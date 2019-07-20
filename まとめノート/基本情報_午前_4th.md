@@ -12,7 +12,7 @@
 
 ### ◇ システム実装のための設計方法の種類と歴史
 
-![構造化プログラミングからオブジェクト指向へ](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\構造化プログラミングからオブジェクト指向へ.png)
+![構造化プログラミングからオブジェクト指向へ](C:\Projects\Summary_Notes\まとめノート\画像\構造化プログラミングからオブジェクト指向へ.png)
 
 
 
@@ -20,7 +20,7 @@
 
 ### ◇  オブジェクトモデリングの図式化方法の種類
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
 
 
@@ -30,13 +30,13 @@
 
 （※ちなみ、UMLは、システム設計だけでなく、データベース設計にも使える）
 
-![UML-0](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\UML-0.png)
+![UML-0](C:\Projects\Summary_Notes\まとめノート\画像\UML-0.png)
 
 ### ◇ UMLのダイアグラム一覧
 
-![UML-1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\UML-1.png)
+![UML-1](C:\Projects\Summary_Notes\まとめノート\画像\UML-1.png)
 
-![UML-2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\UML-2.png)
+![UML-2](C:\Projects\Summary_Notes\まとめノート\画像\UML-2.png)
 
 
 
@@ -44,9 +44,9 @@
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
-![UML-1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\UML-1.png)
+![UML-1](C:\Projects\Summary_Notes\まとめノート\画像\UML-1.png)
 
 
 
@@ -54,19 +54,19 @@
 
 クラスの構造、クラス間の関係、役割を表記する方法。
 
-![クラス図の線の種類](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クラス図の線の種類.png)
+![クラス図の線の種類](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の線の種類.png)
 
 - **Class**
 
 １つのクラスを、クラス区画、属性区画、操作区画の３要素で表記する方法。
 
-![UML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クラス図.png)
+![UML](C:\Projects\Summary_Notes\まとめノート\画像\クラス図.png)
 
 - **Association（関連）**
 
 ２つのクラスを関連させる場合、クラスを線で繋ぐことで関連性を表記する方法。クラス図の実装の章を参照せよ。
 
-![クラス図の関連表現](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クラス図の関連表現.png)
+![クラス図の関連表現](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の関連表現.png)
 
 - **Aggregation（集約）**
 
@@ -76,7 +76,7 @@
 
     「社員」から見た「会社」は1つである。逆に、「会社」からみた「社員」は0人以上であることを表現。
 
-![集約](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\集約.png)
+![集約](C:\Projects\Summary_Notes\まとめノート\画像\集約.png)
 
 
 
@@ -96,7 +96,7 @@
 
   クラス間で属性、操作、関連を引継ぐことを表記する方法。サブクラスから見たスーパークラスとの関係を『汎化』、逆にスーパークラスから見たサブクラスとの関係を『特化』という。プログラミングにおける『継承』は、特化を実装する方法の一つ。
 
-![汎化と特化](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\汎化と特化.png)
+![汎化と特化](C:\Projects\Summary_Notes\まとめノート\画像\汎化と特化.png)
 
 - **Cardinality（多重度）**
 
@@ -106,17 +106,15 @@
 
   「社員」から見た「会社」は1つである。逆に、「会社」からみた「社員」は0人以上であるという表記。
 
-![多重度](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\多重度.png)
+![多重度](C:\Projects\Summary_Notes\まとめノート\画像\多重度.png)
 
-![多重度一覧](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\多重度の表記方法.png)
+![多重度一覧](C:\Projects\Summary_Notes\まとめノート\画像\多重度の表記方法.png)
 
 
 
 # 16-04. UMLの構造図の実装方法
 
-クラス図のAssociation、Aggregation、Compositionでは、実装されたオブジェクト間の依存度に違いがある。
-
-![Association, Aggregation, Compositionの関係の強さの違い](https://user-images.githubusercontent.com/42175286/59730918-1efe6080-927f-11e9-85ba-51d3054a7a24.png)
+![クラス図の線の種類](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の線の種類.png)
 
 
 
@@ -233,9 +231,77 @@ $key = new Key($lock);
 
 
 
-### ◇ Realization（実現）
+### ◇  Dependency（依存）※関連、集約、合成の依存性の違い
 
-Realizationの実装は、すなわち抽象オブジェクトの継承である。例えば、以下の条件の社員オブジェクトを実装したいとする。
+『Association ＞ Aggregation ＞ Composition』の順で、依存性が低い。
+
+![Association, Aggregation, Compositionの関係の強さの違い](C:\Projects\Summary_Notes\まとめノート\画像\Association, Aggregation, Compositionの関係の強さの違い.png)
+
+
+
+### ◇ Generalization（汎化）
+
+- **汎化におけるOverride**
+
+汎化の時、子オブジェクトでメソッドを再定義すると、メソッドは上書きされる。
+
+【親オブジェクト】
+```
+<?php
+class Goods
+{
+    //商品名プロパティ
+    private $name = "";
+
+    //商品価格プロパティ
+    private $price = 0;
+
+    //コンストラクタ。商品名と商品価格を設定する
+    public function __construct(string $name, int $price)
+    {
+        $this->name = $name;
+        $this->price = $price;
+    }
+
+    //商品名と価格を表示するメソッド
+    public function printPrice(): void
+    {
+        print($this->name."の価格: ￥".$this->price."<br>");
+    }
+
+    //商品名のゲッタ
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    //商品価格のゲッタ
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+}
+```
+
+【子オブジェクト】
+```
+<?php
+class GoodsWithTax extends Goods
+{
+    //商品名と価格を表示するメソッド。税込みで表示するように変更
+    public function printPrice(): void
+    {
+
+        //商品価格の税込み価格を計算し、表示
+        $priceWithTax = round($this->getPrice() * 1.08);  // （1）
+        print($this->getName()."の税込み価格: ￥".$priceWithTax."<br>");  // （2）
+    }
+}
+```
+
+- **抽象クラスの汎化**
+
+例えば、以下の条件の社員オブジェクトを実装したいとする。
 
 1. 午前９時に出社
 2. 営業部・開発部・総務部があり、それぞれが異なる仕事を行う
@@ -247,18 +313,75 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 これを解決するために、例えば、次の２つが実装方法が考えられる。
 
-- 営業部社員オブジェクト、開発部社員オブジェクト、総務部社員オブジェクトを別々に実装  
-  メリット：同じ部署の他のオブジェクトに影響を与えられる。  
-  デメリット：各社員オブジェクトで共通の処理を個別に実装しなければならない。共通の処理が同じコードで書かれる保証がない。
-- 一つの社員オブジェクトの中で、働くメソッドに部署ごとで変化する引数を設定  
-  メリット：全部署の社員を一つのオブジェクトで呼び出せる。  
-  デメリット：一つの修正が、全部署の社員の処理に影響を与えてしまう。
+1. 営業部社員オブジェクト、開発部社員オブジェクト、総務部社員オブジェクトを別々に実装
+   メリット：同じ部署の他のオブジェクトに影響を与えられる。
+   デメリット：各社員オブジェクトで共通の処理を個別に実装しなければならない。共通の処理が同じコードで書かれる保証がない。
+
+2. 一つの社員オブジェクトの中で、働くメソッドに部署ごとで変化する引数を設定
+   メリット：全部署の社員を一つのオブジェクトで呼び出せる。
+   デメリット：一つの修正が、全部署の社員の処理に影響を与えてしまう。
 
 抽象オブジェクトと抽象メソッドを用いると、2つのメリットを生かしつつ、デメリットを解消可能。
 
-※オーバーライドは、メソッドの再定義による上書きであり、一方で抽象オブジェクトの継承は、抽象メソッドの実装である。
-
 ![抽象クラスと抽象メソッド-2](https://user-images.githubusercontent.com/42175286/59590387-e8adcd80-9126-11e9-87b3-7659468af2f6.PNG)
+
+- **parent::**
+
+オーバーライドによって上書きされる前のメソッドを呼び出せる。
+
+```
+<?php
+class GoodsWithTax2 extends Goods
+{
+    //商品名と価格を表示するメソッド。税込みで表示するように変更
+    public function printPrice(): void
+    {
+
+        //親オブジェクトの同名メソッドの呼び出し
+        parent::printPrice();  // （1）
+
+        //商品価格の税込み価格を計算し、表示
+        $priceWithTax = round($this->getPrice() * 1.08);
+        print($this->getName()."の税込み価格: ￥".$priceWithTax."<br>");
+    }
+}
+```
+
+
+
+### ◇ Realization（実現）
+
+親オブジェクトのIntefaceと子オブジェクトでのImplementsの関係のように、処理内容だけは他のオブジェクトに実装すること。
+
+【親オブジェクト】
+```
+interface Communication
+{
+     // インターフェイスでは、実装を伴うメソッドやプロパティの宣言はできない
+     public function talk();
+     public function touch();
+     public function gesture();
+}
+```
+
+【子オブジェクト】
+```
+class Human implements Communication
+{
+     public function talk()
+     {
+          // 話す
+     }
+     public function touch()
+     {
+          // 触る
+     }
+     public function gesture()
+     {
+          // 身振り手振り
+     }
+}
+```
 
 
 
@@ -266,7 +389,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
 
 
@@ -274,31 +397,31 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 データベースの設計において、エンティティ間の関係を表すために用いられるダイアグラム図。『IE 記法』と『IDEF1X 記法』が一般的に用いられる。
 
-![ER図（IE記法）](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ER図（IE記法）.png)
+![ER図（IE記法）](C:\Projects\Summary_Notes\まとめノート\画像\ER図（IE記法）.png)
 
 - **Entity と Attribute**
 
-  ![エンティティとアトリビュート](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\エンティティとアトリビュート.png)
+  ![エンティティとアトリビュート](C:\Projects\Summary_Notes\まとめノート\画像\エンティティとアトリビュート.png)
 
 - **Relation と Cardinality（多重度）**
 
   エンティティ間の関係を表す。
 
-  ![リレーションとカーディナリティ](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\リレーションとカーディナリティ.png)
+  ![リレーションとカーディナリティ](C:\Projects\Summary_Notes\まとめノート\画像\リレーションとカーディナリティ.png)
 
 - **1：1**
 
-  ![１：１](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\１：１.png)
+  ![１：１](C:\Projects\Summary_Notes\まとめノート\画像\１：１.png)
 
 - **1：多（Relation が曖昧な状態）**
 
   設計が進むにつれ、「1：0 以上の関係」「1：1 以上の関係」のように具体化しく。
 
-  ![１：多（Relationが曖昧な状態）](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\１：多（Relationが曖昧な状態）.png)
+  ![１：多（Relationが曖昧な状態）](C:\Projects\Summary_Notes\まとめノート\画像\１：多（Relationが曖昧な状態）.png)
 
 - **1：1 以上**
 
-  ![１：１以上](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\１：１以上.png)
+  ![１：１以上](C:\Projects\Summary_Notes\まとめノート\画像\１：１以上.png)
 
 
 
@@ -306,9 +429,9 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
-![UML-2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\UML-2.png)
+![UML-2](C:\Projects\Summary_Notes\まとめノート\画像\UML-2.png)
 
 
 
@@ -318,7 +441,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 **【設計例】**
 
-![ユースケース図](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ユースケース図.png)
+![ユースケース図](C:\Projects\Summary_Notes\まとめノート\画像\ユースケース図.png)
 
 
 
@@ -328,15 +451,15 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 **【設計例】**
 
-![アクティビティ図](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\アクティビティ図.png)
+![アクティビティ図](C:\Projects\Summary_Notes\まとめノート\画像\アクティビティ図.png)
 
 - **アルゴリズムとフローチャート**
 
-  ![p549-1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p549-1.gif)
+  ![p549-1](C:\Projects\Summary_Notes\まとめノート\画像\p549-1.gif)
 
-  ![p549-2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p549-2.gif)
+  ![p549-2](C:\Projects\Summary_Notes\まとめノート\画像\p549-2.gif)
 
-  ![p549-3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p549-3.gif)
+  ![p549-3](C:\Projects\Summary_Notes\まとめノート\画像\p549-3.gif)
 
 
 
@@ -346,13 +469,13 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
 
 
 ### ◇ DFD：Data Flow Diagram（データフロー図）
 
-![データフロー図](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\データフロー図.jpg)
+![データフロー図](C:\Projects\Summary_Notes\まとめノート\画像\データフロー図.jpg)
 
 
 
@@ -367,7 +490,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 1. 店員は在庫管理画面から在庫一覧を確認可能。
 2. この機能は、『店員オブジェクト』、『管理画面オブジェクト』、『倉庫オブジェクト』、『商品オブジェクト』から構成されている。
 
-![シーケンス図](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\シーケンス図.png)
+![シーケンス図](C:\Projects\Summary_Notes\まとめノート\画像\シーケンス図.png)
 
 
 
@@ -375,7 +498,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
 
 
 
@@ -383,7 +506,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 「状態」を丸，「⁠遷移」を矢印で表す。矢印の横の説明は、遷移のきっかけとなる「イベント（入力）⁠／アクション（出力）⁠」を示す。
 
-![状態遷移図](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ストップウォッチ状態遷移図.jpg)
+![状態遷移図](C:\Projects\Summary_Notes\まとめノート\画像\ストップウォッチ状態遷移図.jpg)
 
 
 
@@ -391,7 +514,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 
 状態遷移表を作成してみると，状態遷移図では、9つあるセルのうち4つのセルしか表現できておらず，残り5つのセルは表現されていないことに気づくことができる。
 
-![状態遷移表](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ストップウォッチ状態遷移表.jpg)
+![状態遷移表](C:\Projects\Summary_Notes\まとめノート\画像\ストップウォッチ状態遷移表.jpg)
 
 - **（例題）12.2 という状態**
 
@@ -400,7 +523,7 @@ Realizationの実装は、すなわち抽象オブジェクトの継承である
 3. 現在の状態『b』から、次は小数点なので、b行の『d』へ移動
 4. 現在の状態『d』から、次は数字なので、b行の『e』へ移動
 
-![状態遷移表](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\状態遷移表.png)
+![状態遷移表](C:\Projects\Summary_Notes\まとめノート\画像\状態遷移表.png)
 
 
 
@@ -480,15 +603,15 @@ Array
 
 - **単方向リスト**
 
-![p555-1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p555-1.gif)
+![p555-1](C:\Projects\Summary_Notes\まとめノート\画像\p555-1.gif)
 
 - **双方向リスト**
 
-![p555-2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p555-2.gif)
+![p555-2](C:\Projects\Summary_Notes\まとめノート\画像\p555-2.gif)
 
 - **循環リスト**
 
-![p555-3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\p555-3.gif)
+![p555-3](C:\Projects\Summary_Notes\まとめノート\画像\p555-3.gif)
 
 
 
@@ -496,19 +619,19 @@ Array
 
 phpでは、```array_push()```と```array_shift()```で実装可能。
 
-![Queue1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Queue1.gif)
+![Queue1](C:\Projects\Summary_Notes\まとめノート\画像\Queue1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![Queue2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Queue2.gif)
-
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
  
 
-![Queue3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Queue3.gif)
+![Queue2](C:\Projects\Summary_Notes\まとめノート\画像\Queue2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Queue3](C:\Projects\Summary_Notes\まとめノート\画像\Queue3.gif)
 
 
 
@@ -516,19 +639,19 @@ phpでは、```array_push()```と```array_shift()```で実装可能。
 
 phpでは、```array_push()```と```array_pop()```で実装可能。
 
-![Stack1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Stack1.gif)
+![Stack1](C:\Projects\Summary_Notes\まとめノート\画像\Stack1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![Stack2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Stack2.gif)
-
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
  
 
-![Stack3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Stack3.gif)
+![Stack2](C:\Projects\Summary_Notes\まとめノート\画像\Stack2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Stack3](C:\Projects\Summary_Notes\まとめノート\画像\Stack3.gif)
 
 ### ◇ ツリー構造
 
@@ -536,7 +659,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   各ノードにデータが格納されている。
 
-![二分探索木](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索木1.gif)
+![二分探索木](C:\Projects\Summary_Notes\まとめノート\画像\二分探索木1.gif)
 
 
 
@@ -544,19 +667,19 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ヒープ1.gif)
+  ![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ1.gif)
 
-  ![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+  ![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![ヒープ1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ヒープ2.gif)
+![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ2.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![ヒープ2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ヒープ3.gif)
+![ヒープ2](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ3.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![ヒープ3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ヒープ4.gif)
+![ヒープ3](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ4.gif)
 
 
 
@@ -564,7 +687,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
 
-![ソートの仕組み](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ソートの仕組み.gif)
+![ソートの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\ソートの仕組み.gif)
 
 
 
@@ -572,35 +695,35 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
 
-![バブルソート1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート1.gif)
+![バブルソート1](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![バブルソート2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート2.gif)
+![バブルソート2](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート2.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![バブルソート3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート3.gif)
-
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
-
-![バブルソート4](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート4.gif)
-
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
-
-![バブルソート5](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート5.gif)
-
-
-
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
  
 
+![バブルソート3](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート3.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![バブルソート4](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート4.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![バブルソート5](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート5.gif)
 
 
-![バブルソート6](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\バブルソート6.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+
+
+![バブルソート6](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート6.gif)
 
 
 
@@ -608,19 +731,19 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法。
 
-![選択ソート1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\選択ソート1.gif)
+![選択ソート1](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![選択ソート2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\選択ソート2.gif)
+![選択ソート2](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート2.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![選択ソート3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\選択ソート3.gif)
+![選択ソート3](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート3.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![選択ソート4](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\選択ソート4.gif)
+![選択ソート4](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート4.gif)
 
 ### ◇ 基本挿入法（挿入ソート）
 
@@ -638,51 +761,51 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 適当な基準値を選び，それより小さな値のグループと大きな値のグループにデータを分割する。同様にして，グループの中で基準値を選び，それぞれのグループを分割する。この操作を繰り返していく方法。
 
-![クイックソート-1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-1.JPG)
+![クイックソート-1](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-1.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-2.JPG)
+![クイックソート-2](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-2.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-3.JPG)
+![クイックソート-3](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-3.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-4](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-4.JPG)
+![クイックソート-4](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-4.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-5](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-5.JPG)
+![クイックソート-5](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-5.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-6](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-6.JPG)
+![クイックソート-6](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-6.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-7](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-7.JPG)
+![クイックソート-7](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-7.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-8](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-8.JPG)
+![クイックソート-8](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-8.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-9](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-9.JPG)
+![クイックソート-9](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-9.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-10](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-10.JPG)
+![クイックソート-10](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-10.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-11](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-11.JPG)
+![クイックソート-11](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-11.JPG)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![クイックソート-12](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\クイックソート-12.JPG)
+![クイックソート-12](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-12.JPG)
 
 
 
@@ -692,41 +815,41 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   今回は「６」を探す。
 
-![線形探索法1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\線形探索法1.gif)
+![線形探索法1](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![線形探索法2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\線形探索法2.gif)
+![線形探索法2](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法2.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![線形探索法3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\線形探索法3.gif)
+![線形探索法3](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法3.gif)
 
 ### ◇ 二分探索法
 
   前提として、ソートによって、すでにデータが整列させられているとする。今回は「６」を探す。
 
-![二分探索法1](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法1.gif)
+![二分探索法1](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法1.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![二分探索法2](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法2.gif)
+![二分探索法2](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法2.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![二分探索法3](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法3.gif)
+![二分探索法3](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法3.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![二分探索法4](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法4.gif)
+![二分探索法4](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法4.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![二分探索法5](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法5.gif)
+![二分探索法5](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法5.gif)
 
-![矢印_80x82](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
 
-![二分探索法6](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\二分探索法6.gif)
+![二分探索法6](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法6.gif)
 
 ### ◇ ハッシュ法
 
@@ -746,7 +869,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
 
-![Java Applet](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Java Applet.gif)
+![Java Applet](C:\Projects\Summary_Notes\まとめノート\画像\Java Applet.gif)
 
 
 
@@ -754,7 +877,7 @@ Javaで書かれたWebのフロントエンドで動くプログラム。Java9�
 
 Javaで書かれたWebのサーバーエンドで動くプログラム。
 
-![Java Servlet](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\Java Servlet.gif)
+![Java Servlet](C:\Projects\Summary_Notes\まとめノート\画像\Java Servlet.gif)
 
 
 
@@ -770,7 +893,7 @@ Javaでは、Javaオブジェクトに対するメモリ領域の割り当てや
 
 ソースコード（ウェブサイトならJava、php、Javascriptなど）は、機械語に変換された後、CPUによって読み込まれる。そして、ハードウェア（ウェブサイトならパソコン）のCPUによって、ソースコードに書かれた様々な処理が実行される。
 
-![コンパイル型とインタプリタ型言語](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\コンパイル型とインタプリタ型言語.jpg)
+![コンパイル型とインタプリタ型言語](C:\Projects\Summary_Notes\まとめノート\画像\コンパイル型とインタプリタ型言語.jpg)
 
 ### ◇ ビルド
 
@@ -778,7 +901,7 @@ Compier言語やInterpreter言語では、ソースコードは機械語から�
 
 ※Vue.jsを使用するためには『asset:build』や『asset:watch』が必要であるが、まさにこのため。
 
-![ビルドとコンパイル](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\ビルドとコンパイル.jpg)
+![ビルドとコンパイル](C:\Projects\Summary_Notes\まとめノート\画像\ビルドとコンパイル.jpg)
 
 
 
@@ -788,11 +911,11 @@ Compier言語やInterpreter言語では、ソースコードは機械語から�
 
 （例）C#
 
-![コンパイラ言語](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\コンパイラ言語.png)
+![コンパイラ言語](C:\Projects\Summary_Notes\まとめノート\画像\コンパイラ言語.png)
 
 - **コンパイルの詳しい流れ**
 
-![字句解析、構文解析、意味解析、最適化](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\字句解析、構文解析、意味解析、最適化.png)
+![字句解析、構文解析、意味解析、最適化](C:\Projects\Summary_Notes\まとめノート\画像\字句解析、構文解析、意味解析、最適化.png)
 
 1. Lexical analysis（字句解析）
 
@@ -826,11 +949,11 @@ Compier言語やInterpreter言語では、ソースコードは機械語から�
 
 （例）Java（※他とはプロセスが異なる中間型）、PHP、Ruby、JavaScript、Python
 
-![インタプリタ言語](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\インタプリタ言語.png)
+![インタプリタ言語](C:\Projects\Summary_Notes\まとめノート\画像\インタプリタ言語.png)
 
 - **コンパイルの詳しい流れ**
 
-![字句解析、構文解析、意味解析、最適化](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\字句解析、構文解析、意味解析、最適化.png)
+![字句解析、構文解析、意味解析、最適化](C:\Projects\Summary_Notes\まとめノート\画像\字句解析、構文解析、意味解析、最適化.png)
 
 1. Lexical analysis（字句解析）
 
@@ -884,7 +1007,7 @@ Compier言語やInterpreter言語では、ソースコードは機械語から�
 
 ### ◇ 変数に値が入っているのかを確かめるシリーズ
 
-![値が存在するのかを確かめる](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\値が存在するのかを確かめる.jpg)
+![値が存在するのかを確かめる](C:\Projects\Summary_Notes\まとめノート\画像\値が存在するのかを確かめる.jpg)
 
 ```
 # 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
@@ -901,9 +1024,9 @@ if($this->$var){
 
 
 
-# 16-16. メソッドの作り方
+# 16-16. メソッドの実装方法
 
-### ◇ 引数の渡し方
+### ◇ 値の格納方法
 
 - **参照渡し**
 
@@ -955,7 +1078,37 @@ echo $b;
 
 （例）ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
 
-![再帰的](D:\Documents\Drive 1st\プログラミング自習\まとめノート\画像\再帰的.png)
+![再帰的](C:\Projects\Summary_Notes\まとめノート\画像\再帰的.png)
+
+
+
+# 16-17. アクセス修飾子
+
+### ◇ static
+
+別ファイルでのメソッドの呼び出しにはインスタンス化が必要である。しかし、static修飾子をつけることで、インスタンス化しなくとも呼び出せる。
+
+
+
+### ◇ private
+
+同じオブジェクト内でのみ呼び出せる。
+
+- **Encapsulation（カプセル化）**
+
+カプセル化とは、システムの実装方法を外部から隠すこと。オブジェクト内のプロパティにアクセスするには、直接データを扱う事はできず、オブジェクト内のメソッドを呼び出して、アクセスしなければならない。
+
+![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
+
+
+
+### ◇ proteced
+同じオブジェクト内と子オブジェクトでのみ呼び出せる。
+
+
+
+### ◇ public
+どのオブジェクトでも呼び出せる。
 
 
 
