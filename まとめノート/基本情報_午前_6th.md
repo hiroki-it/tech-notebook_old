@@ -1,0 +1,659 @@
+
+
+# 勉強の方針
+
+1. 必ず、実例として、それが扱われているのかを覚えること。
+2. 必ず、言葉ではなく、イラストを用いて覚えること。
+3. 必ず、知識の『点』と『点』を繋ぎ、『線』にしろ
+4. 必ず、まとめることでインプットしているだけなので、口頭で説明してアプトプットしろ。
+5. キタミ式で大枠をとらえて、過去問で肉付けしていく。
+
+
+
+# 17-01. データ型の実装
+
+プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
+
+
+
+### ◇ Array型
+
+- **多次元配列**
+
+  中に配列をもつ配列のこと。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
+
+```
+Array
+(
+    [0] => Array
+        (
+            [0] => リンゴ
+            [1] => イチゴ
+            [2] => トマト
+        )
+
+    [1] => Array
+        (
+            [0] => メロン
+            [1] => キュウリ
+            [2] => ピーマン
+        )
+
+    [2] => Array
+        (
+            [0] => バナナ
+            [1] => パイナップル
+            [2] => レモン
+        )
+)
+```
+
+- **連想配列**
+
+  中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ような配列のこと。下の例は、二次元配列かつ連想配列である。
+
+```
+Array
+(
+    [赤] => Array
+        (
+            [果物] => リンゴ
+            [果物] => イチゴ
+            [野菜] => トマト
+        )
+
+    [緑] => Array
+        (
+            [果物] => メロン
+            [野菜] => キュウリ
+            [野菜] => ピーマン
+        )
+
+    [黄] => Array
+        (
+            [果物] => バナナ
+            [果物] => パイナップル
+            [果物] => レモン
+        )
+)
+```
+
+
+
+### ◇ List型
+
+ポインタは、次のデータがどこにあるかのアドレスを表す。
+
+- **単方向リスト**
+
+![p555-1](C:\Projects\Summary_Notes\まとめノート\画像\p555-1.gif)
+
+- **双方向リスト**
+
+![p555-2](C:\Projects\Summary_Notes\まとめノート\画像\p555-2.gif)
+
+- **循環リスト**
+
+![p555-3](C:\Projects\Summary_Notes\まとめノート\画像\p555-3.gif)
+
+
+
+### ◇ Queue型
+
+phpでは、```array_push()```と```array_shift()```で実装可能。
+
+![Queue1](C:\Projects\Summary_Notes\まとめノート\画像\Queue1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Queue2](C:\Projects\Summary_Notes\まとめノート\画像\Queue2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Queue3](C:\Projects\Summary_Notes\まとめノート\画像\Queue3.gif)
+
+
+
+### ◇ Stack
+
+phpでは、```array_push()```と```array_pop()```で実装可能。
+
+![Stack1](C:\Projects\Summary_Notes\まとめノート\画像\Stack1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Stack2](C:\Projects\Summary_Notes\まとめノート\画像\Stack2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![Stack3](C:\Projects\Summary_Notes\まとめノート\画像\Stack3.gif)
+
+### ◇ ツリー構造
+
+- **二分探索木**
+
+  各ノードにデータが格納されている。
+
+![二分探索木](C:\Projects\Summary_Notes\まとめノート\画像\二分探索木1.gif)
+
+
+
+- **ヒープ**
+
+  Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
+
+  ![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ1.gif)
+
+  ![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![ヒープ2](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ3.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![ヒープ3](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ4.gif)
+
+
+
+# 17-02. データ整列の概念
+
+例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
+
+![ソートの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\ソートの仕組み.gif)
+
+
+
+### ◇ 基本交換法（バブルソート）
+
+隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
+
+![バブルソート1](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![バブルソート2](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+![バブルソート3](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート3.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![バブルソート4](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート4.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![バブルソート5](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート5.gif)
+
+
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+ 
+
+
+
+![バブルソート6](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート6.gif)
+
+
+
+### ◇ 基本選択法（選択ソート）
+
+データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法。
+
+![選択ソート1](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![選択ソート2](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![選択ソート3](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート3.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![選択ソート4](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート4.gif)
+
+### ◇ 基本挿入法（挿入ソート）
+
+既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法。
+
+### ◇ ヒープソート
+
+
+
+### ◇ シェルソート
+
+
+
+### ◇ クイックソート
+
+適当な基準値を選び，それより小さな値のグループと大きな値のグループにデータを分割する。同様にして，グループの中で基準値を選び，それぞれのグループを分割する。この操作を繰り返していく方法。
+
+![クイックソート-1](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-1.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-2](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-2.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-3](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-3.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-4](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-4.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-5](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-5.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-6](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-6.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-7](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-7.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-8](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-8.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-9](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-9.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-10](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-10.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-11](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-11.JPG)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![クイックソート-12](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-12.JPG)
+
+
+
+# 17-03. データ探索の概念
+
+### ◇ 線形探索法
+
+  今回は「６」を探す。
+
+![線形探索法1](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![線形探索法2](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![線形探索法3](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法3.gif)
+
+### ◇ 二分探索法
+
+  前提として、ソートによって、すでにデータが整列させられているとする。今回は「６」を探す。
+
+![二分探索法1](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法1.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![二分探索法2](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法2.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![二分探索法3](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法3.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![二分探索法4](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法4.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![二分探索法5](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法5.gif)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![二分探索法6](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法6.gif)
+
+### ◇ ハッシュ法
+
+
+
+
+
+
+
+
+
+# 17-04.   『Java』 について
+
+### ◇ Javaで書かれているプログラム
+
+- **Java Applet**
+
+Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
+
+![Java Applet](C:\Projects\Summary_Notes\まとめノート\画像\Java Applet.gif)
+
+
+
+- **Java Servlet**
+
+Javaで書かれたWebのサーバーエンドで動くプログラム。
+
+![Java Servlet](C:\Projects\Summary_Notes\まとめノート\画像\Java Servlet.gif)
+
+
+
+### ◇ Garbage collection
+
+Javaでは、Javaオブジェクトに対するメモリ領域の割り当てや解放をJVM（Java仮想マシン）が自動的に行う。この自動解放メカニズムを『Garbage collection』という。
+
+
+
+# 17-05.  TRUE vs. FALSE
+
+### ◇ FALSE の定義
+
+- **表示なし**
+
+- **キーワード FALSE false**
+
+- **整数 0**
+
+- **浮動小数点 0.0**
+
+- **空の文字列 " "**
+
+- **空の文字列 ' '**
+
+- **文字列 "0"（文字列としての0）**
+
+- **要素数が 0 の配列$ary = array();**
+
+- **プロパティーやメソッドを含まない空のオブジェクト**
+
+- **NULL値**
+
+  
+
+### ◇ TRUE の定義
+
+上記の値以外は、全て TRUE
+
+
+
+### ◇ 変数に値が入っているのかを確かめるシリーズ
+
+![値が存在するのかを確かめる](C:\Projects\Summary_Notes\まとめノート\画像\値が存在するのかを確かめる.jpg)
+
+```
+# 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
+if($this->$var == TRUE){
+	処理A;
+}
+
+# ただし、基本的に右辺は省略すべき。
+
+if($this->$var){
+	処理A;
+}
+```
+
+
+
+# 18-01. システム運用
+
+### ◇ キャパシティ管理
+
+ITシステムやITサービスに求められるリソース需要を予測・監視・評価して、それを満たすシステムリソースを提供できるように計画・調達・配備する活動のこと。
+
+![キャパシティ管理](C:\Projects\Summary_Notes\まとめノート\画像\キャパシティ管理.jpg)
+
+
+
+# 18-02. システムの稼働と障害
+
+### ◇ システムの稼働率
+
+並列システムの場合、両方の非稼働率をかけて、全体から引く。
+
+（例）１－(1－0.81) × (1－0.64) = 0.9316
+
+![稼働率の計算](C:\Projects\Summary_Notes\まとめノート\画像\稼働率の計算.jpg)
+
+
+
+### ◇ Dual システム
+
+いずれかが故障した場合、異常が発生したシステムを切り離し、残る片方で処理を続ける。
+
+![p611-1](C:\Projects\Summary_Notes\まとめノート\画像\p611-1.png)
+
+![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+
+![p611-2](C:\Projects\Summary_Notes\まとめノート\画像\p611-2.png)
+
+
+
+### ◇ Duplex システム
+
+従系システムの待機方法には２つの種類がある。
+
+- **ホットスタンバイ**
+
+  ![p613-1](C:\Projects\Summary_Notes\まとめノート\画像\p613-1.png)
+
+- **コールドスタンバイ**
+
+  ![p613-2](C:\Projects\Summary_Notes\まとめノート\画像\p613-2.png)
+
+
+
+### ◇ Fault tolerant（耐障害性）
+
+- **Fail safe**
+
+  システムの稼働に障害が発生した場合、安全な状態になるように動作するように、設計すること。
+
+  ![p624](C:\Projects\Summary_Notes\まとめノート\画像\p624.png)
+
+- **Fail soft**
+
+  システムの稼働に障害が発生した場合、システムの一部のみが停止し、全体は稼働し続けるように、設計すること。
+
+  ![p625-1](C:\Projects\Summary_Notes\まとめノート\画像\p625-1.png)
+
+- **Fool proof**
+
+  誤った扱い方をしても危険が生じない、あるいは誤った扱い方ができないように、設計すること。
+
+  ![p625-2](C:\Projects\Summary_Notes\まとめノート\画像\p625-2.png)
+
+
+
+### ◇ MTBF と MTTR：Mean Time Between Failure／To Repair
+
+![MTBFとMTTR](C:\Projects\Summary_Notes\まとめノート\画像\MTBFとMTTR.png)
+
+（MTBF）＝（稼働①）＋（稼働②）＋（稼働③）
+
+（MTTR）＝（故障①）＋（故障②）＋（故障③）
+
+
+
+# 18-03. システムの性能評価
+
+### ◇ 性能評価テスト
+
+![スループットとレスポンスタイム](C:\Projects\Summary_Notes\まとめノート\画像\スループットとレスポンスタイム.png)
+
+性能を評価する時、アクセス数を段階的に増加させて数回の性能テストを実施し，その結果を組み合わせてグラフ化する。例えば、性能目標を，⁠スループット：50件／秒⁠、⁠レスポンスタイム：3秒以内とする。今回のグラフでは、スループット：50件／秒の時のレスポンスタイムは2秒である。したがって、このシステムは性能目標を達成していることがわかる。
+
+- **Throughput**
+
+  単位時間当たりに処理できる仕事数のこと。
+
+- **Response time**
+
+  コンピュータが処理を終えるまでに要する時間のこと。
+
+
+
+# 19. 企業活動と関連法規
+
+### ◇ 
+
+
+
+# 20-01. 経営状況の分析手法
+
+### ◇ 3C分析
+
+マーケティング分析に必要不可欠な3要素、顧客(Customer)，自社(Company)，競合他社(Competitor)について自社の置かれている状況を分析する手法
+
+### ◇  IT ポートフォリオ
+
+そもそも、ポートフォリオは、文脈によって意味が大きく異なる（嫌なタイプの英単語や…）。
+
+![ポートフォリオ](C:\Projects\Summary_Notes\まとめノート\画像\ポートフォリオ.jpg)
+
+# 20-02. 会社組織の設計方法
+
+### ◇ Enterprise architecture
+
+組織の全体最適化の観点より、業務及びシステム双方の改革を実践するために、業務及びシステムを統一的な手法でモデル化し、改善することを目的とした、設計・管理手法
+
+
+
+# 21-01. 
+
+### ◇ 費用の種類
+
+費用は大きく2種類に分けられる。
+
+![p689-1](C:\Projects\Summary_Notes\まとめノート\画像\p689-1.png)
+
+- **固定費**
+
+  売上に関係無く発生するお金
+
+  ![p689-2](C:\Projects\Summary_Notes\まとめノート\画像\p689-2.png)
+
+- **変動費**
+
+  売上に比例して増減するお金
+
+  ![p689-3](C:\Projects\Summary_Notes\まとめノート\画像\p689-3.png)
+
+
+
+### ◇ 損益分岐点
+
+（例）タコを売る企業
+
+（固定費）＝（人件費）＋（施設費）＋・・・など
+
+（変動費）＝（タコの原価）×（仕入れ個数）
+
+（売上高）＝（タコの定価）×（販売個数）
+
+（利益）＝（売上高）－（固定費）－（変動費）
+
+★『**損益分岐点利益**』：（利益）＝0 になる時の利益
+
+![p691](C:\Projects\Summary_Notes\まとめノート\画像\p691.png)
+
+
+
+### ◇ 変動費率
+
+**『変動費率』**：定価に対する変動費の割合
+
+※今回、変動費が原価であったため、原価率と同じになったが、変動費は原価以外にもなり得るので注意。
+
+![p692-1](C:\Projects\Summary_Notes\まとめノート\画像\p692-1.png)
+
+
+
+### ◇ 在庫管理の手法の種類
+
+- **先入先出法**
+
+  先に仕入れた商品から順に出庫していったと見なす計算方法。
+
+  ![p696-1](C:\Projects\Summary_Notes\まとめノート\画像\p696-1.png)
+
+- **後入先出法**
+
+  後に仕入れた商品から順に出庫していったと見なす計算方法。
+
+  ![p696-2](C:\Projects\Summary_Notes\まとめノート\画像\p696-2.png)
+
+- **移動平均法**
+
+  商品を仕入れる度に、残っている在庫分と合算して平均単価を計算し、仕入れ原価と見なす計算方法。
+
+  ![p697](C:\Projects\Summary_Notes\まとめノート\画像\p697.png)
+
+
+
+# 21-02. 決算書
+
+![決算書の構成](C:\Projects\Summary_Notes\まとめノート\画像\決算書の構成.png)
+
+
+
+# 21-03. Balance Sheet（賃借対照表）
+
+![p700-1](C:\Projects\Summary_Notes\まとめノート\画像\p700-1.png)
+
+![p701-1](C:\Projects\Summary_Notes\まとめノート\画像\p701-1.png)
+
+![p700-2](C:\Projects\Summary_Notes\まとめノート\画像\p700-2.png)
+
+
+
+# 21-04. 損益計算書
+
+![損益計算表](C:\Projects\Summary_Notes\まとめノート\画像\損益計算表.png)
+
+### ◇ **利益の種類**
+
+- **売上原価**
+  本業よる損失：原価、製造費
+
+- **販売費及び一般管理費**
+  販売費と一般管理費による損失：給与、広告費、旅費交通費、水道光熱費、保険料、減価償却費など
+
+- **営業外収益と営業外費用**
+
+  本業以外による損益：受取利息、配当金、支払利息、雑損失など
+
+- **特別利益と特別損失**
+
+  臨時的な損益：不動産の売却益、地震、火災、訴訟による損失など
+
+  
+
+
+
