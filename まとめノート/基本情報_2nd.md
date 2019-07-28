@@ -418,13 +418,13 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ### ◇ 応用ソフトウェア
 
-（例）その辺のアプリ
+**【具体例】**その辺のアプリ
 
 
 
 ### ◇ Middleware
 
-（例）データベース管理システム
+**【具体例】**データベース管理システム
 
 
 
@@ -434,15 +434,15 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 - 制御プログラム（OSの中核を担うプログラム）
 
-  （例）カーネル、マイクロカーネル、モノリシックカーネル
+  **【具体例】**カーネル、マイクロカーネル、モノリシックカーネル
 
 - 言語処理プログラム（構造解析を行うプログラム）
 
-  （例）C、Java、PHP、Javascript
+  **【具体例】**C、Java、PHP、Javascript
 
 - サービスプログラム
 
-  （例）ファイル圧縮プログラム
+  **【具体例】**ファイル圧縮プログラム
 
 
 
@@ -450,11 +450,11 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 システムソフトウェア（ミドルウェア ＋ 基本ソフトウェア）とハードウェアの間の段階にある。
 
-（例）BIOS：Basic Input/Output System
+**【具体例】**BIOS：Basic Input/Output System
 
 ![BIOS](C:\Projects\Summary_Notes\まとめノート\画像\BIOS.jpg)
 
-（例）UEFI：United Extensible Firmware Interface
+**【具体例】**UEFI：United Extensible Firmware Interface
 
 ![UEFIとセキュアブート](C:\Projects\Summary_Notes\まとめノート\画像\UEFIとセキュアブート.JPG)
 
