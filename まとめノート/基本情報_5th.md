@@ -277,7 +277,7 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 IPsecの仕組みで暗号化されますため、インターネット上で盗聴されない。
 
-![IPsecによるインターネットVPN](D:\Documents\Drive 1st\プログラミング自習\まとめノート\随時、リポジトリの画像フォルダへコピーせよ\IPsecによるインターネットVPN.jpg)
+![IPsecによるインターネットVPN](C:\Projects\Summary_Notes\まとめノート\画像\IPsecによるインターネットVPN.jpg)
 
 
 
