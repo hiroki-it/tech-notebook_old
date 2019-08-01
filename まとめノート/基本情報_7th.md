@@ -12,6 +12,17 @@
 
 プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
 
+### ◇ Object型
+
+```
+Fruit Object
+(
+	[id:private] => 1
+	[name:private] => リンゴ
+	[price:private] => 100
+)	
+```
+
 
 
 ### ◇ Array型
@@ -22,7 +33,7 @@
 
 ```
 Array
-(
+( 
     [0] => Array
         (
             [0] => リンゴ
@@ -35,13 +46,6 @@ Array
             [0] => メロン
             [1] => キュウリ
             [2] => ピーマン
-        )
-
-    [2] => Array
-        (
-            [0] => バナナ
-            [1] => パイナップル
-            [2] => レモン
         )
 )
 ```
@@ -65,13 +69,6 @@ Array
             [果物] => メロン
             [野菜] => キュウリ
             [野菜] => ピーマン
-        )
-
-    [黄] => Array
-        (
-            [果物] => バナナ
-            [果物] => パイナップル
-            [果物] => レモン
         )
 )
 ```
@@ -342,33 +339,9 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 
 
-# 17-04.   『Java』 について
-
-### ◇ Javaで書かれているプログラム
-
-- **Java Applet**
-
-Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
-
-![Java Applet](C:\Projects\Summary_Notes\まとめノート\画像\Java Applet.gif)
 
 
-
-- **Java Servlet**
-
-Javaで書かれたWebのサーバーエンドで動くプログラム。
-
-![Java Servlet](C:\Projects\Summary_Notes\まとめノート\画像\Java Servlet.gif)
-
-
-
-### ◇ Garbage collection
-
-Javaでは、Javaオブジェクトに対するメモリ領域の割り当てや解放をJVM（Java仮想マシン）が自動的に行う。この自動解放メカニズムを『Garbage collection』という。
-
-
-
-# 17-05.  TRUE vs. FALSE
+# 17-04.  TRUE vs. FALSE
 
 ### ◇ FALSE の定義
 
@@ -419,239 +392,116 @@ if($this->$var){
 
 
 
-# 18-01. システム運用
+# 17-05. 条件式の実装方法
 
-### ◇ キャパシティ管理
+### ◇ 『else』はできるだけ用いない
 
-ITシステムやITサービスに求められるリソース需要を予測・監視・評価して、それを満たすシステムリソースを提供できるように計画・調達・配備する活動のこと。
+- **『else』を用いる場合**
 
-![キャパシティ管理](C:\Projects\Summary_Notes\まとめノート\画像\キャパシティ管理.jpg)
+冗長になってしまう。
 
+```
+// マジックナンバーを定義
+noOptionItem = 0;
 
+// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す。
+if(!empty($routeEntity->options) {
+    foreach ($routeEntity->options as $option) {
+    
+    	// if文を通過した場合、メソッドの返り値が格納される。通過しない場合、マジックナンバー0が格納される。
+        if ($option->isOptionItemA()) {
+            $result['optionItemA'] = $option->optionItemA();
+		} else {
+			$result['optionItemA'] = noOptionItem;
+			}
+		
+        if ($option->isOptionItemB()) {
+            $result['optionItemB'] = $option->optionItemB();
+		} else {
+			$result['optionItemB'] = noOptionItem;
+			}
+			
+        if ($option->isOptionItemC()) {
+            $result['optionItemC'] = $option->optionItemC();
+		} else {
+			$result['optionItemC'] = noOptionItem;
+			}		
+	};
+}
 
-# 18-02. システムの稼働と障害
+return $result;
+```
 
-### ◇ システムの稼働率
+- **初期値と上書きのロジックを用いる場合**
 
-並列システムの場合、両方の非稼働率をかけて、全体から引く。
+よりすっきりした書き方になる。
 
-**【具体例】**１－(1－0.81) × (1－0.64) = 0.9316
+```
+// マジックナンバーを定義
+noOptionItem = 0;
 
-![稼働率の計算](C:\Projects\Summary_Notes\まとめノート\画像\稼働率の計算.jpg)
+// 初期値0を設定
+$result['optionItemA'] = noOptionItem;
+$result['optionItemB'] = noOptionItem;
+$result['optionItemC'] = noOptionItem;
 
+// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す。
+if(!empty($routeEntity->options) {
+    foreach ($routeEntity->options as $option) {
+    
+    	// if文を通過した場合、メソッドの返り値によって初期値0が上書きされる。通過しない場合、初期値0が用いられる。
+        if ($option->isOptionItemA()) {
+            $result['optionItemA'] = $option->optionItemA();
+		}
+		
+        if ($option->isOptionItemB()) {
+            $result['optionItemB'] = $option->optionItemB();
+		}		
 
+        if ($option->isOptionItemC()) {
+            $result['optionItemC'] = $option->optionItemC();
+		}
+	};
+}
 
-### ◇ Dual システム
+return $result;
+```
 
-いずれかが故障した場合、異常が発生したシステムを切り離し、残る片方で処理を続ける。
 
-![p611-1](C:\Projects\Summary_Notes\まとめノート\画像\p611-1.png)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+### ◇ エラー文
 
-![p611-2](C:\Projects\Summary_Notes\まとめノート\画像\p611-2.png)
+エラー文は、『ログファイル』に出力される。if文を通過してしまった理由は、empty()でTRUEが返ったためである。empty()がFALSEになるように、デバッグする。
 
+```
+if (empty($value)) {
+	throw new Exception('Variable is empty');
+}
+return $value
+```
 
 
-### ◇ Duplex システム
 
-従系システムの待機方法には２つの種類がある。
+# 17-06.   『Java』 について
 
-- **ホットスタンバイ**
+### ◇ Javaで書かれているプログラム
 
-  ![p613-1](C:\Projects\Summary_Notes\まとめノート\画像\p613-1.png)
+- **Java Applet**
 
-- **コールドスタンバイ**
+Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
 
-  ![p613-2](C:\Projects\Summary_Notes\まとめノート\画像\p613-2.png)
+![Java Applet](C:\Projects\Summary_Notes\まとめノート\画像\Java Applet.gif)
 
 
 
-### ◇ Fault tolerant（耐障害性）
+- **Java Servlet**
 
-- **Fail safe**
+Javaで書かれたWebのサーバーエンドで動くプログラム。
 
-  システムの稼働に障害が発生した場合、安全な状態になるように動作するように、設計すること。
+![Java Servlet](C:\Projects\Summary_Notes\まとめノート\画像\Java Servlet.gif)
 
-  ![p624](C:\Projects\Summary_Notes\まとめノート\画像\p624.png)
 
-- **Fail soft**
 
-  システムの稼働に障害が発生した場合、システムの一部のみが停止し、全体は稼働し続けるように、設計すること。
+### ◇ Garbage collection
 
-  ![p625-1](C:\Projects\Summary_Notes\まとめノート\画像\p625-1.png)
-
-- **Fool proof**
-
-  誤った扱い方をしても危険が生じない、あるいは誤った扱い方ができないように、設計すること。
-
-  ![p625-2](C:\Projects\Summary_Notes\まとめノート\画像\p625-2.png)
-
-
-
-### ◇ MTBF と MTTR：Mean Time Between Failure／To Repair
-
-![MTBFとMTTR](C:\Projects\Summary_Notes\まとめノート\画像\MTBFとMTTR.png)
-
-（MTBF）＝（稼働①）＋（稼働②）＋（稼働③）
-
-（MTTR）＝（故障①）＋（故障②）＋（故障③）
-
-
-
-# 18-03. システムの性能評価
-
-### ◇ 性能評価テスト
-
-![スループットとレスポンスタイム](C:\Projects\Summary_Notes\まとめノート\画像\スループットとレスポンスタイム.png)
-
-性能を評価する時、アクセス数を段階的に増加させて数回の性能テストを実施し，その結果を組み合わせてグラフ化する。例えば、性能目標を，⁠スループット：50件／秒⁠、⁠レスポンスタイム：3秒以内とする。今回のグラフでは、スループット：50件／秒の時のレスポンスタイムは2秒である。したがって、このシステムは性能目標を達成していることがわかる。
-
-- **Throughput**
-
-  単位時間当たりに処理できる仕事数のこと。
-
-- **Response time**
-
-  コンピュータが処理を終えるまでに要する時間のこと。
-
-
-
-# 19. 企業活動と関連法規
-
-### ◇ 
-
-
-
-# 20-01. 経営状況の分析手法
-
-### ◇ 3C分析
-
-マーケティング分析に必要不可欠な3要素、顧客(Customer)，自社(Company)，競合他社(Competitor)について自社の置かれている状況を分析する手法
-
-### ◇  IT ポートフォリオ
-
-そもそも、ポートフォリオは、文脈によって意味が大きく異なる（嫌なタイプの英単語や…）。
-
-![ポートフォリオ](C:\Projects\Summary_Notes\まとめノート\画像\ポートフォリオ.jpg)
-
-# 20-02. 会社組織の設計方法
-
-### ◇ Enterprise architecture
-
-組織の全体最適化の観点より、業務及びシステム双方の改革を実践するために、業務及びシステムを統一的な手法でモデル化し、改善することを目的とした、設計・管理手法
-
-
-
-# 21-01. 
-
-### ◇ 費用の種類
-
-費用は大きく2種類に分けられる。
-
-![p689-1](C:\Projects\Summary_Notes\まとめノート\画像\p689-1.png)
-
-- **固定費**
-
-  売上に関係無く発生するお金
-
-  ![p689-2](C:\Projects\Summary_Notes\まとめノート\画像\p689-2.png)
-
-- **変動費**
-
-  売上に比例して増減するお金
-
-  ![p689-3](C:\Projects\Summary_Notes\まとめノート\画像\p689-3.png)
-
-
-
-### ◇ 損益分岐点
-
-**【具体例】**タコを売る企業
-
-（固定費）＝（人件費）＋（施設費）＋・・・など
-
-（変動費）＝（タコの原価）×（仕入れ個数）
-
-（売上高）＝（タコの定価）×（販売個数）
-
-（利益）＝（売上高）－（固定費）－（変動費）
-
-★『**損益分岐点利益**』：（利益）＝0 になる時の利益
-
-![p691](C:\Projects\Summary_Notes\まとめノート\画像\p691.png)
-
-
-
-### ◇ 変動費率
-
-**『変動費率』**：定価に対する変動費の割合
-
-※今回、変動費が原価であったため、原価率と同じになったが、変動費は原価以外にもなり得るので注意。
-
-![p692-1](C:\Projects\Summary_Notes\まとめノート\画像\p692-1.png)
-
-
-
-### ◇ 在庫管理の手法の種類
-
-- **先入先出法**
-
-  先に仕入れた商品から順に出庫していったと見なす計算方法。
-
-  ![p696-1](C:\Projects\Summary_Notes\まとめノート\画像\p696-1.png)
-
-- **後入先出法**
-
-  後に仕入れた商品から順に出庫していったと見なす計算方法。
-
-  ![p696-2](C:\Projects\Summary_Notes\まとめノート\画像\p696-2.png)
-
-- **移動平均法**
-
-  商品を仕入れる度に、残っている在庫分と合算して平均単価を計算し、仕入れ原価と見なす計算方法。
-
-  ![p697](C:\Projects\Summary_Notes\まとめノート\画像\p697.png)
-
-
-
-# 21-02. 決算書
-
-![決算書の構成](C:\Projects\Summary_Notes\まとめノート\画像\決算書の構成.png)
-
-
-
-# 21-03. Balance Sheet（賃借対照表）
-
-![p700-1](C:\Projects\Summary_Notes\まとめノート\画像\p700-1.png)
-
-![p701-1](C:\Projects\Summary_Notes\まとめノート\画像\p701-1.png)
-
-![p700-2](C:\Projects\Summary_Notes\まとめノート\画像\p700-2.png)
-
-
-
-# 21-04. 損益計算書
-
-![損益計算表](C:\Projects\Summary_Notes\まとめノート\画像\損益計算表.png)
-
-### ◇ **利益の種類**
-
-- **売上原価**
-  本業よる損失：原価、製造費
-
-- **販売費及び一般管理費**
-  販売費と一般管理費による損失：給与、広告費、旅費交通費、水道光熱費、保険料、減価償却費など
-
-- **営業外収益と営業外費用**
-
-  本業以外による損益：受取利息、配当金、支払利息、雑損失など
-
-- **特別利益と特別損失**
-
-  臨時的な損益：不動産の売却益、地震、火災、訴訟による損失など
-
-  
-
-
-
+Javaでは、Javaオブジェクトに対するメモリ領域の割り当てや解放をJVM（Java仮想マシン）が自動的に行う。この自動解放メカニズムを『Garbage collection』という。
