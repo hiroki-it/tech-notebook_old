@@ -481,7 +481,8 @@ class Lock {}
 //Keyクラス定義
 class Key {
 
-    public function __construct(){
+    public function __construct()
+    {
     
     }
 }
@@ -603,9 +604,9 @@ class GoodsWithTax extends Goods
    ⇒デメリット：各社員オブジェクトで共通の処理を個別に実装しなければならない。共通の処理が同じコードで書かれる保証がない。
 
   2. 一つの社員オブジェクトの中で、働くメソッドに部署ごとで変化する引数を設定
-    
+
   ⇒メリット：全部署の社員を一つのオブジェクトで呼び出せる。
-  
+
   ⇒デメリット：一つの修正が、全部署の社員の処理に影響を与えてしまう。
 
 抽象オブジェクトと抽象メソッドを用いると、2つのメリットを生かしつつ、デメリットを解消可能。
@@ -851,9 +852,11 @@ class Human implements Communication
 
 # 15-11. メソッドの実装方法
 
-### ◇ そもそも、出来るだけphpのデフォルト関数を用いる
+### ◇ メソッドの実装手順
 
-引用：php関数リファレンス，https://www.php.net/manual/ja/funcref.php
+1. その会社のシステムで使われているライブラリ
+2. phpのデフォルト関数（引用：php関数リファレンス，https://www.php.net/manual/ja/funcref.php）
+3. 新しいライブラリ
 
 
 
@@ -866,7 +869,8 @@ Getterでは、プロパティを取得するだけではなく、何かしら�
 ```
 private $property; 
 
-public function getEditProperty(){
+public function getEditProperty()
+{
 	if(!isset($this->property){
 		throw new ErrorException('プロパティに値がセットされていません。')
 	}
@@ -901,7 +905,8 @@ public function __construct($property)
 class Obj_A{
 	private $ObjB;
  
-	public function getObjB(){
+	public function getObjB()
+	{
 		return $this->ObjB;
 	}
 }
@@ -913,7 +918,8 @@ class Obj_A{
 class Obj_B{
 	private $ObjC;
  
-	public function getObjC(){
+	public function getObjC()
+	{
 		return $this->ObjC;
 	}
 }
@@ -925,7 +931,8 @@ class Obj_B{
 class Obj_C{
 	private $ObjD;
  
-	public function getObjD(){
+	public function getObjD()
+	{
 		return $this->ObjD;
 	}
 }
@@ -1009,94 +1016,83 @@ echo $b;
 
 
 
-### ◇ 高階関数
+### ◇ 高階関数とClosure（無名関数）
 
 関数を引数として受け取ったり、関数自体を返したりする関数のこと。
 
-- **第一引数を設定**
+- **無名関数を用いない場合**
+
+**【実装例】**
 
 ```
-<?php
+## 第一引数のみの場合
 
 // 高階関数を定義
-function test($callback){
+function test($callback)
+{
     echo $callback();
 }
 
 // コールバックを定義
-function callbackMethod(){
+// 関数の中で呼び出されるため、「後で呼び出される」という意味合いから、コールバック関数といえる。
+function callbackMethod()
+{
     return "出力成功";
 }
 
 // 高階関数の引数として、コールバック関数を渡す
 test("callbackMethod");
-```
 
-```
 // 出力結果
 出力成功
 ```
 
-- **第一引数と第二引数を設定**
-
 ```
-<?php
+## 第一引数と第二引数の場合
+
 // 高階関数を定義
-function test($callback, $param){
-    echo $callback($param);
+public function higher-order($param, $callback)
+{
+    return $callback($param);
 }
 
-// コールバックを定義
-function callbackMethod($param){
-    return $param."出力成功";
+// コールバック関数を定義
+public function callbackMethod($param)
+{
+    return $param."の出力成功";
 }
  
-// 高階関数の第一引数にコールバック関数、第二引数にコールバック関数の引数を渡す
-test("callbackMethod", $param);
-```
+// 高階関数の第一引数にコールバック関数の引数、第二引数にコールバック関数を渡す
+higher-order("第一引数", "callbackMethod");
 
-```
 // 出力結果
-$param出力成功
+第一引数の出力成功
 ```
 
+- **無名関数を用いる場合**
 
-
-### ◇ Closure（無名関数）
-
-コールバックを作成するために用いる。
+**【実装例】**
 
 ```
-
-```
-
-- **use構文**
-
-useで指定した変数をプロパティにもつClosureオブジェクトが作成される。
-
-```
-<?php
-$foo = function($money)
+// 高階関数のように、関数を引数として渡す。
+public function higher-order($param, $callback)
 {
-  return function($price) use ($money)
-  {
-    return $price . $money;
-  };
-};
-$hoge = $foo('円'); 
-//'円'が$moneyとして渡される。$hogeには、『function($price) use ('円')』が入っている。
+	$parentVar = "&親メソッドのスコープの変数"
+	return $callback($param)
+}
 
-echo $hoge(100);
-// 100が$priceとして渡される。
-?>
-```
-
-
-
-### ◇ ラッパー関数
-
-```
-
+// 第二引数の無名関数。関数の中で呼び出されるため、「後で呼び出される」という意味合いから、コールバック関数といえる。
+// コールバック関数は再利用されないため、名前をつけずに無名関数とすることが多い。
+// 親メソッドのスコープの変数を引数として用いることができる。
+high-order(第一引数, 
+        function($param) use($parentVar)
+        {
+            return $param.$parentVar."の出力成功";
+        }
+	)
+	
+// 出力結果
+第一引数&親メソッドのスコープの変数の出力成功	
 ```
 
 

@@ -84,11 +84,23 @@
 
 
 
-# 12-02. パケットヘッダ情報追加とパソコンの関係
+# 12-02. パケット作成段階におけるヘッダ情報追加
+
+### ◇ パケットヘッダ情報追加とパソコン上での処理位置の関係
 
 パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.png.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+### ◇ データへのヘッダ情報追加とカプセル化
+
+![パケットの構造](C:\Projects\Summary_Notes\まとめノート\画像\パケットの構造.jpg)
+
+### ◇ プロトコルが行っていること
+
+
+
+
 
 
 
@@ -102,7 +114,7 @@
 
 ### ◇ 各概念層の実際の通信機器の対応関係
 
-![OSI参照モデルと通信機器.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器.png.jpg)
+![OSI参照モデルと通信機器.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器.jpg)
 
 - **ネットワーク層**
 
@@ -116,7 +128,9 @@ Network Interface Card（（例）LANアダプタ、LANボード、LANカード�
 
 ### ◇ 通信機器における各層のヘッダ情報の認識
 
-![OSI参照モデルと通信機器でのパケット認識.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器でのパケット認識.png.jpg)
+送信元で作成されたパケットは、非カプセル化されながら、通信機器に認識される。
+
+![OSI参照モデルと通信機器でのパケット認識.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器でのパケット認識.jpg)
 
 
 
@@ -132,7 +146,7 @@ TCP/IPモデルで用いられるプロトコルのうち、最も代表的な�
 
 # 12-05. 【TCP/IP】アプリケーション層の『HTTP』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.png.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
@@ -250,7 +264,7 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 # 12-07. 【TCP/IP】トランスポート層の『TCP』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.png.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
@@ -302,7 +316,7 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 # 12-08. 【TCP/IP】インターネット層の『IPv4』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.png.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
