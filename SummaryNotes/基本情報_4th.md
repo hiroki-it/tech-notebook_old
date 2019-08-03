@@ -92,15 +92,17 @@
 
 ![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
+
+
+
 ### ◇ データへのヘッダ情報追加とカプセル化
 
 ![パケットの構造](C:\Projects\summary_notes\SummaryNotes\Image\パケットの構造.jpg)
-
-### ◇ プロトコルが行っていること
-
-
-
-
 
 
 
@@ -146,7 +148,17 @@ TCP/IPモデルで用いられるプロトコルのうち、最も代表的な�
 
 # 12-05. 【TCP/IP】アプリケーション層の『HTTP』
 
+### ◇ パケットヘッダ情報追加とパソコン上での処理位置の関係（再掲）
+
+パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
+
 ![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類（再掲）
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
@@ -234,7 +246,17 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 # 12-06. 【TCP/IP】アプリケーション層の『SMTP』『POP3』『IMAP』
 
+### ◇ パケットヘッダ情報追加とパソコン上での処理位置の関係（再掲）
+
+パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
+
 ![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類（再掲）
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
@@ -252,10 +274,6 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 ### ◇ メール受信プロトコル
 
-- **APOP：Authenticated POP**
-
-  メール受信の際に、チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
-
 - **POP3：Post Official Protocol version 3**
 
   メールサーバに届いたメールを、受信機器にダウンロードし、受信機器で閲覧するプロトコル。メールの既読未読状況は、他の受信機器と共有される。
@@ -266,13 +284,27 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
   **【具体例】**GmailでPOPかIMAPを設定可能
 
-![GmailでPOPorIMAPを設定](C:\Projects\summary_notes\SummaryNotes\Image\GmailでPOPorIMAPを設定.jpg)
+![GmailでPOPorIMAPを設定](C:\Projects\summary_notes\SummaryNotes\Image\GmailでPOPかIMAPを設定.jpg)
 
+- **APOP：Authenticated POP**
 
+  メール受信の際に、チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
+
+  
 
 # 12-07. 【TCP/IP】トランスポート層の『TCP』
 
+### ◇ パケットヘッダ情報追加とパソコン上での処理位置の関係（再掲）
+
+パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
+
 ![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類（再掲）
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
@@ -324,7 +356,17 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 # 12-08. 【TCP/IP】インターネット層の『IPv4』
 
+### ◇ パケットヘッダ情報追加とパソコン上での処理位置の関係（再掲）
+
+パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
+
 ![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類（再掲）
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
