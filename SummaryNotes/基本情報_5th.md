@@ -309,15 +309,15 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 
 
+### ◇ OSI参照モデルにおける各プロトコルの分類（再掲）
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
+
+
+
 ### ◇ データへのヘッダ情報追加とカプセル化（再掲）
 
 ![パケットの構造](C:\Projects\summary_notes\SummaryNotes\Image\パケットの構造.jpg)
-
-
-
-### ◇ OSI参照モデルにおけるセキュリティ技術
-
-![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
