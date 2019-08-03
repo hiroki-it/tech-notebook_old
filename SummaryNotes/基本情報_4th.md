@@ -94,12 +94,6 @@
 
 
 
-### ◇ OSI参照モデルにおける各プロトコルの分類
-
-![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
-
-
-
 ### ◇ データへのヘッダ情報追加とカプセル化
 
 ![パケットの構造](C:\Projects\summary_notes\SummaryNotes\Image\パケットの構造.jpg)
@@ -111,6 +105,12 @@
 ### ◇ 各概念層で追加されるヘッダ情報の内容
 
 ![OSI参照モデル](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデル.png)
+
+
+
+### ◇ OSI参照モデルにおける各プロトコルの分類
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
 
 
 
