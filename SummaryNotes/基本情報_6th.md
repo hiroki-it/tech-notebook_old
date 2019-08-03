@@ -26,13 +26,13 @@
 
 ### ◇ ウォーターフォール型開発
 
-![ウォーターフォール型](C:\Projects\Summary_Notes\まとめノート\画像\ウォーターフォール型.png)
+![ウォーターフォール型](C:\Projects\summary_notes\SummaryNotes\Image\ウォーターフォール型.png)
 
 - **外部設計の詳細**
 
   外部設計では、ユーザ向けのシステム設計が行われる。
 
-  ![外部設計の詳細](C:\Projects\Summary_Notes\まとめノート\画像\外部設計の詳細.png)
+  ![外部設計の詳細](C:\Projects\summary_notes\SummaryNotes\Image\外部設計の詳細.png)
 
 
 
@@ -40,7 +40,7 @@
 
 システム設計に入るまでに試作品を作り、要件定義をより正確にする開発方法。
 
-![p456](C:\Projects\Summary_Notes\まとめノート\画像\p456.png)
+![p456](C:\Projects\summary_notes\SummaryNotes\Image\p456.png)
 
 
 
@@ -48,7 +48,7 @@
 
 各工程が完了した段階で、レビューを行う開発方法。
 
-![p458](C:\Projects\Summary_Notes\まとめノート\画像\p458.png)
+![p458](C:\Projects\summary_notes\SummaryNotes\Image\p458.png)
 
 
 
@@ -56,9 +56,9 @@
 
 Visual Basicなどの開発支援ツールを用いて、短期間で設計～テストまでを繰り返す開発方法。
 
-![p462-1](C:\Projects\Summary_Notes\まとめノート\画像\p462-1.png)
+![p462-1](C:\Projects\summary_notes\SummaryNotes\Image\p462-1.png)
 
-![p462-2](C:\Projects\Summary_Notes\まとめノート\画像\p462-2.png)
+![p462-2](C:\Projects\summary_notes\SummaryNotes\Image\p462-2.png)
 
 
 
@@ -66,7 +66,7 @@ Visual Basicなどの開発支援ツールを用いて、短期間で設計～�
 
 システムをいくつかのサブシステムに分割し、ウォーターフォール型開発で各サブシステムを開発していく方法。
 
-![p457](C:\Projects\Summary_Notes\まとめノート\画像\p457.png)
+![p457](C:\Projects\summary_notes\SummaryNotes\Image\p457.png)
 
 
 
@@ -74,7 +74,7 @@ Visual Basicなどの開発支援ツールを用いて、短期間で設計～�
 
 スパイラルモデルの派生型。スパイラルモデルよりも短い期間で、設計～テストまでを繰り返す開発方法。
 
-![p463](C:\Projects\Summary_Notes\まとめノート\画像\p463.png)
+![p463](C:\Projects\summary_notes\SummaryNotes\Image\p463.png)
 
 
 
@@ -94,7 +94,7 @@ Visual Basicなどの開発支援ツールを用いて、短期間で設計～�
 
   リバースエンジニアリング
 
-![p459](C:\Projects\Summary_Notes\まとめノート\画像\p459.png)
+![p459](C:\Projects\summary_notes\SummaryNotes\Image\p459.png)
 
 
 
@@ -104,7 +104,7 @@ Visual Basicなどの開発支援ツールを用いて、短期間で設計～�
 
 テストは、小さい範囲から大きい範囲へと移行していく。
 
-![p491-3](C:\Projects\Summary_Notes\まとめノート\画像\p491-3.jpg)
+![p491-3](C:\Projects\summary_notes\SummaryNotes\Image\p491-3.jpg)
 
  
 
@@ -112,19 +112,19 @@ Visual Basicなどの開発支援ツールを用いて、短期間で設計～�
 
 モジュール別に適切に動いているかを検証。ブラックボックステストやホワイトボックステストが用いられる。
 
-![単体テスト](C:\Projects\Summary_Notes\まとめノート\画像\p490-1.jpg)
+![単体テスト](C:\Projects\summary_notes\SummaryNotes\Image\p490-1.jpg)
 
 - **ブラックボックステスト**
 
   モジュール内の実装内容は気にせず、入力に対して、適切な出力が行われているかを検証。
 
-  ![p492-1](C:\Projects\Summary_Notes\まとめノート\画像\p492-1.jpg)
+  ![p492-1](C:\Projects\summary_notes\SummaryNotes\Image\p492-1.jpg)
 
 - **ホワイトボックステスト**
 
   モジュール内の実装内容が適切かを確認しながら、入力に対して、適切な出力が行われているかを検証。
 
-  ![p492-2](C:\Projects\Summary_Notes\まとめノート\画像\p492-2.jpg)
+  ![p492-2](C:\Projects\summary_notes\SummaryNotes\Image\p492-2.jpg)
 
 
 
@@ -142,7 +142,7 @@ if (A = 1 && B = 1) {
 
 - **命令網羅（『全ての処理』が実行されるかをテスト）**
 
-![p494-1](C:\Projects\Summary_Notes\まとめノート\画像\p494-1.png)
+![p494-1](C:\Projects\summary_notes\SummaryNotes\Image\p494-1.png)
 
 全ての命令が実行されるかをテスト（ここでは処理は1つ）。
 
@@ -152,7 +152,7 @@ A = 1、B = 1 の時、return X が実行されること。
 
 - **判定条件網羅（『全ての分岐』が実行されるかをテスト）**
 
-![p494-2](C:\Projects\Summary_Notes\まとめノート\画像\p494-2.png)
+![p494-2](C:\Projects\summary_notes\SummaryNotes\Image\p494-2.png)
 
 全ての分岐が実行されるかをテスト（ここでは分岐は2つ）。
 
@@ -163,7 +163,7 @@ A = 1、B = 0 の時、return X が実行されないこと。
 
 - **条件網羅（『各条件の取り得る全ての値』が実行されるかをテスト）**
 
-![p494-3](C:\Projects\Summary_Notes\まとめノート\画像\p494-3.png)
+![p494-3](C:\Projects\summary_notes\SummaryNotes\Image\p494-3.png)
 
 各条件が、取り得る全ての値で実行されるかをテスト（ここでは、Aが0と1、Bが0と1になる組み合わせなので、2つ）
 
@@ -179,7 +179,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 - **複数条件網羅（『各条件が取り得る全ての値』、かつ『全ての組み合わせ』が実行されるかをテスト）**
 
-![p494-4](C:\Projects\Summary_Notes\まとめノート\画像\p494-4.png)
+![p494-4](C:\Projects\summary_notes\SummaryNotes\Image\p494-4.png)
 
 各条件が、取り得る全ての値で、かつ全ての組み合わせが実行されるかをテスト（ここでは4つ）
 
@@ -196,19 +196,19 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 単体テストの次に行うテスト。複数のモジュールを繋げ、モジュール間のインターフェイスが適切に動いているかを検証。
 
-![結合テスト](C:\Projects\Summary_Notes\まとめノート\画像\p491-1.jpg)
+![結合テスト](C:\Projects\summary_notes\SummaryNotes\Image\p491-1.jpg)
 
 - **Top-down テスト**
 
   上位のモジュールから下位のモジュールに向かって、結合テストを行う場合、下位には Stub と呼ばれるダミーモジュールを作成する。
 
-  ![トップダウンテスト](C:\Projects\Summary_Notes\まとめノート\画像\トップダウンテスト.jpg)
+  ![トップダウンテスト](C:\Projects\summary_notes\SummaryNotes\Image\トップダウンテスト.jpg)
 
 - **Bottom-up テスト**
 
   下位のモジュールから上位のモジュールに向かって、結合テストを行う場合、上位には Driver と呼ばれるダミーモジュールを作成する。
 
-  ![ボトムアップテスト](C:\Projects\Summary_Notes\まとめノート\画像\ボトムアップテスト.jpg)
+  ![ボトムアップテスト](C:\Projects\summary_notes\SummaryNotes\Image\ボトムアップテスト.jpg)
 
 
 
@@ -216,7 +216,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 結合テストの次に行うテスト。システム全体が適切に動いているかを検証。
 
-![p491-2](C:\Projects\Summary_Notes\まとめノート\画像\p491-2.jpg)
+![p491-2](C:\Projects\summary_notes\SummaryNotes\Image\p491-2.jpg)
 
 
 
@@ -224,7 +224,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 システムを変更した後、他のプログラムに悪影響を与えていないかを検証。
 
-![p496](C:\Projects\Summary_Notes\まとめノート\画像\p496.jpg)
+![p496](C:\Projects\summary_notes\SummaryNotes\Image\p496.jpg)
 
 
 
@@ -232,11 +232,11 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 プロジェクトの時、残存テスト数と不良摘出数（バグ発見数）を縦軸にとり、時間を横軸にとることで、バグ管理図を作成する。それぞれの曲線の状態から、プロジェクトの進捗状況を読み取ることができる。
 
-![品質管理図](C:\Projects\Summary_Notes\まとめノート\画像\品質管理図.JPG)
+![品質管理図](C:\Projects\summary_notes\SummaryNotes\Image\品質管理図.JPG)
 
 不良摘出実績線（信頼度成長曲線）は、プログラムの品質の状態を表し、S字型でないものはプログラムの品質が良くないことを表す。
 
-![信頼度成長曲線の悪い例](C:\Projects\Summary_Notes\まとめノート\画像\信頼度成長曲線の悪い例.JPG)
+![信頼度成長曲線の悪い例](C:\Projects\summary_notes\SummaryNotes\Image\信頼度成長曲線の悪い例.JPG)
 
 
 
@@ -270,19 +270,19 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
   全体的な工程に必要な日数は、所要日数が最も多い経路に影響される。この経路を、Critical Path という。
 
-  ![p509](C:\Projects\Summary_Notes\まとめノート\画像\p509.jpg)
+  ![p509](C:\Projects\summary_notes\SummaryNotes\Image\p509.jpg)
 
 - **最早結合点時刻**
 
   全体的な工程の中で、任意の結合点に取り掛かるために必要な最少日数のこと。Critical Path に影響されるので、注意。
 
-  ![p510-1](C:\Projects\Summary_Notes\まとめノート\画像\p510-1.jpg)
+  ![p510-1](C:\Projects\summary_notes\SummaryNotes\Image\p510-1.jpg)
 
 - **最遅結合点時刻**
 
   全体的な工程の中で、任意の結合点に取り掛かるために必要な最多日数のこと。
 
-  ![p510-2](C:\Projects\Summary_Notes\まとめノート\画像\p510-2.jpg)
+  ![p510-2](C:\Projects\summary_notes\SummaryNotes\Image\p510-2.jpg)
 
 
 
@@ -292,7 +292,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 ### ◇ システムの設計方法の種類と歴史
 
-![構造化プログラミングからオブジェクト指向へ](C:\Projects\Summary_Notes\まとめノート\画像\構造化プログラミングからオブジェクト指向へ.png)
+![構造化プログラミングからオブジェクト指向へ](C:\Projects\summary_notes\SummaryNotes\Image\構造化プログラミングからオブジェクト指向へ.png)
 
 
 
@@ -300,7 +300,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 ### ◇  オブジェクトモデリングの図式化方法の種類
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
 
 
@@ -310,13 +310,13 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 （※ちなみ、UMLは、システム設計だけでなく、データベース設計にも使える）
 
-![UML-0](C:\Projects\Summary_Notes\まとめノート\画像\UML-0.png)
+![UML-0](C:\Projects\summary_notes\SummaryNotes\Image\UML-0.png)
 
 ### ◇ UMLのダイアグラム一覧
 
-![UML-1](C:\Projects\Summary_Notes\まとめノート\画像\UML-1.png)
+![UML-1](C:\Projects\summary_notes\SummaryNotes\Image\UML-1.png)
 
-![UML-2](C:\Projects\Summary_Notes\まとめノート\画像\UML-2.png)
+![UML-2](C:\Projects\summary_notes\SummaryNotes\Image\UML-2.png)
 
 
 
@@ -324,9 +324,9 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
-![UML-1](C:\Projects\Summary_Notes\まとめノート\画像\UML-1.png)
+![UML-1](C:\Projects\summary_notes\SummaryNotes\Image\UML-1.png)
 
 
 
@@ -334,19 +334,19 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
 クラスの構造、クラス間の関係、役割を表記する方法。
 
-![クラス図の線の種類](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の線の種類.png)
+![クラス図の線の種類](C:\Projects\summary_notes\SummaryNotes\Image\クラス図の線の種類.png)
 
 - **Class**
 
 １つのクラスを、クラス区画、属性区画、操作区画の３要素で表記する方法。
 
-![UML](C:\Projects\Summary_Notes\まとめノート\画像\クラス図.png)
+![UML](C:\Projects\summary_notes\SummaryNotes\Image\クラス図.png)
 
 - **Association（関連）**
 
 ２つのクラスを関連させる場合、クラスを線で繋ぐことで関連性を表記する方法。クラス図の実装の章を参照せよ。
 
-![クラス図の関連表現](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の関連表現.png)
+![クラス図の関連表現](C:\Projects\summary_notes\SummaryNotes\Image\クラス図の関連表現.png)
 
 - **Aggregation（集約）**
 
@@ -356,7 +356,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
     「社員」から見た「会社」は1つである。逆に、「会社」からみた「社員」は0人以上であることを表現。
 
-![集約](C:\Projects\Summary_Notes\まとめノート\画像\集約.png)
+![集約](C:\Projects\summary_notes\SummaryNotes\Image\集約.png)
 
 
 
@@ -376,7 +376,7 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
   クラス間で属性、操作、関連を引継ぐことを表記する方法。サブクラスから見たスーパークラスとの関係を『汎化』、逆にスーパークラスから見たサブクラスとの関係を『特化』という。プログラミングにおける『継承』は、特化を実装する方法の一つ。
 
-![汎化と特化](C:\Projects\Summary_Notes\まとめノート\画像\汎化と特化.png)
+![汎化と特化](C:\Projects\summary_notes\SummaryNotes\Image\汎化と特化.png)
 
 - **Cardinality（多重度）**
 
@@ -386,15 +386,15 @@ A = 0、B = 0 の時、return X が実行されないこと。
 
   「社員」から見た「会社」は1つである。逆に、「会社」からみた「社員」は0人以上であるという表記。
 
-![多重度](C:\Projects\Summary_Notes\まとめノート\画像\多重度.png)
+![多重度](C:\Projects\summary_notes\SummaryNotes\Image\多重度.png)
 
-![多重度一覧](C:\Projects\Summary_Notes\まとめノート\画像\多重度の表記方法.png)
+![多重度一覧](C:\Projects\summary_notes\SummaryNotes\Image\多重度の表記方法.png)
 
 
 
 # 15-04. UMLの構造図の実装方法
 
-![クラス図の線の種類](C:\Projects\Summary_Notes\まとめノート\画像\クラス図の線の種類.png)
+![クラス図の線の種類](C:\Projects\summary_notes\SummaryNotes\Image\クラス図の線の種類.png)
 
 
 
@@ -516,7 +516,7 @@ $key = new Key($lock);
 
 『Association ＞ Aggregation ＞ Composition』の順で、依存性が低い。
 
-![Association, Aggregation, Compositionの関係の強さの違い](C:\Projects\Summary_Notes\まとめノート\画像\Association, Aggregation, Compositionの関係の強さの違い.png)
+![Association, Aggregation, Compositionの関係の強さの違い](C:\Projects\summary_notes\SummaryNotes\Image\Association, Aggregation, Compositionの関係の強さの違い.png)
 
 
 
@@ -641,7 +641,7 @@ class GoodsWithTax2 extends Goods
 
 インターフェースではメソッドの型しか定義できず、実装クラスでは処理内容を記述しなければならない。多重継承できる。
 
-![子インターフェースの多重継承](C:\Projects\Summary_Notes\まとめノート\画像\子インターフェースの多重継承.png)
+![子インターフェースの多重継承](C:\Projects\summary_notes\SummaryNotes\Image\子インターフェースの多重継承.png)
 
 【親オブジェクト】
 
@@ -680,7 +680,7 @@ class Human implements Communication
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
 
 
@@ -688,31 +688,31 @@ class Human implements Communication
 
 データベースの設計において、エンティティ間の関係を表すために用いられるダイアグラム図。『IE 記法』と『IDEF1X 記法』が一般的に用いられる。
 
-![ER図（IE記法）](C:\Projects\Summary_Notes\まとめノート\画像\ER図（IE記法）.png)
+![ER図（IE記法）](C:\Projects\summary_notes\SummaryNotes\Image\ER図（IE記法）.png)
 
 - **Entity と Attribute**
 
-  ![エンティティとアトリビュート](C:\Projects\Summary_Notes\まとめノート\画像\エンティティとアトリビュート.png)
+  ![エンティティとアトリビュート](C:\Projects\summary_notes\SummaryNotes\Image\エンティティとアトリビュート.png)
 
 - **Relation と Cardinality（多重度）**
 
   エンティティ間の関係を表す。
 
-  ![リレーションとカーディナリティ](C:\Projects\Summary_Notes\まとめノート\画像\リレーションとカーディナリティ.png)
+  ![リレーションとカーディナリティ](C:\Projects\summary_notes\SummaryNotes\Image\リレーションとカーディナリティ.png)
 
 - **1：1**
 
-  ![１：１](C:\Projects\Summary_Notes\まとめノート\画像\１：１.png)
+  ![１：１](C:\Projects\summary_notes\SummaryNotes\Image\１：１.png)
 
 - **1：多（Relation が曖昧な状態）**
 
   設計が進むにつれ、「1：0 以上の関係」「1：1 以上の関係」のように具体化しく。
 
-  ![１：多（Relationが曖昧な状態）](C:\Projects\Summary_Notes\まとめノート\画像\１：多（Relationが曖昧な状態）.png)
+  ![１：多（Relationが曖昧な状態）](C:\Projects\summary_notes\SummaryNotes\Image\１：多（Relationが曖昧な状態）.png)
 
 - **1：1 以上**
 
-  ![１：１以上](C:\Projects\Summary_Notes\まとめノート\画像\１：１以上.png)
+  ![１：１以上](C:\Projects\summary_notes\SummaryNotes\Image\１：１以上.png)
 
 
 
@@ -720,9 +720,9 @@ class Human implements Communication
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
-![UML-2](C:\Projects\Summary_Notes\まとめノート\画像\UML-2.png)
+![UML-2](C:\Projects\summary_notes\SummaryNotes\Image\UML-2.png)
 
 
 
@@ -732,7 +732,7 @@ class Human implements Communication
 
 **【具体例】**オンラインショッピングにおけるUse case
 
-![ユースケース図](C:\Projects\Summary_Notes\まとめノート\画像\ユースケース図.png)
+![ユースケース図](C:\Projects\summary_notes\SummaryNotes\Image\ユースケース図.png)
 
 
 
@@ -742,15 +742,15 @@ class Human implements Communication
 
 **【設計例】**
 
-![アクティビティ図](C:\Projects\Summary_Notes\まとめノート\画像\アクティビティ図.png)
+![アクティビティ図](C:\Projects\summary_notes\SummaryNotes\Image\アクティビティ図.png)
 
 - **アルゴリズムとフローチャート**
 
-  ![p549-1](C:\Projects\Summary_Notes\まとめノート\画像\p549-1.gif)
+  ![p549-1](C:\Projects\summary_notes\SummaryNotes\Image\p549-1.gif)
 
-  ![p549-2](C:\Projects\Summary_Notes\まとめノート\画像\p549-2.gif)
+  ![p549-2](C:\Projects\summary_notes\SummaryNotes\Image\p549-2.gif)
 
-  ![p549-3](C:\Projects\Summary_Notes\まとめノート\画像\p549-3.gif)
+  ![p549-3](C:\Projects\summary_notes\SummaryNotes\Image\p549-3.gif)
 
 
 
@@ -760,13 +760,13 @@ class Human implements Communication
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
 
 
 ### ◇ DFD：Data Flow Diagram（データフロー図）
 
-![データフロー図](C:\Projects\Summary_Notes\まとめノート\画像\データフロー図.jpg)
+![データフロー図](C:\Projects\summary_notes\SummaryNotes\Image\データフロー図.jpg)
 
 
 
@@ -781,7 +781,7 @@ class Human implements Communication
 1. 店員は在庫管理画面から在庫一覧を確認可能。
 2. この機能は、『店員オブジェクト』、『管理画面オブジェクト』、『倉庫オブジェクト』、『商品オブジェクト』から構成されている。
 
-![シーケンス図](C:\Projects\Summary_Notes\まとめノート\画像\シーケンス図.png)
+![シーケンス図](C:\Projects\summary_notes\SummaryNotes\Image\シーケンス図.png)
 
 
 
@@ -789,7 +789,7 @@ class Human implements Communication
 
 ### ◇  オブジェクトモデリングの図式化方法の種類（再掲）
 
-![複数視点のモデル化とUML](C:\Projects\Summary_Notes\まとめノート\画像\複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](C:\Projects\summary_notes\SummaryNotes\Image\複数視点のモデル化とUML.jpg)
 
 
 
@@ -797,7 +797,7 @@ class Human implements Communication
 
 「状態」を丸，「⁠遷移」を矢印で表す。矢印の横の説明は、遷移のきっかけとなる「イベント（入力）⁠／アクション（出力）⁠」を示す。
 
-![状態遷移図](C:\Projects\Summary_Notes\まとめノート\画像\ストップウォッチ状態遷移図.jpg)
+![状態遷移図](C:\Projects\summary_notes\SummaryNotes\Image\ストップウォッチ状態遷移図.jpg)
 
 
 
@@ -805,7 +805,7 @@ class Human implements Communication
 
 状態遷移表を作成してみると，状態遷移図では、9つあるセルのうち4つのセルしか表現できておらず，残り5つのセルは表現されていないことに気づくことができる。
 
-![状態遷移表](C:\Projects\Summary_Notes\まとめノート\画像\ストップウォッチ状態遷移表.jpg)
+![状態遷移表](C:\Projects\summary_notes\SummaryNotes\Image\ストップウォッチ状態遷移表.jpg)
 
 **【例題】**12.2 という状態
 
@@ -814,7 +814,7 @@ class Human implements Communication
 3. 現在の状態『b』から、次は小数点なので、b行の『d』へ移動
 4. 現在の状態『d』から、次は数字なので、b行の『e』へ移動
 
-![状態遷移表](C:\Projects\Summary_Notes\まとめノート\画像\状態遷移表.png)
+![状態遷移表](C:\Projects\summary_notes\SummaryNotes\Image\状態遷移表.png)
 
 
 
@@ -1012,7 +1012,7 @@ echo $b;
 
 **【具体例】**ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
 
-![再帰的](C:\Projects\Summary_Notes\まとめノート\画像\再帰的.png)
+![再帰的](C:\Projects\summary_notes\SummaryNotes\Image\再帰的.png)
 
 
 
@@ -1103,13 +1103,13 @@ high-order(第一引数,
 
 プログラムを、『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って、入力モジュール、処理モジュール、出力モジュール、の３つ分割する方法。（リクエスト ➔ DB ➔ レスポンス）
 
-![STS分割法](C:\Projects\Summary_Notes\まとめノート\画像\p485-1.png)
+![STS分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-1.png)
 
 ### ◇ Transaction 分割法
 
 データの種類によってTransaction（処理）の種類が決まるような場合に、プログラムを処理の種類ごとに分割する方法。
 
-![トランザクション分割法](C:\Projects\Summary_Notes\まとめノート\画像\p485-2.png)
+![トランザクション分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-2.png)
 
 
 
@@ -1117,7 +1117,7 @@ high-order(第一引数,
 
 プログラムを、共通の機能ごとに分割する方法
 
-![共通機能分割法](C:\Projects\Summary_Notes\まとめノート\画像\p485-3.jpg)
+![共通機能分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-3.jpg)
 
 
 

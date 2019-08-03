@@ -81,15 +81,15 @@ Array
 
 - **単方向リスト**
 
-![p555-1](C:\Projects\Summary_Notes\まとめノート\画像\p555-1.gif)
+![p555-1](C:\Projects\summary_notes\SummaryNotes\Image\p555-1.gif)
 
 - **双方向リスト**
 
-![p555-2](C:\Projects\Summary_Notes\まとめノート\画像\p555-2.gif)
+![p555-2](C:\Projects\summary_notes\SummaryNotes\Image\p555-2.gif)
 
 - **循環リスト**
 
-![p555-3](C:\Projects\Summary_Notes\まとめノート\画像\p555-3.gif)
+![p555-3](C:\Projects\summary_notes\SummaryNotes\Image\p555-3.gif)
 
 
 
@@ -97,19 +97,19 @@ Array
 
 phpでは、```array_push()```と```array_shift()```で実装可能。
 
-![Queue1](C:\Projects\Summary_Notes\まとめノート\画像\Queue1.gif)
+![Queue1](C:\Projects\summary_notes\SummaryNotes\Image\Queue1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![Queue2](C:\Projects\Summary_Notes\まとめノート\画像\Queue2.gif)
-
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
  
 
-![Queue3](C:\Projects\Summary_Notes\まとめノート\画像\Queue3.gif)
+![Queue2](C:\Projects\summary_notes\SummaryNotes\Image\Queue2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Queue3](C:\Projects\summary_notes\SummaryNotes\Image\Queue3.gif)
 
 
 
@@ -117,19 +117,19 @@ phpでは、```array_push()```と```array_shift()```で実装可能。
 
 phpでは、```array_push()```と```array_pop()```で実装可能。
 
-![Stack1](C:\Projects\Summary_Notes\まとめノート\画像\Stack1.gif)
+![Stack1](C:\Projects\summary_notes\SummaryNotes\Image\Stack1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![Stack2](C:\Projects\Summary_Notes\まとめノート\画像\Stack2.gif)
-
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
  
 
-![Stack3](C:\Projects\Summary_Notes\まとめノート\画像\Stack3.gif)
+![Stack2](C:\Projects\summary_notes\SummaryNotes\Image\Stack2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Stack3](C:\Projects\summary_notes\SummaryNotes\Image\Stack3.gif)
 
 ### ◇ ツリー構造
 
@@ -137,7 +137,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   各ノードにデータが格納されている。
 
-![二分探索木](C:\Projects\Summary_Notes\まとめノート\画像\二分探索木1.gif)
+![二分探索木](C:\Projects\summary_notes\SummaryNotes\Image\二分探索木1.gif)
 
 
 
@@ -145,19 +145,19 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ1.gif)
+  ![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ1.gif)
 
-  ![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+  ![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![ヒープ1](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ2.gif)
+![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ2.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![ヒープ2](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ3.gif)
+![ヒープ2](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ3.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![ヒープ3](C:\Projects\Summary_Notes\まとめノート\画像\ヒープ4.gif)
+![ヒープ3](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ4.gif)
 
 
 
@@ -165,7 +165,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
 
-![ソートの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\ソートの仕組み.gif)
+![ソートの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\ソートの仕組み.gif)
 
 
 
@@ -173,35 +173,35 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
 
-![バブルソート1](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート1.gif)
+![バブルソート1](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![バブルソート2](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート2.gif)
+![バブルソート2](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート2.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
-
- 
-
-![バブルソート3](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート3.gif)
-
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
-
-![バブルソート4](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート4.gif)
-
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
-
-![バブルソート5](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート5.gif)
-
-
-
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
  
 
+![バブルソート3](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート3.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![バブルソート4](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート4.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![バブルソート5](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート5.gif)
 
 
-![バブルソート6](C:\Projects\Summary_Notes\まとめノート\画像\バブルソート6.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+
+
+![バブルソート6](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート6.gif)
 
 
 
@@ -209,19 +209,19 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法。
 
-![選択ソート1](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート1.gif)
+![選択ソート1](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![選択ソート2](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート2.gif)
+![選択ソート2](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート2.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![選択ソート3](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート3.gif)
+![選択ソート3](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート3.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![選択ソート4](C:\Projects\Summary_Notes\まとめノート\画像\選択ソート4.gif)
+![選択ソート4](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート4.gif)
 
 ### ◇ 基本挿入法（挿入ソート）
 
@@ -239,51 +239,51 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 適当な基準値を選び，それより小さな値のグループと大きな値のグループにデータを分割する。同様にして，グループの中で基準値を選び，それぞれのグループを分割する。この操作を繰り返していく方法。
 
-![クイックソート-1](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-1.JPG)
+![クイックソート-1](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-1.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-2](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-2.JPG)
+![クイックソート-2](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-2.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-3](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-3.JPG)
+![クイックソート-3](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-3.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-4](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-4.JPG)
+![クイックソート-4](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-4.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-5](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-5.JPG)
+![クイックソート-5](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-5.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-6](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-6.JPG)
+![クイックソート-6](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-6.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-7](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-7.JPG)
+![クイックソート-7](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-7.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-8](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-8.JPG)
+![クイックソート-8](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-8.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-9](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-9.JPG)
+![クイックソート-9](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-9.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-10](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-10.JPG)
+![クイックソート-10](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-10.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-11](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-11.JPG)
+![クイックソート-11](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-11.JPG)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![クイックソート-12](C:\Projects\Summary_Notes\まとめノート\画像\クイックソート-12.JPG)
+![クイックソート-12](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-12.JPG)
 
 
 
@@ -293,41 +293,41 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
   今回は「６」を探す。
 
-![線形探索法1](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法1.gif)
+![線形探索法1](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![線形探索法2](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法2.gif)
+![線形探索法2](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法2.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![線形探索法3](C:\Projects\Summary_Notes\まとめノート\画像\線形探索法3.gif)
+![線形探索法3](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法3.gif)
 
 ### ◇ 二分探索法
 
   前提として、ソートによって、すでにデータが整列させられているとする。今回は「６」を探す。
 
-![二分探索法1](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法1.gif)
+![二分探索法1](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法1.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![二分探索法2](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法2.gif)
+![二分探索法2](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法2.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![二分探索法3](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法3.gif)
+![二分探索法3](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法3.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![二分探索法4](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法4.gif)
+![二分探索法4](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法4.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![二分探索法5](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法5.gif)
+![二分探索法5](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法5.gif)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![二分探索法6](C:\Projects\Summary_Notes\まとめノート\画像\二分探索法6.gif)
+![二分探索法6](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法6.gif)
 
 ### ◇ ハッシュ法
 
@@ -375,7 +375,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 ### ◇ 変数に値が入っているのかを確かめるシリーズ
 
-![値が存在するのかを確かめる](C:\Projects\Summary_Notes\まとめノート\画像\値が存在するのかを確かめる.jpg)
+![値が存在するのかを確かめる](C:\Projects\summary_notes\SummaryNotes\Image\値が存在するのかを確かめる.jpg)
 
 ```
 # 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
@@ -482,7 +482,7 @@ return $value
 
 
 
-# 17-06.   『Java』 について
+# 17-06.『Java』 について
 
 ### ◇ Javaで書かれているプログラム
 
@@ -490,7 +490,7 @@ return $value
 
 Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
 
-![Java Applet](C:\Projects\Summary_Notes\まとめノート\画像\Java Applet.gif)
+![Java Applet](C:\Projects\summary_notes\SummaryNotes\Image\Java Applet.gif)
 
 
 
@@ -498,7 +498,7 @@ Javaで書かれたWebのフロントエンドで動くプログラム。Java9�
 
 Javaで書かれたWebのサーバーエンドで動くプログラム。
 
-![Java Servlet](C:\Projects\Summary_Notes\まとめノート\画像\Java Servlet.gif)
+![Java Servlet](C:\Projects\summary_notes\SummaryNotes\Image\Java Servlet.gif)
 
 
 

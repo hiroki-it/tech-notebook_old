@@ -27,7 +27,7 @@
 - **MySQL**
 - **PostgreSQL**
 
-![DBMS](C:\Projects\Summary_Notes\まとめノート\画像\DBMS.jpg)
+![DBMS](C:\Projects\summary_notes\SummaryNotes\Image\DBMS.jpg)
 
 
 
@@ -39,7 +39,7 @@
 
 ### ◇ Transaction
 
-![p328](C:\Projects\Summary_Notes\まとめノート\画像\p328.gif)
+![p328](C:\Projects\summary_notes\SummaryNotes\Image\p328.gif)
 
 
 
@@ -47,7 +47,7 @@
 
 あらかじめ一連のSQL文をデータベースに格納しておき、Call文で呼び出す方式。
 
-![p325](C:\Projects\Summary_Notes\まとめノート\画像\p325.gif)
+![p325](C:\Projects\summary_notes\SummaryNotes\Image\p325.gif)
 
 **【実装例】**
 
@@ -125,13 +125,13 @@ catch{
 
   トランザクションとしてくくられた処理が全て実行された時、その処理結果を確定させ、データを更新する機能。
 
-![コミットメント制御-1](C:\Projects\Summary_Notes\まとめノート\画像\コミットメント制御-1.gif)
+![コミットメント制御-1](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御-1.gif)
 
 - **ロールバック機能**
 
   トランザクションを中断する何らかの事象が発生した時などに、処理を取り消し、トランザクション開始以前の状態に戻す機能
 
-![コミットメント制御-2](C:\Projects\Summary_Notes\まとめノート\画像\コミットメント制御-2.gif)
+![コミットメント制御-2](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御-2.gif)
 
 - **二相コミット**
 
@@ -147,37 +147,37 @@ catch{
 
 - **なぜ排他制御が必要か**
 
-  ![排他制御-1](C:\Projects\Summary_Notes\まとめノート\画像\排他制御-1.png)
+  ![排他制御-1](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-1.png)
 
 - **排他制御を行った結果**
 
-  ![排他制御-2](C:\Projects\Summary_Notes\まとめノート\画像\排他制御-2.png)
+  ![排他制御-2](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-2.png)
 
 - **排他制御の種類**
 
   CRUDのRead以外を実行不可能にする共有ロックと、CRUDの全てを実行不可能にする占有ロックがある。「共有」の名の通り、共有ロックされているデータに対して、他の人も共有ロックを行うことができる。
 
-![排他制御-3](C:\Projects\Summary_Notes\まとめノート\画像\排他制御-3.gif)
+![排他制御-3](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-3.gif)
 
 - **ロックの粒度**
 
-  ![ロックの粒度](C:\Projects\Summary_Notes\まとめノート\画像\ロックの粒度-1.png)
+  ![ロックの粒度](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-1.png)
 
   DB ＞ テーブル ＞ レコード ＞ カラム の順に、粒度は大きい。ロックの粒度が細かければ、トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）。しかし、ロックの粒度を細かくすればするほど、それだけデータベース管理システムのCPU負荷は大きくなる。
 
-  ![ロックの粒度-2](C:\Projects\Summary_Notes\まとめノート\画像\ロックの粒度-2.jpg)
+  ![ロックの粒度-2](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-2.jpg)
 
 - **デッドロック現象**
 
   もう一方のレコードのロックが解除されないと、自身のレコードのロックを解除できない時、処理が停止するデッドロック現象が起こる。
 
-  ![デッドロック](C:\Projects\Summary_Notes\まとめノート\画像\デッドロック.gif)
+  ![デッドロック](C:\Projects\summary_notes\SummaryNotes\Image\デッドロック.gif)
 
 
 
 ### ◇ 障害回復制御
 
-![DBの関連性](C:\Projects\Summary_Notes\まとめノート\画像\DBの関連性.gif)
+![DBの関連性](C:\Projects\summary_notes\SummaryNotes\Image\DBの関連性.gif)
 
 - **ログファイル（ジャーナルファイル）**
 
@@ -217,7 +217,7 @@ catch{
 
 テーブルの中で、Rowデータを一意に特定できる値を『主キー』の値と呼ぶ。
 
-![主キー](C:\Projects\Summary_Notes\まとめノート\画像\主キー.jpg)
+![主キー](C:\Projects\summary_notes\SummaryNotes\Image\主キー.jpg)
 
 
 
@@ -225,13 +225,13 @@ catch{
 
 データを追加するあるいは削除する場合、カラムではなく、レコードの増減を行う。カラムの増減の処理には時間がかかる。一方で、レコードの増減の処理には時間がかからない。
 
-![カラムの増減は✖、レコードの増減は〇](C:\Projects\Summary_Notes\まとめノート\画像\カラムの増減は✖、レコードの増減は〇-1.png)
+![カラムの増減は✖、レコードの増減は〇](C:\Projects\summary_notes\SummaryNotes\Image\カラムの増減は✖、レコードの増減は〇-1.png)
 
 **【具体例】**
 
 賞与を年1回から、2回・3回と変える場合、主キーを繰り返し、新しく賞与区分と金額区分を作る。
 
-![カラムの増減は✖、レコードの増減は〇-2](C:\Projects\Summary_Notes\まとめノート\画像\カラムの増減は✖、レコードの増減は〇-2.png)
+![カラムの増減は✖、レコードの増減は〇-2](C:\Projects\summary_notes\SummaryNotes\Image\カラムの増減は✖、レコードの増減は〇-2.png)
 
 
 
@@ -247,33 +247,33 @@ catch{
 
    エクセルで作られた以下の表があると仮定。
 
-![非正規形](C:\Projects\Summary_Notes\まとめノート\画像\非正規形.png)
+![非正規形](C:\Projects\summary_notes\SummaryNotes\Image\非正規形.png)
 
 2. 第一正規化：**繰り返し要素の排除**
 
    レコードを1つずつに分割。
 
-   ![第一正規形](C:\Projects\Summary_Notes\まとめノート\画像\第一正規形.png)
+   ![第一正規形](C:\Projects\summary_notes\SummaryNotes\Image\第一正規形.png)
 
 3. 第二正規化：**主キーの関数従属性を排除**
 
    特定のカラムが連動している（関数従属性）場合、カラムを左表として独立させる
 
-   ![第二正規形-1](C:\Projects\Summary_Notes\まとめノート\画像\第二正規形-1.png)
+   ![第二正規形-1](C:\Projects\summary_notes\SummaryNotes\Image\第二正規形-1.png)
 
    上で分割して生じた右表のカラムに関数従属性があるので、従属性のあるカラムを左表として独立させる。
 
-   ![第二正規形-2](C:\Projects\Summary_Notes\まとめノート\画像\第二正規形-2.png)
+   ![第二正規形-2](C:\Projects\summary_notes\SummaryNotes\Image\第二正規形-2.png)
 
-   ![第二正規形-3](C:\Projects\Summary_Notes\まとめノート\画像\第二正規形-3.png)
+   ![第二正規形-3](C:\Projects\summary_notes\SummaryNotes\Image\第二正規形-3.png)
 
 4. 第三正規化：**主キー以外のカラムの関数従属性を排除**
 
    上で分割して生じた左表のカラムに関数従属性があるので、従属性のあるカラムを左表として独立させる。
 
-![第三正規形](C:\Projects\Summary_Notes\まとめノート\画像\第三正規形-1.png)
+![第三正規形](C:\Projects\summary_notes\SummaryNotes\Image\第三正規形-1.png)
 
-![第三正規形-2](C:\Projects\Summary_Notes\まとめノート\画像\第三正規形-2.png)
+![第三正規形-2](C:\Projects\summary_notes\SummaryNotes\Image\第三正規形-2.png)
 
 
 
@@ -343,7 +343,7 @@ select C,  #『カラム』を指定
 
 - **ベン図で内部結合と外部結合を理解しよう**
 
-![内部結合のベン図](C:\Projects\Summary_Notes\まとめノート\画像\内部結合のベン図.jpg)
+![内部結合のベン図](C:\Projects\summary_notes\SummaryNotes\Image\内部結合のベン図.jpg)
 
 
 
