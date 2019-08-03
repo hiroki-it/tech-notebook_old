@@ -14,7 +14,7 @@
 
 ITシステムやITサービスに求められるリソース需要を予測・監視・評価して、それを満たすシステムリソースを提供できるように計画・調達・配備する活動のこと。
 
-![キャパシティ管理](C:\Projects\Summary_Notes\まとめノート\画像\キャパシティ管理.jpg)
+![キャパシティ管理](C:\Projects\summary_notes\SummaryNotes\Image\キャパシティ管理.jpg)
 
 
 
@@ -26,7 +26,7 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 **【具体例】**１－(1－0.81) × (1－0.64) = 0.9316
 
-![稼働率の計算](C:\Projects\Summary_Notes\まとめノート\画像\稼働率の計算.jpg)
+![稼働率の計算](C:\Projects\summary_notes\SummaryNotes\Image\稼働率の計算.jpg)
 
 
 
@@ -34,11 +34,11 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 いずれかが故障した場合、異常が発生したシステムを切り離し、残る片方で処理を続ける。
 
-![p611-1](C:\Projects\Summary_Notes\まとめノート\画像\p611-1.png)
+![p611-1](C:\Projects\summary_notes\SummaryNotes\Image\p611-1.png)
 
-![矢印_80x82](C:\Projects\Summary_Notes\まとめノート\画像\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
 
-![p611-2](C:\Projects\Summary_Notes\まとめノート\画像\p611-2.png)
+![p611-2](C:\Projects\summary_notes\SummaryNotes\Image\p611-2.png)
 
 
 
@@ -48,11 +48,11 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 - **ホットスタンバイ**
 
-  ![p613-1](C:\Projects\Summary_Notes\まとめノート\画像\p613-1.png)
+  ![p613-1](C:\Projects\summary_notes\SummaryNotes\Image\p613-1.png)
 
 - **コールドスタンバイ**
 
-  ![p613-2](C:\Projects\Summary_Notes\まとめノート\画像\p613-2.png)
+  ![p613-2](C:\Projects\summary_notes\SummaryNotes\Image\p613-2.png)
 
 
 
@@ -62,25 +62,25 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
   システムの稼働に障害が発生した場合、安全な状態になるように動作するように、設計すること。
 
-  ![p624](C:\Projects\Summary_Notes\まとめノート\画像\p624.png)
+  ![p624](C:\Projects\summary_notes\SummaryNotes\Image\p624.png)
 
 - **Fail soft**
 
   システムの稼働に障害が発生した場合、システムの一部のみが停止し、全体は稼働し続けるように、設計すること。
 
-  ![p625-1](C:\Projects\Summary_Notes\まとめノート\画像\p625-1.png)
+  ![p625-1](C:\Projects\summary_notes\SummaryNotes\Image\p625-1.png)
 
 - **Fool proof**
 
   誤った扱い方をしても危険が生じない、あるいは誤った扱い方ができないように、設計すること。
 
-  ![p625-2](C:\Projects\Summary_Notes\まとめノート\画像\p625-2.png)
+  ![p625-2](C:\Projects\summary_notes\SummaryNotes\Image\p625-2.png)
 
 
 
 ### ◇ MTBF と MTTR：Mean Time Between Failure／To Repair
 
-![MTBFとMTTR](C:\Projects\Summary_Notes\まとめノート\画像\MTBFとMTTR.png)
+![MTBFとMTTR](C:\Projects\summary_notes\SummaryNotes\Image\MTBFとMTTR.png)
 
 （MTBF）＝（稼働①）＋（稼働②）＋（稼働③）
 
@@ -92,7 +92,7 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 ### ◇ 性能評価テスト
 
-![スループットとレスポンスタイム](C:\Projects\Summary_Notes\まとめノート\画像\スループットとレスポンスタイム.png)
+![スループットとレスポンスタイム](C:\Projects\summary_notes\SummaryNotes\Image\スループットとレスポンスタイム.png)
 
 性能を評価する時、アクセス数を段階的に増加させて数回の性能テストを実施し，その結果を組み合わせてグラフ化する。例えば、性能目標を，⁠スループット：50件／秒⁠、⁠レスポンスタイム：3秒以内とする。今回のグラフでは、スループット：50件／秒の時のレスポンスタイムは2秒である。したがって、このシステムは性能目標を達成していることがわかる。
 
@@ -122,7 +122,7 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 そもそも、ポートフォリオは、文脈によって意味が大きく異なる（嫌なタイプの英単語や…）。
 
-![ポートフォリオ](C:\Projects\Summary_Notes\まとめノート\画像\ポートフォリオ.jpg)
+![ポートフォリオ](C:\Projects\summary_notes\SummaryNotes\Image\ポートフォリオ.jpg)
 
 # 20-02. 会社組織の設計方法
 
@@ -138,19 +138,19 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 費用は大きく2種類に分けられる。
 
-![p689-1](C:\Projects\Summary_Notes\まとめノート\画像\p689-1.png)
+![p689-1](C:\Projects\summary_notes\SummaryNotes\Image\p689-1.png)
 
 - **固定費**
 
   売上に関係無く発生するお金
 
-  ![p689-2](C:\Projects\Summary_Notes\まとめノート\画像\p689-2.png)
+  ![p689-2](C:\Projects\summary_notes\SummaryNotes\Image\p689-2.png)
 
 - **変動費**
 
   売上に比例して増減するお金
 
-  ![p689-3](C:\Projects\Summary_Notes\まとめノート\画像\p689-3.png)
+  ![p689-3](C:\Projects\summary_notes\SummaryNotes\Image\p689-3.png)
 
 
 
@@ -168,7 +168,7 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 ★『**損益分岐点利益**』：（利益）＝0 になる時の利益
 
-![p691](C:\Projects\Summary_Notes\まとめノート\画像\p691.png)
+![p691](C:\Projects\summary_notes\SummaryNotes\Image\p691.png)
 
 
 
@@ -178,7 +178,7 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
 ※今回、変動費が原価であったため、原価率と同じになったが、変動費は原価以外にもなり得るので注意。
 
-![p692-1](C:\Projects\Summary_Notes\まとめノート\画像\p692-1.png)
+![p692-1](C:\Projects\summary_notes\SummaryNotes\Image\p692-1.png)
 
 
 
@@ -188,41 +188,41 @@ ITシステムやITサービスに求められるリソース需要を予測・�
 
   先に仕入れた商品から順に出庫していったと見なす計算方法。
 
-  ![p696-1](C:\Projects\Summary_Notes\まとめノート\画像\p696-1.png)
+  ![p696-1](C:\Projects\summary_notes\SummaryNotes\Image\p696-1.png)
 
 - **後入先出法**
 
   後に仕入れた商品から順に出庫していったと見なす計算方法。
 
-  ![p696-2](C:\Projects\Summary_Notes\まとめノート\画像\p696-2.png)
+  ![p696-2](C:\Projects\summary_notes\SummaryNotes\Image\p696-2.png)
 
 - **移動平均法**
 
   商品を仕入れる度に、残っている在庫分と合算して平均単価を計算し、仕入れ原価と見なす計算方法。
 
-  ![p697](C:\Projects\Summary_Notes\まとめノート\画像\p697.png)
+  ![p697](C:\Projects\summary_notes\SummaryNotes\Image\p697.png)
 
 
 
 # 21-02. 決算書
 
-![決算書の構成](C:\Projects\Summary_Notes\まとめノート\画像\決算書の構成.png)
+![決算書の構成](C:\Projects\summary_notes\SummaryNotes\Image\決算書の構成.png)
 
 
 
 # 21-03. Balance Sheet（賃借対照表）
 
-![p700-1](C:\Projects\Summary_Notes\まとめノート\画像\p700-1.png)
+![p700-1](C:\Projects\summary_notes\SummaryNotes\Image\p700-1.png)
 
-![p701-1](C:\Projects\Summary_Notes\まとめノート\画像\p701-1.png)
+![p701-1](C:\Projects\summary_notes\SummaryNotes\Image\p701-1.png)
 
-![p700-2](C:\Projects\Summary_Notes\まとめノート\画像\p700-2.png)
+![p700-2](C:\Projects\summary_notes\SummaryNotes\Image\p700-2.png)
 
 
 
 # 21-04. 損益計算書
 
-![損益計算表](C:\Projects\Summary_Notes\まとめノート\画像\損益計算表.png)
+![損益計算表](C:\Projects\summary_notes\SummaryNotes\Image\損益計算表.png)
 
 ### ◇ **利益の種類**
 
