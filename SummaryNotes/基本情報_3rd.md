@@ -37,167 +37,7 @@
 
 
 
-### ◇ Transaction
-
-![p328](C:\Projects\summary_notes\SummaryNotes\Image\p328.gif)
-
-
-
-### ◇ Stored Procedure
-
-あらかじめ一連のSQL文をデータベースに格納しておき、Call文で呼び出す方式。
-
-![p325](C:\Projects\summary_notes\SummaryNotes\Image\p325.gif)
-
-**【実装例】**
-
-```
-# PROCEDUREを作成
-CREATE PROCEDURE SelectContact AS　
-  SELECT CustomerID, CompanyName, ContactName, Phone
-  FROM Customers
-```
-
-```
-# PROCEDUREを実行
-EXEC SelectContact
-```
-
-
-
-### ◇ ACID特性
-
-トランザクション処理では、以下の４つの性質が保証されている必要がある。
-
-- **Atomicity**
-
-  コミットメント制御によって実装される。
-
-- **Consistency** 
-
-  排他制御によって実装される。
-
-- **Isolation** 
-
-  排他制御によって実装される。
-
-- **Durability** 
-
-  障害回復制御によって実装される。
-
-
-
-### ◇ コミットメント制御
-
-**【実装例】**トランザクション、コミットメント制御、ロールバック機能
-
-```
-try{
-    // データベースと接続。
-    $db = getDb();
-
-    // 例外処理を有効化。
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // トランザクションを開始。
-    $db->beginTransaction();
-    // いくつかのSQLが実行される。※もし失敗した場合、ERRMODE_EXCEPTIONを実行。
-    $db->exec("INSERT INTO movie(title, price) VALUES('ハリポタ', 2000)")
-    $db->exec("INSERT INTO movie(title, price) VALUES('シスター', 2000)")
-   
-    // トランザクションの全てのSQLに成功したら、トランザクションをコミット。
-    $db->commit();
-}
-catch{
-	// 例外が発生したらロールバックし、エラーメッセージを出力。
-	$db->rollBack();
-	print "エラーメッセージ：{$e->getMessage()}"
-}    
-```
-
-- **Transaction**
-
-  SQLによる一連のCRUDを一繋ぎにした処理のこと。
-  
-  **【例】**銀行ATMの振込処理によるCRUD
-  
-- **コミット機能**
-
-  トランザクションとしてくくられた処理が全て実行された時、その処理結果を確定させ、データを更新する機能。
-
-![コミットメント制御-1](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御-1.gif)
-
-- **ロールバック機能**
-
-  トランザクションを中断する何らかの事象が発生した時などに、処理を取り消し、トランザクション開始以前の状態に戻す機能
-
-![コミットメント制御-2](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御-2.gif)
-
-- **二相コミット**
-
-  コミットを以下の二つの段階に分けて行うこと。ACIDのうち、原子性と一貫性を実装している。
-
-  （１）他のサイトに更新可能かどうかを確認。
-
-  （２）全サイトからの合意が得られた場合に更新を確定。
-
-
-
-### ◇ 排他制御
-
-- **なぜ排他制御が必要か**
-
-  ![排他制御-1](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-1.png)
-
-- **排他制御を行った結果**
-
-  ![排他制御-2](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-2.png)
-
-- **排他制御の種類**
-
-  CRUDのRead以外を実行不可能にする共有ロックと、CRUDの全てを実行不可能にする占有ロックがある。「共有」の名の通り、共有ロックされているデータに対して、他の人も共有ロックを行うことができる。
-
-![排他制御-3](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-3.gif)
-
-- **ロックの粒度**
-
-  ![ロックの粒度](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-1.png)
-
-  DB ＞ テーブル ＞ レコード ＞ カラム の順に、粒度は大きい。ロックの粒度が細かければ、トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）。しかし、ロックの粒度を細かくすればするほど、それだけデータベース管理システムのCPU負荷は大きくなる。
-
-  ![ロックの粒度-2](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-2.jpg)
-
-- **デッドロック現象**
-
-  もう一方のレコードのロックが解除されないと、自身のレコードのロックを解除できない時、処理が停止するデッドロック現象が起こる。
-
-  ![デッドロック](C:\Projects\summary_notes\SummaryNotes\Image\デッドロック.gif)
-
-
-
-### ◇ 障害回復制御
-
-![DBの関連性](C:\Projects\summary_notes\SummaryNotes\Image\DBの関連性.gif)
-
-- **ログファイル（ジャーナルファイル）**
-
-  データベースの処理履歴を記録したファイル。更新前ログファイルや更新後ログファイルとして残しておく。
-
-- **チェックポイント**
-
-  システムで障害が発生した場合、チェックポイントを設け、ログファイルの作成やデータベースのバックアップを行う。
-
-- **Roll forward**
-
-  ハードディスクの不具合でデータベースが破損した場合、まず、チェックポイントまでデータベースを復元する。次に、更新後ログファイルを読み込んでディスク破損直前の状態まで復元する。 
-
-- **Roll back**
-
-  更新処理中に異常が発生した場合、まず、チェックポイントまでデータベースを復元する。次に、更新前ログファイルを読み込んで障害前の状態まで戻し、更新処理自体を無かったことにする。
-
-  
-
-# 11-02. データベースの設計方法
+# 11-02. データベースの設計
 
 ### ◇ **UMLによる設計**
 
@@ -211,7 +51,7 @@ catch{
 
 
 
-# 11-03. テーブルの設計と作成
+# 11-03. テーブルの作成
 
 ### ◇ 主キー
 
@@ -277,7 +117,155 @@ catch{
 
 
 
-### ◇ Migrationとinsert
+# 11-04. データベースの操作
+
+### ◇ Transaction
+
+SQLによる一連のCRUDを一繋ぎにした処理のこと。
+
+- **チェックポイント**
+
+DBMSでは処理速度を高めるため、トランザクション処理結果をその都度ディスクには書き込まず、データ更新情報をメモリ上で管理する。そしてチェックポイントのタイミングで、最終的なデータの更新結果をディスク上に反映させ同期する。
+
+![トランザクション](C:\Projects\summary_notes\SummaryNotes\Image\トランザクション.jpg)
+
+
+
+### ◇ ACID特性
+
+トランザクション処理では、以下の４つの性質が保証されている必要がある。
+
+- **Atomicity**
+
+  コミットメント制御によって実装される。
+
+- **Consistency** 
+
+  排他制御によって実装される。
+
+- **Isolation** 
+
+  排他制御によって実装される。
+
+- **Durability** 
+
+  障害回復制御によって実装される。
+
+
+
+### ◇ コミットメント制御
+
+![コミットメント制御](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御.jpg)
+
+- **コミット機能**
+
+トランザクションとしてくくられた処理が全て実行された時、その処理結果を確定させ、データを更新する機能。
+
+- **ロールバック機能**
+
+トランザクションを中断する何らかの事象が発生した時などに、処理を取り消し、トランザクション開始以前の状態に戻す機能。
+
+- **二相コミット**
+
+  コミットを以下の二つの段階に分けて行うこと。ACIDのうち、原子性と一貫性を実装している。
+
+  （１）他のサイトに更新可能かどうかを確認。
+
+  （２）全サイトからの合意が得られた場合に更新を確定。
+
+**【実装例】**トランザクション、コミットメント制御、ロールバック機能
+
+```
+try{
+    // データベースと接続。
+    $db = getDb();
+
+    // 例外処理を有効化。
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // トランザクションを開始。
+    $db->beginTransaction();
+    // いくつかのSQLが実行される。※もし失敗した場合、ERRMODE_EXCEPTIONを実行。
+    $db->exec("INSERT INTO movie(title, price) VALUES('ハリポタ', 2000)")
+    $db->exec("INSERT INTO movie(title, price) VALUES('シスター', 2000)")
+   
+    // トランザクションの全てのSQLに成功したら、トランザクションをコミット。
+    $db->commit();
+}
+catch{
+	// 例外が発生したらロールバックし、エラーメッセージを出力。
+	$db->rollBack();
+	print "エラーメッセージ：{$e->getMessage()}"
+}    
+```
+
+
+
+### ◇ 排他制御
+
+- **なぜ排他制御が必要か**
+
+  ![排他制御-1](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-1.png)
+
+- **排他制御を行った結果**
+
+  ![排他制御-2](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-2.png)
+
+- **排他制御の種類**
+
+  CRUDのRead以外を実行不可能にする共有ロックと、CRUDの全てを実行不可能にする占有ロックがある。「共有」の名の通り、共有ロックされているデータに対して、他の人も共有ロックを行うことができる。
+
+![排他制御-3](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-3.gif)
+
+- **ロックの粒度**
+
+  ![ロックの粒度](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-1.png)
+
+  DB ＞ テーブル ＞ レコード ＞ カラム の順に、粒度は大きい。ロックの粒度が細かければ、トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）。しかし、ロックの粒度を細かくすればするほど、それだけデータベース管理システムのCPU負荷は大きくなる。
+
+  ![ロックの粒度-2](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-2.jpg)
+
+- **デッドロック現象**
+
+  もう一方のレコードのロックが解除されないと、自身のレコードのロックを解除できない時、処理が停止するデッドロック現象が起こる。
+
+  ![デッドロック](C:\Projects\summary_notes\SummaryNotes\Image\デッドロック.gif)
+
+
+
+### ◇ 障害回復制御
+
+- **システム障害の場合**
+
+**【具体例1】**
+
+『a』の値が更新されるトランザクションの処理後に、システムが異常終了した場合、更新前ログファイルを基に、ロールフォワードが実行される。
+
+**【具体例2】**
+
+『b』の値が更新されるトランザクションの処理中に、システムが異常終了した場合、ロールバックにより、障害発生前に戻す。
+
+![障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\システム障害の障害回復機能.jpg)
+
+
+
+- **媒体障害の場合**
+
+![媒体障害の障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\媒体障害の障害回復機能.jpg)
+
+
+
+- **Roll forward**
+
+  ハードディスクの不具合でデータベースが破損した場合、まず、チェックポイントまでデータベースを復元する。次に、更新後ログファイルを読み込んでディスク破損直前の状態まで復元する。 
+
+- **Roll back**
+
+  更新処理中に異常が発生した場合、まず、チェックポイントまでデータベースを復元する。次に、更新前ログファイルを読み込んで障害前の状態まで戻し、更新処理自体を無かったことにする。
+
+  
+
+### ◇ MigrationによるDBスキーマとデータの更新
 
 1. 誰かが以下のMigrationファイルをmasterにPush
 2. Migrationファイルをローカル環境にPull
@@ -297,7 +285,7 @@ class ItemQuery
 
 
 
-# 11-04. select
+# 11-05. selectによるデータセットの取得
 
 ### ◇ 実装例で用いた略号
 
@@ -544,7 +532,29 @@ select * from T
 
 
 
-# 11-05. fetch
+### ◇ Stored Procedure
+
+あらかじめ一連のSQL文をデータベースに格納しておき、Call文で呼び出す方式。
+
+![p325](C:\Projects\summary_notes\SummaryNotes\Image\p325.gif)
+
+**【実装例】**
+
+```
+# PROCEDUREを作成
+CREATE PROCEDURE SelectContact AS　
+  SELECT CustomerID, CompanyName, ContactName, Phone
+  FROM Customers
+```
+
+```
+# PROCEDUREを実行
+EXEC SelectContact
+```
+
+
+
+# 11-06. fetchによるデータ行の取り出し
 
 DBで取得したデータをプログラムに一度に全て送信してしまうと、プログラム側のメモリを圧迫してしまう。そこで、fetchで少しずつ取得する。
 
