@@ -38,7 +38,7 @@
 
 【具体例】ASCIIにおける『HELLO』
 
-![p110](C:\Projects\Summary_Notes\まとめノート\画像\p110.png)
+![p110](C:\Projects\summary_notes\SummaryNotes\Image\p110.png)
 
 
 
@@ -54,11 +54,11 @@
 
 **『bit-map方式』**：ドットを組み合わせることによって、画像を表現する方法。
 
-![p113-1](C:\Projects\Summary_Notes\まとめノート\画像\p113-1.png)
+![p113-1](C:\Projects\summary_notes\SummaryNotes\Image\p113-1.png)
 
 1ドットを1-bitに設定した場合、1-bitで2種類の情報を表せるので、つまり1-bitで2種類の色を表すことができる。
 
-![p113-2](C:\Projects\Summary_Notes\まとめノート\画像\p113-2.png)
+![p113-2](C:\Projects\summary_notes\SummaryNotes\Image\p113-2.png)
 
 
 
@@ -66,11 +66,11 @@
 
 **『PCM（Pulse Code Modulation）方式』**：音声を時間単位（サンプリング周期）で細かく区切ってサンプリングし、各単位の音声を数値化することによって、音声を表現する方法。
 
-![p114-1](C:\Projects\Summary_Notes\まとめノート\画像\p114-1.png)
+![p114-1](C:\Projects\summary_notes\SummaryNotes\Image\p114-1.png)
 
 より細かい時間単位で区切り、より大きな量子化bit数に設定することによって、より原音に近い音声で表現できる。
 
-![p115-2](C:\Projects\Summary_Notes\まとめノート\画像\p115-2.png)
+![p115-2](C:\Projects\summary_notes\SummaryNotes\Image\p115-2.png)
 
 **【具体例】**512×10^6 byteの容量のフラッシュメモリに記録できる音声の長さ（分）
 
@@ -98,13 +98,13 @@
 
   **【具体例】：温度センサ、加速度センサ、照度センサ、…**
 
-  ![p119-2](C:\Projects\Summary_Notes\まとめノート\画像\p119-2.png)
+  ![p119-2](C:\Projects\summary_notes\SummaryNotes\Image\p119-2.png)
 
 - **A/D変換器**
 
   アナログ情報をデジタル情報に変換。
 
-  ![AD変換](C:\Projects\Summary_Notes\まとめノート\画像\AD変換.png)
+  ![AD変換](C:\Projects\summary_notes\SummaryNotes\Image\AD変換.png)
 
 - **コンピュータ**
 
@@ -118,7 +118,7 @@
 
   アナログ情報を受信し、機械エネルギーに変換。
 
-  ![p119-3](C:\Projects\Summary_Notes\まとめノート\画像\p119-3.png)
+  ![p119-3](C:\Projects\summary_notes\SummaryNotes\Image\p119-3.png)
 
 
 
@@ -130,7 +130,7 @@
 
   **【具体例】：洗濯機**
 
-  ![p120-1](C:\Projects\Summary_Notes\まとめノート\画像\p120-1.png)
+  ![p120-1](C:\Projects\summary_notes\SummaryNotes\Image\p120-1.png)
 
 - **フィードバック制御**
 
@@ -138,7 +138,7 @@
 
   **【具体例】：エアコン**
 
-  ![p120-2](C:\Projects\Summary_Notes\まとめノート\画像\p120-2.png)
+  ![p120-2](C:\Projects\summary_notes\SummaryNotes\Image\p120-2.png)
 
 
 
@@ -146,13 +146,13 @@
 
 ### ◇ ハードウェアとソフトウェアの関係
 
-![ソフトウェアの分類](C:\Projects\Summary_Notes\まとめノート\画像\ソフトウェアの分類.jpg)
+![ソフトウェアの分類](C:\Projects\summary_notes\SummaryNotes\Image\ソフトウェアの分類.jpg)
 
 
 
 ### ◇ 装置間の関係
 
-![p125](C:\Projects\Summary_Notes\まとめノート\画像\p125.png)
+![p125](C:\Projects\summary_notes\SummaryNotes\Image\p125.png)
 
 
 
@@ -196,7 +196,7 @@ CPUの回路が処理と歩調を合わせるために用いる信号を、『�
 
 （例2）2.6GHz = 2.6×10^9  (クロック数／秒)
 
-![クロック数比較](C:\Projects\Summary_Notes\まとめノート\画像\クロック数比較.png)
+![クロック数比較](C:\Projects\summary_notes\SummaryNotes\Image\クロック数比較.png)
 
 
 
@@ -210,7 +210,7 @@ CPUが1秒間に何回命令を実行するかを表す。
 
 700Hz (×10^6 クロック数／秒) ÷ 7 (クロック数／命令) = 100 (×10^6 命令数／秒)
 
-![MIPSの例題](C:\Projects\Summary_Notes\まとめノート\画像\MIPSの例題.png)
+![MIPSの例題](C:\Projects\summary_notes\SummaryNotes\Image\MIPSの例題.png)
 
 - **1命令当たりの実行時間 (秒／命令) の求め方**
 
@@ -224,7 +224,7 @@ CPUが1秒間に何回命令を実行するかを表す。
 
 『メモリ』は、RAMとROMに大きく分けられる。
 
-![p162](C:\Projects\Summary_Notes\まとめノート\画像\p162.png)
+![p162](C:\Projects\summary_notes\SummaryNotes\Image\p162.png)
 
 
 
@@ -236,13 +236,13 @@ RAMは、メインメモリとして使われる『Dynamic RAM』と、キャッ
 
   メインメモリとして用いられる。よく見るやつ。
 
-  ![Dynamic RAM](C:\Projects\Summary_Notes\まとめノート\画像\Dynamic RAM.jpg)
+  ![Dynamic RAM](C:\Projects\summary_notes\SummaryNotes\Image\Dynamic RAM.jpg)
 
 - **Static RAM**
 
   キャッシュメモリとして用いられる。
   
-  ![Static RAM](C:\Projects\Summary_Notes\まとめノート\画像\Static RAM.jpg)
+  ![Static RAM](C:\Projects\summary_notes\SummaryNotes\Image\Static RAM.jpg)
   
 
 
@@ -251,11 +251,11 @@ RAMは、メインメモリとして使われる『Dynamic RAM』と、キャッ
 
 - **Mask ROM**
 
-  ![p164-1](C:\Projects\Summary_Notes\まとめノート\画像\p164-1.png)
+  ![p164-1](C:\Projects\summary_notes\SummaryNotes\Image\p164-1.png)
 
 - **Programmable ROM**
 
-  ![p164-2](C:\Projects\Summary_Notes\まとめノート\画像\p164-2.png)
+  ![p164-2](C:\Projects\summary_notes\SummaryNotes\Image\p164-2.png)
 
 
 
@@ -263,7 +263,7 @@ RAMは、メインメモリとして使われる『Dynamic RAM』と、キャッ
 
 CPUから命令が起こるとき、CPU、メインメモリ、ハードディスク間には、読み込みと書き出しの処理速度に差がある。
 
-![p169](C:\Projects\Summary_Notes\まとめノート\画像\p169.png)
+![p169](C:\Projects\summary_notes\SummaryNotes\Image\p169.png)
 
 
 
@@ -273,17 +273,17 @@ CPUから命令が起こるとき、CPU、メインメモリ、ハードディ�
 
   CPUとメインメモリの間に、キャッシュメモリを何段階か設置し、読み込みと書き出しの処理速度の差を緩和させる。
 
-![メモリキャッシュ](C:\Projects\Summary_Notes\まとめノート\画像\メモリキャッシュ.GIF)
+![メモリキャッシュ](C:\Projects\summary_notes\SummaryNotes\Image\メモリキャッシュ.GIF)
 
 - **メモリ ➔ 二次キャッシュメモリ ➔ 一次キャッシュメモリ**
 
-![メモリとキャッシュメモリ](C:\Projects\Summary_Notes\まとめノート\画像\メモリとキャッシュメモリ.gif)
+![メモリとキャッシュメモリ](C:\Projects\summary_notes\SummaryNotes\Image\メモリとキャッシュメモリ.gif)
 
 - **実例**
 
   タスクマネージャのパフォーマンスタブで、n次キャッシュメモリがどのくらい使われているのかを確認できる。
 
-  ![キャッシュメモリの実例](C:\Projects\Summary_Notes\まとめノート\画像\キャッシュメモリの実例.png)
+  ![キャッシュメモリの実例](C:\Projects\summary_notes\SummaryNotes\Image\キャッシュメモリの実例.png)
 
 
 
@@ -293,13 +293,13 @@ CPUから命令が起こるとき、CPU、メインメモリ、ハードディ�
 
   CPUは、メインメモリとキャッシュメモリの両方に書き込む。常に主記憶とキャッシュの内容が一致している状態を確保できるが、主記憶への書き込みが頻繁に行われるので遅い。
 
-  ![Write-through方式](C:\Projects\Summary_Notes\まとめノート\画像\Write-through方式.jpg)
+  ![Write-through方式](C:\Projects\summary_notes\SummaryNotes\Image\Write-through方式.jpg)
 
 - **Write-back 方式**
 
   CPUは、キャッシュメモリのみに書き込む。次に、キャッシュメモリがメインメモリに書き込む。主記憶とキャッシュの内容が一致している状態を必ずしも確保できないが、主記憶への書き込み回数が少ないため速い
 
-![Write-back方式](C:\Projects\Summary_Notes\まとめノート\画像\Write-back方式.jpg)
+![Write-back方式](C:\Projects\summary_notes\SummaryNotes\Image\Write-back方式.jpg)
 
 
 
@@ -307,7 +307,7 @@ CPUから命令が起こるとき、CPU、メインメモリ、ハードディ�
 
 CPU、メインメモリ、ストレージ間には、読み込みと書き出しの処理速度に差がある。（※再度記載）
 
-![p169](C:\Projects\Summary_Notes\まとめノート\画像\p169.png)
+![p169](C:\Projects\summary_notes\SummaryNotes\Image\p169.png)
 
 
 
@@ -315,7 +315,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 メインメモリとハードディスクの間に、ディスクキャッシュを設置し、読み込みと書き出しの処理速度の差を緩和させる。
 
-![ディスクキャッシュ](C:\Projects\Summary_Notes\まとめノート\画像\ディスクキャッシュ.gif)
+![ディスクキャッシュ](C:\Projects\summary_notes\SummaryNotes\Image\ディスクキャッシュ.gif)
 
 
 
@@ -323,7 +323,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 ### ◇ 実効アクセス時間
 
-![p171-1](C:\Projects\Summary_Notes\まとめノート\画像\p171-1.png)
+![p171-1](C:\Projects\summary_notes\SummaryNotes\Image\p171-1.png)
 
   
 
@@ -333,9 +333,9 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 断片化されたデータ領域を整理整頓する。
 
-![p184-1](C:\Projects\Summary_Notes\まとめノート\画像\p184-1.png)
+![p184-1](C:\Projects\summary_notes\SummaryNotes\Image\p184-1.png)
 
-![p184-2](C:\Projects\Summary_Notes\まとめノート\画像\p184-2.png)
+![p184-2](C:\Projects\summary_notes\SummaryNotes\Image\p184-2.png)
 
 ### ◇ RAID：Redundant Arrays of Inexpensive Disks
 
@@ -353,7 +353,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
   データとパリティ（誤り訂正符号）を、3つ以上のハードディスクに書き込む。
 
-![RAIDの種類](C:\Projects\Summary_Notes\まとめノート\画像\RAIDの種類.png)
+![RAIDの種類](C:\Projects\summary_notes\SummaryNotes\Image\RAIDの種類.png)
 
 
 
@@ -379,7 +379,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
   マークシートの塗り潰し位置を読み取る装置。
 
-  ![ORM](C:\Projects\Summary_Notes\まとめノート\画像\ORM.png)
+  ![ORM](C:\Projects\summary_notes\SummaryNotes\Image\ORM.png)
 
 - **キャプチャカード**
 
@@ -389,7 +389,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 バーコードを読み取った後、読み取りによって算出したCheck digitと、実際のCheck digitを比較し、正しく読み取れているのかを判定する。
 
-![チェックディジット](C:\Projects\Summary_Notes\まとめノート\画像\チェックディジット.gif)
+![チェックディジット](C:\Projects\summary_notes\SummaryNotes\Image\チェックディジット.gif)
 
 
 
@@ -398,15 +398,15 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 VRAMの容量によって、扱うことのできる解像度と色数が決まる。
 
-![VRAM](C:\Projects\Summary_Notes\まとめノート\画像\VRAM.jpg)
+![VRAM](C:\Projects\summary_notes\SummaryNotes\Image\VRAM.jpg)
 
 富士通PCのVRAMスペックは32MB。
 
-![本パソコンのVRAMスペック](C:\Projects\Summary_Notes\まとめノート\画像\本パソコンのVRAMスペック.jpg)
+![本パソコンのVRAMスペック](C:\Projects\summary_notes\SummaryNotes\Image\本パソコンのVRAMスペック.jpg)
 
 色数によって、１ドット当たり何ビットを要するが異なる。
 
-![p204](C:\Projects\Summary_Notes\まとめノート\画像\p204.jpg)
+![p204](C:\Projects\summary_notes\SummaryNotes\Image\p204.jpg)
 
 
 
@@ -419,27 +419,27 @@ VRAMの容量によって、扱うことのできる解像度と色数が決ま�
 
   電圧の有無によって液晶分子を制御。外部からの光によって画面を表示させる。
 
-  ![液晶分子](C:\Projects\Summary_Notes\まとめノート\画像\液晶分子.png)
+  ![液晶分子](C:\Projects\summary_notes\SummaryNotes\Image\液晶分子.png)
 
-  ![液晶ディスプレイ](C:\Projects\Summary_Notes\まとめノート\画像\液晶ディスプレイ.jpg)
+  ![液晶ディスプレイ](C:\Projects\summary_notes\SummaryNotes\Image\液晶ディスプレイ.jpg)
 
 - **有機ELディスプレイ**
 
   有機化合物に電圧を加えることによって発光させ、画面を表示させる。
 
-  ![有機ELディスプレイ](C:\Projects\Summary_Notes\まとめノート\画像\有機ELディスプレイ.jpg)
+  ![有機ELディスプレイ](C:\Projects\summary_notes\SummaryNotes\Image\有機ELディスプレイ.jpg)
 
 - **プラズマディスプレイ**
 
-  ![プラズマディスプレイ](C:\Projects\Summary_Notes\まとめノート\画像\プラズマディスプレイ.gif)
+  ![プラズマディスプレイ](C:\Projects\summary_notes\SummaryNotes\Image\プラズマディスプレイ.gif)
 
   2枚のガラスの間に、封入された希ガスに電圧をかけると放電し、紫外線が出る。そして、この紫外線が蛍光体を発光させることによって画面を表示する。  液晶ディスプレイとのシェア差が大きくなり、2014年に世界的に生産が終了された。
 
-  ![パナソニック製プラズマディスプレイ](C:\Projects\Summary_Notes\まとめノート\画像\パナソニック製プラズマディスプレイ.jpg)
+  ![パナソニック製プラズマディスプレイ](C:\Projects\summary_notes\SummaryNotes\Image\パナソニック製プラズマディスプレイ.jpg)
 
 - **LEDディスプレイ**
 
-![LEDディスプレイ](C:\Projects\Summary_Notes\まとめノート\画像\LEDディスプレイ.jpg)
+![LEDディスプレイ](C:\Projects\summary_notes\SummaryNotes\Image\LEDディスプレイ.jpg)
 
 2018年1月に開催された「CES 2018」でサムスンが発表した“マイクロLEDテレビ”「The Wall」は、従来の「液晶」や「有機EL」とは異なる新たな表示方式を採用したテレビとして、大きな話題となった。
 
@@ -450,35 +450,35 @@ VRAMの容量によって、扱うことのできる解像度と色数が決ま�
 
 - **ドットインパクトプリンタ**
 
-  ![ドットインパクトプリンタ](C:\Projects\Summary_Notes\まとめノート\画像\ドットインパクトプリンタ.jpg)
+  ![ドットインパクトプリンタ](C:\Projects\summary_notes\SummaryNotes\Image\ドットインパクトプリンタ.jpg)
 
-  ![ドットインパクトプリンタの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\ドットインパクトプリンタの仕組み.jpg)
+  ![ドットインパクトプリンタの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\ドットインパクトプリンタの仕組み.jpg)
 
 - **インクジェットプリンタ**
 
-  ![インクジェットプリンタ](C:\Projects\Summary_Notes\まとめノート\画像\インクジェットプリンタ.jpg)
+  ![インクジェットプリンタ](C:\Projects\summary_notes\SummaryNotes\Image\インクジェットプリンタ.jpg)
 
-  ![インクジェットプリンタの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\インクジェットプリンタの仕組み.jpg)
+  ![インクジェットプリンタの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\インクジェットプリンタの仕組み.jpg)
 
 - **レーザプリンタ**
 
-  ![レーザプリンタ](C:\Projects\Summary_Notes\まとめノート\画像\レーザプリンタ.jpg)
+  ![レーザプリンタ](C:\Projects\summary_notes\SummaryNotes\Image\レーザプリンタ.jpg)
 
-  ![レーザプリンタの仕組み](C:\Projects\Summary_Notes\まとめノート\画像\レーザプリンタの仕組み.jpg)
+  ![レーザプリンタの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\レーザプリンタの仕組み.jpg)
 
 - **プリンタの解像度**
 
   １インチ当たりのドット数（dpi）によって、解像度が異なる。復習ではあるが、PC上では、ドット数がどのくらいのビット数を持つかで、解像度が変わる。
 
-![DPI](C:\Projects\Summary_Notes\まとめノート\画像\DPI.jpg)
+![DPI](C:\Projects\summary_notes\SummaryNotes\Image\DPI.jpg)
 
 dpiが大きくなるにつれて、解像度は大きくなる。
 
-![DPIの比較](C:\Projects\Summary_Notes\まとめノート\画像\DPIの比較.jpg)
+![DPIの比較](C:\Projects\summary_notes\SummaryNotes\Image\DPIの比較.jpg)
 
 - **プリンタの印字速度**
 
-  ![CPS と PPM](C:\Projects\Summary_Notes\まとめノート\画像\CPS と PPM.jpg)
+  ![CPS と PPM](C:\Projects\summary_notes\SummaryNotes\Image\CPS と PPM.jpg)
   
   
 
@@ -489,9 +489,9 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 シリアルインターフェイスは、情報を1bitずつ転送する方式。パラレルインターフェイスは、複数のbitの情報を同時に転送する方式。パラレルインターフェイスは、同時にデータを送信し、同時に受信しなければならない。配線の形状や長さによって、信号の転送時間は異なる。動作クロックが速ければ速いほど、配線間の同時転送に誤差が生じてしまうため、現代の高スペックパソコンには向いていない。
 
-![パラレルインターフェイスは配線の長さが関係してくる](C:\Projects\Summary_Notes\まとめノート\画像\パラレルインターフェイスは配線の長さが関係してくる.png)
+![パラレルインターフェイスは配線の長さが関係してくる](C:\Projects\summary_notes\SummaryNotes\Image\パラレルインターフェイスは配線の長さが関係してくる.png)
 
-![シリアルvs パラレル の違い](C:\Projects\Summary_Notes\まとめノート\画像\シリアルvs パラレル の違い.jpeg)
+![シリアルvs パラレル の違い](C:\Projects\summary_notes\SummaryNotes\Image\シリアルvs パラレル の違い.jpeg)
 
 
 
@@ -499,13 +499,13 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 - **USB（Universal Serial Bus）**
 
-![usbケーブル](C:\Projects\Summary_Notes\まとめノート\画像\usbインターフェイス.png)
+![usbケーブル](C:\Projects\summary_notes\SummaryNotes\Image\usbインターフェイス.png)
 
 - **IEEE1394**
 
 ビデオカメラとの接続に用いられるインターフェイス
 
-![ieeeケーブル](C:\Projects\Summary_Notes\まとめノート\画像\ieeeインターフェイス.jpg)
+![ieeeケーブル](C:\Projects\summary_notes\SummaryNotes\Image\ieeeインターフェイス.jpg)
 
 
 
@@ -515,13 +515,13 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ハードディスクとの接続に用いられるインターフェイス。
 
-![ideケーブル](C:\Projects\Summary_Notes\まとめノート\画像\ideインターフェイス.jpg)
+![ideケーブル](C:\Projects\summary_notes\SummaryNotes\Image\ideインターフェイス.jpg)
 
 - **SCSI（Small Computer System Interface）**
 
 ハードディスク、CD-ROM、イメージスキャナなど、様々な周辺機器をデイジーチェーンするために用いるインターフェイス。
 
-![scsiケーブル](C:\Projects\Summary_Notes\まとめノート\画像\scsiインターフェイス.jpg)
+![scsiケーブル](C:\Projects\summary_notes\SummaryNotes\Image\scsiインターフェイス.jpg)
 
 
 
@@ -530,7 +530,7 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 - **IrDA（infrared Data Assoiciation）**
   赤外線を使って、無線通信を行うためのインターフェイス。
 
-![irDAインターフェイス](C:\Projects\Summary_Notes\まとめノート\画像\irDAインターフェイス.jpg)
+![irDAインターフェイス](C:\Projects\summary_notes\SummaryNotes\Image\irDAインターフェイス.jpg)
 
 - **Bluetooth**
   2.4GHzの電波を使って無線通信を行うためのインターフェイス。
@@ -542,7 +542,7 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ### ◇ ハードウェアとソフトウェアの関係（再度記載）
 
-![ソフトウェアの分類](C:\Projects\Summary_Notes\まとめノート\画像\ソフトウェアの分類.jpg)
+![ソフトウェアの分類](C:\Projects\summary_notes\SummaryNotes\Image\ソフトウェアの分類.jpg)
 
 
 
@@ -582,11 +582,11 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 **【具体例】**BIOS：Basic Input/Output System
 
-![BIOS](C:\Projects\Summary_Notes\まとめノート\画像\BIOS.jpg)
+![BIOS](C:\Projects\summary_notes\SummaryNotes\Image\BIOS.jpg)
 
 **【具体例】**UEFI：United Extensible Firmware Interface
 
-![UEFIとセキュアブート](C:\Projects\Summary_Notes\まとめノート\画像\UEFIとセキュアブート.JPG)
+![UEFIとセキュアブート](C:\Projects\summary_notes\SummaryNotes\Image\UEFIとセキュアブート.JPG)
 
 
 
@@ -618,7 +618,7 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ### ◇ OSSの種類
 
-![OSS一覧](C:\Projects\Summary_Notes\まとめノート\画像\OSS一覧.png)
+![OSS一覧](C:\Projects\summary_notes\SummaryNotes\Image\OSS一覧.png)
 
 引用：https://openstandia.jp/oss_info/
 
@@ -668,7 +668,7 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ### ◇ ジョブ管理とタスク管理の関係
 
-![ジョブ管理とタスク管理の概要](C:\Projects\Summary_Notes\まとめノート\画像\ジョブ管理とタスク管理の概要.jpg)
+![ジョブ管理とタスク管理の概要](C:\Projects\summary_notes\SummaryNotes\Image\ジョブ管理とタスク管理の概要.jpg)
 
 ### ◇ マスタスケジュラ
 
@@ -712,7 +712,7 @@ CPUに対して、処理命令が行われる
 
   決められた時間または一定間隔でプログラムやスクリプトを実行する機能。
 
-  ![タスクスケジューラ](C:\Projects\Summary_Notes\まとめノート\画像\タスクスケジューラ.png)
+  ![タスクスケジューラ](C:\Projects\summary_notes\SummaryNotes\Image\タスクスケジューラ.png)
 
 
 
@@ -722,7 +722,7 @@ CPUに対して、処理命令が行われる
 
 タスクとは、スレッドに似たような、単一のプロセスのこと。
 
-![タスクの状態遷移](C:\Projects\Summary_Notes\まとめノート\画像\タスクの状態遷移.jpg)
+![タスクの状態遷移](C:\Projects\summary_notes\SummaryNotes\Image\タスクの状態遷移.jpg)
 
 - **到着順方式**
 
@@ -742,7 +742,7 @@ CPUに対して、処理命令が行われる
 
 アプリケーションから低速な周辺機器へデータを出力する時、まず、CPUはスプーラにデータを出力する。Spoolerは、全てのデータをまとめて出力するのではなく、一時的に補助記憶装置（Spool）にためておきながら、少しずつ出力する（Spooling）。
 
-  ![スプーリング](C:\Projects\Summary_Notes\まとめノート\画像\スプーリング.jpg)
+  ![スプーリング](C:\Projects\summary_notes\SummaryNotes\Image\スプーリング.jpg)
 
 
 
@@ -768,19 +768,19 @@ CPUに対して、処理命令が行われる
 
   一度プログラムを実行した後、補助記憶装置から主記憶装置にロードし直さずに、再び実行を繰り返すことができるプログラムのこと。
 
-  ![再使用可能](C:\Projects\Summary_Notes\まとめノート\画像\再使用可能.gif)
+  ![再使用可能](C:\Projects\summary_notes\SummaryNotes\Image\再使用可能.gif)
 
 ### ◇ Reentrant（再入可能プログラム）
 
   あるプログラムが呼び出したプログラムを、他のプログラムがさらに呼び出しを行い、同時に実行できるプログラムのこと。
 
-![再入可能](C:\Projects\Summary_Notes\まとめノート\画像\再入可能.gif)
+![再入可能](C:\Projects\summary_notes\SummaryNotes\Image\再入可能.gif)
 
 ### ◇ Relocatable（再配置可能プログラム）
 
   補助記憶装置から主記憶装置へロードする際に、アドレス空間上のどこに配置しても実行できるプログラムのこと。
 
-![再配置可能](C:\Projects\Summary_Notes\まとめノート\画像\再配置可能.gif)
+![再配置可能](C:\Projects\summary_notes\SummaryNotes\Image\再配置可能.gif)
 
 
 
@@ -792,17 +792,17 @@ CPUに対して、処理命令が行われる
 2. 仮想アドレス空間を固定長の領域に区切り、ページをその領域で管理。
 3. 実行に必要なページだけを物理メモリに読み込ませる
 
-![p258](C:\Projects\Summary_Notes\まとめノート\画像\p258.png)
+![p258](C:\Projects\summary_notes\SummaryNotes\Image\p258.png)
 
 
 
 ### ◇ ページアウトの種類
 
-![p259-2](C:\Projects\Summary_Notes\まとめノート\画像\p259-2.png)
+![p259-2](C:\Projects\summary_notes\SummaryNotes\Image\p259-2.png)
 
 - **LRU方式：Least Recently Used**
 
-  ![p261](C:\Projects\Summary_Notes\まとめノート\画像\p261.png)
+  ![p261](C:\Projects\summary_notes\SummaryNotes\Image\p261.png)
 
 
 
@@ -818,7 +818,7 @@ CPUに対して、処理命令が行われる
 <img src="http://fruits.com/img/apple.png">
 ```
 
-![絶対パス](C:\Projects\Summary_Notes\まとめノート\画像\絶対パス.png)
+![絶対パス](C:\Projects\summary_notes\SummaryNotes\Image\絶対パス.png)
 
 ### ◇ 相対パス
 
@@ -828,4 +828,4 @@ CPUに対して、処理命令が行われる
 <img src="../img/apple.png">
 ```
 
-![相対パス](C:\Projects\Summary_Notes\まとめノート\画像\相対パス.png)
+![相対パス](C:\Projects\summary_notes\SummaryNotes\Image\相対パス.png)

@@ -14,7 +14,7 @@
 
 ネットワークには、『インターネット』『WAN』『LAN』がある。家庭内LAN、学内LAN、企業内LAN、企業WANなど、さまざまなネットワークがあり、インターネットは、それぞれのネットワークを互いに接続しているネットワークである。
 
-![インターネットとWANとLAN](C:\Projects\Summary_Notes\まとめノート\画像\インターネットとWANとLAN.png)
+![インターネットとWANとLAN](C:\Projects\summary_notes\SummaryNotes\Image\インターネットとWANとLAN.png)
 
 
 
@@ -22,13 +22,13 @@
 
 例えば、LANとしてEthernet、WANとしてデジタル専用線を用いる。
 
-![WAN、LANの具体例](C:\Projects\Summary_Notes\まとめノート\画像\WAN、LANの具体例.png)
+![WAN、LANの具体例](C:\Projects\summary_notes\SummaryNotes\Image\WAN、LANの具体例.png)
 
 
 
 ### ◇ WANの種類と歴史
 
-![WANの歴史](C:\Projects\Summary_Notes\まとめノート\画像\WANの種類と歴史.png)
+![WANの歴史](C:\Projects\summary_notes\SummaryNotes\Image\WANの種類と歴史.png)
 
 
 
@@ -42,7 +42,7 @@
 
 外部からリクエストを受けないデータベースサーバは、内部ネットワークに設置するべき。
 
-![内部、DMZ、外部](C:\Projects\Summary_Notes\まとめノート\画像\内部、DMZ、外部.png)
+![内部、DMZ、外部](C:\Projects\summary_notes\SummaryNotes\Image\内部、DMZ、外部.png)
 
 
 
@@ -58,13 +58,13 @@
 
   サーバ自体のスペックをより高くすることで、サーバ当たりの処理能力を向上させる。その逆は、スケールダウン。
 
-  ![スケールアップ](C:\Projects\Summary_Notes\まとめノート\画像\スケールアップ.png)
+  ![スケールアップ](C:\Projects\summary_notes\SummaryNotes\Image\スケールアップ.png)
 
 - **スケールアウト ⇔ スケールイン**
 
   サーバの台数を増やすことで、サーバ全体の処理能力を向上させる。その逆は、スケールイン。
 
-  ![スケールアウト](C:\Projects\Summary_Notes\まとめノート\画像\スケールアウト.png)
+  ![スケールアウト](C:\Projects\summary_notes\SummaryNotes\Image\スケールアウト.png)
 
   
 
@@ -74,13 +74,13 @@
 
   少数対少数でデータ通信を行うため、送信時に、送信者と受信者の宛先情報は必要ない。
 
-  ![回線交換方式](C:\Projects\Summary_Notes\まとめノート\画像\回線交換方式.png)
+  ![回線交換方式](C:\Projects\summary_notes\SummaryNotes\Image\回線交換方式.png)
 
 - **パケット交換方式**
 
   通信するデータをパケット化する。多数対多数でデータ通信を行うため、送信時に、送信者と受信者の宛先情報が必要になる。
 
-  ![パケット交換方式](C:\Projects\Summary_Notes\まとめノート\画像\パケット交換方式.png)
+  ![パケット交換方式](C:\Projects\summary_notes\SummaryNotes\Image\パケット交換方式.png)
 
 
 
@@ -90,11 +90,11 @@
 
 パケット交換方式におけるパケットのヘッダ情報は、パソコンの各概念層のプロトコルによって追加されていく。
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 ### ◇ データへのヘッダ情報追加とカプセル化
 
-![パケットの構造](C:\Projects\Summary_Notes\まとめノート\画像\パケットの構造.jpg)
+![パケットの構造](C:\Projects\summary_notes\SummaryNotes\Image\パケットの構造.jpg)
 
 ### ◇ プロトコルが行っていること
 
@@ -108,13 +108,13 @@
 
 ### ◇ 各概念層で追加されるヘッダ情報の内容
 
-![OSI参照モデル](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデル.png)
+![OSI参照モデル](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデル.png)
 
 
 
 ### ◇ 各概念層の実際の通信機器の対応関係
 
-![OSI参照モデルと通信機器.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器.jpg)
+![OSI参照モデルと通信機器.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルと通信機器.jpg)
 
 - **ネットワーク層**
 
@@ -130,7 +130,7 @@ Network Interface Card（（例）LANアダプタ、LANボード、LANカード�
 
 送信元で作成されたパケットは、非カプセル化されながら、通信機器に認識される。
 
-![OSI参照モデルと通信機器でのパケット認識.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルと通信機器でのパケット認識.jpg)
+![OSI参照モデルと通信機器でのパケット認識.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルと通信機器でのパケット認識.jpg)
 
 
 
@@ -140,13 +140,13 @@ Network Interface Card（（例）LANアダプタ、LANボード、LANカード�
 
 TCP/IPモデルで用いられるプロトコルのうち、最も代表的な「TCP」と「IP」から名前をとって「TCP/IP」と名付けられた。
 
-![TCP_IPとは](C:\Projects\Summary_Notes\まとめノート\画像\TCP_IPとは.png)
+![TCP_IPとは](C:\Projects\summary_notes\SummaryNotes\Image\TCP_IPとは.png)
 
 
 
 # 12-05. 【TCP/IP】アプリケーション層の『HTTP』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
@@ -232,15 +232,15 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 
 
-# 12-06. 【TCP/IP】アプリケーション層の『SMTP』『POP』
+# 12-06. 【TCP/IP】アプリケーション層の『SMTP』『POP3』『IMAP』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.png.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
 ### ◇ メール送信プロトコル
 
-- **SMTP-AUTH**
+- **SMTP AUTH：Simple Mail Transfer Protocol AUTHentication**
 
   メール送信にあたってユーザ認証の仕組みがないSMTPを拡張し、ユーザ認証機能を追加した仕様
 
@@ -256,21 +256,29 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
   メール受信の際に、チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
 
-- **POP3：POP3 over TLS**
+- **POP3：Post Official Protocol version 3**
 
-  TLSのセキュアな通信路上でメールソフトからメールサーバ間のPOP通信を行うプロトコル
+  メールサーバに届いたメールを、受信機器にダウンロードし、受信機器で閲覧するプロトコル。メールの既読未読状況は、他の受信機器と共有される。
+  
+- **IMAP：Internet Message Access Protocol**
+
+  メールサーバに届いたメールを、受信機器にダウンロードせず、メールサーバに置いたまま閲覧するプロトコル。メールの既読未読状況は、他の受信機器と共有されない。
+
+  **【具体例】**GmailでPOPかIMAPを設定可能
+
+![GmailでPOPorIMAPを設定](C:\Projects\summary_notes\SummaryNotes\Image\GmailでPOPorIMAPを設定.jpg)
 
 
 
 # 12-07. 【TCP/IP】トランスポート層の『TCP』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
 ### ◇ レスポンスにおけるポート番号の識別の仕組み
 
-![トランスポート層からアプリケーション層へのパケットの移動](C:\Projects\Summary_Notes\まとめノート\画像\トランスポート層からアプリケーション層へのパケットの移動.PNG)
+![トランスポート層からアプリケーション層へのパケットの移動](C:\Projects\summary_notes\SummaryNotes\Image\トランスポート層からアプリケーション層へのパケットの移動.PNG)
 
 まず、プライベートIPアドレスを用いて、レスポンス先のパソコンを識別する。その後、リクエスト時のポート番号を元にして、特定のアプリにレスポンスする。
 
@@ -284,7 +292,7 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
    
 
-![ポート番号](C:\Projects\Summary_Notes\まとめノート\画像\ポート番号.png)
+![ポート番号](C:\Projects\summary_notes\SummaryNotes\Image\ポート番号.png)
 
 
 
@@ -302,7 +310,7 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
   IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号。Webサーバがリクエストを受信する時、またレスポンスを送信する時に使用される。
 
-  ![ポート番号とプロトコルの対応関係](C:\Projects\Summary_Notes\まとめノート\画像\ポート番号とプロトコルの対応関係.png)
+  ![ポート番号とプロトコルの対応関係](C:\Projects\summary_notes\SummaryNotes\Image\ポート番号とプロトコルの対応関係.png)
 
 - **登録済みポート番号（1024 ～ 49151）**
 
@@ -316,7 +324,7 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 # 12-08. 【TCP/IP】インターネット層の『IPv4』
 
-![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\Summary_Notes\まとめノート\画像\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
 
 
 
@@ -326,13 +334,13 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 2. ルータAは、IPパケットをデジタル専用線に乗せて、ルータBに送信。
 3. ルータBは、構成したIPパケットをEthernetに乗せて、Webサーバに送信。
 
-![ネットワークにおけるTCP_IPを用いたデータ通信](C:\Projects\Summary_Notes\まとめノート\画像\ネットワークにおけるTCP_IPを用いたデータ通信.png)
+![ネットワークにおけるTCP_IPを用いたデータ通信](C:\Projects\summary_notes\SummaryNotes\Image\ネットワークにおけるTCP_IPを用いたデータ通信.png)
 
 
 
 ### ◇ IPv4アドレスの種類
 
-![プライベートIPアドレスとグローバルIPアドレス](C:\Projects\Summary_Notes\まとめノート\画像\プライベートIPアドレスとグローバルIPアドレス.png)
+![プライベートIPアドレスとグローバルIPアドレス](C:\Projects\summary_notes\SummaryNotes\Image\プライベートIPアドレスとグローバルIPアドレス.png)
 
 - **プライベートIPアドレス**
 
@@ -366,27 +374,45 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 - **各部品の名称**
 
-![URLと電子メールの構造](C:\Projects\Summary_Notes\まとめノート\画像\URLと電子メールの構造.png)
+![URLと電子メールの構造](C:\Projects\summary_notes\SummaryNotes\Image\URLと電子メールの構造.png)
 
 - **各部品の様々な組み合わせ**
 
-![ホスト名とドメイン名の組み合わせの種類](C:\Projects\Summary_Notes\まとめノート\画像\ホスト名とドメイン名の組み合わせの種類.gif)
+![ホスト名とドメイン名の組み合わせの種類](C:\Projects\summary_notes\SummaryNotes\Image\ホスト名とドメイン名の組み合わせの種類.gif)
 
 
 
 ### ◇ 完全修飾ドメイン名とグローバルIPアドレスのマッピング
 
-![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](C:\Projects\Summary_Notes\まとめノート\画像\IPアドレスと完全修飾ドメイン名のマッピング4.png)
+![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](C:\Projects\summary_notes\SummaryNotes\Image\IPアドレスと完全修飾ドメイン名のマッピング4.png)
 
 例えば、外部WebサーバのグローバルIPアドレスが『203.142.205.139』であると知っている場合、URLのプロトコル部分以下を『203.142.205.139』としてリクエストすれば、外部Webサーバが提供するウェブサイトにアクセスできる。しかし、グローバルIPアドレスは数字の羅列であるため、人間には覚えにくい。そこで、グローバルIPアドレスの代わりに、完全修飾ドメイン名をURLの一部として用いる。
 
 
 
-# 12-09. 不正アクセスからの防御方法
+# 12-09. ルータの種類
+
+### ◇ NAT：Network Address TranslationによるIPアドレスv4の変換
+
+プライベートIPアドレスとグローバルIPアドレスを相互変換する機能。
+
+![nat 変換](C:\Projects\summary_notes\SummaryNotes\Image\nat 変換.png)
+
+
+
+### ◇ NAPT：Network Address Port Translationによるポート番号の変換
+
+NATと同様にプライベートIPアドレスとグローバルIPアドレスの間を相互変換するだけでなく、ポート番号も変換する。
+
+![napt変換](C:\Projects\summary_notes\SummaryNotes\Image\napt変換.png)
+
+
+
+# 12-10. 不正アクセスからの防御方法
 
 ### ◇ 不正アクセス防御方法の種類
 
-![ファイアウォール_ips_ids_waf](C:\Projects\Summary_Notes\まとめノート\画像\ファイアウォール_ips_ids_waf.png)
+![ファイアウォール_ips_ids_waf](C:\Projects\summary_notes\SummaryNotes\Image\ファイアウォール_ips_ids_waf.png)
 
 
 
@@ -394,23 +420,23 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 - **セグメントにおけるファイアウォール（再掲）**
 
-![内部、DMZ、外部](C:\Projects\Summary_Notes\まとめノート\画像\内部、DMZ、外部.png)
+![内部、DMZ、外部](C:\Projects\summary_notes\SummaryNotes\Image\内部、DMZ、外部.png)
 
 - **パケットフィルタリング型ファイアウォール**
 
 パケットのヘッダ情報に記載された送信元IPアドレスやポート番号などによって、パケットを許可するべきかどうかを決定する。速度を重視する場合はこちら。
 
-![パケットフィルタリング](C:\Projects\Summary_Notes\まとめノート\画像\パケットフィルタリング.gif)
+![パケットフィルタリング](C:\Projects\summary_notes\SummaryNotes\Image\パケットフィルタリング.gif)
 
 **【具体例】**Win10における設定画面
 
-![パケットフィルタリングの設定](C:\Projects\Summary_Notes\まとめノート\画像\パケットフィルタリングの設定.gif)
+![パケットフィルタリングの設定](C:\Projects\summary_notes\SummaryNotes\Image\パケットフィルタリングの設定.gif)
 
 - **アプリケーションゲートウェイ型ファイアウォール（Proxy型）**
 
 外部公開サーバのリバースProxyサーバを、ファイアウォールとして用いる。セキュリティ精度を重視する場合はこちら。
 
-![フォワードプロキシサーバーとリバースプロキシサーバ](C:\Projects\Summary_Notes\まとめノート\画像\フォワードプロキシサーバーとリバースプロキシサーバ.png)
+![フォワードプロキシサーバーとリバースプロキシサーバ](C:\Projects\summary_notes\SummaryNotes\Image\フォワードプロキシサーバーとリバースプロキシサーバ.png)
 
 
 
@@ -432,27 +458,13 @@ Dos攻撃を防ぐ。
 
 
 
-# 12-10. 異なるネットワーク間でのデータ変換
 
-### ◇ NAT：Network Address TranslationによるIPアドレスv4の変換
-
-プライベートIPアドレスとグローバルIPアドレスを相互変換する機能。
-
-![nat 変換](C:\Projects\Summary_Notes\まとめノート\画像\nat 変換.png)
-
-
-
-### ◇ NAPT：Network Address Port Translationによるポート番号の変換
-
-NATと同様にプライベートIPアドレスとグローバルIPアドレスの間を相互変換するだけでなく、ポート番号も変換する。
-
-![napt変換](C:\Projects\Summary_Notes\まとめノート\画像\napt変換.png)
 
 
 
 # 12-11. Proxyサーバ、DNSサーバ、Webサーバ、NAT、でのデータ通信まとめ
 
-![ホスト名とIPアドレスの変換](C:\Projects\Summary_Notes\まとめノート\画像\IPアドレスと完全修飾ドメイン名のマッピング3.png)
+![ホスト名とIPアドレスの変換](C:\Projects\summary_notes\SummaryNotes\Image\IPアドレスと完全修飾ドメイン名のマッピング3.png)
 
 1. クライアントPCは、完全修飾ドメイン名を、フォワードProxyサーバにリクエスト。
 

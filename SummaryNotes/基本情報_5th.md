@@ -20,7 +20,7 @@
 
 Wordなどのワープロアプリや、Excelなどの表計算アプリに感染
 
-![Macroウイルス](C:\Projects\Summary_Notes\まとめノート\画像\Macroウイルス.jpg)
+![Macroウイルス](C:\Projects\summary_notes\SummaryNotes\Image\Macroウイルス.jpg)
 
 
 
@@ -30,7 +30,7 @@ Wordなどのワープロアプリや、Excelなどの表計算アプリに感�
 
 **【具体例】**共有フォルダ経由での感染拡大
 
-![Worm（共有フォルダ）](C:\Projects\Summary_Notes\まとめノート\画像\Worm（共有フォルダ）.jpg)
+![Worm（共有フォルダ）](C:\Projects\summary_notes\SummaryNotes\Image\Worm（共有フォルダ）.jpg)
 
 
 
@@ -38,7 +38,7 @@ Wordなどのワープロアプリや、Excelなどの表計算アプリに感�
 
 **【具体例】**Google play で、過去にアプリとして忍び込んでいたトロイの木馬
 
-![トロイの木馬](C:\Projects\Summary_Notes\まとめノート\画像\トロイの木馬.jpg)
+![トロイの木馬](C:\Projects\summary_notes\SummaryNotes\Image\トロイの木馬.jpg)
 
 感染方法がギリシャ神話上のトロイの木馬に似ていることに由来する。有用なプログラムであるように見せかけて、パソコン利用者に実行させることで感染。裏で不正な処理を行う。
 
@@ -50,7 +50,7 @@ Wordなどのワープロアプリや、Excelなどの表計算アプリに感�
 
 パソコン利用者の個人情報を収集し、外部に送信する。
 
-![スパイウェア](C:\Projects\Summary_Notes\まとめノート\画像\スパイウェア.png)
+![スパイウェア](C:\Projects\summary_notes\SummaryNotes\Image\スパイウェア.png)
 
 ### ◇ Bot
 
@@ -58,17 +58,17 @@ Wordなどのワープロアプリや、Excelなどの表計算アプリに感�
 
 - **パソコンがボット化するまでのプロセス**
 
-  ![ボット化のプロセス（パソコン）](C:\Projects\Summary_Notes\まとめノート\画像\ボット化のプロセス（パソコン）.jpg)
+  ![ボット化のプロセス（パソコン）](C:\Projects\summary_notes\SummaryNotes\Image\ボット化のプロセス（パソコン）.jpg)
 
 - **スマホがボット化するまでのプロセス**
 
-  ![ボット化のプロセス（スマホ）](C:\Projects\Summary_Notes\まとめノート\画像\ボット化のプロセス（スマホ）.jpg)
+  ![ボット化のプロセス（スマホ）](C:\Projects\summary_notes\SummaryNotes\Image\ボット化のプロセス（スマホ）.jpg)
 
 - **Bot の使われ方**
 
   まず、攻撃対象のネットワーク内にあるパソコンをBot化させる。攻撃者は、Bot化したパソコンを踏み台としてサーバーを攻撃させるように、C&Cサーバーに命令を出す。
 
-![C&Cサーバー](C:\Projects\Summary_Notes\まとめノート\画像\C&Cサーバー.png)
+![C&Cサーバー](C:\Projects\summary_notes\SummaryNotes\Image\C&Cサーバー.png)
 
 
 
@@ -108,7 +108,7 @@ Brute-forceは力ずくの意味。IDを固定して、パスワードを総当�
 
 データベースのSQLクエリのパラメータとなる入力に、不正な文字列を入力して不正なSQLクエリを実行させ、データベースの情報を抜き取る手法。ただし、近年は減少傾向にある。
 
-![SQLインジェクション](C:\Projects\Summary_Notes\まとめノート\画像\SQLインジェクション.jpg)
+![SQLインジェクション](C:\Projects\summary_notes\SummaryNotes\Image\SQLインジェクション.jpg)
 
 - **対策**
 
@@ -120,7 +120,7 @@ Brute-forceは力ずくの意味。IDを固定して、パスワードを総当�
 
 例えば、Webサイトのカード決済画面やサーバに潜ませることによって、カード情報を第三者に送信する手法。
 
-![バックドア](C:\Projects\Summary_Notes\まとめノート\画像\バックドア.png)
+![バックドア](C:\Projects\summary_notes\SummaryNotes\Image\バックドア.png)
 
 
 
@@ -134,7 +134,7 @@ Brute-forceは力ずくの意味。IDを固定して、パスワードを総当�
 
 キャッシュDNSサーバーがもつIPアドレスを偽のIPアドレスに変え、偽のWebサイトに強制的にアクセスさせる手法。
 
-![DNSキャッシュポイズニング](C:\Projects\Summary_Notes\まとめノート\画像\DNSキャッシュポイズニング.gif)
+![DNSキャッシュポイズニング](C:\Projects\summary_notes\SummaryNotes\Image\DNSキャッシュポイズニング.gif)
 
 
 
@@ -142,13 +142,13 @@ Brute-forceは力ずくの意味。IDを固定して、パスワードを総当�
 
 WebアプリケーションによるHTML出力のエスケープ処理の欠陥を悪用し，利用者のWebブラウザで悪意のあるスクリプトを実行させる 。
 
-![Cross Cite Scripting](C:\Projects\Summary_Notes\まとめノート\画像\Cross Cite Scripting.png)
+![Cross Cite Scripting](C:\Projects\summary_notes\SummaryNotes\Image\Cross Cite Scripting.png)
 
 ### ◇ Directory traversal
 
 パス名を使ってファイルを指定し，管理者の意図していないファイルを不正に閲覧する。
 
-![ディレクトリトラバーサル](C:\Projects\Summary_Notes\まとめノート\画像\ディレクトリトラバーサル.jpg)
+![ディレクトリトラバーサル](C:\Projects\summary_notes\SummaryNotes\Image\ディレクトリトラバーサル.jpg)
 
 
 
@@ -158,19 +158,19 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される。暗号アルゴリズムに基づく暗号方式を用いてデータを暗号化することによって、盗聴を防ぐ。
 
-![盗聴_改竄_なりすまし](C:\Projects\Summary_Notes\まとめノート\画像\盗聴_改竄_なりすまし_1.png)
+![盗聴_改竄_なりすまし](C:\Projects\summary_notes\SummaryNotes\Image\盗聴_改竄_なりすまし_1.png)
 
 ### ◇ 改竄（データの書き換え）を防ぐ
 
 『ハッシュ関数』によって実現される。相手に送ったデータと相手が受け取ったデータが同じかどうかを確認することによって、改竄を防ぐ。
 
-![盗聴_改竄_なりすまし](C:\Projects\Summary_Notes\まとめノート\画像\盗聴_改竄_なりすまし_2.png)
+![盗聴_改竄_なりすまし](C:\Projects\summary_notes\SummaryNotes\Image\盗聴_改竄_なりすまし_2.png)
 
 ### ◇ なりすましを防ぐ
 
 『デジタル署名』によって実現される。正しい相手であることを証明することによって、なりすましを防ぐ。
 
-![盗聴_改竄_なりすまし](C:\Projects\Summary_Notes\まとめノート\画像\盗聴_改竄_なりすまし_3.png)
+![盗聴_改竄_なりすまし](C:\Projects\summary_notes\SummaryNotes\Image\盗聴_改竄_なりすまし_3.png)
 
 
 
@@ -195,7 +195,7 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 ### ◇ 暗号方式の種類一覧
 
-![暗号方式の種類](C:\Projects\Summary_Notes\まとめノート\画像\暗号方式の種類.png)
+![暗号方式の種類](C:\Projects\summary_notes\SummaryNotes\Image\暗号方式の種類.png)
 
 
 
@@ -209,13 +209,13 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 **短所**：鍵の配布が大変
 
-![p437](C:\Projects\Summary_Notes\まとめノート\画像\p437.png)
+![p437](C:\Projects\summary_notes\SummaryNotes\Image\p437.png)
 
 
 
 ### ◇ 公開鍵暗号方式 ⇒ 『受信者』に、秘密鍵による本人証明が必要
 
-![公開鍵暗号方式](C:\Projects\Summary_Notes\まとめノート\画像\公開鍵暗号方式.png)
+![公開鍵暗号方式](C:\Projects\summary_notes\SummaryNotes\Image\公開鍵暗号方式.png)
 
 公開鍵暗号方式でも記載の通り、共通鍵暗号方式の鍵配送問題を解決すべく開発された。『RSA暗号』などによって実装される。送信者にあらかじめ公開鍵を渡しておく。公開鍵は暗号化しかできない。送信者は公開鍵で情報を暗号化する。自分はそれを秘密鍵で復号する。受信する場合、相手から公開鍵をもらう。
 
@@ -233,63 +233,11 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 共通鍵暗号方式と公開鍵暗号方式を組み合わせた暗号方式。両方の方式の長所と短所を補う。
 
- ![ハイブリッド暗号](C:\Projects\Summary_Notes\まとめノート\画像\ハイブリッド暗号.png)
+ ![ハイブリッド暗号](C:\Projects\summary_notes\SummaryNotes\Image\ハイブリッド暗号.png)
 
 
 
-# 13-06. データ通信におけるセキュリティ技術
-
-### ◇ TCP/IP階層モデルとOSI参照モデルの対応関係（再掲）
-
-![TCPIP階層モデルとOSI参照モデルの対応関係](C:\Projects\Summary_Notes\まとめノート\画像\TCPIP階層モデルとOSI参照モデルの対応関係.png)
-
-
-
-### ◇ OSI参照モデルにおけるセキュリティ技術
-
-![セキュアプロトコル](C:\Projects\Summary_Notes\まとめノート\画像\セキュアプロトコル.jpg)
-
-- **アプリケーション層の『SSH』**
-
-公開鍵暗号方式に基づく技術。アプリケーション層で、パケットのヘッダ情報の暗号化を担う。
-
-- **トランスポート層の『SSL/TLS』**
-
-ハイブリッド暗号方式に基づく技術。トランスポート層で、パケットのヘッダ情報の暗号化を担う。インターネットVPNの実現のために用いられる。
-
-- **ネットワーク層の『IPsec』**
-
-共通鍵暗号方式に基づく技術。ネットワーク層で、パケットのヘッダ情報の暗号化を担う。インターネットVPNの実現のために用いられる。
-
-
-
-### ◇ VPN：Virtual Private Network（仮想プライベートネットワーク）
-
-異なるネットワーク間で安全な通信を行うための仕組み。IPsecやSSL/TLSによって実現される。
-
-![VPN（ネットワーク間）](C:\Projects\Summary_Notes\まとめノート\画像\VPN（ネットワーク間）.png)
-
-
-
-# 13-07. 共通鍵暗号方式に基づくセキュリティ技術
-
-### ◇ IPsec
-
-IPsecの仕組みで暗号化されますため、インターネット上で盗聴されない。
-
-![IPsecによるインターネットVPN](C:\Projects\Summary_Notes\まとめノート\画像\IPsecによるインターネットVPN.jpg)
-
-
-
-# 13-08. 公開鍵暗号方式に基づくセキュリティ技術
-
-### ◇ SSH：Secure Shell
-
-暗号方式と認証方式の技術を用いて、リモートコンピュータとの通信を安全に行うためのプロトコル。公開鍵暗号方式が用いられる。例えば、クライアント側SSHソフトには、『OpenSSH』、『Apache MINA/SSHD』があり、またサーバ側SSHソフトには、お『OpenSSH』、『TeraTerm』、『Putty』がある。
-
-![ssh接続](C:\Projects\Summary_Notes\まとめノート\画像\ssh接続.png)
-
-
+# 13-06. デジタル署名と公開鍵基盤
 
 ### ◇ デジタル署名 ⇒ 『送信者』に、秘密鍵による本人証明が必要
 
@@ -298,11 +246,8 @@ IPsecの仕組みで暗号化されますため、インターネット上で盗
 【送信者】
 
 1. 平文をハッシュ化し、ダイジェストにする。
-
 2. ダイジェストを秘密鍵（署名生成鍵）で暗号化し、暗号ダイジェスト（デジタル署名）を作成する。
-
 3. 『平文』と『暗号ダイジェスト（デジタル署名）』の両方を送信
-
 
 【受信者】
 
@@ -318,7 +263,7 @@ IPsecの仕組みで暗号化されますため、インターネット上で盗
 
   送信者から送られた『平文』と『暗号ダイジェスト』のどちらかが、通信の途中で改竄された場合、これらのダイジェストが同じになることは確率的にありえない。したがって、確かに改竄されていないと判断可能。
 
-![デジタル署名](C:\Projects\Summary_Notes\まとめノート\画像\デジタル署名.png)
+![デジタル署名](C:\Projects\summary_notes\SummaryNotes\Image\デジタル署名.png)
 
 
 
@@ -326,7 +271,7 @@ IPsecの仕組みで暗号化されますため、インターネット上で盗
 
   何かのデータを入力すると、規則性のない一定の桁数の値を出力する演算手法。
 
-![ハッシュ関数](C:\Projects\Summary_Notes\まとめノート\画像\ハッシュ関数.png)
+![ハッシュ関数](C:\Projects\summary_notes\SummaryNotes\Image\ハッシュ関数.png)
 
 
 
@@ -334,60 +279,120 @@ IPsecの仕組みで暗号化されますため、インターネット上で盗
 
 『なりすまし』と『改竄』を防げるデジタル署名に、『盗聴』を防げる公開鍵暗号方式を組み込んだセキュリティ技術。
 
-![デジタル署名と暗号化](C:\Projects\Summary_Notes\まとめノート\画像\デジタル署名と暗号化.png)
+![デジタル署名と暗号化](C:\Projects\summary_notes\SummaryNotes\Image\デジタル署名と暗号化.png)
 
 
 
 ### ◇ PKI：Public Key Infrastructure（公開鍵基盤）
 
-『公開鍵暗号方式』を利用したセキュリティ技術。
+デジタル署名を用いたセキュリティインフラ技術
 
 1. 送信者は、公開鍵と秘密鍵を作り、認証局に公開鍵とデジタル証明書を提出。
 
 2. 認証局は、デジタル署名の入ったデジタル証明書を発行。
 
-   ![デジタル証明書によるなりすまし防止1,2](C:\Projects\Summary_Notes\まとめノート\画像\デジタル証明書によるなりすまし防止-1,2.png)
+   ![デジタル証明書によるなりすまし防止1,2](C:\Projects\summary_notes\SummaryNotes\Image\デジタル証明書によるなりすまし防止-1,2.png)
 
 3. 送信者は、受信者にメール、デジタル署名、デジタル証明書を送信。
 
 4. よくわからない。
 
-![デジタル証明書によるなりすまし防止3,4](C:\Projects\Summary_Notes\まとめノート\画像\デジタル証明書によるなりすまし防止-3,4.png)
+![デジタル証明書によるなりすまし防止3,4](C:\Projects\summary_notes\SummaryNotes\Image\デジタル証明書によるなりすまし防止-3,4.png)
 
 
 
-# 13-09. ハイブリッド暗号方式に基づくセキュリティ技術
+# 13-07.  パケット交換方式におけるセキュリティ技術
+
+### ◇ TCP/IP階層モデルとOSI参照モデルの対応関係（再掲）
+
+![OSI参照モデルとTCPIPとヘッダ情報追加の位置.png](C:\Projects\summary_notes\SummaryNotes\Image\OSI参照モデルとTCPIPとヘッダ情報追加の位置.jpg)
+
+
+
+### ◇ データへのヘッダ情報追加とカプセル化（再掲）
+
+![パケットの構造](C:\Projects\summary_notes\SummaryNotes\Image\パケットの構造.jpg)
+
+
+
+### ◇ OSI参照モデルにおけるセキュリティ技術
+
+![セキュアプロトコル](C:\Projects\summary_notes\SummaryNotes\Image\セキュアプロトコル.jpg)
+
+
+
+# 13-08. アプリケーション層
+
+### ◇ SSH：Secure Shell
+
+公開鍵暗号方式に基づく技術。アプリケーション層で、データの暗号化を担う。暗号方式と認証方式の技術を用いて、リモートコンピュータとの通信を安全に行う。公開鍵暗号方式が用いられる。例えば、クライアント側SSHソフトには、『OpenSSH』、『Apache MINA/SSHD』があり、またサーバ側SSHソフトには、お『OpenSSH』、『TeraTerm』、『Putty』がある。
+
+![ssh接続](C:\Projects\summary_notes\SummaryNotes\Image\ssh接続.png)
+
+
+
+# 13-09. トランスポート層
 
 ### ◇ SSL/TLS
 
-![SSLによるインターネットVPN](D:\Documents\Drive 1st\プログラミング自習\まとめノート\随時、リポジトリの画像フォルダへコピーせよ\SSLによるインターネットVPN.jpg)
+ハイブリッド暗号方式に基づく技術。トランスポート層で、パケットのヘッダ情報の暗号化を担う。インターネットVPNの実現のために用いられる。
+
+![SSLによるインターネットVPN](C:\Projects\summary_notes\SummaryNotes\Image\SSLによるインターネットVPN.jpg)
+
+**【具体例】**
+
+Chromeでは、SSL接続に不備があると、以下のような警告が表示される。
+
+![SSL接続に不備がある場合の警告](C:\Projects\summary_notes\SummaryNotes\Image\SSL接続に不備がある場合の警告.jpg)
 
 
 
-# 13-10. その他のセキュリティ技術
+# 13-10. ネットワーク層
+
+### ◇ IPsec
+
+共通鍵暗号方式に基づく技術。ネットワーク層で、パケットのヘッダ情報の暗号化を担う。インターネットVPNの実現のために用いられる。盗聴を防ぐことができる。
+
+![IPsecによるインターネットVPN](C:\Projects\summary_notes\SummaryNotes\Image\IPsecによるインターネットVPN.jpg)
+
+- **IPsecによるパケットのカプセル化**
+
+![IPsecによるカプセル化](C:\Projects\summary_notes\SummaryNotes\Image\IPsecによるカプセル化.jpg)
+
+
+
+### ◇ VPN：Virtual Private Network（仮想プライベートネットワーク）
+
+異なるネットワーク間で安全な通信を行うための仕組み。IPsecやSSL/TLSによって実現される。
+
+![VPN（ネットワーク間）](C:\Projects\summary_notes\SummaryNotes\Image\VPN（ネットワーク間）.png)
+
+
+
+# 13-11. その他のセキュリティ技術
+
+### ◇ メール受信におけるセキュリティ
+
+- **OP25B（Outbound Port 25 Blocking）**
+- **SPF（Sender Policy Framework）**
+
+
 
 ### ◇ パスワードの保存方法
 
 平文で保存しておくと、流出した時に勝手に使用されてしまうため、ハッシュ値で保存するべきである。
 
-![ハッシュ値で保存](C:\Projects\Summary_Notes\まとめノート\画像\ハッシュ値で保存.png)
-
-
-
-### ◇ メール受信におけるセキュリティ
-
-- **OP25B（Outbound Port25 Blocking）**
-- **SPF（Sender Policy Framework）**
+![ハッシュ値で保存](C:\Projects\summary_notes\SummaryNotes\Image\ハッシュ値で保存.png)
 
 
 
 ### ◇ 生体認証
 
-![生体認証-1](C:\Projects\Summary_Notes\まとめノート\画像\生体認証-1.png)
+![生体認証-1](C:\Projects\summary_notes\SummaryNotes\Image\生体認証-1.png)
 
 
 
-![生体認証-2](C:\Projects\Summary_Notes\まとめノート\画像\生体認証-2.png)
+![生体認証-2](C:\Projects\summary_notes\SummaryNotes\Image\生体認証-2.png)
 
 
 
@@ -403,15 +408,15 @@ webページに、サーバに対してHTTPリクエストを送信するプロ�
 
 **【具体例】**株式会社LACによるPenetration テストサービス
 
-![ペネトレーションテスト](C:\Projects\Summary_Notes\まとめノート\画像\ペネトレーションテスト.png)
+![ペネトレーションテスト](C:\Projects\summary_notes\SummaryNotes\Image\ペネトレーションテスト.png)
 
 
 
-# 13-11. セキュリティガイドライン
+# 13-12. セキュリティガイドライン
 
 ### ◇ セキュリティマネジメントの３要素
 
-![情報セキュリティ３要素](C:\Projects\Summary_Notes\まとめノート\画像\情報セキュリティ３要素.jpg)
+![情報セキュリティ３要素](C:\Projects\summary_notes\SummaryNotes\Image\情報セキュリティ３要素.jpg)
 
 - **Confidentiality（機密性）**
 
