@@ -1,3 +1,5 @@
+
+
 # 勉強の方針
 
 1. 必ず、実例として、それが扱われているのかを覚えること。
@@ -117,23 +119,11 @@
 
 
 
-# 11-04. データベースの操作
-
-### ◇ Transaction
-
-SQLによる一連のCRUDを一繋ぎにした処理のこと。
-
-- **チェックポイント**
-
-DBMSでは処理速度を高めるため、トランザクション処理結果をその都度ディスクには書き込まず、データ更新情報をメモリ上で管理する。そしてチェックポイントのタイミングで、最終的なデータの更新結果をディスク上に反映させ同期する。
-
-![トランザクション](C:\Projects\summary_notes\SummaryNotes\Image\トランザクション.jpg)
-
-
+# 11-04. データベースに必要な機能
 
 ### ◇ ACID特性
 
-トランザクション処理では、以下の４つの性質が保証されている必要がある。
+トランザクションを実現するためには、以下の４つの機能が必要である。
 
 - **Atomicity**
 
@@ -141,7 +131,7 @@ DBMSでは処理速度を高めるため、トランザクション処理結果�
 
 - **Consistency** 
 
-  排他制御によって実装される。
+  トランザクションの前後でデータ排他制御によって実装される。
 
 - **Isolation** 
 
@@ -153,27 +143,11 @@ DBMSでは処理速度を高めるため、トランザクション処理結果�
 
 
 
-### ◇ コミットメント制御
+# 11-05. コミットメント制御と障害回復制御
 
 ![コミットメント制御](C:\Projects\summary_notes\SummaryNotes\Image\コミットメント制御.jpg)
 
-- **コミット機能**
-
-トランザクションとしてくくられた処理が全て実行された時、その処理結果を確定させ、データを更新する機能。
-
-- **ロールバック機能**
-
-トランザクションを中断する何らかの事象が発生した時などに、処理を取り消し、トランザクション開始以前の状態に戻す機能。
-
-- **二相コミット**
-
-  コミットを以下の二つの段階に分けて行うこと。ACIDのうち、原子性と一貫性を実装している。
-
-  （１）他のサイトに更新可能かどうかを確認。
-
-  （２）全サイトからの合意が得られた場合に更新を確定。
-
-**【実装例】**トランザクション、コミットメント制御、ロールバック機能
+**【実装例】**
 
 ```
 try{
@@ -189,83 +163,186 @@ try{
     $db->exec("INSERT INTO movie(title, price) VALUES('ハリポタ', 2000)")
     $db->exec("INSERT INTO movie(title, price) VALUES('シスター', 2000)")
    
-    // トランザクションの全てのSQLに成功したら、トランザクションをコミット。
+    // トランザクション内の一連のステートメントが成功したら、トランザクションをコミット。
     $db->commit();
-}
-catch{
+
+} catch{
 	// 例外が発生したらロールバックし、エラーメッセージを出力。
 	$db->rollBack();
-	print "エラーメッセージ：{$e->getMessage()}"
-}    
+	print "失敗しました。：{$e->getMessage()}"
+}  
+```
+
+### ◇ 更新前ログデータの記録
+
+
+
+### ◇ コミットによるログファイルへの書き込み
+
+- **コミット**
+
+トランザクション内の一連のステートメントをログファイル（※更新前後ログではない）に書き込む。
+
+- **二相コミット**
+
+コミットを以下の二つの段階に分けて行うこと。ACIDのうち、原子性と一貫性を実装している。
+
+1. 他のサイトに更新可能かどうかを確認。
+2. 全サイトからの合意が得られた場合に更新を確定。
+
+
+
+### ◇ チェックポイントにおけるディスク上のデータファイルへの書き込み
+
+トランザクションの終了後、DBMSは、処理速度を高めるために、更新後ログデータをいったんメモリ上で管理する。
+
+![DBMSによるメモリとディスクの使い分け](C:\Projects\summary_notes\SummaryNotes\Image\DBMSによるメモリとディスクの使い分け.jpg)
+
+そして、チェックポイントのタイミングで、更新後ログデータをディスク上のデータファイルに反映させる。チェックポイントは、自動実行または手動実行で作成する。
+
+![トランザクション](C:\Projects\summary_notes\SummaryNotes\Image\トランザクション.jpg)
+
+
+
+### ◇ システム障害からの回復
+
+DBMSやOSのトラブル等によりシステム全体が停止する障害のこと。
+
+![障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\システム障害の障害回復機能.jpg)
+
+- **ロールバック**
+
+障害によって、トランザクション内の一連のステートメントがすべて実行されなかった場合に、更新前ログデータを用いて、トランザクションの開始前の状態に戻す。
+
+- **ロールフォワード**
+
+障害によって、トランザクションの終了後に一連のステートメントの更新結果がディスクに反映されなかった場合に、更新後ログデータを用いて、ディスク上のデータファイルに更新結果を反映させる。
+
+**【具体例】**
+
+『a』の値を更新するステートメントを含むトランザクションの後に、システムが異常終了した場合、ログファイルと更新後ログデータを用いて、ディスク上のデータファイルに更新結果を反映させる。（ロールフォワード）
+
+『b』の値を更新するステートメントを含むトランザクションの途中に、システムが異常終了した場合、更新前ログデータを用いて、障害発生前の状態に戻す。（ロールバック）
+
+
+
+### ◇ 媒体障害からの回復
+
+データベースの情報が格納された物理ディスクの障害のこと。ディスクを初期化／交換した後、バックアップファイルからデータベースを修復し、ログファイルにより、修復できる限りロールフォワードを行う。
+
+![媒体障害の障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\媒体障害の障害回復機能.jpg)
+
+**【具体例】**バックアップファイル
+
+```
+-- --------------------------------------------------------
+-- Host:                         xxxxx
+-- Server version:               10.1.38-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             10.2.0.5611
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+# データベース作成
+-- Dumping database structure for kizukeba_pronami_php
+CREATE DATABASE IF NOT EXISTS `kizukeba_pronami_php` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+USE `kizukeba_pronami_php`;
+
+# テーブルのデータ型を指定
+-- Dumping structure for table kizukeba_pronami_php.mst_staff
+CREATE TABLE IF NOT EXISTS `mst_staff` (
+  `code` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+# データを作成
+-- Dumping data for table kizukeba_pronami_php.mst_staff: ~8 rows (approximately)
+/*!40000 ALTER TABLE `mst_staff` DISABLE KEYS */;
+INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
+	(1, '秦基博', 'xxxxxxx'),
+	(2, '藤原基央', 'xxxxxxx');
+/*!40000 ALTER TABLE `mst_staff` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
 ```
 
 
 
-### ◇ 排他制御
+# 11-06. 排他制御
 
-- **なぜ排他制御が必要か**
+### ◇ なぜ排他制御が必要か
 
-  ![排他制御-1](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-1.png)
+![排他制御-1](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-1.png)
 
 - **排他制御を行った結果**
 
   ![排他制御-2](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-2.png)
 
-- **排他制御の種類**
+  
+
+  ### ◇ 排他制御におけるロックの種類
 
   CRUDのRead以外を実行不可能にする共有ロックと、CRUDの全てを実行不可能にする占有ロックがある。「共有」の名の通り、共有ロックされているデータに対して、他の人も共有ロックを行うことができる。
 
 ![排他制御-3](C:\Projects\summary_notes\SummaryNotes\Image\排他制御-3.gif)
 
-- **ロックの粒度**
 
-  ![ロックの粒度](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-1.png)
 
-  DB ＞ テーブル ＞ レコード ＞ カラム の順に、粒度は大きい。ロックの粒度が細かければ、トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）。しかし、ロックの粒度を細かくすればするほど、それだけデータベース管理システムのCPU負荷は大きくなる。
+### ◇ ロックの粒度
 
-  ![ロックの粒度-2](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-2.jpg)
+![ロックの粒度](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-1.png)
 
-- **デッドロック現象**
+DB ＞ テーブル ＞ レコード ＞ カラム の順に、粒度は大きい。ロックの粒度が細かければ、トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）。しかし、ロックの粒度を細かくすればするほど、それだけデータベース管理システムのCPU負荷は大きくなる。
 
-  もう一方のレコードのロックが解除されないと、自身のレコードのロックを解除できない時、処理が停止するデッドロック現象が起こる。
-
-  ![デッドロック](C:\Projects\summary_notes\SummaryNotes\Image\デッドロック.gif)
+![ロックの粒度-2](C:\Projects\summary_notes\SummaryNotes\Image\ロックの粒度-2.jpg)
 
 
 
-### ◇ 障害回復制御
+### ◇ デッドロック現象
 
-- **システム障害の場合**
+もう一方のレコードのロックが解除されないと、自身のレコードのロックを解除できない時、トランザクションが停止すること。
 
-**【具体例1】**
-
-『a』の値が更新されるトランザクションの処理後に、システムが異常終了した場合、更新前ログファイルを基に、ロールフォワードが実行される。
-
-**【具体例2】**
-
-『b』の値が更新されるトランザクションの処理中に、システムが異常終了した場合、ロールバックにより、障害発生前に戻す。
-
-![障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\システム障害の障害回復機能.jpg)
+![デッドロック](C:\Projects\summary_notes\SummaryNotes\Image\デッドロック.gif)
 
 
 
-- **媒体障害の場合**
+# 11-07. データベースの操作
 
-![媒体障害の障害回復機能](C:\Projects\summary_notes\SummaryNotes\Image\媒体障害の障害回復機能.jpg)
+### ◇ Stored procedure
+
+あらかじめ一連のSQL文をデータベースに格納しておき、Call文で呼び出す方式。
+
+![p325](C:\Projects\summary_notes\SummaryNotes\Image\p325.gif)
+
+**【実装例】**
+
+```
+# PROCEDUREを作成し、データベースへ格納しておく。
+CREATE PROCEDURE SelectContact AS　
+  SELECT CustomerID, CompanyName, ContactName, Phone
+  FROM Customers
+```
+
+```
+# PROCEDUREを実行
+EXEC SelectContact
+```
 
 
 
-- **Roll forward**
+### ◇ Migrationファイルによるテーブルの作成
 
-  ハードディスクの不具合でデータベースが破損した場合、まず、チェックポイントまでデータベースを復元する。次に、更新後ログファイルを読み込んでディスク破損直前の状態まで復元する。 
-
-- **Roll back**
-
-  更新処理中に異常が発生した場合、まず、チェックポイントまでデータベースを復元する。次に、更新前ログファイルを読み込んで障害前の状態まで戻し、更新処理自体を無かったことにする。
-
-  
-
-### ◇ MigrationによるDBスキーマとデータの更新
+マイグレーションファイルと呼ばれるスクリプトファイルを作成し、テーブルの新規作成やカラムの追加はこのスクリプトファイルに記述していく。
 
 1. 誰かが以下のMigrationファイルをmasterにPush
 2. Migrationファイルをローカル環境にPull
@@ -285,7 +362,7 @@ class ItemQuery
 
 
 
-# 11-05. selectによるデータセットの取得
+# 11-08. selectによるデータセットの取得
 
 ### ◇ 実装例で用いた略号
 
@@ -532,29 +609,13 @@ select * from T
 
 
 
-### ◇ Stored Procedure
-
-あらかじめ一連のSQL文をデータベースに格納しておき、Call文で呼び出す方式。
-
-![p325](C:\Projects\summary_notes\SummaryNotes\Image\p325.gif)
-
-**【実装例】**
-
-```
-# PROCEDUREを作成
-CREATE PROCEDURE SelectContact AS　
-  SELECT CustomerID, CompanyName, ContactName, Phone
-  FROM Customers
-```
-
-```
-# PROCEDUREを実行
-EXEC SelectContact
-```
+### ◇ Prepared statement
 
 
 
-# 11-06. fetchによるデータ行の取り出し
+
+
+# 11-09. fetchによるデータ行の取り出し
 
 DBで取得したデータをプログラムに一度に全て送信してしまうと、プログラム側のメモリを圧迫してしまう。そこで、fetchで少しずつ取得する。
 
