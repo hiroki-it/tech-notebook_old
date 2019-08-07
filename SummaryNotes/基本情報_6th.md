@@ -524,39 +524,40 @@ $key = new Key($lock);
 
 - **汎化におけるOverride**
 
-汎化の時、子オブジェクトでメソッドを再定義すると、メソッドは上書きされる。
+汎化の時、子クラスでメソッドの処理内容を再び実装すると、処理内容は上書きされる。
 
-【親オブジェクト】
+【親クラス】
 ```
 <?php
 class Goods
 {
-    //商品名プロパティ
+    // 商品名プロパティ
     private $name = "";
 
-    //商品価格プロパティ
+    // 商品価格プロパティ
     private $price = 0;
 
-    //コンストラクタ。商品名と商品価格を設定する
+    // コンストラクタ。商品名と商品価格を設定する
     public function __construct(string $name, int $price)
     {
         $this->name = $name;
         $this->price = $price;
     }
 
-    //商品名と価格を表示するメソッド
+    // ★★★★★★注目★★★★★★
+    // 商品名と価格を表示するメソッド
     public function printPrice(): void
     {
         print($this->name."の価格: ￥".$this->price."<br>");
     }
 
-    //商品名のゲッター
+    // 商品名のゲッター
     public function getName(): string
     {
         return $this->name;
     }
 
-    //商品価格のゲッター
+    // 商品価格のゲッター
     public function getPrice(): int
     {
         return $this->price;
@@ -564,15 +565,16 @@ class Goods
 }
 ```
 
-【子オブジェクト】
+【子クラス】
 ```
 <?php
 class GoodsWithTax extends Goods
 {
+	// ★★★★★★注目★★★★★★
     // printPriceメソッドをOverride
     public function printPrice(): void
     {
-        //商品価格の税込み価格を計算し、表示
+        // 商品価格の税込み価格を計算し、表示
         $priceWithTax = round($this->getPrice() * 1.08);  // （1）
         print($this->getName()."の税込み価格: ￥".$priceWithTax."<br>");  // （2）
     }
@@ -581,9 +583,11 @@ class GoodsWithTax extends Goods
 
 - **抽象クラス**
 
-抽象クラスでは、メソッドの型定義だけでなく処理内容も記述できる。ただし、子クラスでは、記述内容をOverrideしなければならない。多重継承はできず、単一継承しかできない。
+クラスのモデルを作るイメージ。抽象クラスで、メソッドの定義や処理内容を記述し、それをモデルとする。子クラスでは、処理内容をOverrideしなければならない。多重継承はできず、単一継承しかできない。
 
-  例えば、以下の条件の社員オブジェクトを実装したいとする。
+  **【具体例1】**
+
+以下の条件の社員オブジェクトを実装したいとする。
 
   1. 午前９時に出社
 
@@ -613,6 +617,12 @@ class GoodsWithTax extends Goods
 
 ![抽象クラスと抽象メソッド-2](https://user-images.githubusercontent.com/42175286/59590387-e8adcd80-9126-11e9-87b3-7659468af2f6.PNG)
 
+**【具体例2】**
+
+プリウスと各世代プリウスが、抽象クラスと子クラスの関係にある。
+
+![抽象クラス](C:\Projects\summary_notes\SummaryNotes\Image\抽象クラス.png)
+
 - **parent::**
 
 オーバーライドによって上書きされる前のメソッドを呼び出せる。
@@ -639,13 +649,22 @@ class GoodsWithTax2 extends Goods
 
 ### ◇ Realization（実現）
 
-インターフェースではメソッドの型しか定義できず、実装クラスでは処理内容を記述しなければならない。多重継承できる。
+インターフェースから実装クラスへ機能を追加するイメージ。または、実装クラスに共通して持たせたいメソッドの型を定義しておくイメージ。
+
+**【具体例】**
+
+各車にはモーター機能を追加したい。
+
+![インターフェースとは](C:\Projects\summary_notes\SummaryNotes\Image\インターフェースとは.png)
+
+実装クラスに処理内容を記述しなければならない。すなわち、抽象クラスにメソッドの型のみ定義した場合と同じである。多重継承できる。
 
 ![子インターフェースの多重継承](C:\Projects\summary_notes\SummaryNotes\Image\子インターフェースの多重継承.png)
 
-【親オブジェクト】
+**【実装例】**
 
 ```
+# コミュニケーション機能を持つインターフェース
 interface Communication
 {
      // インターフェイスでは、実装を伴うメソッドやプロパティの宣言はできない
@@ -655,24 +674,36 @@ interface Communication
 }
 ```
 
-【子オブジェクト】
 ```
+# コミュニケーションの機能を追加したい実装クラス
 class Human implements Communication
 {
      public function talk()
      {
           // 話す
      }
+     
      public function touch()
      {
           // 触る
      }
+     
      public function gesture()
      {
           // 身振り手振り
      }
 }
 ```
+
+
+
+### ◇ 汎化の抽象クラス vs. 実現のインターフェース
+
+★Carクラスのモデルと、それの上書きクラスを作りたい場合、抽象Carクラスと子クラスを作成する。
+
+★Driven機能をもつインターフェースと、それを追加したい実装クラス関係を作りたい場合、Drivenインターフェースと実装クラスを作成する。
+
+![インターフェースと抽象クラスの使い分け](C:\Projects\summary_notes\SummaryNotes\Image\インターフェースと抽象クラスの使い分け.png)
 
 
 
@@ -840,7 +871,7 @@ class Human implements Communication
 
 ### ◇ proteced
 
-同じオブジェクト内と子オブジェクトでのみ呼び出せる。
+同じクラス内と、その親クラスまたは子クラスでのみ呼び出せる。
 
 
 
