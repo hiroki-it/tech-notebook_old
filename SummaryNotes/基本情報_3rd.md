@@ -386,6 +386,12 @@ from ⇒ where ⇒ group by ⇒ having ⇒ select ⇒ order by
 
 基本情報技術者試験では、内部結合（A∩B）しか出題されない。
 
+- **``LEFT JOIN``で起こること**
+
+『users』テーブルと『items』テーブルの商品IDが一致しているデータと、元となる『users』テーブルにしか存在しないデータが、セットで取得される。
+
+![LEFT_JOIN](C:\Projects\summary_notes\SummaryNotes\Image\LEFT_JOIN.png)
+
 - **内部結合に```where```を用いる場合**
 
 ```

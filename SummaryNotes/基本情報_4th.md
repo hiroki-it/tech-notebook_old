@@ -260,25 +260,22 @@ HTTPの構造は、WebAPIの種類によって決まる。WebAPIには、『SOAP
 
 
 
-### ◇ メール送信プロトコル
+### ◇ メール送信用プロトコル
 
 - **SMTP AUTH：Simple Mail Transfer Protocol AUTHentication**
 
-  メール送信にあたってユーザ認証の仕組みがないSMTPを拡張し、ユーザ認証機能を追加した仕様
-
-- **S/MIME：Secure MIME**
-
-  公開鍵暗号技術を使用して認証、改ざん検出、暗号化などの機能を電子メールソフトに提供する
+  メール送信にあたってユーザ認証の仕組みがないSMTPを拡張し、ユーザ認証機能を追加した仕様。
 
 
 
-### ◇ メール受信プロトコル
+
+### ◇ メール受信用プロトコル
 
 - **POP3：Post Official Protocol version 3**
 
   メールサーバに届いたメールを、受信機器にダウンロードし、受信機器で閲覧するプロトコル。メールの既読未読状況は、他の受信機器と共有される。
   
-- **IMAP：Internet Message Access Protocol**
+- **IMAP4：Internet Message Access Protocol version 3**
 
   メールサーバに届いたメールを、受信機器にダウンロードせず、メールサーバに置いたまま閲覧するプロトコル。メールの既読未読状況は、他の受信機器と共有されない。
 
