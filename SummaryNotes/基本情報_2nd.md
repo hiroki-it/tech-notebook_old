@@ -18,7 +18,9 @@
 
 英語のアルファベットや日本語のひらがな、カタカナ等、どのような文字が使えるかを示した文字リストのこと。
 
-**【具体例】**Unicode、ASCII、EBSDIC、シフトJIS、EUC
+**【具体例】**
+
+Unicode、ASCII、EBSDIC、シフトJIS、EUC
 
 
 
@@ -36,7 +38,9 @@
 
 引用：$shibayu36->blog;，https://blog.shibayu36.org/entry/2015/09/14/102100
 
-【具体例】ASCIIにおける『HELLO』
+**【具体例】**
+
+ASCIIにおける『HELLO』
 
 ![p110](C:\Projects\summary_notes\SummaryNotes\Image\p110.png)
 
@@ -52,7 +56,9 @@
 
 ### ◇ 画像の表現方法
 
-**『bit-map方式』**：ドットを組み合わせることによって、画像を表現する方法。
+**『bit-map方式』**
+
+：ドットを組み合わせることによって、画像を表現する方法。
 
 ![p113-1](C:\Projects\summary_notes\SummaryNotes\Image\p113-1.png)
 
@@ -72,7 +78,9 @@
 
 ![p115-2](C:\Projects\summary_notes\SummaryNotes\Image\p115-2.png)
 
-**【具体例】**512×10^6 byteの容量のフラッシュメモリに記録できる音声の長さ（分）
+**【具体例】**
+
+512×10^6 byteの容量のフラッシュメモリに記録できる音声の長さ（分）について…
 
 1秒間に11,000回データを取得し、1つのデータを8 bitで保存すると仮定する。データ量は単純に、
 
@@ -128,7 +136,9 @@
 
   決められた順序や条件に従って、制御の各段階を進めていく制御方式。
 
-  **【具体例】：洗濯機**
+  **【具体例】**
+
+  洗濯機
 
   ![p120-1](C:\Projects\summary_notes\SummaryNotes\Image\p120-1.png)
 
@@ -136,8 +146,10 @@
 
   その時の状況を定期的に計測し、目標値との差分を基に、出力を調節する制御方式。
 
-  **【具体例】：エアコン**
+  **【具体例】**
 
+  エアコン
+  
   ![p120-2](C:\Projects\summary_notes\SummaryNotes\Image\p120-2.png)
 
 
@@ -548,13 +560,17 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 ### ◇ 応用ソフトウェア
 
-**【具体例】**その辺のアプリ
+**【具体例】**
+
+その辺のアプリ
 
 
 
 ### ◇ Middleware
 
-**【具体例】**データベース管理システム
+**【具体例】**
+
+データベース管理システム
 
 
 
@@ -564,15 +580,21 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 - 制御プログラム（OSの中核を担うプログラム）
 
-  **【具体例】**カーネル、マイクロカーネル、モノリシックカーネル
+  **【具体例】**
+
+  カーネル、マイクロカーネル、モノリシックカーネル
 
 - 言語処理プログラム（構造解析を行うプログラム）
 
-  **【具体例】**C、Java、PHP、Javascript
+  **【具体例】**
+
+  C、Java、PHP、Javascript
 
 - サービスプログラム
 
-  **【具体例】**ファイル圧縮プログラム
+  **【具体例】**
+  
+  ファイル圧縮プログラム
 
 
 
@@ -580,11 +602,15 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 
 システムソフトウェア（ミドルウェア ＋ 基本ソフトウェア）とハードウェアの間の段階にある。
 
-**【具体例】**BIOS：Basic Input/Output System
+**【具体例】**
+
+BIOS：Basic Input/Output System
 
 ![BIOS](C:\Projects\summary_notes\SummaryNotes\Image\BIOS.jpg)
 
-**【具体例】**UEFI：United Extensible Firmware Interface
+**【具体例】**
+
+UEFI：United Extensible Firmware Interface
 
 ![UEFIとセキュアブート](C:\Projects\summary_notes\SummaryNotes\Image\UEFIとセキュアブート.JPG)
 
