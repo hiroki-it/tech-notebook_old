@@ -120,22 +120,22 @@ class Test02 {
 ```
 - **『Mutable』と『Immutable』を実現できる理由**
 
-Testクラスインスタンスの```$property01```に値を設定するためには、インスタンスからSetterを呼び出す。Setterは何度でも呼び出せ、その度にプロパティの値を上書きできる。
+Test01クラスインスタンスの```$property01```に値を設定するためには、インスタンスからSetterを呼び出す。Setterは何度でも呼び出せ、その度にプロパティの値を上書きできる。
 
 ```
 $test01 = new Test01
 
-$test01->setProperty1("プロパティ01")
+$test01->setProperty01("プロパティ01の値")
 
-$test01->setProperty1("新しいプロパティ01")
+$test01->setProperty01("新しいプロパティ01の値")
 ```
 
-一方で、Testクラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()``だけを持たせれば、『Immutable』なオブジェクトとなる。
+一方で、Test02クラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()``だけを持たせれば、『Immutable』なオブジェクトとなる。
 
 ```
-$test02 = new Test02("プロパティ02")
+$test02 = new Test02("プロパティ02の値")
 
-$test02 = new Test02("新しいプロパティ02")
+$test02 = new Test02("新しいプロパティ02の値")
 ```
 
 
