@@ -50,39 +50,92 @@
 
 
 
-### ◇ Getterを実装するコツ
+### ◇ 値を取得するメソッドの実装
 
 Getterでは、プロパティを取得するだけではなく、何かしらの処理を加えたうえで取得すること。
 
 **【実装例】**
 
-例外処理＋取得
+- **Getter**
 
 ```
-private $property; 
+class ABC {
 
-public function getEditProperty()
-{
-	if(!isset($this->property){
-		throw new ErrorException('プロパティに値がセットされていません。')
-	}
-    return $this->property;
+    private $property; 
+
+    public function getEditProperty()
+    {
+        // 単なるGetterではなく、例外処理も加える。
+        if(!isset($this->property){
+            throw new ErrorException('プロパティに値がセットされていません。')
+        }
+        return $this->property;
+    }
+
 }
 ```
 
 
 
-### ◇ Setterを実装するコツ
+### ◇ 値を設定するメソッドの実装
 
-Setterとして、マジックメソッドの```__construct()```を用いる。
+- **Setter**
+
+『Mutable』なオブジェクトを実現できる。
+
+**【実装例】**
 
 ```
-private $property; 
+class Test01 {
 
-public function __construct($property)
-{
-	$this->property = $property;
+    private $property01;
+
+	// Setterで$property01に値を設定
+    public function setProperty($property01)
+    {
+        $this->property01 = $property01;
+    }
+    
+}    
+```
+
+- **マジックメソッドの```__construct()```**
+
+Setterを持たせずに、```__construct()```だけを持たせれば、ValueObjectのような、『Immutable』なオブジェクトを実現できる。
+
+**【実装例】**
+
+```
+class Test02 {
+
+    private $property02;
+
+	// コンストラクタで$property02に値を設定
+    public function __construct($property02)
+    {
+        $this->property02 = $property02;
+    }
+    
 }
+```
+- **『Mutable』と『Immutable』を実現できる理由**
+
+Testクラスインスタンスの```$property01```に値を設定するためには、インスタンスからSetterを呼び出す。Setterは何度でも呼び出せ、その度にプロパティの値を上書きできる。
+
+```
+$test01 = new Test01
+
+$test01->setProperty1("プロパティ01")
+
+$test01->setProperty1("新しいプロパティ01")
+```
+
+一方で、Testクラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()``だけを持たせれば、『Immutable』なオブジェクトとなる。
+
+```
+$test02 = new Test02("プロパティ02")
+
+$test02 = new Test02("新しいプロパティ02")
 ```
 
 
@@ -158,7 +211,7 @@ $D = getObjB()->getObjC()->getObjC();
 
 - **```__construct()```**
 
-クラスがインスタンス化される際に呼び出される。
+クラスがインスタンス化される時に呼び出される。
 
 - **```__get()```**
 
@@ -180,9 +233,8 @@ class Example
 ```
 
 ```
-$example = new Example();
-
 // 存在しないプロパティを取得。
+$example = new Example();
 $example->hoge;
 ```
 
@@ -206,9 +258,8 @@ class Example
 ```
 
 ```
-$example = new Example();
-
 // 存在しないプロパティに値をセット。
+$example = new Example();
 $example->huga = 'aaa';
 ```
 
@@ -373,92 +424,6 @@ Fruit Object
 	[price:private] => 100
 )	
 ```
-
-
-
-### ◇ List型
-
-ポインタは、次のデータがどこにあるかのアドレスを表す。
-
-- **単方向リスト**
-
-![p555-1](C:\Projects\summary_notes\SummaryNotes\Image\p555-1.gif)
-
-- **双方向リスト**
-
-![p555-2](C:\Projects\summary_notes\SummaryNotes\Image\p555-2.gif)
-
-- **循環リスト**
-
-![p555-3](C:\Projects\summary_notes\SummaryNotes\Image\p555-3.gif)
-
-
-
-### ◇ Queue型
-
-phpでは、```array_push()```と```array_shift()```で実装可能。
-
-![Queue1](C:\Projects\summary_notes\SummaryNotes\Image\Queue1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Queue2](C:\Projects\summary_notes\SummaryNotes\Image\Queue2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Queue3](C:\Projects\summary_notes\SummaryNotes\Image\Queue3.gif)
-
-
-
-### ◇ Stack型
-
-phpでは、```array_push()```と```array_pop()```で実装可能。
-
-![Stack1](C:\Projects\summary_notes\SummaryNotes\Image\Stack1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Stack2](C:\Projects\summary_notes\SummaryNotes\Image\Stack2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Stack3](C:\Projects\summary_notes\SummaryNotes\Image\Stack3.gif)
-
-### ◇ ツリー構造
-
-- **二分探索木**
-
-  各ノードにデータが格納されている。
-
-![二分探索木](C:\Projects\summary_notes\SummaryNotes\Image\二分探索木1.gif)
-
-
-
-- **ヒープ**
-
-  Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
-
-  ![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ1.gif)
-
-  ![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![ヒープ2](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ3.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![ヒープ3](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ4.gif)
 
 
 
@@ -694,7 +659,7 @@ echo "これは $fruit です。";
 
 - **ダブルクオーテーションと波括弧による変数展開**
 
-変数の前後に半角スペースを置かなくとも、変数は展開される。
+波括弧を用いると、明示的に変数として扱うことができる。これによって、変数の前後に半角スペースを置かなくとも、変数は展開される。
 
 ```
 $fruit = "リンゴ";
@@ -753,9 +718,7 @@ echo $b;
 
 
 
-
-
-# 17-03.『Java』 について
+# 16-07.『Java』 について
 
 ### ◇ Javaで書かれているプログラム
 
