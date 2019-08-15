@@ -8,6 +8,178 @@
 
 
 
+# 17-01 データ整列の概念
+
+例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
+
+![ソートの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\ソートの仕組み.gif)
+
+
+
+### ◇ 基本交換法（バブルソート）
+
+隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
+
+![バブルソート1](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![バブルソート2](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![バブルソート3](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート3.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![バブルソート4](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート4.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![バブルソート5](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート5.gif)
+
+
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+
+
+![バブルソート6](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート6.gif)
+
+
+
+### ◇ 基本選択法（選択ソート）
+
+データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法。
+
+![選択ソート1](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![選択ソート2](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![選択ソート3](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート3.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![選択ソート4](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート4.gif)
+
+### ◇ 基本挿入法（挿入ソート）
+
+既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法。
+
+### ◇ ヒープソート
+
+
+
+### ◇ シェルソート
+
+
+
+### ◇ クイックソート
+
+適当な基準値を選び，それより小さな値のグループと大きな値のグループにデータを分割する。同様にして，グループの中で基準値を選び，それぞれのグループを分割する。この操作を繰り返していく方法。
+
+![クイックソート-1](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-1.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-2](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-2.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-3](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-3.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-4](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-4.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-5](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-5.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-6](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-6.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-7](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-7.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-8](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-8.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-9](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-9.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-10](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-10.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-11](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-11.JPG)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![クイックソート-12](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-12.JPG)
+
+
+
+# 17-02. データ探索の概念
+
+### ◇ 線形探索法
+
+  今回は「６」を探す。
+
+![線形探索法1](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![線形探索法2](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![線形探索法3](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法3.gif)
+
+### ◇ 二分探索法
+
+  前提として、ソートによって、すでにデータが整列させられているとする。今回は「６」を探す。
+
+![二分探索法1](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![二分探索法2](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![二分探索法3](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法3.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![二分探索法4](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法4.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![二分探索法5](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法5.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![二分探索法6](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法6.gif)
+
+### ◇ ハッシュ法
+
+
+
 # 18-01. システム運用
 
 ### ◇ キャパシティ管理

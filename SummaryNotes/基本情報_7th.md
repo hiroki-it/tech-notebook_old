@@ -8,28 +8,310 @@
 
 
 
-# 17-01. データ型の実装
+# 16-01. アクセス修飾子
+
+### ◇ static
+
+別ファイルでのメソッドの呼び出しにはインスタンス化が必要である。しかし、static修飾子をつけることで、インスタンス化しなくとも呼び出せる。生成されたオブジェクト自身から取り出す必要がなく、静的（オブジェクトの状態とは無関係）な、プロパティやメソッドに用いる。
+
+
+
+### ◇ private
+
+同じオブジェクト内でのみ呼び出せる。
+
+- **Encapsulation（カプセル化）**
+
+カプセル化とは、システムの実装方法を外部から隠すこと。オブジェクト内のプロパティにアクセスするには、直接データを扱う事はできず、オブジェクト内のメソッドを呼び出して、アクセスしなければならない。
+
+![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
+
+
+
+### ◇ protected
+
+同じクラス内と、その親クラスまたは子クラスでのみ呼び出せる。
+
+
+
+### ◇ public
+
+どのオブジェクトでも呼び出せる。
+
+
+
+# 16-02. メソッド
+
+### ◇ メソッドの実装手順
+
+1. その会社のシステムで使われているライブラリ
+2. phpのデフォルト関数（引用：php関数リファレンス，https://www.php.net/manual/ja/funcref.php）
+3. 新しいライブラリ
+
+
+
+### ◇ Getterを実装するコツ
+
+Getterでは、プロパティを取得するだけではなく、何かしらの処理を加えたうえで取得すること。
+
+**【実装例】**例外処理＋取得
+
+```
+private $property; 
+
+public function getEditProperty()
+{
+	if(!isset($this->property){
+		throw new ErrorException('プロパティに値がセットされていません。')
+	}
+    return $this->property;
+}
+```
+
+
+
+### ◇ Setterを実装するコツ
+
+Setterとして、マジックメソッドの```__construct()```を用いる。
+
+```
+private $property; 
+
+public function __construct($property)
+{
+	$this->property = $property;
+}
+```
+
+
+
+### ◇ メソッドチェーン
+
+以下のような、オブジェクトAを最外層とした関係が存在しているとする。
+
+【オブジェクトA（オブジェクトBをプロパティに持つ）】
+
+```
+class Obj_A{
+	private $ObjB;
+ 
+	public function getObjB()
+	{
+		return $this->ObjB;
+	}
+}
+```
+
+【オブジェクトB（オブジェクトCをプロパティに持つ）】
+
+```
+class Obj_B{
+	private $ObjC;
+ 
+	public function getObjC()
+	{
+		return $this->ObjC;
+	}
+}
+```
+
+【オブジェクトC（オブジェクトDをプロパティに持つ）】
+
+```
+class Obj_C{
+	private $ObjD;
+ 
+	public function getObjD()
+	{
+		return $this->ObjD;
+	}
+}
+```
+
+以下のように、返り値のオブジェクトを用いて、より深い層に連続してアクセスしていく場合…
+
+```
+$ObjA = new Obj_A;
+
+$ObjB = $ObjA->getObjB();
+
+$ObjC = $B->getObjB();
+
+$ObjD = $C->getObjD();
+```
+
+以下のように、メソッドチェーンという書き方が可能。
+
+```
+$D = getObjB()->getObjC()->getObjC();
+
+// $D には ObjD が格納されている。
+```
+
+
+
+### ◇ マジックメソッド
+
+オブジェクトに対して特定の操作が行われた時に自動的に呼ばれる特殊なメソッドのこと。処理内容は自身で実装する必要がある。
+
+- **```__construct()```**
+
+クラスがインスタンス化される際に呼び出される。
+
+- **```__get()```**
+
+定義されていないプロパティや、アクセス権のないプロパティを取得しようとした時に、自動的に呼び出される。
+
+```
+class Example
+{
+
+	private $example = [];
+	
+	// 定義されていないプロパティが設定された場合、$exampleに連想配列として設定。
+	public function __get($name)
+	{
+		return $this->example[$name];
+	}
+
+}
+```
+
+```
+$example = new Example();
+
+// 存在しないプロパティを取得。
+$example->hoge;
+```
+
+- **```__set()```**
+
+定義されていないプロパティや、アクセス権のないプロパティに値を設定しようとした時に、自動的に呼び出される。
+
+```
+class Example
+{
+
+	private $example = [];
+	
+	// 
+	public function __set($name, $value)
+    {
+    	$this->example[$name] = $value;
+    }
+
+}
+```
+
+```
+$example = new Example();
+
+// 存在しないプロパティに値をセット。
+$example->huga = 'aaa';
+```
+
+
+
+### ◇ **Recursive call：再帰的プログラム**
+
+自プログラムから、自身自身を呼び出して実行できるプログラムのこと。
+
+**【具体例】**ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
+
+![再帰的](C:\Projects\summary_notes\SummaryNotes\Image\再帰的.png)
+
+
+
+### ◇ 高階関数とClosure（無名関数）
+
+関数を引数として受け取ったり、関数自体を返したりする関数のこと。
+
+- **無名関数を用いない場合**
+
+**【実装例】**
+
+```
+## 第一引数のみの場合
+
+// 高階関数を定義
+function test($callback)
+{
+    echo $callback();
+}
+
+// コールバックを定義
+// 関数の中で呼び出されるため、「後で呼び出される」という意味合いから、コールバック関数といえる。
+function callbackMethod()
+{
+    return "出力成功";
+}
+
+// 高階関数の引数として、コールバック関数を渡す
+test("callbackMethod");
+
+// 出力結果
+出力成功
+```
+
+```
+## 第一引数と第二引数の場合
+
+// 高階関数を定義
+public function higher-order($param, $callback)
+{
+    return $callback($param);
+}
+
+// コールバック関数を定義
+public function callbackMethod($param)
+{
+    return $param."の出力成功";
+}
+ 
+// 高階関数の第一引数にコールバック関数の引数、第二引数にコールバック関数を渡す
+higher-order("第一引数", "callbackMethod");
+
+// 出力結果
+第一引数の出力成功
+```
+
+- **無名関数を用いる場合**
+
+**【実装例】**
+
+```
+// 高階関数のように、関数を引数として渡す。
+public function higher-order($param, $callback)
+{
+	$parentVar = "&親メソッドのスコープの変数"
+	return $callback($param)
+}
+
+// 第二引数の無名関数。関数の中で呼び出されるため、「後で呼び出される」という意味合いから、コールバック関数といえる。
+// コールバック関数は再利用されないため、名前をつけずに無名関数とすることが多い。
+// 親メソッドのスコープの変数を引数として用いることができる。
+high-order(第一引数, 
+        function($param) use($parentVar)
+        {
+            return $param.$parentVar."の出力成功";
+        }
+	)
+	
+// 出力結果
+第一引数&親メソッドのスコープの変数の出力成功	
+```
+
+
+
+# 16-03. データ型
 
 プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
-
-### ◇ Object型
-
-```
-Fruit Object
-(
-	[id:private] => 1
-	[name:private] => リンゴ
-	[price:private] => 100
-)	
-```
-
-
 
 ### ◇ Array型
 
 - **多次元配列**
 
-  中に配列をもつ配列のこと。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
+中に配列をもつ配列のこと。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
 
 ```
 Array
@@ -52,7 +334,7 @@ Array
 
 - **連想配列**
 
-  中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ような配列のこと。下の例は、二次元配列かつ連想配列である。
+中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ような配列のこと。下の例は、二次元配列かつ連想配列である。
 
 ```
 Array
@@ -71,6 +353,21 @@ Array
             [野菜] => ピーマン
         )
 )
+```
+
+
+
+### ◇ Object型
+
+プロパティ名とその値は、連想配列になっている。
+
+```
+Fruit Object
+(
+	[id:private] => 1
+	[name:private] => リンゴ
+	[price:private] => 100
+)	
 ```
 
 
@@ -113,7 +410,7 @@ phpでは、```array_push()```と```array_shift()```で実装可能。
 
 
 
-### ◇ Stack
+### ◇ Stack型
 
 phpでは、```array_push()```と```array_pop()```で実装可能。
 
@@ -161,187 +458,7 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 
 
-# 17-02. データ整列の概念
-
-例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
-
-![ソートの仕組み](C:\Projects\summary_notes\SummaryNotes\Image\ソートの仕組み.gif)
-
-
-
-### ◇ 基本交換法（バブルソート）
-
-隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
-
-![バブルソート1](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![バブルソート2](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![バブルソート3](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート3.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![バブルソート4](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート4.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![バブルソート5](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート5.gif)
-
-
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-
-
-![バブルソート6](C:\Projects\summary_notes\SummaryNotes\Image\バブルソート6.gif)
-
-
-
-### ◇ 基本選択法（選択ソート）
-
-データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法。
-
-![選択ソート1](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![選択ソート2](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![選択ソート3](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート3.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![選択ソート4](C:\Projects\summary_notes\SummaryNotes\Image\選択ソート4.gif)
-
-### ◇ 基本挿入法（挿入ソート）
-
-既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法。
-
-### ◇ ヒープソート
-
-
-
-### ◇ シェルソート
-
-
-
-### ◇ クイックソート
-
-適当な基準値を選び，それより小さな値のグループと大きな値のグループにデータを分割する。同様にして，グループの中で基準値を選び，それぞれのグループを分割する。この操作を繰り返していく方法。
-
-![クイックソート-1](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-1.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-2](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-2.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-3](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-3.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-4](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-4.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-5](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-5.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-6](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-6.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-7](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-7.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-8](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-8.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-9](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-9.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-10](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-10.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-11](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-11.JPG)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![クイックソート-12](C:\Projects\summary_notes\SummaryNotes\Image\クイックソート-12.JPG)
-
-
-
-# 17-03. データ探索の概念
-
-### ◇ 線形探索法
-
-  今回は「６」を探す。
-
-![線形探索法1](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![線形探索法2](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![線形探索法3](C:\Projects\summary_notes\SummaryNotes\Image\線形探索法3.gif)
-
-### ◇ 二分探索法
-
-  前提として、ソートによって、すでにデータが整列させられているとする。今回は「６」を探す。
-
-![二分探索法1](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法1.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![二分探索法2](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![二分探索法3](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法3.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![二分探索法4](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法4.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![二分探索法5](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法5.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
-![二分探索法6](C:\Projects\summary_notes\SummaryNotes\Image\二分探索法6.gif)
-
-### ◇ ハッシュ法
-
-
-
-
-
-
-
-
-
-
-
-# 17-04.  TRUE vs. FALSE
+# 16-04.  TRUE vs. FALSE
 
 ### ◇ FALSE の定義
 
@@ -392,7 +509,7 @@ if($this->$var){
 
 
 
-# 17-05. 条件式の実装方法
+# 16-05. 条件式の実装方法
 
 ### ◇ 『else』はできるだけ用いない
 
@@ -482,7 +599,159 @@ return $value
 
 
 
-# 17-06.『Java』 について
+# 16-06. 変数
+
+### ◇ スーパーグローバル変数
+
+スコープに関係なく、どのプログラムからでもアクセスできる連想配列変数
+
+![スーパーグローバル変数](C:\Projects\Summary_Notes\SummaryNotes\Image\スーパーグローバル変数.png)
+
+- **```$_SERVER```に格納されている値**
+
+```
+$_SERVER['SERVER_ADDR']           サーバのIPアドレス(例:192.168.0.1)
+$_SERVER['SERVER_NAME']           サーバの名前(例:www.example.com)
+$_SERVER['SERVER_PORT']           サーバのポート番号(例:80)
+$_SERVER['SERVER_PROTOCOL']       サーバプロトコル(例:HTTP/1.1)
+$_SERVER['SERVER_ADMIN']          サーバの管理者(例:root@localhost)
+$_SERVER['SERVER_SIGNATURE']      サーバのシグニチャ(例:Apache/2.2.15...)
+$_SERVER['SERVER_SOFTWARE']       サーバソフトウェア(例:Apache/2.2.15...)
+$_SERVER['GATEWAY_INTERFACE']     CGIバージョン(例:CGI/1.1)
+$_SERVER['DOCUMENT_ROOT']         ドキュメントルート(例:/var/www/html)
+$_SERVER['PATH']                  環境変数PATHの値(例:/sbin:/usr/sbin:/bin:/usr/bin)
+$_SERVER['PATH_TRANSLATED']       スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['SCRIPT_FILENAME']       スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['REQUEST_URI']           リクエストのURI(例:/test.php)
+$_SERVER['PHP_SELF']              PHPスクリプト名(例:/test.php)
+$_SERVER['SCRIPT_NAME']           スクリプト名(例:/test.php)
+$_SERVER['PATH_INFO']             URLの引数に指定されたパス名(例:/test.php/aaa)
+$_SERVER['ORIG_PATH_INFO']        PHPで処理される前のPATH_INFO情報
+$_SERVER['QUERY_STRING']          URLの?以降に記述された引数(例:q=123)
+$_SERVER['REMOTE_ADDR']           クライアントのIPアドレス(例:192.168.0.123)
+$_SERVER['REMOTE_HOST']           クライアント名(例:client32.example.com)
+$_SERVER['REMOTE_PORT']           クライアントのポート番号(例:64799)
+$_SERVER['REMOTE_USER']           クライアントのユーザ名(例:tanaka)
+$_SERVER['REQUEST_METHOD']        リクエストメソッド(例:GET)
+$_SERVER['REQUEST_TIME']          リクエストのタイムスタンプ(例:1351987425)
+$_SERVER['REQUEST_TIME_FLOAT']    リクエストのタイムスタンプ(マイクロ秒)(PHP 5.1.0以降)
+$_SERVER['REDIRECT_REMOTE_USER']  リダイレクトされた場合の認証ユーザ(例:tanaka)
+$_SERVER['HTTP_ACCEPT']           リクエストのAccept:ヘッダの値(例:text/html)
+$_SERVER['HTTP_ACCEPT_CHARSET']   リクエストのAccept-Charset:ヘッダの値(例:utf-8)
+$_SERVER['HTTP_ACCEPT_ENCODING']  リクエストのAccept-Encoding:ヘッダの値(例:gzip)
+$_SERVER['HTTP_ACCEPT_LANGUAGE']  リクエストのAccept-Language:ヘッダの値(ja,en-US)
+$_SERVER['HTTP_CACHE_CONTROL']    リクエストのCache-Control:ヘッダの値(例:max-age=0)
+$_SERVER['HTTP_CONNECTION']       リクエストのConnection:ヘッダの値(例:keep-alive)
+$_SERVER['HTTP_HOST']             リクエストのHost:ヘッダの値(例:www.example.com)
+$_SERVER['HTTP_REFERER']          リンクの参照元URL(例:http://www.example.com/)
+$_SERVER['HTTP_USER_AGENT']       リクエストのUser-Agent:ヘッダの値(例:Mozilla/5.0...)
+$_SERVER['HTTPS']                 HTTPSを利用しているか否か(例:on)
+$_SERVER['PHP_AUTH_DIGEST']       ダイジェスト認証時のAuthorization:ヘッダの値
+$_SERVER['PHP_AUTH_USER']         HTTP認証時のユーザ名
+$_SERVER['PHP_AUTH_PW']           HTTP認証時のパスワード
+$_SERVER['AUTH_TYPE']             HTTP認証時の認証形式
+```
+
+
+
+### ◇ 変数展開
+
+文字列の中で、変数の中身を取り出すことを『変数展開』と呼ぶ。
+
+※Paizaで検証済み。
+
+- **シングルクオーテーションによる変数展開**
+
+シングルクオーテーションの中身は全て文字列として認識され、変数は展開されない。
+
+```
+$fruit = "リンゴ";
+
+echo 'これは$fruitです。';
+
+// 出力結果
+これは、$fruitです。
+```
+
+
+- **ダブルクオーテーションによる変数展開**
+
+変数の前後に半角スペースを置いた場合にのみ、変数は展開される。（※半角スペースがないとエラーになる）
+
+```
+$fruit = "リンゴ";
+
+echo "これは $fruit です。";
+
+// 出力結果
+これは リンゴ です。
+```
+
+
+- **ダブルクオーテーションと波括弧による変数展開**
+
+変数の前後に半角スペースを置かなくとも、変数は展開される。
+
+```
+$fruit = "リンゴ";
+
+echo "これは{$fruit}です。";
+
+// 出力結果
+これは、リンゴです。
+```
+
+
+
+### ◇ 参照渡しと値渡し
+
+- **参照渡し**
+
+「参照渡し」とは、変数に代入した値の参照先（メモリアドレス）を渡すこと。
+
+```
+$value = 1;
+$result = &$value; // 値の入れ物を参照先として代入
+```
+
+**【実装例】**```$b```には、```$a```の参照によって10が格納される。
+
+```
+$a = 2;
+$b = &$a;  // 変数aを&をつけて代入
+$a = 10;    // 変数aの値を変更
+echo $b;
+
+# 結果
+10
+```
+
+- **値渡し**
+
+「値渡し」とは、変数に代入した値のコピーを渡すこと。
+
+```
+$value = 1;
+$result = $value; // 1をコピーして代入
+```
+
+**【実装例】**```$b```には、```$a```の一行目の格納によって2が格納される。
+
+```
+$a = 2;
+$b = $a;  // 変数aを代入
+$a = 10;  // 変数aの値を変更
+echo $b;
+
+# 結果
+2
+```
+
+
+
+
+
+# 17-03.『Java』 について
 
 ### ◇ Javaで書かれているプログラム
 
