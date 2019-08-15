@@ -8,7 +8,93 @@
 
 
 
-# 17-01 データ整列の概念
+# 17-01 .データの構造化
+
+### ◇ List型
+
+ポインタは、次のデータがどこにあるかのアドレスを表す。
+
+- **単方向リスト**
+
+![p555-1](C:\Projects\summary_notes\SummaryNotes\Image\p555-1.gif)
+
+- **双方向リスト**
+
+![p555-2](C:\Projects\summary_notes\SummaryNotes\Image\p555-2.gif)
+
+- **循環リスト**
+
+![p555-3](C:\Projects\summary_notes\SummaryNotes\Image\p555-3.gif)
+
+
+
+### ◇ Queue型
+
+phpでは、```array_push()```と```array_shift()```で実装可能。
+
+![Queue1](C:\Projects\summary_notes\SummaryNotes\Image\Queue1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Queue2](C:\Projects\summary_notes\SummaryNotes\Image\Queue2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Queue3](C:\Projects\summary_notes\SummaryNotes\Image\Queue3.gif)
+
+
+
+### ◇ Stack型
+
+phpでは、```array_push()```と```array_pop()```で実装可能。
+
+![Stack1](C:\Projects\summary_notes\SummaryNotes\Image\Stack1.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Stack2](C:\Projects\summary_notes\SummaryNotes\Image\Stack2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+ 
+
+![Stack3](C:\Projects\summary_notes\SummaryNotes\Image\Stack3.gif)
+
+### ◇ ツリー構造
+
+- **二分探索木**
+
+  各ノードにデータが格納されている。
+
+![二分探索木](C:\Projects\summary_notes\SummaryNotes\Image\二分探索木1.gif)
+
+
+
+- **ヒープ**
+
+  Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
+
+  ![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ1.gif)
+
+  ![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ2.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![ヒープ2](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ3.gif)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![ヒープ3](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ4.gif)
+
+# 17-02 データ整列の概念
 
 例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
 
@@ -134,7 +220,7 @@
 
 
 
-# 17-02. データ探索の概念
+# 17-03. データ探索の概念
 
 ### ◇ 線形探索法
 
