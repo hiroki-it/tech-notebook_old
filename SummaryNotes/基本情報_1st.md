@@ -398,14 +398,14 @@ CPUは、数値に対し、特定の位置に小数点を打つ。
 
 指数表記を用いることによって、小数点を含む数値を表現する方法。
 
-![p060-1](C:\Projects\summary_notes\SummaryNotes\Image\p060-1.png)
+- **正規化した数式から浮動小数点数への変換**
 
-![p060-2](C:\Projects\summary_notes\SummaryNotes\Image\p060-2.png)
+![正規化した数式から浮動小数点数への変換](C:\Projects\summary_notes\SummaryNotes\Image\正規化した数式から浮動小数点数への変換.png)
 
-- **浮動小数点数の正規化**
+- **浮動小数点数から正規化した数式への変換**
   指数部と仮数部を調節して、できるだけ仮数部の上位桁に0が入らないようにして、誤差を少なくすること。例えば、ある計算の結果が0.012345×10^－3だった場合、仮数部を0.1～1の範囲に収めるために0.12345×10^－4に変更する。
 
-![p061](C:\Projects\summary_notes\SummaryNotes\Image\p061.png)
+![浮動小数点数から正規化した数式への変換](C:\Projects\summary_notes\SummaryNotes\Image\浮動小数点数から正規化した数式への変換.png)
 
 
 
@@ -414,8 +414,6 @@ CPUは、数値に対し、特定の位置に小数点を打つ。
 『誤差』：実際の数値とCPUが表現できる数値の間に生じるズレのこと。
 
 ### ◇ 無限小数
-
-
 
 ![p067-1](C:\Projects\summary_notes\SummaryNotes\Image\p067-1.png)
 

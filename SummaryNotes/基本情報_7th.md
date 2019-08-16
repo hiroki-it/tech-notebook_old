@@ -50,7 +50,7 @@
 
 
 
-### ◇ 値を取得するメソッドの実装
+### ◇ 値を取得するアクセサメソッドの実装
 
 Getterでは、プロパティを取得するだけではなく、何かしらの処理を加えたうえで取得すること。
 
@@ -77,7 +77,7 @@ class ABC {
 
 
 
-### ◇ 値を設定するメソッドの実装
+### ◇ 値を設定するアクセサメソッドの実装
 
 - **Setter**
 
@@ -487,14 +487,14 @@ if($this->$var){
 冗長になってしまう。
 
 ```
-// マジックナンバーを定義
-noOptionItem = 0;
+// マジックナンバーを使わずに、定数として定義
+const noOptionItem = 0;
 
 // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す。
 if(!empty($routeEntity->options) {
     foreach ($routeEntity->options as $option) {
     
-    	// if文を通過した場合、メソッドの返り値が格納される。通過しない場合、マジックナンバー0が格納される。
+    	// if文を通過した場合、メソッドの返り値が格納される。通過しない場合、定数が格納される。
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
 		} else {
@@ -523,8 +523,8 @@ return $result;
 よりすっきりした書き方になる。
 
 ```
-// マジックナンバーを定義
-noOptionItem = 0;
+// マジックナンバーを使わずに、定数として定義
+const noOptionItem = 0;
 
 // 初期値0を設定
 $result['optionItemA'] = noOptionItem;
