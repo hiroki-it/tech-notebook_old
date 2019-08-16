@@ -663,7 +663,7 @@ class GoodsWithTax2 extends Goods
 
 実装クラスに処理内容を記述しなければならない。すなわち、抽象クラスにメソッドの型のみ定義した場合と同じである。多重継承できる。
 
-![子インターフェースの多重継承](C:\Projects\summary_notes\SummaryNotes\Image\子インターフェースの多重継承.png)
+![子インターフェースの多重継承_2](C:\Projects\summary_notes\SummaryNotes\Image\子インターフェースの多重継承_2.png)
 
 **【実装例】**
 
@@ -701,13 +701,21 @@ class Human implements Communication
 
 
 
-### ◇ 汎化の抽象クラス vs. 実現のインターフェース
+### ◇ 汎化の抽象クラスと実現のインターフェースの違い
 
 ★Carクラスのモデルと、それの上書きクラスを作りたい場合、抽象Carクラスと子クラスを作成する。
 
 ★Driven機能をもつインターフェースと、それを追加したい実装クラス関係を作りたい場合、Drivenインターフェースと実装クラスを作成する。
 
 ![インターフェースと抽象クラスの使い分け](C:\Projects\summary_notes\SummaryNotes\Image\インターフェースと抽象クラスの使い分け.png)
+
+
+
+### ◇ Trait（※php独自の機能）
+
+再利用したいメソッドやプロパティを部品化し、利用したい時にクラスに取り込む。Traitを用いるときは、クラス内でTraitをuse宣言する。Trait自体は不完全なクラスであり、インスタンス化できない。
+
+![トレイト](C:\Projects\summary_notes\SummaryNotes\Image\トレイト.png)
 
 
 
