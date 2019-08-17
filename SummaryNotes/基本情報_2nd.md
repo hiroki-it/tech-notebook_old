@@ -200,6 +200,12 @@ CPUは制御と演算を行う。CPUの制御部分は、プログラムの命�
 
 # 05-02. CPU（プロセッサ）
 
+### ◇ IntelとAMDにおけるCPUの歴史（※2009年まで）
+
+![IntelとAMDにおけるCPUの歴史](C:\Projects\summary_notes\SummaryNotes\Image\IntelとAMDにおけるCPUの歴史.png)
+
+
+
 ### ◇ クロック周波数
 
 CPUの回路が処理と歩調を合わせるために用いる信号を、『クロック』と言う。一定時間ごとにクロックが起こる時、１秒間にクロックが何回起こるかを『クロック周波数』という。これは、Hzで表される。ちなみに、ワイのパソコンのクロック周波数は2.60GHzでした。
@@ -230,11 +236,11 @@ CPUが1秒間に何回命令を実行するかを表す。
 
 
 
-# 06-01. メモリ（RAM + ROM）
+# 05-03. 物理メモリ（RAM + ROM）
 
-### ◇ メモリの種類
+### ◇ 物理メモリの種類
 
-『メモリ』は、RAMとROMに大きく分けられる。
+『物理メモリ』は、RAMとROMに大きく分けられる。
 
 ![p162](C:\Projects\summary_notes\SummaryNotes\Image\p162.png)
 
@@ -271,7 +277,7 @@ RAMは、メインメモリとして使われる『Dynamic RAM』と、キャッ
 
 
 
-# 06-02. キャッシュメモリ 
+# 05-04. キャッシュメモリ 
 
 CPUから命令が起こるとき、CPU、メインメモリ、ハードディスク間には、読み込みと書き出しの処理速度に差がある。
 
@@ -287,7 +293,7 @@ CPUから命令が起こるとき、CPU、メインメモリ、ハードディ�
 
 ![メモリキャッシュ](C:\Projects\summary_notes\SummaryNotes\Image\メモリキャッシュ.GIF)
 
-- **メモリ ➔ 二次キャッシュメモリ ➔ 一次キャッシュメモリ**
+- **メインメモリ ➔ 二次キャッシュメモリ ➔ 一次キャッシュメモリ**
 
 ![メモリとキャッシュメモリ](C:\Projects\summary_notes\SummaryNotes\Image\メモリとキャッシュメモリ.gif)
 
@@ -303,19 +309,117 @@ CPUから命令が起こるとき、CPU、メインメモリ、ハードディ�
 
 - **Write-throught 方式**
 
-  CPUは、メインメモリとキャッシュメモリの両方に書き込む。常に主記憶とキャッシュの内容が一致している状態を確保できるが、主記憶への書き込みが頻繁に行われるので遅い。
+  CPUは、メインメモリとキャッシュメモリの両方に書き込む。常にメインメモリとキャッシュメモリの内容が一致している状態を確保できるが、メモリへの書き込みが頻繁に行われるので遅い。
 
   ![Write-through方式](C:\Projects\summary_notes\SummaryNotes\Image\Write-through方式.jpg)
 
 - **Write-back 方式**
 
-  CPUは、キャッシュメモリのみに書き込む。次に、キャッシュメモリがメインメモリに書き込む。主記憶とキャッシュの内容が一致している状態を必ずしも確保できないが、主記憶への書き込み回数が少ないため速い
+  CPUは、キャッシュメモリのみに書き込む。次に、キャッシュメモリがメインメモリに書き込む。メインメモリとキャッシュメモリの内容が一致している状態を必ずしも確保できないが、メインメモリへの書き込み回数が少ないため速い
 
 ![Write-back方式](C:\Projects\summary_notes\SummaryNotes\Image\Write-back方式.jpg)
 
 
 
-# 06-03. ディスクメモリ
+
+
+# 05-05. 物理メモリのアドレス空間の管理
+
+### ◇ 固定区画方式
+
+### ◇ 可変区画方式
+
+### ◇ オーバーレイ方式
+
+### ◇ フラグメンテーション／メモリコンパクション
+
+### ◇ スワッピング方式
+
+
+
+
+
+
+
+# 05-06. 仮想メモリのアドレス空間の管理
+
+### ◇ 仮想メモリとは
+
+以下の用語に統一する。
+
+- **主記憶 ⇒ 物理メモリ（メインメモリ＋キャッシュメモリ）**
+
+- **補助記憶 ⇒ ハードディスク**
+
+- **仮想記憶 ⇒ 仮想メモリ**
+
+![仮想メモリ管理](C:\Projects\summary_notes\SummaryNotes\Image\仮想メモリ管理.png)
+
+ちなみに、富士通の仮想メモリの容量は、以下の通り。
+
+![仮想メモリのアドレス空間の容量設定](C:\Projects\summary_notes\SummaryNotes\Image\仮想メモリのアドレス空間の容量設定.png)
+
+
+
+### ◇ マッピングによる大容量アドレス空間の再現
+
+仮想メモリのアドレス空間を、物理メモリのアドレス空間とハードディスクにマッピングすることによって、大容量のアドレス空間を疑似的に実現できる。
+
+![マッピングによる大容量アドレス空間の再現](C:\Projects\summary_notes\SummaryNotes\Image\マッピングによる大容量アドレス空間の再現.png)
+
+
+
+### ◇ Demand paging 方式
+
+1. プログラムをページという単位に分割し、ハードディスクで管理。
+2. 仮想アドレス空間を固定長の領域に区切り、ページをその領域で管理。
+3. ページイン
+
+![p258](C:\Projects\summary_notes\SummaryNotes\Image\p258.png)
+
+
+
+### ◇ Page Replacement アルゴリズム
+
+ページアウトのアルゴリズムのこと。空き物理ページが少ない状態で新たにページインを行う時、アルゴリズムの方式ごとに、物理メモリからハードディスクに追い出すページが異なる。
+
+![p259-1](C:\Projects\summary_notes\SummaryNotes\Image\p259-1.png)
+
+![p259-2](C:\Projects\summary_notes\SummaryNotes\Image\p259-2.png)
+
+- **LRU方式：Least Recently Used**
+
+  ![p261](C:\Projects\summary_notes\SummaryNotes\Image\p261.png)
+
+- **FIFO方式：First In First Out**
+- **LIFO方式：Last In First Out**
+- **LFU方式：Least Frequently Used**
+
+
+
+# 05-07. プログラムの種類
+
+### ◇ Reusable（再使用可能プログラム）
+
+  一度プログラムを実行した後、ハードディスクから物理メモリにロードし直さずに、再び実行を繰り返すことができるプログラムのこと。
+
+  ![再使用可能](C:\Projects\summary_notes\SummaryNotes\Image\再使用可能.gif)
+
+### ◇ Reentrant（再入可能プログラム）
+
+  あるプログラムが呼び出したプログラムを、他のプログラムがさらに呼び出しを行い、同時に実行できるプログラムのこと。
+
+![再入可能](C:\Projects\summary_notes\SummaryNotes\Image\再入可能.gif)
+
+### ◇ Relocatable（再配置可能プログラム）
+
+  ハードディスクから物理メモリへロードする際に、アドレス空間上のどこに配置しても実行できるプログラムのこと。
+
+![再配置可能](C:\Projects\summary_notes\SummaryNotes\Image\再配置可能.gif)
+
+
+
+# 05-08. ディスクメモリ
 
 CPU、メインメモリ、ストレージ間には、読み込みと書き出しの処理速度に差がある。（※再度記載）
 
@@ -331,7 +435,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 
 
-# 06-04. ヒット率と実効アクセス時間
+# 05-09. ヒット率と実効アクセス時間
 
 ### ◇ 実効アクセス時間
 
@@ -339,7 +443,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
   
 
-# 07. ハードディスクとその他の補助記憶装置
+# 05-10. ハードディスクとその他の補助記憶装置
 
 ### ◇ Defragmentation
 
@@ -369,7 +473,7 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 
 
 
-# 08-01. その他のハードウェア
+# 05-11. 入力装置と出力装置
 
 
 ### ◇ キーボードからポインティングデバイス
@@ -404,21 +508,6 @@ CPU、メインメモリ、ストレージ間には、読み込みと書き出�
 ![チェックディジット](C:\Projects\summary_notes\SummaryNotes\Image\チェックディジット.gif)
 
 
-
-
-### ◇ Video RAM
-
-VRAMの容量によって、扱うことのできる解像度と色数が決まる。
-
-![VRAM](C:\Projects\summary_notes\SummaryNotes\Image\VRAM.jpg)
-
-富士通PCのVRAMスペックは32MB。
-
-![本パソコンのVRAMスペック](C:\Projects\summary_notes\SummaryNotes\Image\本パソコンのVRAMスペック.jpg)
-
-色数によって、１ドット当たり何ビットを要するが異なる。
-
-![p204](C:\Projects\summary_notes\SummaryNotes\Image\p204.jpg)
 
 
 
@@ -495,7 +584,7 @@ dpiが大きくなるにつれて、解像度は大きくなる。
   
 
 
-# 08-02 入出力インターフェイス
+# 05-12 入出力インターフェイス
 
 ### ◇ Serial interface vs. Parallel interface
 
@@ -547,10 +636,27 @@ dpiが大きくなるにつれて、解像度は大きくなる。
 - **Bluetooth**
   2.4GHzの電波を使って無線通信を行うためのインターフェイス。
   
-  
 
 
-# 09-01. ソフトウェアの分類
+
+# 05-13. GPUとVRAM
+
+GPUとVRAMの容量によって、扱うことのできる解像度と色数が決まる。
+
+![VRAM](C:\Projects\summary_notes\SummaryNotes\Image\VRAM.jpg)
+
+富士通PCのGPUとVRAMの容量は、以下の通り。
+
+![本パソコンのVRAMスペック](C:\Projects\summary_notes\SummaryNotes\Image\本パソコンのVRAMスペック.jpg)
+
+色数によって、１ドット当たり何ビットを要するが異なる。
+
+![p204](C:\Projects\summary_notes\SummaryNotes\Image\p204.jpg)
+
+
+
+
+# 06-01. ソフトウェアの分類
 
 ### ◇ ハードウェアとソフトウェアの関係（再度記載）
 
@@ -616,7 +722,7 @@ UEFI：United Extensible Firmware Interface
 
 
 
-# 09-02. OSS：Open Source Software 
+# 06-02. OSS：Open Source Software 
 
 ### ◇ OSSの10個の定義
 
@@ -690,7 +796,7 @@ UEFI：United Extensible Firmware Interface
 
 
 
-# 09-03. ジョブ管理
+# 07-01. ジョブ管理
 
 ### ◇ ジョブ管理とタスク管理の関係
 
@@ -742,7 +848,7 @@ CPUに対して、処理命令が行われる
 
 
 
-# 09-03. タスク管理について
+# 07-02. タスク管理について
 
 ### ◇ タスク管理の３つの方式
 
@@ -769,97 +875,3 @@ CPUに対して、処理命令が行われる
 アプリケーションから低速な周辺機器へデータを出力する時、まず、CPUはスプーラにデータを出力する。Spoolerは、全てのデータをまとめて出力するのではなく、一時的に補助記憶装置（Spool）にためておきながら、少しずつ出力する（Spooling）。
 
   ![スプーリング](C:\Projects\summary_notes\SummaryNotes\Image\スプーリング.jpg)
-
-
-
-# 09-05. 物理メモリ空間の活用（出題頻度低い）
-
-
-### ◇ 固定区画方式
-
-### ◇ 可変区画方式
-
-### ◇ オーバーレイ方式
-
-### ◇ フラグメンテーション／メモリコンパクション
-
-### ◇ スワッピング方式
-
-
-
-
-# 09-06. ？？？の活用
-
-### ◇ Reusable（再使用可能プログラム）
-
-  一度プログラムを実行した後、補助記憶装置から主記憶装置にロードし直さずに、再び実行を繰り返すことができるプログラムのこと。
-
-  ![再使用可能](C:\Projects\summary_notes\SummaryNotes\Image\再使用可能.gif)
-
-### ◇ Reentrant（再入可能プログラム）
-
-  あるプログラムが呼び出したプログラムを、他のプログラムがさらに呼び出しを行い、同時に実行できるプログラムのこと。
-
-![再入可能](C:\Projects\summary_notes\SummaryNotes\Image\再入可能.gif)
-
-### ◇ Relocatable（再配置可能プログラム）
-
-  補助記憶装置から主記憶装置へロードする際に、アドレス空間上のどこに配置しても実行できるプログラムのこと。
-
-![再配置可能](C:\Projects\summary_notes\SummaryNotes\Image\再配置可能.gif)
-
-
-
-# 09-07. 仮想メモリ空間の活用
-
-### ◇ 仮想メモリ
-
-![仮想メモリ管理](C:\Projects\summary_notes\SummaryNotes\Image\仮想メモリ管理.png)
-
-
-
-
-
-### ◇ Demand paging 方式
-
-1. プログラムをページという単位に分割し、ハードディスクで管理。
-2. 仮想アドレス空間を固定長の領域に区切り、ページをその領域で管理。
-3. 実行に必要なページだけを物理メモリに読み込ませる
-
-![p258](C:\Projects\summary_notes\SummaryNotes\Image\p258.png)
-
-
-
-### ◇ ページアウトの種類
-
-![p259-2](C:\Projects\summary_notes\SummaryNotes\Image\p259-2.png)
-
-- **LRU方式：Least Recently Used**
-
-  ![p261](C:\Projects\summary_notes\SummaryNotes\Image\p261.png)
-
-
-
-
-
-# 10. ファイル管理
-
-### ◇ 絶対パス
-
-ルートディレクトリ（fruit.com）から、指定のファイル（apple.png）までのパス。
-
-```
-<img src="http://fruits.com/img/apple.png">
-```
-
-![絶対パス](C:\Projects\summary_notes\SummaryNotes\Image\絶対パス.png)
-
-### ◇ 相対パス
-
-起点となる場所（apple.html）から、指定のディレクトリやファイル（apple.png）の場所までを辿るパス。例えば、apple.htmlのページでapple.pngを使用したいとする。この時、『 .. 』を用いて一つ上の階層に行き、青の後、imgフォルダを指定する。
-
-```
-<img src="../img/apple.png">
-```
-
-![相対パス](C:\Projects\summary_notes\SummaryNotes\Image\相対パス.png)
