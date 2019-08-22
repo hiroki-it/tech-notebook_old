@@ -280,6 +280,32 @@ phpでは、```array_push()```と```array_pop()```で実装可能。
 
 
 
+# 14-05.『Java』 について
+
+### ◇ Javaで書かれているプログラム
+
+- **Java Applet**
+
+Javaで書かれたWebのフロントエンドで動くプログラム。Java9より非推奨になり、Java 11で廃止。
+
+![Java Applet](C:\Projects\summary_notes\SummaryNotes\Image\Java Applet.gif)
+
+
+
+- **Java Servlet**
+
+Javaで書かれたWebのサーバーエンドで動くプログラム。
+
+![Java Servlet](C:\Projects\summary_notes\SummaryNotes\Image\Java Servlet.gif)
+
+
+
+### ◇ Garbage collection
+
+Javaでは、Javaオブジェクトに対するメモリ領域の割り当てや解放をJVM（Java仮想マシン）が自動的に行う。この自動解放メカニズムを『Garbage collection』という。
+
+
+
 # 15-01. システム運用
 
 ### ◇ キャパシティ管理
