@@ -493,10 +493,6 @@ Dos攻撃を防ぐ。
 
 
 
-
-
-
-
 # 09-11. Proxyサーバ、DNSサーバ、Webサーバ、NAT、でのデータ通信まとめ
 
 ![ホスト名とIPアドレスの変換](C:\Projects\summary_notes\SummaryNotes\Image\IPアドレスと完全修飾ドメイン名のマッピング3.png)
@@ -524,3 +520,62 @@ Dos攻撃を防ぐ。
 10. リバースProxyサーバは、Webページを、クライアントPCにレスポンス。
 
 ※上記の様に、リクエストとレスポンスが繰り返されるが、データ通信は光速なので、１秒もかからない。
+
+
+
+# 09-12. GitHubからAWSの仮想サーバへのデプロイ
+
+### ◇ GitHubからデプロイサーバへの```pull```
+
+本番環境で```pull```を行い、GitHubからデプロイサーバにmasterブランチの状態を取り込む。
+
+![GitHub上のコードが本番環境にデプロイされるまで](C:\Projects\summary_notes\SummaryNotes\Image\GitHub上のコードが本番環境にデプロイされるまで.png)
+
+
+
+### ◇ デプロイサーバからAWSへのデプロイ
+
+デプロイ自動化ツール（例：Capistrano）を用いて、デプロイサーバからAWSにおけるインスタンスやデータベースへデプロイを行う。
+
+![Capistranoを用いた自動デプロイ](C:\Projects\summary_notes\SummaryNotes\Image\Capistranoを用いた自動デプロイ.png)
+
+
+
+### ◇ AWS：Amazon Web Service
+
+**【AWSのクラウドデザインの一例】**
+
+![AWSのクラウドデザイン一例](C:\Projects\summary_notes\SummaryNotes\Image\AWSのクラウドデザイン一例.png)
+
+- **Amazon Route 53**
+
+クラウドDNSサーバー。リクエストされた完全修飾ドメイン名とインスタンスのグローバルIPアドレスをマッピングしている。
+
+- **VPC：Virtual Private Cloud**
+
+クラウドプライベートネットワークサービス。AWSでは、プライベートIPアドレスが割り当てられた、VPCと呼ばれるプライベートネットワークを仮想的に構築することができる。
+
+- **AZ：Availability Zone**
+
+VPCの中に、AZと呼ばれる物理的に離れたデータセンターがある。AZの中に、VPC subnetを作ることができ、そこにインスタンス（仮想Webサーバ）を構築できる。
+
+- **ELB：Elastic Load Balancing**
+
+デュアル化させたインスタンスへのアクセスを自動的に分配し、サーバへの負荷を緩和するサービス。
+
+- **Amazon Simple Storage ServiceにおけるBucket**
+
+Amazon S3というストレージサービスに保存するCSSファイルや画像ファイルを管理できるサービス。
+
+
+
+### ◇ Dual システム（再掲）
+
+平常時、バックアップとして予備システムを稼働させておく。いずれかが故障した場合、異常が発生したシステムを切り離し、残る片方で処理を続ける。
+
+![p611-1](C:\Projects\summary_notes\SummaryNotes\Image\p611-1.png)
+
+![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+
+![p611-2](C:\Projects\summary_notes\SummaryNotes\Image\p611-2.png)
+
