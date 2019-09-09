@@ -236,8 +236,6 @@ fancyRpartPlot(tree)
 
 ![階層クラスタ解析](C:\Projects\summary_notes\SummaryNotes\Image\階層クラスタ解析.png)
 
-
-
 - **分析例**
 
 ```
