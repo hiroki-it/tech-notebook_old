@@ -1019,6 +1019,18 @@ return $result;
 
 
 
+### ◇ オブジェクトごとにプロパティの値の有無が異なる時の出力
+
+```
+// 全てのオブジェクトが必ず持っているわけではなく、
+$csv['オリコ払い'] = $order->oricoCondition ? $order->oricoCondition->
+
+// 全てのオブジェクトが必ず持っているプロパティの場合には不要
+$csv['ID'] = $order->id;
+```
+
+
+
 ### ◇ エラー文
 
 エラー文は、『ログファイル』に出力される。if文を通過してしまった理由は、empty()でTRUEが返ったためである。empty()がFALSEになるように、デバッグする。
@@ -1070,6 +1082,8 @@ if($this->$var){
 ```
 
 
+
+- **エンティティごとに、プロパティの値を持つか否かが異なる場合**
 
 
 
@@ -1221,4 +1235,28 @@ if($a === $b){
 ### ◇ デザインパターン
 
 デザインパターンのノートを参照せよ。
+
+
+
+# 05. ファイルパス
+
+### ◇ 絶対パス
+
+ルートディレクトリ（fruit.com）から、指定のファイル（apple.png）までのパス。
+
+```
+<img src="http://fruits.com/img/apple.png">
+```
+
+![絶対パス](C:\Projects\summary_notes\SummaryNotes\Image\絶対パス.png)
+
+### ◇ 相対パス
+
+起点となる場所（apple.html）から、指定のディレクトリやファイル（apple.png）の場所までを辿るパス。例えば、apple.htmlのページでapple.pngを使用したいとする。この時、『 .. 』を用いて一つ上の階層に行き、青の後、imgフォルダを指定する。
+
+```
+<img src="../img/apple.png">
+```
+
+![相対パス](C:\Projects\summary_notes\SummaryNotes\Image\相対パス.png)
 
