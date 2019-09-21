@@ -1,8 +1,9 @@
 ## このリポジトリについて
 
 このリポジトリは、編集中のまとめノートを管理するために作られたリポジトリです。  
-作成中のノートを随時PDF化していますので、PdfNotesフォルダからご覧ください。
+作成中のノートを随時PDF化していますので、pdfフォルダからご覧ください。
 
 
 ## 他のまとめノート
-Symfony2_NyumonのGitHubWiki，https://github.com/Hiroki-IT/Symfony2_Nyumon/wiki
+symfony2_nyumonのGitHubWiki，https://github.com/Hiroki-IT/symfony2_nyumon/wiki
+
