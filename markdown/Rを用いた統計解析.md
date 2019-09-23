@@ -10,11 +10,11 @@
 
 データに、どの程度の直線的関係があるかを検出する分析手法。回帰分析を行うか否かの判断材料になる。
 
-![相関分析](C:\Projects\summary_notes\SummaryNotes\Image\相関分析.png)
+![相関分析](C:\Projects\tech-notebook\markdown\image\相関分析.png)
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample <- read.table("sample_edit.txt", header = T)
 
@@ -46,19 +46,19 @@ cor(ts, method = "pearson")
 
 因果関係がありそうなデータに対して、横軸を原因、また縦軸を結果とし、最も当てはまりの良い線形モデルを推定する分析手法。モデルの精度が高ければ因果関係の証明になり、またモデルに原因を代入することで結果を予測できる。
 
-### ◇ 単回帰分析
+### ◆ 単回帰分析
 
 原因と結果が一つずつと仮定した時に、最も当てはまりの良い線形モデルを推定できる。
 
-<img src = "C:\Projects\summary_notes\SummaryNotes\Image\単回帰分析.png" width = 60%>
+<img src = "C:\Projects\tech-notebook\markdown\image\単回帰分析.png" width = 60%>
 
 - **回帰方程式**
 
-![単回帰式](C:\Projects\summary_notes\SummaryNotes\Image\単回帰式.png)
+![単回帰式](C:\Projects\tech-notebook\markdown\image\単回帰式.png)
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample <- read.table("sample_edit.txt", header = T)
 ts <- ts(sample[,2:5])
@@ -85,19 +85,19 @@ summary(Reg)
 
 
 
-### ◇ 重回帰分析
+### ◆ 重回帰分析
 
 原因が二つ以上で結果が一つと仮定した時に、最も当てはまりの良い線形モデルを推定できる。ただし、グラフでは、モデルは平面で表される。
 
-![重回帰分析](C:\Projects\summary_notes\SummaryNotes\Image\重回帰分析.png)
+![重回帰分析](C:\Projects\tech-notebook\markdown\image\重回帰分析.png)
 
 - **回帰方程式**
 
-![重回帰式](C:\Projects\summary_notes\SummaryNotes\Image\重回帰式.png)
+![重回帰式](C:\Projects\tech-notebook\markdown\image\重回帰式.png)
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample <- read.table("sample_edit.txt", header = T)
 
@@ -149,21 +149,21 @@ summary(Reg)
 
 因果関係がありそうなデータに対して、横軸を原因、また縦軸を結果とし、最も当てはまりの良い非線形モデルを推定する分析手法。モデルの精度が高ければ因果関係の証明になり、またモデルに原因を代入することで結果を予測できる。非線形モデルを推定するためには、モデルを一般化し、一般化線形モデルとして処理する必要がある。
 
-### ◇ ロジスティック回帰分析
+### ◆ ロジスティック回帰分析
 
 説明変数が質的変数の場合に、最も当てはまりの良い非線形モデル（ロジスティック分布）を推定する。
 
-<img src = "C:\Projects\summary_notes\SummaryNotes\Image\ロジスティック回帰分析.png" width = 70%>
+<img src = "C:\Projects\tech-notebook\markdown\image\ロジスティック回帰分析.png" width = 70%>
 
 - **回帰方程式**
 
-![ロジスティック回帰式](C:\Projects\summary_notes\SummaryNotes\Image\ロジスティック回帰式.png)
+![ロジスティック回帰式](C:\Projects\tech-notebook\markdown\image\ロジスティック回帰式.png)
 
 
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample<-read.csv("CV_data2.csv",header=T)
 
@@ -188,7 +188,7 @@ exp(result_lg2$coefficients)
 
 データに対して、最も当てはまりの良い決定木モデルを推定する分析手法。
 
-### ◇ 分類木分析
+### ◆ 分類木分析
 
 決定木モデルを分類モデルとして用いる場合の決定木分析。
 
@@ -198,15 +198,15 @@ exp(result_lg2$coefficients)
 
 青い点：被験者が暑くないと感じた日
 
-![決定木分析_1](C:\Projects\summary_notes\SummaryNotes\Image\決定木分析_1.png)
+![決定木分析_1](C:\Projects\tech-notebook\markdown\image\決定木分析_1.png)
 
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
-![決定木分析_2](C:\Projects\summary_notes\SummaryNotes\Image\決定木分析_2.png)
+![決定木分析_2](C:\Projects\tech-notebook\markdown\image\決定木分析_2.png)
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample <- read.csv("CV_data.csv", header = T)
 
@@ -234,11 +234,11 @@ fancyRpartPlot(tree)
 
 データを、似ている順に階層的にグループ化（クラスタリング）していく分析手法。データ間の同一性を明らかにすることができる。
 
-![階層クラスタ解析](C:\Projects\summary_notes\SummaryNotes\Image\階層クラスタ解析.png)
+![階層クラスタ解析](C:\Projects\tech-notebook\markdown\image\階層クラスタ解析.png)
 
 - **分析例**
 
-```
+```R
 # データを読み込む。
 sample1 <- read.csv("CV_data.csv")
 
@@ -269,10 +269,10 @@ plot(cluster1)
 
 # 05. 関数の解説
 
-### ◇ **```ggplot()```**
+### ◆ **```ggplot()```**
 
 1. ```ggplot()```：グラフのキャンバスを準備
 2. ```geom_XXX()```：グラフをプロット
 3. ```theme()```：グラフを追加加工
 
-![ggplotの概念](C:\Projects\summary_notes\SummaryNotes\Image\ggplotの概念.png)
+![ggplotの概念](C:\Projects\tech-notebook\markdown\image\ggplotの概念.png)
