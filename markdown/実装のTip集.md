@@ -1,18 +1,18 @@
 # 01-01. アクセス修飾子
 
-### ◇ public
+### ◆ public
 
 どのオブジェクトでも呼び出せる。
 
 
 
-### ◇ protected
+### ◆ protected
 
 同じクラス内と、その親クラスまたは子クラスでのみ呼び出せる。
 
 
 
-### ◇ private
+### ◆ private
 
 同じオブジェクト内でのみ呼び出せる。
 
@@ -24,11 +24,11 @@
 
 
 
-### ◇ static
+### ◆ static
 
 別ファイルでのメソッドの呼び出しにはインスタンス化が必要である。しかし、static修飾子をつけることで、インスタンス化しなくとも呼び出せる。オブジェクトのプロパティ値に関係なく、常に同一の処理を行うメソッドに用いる。
 
-```
+```PHP
 // インスタンスを作成する集約メソッドは、プロパティ値にアクセスしないため、常に同一の処理を行う。
 public static function aggregateDogToyEntity(Array $fetchedData)
 {
@@ -47,7 +47,7 @@ public static function aggregateDogToyEntity(Array $fetchedData)
 
 # 01-02. メソッド
 
-### ◇ メソッドの実装手順
+### ◆ メソッドの実装手順
 
 1. その会社のシステムで使われているライブラリ
 2. PHPのデフォルト関数（引用：PHP関数リファレンス，https://www.PHP.net/manual/ja/funcref.PHP）
@@ -55,7 +55,7 @@ public static function aggregateDogToyEntity(Array $fetchedData)
 
 
 
-### ◇ 値を取得するアクセサメソッドの実装
+### ◆ 値を取得するアクセサメソッドの実装
 
 Getterでは、プロパティを取得するだけではなく、何かしらの処理を加えたうえで取得すること。
 
@@ -63,7 +63,7 @@ Getterでは、プロパティを取得するだけではなく、何かしら�
 
 - **Getter**
 
-```
+```PHP
 class ABC {
 
     private $property; 
@@ -82,7 +82,7 @@ class ABC {
 
 
 
-### ◇ 値を設定するアクセサメソッドの実装
+### ◆ 値を設定するアクセサメソッドの実装
 
 - **Setter**
 
@@ -90,7 +90,7 @@ class ABC {
 
 **【実装例】**
 
-```
+```PHP
 class Test01 {
 
     private $property01;
@@ -110,7 +110,7 @@ Setterを持たせずに、```__construct()```だけを持たせれば、ValueOb
 
 **【実装例】**
 
-```
+```PHP
 class Test02 {
 
     private $property02;
@@ -127,7 +127,7 @@ class Test02 {
 
 Test01クラスインスタンスの```$property01```に値を設定するためには、インスタンスからSetterを呼び出す。Setterは何度でも呼び出せ、その度にプロパティの値を上書きできる。
 
-```
+```PHP
 $test01 = new Test01
 
 $test01->setProperty01("プロパティ01の値")
@@ -135,9 +135,9 @@ $test01->setProperty01("プロパティ01の値")
 $test01->setProperty01("新しいプロパティ01の値")
 ```
 
-一方で、Test02クラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()``だけを持たせれば、『Immutable』なオブジェクトとなる。
+一方で、Test02クラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()```だけを持たせれば、『Immutable』なオブジェクトとなる。
 
-```
+```PHP
 $test02 = new Test02("プロパティ02の値")
 
 $test02 = new Test02("新しいプロパティ02の値")
@@ -145,13 +145,13 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 
 
-### ◇ メソッドチェーン
+### ◆ メソッドチェーン
 
 以下のような、オブジェクトAを最外層とした関係が存在しているとする。
 
 【オブジェクトA（オブジェクトBをプロパティに持つ）】
 
-```
+```PHP
 class Obj_A{
 	private $objB;
 	
@@ -165,7 +165,7 @@ class Obj_A{
 
 【オブジェクトB（オブジェクトCをプロパティに持つ）】
 
-```
+```PHP
 class Obj_B{
 	private $objC;
  
@@ -179,7 +179,7 @@ class Obj_B{
 
 【オブジェクトC（オブジェクトDをプロパティに持つ）】
 
-```
+```PHP
 class Obj_C{
 	private $objD;
  
@@ -193,7 +193,7 @@ class Obj_C{
 
 以下のように、返り値のオブジェクトを用いて、より深い層に連続してアクセスしていく場合…
 
-```
+```PHP
 $ObjA = new Obj_A;
 
 $ObjB = $ObjA->getObjB();
@@ -205,7 +205,7 @@ $ObjD = $C->getObjD();
 
 以下のように、メソッドチェーンという書き方が可能。
 
-```
+```PHP
 $D = getObjB()->getObjC()->getObjC();
 
 // $D には ObjD が格納されている。
@@ -213,19 +213,15 @@ $D = getObjB()->getObjC()->getObjC();
 
 
 
-### ◇ マジックメソッド
+### ◆ マジックメソッド（Getter系）
 
-オブジェクトに対して特定の操作が行われた時に自動的に呼ばれる特殊なメソッドのこと。処理内容は自身で実装する必要がある。
-
-- **```__construct()```**
-
-クラスがインスタンス化される時に呼び出される。
+オブジェクトに対して特定の操作が行われた時に自動的に呼び出される特殊なメソッドのこと。自動的に呼び出される仕組みは謎。共通の処理を行うGetter（例えば、値を取得するだけのGetterなど）を無闇に増やしたくない場合に用いることで、コード量の肥大化を防ぐことができる。PHPには最初からマジックメソッドは組み込まれているが、自身で実装した場合、オーバーライドされて呼び出される。
 
 - **```__get()```**
 
-定義されていないプロパティや、アクセス権のないプロパティを取得しようとした時に、代わりに呼び出される。
+定義されていないプロパティや、アクセス権のないプロパティを取得しようとした時に、代わりに呼び出される。メソッドは定義しているが、プロパティは定義していないような状況で用いる。
 
-```
+```PHP
 class Example
 {
 
@@ -240,7 +236,7 @@ class Example
 }
 ```
 
-```
+```PHP
 // 存在しないプロパティを取得。
 $example = new Example();
 $example->hoge;
@@ -249,11 +245,23 @@ $example->hoge;
 hogeプロパティは存在しないため、値を呼び出せません。
 ```
 
+- **```__call()```**
+
+定義されていないメソッドや、アクセス権のないメソッドを取得しようとした時に、代わりに呼び出される。プロパティは定義しているが、メソッドは定義していないような状況で用いる。
+
+- **```__callStatic()```**
+
+
+
+### ◆ マジックメソッド（Setter系）
+
+定義されていないstaticメソッドや、アクセス権のないstaticメソッドを取得しようとした時に、代わりに呼び出される。自動的に呼び出される仕組みは謎。共通の処理を行うSetter（例えば、値を設定するだけのSetterなど）を無闇に増やしたくない場合に用いることで、コード量の肥大化を防ぐことができる。PHPには最初からマジックメソッドは組み込まれているが、自身で実装した場合、オーバーライドされて呼び出される。
+
 - **```__set()```**
 
 定義されていないプロパティや、アクセス権のないプロパティに値を設定しようとした時に、代わりに呼び出される。オブジェクトの不変性を実現するために使用される。（詳しくは、ドメイン駆動設計のノートを参照せよ）
 
-```
+```PHP
 class Example
 {
 
@@ -268,7 +276,7 @@ class Example
 }
 ```
 
-```
+```PHP
 // 存在しないプロパティに値をセット。
 $example = new Example();
 $example->hoge = "HOGE";
@@ -277,9 +285,49 @@ $example->hoge = "HOGE";
 hogeプロパティは存在しないため、HOGEを設定できません。
 ```
 
+- **マジックメソッドの```__construct()```**
+
+Setterを持たせずに、```__construct()```だけを持たせれば、ValueObjectのような、『Immutable』なオブジェクトを実現できる。
+
+**【実装例】**
+
+```PHP
+class Test02 {
+
+    private $property02;
+
+	// コンストラクタで$property02に値を設定
+    public function __construct($property02)
+    {
+        $this->property02 = $property02;
+    }
+    
+}
+```
+
+- **【『Mutable』と『Immutable』を実現できる理由】**
+
+Test01クラスインスタンスの```$property01```に値を設定するためには、インスタンスからSetterを呼び出す。Setterは何度でも呼び出せ、その度にプロパティの値を上書きできる。
+
+```
+$test01 = new Test01
+
+$test01->setProperty01("プロパティ01の値")
+PHP
+$test01->setProperty01("新しいプロパティ01の値")
+```
+
+一方で、Test02クラスインスタンスの```$property02```に値を設定するためには、インスタンスを作り直さなければならない。つまり、以前に作ったインスタンスの```$property02```の値は上書きできない。Setterを持たせずに、```__construct()```だけを持たせれば、『Immutable』なオブジェクトとなる。
+
+```PHP
+$test02 = new Test02("プロパティ02の値")
+
+$test02 = new Test02("新しいプロパティ02の値")
+```
 
 
-### ◇ **Recursive call：再帰的プログラム**
+
+### ◆ **Recursive call：再帰的プログラム**
 
 自プログラムから、自身自身を呼び出して実行できるプログラムのこと。
 
@@ -287,7 +335,7 @@ hogeプロパティは存在しないため、HOGEを設定できません。
 
 ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
 
-![再帰的](C:\Projects\summary_notes\SummaryNotes\Image\再帰的.png)
+![再帰的](C:\Projects\tech-notebook\markdown\image\再帰的.png)
 
 **【実装例】**
 
@@ -298,7 +346,7 @@ hogeプロパティは存在しないため、HOGEを設定できません。
 3. 二分割された各々のデータを、それぞれソートする。
 4. ソートを繰り返し実行する。
 
-```
+```PHP
 function quickSort(Array $array): Array 
 {
 	// 配列の要素数が一つしかない場合、クイックソートする必要がないので、返却する。
@@ -344,7 +392,7 @@ function quickSort(Array $array): Array
 }
 ```
 
-```
+```PHP
 // 実際に使ってみる。
 $array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
 $result = quickSort($array);
@@ -356,7 +404,7 @@ var_dump($result);
 
 
 
-### ◇ 高階関数とClosure（無名関数）
+### ◆ 高階関数とClosure（無名関数）
 
 関数を引数として受け取ったり、関数自体を返したりする関数を『高階関数』と呼ぶ。
 
@@ -364,7 +412,7 @@ var_dump($result);
 
 **【実装例】**
 
-```
+```PHP
 ## 第一引数のみの場合
 
 // 高階関数を定義
@@ -387,7 +435,7 @@ test("callbackMethod");
 出力成功
 ```
 
-```
+```PHP
 ## 第一引数と第二引数の場合
 
 // 高階関数を定義
@@ -413,7 +461,7 @@ higher-order("第一引数", "callbackMethod");
 
 **【実装例】**
 
-```
+```PHP
 // 高階関数のように、関数を引数として渡す。
 public function higher-order($param, $callback)
 {
@@ -437,11 +485,11 @@ high-order(第一引数,
 
 
 
-### ◇ Closure（無名関数）と即時関数
+### ◆ Closure（無名関数）と即時関数
 
 定義したその場で実行される無名関数を『即時関数』と呼ぶ。
 
-```
+```PHP
 $item = new Item;
 $item->getOption()->setName('オプションA')
 
@@ -463,13 +511,13 @@ echo $optionName //オプションA
 
 プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
 
-### ◇ Array型
+### ◆ Array型
 
 『内部ポインタ』とは、配列において、参照したい要素を位置で指定するためのカーソルのこと。
 
 - **内部ポインタを用いた配列要素の出力**
 
-```
+```PHP
 $array = array("あ", "い", "う");
 
 // 内部ポインタが現在指定している要素を出力。
@@ -493,7 +541,7 @@ echo reset($array); // あ
 
 中に配列をもつ配列のこと。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
 
-```
+```PHP
 Array
 ( 
     [0] => Array
@@ -516,7 +564,7 @@ Array
 
 中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ような配列のこと。下の例は、二次元配列かつ連想配列である。
 
-```
+```PHP
 Array
 (
     [赤] => Array
@@ -537,11 +585,11 @@ Array
 
 
 
-### ◇ List型
+### ◆ List型
 
 配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、以下のように実装する必要がある。
 
-```
+```PHP
 $array = array("あ", "い", "う");
 $a = $array[0];
 $i = $array[1];
@@ -552,7 +600,7 @@ echo $a.$i.$u; // あいう
 
 しかし、以下の様にList型を使うことによって、複数の変数への格納を一行で実装することができる。
 
-```
+```PHP
 list($a, $i, $u) = array("あ", "い", "う")
 
 echo $a.$i.$u; // あいう
@@ -560,19 +608,19 @@ echo $a.$i.$u; // あいう
 
 - **単方向List**
 
-![p555-1](C:\Projects\summary_notes\SummaryNotes\Image\p555-1.gif)
+![p555-1](C:\Projects\tech-notebook\markdown\image\p555-1.gif)
 
 - **双方向List**
 
-![p555-2](C:\Projects\summary_notes\SummaryNotes\Image\p555-2.gif)
+![p555-2](C:\Projects\tech-notebook\markdown\image\p555-2.gif)
 
 - **循環List**
 
-![p555-3](C:\Projects\summary_notes\SummaryNotes\Image\p555-3.gif)
+![p555-3](C:\Projects\tech-notebook\markdown\image\p555-3.gif)
 
 
 
-### ◇ Object型
+### ◆ Object型
 
 ```
 Fruit Object
@@ -585,21 +633,21 @@ Fruit Object
 
 
 
-### ◇ Queue型
+### ◆ Queue型
 
-![Queue1](C:\Projects\summary_notes\SummaryNotes\Image\Queue1.gif)
+![Queue1](C:\Projects\tech-notebook\markdown\image\Queue1.gif)
 
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Queue2](C:\Projects\summary_notes\SummaryNotes\Image\Queue2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
  
 
-![Queue3](C:\Projects\summary_notes\SummaryNotes\Image\Queue3.gif)
+![Queue2](C:\Projects\tech-notebook\markdown\image\Queue2.gif)
+
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+
+ 
+
+![Queue3](C:\Projects\tech-notebook\markdown\image\Queue3.gif)
 
 PHPでは、```array_push()```と```array_shift()```を組み合わせることで実装できる。
 
@@ -635,31 +683,31 @@ echo $theFirst // Blue
 
 
 
-### ◇ Stack型
+### ◆ Stack型
 
 PHPでは、```array_push()```と```array_pop()```で実装可能。
 
-![Stack1](C:\Projects\summary_notes\SummaryNotes\Image\Stack1.gif)
+![Stack1](C:\Projects\tech-notebook\markdown\image\Stack1.gif)
 
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
-
- 
-
-![Stack2](C:\Projects\summary_notes\SummaryNotes\Image\Stack2.gif)
-
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
  
 
-![Stack3](C:\Projects\summary_notes\SummaryNotes\Image\Stack3.gif)
+![Stack2](C:\Projects\tech-notebook\markdown\image\Stack2.gif)
 
-### ◇ ツリー構造
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+
+ 
+
+![Stack3](C:\Projects\tech-notebook\markdown\image\Stack3.gif)
+
+### ◆ ツリー構造
 
 - **二分探索木**
 
   各ノードにデータが格納されている。
 
-![二分探索木](C:\Projects\summary_notes\SummaryNotes\Image\二分探索木1.gif)
+![二分探索木](C:\Projects\tech-notebook\markdown\image\二分探索木1.gif)
 
 
 
@@ -667,27 +715,27 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ1.gif)
+  ![ヒープ1](C:\Projects\tech-notebook\markdown\image\ヒープ1.gif)
 
-  ![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+  ![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
-![ヒープ1](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ2.gif)
+![ヒープ1](C:\Projects\tech-notebook\markdown\image\ヒープ2.gif)
 
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
-![ヒープ2](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ3.gif)
+![ヒープ2](C:\Projects\tech-notebook\markdown\image\ヒープ3.gif)
 
-![矢印_80x82](C:\Projects\summary_notes\SummaryNotes\Image\矢印_80x82.jpg)
+![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
 
-![ヒープ3](C:\Projects\summary_notes\SummaryNotes\Image\ヒープ4.gif)
+![ヒープ3](C:\Projects\tech-notebook\markdown\image\ヒープ4.gif)
 
 # 02-02. 変数
 
-### ◇ スーパーグローバル変数
+### ◆ スーパーグローバル変数
 
 スコープに関係なく、どのプログラムからでもアクセスできる連想配列変数
 
-![スーパーグローバル変数](C:\Projects\Summary_Notes\SummaryNotes\Image\スーパーグローバル変数.png)
+![スーパーグローバル変数](C:\Projects\tech-notebook\markdown\image\スーパーグローバル変数.png)
 
 - **```$_SERVER```に格納されている値**
 
@@ -734,7 +782,7 @@ $_SERVER['PHP_AUTH_PW']           HTTP認証時のパスワード
 $_SERVER['AUTH_TYPE']             HTTP認証時の認証形式
 ```
 
-- **Symfonyで、スーパーグローバル変数からの値取得**
+- **スーパーグローバル変数からの値取得（Symfony）**
 
 ```
 // $_GET['hoge']
@@ -764,7 +812,7 @@ $request->get('hoge');
 
 
 
-### ◇ 変数展開
+### ◆ 変数展開
 
 文字列の中で、変数の中身を取り出すことを『変数展開』と呼ぶ。
 
@@ -824,7 +872,7 @@ echo "これは{$fruit}です。";
 
 
 
-### ◇ 参照渡しと値渡し
+### ◆ 参照渡しと値渡し
 
 - **参照渡し**
 
@@ -872,7 +920,17 @@ echo $b;
 
 # 03-01. 条件式
 
-### ◇ If-Elseif と Switch-Case-Break
+### ◆ 決定表
+
+**【作成例】**
+
+平年とうるう年を出力する処理を、決定表で表す。その後、流れ図として表す。
+
+![決定表](C:\Projects\tech-notebook\markdown\image\決定表.png)
+
+
+
+### ◆ If-Elseif と Switch-Case-Break
 
 ```
 // 変数に Tue を格納
@@ -934,17 +992,7 @@ switch ($weeks) {
 
 
 
-### ◇ 決定表
-
-**【作成例】**
-
-平年とうるう年を出力する処理を、決定表で表す。その後、流れ図として表す。
-
-![決定表](C:\Projects\summary_notes\SummaryNotes\Image\決定表.png)
-
-
-
-### ◇ 『else』はできるだけ用いない
+### ◆ 『else』はできるだけ用いない
 
 - **『else』を用いる場合**
 
@@ -1019,7 +1067,7 @@ return $result;
 
 
 
-### ◇ オブジェクトごとにプロパティの値の有無が異なる時の出力
+### ◆ オブジェクトごとにプロパティの値の有無が異なる時の出力
 
 ```
 // 全てのオブジェクトが必ず持っているわけではなく、
@@ -1031,41 +1079,9 @@ $csv['ID'] = $order->id;
 
 
 
-### ◇ エラー文
-
-エラー文は、『ログファイル』に出力される。if文を通過してしまった理由は、empty()でTRUEが返ったためである。empty()がFALSEになるように、デバッグする。
-
-```
-if (empty($value)) {
-	throw new Exception('Variable is empty');
-}
-return $value
-```
-
-
-
-### ◇ 値が格納されているかを調べる関数
-
-![値が存在するのかを確かめる](C:\Projects\summary_notes\SummaryNotes\Image\値が存在するのかを確かめる.jpg)
-
-```
-# 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
-if($this->$var == TRUE){
-	処理A;
-}
-
-# ただし、基本的に右辺は省略すべき。
-
-if($this->$var){
-	処理A;
-}
-```
-
-
-
 # 03-02. 反復処理
 
-### ◇ Foreachの用途
+### ◆ Foreachの用途
 
 - **配列を返却したい場合**
 
@@ -1087,7 +1103,7 @@ if($this->$var){
 
 
 
-### ◇ 無限ループ
+### ◆ 無限ループ
 
 反復処理では、何らかの状態になった時に反復処理を終えなければならない。しかし、終えることができないと、無限ループが発生してしまう。
 
@@ -1109,11 +1125,43 @@ while($i < 4){
 
 
 
+# 03-03. 例外処理
+
+データベースから取得する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
+
+### ◆ 値が格納されているかを調べる関数
+
+![値が存在するのかを確かめる](C:\Projects\tech-notebook\markdown\image\値が存在するのかを確かめる.jpg)
+
+```
+# 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
+if($this->$var == TRUE){
+	処理A;
+}
+
+# ただし、基本的に右辺は省略すべき。
+
+if($this->$var){
+	処理A;
+}
+```
 
 
-# 03-03.  Boolean（真理値）
 
-### ◇ Falseの定義
+### ◆ エラー文
+
+定義されたエラー文は、デバック画面に表示される。if文を通過してしまった理由は、empty()でTRUEが返ったためである。empty()がFALSEになるように、デバッグする。
+
+```
+if (empty($value)) {
+	throw new Exception('Variable is empty');
+}
+return $value
+```
+
+
+
+### ◆ Falseの定義
 
 - **表示なし**
 
@@ -1137,7 +1185,7 @@ while($i < 4){
 
   
 
-### ◇ Trueの定義
+### ◆ Trueの定義
 
 上記の値以外は、全て TRUEである。
 
@@ -1145,7 +1193,7 @@ while($i < 4){
 
 # 03-04. 演算子
 
-### ◇ 等価演算子を用いたオブジェクトの比較
+### ◆ 等価演算子を用いたオブジェクトの比較
 
 - **イコールが2つの場合**
 
@@ -1196,43 +1244,43 @@ if($a === $b){
 
 # 04. 実装のモジュール化
 
-### ◇ STS分割法
+### ◆ STS分割法
 
 プログラムを、『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って、入力モジュール、処理モジュール、出力モジュール、の３つ分割する方法。（リクエスト ➔ DB ➔ レスポンス）
 
-![STS分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-1.png)
+![STS分割法](C:\Projects\tech-notebook\markdown\image\p485-1.png)
 
 
 
-### ◇ Transaction分割法
+### ◆ Transaction分割法
 
 データの種類によってTransaction（処理）の種類が決まるような場合に、プログラムを処理の種類ごとに分割する方法。
 
-![トランザクション分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-2.png)
+![トランザクション分割法](C:\Projects\tech-notebook\markdown\image\p485-2.png)
 
 
 
-### ◇ 共通機能分割法
+### ◆ 共通機能分割法
 
 プログラムを、共通の機能ごとに分割する方法
 
-![共通機能分割法](C:\Projects\summary_notes\SummaryNotes\Image\p485-3.jpg)
+![共通機能分割法](C:\Projects\tech-notebook\markdown\image\p485-3.jpg)
 
 
 
-### ◇ MVC
-
-ドメイン駆動設計のノートを参照せよ。
-
-
-
-### ◇ ドメイン駆動設計
+### ◆ MVC
 
 ドメイン駆動設計のノートを参照せよ。
 
 
 
-### ◇ デザインパターン
+### ◆ ドメイン駆動設計
+
+ドメイン駆動設計のノートを参照せよ。
+
+
+
+### ◆ デザインパターン
 
 デザインパターンのノートを参照せよ。
 
@@ -1240,7 +1288,7 @@ if($a === $b){
 
 # 05. ファイルパス
 
-### ◇ 絶対パス
+### ◆ 絶対パス
 
 ルートディレクトリ（fruit.com）から、指定のファイル（apple.png）までのパス。
 
@@ -1248,9 +1296,9 @@ if($a === $b){
 <img src="http://fruits.com/img/apple.png">
 ```
 
-![絶対パス](C:\Projects\summary_notes\SummaryNotes\Image\絶対パス.png)
+![絶対パス](C:\Projects\tech-notebook\markdown\image\絶対パス.png)
 
-### ◇ 相対パス
+### ◆ 相対パス
 
 起点となる場所（apple.html）から、指定のディレクトリやファイル（apple.png）の場所までを辿るパス。例えば、apple.htmlのページでapple.pngを使用したいとする。この時、『 .. 』を用いて一つ上の階層に行き、青の後、imgフォルダを指定する。
 
@@ -1258,5 +1306,42 @@ if($a === $b){
 <img src="../img/apple.png">
 ```
 
-![相対パス](C:\Projects\summary_notes\SummaryNotes\Image\相対パス.png)
+![相対パス](C:\Projects\tech-notebook\markdown\image\相対パス.png)
 
+
+
+# 06. ライブラリ
+
+### ◆ Carbon
+
+```
+use Carbon\Carbon;
+
+// インスタンス化で現在の日付時刻を生成
+$dt = new Carbon();
+echo $dt . "\n"; // 2016-05-01 11:17:38
+
+// インスタンス化で現在の日付時刻を生成
+$dt = Carbon::now();
+echo $dt . "\n"; // 2016-05-01 11:17:38
+
+// 引数の日付時刻の0時を生成
+$dt = new Carbon('2016-04-30');
+echo $dt . "\n"; // 2016-04-30 00:00:00
+
+// 今日の日付時刻の0時を生成
+$dt = Carbon::today();
+echo $dt . "\n"; // 2016-05-01 00:00:00
+
+// 明日の日付時刻の0時を生成
+$dt = Carbon::tomorrow();
+echo $dt . "\n"; // 2016-05-02 00:00:00
+
+// 昨日の日付時刻の0時を生成
+$dt = Carbon::yesterday();
+echo $dt . "\n"; //2016-04-30 00:00:00
+
+// 何をしてくれるやつ？
+$dt = Carbon::parse('2016-04-30 10:32:32');
+echo $dt . "\n"; //2016-04-30 10:32:32
+```
