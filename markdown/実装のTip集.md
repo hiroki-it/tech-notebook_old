@@ -520,6 +520,121 @@ echo $optionName //オプションA
 
 
 
+# 01-03. 外部ファイルの読み込みとコール
+
+### ◆ use文による読み込みとコール
+
+PHPでは、use文によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込み、コールできる。ただし、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでいたらスパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、use文で読み込んでよいものを制限するとよい。
+
+**【以下で読み込まれるクラスの実装例】**
+
+```PHP
+// 名前空間を定義。
+namespace Domain/Entity1;
+
+// 定数を定義。
+const VALUE = "これは定数です。"
+
+class E1
+{
+	public function className()
+	{
+		return "example1メソッドです。";
+	}
+}
+```
+
+- **名前空間の読み込み**
+
+```PHP
+// use文で名前空間を読み込む。
+use Domain/Entity2
+
+namespace Domain/Entity2;
+
+class E2
+{
+	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
+	$e1 = new Entity1/E1:
+	echo $e1;
+}
+```
+
+- **クラスの読み込み**
+
+```PHP
+// use文でクラス名を読み込む。
+use Domain/Entity1/E1;
+
+namespace Domain/Entity2;
+
+class E2
+{
+	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
+	$e1 = new E1;
+	echo $e1;
+}
+```
+
+- **メソッドの読み込み**
+
+```PHP
+// use文でメソッドを読み込む。
+use Domain/Entity1/E1/className;
+
+namespace Domain/Entity2;
+
+class E2
+{
+	// E1クラスのclassName()をコール。
+	echo className();
+}
+```
+
+- **定数の読み込み**
+
+```PHP
+// use文で定数を読み込む。
+use Domain/Entity1/E1/VALUE;
+
+namespace Domain/Entity2;
+
+class E2
+{
+	// E1クラスの定数を出力。
+	echo VALUE;
+}
+```
+
+
+
+### ◆ 親クラスの静的メソッドのコール
+
+```PHP
+abstract class Example 
+{
+	public function example()
+	{
+		// 処理内容;
+	}
+}
+```
+
+```PHP
+class SubExample
+{
+	public function subExample()	
+	{
+        // 親メソッドの静的メソッドをコール
+		$example = parent::example();
+	} 
+}
+```
+
+
+
+
+
 # 02-01. データ型
 
 プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
@@ -931,7 +1046,39 @@ echo $b;
 
 
 
-# 03-01. 条件式
+# 02-03. Bool値
+
+### ◆ Falseの定義
+
+- **表示なし**
+
+- **キーワード FALSE false**
+
+- **整数 0**
+
+- **浮動小数点 0.0**
+
+- **空の文字列 " "**
+
+- **空の文字列 ' '**
+
+- **文字列 "0"（文字列としての0）**
+
+- **要素数が 0 の配列$ary = array();**
+
+- **プロパティーやメソッドを含まない空のオブジェクト**
+
+- **NULL値**
+
+  
+
+### ◆ Trueの定義
+
+上記の値以外は、全て TRUEである。
+
+
+
+# 02-04. 条件式
 
 ### ◆ 決定表
 
@@ -1019,7 +1166,8 @@ const noOptionItem = 0;
 if(!empty($routeEntity->options) {
     foreach ($routeEntity->options as $option) {
     
-    	// if文を通過した場合、メソッドの返り値が格納される。通過しない場合、定数が格納される。
+    	// if文を通過した場合、メソッドの返り値が格納される。
+        // 通過しない場合、定数が格納される。
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
 		} else {
@@ -1060,7 +1208,8 @@ $result['optionItemC'] = noOptionItem;
 if(!empty($routeEntity->options) {
     foreach ($routeEntity->options as $option) {
     
-    	// if文を通過した場合、メソッドの返り値によって初期値0が上書きされる。通過しない場合、初期値0が用いられる。
+		// if文を通過した場合、メソッドの返り値によって初期値0が上書きされる。
+        // 通過しない場合、初期値0が用いられる。
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
 		}
@@ -1092,7 +1241,145 @@ $csv['ID'] = $order->id;
 
 
 
-# 03-02. 反復処理
+
+
+
+
+# 02-05. 例外処理
+
+データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
+
+### ◆ 例外処理前の条件分岐
+
+|          | if($var) | isset($var) | ! empty($var) | ! is_null($var) |
+| :------- | :------: | :---------: | :-----------: | :-------------: |
+| 0        |    ✕     |   **〇**    |       ✕       |     **〇**      |
+| 1        |  **〇**  |   **〇**    |    **〇**     |     **〇**      |
+| ""       |    ✕     |   **〇**    |       ✕       |     **〇**      |
+| "あ"     |    ✕     |   **〇**    |       ✕       |     **〇**      |
+| NULL     |    ✕     |      ✕      |       ✕       |        ✕        |
+| array()  |    ✕     |   **〇**    |       ✕       |     **〇**      |
+| array(1) |  **〇**  |   **〇**    |    **〇**     |     **〇**      |
+
+
+
+```PHP
+# 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
+if($this->$var == TRUE){
+	// 処理A;
+}
+
+# ただし、基本的に右辺は省略すべき。
+if($this->$var){
+	// 処理A;
+}
+```
+
+
+
+### ◆ Exceptionクラスを継承した独自例外クラス
+
+```PHP
+// HttpRequestに対処する例外クラス
+class HttpRequestException extends Exception
+{
+	// インスタンスが作成された時に実行される処理
+	public function __construct()
+	{
+		parent::__construct("HTTPリクエストに失敗しました", 400);
+	}
+	
+	// 新しいメソッドを定義
+	public function example()
+	{
+		// なんらかの処理;
+	}
+}
+```
+
+
+
+### ◆ If-Throw文
+
+特定の処理の中に、想定できる例外があり、それをエラー文として出力するために用いる。ここでは、全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている。
+
+```PHP
+if (empty($value)) {
+	throw new Exception('Variable is empty');
+}
+
+return $value;
+```
+
+
+
+### ◆ Try-Catch文
+
+特定の処理の中に、想定できない例外があり、それをエラー文として出力するために用いる。定義されたエラー文は、デバック画面に表示される。
+
+```PHP
+// Exceptionを投げる
+try{
+    // WebAPIの接続に失敗した場合
+    if(...){
+        throw new WebAPIException();
+    }
+    
+    if(...){
+        throw new HttpRequestException();
+    }
+
+// try文で指定のExceptionが投げられた時に、指定のcatch文に入る
+// あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）
+}catch(WebAPIException $e){
+   	// エラー文を出力。
+   	print $e->getMessage();
+
+    
+}catch(HttpRequestException $e){
+   	// エラー文を出力。
+   	print $e->getMessage();
+
+    
+// Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため、最後に記述するべき。
+}catch(Exception $e){
+    // 特定できなかったことを示すエラーを出力
+    throw new Exception("なんらかの例外が発生しました。")      
+
+        
+// 正常と例外にかかわらず、必ず実行される。
+}finally{
+    // 正常と例外にかかわらず、必ずファイルを閉じるための処理
+}
+```
+
+以下、上記で使用した独自の例外クラス。
+
+```PHP
+// HttpRequestに対処する例外クラス
+class HttpRequestException extends Exception
+{
+	// インスタンスが作成された時に実行される処理
+	public function __construct()
+	{
+		parent::__construct("HTTPリクエストに失敗しました", 400);
+	}
+```
+
+```PHP
+// HttpRequestに対処する例外クラス
+class HttpRequestException extends Exception
+{
+	// インスタンスが作成された時に実行される処理
+	public function __construct()
+	{
+		parent::__construct("HTTPリクエストに失敗しました", 400)
+	}
+```
+
+
+
+# 02-06. 反復処理
 
 ### ◆ Foreachの用途
 
@@ -1138,73 +1425,7 @@ while($i < 4){
 
 
 
-# 03-03. 例外処理
-
-データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
-
-### ◆ 値が格納されているかを調べる関数
-
-![値が存在するのかを確かめる](C:\Projects\tech-notebook\markdown\image\値が存在するのかを確かめる.jpg)
-
-```PHP
-# 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
-if($this->$var == TRUE){
-	処理A;
-}
-
-# ただし、基本的に右辺は省略すべき。
-
-if($this->$var){
-	処理A;
-}
-```
-
-
-
-### ◆ エラー文
-
-定義されたエラー文は、デバック画面に表示される。if文を通過してしまった理由は、empty()でTRUEが返ったためである。empty()がFALSEになるように、デバッグする。
-
-```PHP
-if (empty($value)) {
-	throw new Exception('Variable is empty');
-}
-return $value
-```
-
-
-
-### ◆ Falseの定義
-
-- **表示なし**
-
-- **キーワード FALSE false**
-
-- **整数 0**
-
-- **浮動小数点 0.0**
-
-- **空の文字列 " "**
-
-- **空の文字列 ' '**
-
-- **文字列 "0"（文字列としての0）**
-
-- **要素数が 0 の配列$ary = array();**
-
-- **プロパティーやメソッドを含まない空のオブジェクト**
-
-- **NULL値**
-
-  
-
-### ◆ Trueの定義
-
-上記の値以外は、全て TRUEである。
-
-
-
-# 03-04. 演算子
+# 02-07. 演算子
 
 ### ◆ 等価演算子を用いたオブジェクトの比較
 
@@ -1291,109 +1512,6 @@ $var = (object) $var
 
 
 
-
-
-# 03-05. 外部ファイルの読み込みとコール
-
-### ◆ use文による読み込みとコール
-
-PHPでは、use文によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込み、コールできる。ただし、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでいたらスパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、use文で読み込んでよいものを制限するとよい。
-
-**【以下で読み込まれるクラスの実装例】**
-
-
-```PHP
-// 名前空間を定義。
-namespace Domain/Entity1;
-
-// 定数を定義。
-const VALUE = "これは定数です。"
-
-class E1
-{
-	public function className()
-	{
-		return "example1メソッドです。";
-	}
-}
-```
-
-- **名前空間の読み込み**
-
-```PHP
-// use文で名前空間を読み込む。
-use Domain/Entity2
-
-namespace Domain/Entity2;
-
-class E2
-{
-	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
-	$e1 = new Entity1/E1:
-	echo $e1;
-}
-```
-
--  **クラスの読み込み**
-
-```PHP
-// use文でクラス名を読み込む。
-use Domain/Entity1/E1;
-
-namespace Domain/Entity2;
-
-class E2
-{
-	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
-	$e1 = new E1;
-	echo $e1;
-}
-```
-
--  **メソッドの読み込み**
-
-```PHP
-// use文でメソッドを読み込む。
-use Domain/Entity1/E1/className;
-
-namespace Domain/Entity2;
-
-class E2
-{
-	// E1クラスのclassName()をコール。
-	echo className();
-}
-```
-
--  **定数の読み込み**
-
-```PHP
-// use文で定数を読み込む。
-use Domain/Entity1/E1/VALUE;
-
-namespace Domain/Entity2;
-
-class E2
-{
-	// E1クラスの定数を出力。
-	echo VALUE;
-}
-```
-
-
-
-### ◆ 親クラスから静的メソッドのコール
-
-```
-parent::
-```
-
-
-
-
-
-
-
 # 04. 実装のモジュール化
 
 ### ◆ STS分割法
@@ -1460,40 +1578,3 @@ parent::
 
 ![相対パス](C:\Projects\tech-notebook\markdown\image\相対パス.png)
 
-
-
-# 06. ライブラリ
-
-### ◆ Carbon
-
-```PHP
-use Carbon\Carbon;
-
-// インスタンス化で現在の日付時刻を生成
-$dt = new Carbon();
-echo $dt . "\n"; // 2016-05-01 11:17:38
-
-// インスタンス化で現在の日付時刻を生成
-$dt = Carbon::now();
-echo $dt . "\n"; // 2016-05-01 11:17:38
-
-// 引数の日付時刻の0時を生成
-$dt = new Carbon('2016-04-30');
-echo $dt . "\n"; // 2016-04-30 00:00:00
-
-// 今日の日付時刻の0時を生成
-$dt = Carbon::today();
-echo $dt . "\n"; // 2016-05-01 00:00:00
-
-// 明日の日付時刻の0時を生成
-$dt = Carbon::tomorrow();
-echo $dt . "\n"; // 2016-05-02 00:00:00
-
-// 昨日の日付時刻の0時を生成
-$dt = Carbon::yesterday();
-echo $dt . "\n"; //2016-04-30 00:00:00
-
-// 何をしてくれるやつ？
-$dt = Carbon::parse('2016-04-30 10:32:32');
-echo $dt . "\n"; //2016-04-30 10:32:32
-```
