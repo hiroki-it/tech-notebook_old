@@ -417,7 +417,65 @@ var_dump($result);
 
 
 
-### ◆ 高階関数とClosure（無名関数）
+### ◆ Closure（無名関数）を用いた関数の即時実行
+
+定義したその場で実行される無名関数を『即時関数』と呼ぶ。
+
+- **useのみに引数を渡す場合**
+
+```PHP
+// 即時関数を定義
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
+// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
+$optionName = call_user_func(function() use($item){
+        $item->hasOption()
+        ? $item->getOption()->name()
+        : '';
+	});
+	
+// 出力結果
+echo $optionName
+オプションA
+```
+
+- **useのみに引数を渡す場合**
+
+```PHP
+// 即時関数を定義
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
+// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
+$optionName = call_user_func(function($para) use($item){
+                $item->hasOption()
+                ? $item->getOption()->name().$para
+                : '';
+            });
+	
+// 出力結果
+echo $optionName("BC")
+オプションABC
+```
+
+- **プロパティの値に無名関数を格納しておく裏技**
+
+```PHP
+// 即時関数を定義
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
+// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
+$option = new Option;
+$option->setName() = call_user_func(function($para) use($item){
+                        $item->hasOption()
+                        ? $item->getOption()->name().$para
+                        : '';
+					});
+	
+// 出力結果
+echo $name("BC")
+オプションABC
+```
+
+
+
+### ◆ 高階関数とClosure（無名関数）の組み合わせ
 
 関数を引数として受け取ったり、関数自体を返したりする関数を『高階関数』と呼ぶ。
 
@@ -426,7 +484,7 @@ var_dump($result);
 **【実装例】**
 
 ```PHP
-## 第一引数のみの場合
+// 第一引数のみの場合
 
 // 高階関数を定義
 function test($callback)
@@ -449,7 +507,7 @@ test("callbackMethod");
 ```
 
 ```PHP
-## 第一引数と第二引数の場合
+// 第一引数と第二引数の場合
 
 // 高階関数を定義
 public function higher-order($param, $callback)
@@ -476,46 +534,23 @@ higher-order("第一引数", "callbackMethod");
 
 ```PHP
 // 高階関数のように、関数を引数として渡す。
-public function higher-order($param, $callback)
+public function higher-order($parentVar, $callback)
 {
 	$parentVar = "&親メソッドのスコープの変数"
-	return $callback($param)
+	return $callback($parentVar)
 }
 
 // 第二引数の無名関数。関数の中でコールされるため、「後でコールされる」という意味合いから、コールバック関数といえる。
 // コールバック関数は再利用されないため、名前をつけずに無名関数とすることが多い。
-// 親メソッドのスコープの変数を引数として用いることができる。
-high-order(第一引数, 
-        function($param) use($parentVar)
+// 親メソッドのスコープで定義されている変数を引数として渡す。（普段よくやっている値渡しと同じ）
+high-order($parentVar, function() use($parentVar)
         {
-            return $param.$parentVar."の出力成功";
+            return $parentVar."の出力成功";
         }
 	)
 	
 // 出力結果
-第一引数&親メソッドのスコープの変数の出力成功	
-```
-
-
-
-### ◆ Closure（無名関数）と即時関数
-
-定義したその場で実行される無名関数を『即時関数』と呼ぶ。
-
-```PHP
-$item = new Item;
-$item->getOption()->setName('オプションA')
-
-// 即時関数を定義
-// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
-$optionName = call_user_func(function() use($item){
-        $item->hasOption()
-        ? $item->getOption()->name()
-        : '';
-	});
-	
-// 出力結果
-echo $optionName //オプションA
+親メソッドのスコープの変数の出力成功	
 ```
 
 
@@ -1427,7 +1462,7 @@ while($i < 4){
 
 # 02-07. 演算子
 
-### ◆ 等価演算子を用いたオブジェクトの比較
+### ◆ 等価演算子を用いたインスタンスの比較
 
 - **イコールが2つの場合**
 
