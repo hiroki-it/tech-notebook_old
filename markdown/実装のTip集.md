@@ -1115,17 +1115,13 @@ echo $b;
 
 # 02-04. 条件式
 
-### ◆ 決定表
+### ◆ if-elseとswitch-case-break
 
-**【作成例】**
+**【実装例】**
 
-平年とうるう年を出力する処理を、決定表で表す。その後、流れ図として表す。
+曜日を判定し、文字列を出力する。
 
-![決定表](C:\Projects\tech-notebook\markdown\image\決定表.png)
-
-
-
-### ◆ If-Elseif と Switch-Case-Break
+- **if-else**
 
 ```PHP
 // 変数に Tue を格納
@@ -1151,6 +1147,7 @@ if ($weeks == 'Mon') {
 // 実行結果
 火曜日
 ```
+- **switch-case-break**
 
 ```PHP
 // 変数に Tue を格納
@@ -1187,9 +1184,9 @@ switch ($weeks) {
 
 
 
-### ◆ 『else』はできるだけ用いない
+### ◆ if-elseはできるだけ用いない
 
-- **『else』を用いる場合**
+- **if-elseを用いた場合**
 
 冗長になってしまう。
 
@@ -1226,7 +1223,7 @@ if(!empty($routeEntity->options) {
 return $result;
 ```
 
-- **初期値と上書きのロジックを用いる場合**
+- **if-elseを用いた場合（初期値と上書きのロジックを用いた場合）**
 
 よりすっきりした書き方になる。
 
@@ -1264,6 +1261,90 @@ return $result;
 
 
 
+### ◆ if-elseif-elseはできるだけ用いない
+
+**【実装例】**
+
+うるう年であるかを判定し、文字列を出力する。この処理は、流れ図と決定表で表せる。動作部は、複数の条件分岐で出力される。
+
+![決定表](C:\Projects\tech-notebook\markdown\image\決定表.png)
+
+- **if-elseif-elseを用いた場合**
+
+```PHP
+// 西暦を格納する。
+$year = N;
+```
+
+```PHP
+public function leapYear(Int $year): String
+{
+
+    // (5)
+    if($year <= 0){
+        throw new Exception("負の数は判定できません。");
+
+    // (4)
+    } elseif($year % 4 != 0 ){
+        return "平年";
+
+    // (3)
+    } elseif($year % 100 != 0){
+        return "うるう年";
+
+    // (2)
+    } elseif($year % 400 != 0){
+        return "平年";
+
+    // (1)
+    } else{
+    	return "うるう年";
+    	
+    }
+}
+```
+
+- **if-elseif-elseを用いない場合**
+
+returnを用いることで、if文が入れ子状になることを防ぐことができる。
+
+```PHP
+// 西暦を格納する。
+$year = N;
+```
+
+```PHP
+public function leapYear(Int $year): String
+{
+
+    // (5)
+    if($year <= 0){
+        throw new Exception("負の数は判定できません。");
+    }
+
+    // (4)
+    if($year % 4 != 0 ){
+        return "平年";
+    }
+
+    // (3)
+    if($year % 100 != 0){
+        return "うるう年";
+    }
+
+    // (2)
+    if($year % 400 != 0){
+        return "平年";
+    }
+
+    // (1)
+    return "うるう年";
+    
+}
+```
+
+
+
 ### ◆ オブジェクトごとにプロパティの値の有無が異なる時の出力
 
 ```PHP
@@ -1276,27 +1357,25 @@ $csv['ID'] = $order->id;
 
 
 
-
-
-
-
 # 02-05. 例外処理
 
 データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
 
 ### ◆ 例外処理前の条件分岐
 
-|          | if($var) | isset($var) | ! empty($var) | ! is_null($var) |
-| :------- | :------: | :---------: | :-----------: | :-------------: |
-| 0        |    ✕     |   **〇**    |       ✕       |     **〇**      |
-| 1        |  **〇**  |   **〇**    |    **〇**     |     **〇**      |
-| ""       |    ✕     |   **〇**    |       ✕       |     **〇**      |
-| "あ"     |    ✕     |   **〇**    |       ✕       |     **〇**      |
-| NULL     |    ✕     |      ✕      |       ✕       |        ✕        |
-| array()  |    ✕     |   **〇**    |       ✕       |     **〇**      |
-| array(1) |  **〇**  |   **〇**    |    **〇**     |     **〇**      |
+〇：```TRUE```
 
+✕：```FALSE```
 
+|          | if($var) | ! empty($var) | isset($var) | ! is_null($var) |
+| :------- | :------: | :-----------: | :---------: | :-------------: |
+| 0        |    ✕     |       ✕       |   **〇**    |     **〇**      |
+| 1        |  **〇**  |    **〇**     |   **〇**    |     **〇**      |
+| ""       |    ✕     |       ✕       |   **〇**    |     **〇**      |
+| "あ"     |    ✕     |       ✕       |   **〇**    |     **〇**      |
+| NULL     |    ✕     |       ✕       |      ✕      |        ✕        |
+| array()  |    ✕     |       ✕       |   **〇**    |     **〇**      |
+| array(1) |  **〇**  |    **〇**     |   **〇**    |     **〇**      |
 
 ```PHP
 # 右辺には、上記に当てはまらない状態『TRUE』が置かれている。
@@ -1457,6 +1536,72 @@ while($i < 4){
 ```
 
 - **continue**
+
+
+
+### ◆ 反復を含む流れ図における実装との対応
+
+『N個の正負の整数の中から、正の数のみの合計を求める』という処理を行うとする。
+
+- **for**
+
+![流れ図_for文](C:\Projects\tech-notebook\markdown\image\流れ図_for文.png)
+
+```PHP
+$a = array(1, -1, 2, ... ,N);
+```
+
+```PHP
+sum = 0;
+
+for(i = 0; i < N; i++){
+	$x = $a[i]
+	if($x > 0){
+		sum += $x;
+	}
+}
+```
+
+- **while**
+
+![流れ図_while文](C:\Projects\tech-notebook\markdown\image\流れ図_while文.png)
+
+```PHP
+$a = array(1, -1, 2, ... ,N);
+```
+
+```PHP
+sum = 0;
+
+// 反復数の初期値
+i = 0;
+
+while(i < N){
+	$x = $a[i];
+	if($x > 0){
+		sum += $x
+	}
+	i += 1;
+}
+```
+
+- **foreach**
+
+![流れ図_foreach文](C:\Projects\tech-notebook\markdown\image\流れ図_foreach文.png)
+
+```PHP
+$a = array(1, -1, 2, ... ,N);
+```
+
+```PHP
+sum = 0;
+
+foreach($a as $x){
+    if($x > 0){
+        sum += $x;
+    }
+}
+```
 
 
 
