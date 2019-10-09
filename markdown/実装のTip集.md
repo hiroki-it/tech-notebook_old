@@ -348,7 +348,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
 
-![再帰的](C:\Projects\tech-notebook\markdown\image\再帰的.png)
+![再帰的](随時、リポジトリの画像フォルダへコピーせよ\再帰的.png)
 
 **【実装例】**
 
@@ -555,6 +555,42 @@ high-order($parentVar, function() use($parentVar)
 
 
 
+### ◆ 高階関数を使いこなす！
+
+```PHP
+/**
+ * @var Array
+ */
+protected $properties;
+
+// 非無名メソッドあるいは無名メソッドを引数で渡す。
+public function Shiborikomi($callback)
+{
+	if (!is_callable($callback)) {
+	throw new \LogicException;
+	}
+
+    // 自身が持つ配列型のプロパティを加工し、再格納する。
+	$properties = [];
+	foreach ($this->properties as $property) {
+        
+        // 引数の無名関数によって、プロパティに対する加工方法が異なる。
+        // 例えば、判定でTRUEのもののみを返すメソッドを渡すと、自プロパティを絞り込むような処理を行える。
+		$returned = call_user_func($property, $callback);
+		if ($returned) {
+            
+            // 再格納。
+			$properties[] = $returned;
+		}
+	}
+
+    // 他のプロパティは静的に扱ったうえで、自身を返す。
+	return new static($properties);
+}
+```
+
+
+
 # 01-03. 外部ファイルの読み込みとコール
 
 ### ◆ use文による読み込みとコール
@@ -668,17 +704,21 @@ class SubExample
 
 
 
-
-
 # 02-01. データ型
 
 プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
 
 ### ◆ Array型
 
-『内部ポインタ』とは、配列において、参照したい要素を位置で指定するためのカーソルのこと。
+- **配列内の要素の走査（スキャン）**
+
+配列内の要素を順に調べていくことを『走査（スキャン）』という。例えば、foreachは、配列内の全ての要素を走査する処理である。
+
+![配列の走査](image\配列の走査.png)
 
 - **内部ポインタを用いた配列要素の出力**
+
+『内部ポインタ』とは、配列において、参照したい要素を位置で指定するためのカーソルのこと。
 
 ```PHP
 $array = array("あ", "い", "う");
@@ -750,7 +790,7 @@ Array
 
 ### ◆ List型
 
-配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、以下のように実装する必要がある。
+配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、冗長ではあるが、以下のように実装する必要がある。
 
 ```PHP
 $array = array("あ", "い", "う");
@@ -771,15 +811,15 @@ echo $a.$i.$u; // あいう
 
 - **単方向List**
 
-![p555-1](C:\Projects\tech-notebook\markdown\image\p555-1.gif)
+![p555-1](image\p555-1.gif)
 
 - **双方向List**
 
-![p555-2](C:\Projects\tech-notebook\markdown\image\p555-2.gif)
+![p555-2](image\p555-2.gif)
 
 - **循環List**
 
-![p555-3](C:\Projects\tech-notebook\markdown\image\p555-3.gif)
+![p555-3](image\p555-3.gif)
 
 
 
@@ -798,19 +838,19 @@ Fruit Object
 
 ### ◆ Queue型
 
-![Queue1](C:\Projects\tech-notebook\markdown\image\Queue1.gif)
+![Queue1](image\Queue1.gif)
 
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
-
- 
-
-![Queue2](C:\Projects\tech-notebook\markdown\image\Queue2.gif)
-
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+![矢印_80x82](image\矢印_80x82.jpg)
 
  
 
-![Queue3](C:\Projects\tech-notebook\markdown\image\Queue3.gif)
+![Queue2](image\Queue2.gif)
+
+![矢印_80x82](image\矢印_80x82.jpg)
+
+ 
+
+![Queue3](image\Queue3.gif)
 
 PHPでは、```array_push()```と```array_shift()```を組み合わせることで実装できる。
 
@@ -850,19 +890,19 @@ echo $theFirst // Blue
 
 PHPでは、```array_push()```と```array_pop()```で実装可能。
 
-![Stack1](C:\Projects\tech-notebook\markdown\image\Stack1.gif)
+![Stack1](image\Stack1.gif)
 
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
-
- 
-
-![Stack2](C:\Projects\tech-notebook\markdown\image\Stack2.gif)
-
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+![矢印_80x82](image\矢印_80x82.jpg)
 
  
 
-![Stack3](C:\Projects\tech-notebook\markdown\image\Stack3.gif)
+![Stack2](image\Stack2.gif)
+
+![矢印_80x82](image\矢印_80x82.jpg)
+
+ 
+
+![Stack3](image\Stack3.gif)
 
 ### ◆ ツリー構造
 
@@ -870,7 +910,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   各ノードにデータが格納されている。
 
-![二分探索木](C:\Projects\tech-notebook\markdown\image\二分探索木1.gif)
+![二分探索木](image\二分探索木1.gif)
 
 
 
@@ -878,19 +918,19 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](C:\Projects\tech-notebook\markdown\image\ヒープ1.gif)
+  ![ヒープ1](image\ヒープ1.gif)
 
-  ![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+  ![矢印_80x82](image\矢印_80x82.jpg)
 
-![ヒープ1](C:\Projects\tech-notebook\markdown\image\ヒープ2.gif)
+![ヒープ1](image\ヒープ2.gif)
 
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+![矢印_80x82](image\矢印_80x82.jpg)
 
-![ヒープ2](C:\Projects\tech-notebook\markdown\image\ヒープ3.gif)
+![ヒープ2](image\ヒープ3.gif)
 
-![矢印_80x82](C:\Projects\tech-notebook\markdown\image\矢印_80x82.jpg)
+![矢印_80x82](image\矢印_80x82.jpg)
 
-![ヒープ3](C:\Projects\tech-notebook\markdown\image\ヒープ4.gif)
+![ヒープ3](image\ヒープ4.gif)
 
 # 02-02. 変数
 
@@ -898,7 +938,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 スコープに関係なく、どのプログラムからでもアクセスできる連想配列変数
 
-![スーパーグローバル変数](C:\Projects\tech-notebook\markdown\image\スーパーグローバル変数.png)
+![スーパーグローバル変数](image\スーパーグローバル変数.png)
 
 - **```$_SERVER```に格納されている値**
 
@@ -1267,7 +1307,7 @@ return $result;
 
 うるう年であるかを判定し、文字列を出力する。この処理は、流れ図と決定表で表せる。動作部は、複数の条件分岐で出力される。
 
-![決定表](C:\Projects\tech-notebook\markdown\image\決定表.png)
+![決定表](image\決定表.png)
 
 - **if-elseif-elseを用いた場合**
 
@@ -1413,7 +1453,7 @@ class HttpRequestException extends Exception
 
 
 
-### ◆ If-Throw文
+### ◆ if-throw文
 
 特定の処理の中に、想定できる例外があり、それをエラー文として出力するために用いる。ここでは、全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている。
 
@@ -1427,7 +1467,7 @@ return $value;
 
 
 
-### ◆ Try-Catch文
+### ◆ try-catch文
 
 特定の処理の中に、想定できない例外があり、それをエラー文として出力するために用いる。定義されたエラー文は、デバック画面に表示される。
 
@@ -1545,7 +1585,7 @@ while($i < 4){
 
 - **for**
 
-![流れ図_for文](C:\Projects\tech-notebook\markdown\image\流れ図_for文.png)
+![流れ図_for文](image\流れ図_for文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1564,7 +1604,7 @@ for(i = 0; i < N; i++){
 
 - **while**
 
-![流れ図_while文](C:\Projects\tech-notebook\markdown\image\流れ図_while文.png)
+![流れ図_while文](image\流れ図_while文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1587,7 +1627,7 @@ while(i < N){
 
 - **foreach**
 
-![流れ図_foreach文](C:\Projects\tech-notebook\markdown\image\流れ図_foreach文.png)
+![流れ図_foreach文](image\流れ図_foreach文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1698,7 +1738,7 @@ $var = (object) $var
 
 プログラムを、『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って、入力モジュール、処理モジュール、出力モジュール、の３つ分割する方法。（リクエスト ➔ DB ➔ レスポンス）
 
-![STS分割法](C:\Projects\tech-notebook\markdown\image\p485-1.png)
+![STS分割法](image\p485-1.png)
 
 
 
@@ -1706,7 +1746,7 @@ $var = (object) $var
 
 データの種類によってTransaction（処理）の種類が決まるような場合に、プログラムを処理の種類ごとに分割する方法。
 
-![トランザクション分割法](C:\Projects\tech-notebook\markdown\image\p485-2.png)
+![トランザクション分割法](image\p485-2.png)
 
 
 
@@ -1714,7 +1754,7 @@ $var = (object) $var
 
 プログラムを、共通の機能ごとに分割する方法
 
-![共通機能分割法](C:\Projects\tech-notebook\markdown\image\p485-3.jpg)
+![共通機能分割法](image\p485-3.jpg)
 
 
 
@@ -1746,7 +1786,7 @@ $var = (object) $var
 <img src="http://fruits.com/img/apple.png">
 ```
 
-![絶対パス](C:\Projects\tech-notebook\markdown\image\絶対パス.png)
+![絶対パス](image\絶対パス.png)
 
 ### ◆ 相対パス
 
@@ -1756,5 +1796,5 @@ $var = (object) $var
 <img src="../img/apple.png">
 ```
 
-![相対パス](C:\Projects\tech-notebook\markdown\image\相対パス.png)
+![相対パス](image\相対パス.png)
 
