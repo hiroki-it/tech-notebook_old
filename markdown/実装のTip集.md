@@ -714,7 +714,7 @@ class SubExample
 
 配列内の要素を順に調べていくことを『走査（スキャン）』という。例えば、foreachは、配列内の全ての要素を走査する処理である。
 
-![配列の走査](image\配列の走査.png)
+![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/配列の走査.png)
 
 - **内部ポインタを用いた配列要素の出力**
 
@@ -811,15 +811,15 @@ echo $a.$i.$u; // あいう
 
 - **単方向List**
 
-![p555-1](image\p555-1.gif)
+![p555-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-1.gif)
 
 - **双方向List**
 
-![p555-2](image\p555-2.gif)
+![p555-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-2.gif)
 
 - **循環List**
 
-![p555-3](image\p555-3.gif)
+![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-3.gif)
 
 
 
@@ -838,19 +838,19 @@ Fruit Object
 
 ### ◆ Queue型
 
-![Queue1](image\Queue1.gif)
+![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue1.gif)
 
-![矢印_80x82](image\矢印_80x82.jpg)
-
- 
-
-![Queue2](image\Queue2.gif)
-
-![矢印_80x82](image\矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
  
 
-![Queue3](image\Queue3.gif)
+![Queue2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue2.gif)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+
+ 
+
+![Queue3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue3.gif)
 
 PHPでは、```array_push()```と```array_shift()```を組み合わせることで実装できる。
 
@@ -890,19 +890,19 @@ echo $theFirst // Blue
 
 PHPでは、```array_push()```と```array_pop()```で実装可能。
 
-![Stack1](image\Stack1.gif)
+![Stack1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack1.gif)
 
-![矢印_80x82](image\矢印_80x82.jpg)
-
- 
-
-![Stack2](image\Stack2.gif)
-
-![矢印_80x82](image\矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
  
 
-![Stack3](image\Stack3.gif)
+![Stack2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack2.gif)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+
+ 
+
+![Stack3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack3.gif)
 
 ### ◆ ツリー構造
 
@@ -910,7 +910,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   各ノードにデータが格納されている。
 
-![二分探索木](image\二分探索木1.gif)
+![二分探索木](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/二分探索木1.gif)
 
 
 
@@ -918,19 +918,19 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](image\ヒープ1.gif)
+  ![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ1.gif)
 
-  ![矢印_80x82](image\矢印_80x82.jpg)
+  ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![ヒープ1](image\ヒープ2.gif)
+![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ2.gif)
 
-![矢印_80x82](image\矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![ヒープ2](image\ヒープ3.gif)
+![ヒープ2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ3.gif)
 
-![矢印_80x82](image\矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![ヒープ3](image\ヒープ4.gif)
+![ヒープ3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ4.gif)
 
 # 02-02. 変数
 
@@ -938,7 +938,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 スコープに関係なく、どのプログラムからでもアクセスできる連想配列変数
 
-![スーパーグローバル変数](image\スーパーグローバル変数.png)
+![スーパーグローバル変数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/スーパーグローバル変数.png)
 
 - **```$_SERVER```に格納されている値**
 
@@ -1307,7 +1307,7 @@ return $result;
 
 うるう年であるかを判定し、文字列を出力する。この処理は、流れ図と決定表で表せる。動作部は、複数の条件分岐で出力される。
 
-![決定表](image\決定表.png)
+![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/決定表.png)
 
 - **if-elseif-elseを用いた場合**
 
@@ -1585,7 +1585,7 @@ while($i < 4){
 
 - **for**
 
-![流れ図_for文](image\流れ図_for文.png)
+![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_for文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1604,7 +1604,7 @@ for(i = 0; i < N; i++){
 
 - **while**
 
-![流れ図_while文](image\流れ図_while文.png)
+![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_while文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1627,7 +1627,7 @@ while(i < N){
 
 - **foreach**
 
-![流れ図_foreach文](image\流れ図_foreach文.png)
+![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_foreach文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -1738,7 +1738,7 @@ $var = (object) $var
 
 プログラムを、『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って、入力モジュール、処理モジュール、出力モジュール、の３つ分割する方法。（リクエスト ➔ DB ➔ レスポンス）
 
-![STS分割法](image\p485-1.png)
+![STS分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-1.png)
 
 
 
@@ -1746,7 +1746,7 @@ $var = (object) $var
 
 データの種類によってTransaction（処理）の種類が決まるような場合に、プログラムを処理の種類ごとに分割する方法。
 
-![トランザクション分割法](image\p485-2.png)
+![トランザクション分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-2.png)
 
 
 
@@ -1754,7 +1754,7 @@ $var = (object) $var
 
 プログラムを、共通の機能ごとに分割する方法
 
-![共通機能分割法](image\p485-3.jpg)
+![共通機能分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-3.jpg)
 
 
 
@@ -1786,7 +1786,7 @@ $var = (object) $var
 <img src="http://fruits.com/img/apple.png">
 ```
 
-![絶対パス](image\絶対パス.png)
+![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/絶対パス.png)
 
 ### ◆ 相対パス
 
@@ -1796,5 +1796,5 @@ $var = (object) $var
 <img src="../img/apple.png">
 ```
 
-![相対パス](image\相対パス.png)
+![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相対パス.png)
 
