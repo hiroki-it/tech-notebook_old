@@ -917,9 +917,9 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
   Priority Queueを実現するときに用いられる。各ノードにデータが格納されている。
 
-  ![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ1.gif)
+![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ1.gif)
 
-  ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+  !印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
 ![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ2.gif)
 
@@ -1412,7 +1412,7 @@ $csv['ID'] = $order->id;
 
 ✕：```FALSE```
 
-|          | if(var) ／  !empty(var) | isset(var) ／ ! is_null(​var) |
+|          | if(var) ／  !pty(var) | isset(var) ／ ! is_null(​var) |
 | :------- | :------: | :-----------: |
 | 0        |    ✕     |       ✕       |
 | 1        |  **〇**  |    **〇**     |
