@@ -21,8 +21,7 @@ sample <- read.table("sample_edit.txt", header = T)
 
 # 純広告とCV_純広告の散布図を作成。
 g <- ggplot(sample, aes(x = 純広告, y = CV_純広告))
-g <- g + geom
-_point()
+g <- g + geom_point()
 plot(g)
 
 
