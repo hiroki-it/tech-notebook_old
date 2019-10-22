@@ -462,54 +462,69 @@ DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラス�
 
 
 
-### ◆ 集約構成とデータ挿入
+### ◆ 集約の構成／データベースへのデータ追加
 
-1. アプリケーション層から集約がリクエストされる。
-2. ファクトリの呼び出しによって、EntityやValueObjectから構成される集約を新しく構成
-3. データベースに追加する。
-4. ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
+1. GETまたはPOSTによって、アプリケーション層から値が送信される。
+
+2. Repositoryによって、送信された値からEntityやValueObjectを構成する。さらに、それらから集約を構成する。
+
+3. Factoryによって、集約を加工する。
+
+4. Repositoryによって、集約を連想配列に分解する。
+
+5. データベースのテーブルに挿入する。
+
+   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
 
 **【実装例】**
 
 ```PHP
-// 集約を新しく構成し、データベースに追加する。
-class ToyOrderRepository
+// 集約の構成とデータ追加を行う。
+class setDogToyEntityRepository(Request $request)
 {
-	// データベースへの挿入の前処理として、カラム名を値に持つ連想配列で定義
+	$dogToyEntity = new DogToyEntity;
+  
+  // 送信された値を取り出して格納。
+	$dogToyEntity->toyType 	= $request->xxx(),
+	$dogToyEntity->toyName 	= $request->xxx(),
+	$dogToyEntity->number 	= $request->xxx(),
+	$dogToyEntity->priceVO 	= $request->xxx(new PriceVO()),
+	$dogToyEntity->colorVO 	= $request->xxx(new ColorVO()),
+  
+  
+	// 集約を連想配列に分解する。
 	$data = [
-		'type' => XXX 
-		'name' => XXX
-		'number' => XXX
-		'price' => ($order->priceVO) ? $order->priceVO->price() : 0,
-		'color_value' => ($order->colorVO) ? $order->colorVO->value() : null
+		'type' 				=> $dogToyEntity->toyType,
+		'name' 				=> $dogToyEntity->toyName,
+		'number' 			=> $dogToyEntity->number,
+		'price' 			=> $dogToyEntity->priceVO->price(),
+		'color_value' => $dogToyEntity->colorVO->value(),
 	];
 	
 	return $data;
 }
 ```
 
-```
-
-```
 
 
+### ◆ データベースからのデータ取得／集約の再構成
 
-### ◆ データ取得と集約再構成
-
-1. データベースからデータを取得。
-2. ファクトリの呼び出しによって、EntityやValueObjectから構成される集約を加工し、再構成する。
-3. 再構成された集約をアプリケーション層にレスポンス。
+1. アプリケーション層から集約がリクエストされる。
+2. データベースのテーブルからデータを取得。
+3. Repositoryによって、リクエストされたデータからEntityやValueObjectを構成する。さらに、それらから集約を構成する。
+4. Factoryによって、集約を加工する。
+5. 再構成された集約をアプリケーション層にレスポンス。
 
 ![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ取得.jpg)
 
 **【実装例】**
 
 ```PHP
-// データ取得と集約再構成を行う
-class ToyOrderRepository
+// データ取得と集約再構成を行う。
+class getDogToyEntityRepository
 {
 
-	// データベースからデータを取得
+	// データベースからデータを取得する。
 	public function fetchDataSet()
 	{
 		$select = [
@@ -525,26 +540,26 @@ class ToyOrderRepository
 	}
 	
 	
-	// データベースの連想配列レコードの値を用いて、『RouteEntity』の集約を構成を行う。
-	public function arrayToyOrderEntities(): ToyOrderEntities
+	// 連想配列データから『RouteEntity』の集約を構成し、レスポンスする。
+	public function arrayDogToyEntities(): DogToyEntities
 	{	
-		$toyOrderEntities = [];
+		$dogToyEntities = [];
 		foreach($this->fetchDataSet() as $fetchedData){
-			$toyOrderEntities[] = $this->aggregateToyOrderEntity($fetchedData)
+			$dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
 		}
         
 		return $toyOrderEntities;
 	}
   
   // 集約を行うメソッド
-	private function aggregateToyOrderEntity(Array $fetchedData)
+	private function aggregateDogToyEntity(Array $fetchedData)
 	{
-		$toyOrderEntity = new ToyOrderEntity;
-		$toyOrderEntity->toyType = $fetchedData['dog_toy_type'];
-		$toyOrderEntity->toyName = $fetchedData['dog_toy_name'];
-		$toyOrderEntity->number = $fetchedData['number'];
-		$toyOrderEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
-		$toyOrderEntity->colorVO = new ColorVO($fetchedData['color_value']);
+		$dogToyEntity = new DogToyEntity;
+		$dogToyEntity->toyType = $fetchedData['dog_toy_type'];
+		$dogToyEntity->toyName = $fetchedData['dog_toy_name'];
+		$dogToyEntity->number = $fetchedData['number'];
+		$dogToyEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
+		$dogToyEntity->colorVO = new ColorVO($fetchedData['color_value']);
 	}
   
 }
@@ -561,7 +576,7 @@ class ToyOrderRepository
 - **実装例**
 
 ```PHP
-// 構成した集約関係を加工して新sたな集約を再構成する
+// 構成した集約関係を加工して新たな集約を再構成する
 class Factory
 {
   
