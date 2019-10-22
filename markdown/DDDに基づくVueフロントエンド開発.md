@@ -20,7 +20,7 @@
 2. まずDispatchされたActionは、APIにリクエストを投げる。そしてサーバーサイド側で定義したロジックによって何らかの処理が実行される。ここで注意するポイントは、「Actionは、必ず非同期処理 」
 
 - **Commit**
-   サーバー側で返却されたデータ（基本的にはJSONでリターンする）をMutationへ送る。
+   サーバー側で返却されたデータ（基本的にはJSONでリターンする）をMutationへ渡す。
 
 - **Mutate**
   MutationがStateを変更。ここで注意するポイントは、「Mutationは、必ず同期処理 」。
@@ -33,13 +33,44 @@
 
 引用：【Vuex】ざっくり理解、Vuexって何？VuexとAPIの関係を図解してみた，https://qiita.com/MatakiTanaka09/items/8cdccf54164f782ad2e8
 
+```javascript
+const Vuex = require('vuex')
+
+module.exports = new Vuex.Store({
+
+	// 初期stateに値を設定しておく。
+	state: {    
+		exArray: [],
+	},
+
+	// 引数で渡したexArrayの要素を、初期stateのexArrayの要素として格納する。
+	// 矢印はアロー関数を表し、無名関数の即時実行を省略することができる。
+	mutation: {
+		mutate(state, exArray) {
+			exArray.forEach(
+				(element) => { state.exArray.push(element); }
+				// アロー関数を用いなければ、以下のように記述できる。
+				// function(element) { state.exArray.push(element); }
+			);  
+		},
+	},
+	
+	// 
+	getters: {
+			exArray(state) {
+				return state.exArray;
+			},
+			
+	},
+```
+
 
 
 ### ◆ Vue.js
 
 **【実装例】**
 
-```
+```javascript
 new Vue({
 
     //htmlファイルと連携
