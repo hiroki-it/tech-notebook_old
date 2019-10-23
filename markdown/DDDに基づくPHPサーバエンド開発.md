@@ -482,26 +482,35 @@ DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラス�
 // 集約の構成とデータ追加を行う。
 class setDogToyEntityRepository(Request $request)
 {
+  // 接続先したいデータベースが設定されたプロパティ
+	private $dbs;
+  
+  
 	$dogToyEntity = new DogToyEntity;
   
-  // 送信された値を取り出して格納。
-	$dogToyEntity->toyType 	= $request->xxx(),
-	$dogToyEntity->toyName 	= $request->xxx(),
-	$dogToyEntity->number 	= $request->xxx(),
-	$dogToyEntity->priceVO 	= $request->xxx(new PriceVO()),
-	$dogToyEntity->colorVO 	= $request->xxx(new ColorVO()),
+  
+	// 送信された値を取り出して格納。
+	$dogToyEntity->toyType = $request->xxx(),
+	$dogToyEntity->toyName	= $request->xxx(),
+	$dogToyEntity->number = $request->xxx(),
+	$dogToyEntity->priceVO = $request->xxx(new PriceVO()),
+	$dogToyEntity->colorVO = $request->xxx(new ColorVO()),
   
   
 	// 集約を連想配列に分解する。
-	$data = [
-		'type' 				=> $dogToyEntity->toyType,
-		'name' 				=> $dogToyEntity->toyName,
-		'number' 			=> $dogToyEntity->number,
-		'price' 			=> $dogToyEntity->priceVO->price(),
+	$date = [
+		'type' => $dogToyEntity->toyType,
+		'name' => $dogToyEntity->toyName,
+		'number' => $dogToyEntity->number,
+		'price' => $dogToyEntity->priceVO->price(),
 		'color_value' => $dogToyEntity->colorVO->value(),
 	];
-	
-	return $data;
+  
+  
+	// データベースのテーブルに挿入する。
+	$this->dbs['app']->insert(dog_toy_table, $data);
+  
+  
 }
 ```
 
@@ -523,7 +532,10 @@ class setDogToyEntityRepository(Request $request)
 // データ取得と集約再構成を行う。
 class getDogToyEntityRepository
 {
+  // 接続先したいデータベースが設定されたプロパティ
+	private $dbs;
 
+  
 	// データベースからデータを取得する。
 	public function fetchDataSet()
 	{
@@ -532,7 +544,7 @@ class getDogToyEntityRepository
 			'dog_toy.name AS dog_toy_name',
 			'dog_toy.number AS number',
 			'dog_toy.price AS dog_toy_price',
-			'color.color_value AS color_value'
+			'dog_toy.color_value AS color_value'
 		];
         
 		$query = $this->getFecthQuery($select);
@@ -551,7 +563,8 @@ class getDogToyEntityRepository
 		return $toyOrderEntities;
 	}
   
-  // 集約を行うメソッド
+  
+	// 集約を行うメソッド
 	private function aggregateDogToyEntity(Array $fetchedData)
 	{
 		$dogToyEntity = new DogToyEntity;
@@ -608,13 +621,26 @@ class Factory
 
 # 04-08. Controller
 
-責務として、ドメイン層の抽象メソッドを用いて、Use case（使用事例）を実装する。
+責務として、ドメイン層の抽象メソッドを組み合わせて、Use case（使用事例）を実装する。
 
 **【具体例】**
 
 オンラインショッピングにおけるUse case
 
 ![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ユースケース図.png)
+
+**【実装例】**
+
+```PHP
+class AcceptOrdersController
+{
+	// 単なるメソッドではなく、Use caseとなるようなメソッドを定義
+	public function acceptOrders()
+	{
+	
+	}
+	
+```
 
 
 
