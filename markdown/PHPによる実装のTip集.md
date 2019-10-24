@@ -168,7 +168,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 class Obj_A{
 	private $objB;
 	
-	// 返り値のデータ型を指定
+	// 返却値のデータ型を指定
 	public function getObjB(): ObjB
 	{
 		return $this->objB;
@@ -182,7 +182,7 @@ class Obj_A{
 class Obj_B{
 	private $objC;
  
-	// 返り値のデータ型を指定
+	// 返却値のデータ型を指定
 	public function getObjC(): ObjC
 	{
 		return $this->objC;
@@ -196,7 +196,7 @@ class Obj_B{
 class Obj_C{
 	private $objD;
  
- 	// 返り値のデータ型を指定
+ 	// 返却値のデータ型を指定
 	public function getObjD(): ObjD
 	{
 		return $this->objD;
@@ -204,7 +204,7 @@ class Obj_C{
 }
 ```
 
-以下のように、返り値のオブジェクトを用いて、より深い層に連続してアクセスしていく場合…
+以下のように、返却値のオブジェクトを用いて、より深い層に連続してアクセスしていく場合…
 
 ```PHP
 $ObjA = new Obj_A;
@@ -240,7 +240,7 @@ class Example
 
 	private $example = [];
 	
-	// 引数と返り値のデータ型を指定
+	// 引数と返却値のデータ型を指定
 	public function __get(String $name): String
 	{
 		echo "{$name}プロパティは存在しないため、プロパティ値を取得できません。"
@@ -348,7 +348,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある。
 
-![再帰的](随時、リポジトリの画像フォルダへコピーせよ\再帰的.png)
+![再帰的](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/再帰的.png)
 
 **【実装例】**
 
@@ -417,20 +417,20 @@ var_dump($result);
 
 
 
-### ◆ Closure（無名関数）を用いた関数の即時実行
+### ◆ Closure（無名関数）を用いた関数の即コール
 
-定義したその場で実行される無名関数を『即時関数』と呼ぶ。
+定義したその場でコールされる無名関数を『即時関数』と呼ぶ。無名関数をコールしたい時は、```call_user_func()```を用いる。
 
 - **useのみに引数を渡す場合**
 
 ```PHP
-// 即時関数を定義
+// 無名関数を定義し、同時にcall_user_func()で即コールする。
 // 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
 // 無名関数の引数に、親メソッドのスコープの$itemを渡す。
 $optionName = call_user_func(function() use($item){
-        $item->hasOption()
-        ? $item->getOption()->name()
-        : '';
+								$item->hasOption()
+								? $item->getOption()->name()
+								: '';
 	});
 	
 // 出力結果
@@ -441,14 +441,14 @@ echo $optionName
 - **useのみに引数を渡す場合**
 
 ```PHP
-// 即時関数を定義
+// 無名関数を定義し、同時にcall_user_func()で即コールする。
 // 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
 // 無名関数の引数に、親メソッドのスコープの$itemを渡す。
 $optionName = call_user_func(function($para) use($item){
-                $item->hasOption()
-                ? $item->getOption()->name().$para
-                : '';
-            });
+								$item->hasOption()
+								? $item->getOption()->name().$para
+								: '';
+								});
 	
 // 出力結果
 echo $optionName("BC")
@@ -458,7 +458,7 @@ echo $optionName("BC")
 - **プロパティの値に無名関数を格納しておく裏技**
 
 ```PHP
-// 即時関数を定義
+// 無名関数を定義し、同時にcall_user_func()で即コールする。
 // 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
 // 無名関数の引数に、親メソッドのスコープの$itemを渡す。
 $option = new Option;
@@ -570,21 +570,21 @@ public function Shiborikomi($callback)
 	throw new \LogicException;
 	}
 
-    // 自身が持つ配列型のプロパティを加工し、再格納する。
+	// 自身が持つ配列型のプロパティを加工し、再格納する。
 	$properties = [];
 	foreach ($this->properties as $property) {
         
-        // 引数の無名関数によって、プロパティに対する加工方法が異なる。
-        // 例えば、判定でTRUEのもののみを返すメソッドを渡すと、自プロパティを絞り込むような処理を行える。
+		// 引数の無名関数によって、プロパティに対する加工方法が異なる。
+		// 例えば、判定でTRUEのもののみを返すメソッドを渡すと、自プロパティを絞り込むような処理を行える。
 		$returned = call_user_func($property, $callback);
 		if ($returned) {
-            
-            // 再格納。
+		
+			// 再格納。
 			$properties[] = $returned;
 		}
 	}
 
-    // 他のプロパティは静的に扱ったうえで、自身を返す。
+	// 他のプロパティは静的に扱ったうえで、自身を返す。
 	return new static($properties);
 }
 ```
@@ -1237,7 +1237,7 @@ const noOptionItem = 0;
 if(!empty($routeEntity->options) {
     foreach ($routeEntity->options as $option) {
     
-    	// if文を通過した場合、メソッドの返り値が格納される。
+    	// if文を通過した場合、メソッドの返却値が格納される。
         // 通過しない場合、定数が格納される。
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
@@ -1279,7 +1279,7 @@ $result['optionItemC'] = noOptionItem;
 if(!empty($routeEntity->options) {
     foreach ($routeEntity->options as $option) {
     
-		// if文を通過した場合、メソッドの返り値によって初期値0が上書きされる。
+		// if文を通過した場合、メソッドの返却値によって初期値0が上書きされる。
         // 通過しない場合、初期値0が用いられる。
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
@@ -1503,7 +1503,7 @@ try{
 // Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため、最後に記述するべき。
 }catch(Exception $e){
     // 特定できなかったことを示すエラーを出力
-    throw new Exception("なんらかの例外が発生しました。")      
+    throw new Exception("なんらかの例外が発生しました。");
 
         
 // 正常と例外にかかわらず、必ず実行される。
@@ -1532,7 +1532,7 @@ class HttpRequestException extends Exception
 	// インスタンスが作成された時に実行される処理
 	public function __construct()
 	{
-		parent::__construct("HTTPリクエストに失敗しました", 400)
+		parent::__construct("HTTPリクエストに失敗しました", 400);
 	}
 ```
 
@@ -1566,14 +1566,14 @@ class HttpRequestException extends Exception
 
 - **要素の位置を繰り返しズラす場合**
 
-```
+```PHP
 moveFile(fromPos < toPos)
 {
-  if(fromPos < toPos){
-    for(i = fromPos ; i ≦ toPos - 1; ++ 1){
-      File[i] = File[i + 1]
-    }
-  }
+	if(fromPos < toPos){
+		for(i = fromPos ; i ≦ toPos - 1; ++ 1){
+			File[i] = File[i + 1];
+		}
+	}
 }
 ```
 
@@ -1590,10 +1590,10 @@ moveFile(fromPos < toPos)
 $i = 0; 
 while($i < 4){
     
-    echo $i;
+	echo $i;
     
-    // 改行
-    echo PHP_EOL;
+	// 改行
+	echo PHP_EOL;
 }
 ```
 
@@ -1733,37 +1733,71 @@ $var = (string) $var; // $varはString型
 
 ```PHP
 // Int型
-$var = (int) $var
+$var = (int) $var;
 (integer)
 
 // Boolean型
-$var = (bool) $var
+$var = (bool) $var;
 (boolean)
 
 // Float型
-$var = (float) $var
+$var = (float) $var;
 (double)
 (real)
 
 // Array型
-$var = (array) $var
+$var = (array) $var;
 
 // Object型
-$var = (object) $var
+$var = (object) $var;
 ```
 
 
 
 # 02-08. キャッシュの実装
 
-### ◆ プロパティと条件分岐を用いたキャッシュ
+### ◆ プロパティを用いたキャッシュ
+
+大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
 
 ```PHP
-// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
-if(!isset($this->cache[]){
-	$this->cache[] = $entity;
+public cachedResult;
+
+public funcCollection;
+
+
+public function callFunc__construct()
+{
+	$this->funcCollection = $this->funcCollection()
 }
-return $this->cache[];
+
+
+// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく。
+public function funcCollection()
+{
+  return  [
+    'computeProfit' => [$this, 'computeProfit']
+  ];
+}
+
+
+// 集計メソッド
+public function computeProfit()
+{
+	// 時間のかかる集計処理;
+}
+
+
+// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
+public function cachedResult($funcName)
+{
+  if(!isset($this->cachedResult[$funcName]){
+    
+    // Collectionに登録されているメソッド名を出力し、call_user_funcでメソッドをコールする。
+    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
+  }
+  return $this->cachedResult[$funcName];
+}
 ```
 
 
