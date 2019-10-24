@@ -1,4 +1,4 @@
-# 01. 処理の流れの全体像
+# 01. Webページにおける処理の流れ
 
 一例として、処理フローは、『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される。
 
@@ -8,9 +8,94 @@
 
 
 
-# 02. Vue
+# 02-01. Vuejs
 
-### ◆ Vuexにおけるページ更新サイクル
+### ◆ Vue.js の基本的な使い方
+
+**【実装例】**
+
+```javascript
+# Storeを読み込む
+const store = require('./_store')
+
+# Vueインスタンスを生成
+new Vue({
+
+	#　データの受け渡しを行うHTML（Twig）のIDを、『#ID名』で設定する。
+	el: '#app',
+
+	# Vueに持たせたいデータを定義し、その初期状態を設定する。
+	# dataオプションは関数で定義しておく。
+	data: function() {
+        return {
+            // プロパティ名: 状態
+            isLoaded: false,
+            exampleArray: [],
+		}
+  
+	},
+
+	# 取得データをキャッシュしたいようなメソッドを定義する。
+	computed: {
+		
+		# mapGettersヘルパー。StoreのGetterをローカルのcomputedにマッピングし、コール可能にする。
+		...mapGetters([
+			'x-Function' 
+		])
+
+	},
+
+	# 取得データをキャッシュしたくないようなメソッドを定義する。
+	methods: {
+		
+		# mapMutationsヘルパー
+		...mapMutations([
+			'y-Function'
+		])
+		
+		# mapActionsヘルパー
+		...mapActions([
+			'z-Function'
+		])
+
+		# ローカルで新しく定義するメソッド
+		load(query){
+            
+            # dataプロパティの状態を変更。
+            this.isLoaded = true;
+            
+            	return 
+            
+        }
+		}
+	
+	# コンポーネントをローカルに登録する。
+	# 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+	component: {
+	
+		# 読み込み先のファイルでは、templateタグが必要。
+		'v-example-form': require('./xxx/xxx/xxx')
+	},
+ 
+});
+```
+
+```HTML
+<!--コンポーネントのオブジェクト名とその処理として使用することを宣言-->
+<template>
+
+...
+
+</template>
+```
+
+
+
+# 02-02. Vuexライブラリ
+
+### ◆ Vuexを用いたページの状態管理の仕組み
+
+Vuexとは、Vuejsでページの状態管理を行うためのライブラリである。
 
 ![Vuex](https://user-images.githubusercontent.com/42175286/58393072-ef8d7700-8077-11e9-9633-d137b8e36077.png)
 
@@ -20,78 +105,65 @@
 2. まずDispatchされたActionは、APIにリクエストを投げる。そしてサーバーサイド側で定義したロジックによって何らかの処理が実行される。ここで注意するポイントは、「Actionは、必ず非同期処理 」
 
 - **Commit**
-   サーバー側で返却されたデータ（基本的にはJSONでリターンする）をMutationへ渡す。
+  
+
+サーバー側で返却されたデータ（基本的にはJSONでリターンする）をMutationへ渡す。
 
 - **Mutate**
-  MutationがStateを変更。ここで注意するポイントは、「Mutationは、必ず同期処理 」。
+  
+
+MutationがStateを変更。ここで注意するポイントは、「Mutationは、必ず同期処理 」。
 
 - **Render**
 
    MutateされたStateを、Vue Component側に描画。
 
-   
 
-引用：【Vuex】ざっくり理解、Vuexって何？VuexとAPIの関係を図解してみた，https://qiita.com/MatakiTanaka09/items/8cdccf54164f782ad2e8
+**【実装例】**
+
+Vuexの実装は、Storeという名前で行う。
 
 ```javascript
+# Vuexライブラリを読み込む。
 const Vuex = require('vuex')
 
+
+# 外部ファイルがこのファイル（Store）を読み込めるようにする。
 module.exports = new Vuex.Store({
 
-	// 初期stateに値を設定しておく。
+    
+	# 初期stateに値を設定しておく。
 	state: {    
 		exArray: [],
 	},
 
-	// 引数で渡したexArrayの要素を、初期stateのexArrayの要素として格納する。
-	// 矢印はアロー関数を表し、無名関数の即時実行を省略することができる。
+    
+	# 引数で渡したexArrayの要素を、初期stateのexArrayの要素として格納する。
+	# 矢印はアロー関数を表し、無名関数の即時実行を省略することができる。
 	mutation: {
+        
 		mutate(state, exArray) {
 			exArray.forEach(
 				(element) => { state.exArray.push(element); }
-				// アロー関数を用いなければ、以下のように記述できる。
-				// function(element) { state.exArray.push(element); }
+				# アロー関数を用いなければ、以下のように記述できる。
+				# function(element) { state.exArray.push(element); }
 			);  
 		},
+        
 	},
 	
-	// 
+	# 複数のコンポーネントで共通してコールしたいcomputedをまとめて定義しておく。
 	getters: {
+        
 			exArray(state) {
 				return state.exArray;
 			},
 			
 	},
-```
-
-
-
-### ◆ Vue.js
-
-**【実装例】**
-
-```javascript
-new Vue({
-
-    //htmlファイルと連携
-    el: '#app',
-
-    //どんなデータがあるか
-    data: {
-        xxxData:
+    
+    actions: {
+        
     },
-
-    //取得データをキャッシュしたいようなメソッドを定義（大量のデータを取得するメソッドなど）
-    computed: {
-
-    },
-
-    //取得データをキャッシュしたくないようなメソッドを定義
-    methods: {
-        xxxFunction: function(){
-        }
-    }
-});
 ```
 
 
@@ -120,13 +192,13 @@ new Vue({
     /**
      * @var \DateTime
      * 
-     * #マッピングするテーブルを指定
+     * # マッピングするテーブルを指定
      * @ORM\Column(name="date", type="datetime")
      *
-     * #Expose()でJSON形式に変換することを宣言
+     * # Expose()でJSON形式に変換することを宣言
      * @JSON\Expose()
      *
-     * #JSONに出力するときのフォーマット
+     * # JSONに出力するときのフォーマット
      * @JSON\Type("DateTime<'Y-m-d'>")
      */
     private $date;
@@ -161,35 +233,45 @@ AJAX（Asynchronous JavaScript + XML）は、以下の４つから構成され�
 **【実装例】**
 
 ```javascript
-  static find(criteria, b, c) {
-    
-    //jQueryのAJAXメソッド発動
-    return $.ajax({
-      type:        'GET', #HTTPリクエストとしてGETメソッドを指定
-      url:         '/xxx/xxx', #コントローラを指定
-      contentType: 'application/json',
-      dataType:    'json', #リクエストにJSON形式を指定
-      data: (() => {
-        const query = {
-          criteria: criteria,
-          b: b,
-          c: c,
-        };
+# HTMLからこのようなデータが送信されてきたとする。
+query = {
+	criteria: criteria,
+    b: b,
+    c: c,
+}
+```
+```javascript
+static find(query) {
 
-        // 検索条件を設定
-        if (criteria.id) {
-          query.id = criteria.id;
-        }
+	# jQueryのAJAXメソッド発動
+	return $.ajax({
+		type: 'POST', # HTTPリクエストとしてPOSTメソッドを指定
+		url: '/xxx/xxx', # リクエストの送信先のコントローラを指定
+		contentType: 'application/json',
+		dataType: 'json', # レスポンスされるデータはJSON形式を指定
+		data: query,
+	});
+	
 
-        return query;
-      })(),
-    })
-      .then((data) => {
-        return {
-　　　　　　dataの配列
-        };
-      });
-  }
+	# ajax()の処理が成功した場合に起こる処理。
+	.done((data) => {
+        
+    });
+	
+	# ajax()の処理が失敗した場合に起こる処理。
+	.fail(() => {
+        toastr.error('', 'エラーが発生しました。')
+    });
+	
+	# ajax()の成功失敗に関わらず、必ず起こる処理。
+	.always(()) => {
+		this.isLoaded = false;
+	});
+}    
+```
+
+```javascript
+
 ```
 
 
