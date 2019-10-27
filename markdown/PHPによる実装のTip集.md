@@ -417,59 +417,86 @@ var_dump($result);
 
 
 
-### ◆ Closure（無名関数）を用いた関数の即コール
+### ◆ Closure（無名関数）の定義、変数格納後のコール
 
-定義したその場でコールされる無名関数を『即時関数』と呼ぶ。無名関数をコールしたい時は、```call_user_func()```を用いる。
-
-- **useのみに引数を渡す場合**
+- **```use()```のみに引数を渡す場合**
 
 ```PHP
-// 無名関数を定義し、同時にcall_user_func()で即コールする。
-// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
-// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
-$optionName = call_user_func(function() use($item){
-								$item->hasOption()
-								? $item->getOption()->name()
-								: '';
-	});
+$item = new Item;
+
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを定義しているのと同じになる。
+// use()に、親メソッド（$optionName）のスコープの$itemを渡す。
+$optionName = function() use($item){
+								$item->getOptionName();
+							});
 	
+// function()には引数が設定されていないので、コール時に引数は不要。
+echo $optionName;
+  
 // 出力結果
-echo $optionName
 オプションA
 ```
 
-- **useのみに引数を渡す場合**
+- **```function()```と```use()```に引数を渡す場合**
 
 ```PHP
-// 無名関数を定義し、同時にcall_user_func()で即コールする。
-// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
-// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
-$optionName = call_user_func(function($para) use($item){
-								$item->hasOption()
-								? $item->getOption()->name().$para
-								: '';
-								});
+$item = new Item;
+
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを定義しているのと同じになる。
+// 親メソッド（$optionName）のスコープの$itemを、use()に渡す。
+$optionName = function($para) use($item){
+								$item->getOptionName().$para;
+							};
 	
+// コール時に、$paramをfunction()に渡す。
+echo $optionName("BC");
+  
 // 出力結果
-echo $optionName("BC")
 オプションABC
 ```
 
 - **プロパティの値に無名関数を格納しておく裏技**
 
 ```PHP
-// 無名関数を定義し、同時にcall_user_func()で即コールする。
-// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを即時実行しているのと同じになる。
-// 無名関数の引数に、親メソッドのスコープの$itemを渡す。
+$item = new Item;
+
+// 最初の括弧を用いないことで、普段よくやっている値渡しのメソッドを定義しているのと同じになる。
+// use()に、親メソッドのスコープの$itemを渡す。
+// function()に、コール時に新しく$paramを渡す。
 $option = new Option;
-$option->setName() = call_user_func(function($para) use($item){
-                        $item->hasOption()
-                        ? $item->getOption()->name().$para
-                        : '';
-					});
+
+// プロパティの値に無名関数を格納する。
+$option->name = function($para) use($item){
+									$item->getOptionName().$para;
+								};
 	
+// コール時に、$paramをfunction()に渡す。
+echo $option->name("BC");
+
 // 出力結果
-echo $name("BC")
+オプションABC
+```
+
+
+
+### ◆ Closure（無名関数）の定義と即コール
+
+定義したその場でコールされる無名関数を『即時関数』と呼ぶ。無名関数をコールしたい時は、```call_user_func()```を用いる。
+
+```PHP
+$item = new Item;
+
+// use()に、親メソッドのスコープの$itemを渡す。
+// 無名関数を定義し、同時にcall_user_func()で即コールする。さらに、$paramをfunction()に渡す。
+$optionName = call_user_func(function("BC") use($item){
+                                  $item->getOptionName().$para;
+                               });
+	
+// $paramはすでに即コール時に渡されている。
+// これはコールではなく、即コール時に格納された返却値の出力。
+echo $optionName;
+
+// 出力結果
 オプションABC
 ```
 
@@ -595,7 +622,7 @@ public function Shiborikomi($callback)
 
 ### ◆ use文による読み込みとコール
 
-PHPでは、use文によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込み、コールできる。ただし、動的な値は持たず、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでコールしていたら、スパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、use文で読み込んでコールして良いものを決めておくと良い。
+PHPでは、```use```によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込み、コールできる。ただし、動的な値は持たず、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでコールしていたら、スパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、```use```で読み込んでコールして良いものを決めておくと良い。
 
 **【以下で読み込まれるクラスの実装例】**
 
@@ -704,9 +731,9 @@ class SubExample
 
 
 
-# 02-01. データ型
+# 02-01. データ構造
 
-プログラムを書く際にはどのような処理を行うのかを事前に考え、その処理にとって最適なデータ構造で記述する必要がある。そのためにも、それぞれのデータ構造の特徴（長所、短所）を知っておくことが重要である。
+処理において、データの集合を効率的に扱うためのデータ格納形式のこと。
 
 ### ◆ Array型
 
@@ -758,7 +785,7 @@ Array
 
 - **配列内の要素の走査（スキャン）**
 
-配列内の要素を順に調べていくことを『走査（スキャン）』という。例えば、foreachは、配列内の全ての要素を走査する処理である。下図では、連想配列が表現されている。
+配列内の要素を順に調べていくことを『走査（スキャン）』という。例えば、```foreach()```は、配列内の全ての要素を走査する処理である。下図では、連想配列が表現されている。
 
 ![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/配列の走査.png)
 
@@ -919,7 +946,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 ![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ1.gif)
 
-  !印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
 ![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ2.gif)
 
@@ -929,9 +956,45 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![ヒープ3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ4.gif)
+![. ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ4.gif)
 
-# 02-02. 変数
+
+
+# 02-02 データ型
+
+### ◆ Boolean型
+
+- **Falseの定義**
+
+| データの種類 | 説明                     |
+| ------------ | ------------------------ |
+| $var =       | 何も格納されていない変数 |
+| False        | 文字としてのFalse        |
+| 0            | 数字、文字列             |
+| ""           | 空文字                   |
+| array()      | 要素数が0個の配列        |
+| NULL         | NULL値                   |
+
+- **Trueの定義**
+
+上記の値以外は、全て TRUEである。
+
+
+
+### ◆ Date型
+
+厳密にはデータ型ではないが、便宜上、データ型とする。タイムスタンプとは、協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの。
+
+| フォーマット         | 実装方法            | 備考                                                         |
+| -------------------- | ------------------- | ------------------------------------------------------------ |
+| 日付                 | 2019-07-07          | 区切り記号なし、ドット、スラッシュなども可能                 |
+| 時間                 | 19:07:07            | 区切り記号なし、も可能                                       |
+| 日付と時間           | 2019-07-07 19:07:07 | 同上                                                         |
+| タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
+
+
+
+# 02-04. 変数
 
 ### ◆ スーパーグローバル変数
 
@@ -1120,39 +1183,142 @@ echo $b;
 
 
 
-# 02-03. Bool値
+# 02-05. 演算子
 
-### ◆ Falseの定義
+### ◆ 等価演算子を用いたインスタンスの比較
 
-- **表示なし**
+- **イコールが2つの場合**
 
-- **キーワード FALSE false**
+同じオブジェクトから別々に作られたインスタンスであっても、『同じもの』として認識される。
 
-- **整数 0**
+```PHP
+class Example {};
 
-- **浮動小数点 0.0**
+if(new Example == new Example){
+	echo '同じです';
+} else { echo '異なります' }
 
-- **空の文字列 " "**
+// 実行結果
+同じです
+```
 
-- **空の文字列 ' '**
+- **イコールが3つの場合**
 
-- **文字列 "0"（文字列としての0）**
+同じオブジェクトから別々に作られたインスタンスであっても、『異なるもの』として認識される。
 
-- **要素数が 0 の配列$ary = array();**
+```PHP
+class Example {};
 
-- **プロパティーやメソッドを含まない空のオブジェクト**
+if(new Example === new Example){
+	echo '同じです';
+} else { echo '異なります' }
 
-- **NULL値**
+// 実行結果
+異なります
+```
 
-  
+同一のインスタンスの場合のみ、『同じもの』として認識される。
 
-### ◆ Trueの定義
+```PHP
+class Example {};
 
-上記の値以外は、全て TRUEである。
+$a = $b = new Example;
+
+if($a === $b){
+	echo '同じです';
+} else { echo '異なります' }
+
+// 実行結果
+同じです
+```
 
 
 
-# 02-04. 条件式
+### ◆ キャスト演算子
+
+**【実装例】**
+
+```PHP
+$var = 10;　// $varはInt型。
+
+// キャスト演算子でデータ型を変換
+$var = (string) $var; // $varはString型
+```
+
+**【その他のキャスト演算子】**
+
+```PHP
+// Int型
+$var = (int) $var;
+(integer)
+
+// Boolean型
+$var = (bool) $var;
+(boolean)
+
+// Float型
+$var = (float) $var;
+(double)
+(real)
+
+// Array型
+$var = (array) $var;
+
+// Object型
+$var = (object) $var;
+```
+
+
+
+# 02-06. データのキャッシュ
+
+### ◆ プロパティを用いたキャッシュ
+
+大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
+
+```PHP
+public cachedResult;
+
+public funcCollection;
+
+
+public function callFunc__construct()
+{
+	$this->funcCollection = $this->funcCollection()
+}
+
+
+// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく。
+public function funcCollection()
+{
+  return  [
+    'computeProfit' => [$this, 'computeProfit']
+  ];
+}
+
+
+// 集計メソッド
+public function computeProfit()
+{
+	// 時間のかかる集計処理;
+}
+
+
+// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
+public function cachedResult($funcName)
+{
+  if(!isset($this->cachedResult[$funcName]){
+    
+    // Collectionに登録されているメソッド名を出力し、call_user_funcでメソッドをコールする。
+    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
+  }
+  return $this->cachedResult[$funcName];
+}
+```
+
+
+
+# 03-01. 条件式
 
 ### ◆ if-elseとswitch-case-break
 
@@ -1351,7 +1517,7 @@ public function leapYear(Int $year): String
 
 - **if-elseif-elseを用いない条件分岐の場合**
 
-returnを用いることで、if文が入れ子状になることを防ぐことができる。
+```return```を用いることで、```if```が入れ子状になることを防ぐことができる。
 
 ```PHP
 // 西暦を格納する。
@@ -1402,7 +1568,7 @@ $csv['ID'] = $order->id;
 
 
 
-# 02-05. 例外処理
+# 03-02. 例外処理
 
 データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
 
@@ -1538,9 +1704,9 @@ class HttpRequestException extends Exception
 
 
 
-# 02-06. 反復処理
+# 04-01. 反復処理
 
-### ◆ Foreachの用途
+### ◆ ```foreach()```
 
 - **配列を返却したい場合**
 
@@ -1562,7 +1728,7 @@ class HttpRequestException extends Exception
 
 
 
-### ◆ for
+### ◆ ```for()```
 
 - **要素の位置を繰り返しズラす場合**
 
@@ -1583,7 +1749,7 @@ moveFile(fromPos < toPos)
 
 反復処理では、何らかの状態になった時に反復処理を終えなければならない。しかし、終えることができないと、無限ループが発生してしまう。
 
-- **break**
+- **```break```**
 
 ```PHP
 // 初期化
@@ -1605,7 +1771,7 @@ while($i < 4){
 
 『N個の正負の整数の中から、正の数のみの合計を求める』という処理を行うとする。
 
-- **for**
+- **```for()```**
 
 ![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_for文.png)
 
@@ -1624,7 +1790,7 @@ for(i = 0; i < N; i++){
 }
 ```
 
-- **while**
+- **```while()```**
 
 ![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_while文.png)
 
@@ -1647,7 +1813,7 @@ while(i < N){
 }
 ```
 
-- **foreach**
+- **```foreach()```**
 
 ![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_foreach文.png)
 
@@ -1667,142 +1833,7 @@ foreach($a as $x){
 
 
 
-# 02-07. 演算子
-
-### ◆ 等価演算子を用いたインスタンスの比較
-
-- **イコールが2つの場合**
-
-同じオブジェクトから別々に作られたインスタンスであっても、『同じもの』として認識される。
-
-```PHP
-class Example {};
-
-if(new Example == new Example){
-	echo '同じです';
-} else { echo '異なります' }
-
-// 実行結果
-同じです
-```
-
-- **イコールが3つの場合**
-
-同じオブジェクトから別々に作られたインスタンスであっても、『異なるもの』として認識される。
-
-```PHP
-class Example {};
-
-if(new Example === new Example){
-	echo '同じです';
-} else { echo '異なります' }
-
-// 実行結果
-異なります
-```
-
-同一のインスタンスの場合のみ、『同じもの』として認識される。
-
-```PHP
-class Example {};
-
-$a = $b = new Example;
-
-if($a === $b){
-	echo '同じです';
-} else { echo '異なります' }
-
-// 実行結果
-同じです
-```
-
-
-
-### ◆ キャスト演算子
-
-**【実装例】**
-
-```PHP
-$var = 10;　// $varはInt型。
-
-// キャスト演算子でデータ型を変換
-$var = (string) $var; // $varはString型
-```
-
-**【その他のキャスト演算子】**
-
-```PHP
-// Int型
-$var = (int) $var;
-(integer)
-
-// Boolean型
-$var = (bool) $var;
-(boolean)
-
-// Float型
-$var = (float) $var;
-(double)
-(real)
-
-// Array型
-$var = (array) $var;
-
-// Object型
-$var = (object) $var;
-```
-
-
-
-# 02-08. キャッシュの実装
-
-### ◆ プロパティを用いたキャッシュ
-
-大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
-
-```PHP
-public cachedResult;
-
-public funcCollection;
-
-
-public function callFunc__construct()
-{
-	$this->funcCollection = $this->funcCollection()
-}
-
-
-// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく。
-public function funcCollection()
-{
-  return  [
-    'computeProfit' => [$this, 'computeProfit']
-  ];
-}
-
-
-// 集計メソッド
-public function computeProfit()
-{
-	// 時間のかかる集計処理;
-}
-
-
-// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
-public function cachedResult($funcName)
-{
-  if(!isset($this->cachedResult[$funcName]){
-    
-    // Collectionに登録されているメソッド名を出力し、call_user_funcでメソッドをコールする。
-    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
-  }
-  return $this->cachedResult[$funcName];
-}
-```
-
-
-
-# 04. 実装のモジュール化
+# 05-01. 実装のモジュール化
 
 ### ◆ STS分割法
 
@@ -1846,7 +1877,7 @@ public function cachedResult($funcName)
 
 
 
-# 05. ファイルパス
+# 06-01. ファイルパス
 
 ### ◆ 絶対パス
 
