@@ -1,4 +1,4 @@
-01. Webページにおける処理の流れ
+# 01. Webページにおける処理の流れ
 
 一例として、処理フローは、『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される。
 
@@ -8,15 +8,82 @@
 
 
 
+
+
 # 02-01. Vue
+
+### ◆ SPA：シングルページアプリケーション
+
+Vue.jsでは、SPAの仕組みが用いられている。
+
+- **SPアプリにおけるデータ通信の仕組み**
+
+![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SPアプリにおけるデータ通信の仕組み.png)
+
+- **従来WebアプリとSPアプリの処理速度の違い**
+
+![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/従来WebアプリとSPアプリの処理速度の違い.png)
+
+
+
+### ◆ コンポーネントの登録
+
+- **グローバル登録**
+
+```javascript
+Vue.component('v-example-component',{
+	template: require('./xxx/xxx/xxx')
+})
+
+new Vue({
+	el: '#app'
+})
+```
+
+- **ローカル登録**
+
+```javascript
+var vExmapleComponent = {
+  // 親コンポーネントと子コンポーネントの対応関係
+	template: require('./xxx/xxx/xxx'),
+}
+
+new Vue({
+
+	el: '#app'
+  
+	components: {
+		// 親コンポーネントにオブジェクト名をつける。
+		'v-example-component': vExampleComponent
+	}
+  
+})
+```
+
+ただし、コンポーネントのオブジェクト名の定義は、以下のように省略することができる。
+
+```javascript
+new Vue({
+
+	el: '#app'
+  
+	components: {
+		// 親コンポーネントと子コンポーネントの対応関係
+		'v-example-component': require('./xxx/xxx/xxx'),
+	}
+  
+})
+```
+
+
 
 ### ◆ コンポーネント間のデータ通信
 
 親コンポーネント（出力先のコンポーネントタグ）では、子コンポーネント（出力内容）がタグ名でコールされる。
 
-1. ボタンをクリックした時には、親コンポーネントのタグ内で設定された『```:example = "値"```』が、子コンポーネントの『```props: { "値" }```』に渡される。この値は読み込み専用で、変更できない。
-2. ボタンをクリックした時には、子コンポーネントの『```$emit("イベント名", "値")```』によって、親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し、値として渡される。値に応じたコンポーネント部分の変化が起こる。
-3. 各コンポーネントで個別に状態を変化させたいものは、propsオプションではなく、dataオプションとして扱う。
+1. 親コンポーネントのタグ内で設定された『```:example = "値"```』が、子コンポーネントの『```props: { "値" }```』に渡される。この値は読み込み専用で、変更できない。
+2. 各コンポーネントで個別に状態を変化させたいものは、propsオプションではなく、dataオプションとして扱う。
+3. ボタンをクリックした時、子コンポーネントの『```$emit("イベント名", "値")```』によって、親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し、値として渡される。値に応じたコンポーネント部分の変化が起こる。
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
@@ -26,20 +93,21 @@
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
 <div id="app">
   
-  <!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-  <v-example-component-1
+	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
+	<!-- 対応するVueインスタンスのmethodオプションをコール-->
+	<v-example-component-1
 	v-on change="changeQuery"
   ></v-example-component-1>
 
 	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-  <v-example-component-2
+	<v-example-component-2
                          
-  ></v-example-component-2>
+	></v-example-component-2>
 
 	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-  <v-example-component-3
+	<v-example-component-3
                          
-  ></v-example-component-3>
+	></v-example-component-3>
   
 </div>
 ```
@@ -48,47 +116,47 @@
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
 new Vue({
 
-    //　データの受け渡しを行うHTML（TWIG）のIDを、『#ID名』で設定する。
-    el: '#app',
+	//　データの受け渡しを行うHTML（TWIG）のIDを、『#ID名』で設定する。
+	el: '#app',
 
+	// 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+	component: {
 
-    // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
-    component: {
+		// 親コンポーネントと子コンポーネントの対応関係。
+    // 子コンポーネントごとに異なるファイルを用意する。
+		'v-example-component-1': require('./xxx/xxx/xxx-1'),
+		'v-example-component-2': require('./xxx/xxx/xxx-2'),
+		'v-example-component-3': require('./xxx/xxx/xxx-3')
+		},
 
-        // 親コンポーネントと子コンポーネントの対応関係
-        'v-example-component-1': require('./xxx/xxx/xxx-1'),
-        'v-example-component-2': require('./xxx/xxx/xxx-2'),
-        'v-example-component-3': require('./xxx/xxx/xxx-3')
-    },
+		// 状態を変化させたいデータを、関数として定義しておき、初期状態を設定する。
+		data: function() {
+			return {
+				// プロパティ名: 値
+				isLoaded: false,
+				staffData: [],
+				criteria: {
+					id: null,
+					name: null
+					},
+				};
+		},
 
-    // 状態を変化させたいデータを、関数として定義しておき、初期状態を設定する。
-    data: function() {
-        return {
-            // プロパティ名: 値
-            isLoaded: false,
-            staffData: [],
-            criteria: {
-                id: null,
-                name: null
-            },
-        };
-    },
-
-		// 任意の関数を定義する。
+		// 親コンポーネントでコールするためのメソッドを定義する。
 		method: {
-      	changeQuery(obj) {
-          // 何らかの処理;
-        }  
-    },
+			changeQuery(obj) {
+				// 何らかの処理;
+			}  
+		},
 
 		// Vueインスタンス内の値の変化を監視する関数を定義する。
-    watch: {
+		watch: {
       
-    },
+		},
 });
 ```
 ```vue
-<!-- xxx-1ファイル -->
+<!-- v-example-component-1の子コンポーネント -->
 <!-- 子コンポーネントとして使用するためのtemplateタグ -->
 <!-- ここに、出力したいHTMLやTWIGを記述する。 -->
 <template>
@@ -103,59 +171,46 @@ new Vue({
 
 <!-- 子コンポーネントのオプションを設定 -->
 <script>
-    module.exports = {
+module.exports = {
       
       
-        // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
-        component: {
+	// 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+	component: {
 
-            // 子コンポーネントと孫コンポーネントの対応関係
-            'v-example-component-4': require('./xxx/xxx/xxx-4'),
-        },
-      
-
-        // 親コンポーネントからpropsオブジェクトのプロパティに、値が格納される。
-        props: {
-            'criteria': {
-                type: Object,
-                required: true
-            },
-        },
+		// 子コンポーネントと孫コンポーネントの対応関係
+		'v-example-component-4': require('./xxx/xxx/xxx-4'),
+	},
       
 
-        // 状態を変化させたいデータを関数として定義しておき、初期状態を格納する。
-        data: function() {
-            return {
-            };
-        },
+	// 親コンポーネントからpropsオブジェクトのプロパティに、値が格納される。
+	props: {
+		'criteria': {
+			type: Object,
+			required: true
+		},
+	},
+      
+
+	// 状態を変化させたいデータを関数として定義しておき、初期状態を格納する。
+	data: function() {
+		return {
+		
+		};
+	},
       
       
-      	// 任意の関数を定義する。
-      	method: {
-          	updateCriteria (key, value) {
+	// 任意の関数を定義する。
+	method: {
+		updateCriteria (key, value) {
               
-              // 親コンポーネント（v-example-component-1）と紐づく処理
-              // chageイベントを発火させ、イベントに紐づくchangeQuery()の引数として値を渡す。
-              this.$emit('change', {'criteria': localCriteria});
-        },
+		// 親コンポーネント（v-example-component-1）と紐づく処理
+		// chageイベントを発火させ、イベントに紐づくchangeQuery()の引数として値を渡す。
+		this.$emit('change', {'criteria': localCriteria});
+	},
 
-    };
+};
 </script>
 ```
-
-
-
-### ◆ SPA：シングルページアプリケーション
-
-Vue.jsでは、SPAの仕組みが用いられている。
-
-- **SPアプリにおけるデータ通信の仕組み**
-
-![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SPアプリにおけるデータ通信の仕組み.png)
-
-- **従来WebアプリとSPアプリの処理速度の違い**
-
-![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/従来WebアプリとSPアプリの処理速度の違い.png)
 
 
 
@@ -198,7 +253,7 @@ Vuejsでライブラリの一つで、ページの状態管理を行うことが
 
 - **Commit**
   
-  サーバー側で返却されたデータ（基本的にはJSONでリターンする）をMutationへ渡す。
+  サーバー側からレスポンスされたデータ（基本的にはJSONでリターンする）をMutationへ渡す。
 
 - **Mutate**
 
@@ -312,9 +367,9 @@ new Vue({
 
 
 
-# 03-01. Web API
+# 03-01. JQuery
 
-### ◆ Web APIの概念
+### ◆ Web APIとは
 
 ![API](https://user-images.githubusercontent.com/42175286/58460636-04960300-8169-11e9-8fa0-18a307f3425b.png)
 
@@ -324,29 +379,14 @@ new Vue({
 
 
 
-### ◆ AJAXを用いたAPI
+### ◆ AJAXを用いたWeb APIの実装
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
-AJAX（Asynchronous JavaScript + XML）は、以下の４つから構成される。
-
-- **JavaScript**
-
-- **XML HttpRequest**
-  オブジェクト形式で書かれ、ブラウザとサーバー間を繋ぐAPI。
-  
-- **DOM**
-  xmlやhtmlをツリー構造で表現することによって、ブラウザとサーバー間を繋ぐAPI。
-  
-- **XML**
-
-  
-
-1. ページ上で任意のイベントが発生（ボタンクリックなど）
-1. JavaScriptとXMLHttpRequestでサーバーに対して、ルーティングを基にコントローラにリクエストを送信
-1. サーバーで受け取った情報を処理。サーバーの処理中もクライアントは操作を継続可能（これぞ非同期通信）。
-1. コントローラは処理結果をJSONやXMLなどの形式でレスポンスを送信。
-1. レスポンスを受けて、DOMでページを更新。
+1. ページ上で任意のイベントが発生。（ボタンクリックなど）
+1. JavaScriptとXMLHttpRequestを用いて、ルーティングを基にコントローラにリクエストを送信。
+1. コントローラはデータをJSON形式でレスポンス。
+1. DOMを用いて、マークアップ言語を解析し、Webページを表示する。
 
 **【実装例】**
 
@@ -368,7 +408,7 @@ class Staff
 
 		return $.ajax({
       type: 'POST', // HTTPリクエストとしてPOSTメソッドを指定
-      url: '/xxx/xxx', // データを受け取るHTMLあるいはTWIGファイルを指定
+      url: '/xxx/xxx', // データの送信先のファイルのパスを指定
       contentType: 'application/json',
       dataType: 'json', // レスポンスされるデータはJSON形式を指定
       data: query,
@@ -404,13 +444,35 @@ module.exports = Staff;
 
 
 
-### ◆ サーバサイドとフロントサイド間でのデータの形式変換
+# 04-01. フロントとサーバの間のデータ形式変換
+
+### ◆ オブジェクトデータの形式変換
 
 データを送受信できるように、データを形式変換することをシリアライズまたはデシリアライズという。
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
 
 **【実装例】**
+
+```javascript
+// JavaScriptによるオブジェクトの表現
+Example: {
+    fruit: ["ばなな", "りんご"],
+    account: 200,
+}
+```
+
+⬇︎⬆︎
+
+```javascript
+// JSON形式によるオブジェクトの表現
+"Example": {
+    "fruit": ["ばなな", "りんご"],
+    "account": "200",
+}
+```
+
+⬇︎⬆︎
 
 ```PHP
 // PHPによるオブジェクトの表現
@@ -422,17 +484,23 @@ class Example
 }    
 ```
 
-⇅
 
-```javascript
-// JSON形式によるオブジェクトの表現
-"Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": "200",
-}
+
+### ◆ GET送信
+
+ネットワークのノートも参照せよ。
+
+- **クエリストリングの付加**
+
+GET送信ではクエリストリングが生成され、HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる。URLに情報が記述されるため、履歴で確認できてしまう。リクエスト情報は、以下の要素に分類できる。
+
+```
+http://127.0.0.1/example.php + ? + クエリストリング
 ```
 
-⇅
+- **オブジェクトデータのクエリストリングへの変換**
+
+**【実装例】**
 
 ```javascript
 // JavaScriptによるオブジェクトの表現
@@ -442,46 +510,68 @@ Example: {
 }
 ```
 
+⬇︎
 
-
-### ◆ データのクエリストリングへの変換
-
-```javascript
-// JavaScriptによるオブジェクトの表現
-Example: {
-    fruit: ["ばなな", "りんご"],
-    account: 200,
-}
 ```
-
-⇅
-
-```javascript
 // 『ルート + ? + クエリストリング』のクエリストリングに相当する部分。
 // ...の部分には、データ型を表す記号などが含まれる。
-fruit...=ばなな&fruit...=りんご&account...=200
+http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
 ```
 
 
 
-# 03-02. スキーマ言語と構造解析
+# 05-01. マークアップ言語のツリー構造化
 
-### ◆ XML Schema と DTD（Document Type Definition）によるツリー構造定義
+### ◆ マークアップ言語の歴史
 
-XML文書は、ツリー構造で書かれている。最初に出現するルート要素は根（ルート）であると考えられ、すべての要素や属性は、そこから延びる枝葉として考えられる。ツリー構造を定義するための言語はスキーマ言語と呼ばれる。
+Webページをテキストによって構成するための言語をマークアップ言語という。1970年、IBMが、タグによって、テキスト文章に構造や意味を持たせるGML言語を発表した。
 
-（例）DTDによってツリー構造を定義されたXML
+![マークアップ言語の歴史](/Users/hiroki/Documents/Drive 1st/Programming/tech-notebook/image/マークアップ言語の歴史.png)
+
+
+
+### ◆ XMLのツリー構造化
+
+XML形式テキストファイルはタグを用いて記述されている。最初に出現するルート要素は根（ルート）、またすべての要素や属性は、そこから延びる枝葉として意味づけられる。
+
+**【XMLのツリー構造化の例】**
 
 ![DOMの構造](https://user-images.githubusercontent.com/42175286/59778015-a59f5600-92f0-11e9-9158-36cc937876fb.png)
 
 引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB
 
+- **スキーマ言語**
 
+  XML形式テキストファイルにおいて、タグの付け方は自由である。しかし、利用者間で共通のルールを設けた方が良い。ルールを定義するための言語をスキーマ言語という。スキーマ言語に、DTD：Document Type Definition（文書型定義）がある。
 
-### ◆ DOM（Document Object Model）と SAXによる構造解析
+  **【DTDの実装例】**
 
-XMLデータを操作するためのAPI。DOMの場合、プロセッサはXMLを構文解析し、メモリ上にDOMツリーを展開する。一方のSAXの場合、DOMのようにメモリ上にツリーを構築することなく、先頭から順にXMLを読み込み、要素の開始や要素の終わりといったイベントを生成し、その都度アプリケーションに通知する。
+  ```dtd
+  <!DOCTYPE Enployee[
+    <!ELEMENT Name (First, Last)>
+    <!ELEMENT First (#PCDATA)>
+    <!ELEMENT Last (#PCDATA)>
+    <!ELEMENT Email (#PCDATA)>
+    <!ELEMENT Organization (Name, Address, Country)>
+    <!ELEMENT Name (#PCDATA)>
+    <!ELEMENT Address (#PCDATA)>
+    <!ELEMENT Country (#PCDATA)>
+  ]>
+  ```
+
+  
+
+# 05-02. ツリー構造の解析
+
+### ◆ XMLによるツリー構造の解析
+
+DOMによる解析の場合、プロセッサはXMLを構文解析し、メモリ上にDOMツリーを展開する。一方で、SAXによる解析の場合、DOMのようにメモリ上にツリーを構築することなく、先頭から順にXMLを読み込み、要素の開始や要素の終わりといったイベントを生成し、その都度アプリケーションに通知する。
 
 ![DTDとDOM](https://user-images.githubusercontent.com/42175286/59777367-83f19f00-92ef-11e9-82e5-6ebcd59f4cba.gif)
 
 引用：＠IT，https://www.atmarkit.co.jp/ait/articles/0208/20/news002.html
+
+
+
+### ◆ HTMLによるツリー構造の解析
+
