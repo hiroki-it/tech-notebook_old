@@ -407,33 +407,33 @@ class Staff
 	static find(query) {
 
 		return $.ajax({
-      type: 'POST', // HTTPリクエストとしてPOSTメソッドを指定
-      url: '/xxx/xxx', // データの送信先のファイルのパスを指定
-      contentType: 'application/json',
-      dataType: 'json', // レスポンスされるデータはJSON形式を指定
-      data: query,
-    });
+			type: 'POST', // HTTPリクエストとしてPOSTメソッドを指定
+			url: '/xxx/xxx', // データの送信先のファイルのパスを指定
+			contentType: 'application/json',
+			dataType: 'json', // レスポンスされるデータはJSON形式を指定
+			data: query,
+		});
     
     // ajax()の処理が成功した場合に起こる処理。
-    .done((data) => {
+		.done((data) => {
       
-    });
+		});
     
-    // ajax()の処理が失敗した場合に起こる処理。
-    .fail(() => {
-      toastr.error('', 'エラーが発生しました。');
-    });
+		// ajax()の処理が失敗した場合に起こる処理。
+		.fail(() => {
+			toastr.error('', 'エラーが発生しました。');
+		});
     
-    // ajax()の成功失敗に関わらず、必ず起こる処理。
-    .always(()) => {
-      this.isLoaded = false;
-    });
+		// ajax()の成功失敗に関わらず、必ず起こる処理。
+		.always(()) => {
+			this.isLoaded = false;
+		});
     
-    // 取得したJJSON型オブジェクトからJS型オブジェクトを生成する。
-    static staffInstance(data) {
-      return new Staff({
-        id: data.id,
-        name: data.name
+		// 取得したJJSON型オブジェクトからJS型オブジェクトを生成する。
+		static staffInstance(data) {
+			return new Staff({
+				id: data.id,
+				name: data.name
 			});
 		}                       
 }
@@ -526,7 +526,7 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 
 Webページをテキストによって構成するための言語をマークアップ言語という。1970年、IBMが、タグによって、テキスト文章に構造や意味を持たせるGML言語を発表した。
 
-![マークアップ言語の歴史](/Users/hiroki/Documents/Drive 1st/Programming/tech-notebook/image/マークアップ言語の歴史.png)
+![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.png)
 
 
 
