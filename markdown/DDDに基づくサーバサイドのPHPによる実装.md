@@ -246,7 +246,15 @@ class PaymentInfoVO
 
 ### ◆ （1）ドメイン層の計測、定量化、説明
 
-金額、数字、電話番号、文字列、日付、氏名、色など、一意に識別する必要がないユビキタス言語をオブジェクトモデルで表現する時に、ValueObjectとしてモデリング／実装すべき。例えば、電話番号を表すために、Int型ではなく、PhoneNumber型で定義する。
+金額、数字、電話番号、文字列、日付、氏名、色など、一意に識別する必要がないユビキタス言語をオブジェクトモデルで表現する時に、ValueObjectとしてモデリング／実装すべき。
+
+- **金額計算**
+
+金額計算をController内処理やEntity内メソッドで行うのではなく、金額計算を行うValueObjectのメソッドとして分割する。
+
+- **所要時間計算**
+
+所要時間計算をController内処理やEntity内メソッドで行うのではなく、所要時間計算を行うValueObjectのメソッドとして分割する。
 
 
 
@@ -639,7 +647,7 @@ class AcceptOrdersController
 	{
 	
 	}
-	
+}	
 ```
 
 
@@ -669,13 +677,18 @@ class AcceptOrdersController
 **【app.phpの実装例】**
 
 ```PHP
-$kernel = new AppKernel('dev', true); 
+$kernel = new AppKernel('dev', true);
+
 if (PHP_VERSION_ID < 70000) {
     $kernel->loadClassCache();
 }
+
 $request = Request::createFromGlobals();  //（１）
+
 $response = $kernel->handle($request); //（２）
+
 $response->send(); //（３）
+
 $kernel->terminate($request, $response);
 ```
 
@@ -686,17 +699,25 @@ handle()が定義されているファイル。ここで定義されたhandle()�
 /** 
 * {@inheritdoc}
 */
-public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+public function handle
+(
+    Request $request,
+    $type = HttpKernelInterface::MASTER_REQUEST,
+    $catch = true
+)
 {
-　$this->boot();
-　++$this->requestStackSize;
-　$this->resetServices = true;
+	$this->boot();
+    
+	++$this->requestStackSize;
+    
+	$this->resetServices = true;
 
-　try {
-　return $this->getHttpKernel()->handle($request, $type, $catch);
-　} finally {
-　--$this->requestStackSize;
-　}
+	try {
+        return $this->getHttpKernel()->handle($request, $type, $catch);
+	
+    } finally {
+        --$this->requestStackSize;
+	}
 }
 ```
 
