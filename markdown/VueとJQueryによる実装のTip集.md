@@ -77,7 +77,15 @@ new Vue({
 
 
 
-### ◆ コンポーネント間のデータ通信
+### ◆ 親子コンポーネント間のデータ通信
+
+- **MVVMパターン**
+
+Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModelが『子コンポーネントのVueファイル』、Modelが『JSのクラス定義ファイル』に相当する。
+
+![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVMパターン.png)
+
+- **データ通信の仕組み**
 
 親コンポーネント（出力先のコンポーネントタグ）では、子コンポーネント（出力内容）がタグ名でコールされる。
 
@@ -87,7 +95,9 @@ new Vue({
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
-**【実装例1】**
+**【実装例】**
+
+- **親コンポーネント**
 
 ```html
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
@@ -96,7 +106,8 @@ new Vue({
 	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
 	<!-- 対応するVueインスタンスのmethodオプションをコール-->
 	<v-example-component-1
-	v-on change="changeQuery"
+		:criteria="criteria"
+		v-on change="changeQuery"
   ></v-example-component-1>
 
 	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
@@ -111,6 +122,7 @@ new Vue({
   
 </div>
 ```
+- **Vueインスタンス**
 
 ```javascript
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
@@ -142,11 +154,39 @@ new Vue({
 				};
 		},
 
-		// 親コンポーネントでコールするためのメソッドを定義する。
+		// dataプロパティの状態を変化させ、親コンポーネントでコールされるメソッドを定義する。
+		// メソッドは部品化されており、全てのメソッドが合わさって上記の条件に合致する。
 		method: {
-			changeQuery(obj) {
-				// 何らかの処理;
-			}  
+			changeQuery(criteriaObj) {
+        
+        // 値無しプロパティを持つkeysオブジェクトを定義する。
+				const keys = [
+          'criteria',
+          'limit',
+				];
+        
+        // プロパティ名を取り出す。
+        for (const key of keys) {
+          
+          // criteriaObjのプロパティの値を、上記のkeysオブジェクトに格納する。
+          if (key in criteriaObj) {
+            
+            // ここでのthisはメソッド内のkeysオブジェクトを指す。
+            this[key] = criteriaObj[key];
+          }
+        }
+        
+        
+			// dataプロパティの状態を変化させるメソッド。
+ 			load(query) {
+          
+        // ここでのthisはdataプロパティを指す。
+        this.isLoaded = true;
+        this.staffData = [];
+        
+        // JS型オブジェクトを返却する。
+        return Staff.find(query)
+      }  
 		},
 
 		// Vueインスタンス内の値の変化を監視する関数を定義する。
@@ -155,6 +195,8 @@ new Vue({
 		},
 });
 ```
+- **子コンポーネント**
+
 ```vue
 <!-- v-example-component-1の子コンポーネント -->
 <!-- 子コンポーネントとして使用するためのtemplateタグ -->
@@ -182,7 +224,7 @@ module.exports = {
 	},
       
 
-	// 親コンポーネントからpropsオブジェクトのプロパティに、値が格納される。
+	// 親コンポーネントからpropsオブジェクトのプロパティに、criteriaの値が格納される。
 	props: {
 		'criteria': {
 			type: Object,
@@ -403,7 +445,7 @@ query = {
 class Staff
 {
 
-  // 自分自身をJSON型オブジェクトでサーバサイドから取得するメソッド
+	// 自分自身をJSON型オブジェクトでサーバサイドから取得するメソッド
 	static find(query) {
 
 		return $.ajax({
@@ -414,7 +456,7 @@ class Staff
 			data: query,
 		});
     
-    // ajax()の処理が成功した場合に起こる処理。
+		// ajax()の処理が成功した場合に起こる処理。
 		.done((data) => {
       
 		});
@@ -457,8 +499,8 @@ module.exports = Staff;
 ```javascript
 // JavaScriptによるオブジェクトの表現
 Example: {
-    fruit: ["ばなな", "りんご"],
-    account: 200,
+	fruit: ["ばなな", "りんご"],
+	account: 200,
 }
 ```
 
@@ -467,8 +509,8 @@ Example: {
 ```javascript
 // JSON形式によるオブジェクトの表現
 "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": "200",
+	"fruit": ["ばなな", "りんご"],
+	"account": "200",
 }
 ```
 
@@ -478,9 +520,9 @@ Example: {
 // PHPによるオブジェクトの表現
 class Example
 {
-    private fruit;
+	private fruit;
     
-    private account;
+	private account;
 }    
 ```
 
@@ -505,8 +547,8 @@ http://127.0.0.1/example.php + ? + クエリストリング
 ```javascript
 // JavaScriptによるオブジェクトの表現
 Example: {
-    fruit: ["ばなな", "りんご"],
-    account: 200,
+	fruit: ["ばなな", "りんご"],
+	account: 200,
 }
 ```
 
@@ -526,7 +568,7 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 
 Webページをテキストによって構成するための言語をマークアップ言語という。1970年、IBMが、タグによって、テキスト文章に構造や意味を持たせるGML言語を発表した。
 
-![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.png)
+![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.gif)
 
 
 
@@ -544,20 +586,20 @@ XML形式テキストファイルはタグを用いて記述されている。�
 
   XML形式テキストファイルにおいて、タグの付け方は自由である。しかし、利用者間で共通のルールを設けた方が良い。ルールを定義するための言語をスキーマ言語という。スキーマ言語に、DTD：Document Type Definition（文書型定義）がある。
 
-  **【DTDの実装例】**
+**【DTDの実装例】**
 
-  ```dtd
-  <!DOCTYPE Enployee[
-    <!ELEMENT Name (First, Last)>
-    <!ELEMENT First (#PCDATA)>
-    <!ELEMENT Last (#PCDATA)>
-    <!ELEMENT Email (#PCDATA)>
-    <!ELEMENT Organization (Name, Address, Country)>
-    <!ELEMENT Name (#PCDATA)>
-    <!ELEMENT Address (#PCDATA)>
-    <!ELEMENT Country (#PCDATA)>
-  ]>
-  ```
+```dtd
+<!DOCTYPE Enployee[
+	<!ELEMENT Name (First, Last)>
+	<!ELEMENT First (#PCDATA)>
+	<!ELEMENT Last (#PCDATA)>
+	<!ELEMENT Email (#PCDATA)>
+	<!ELEMENT Organization (Name, Address, Country)>
+	<!ELEMENT Name (#PCDATA)>
+	<!ELEMENT Address (#PCDATA)>
+	<!ELEMENT Country (#PCDATA)>
+]>
+```
 
   
 
