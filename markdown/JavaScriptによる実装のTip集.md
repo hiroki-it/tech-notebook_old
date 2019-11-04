@@ -8,13 +8,293 @@
 
 
 
+# 02-01. データ記述言語
+
+### ◆ JSON：JavaScript Object Notation
+
+``` json
+// 一番外側を波括弧で囲う。
+{
+  "Example": {
+    "fruit": ["ばなな", "りんご"],
+    "account": 200,
+  }
+}
+```
 
 
-# 02-01. Vue
+
+### ◆ YAML：YAML Ain't a Markup Language
+
+```yaml
+{
+  Example:
+    fruit:
+      - "ばなな"
+      - "りんご"
+    account: 200
+}  
+```
+
+
+
+### ◆ マークアップ言語
+
+マークアップ言語の章を参照せよ。
+
+
+
+### ◆ CSV：Comma Separated Vector
+
+データ解析の入力ファイルとしてよく使うやつ。
+
+
+
+# 02-02. JavaScriptにおけるオブジェクト指向
+
+
+### ◆ オブジェクトの定義方法
+
+- **リテラル表記による定義**
+
+オブジェクトをリテラル表記で定義する方法。キャメルケース（小文字から始める記法）を用いる。
+
+```javascript
+const exmaple = {
+  
+	property: value,
+  
+  setValue: function(value) {
+  	this.property = value;
+  }    
+  
+	getValue: function() {
+		return this.property;
+	}
+}	
+```
+
+
+- **```new Object()```による定義**
+
+```Object```オブジェクトから明示的にオブジェクトを定義する方法。キャメルケース（小文字から始める記法）を用いる。
+
+```javascript
+const exmaple = new Exmaple({
+  
+	property: value,
+  
+  setValue: function(value) {
+  	this.property = value;
+  }  
+	
+  getValue: function() {
+		return this.property;
+	}
+})
+```
+
+
+- **construct関数による定義**
+
+プロパティを定義するためには、値を格納する必要がある。関数宣言あるいは関数式で記述する。パスカルケース（大文字から始める記法）を用いる。
+
+```javascript
+// 関数宣言
+function Example(value) {
+	
+  this.property = value;
+
+	this.setValue = function(value) {
+  	this.property = value;
+  }   
+  
+	this.getValue = function(){
+		return this.property;
+	};
+}
+```
+
+```javascript
+// 関数式
+const Example = function(value) {
+  
+	this.property = value;
+  
+	this.setValue = function(value) {
+  	this.property = value;
+  }  
+  
+	this.getValue = function() {
+		return this.property;
+	};
+}
+```
+
+また、リテラル表記と```new Object()```による定義とは異なり、construct関数によって定義されたオブジェクトは、暗示的に```prototype```プロパティをもつ。
+
+```javascript
+// リテラル表記による定義
+const object1 = {};
+
+// new Object()による定義
+const object2 = new Object({});
+
+// construct関数による定義
+const Object3 = function(){};
+
+// 出力結果
+console.log(
+	object1.prototype, // undefined
+	object2.prototype,  // undefined
+	Object3.prototype // Object3 {}
+);
+```
+
+- **糖衣構文である```class```による定義**
+
+ES6から、糖衣構文である```class```によって、オブジェクトを定義できるようになった。クラス宣言あるいはクラス式で記述する。パスカルケース（大文字から始める記法）を用いる。
+
+```javascript
+// クラス宣言
+class Exmaple {
+  // コンストラクタ
+	constructor(value)
+  {
+		this.property = value;
+	}
+	
+	getValue()
+  {
+		return this.property;
+	}
+}
+```
+
+```javascript
+// クラス式
+const Example = class {
+  
+	constructor(value) {
+		this.property = value;
+	}
+	
+	getValue() {
+		return this.property;
+	}
+}
+```
+
+
+
+### ◆ 継承とプロトタイプチェーン
+
+```prototype```プロパティに別のオブジェクトのメンバを追加することによって、そのオブジェクトのプロトタイプを継承することができる。オブジェクトからプロパティやメソッドをコールした時、そのオブジェクトにこれらが存在しなければ、継承元まで辿る仕組みを『プロトタイプチェーン』という。クラスベースのオブジェクト指向で用いられるクラスチェーンについては、別ノートを参照せよ。
+
+- **```new Obejct()```を用いた継承**
+
+```javascript
+// 大元となるオブジェクトは個別ファイルで管理しておくのがベター。
+// construct関数の関数式による定義。
+const Example = function(value) {
+  
+	this.property = value;
+  
+	this.setValue = function(value) {
+  	this.property = value;
+  }  
+  
+	this.getValue = function() {
+		return this.property;
+	};
+}
+```
+
+```javascript
+// 継承元のオブジェクトのファイルを読み込むことも忘れずに。
+// prototypeプロパティの継承先のオブジェクトを定義。
+const SubExample = function(subValue) {
+	
+  this.subProperty = subValue;
+  
+	this.setSubValue = function(subValue) {
+  	this.subProperty = subValue;
+  }  
+  
+	this.getSubValue = function() {
+		return this.subProperty;
+	};
+}
+
+// new Object()を用いた継承。
+SubExample.prototype = new Example();
+
+// SubExampleクラスにはgetValue()は無い。
+// 継承元まで辿り、Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）。
+var result = SubExample.getValue()
+console.log(result);
+```
+
+- **```Object.create()```を用いた継承とメンバ追加**
+
+```javascript
+// 継承元のオブジェクトのファイルを読み込むことも忘れずに。
+// prototypeプロパティの継承先のオブジェクトを定義。
+const SubExample = function() {
+	
+  this.subProperty = subValue;
+  
+	this.setSubValue = function(subValue) {
+  	this.subProperty = subValue;
+  }  
+  
+	this.getSubValue = function() {
+		return this.subProperty;
+	};
+}
+
+// Object.create()を用いた継承。
+SubExample.prototype = Object.create(Example.prototype);
+
+// SubExampleクラスにはgetValue()は無い。
+// 継承元まで辿り、Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）。
+var result = SubExample.getValue()
+console.log(result);
+```
+
+また、```Object.create()```を用いる場合、継承だけでなく、メンバを新しく追加することもできる。
+
+```javascript
+// Object.create()による継承。
+SubExample.prototype = Object.create(Example.prototype, {
+
+  // メソッドを追加する。
+	this.printSubValue = function() {
+		return 'これは' + this.subProperty + 'です。';
+	};
+  
+});
+
+// SubExampleクラスにはprintSubValue()が追加された。
+var result = SubExample.printSubValue()
+console.log(result);
+```
+
+
+
+### ◆ ```this```のスコープ範囲
+
+
+
+
+
+
+
+# 03-01. Vueフレームワーク
 
 ### ◆ SPA：シングルページアプリケーション
 
-Vue.jsでは、SPAの仕組みが用いられている。
+Vueでは、SPAの仕組みが用いられている。
 
 - **SPアプリにおけるデータ通信の仕組み**
 
@@ -81,7 +361,7 @@ new Vue({
 
 - **MVVMパターン**
 
-Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModelが『子コンポーネントのVueファイル』、Modelが『JSのクラス定義ファイル』に相当する。
+Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModelが『子コンポーネントのVueファイル』、Modelが『クラスが定義されたJSファイル』に相当する。
 
 ![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVMパターン.png)
 
@@ -256,17 +536,17 @@ module.exports = {
 
 
 
-# 02-02. Vue-Routerライブラリ
+# 03-02. Vue-Routerライブラリ
 
 ### ◆ コンポーネントのルーティング
 
-Vue.jsのライブラリの一つで、コンポーネントとルートをマッピングさせることによって、特定のルートがリクエストされた時に、特定のコンポーネントが動作するように設定することができる。
+Vueのライブラリの一つで、コンポーネントとルートをマッピングさせることによって、特定のルートがリクエストされた時に、特定のコンポーネントが動作するように設定することができる。
 
 **【実装例】**
 
 ```javascript
 // Vue-Routerライブラリを読み込む。
-const VueRouter = require('vue-router').default;
+const vueRouter = require('vue-router').default;
 
 // VueRouterインスタンスを作成する。
 const router = new VueRouter({[
@@ -280,7 +560,7 @@ module.exports = router;
 
 
 
-# 02-03. Vuexライブラリ
+# 03-03. Vuexライブラリ
 
 ### ◆ ページの状態管理の仕組み
 
@@ -307,13 +587,13 @@ Vuejsでライブラリの一つで、ページの状態管理を行うことが
 
 
 
-### ◆ Storeにおける状態管理の実装
+### ◆ ```Store```における状態管理の実装
 
 Vuexライブラリを経由してリクエストとレスポンスを行うことで、より効率的にページの状態管理が行える。
 
 ![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VueコンポーネントツリーとVuexの関係.png)
 
-Vuexによる状態管理は、Storeで実装していく。
+Vuexによる状態管理は、```Store```で実装していく。
 
 **【実装例】**
 
@@ -321,7 +601,7 @@ Vuexによる状態管理は、Storeで実装していく。
 // Vuex store
 // 基本的に、一つのコンポーネントに対応するStoreは一つのみとする。
 // Vuexライブラリを読み込む。
-const Vuex = require('vuex')
+const vuex = require('vuex')
 
 
 // 外部ファイルが、このStoreインスタンスを読み込めるようにする。
@@ -359,9 +639,9 @@ module.exports = new Vuex.Store({
 			
 	},
     
-    actions: {
+	actions: {
         
-    },
+	},
 });  
 ```
 
@@ -377,74 +657,116 @@ const mapMutaions = require('vuex').mapMutaions;
 
 new Vue({
   
-  el: '#app'
+	el: '#app'
   
-  store,
+	store,
 
   // 取得データをキャッシュしたいようなメソッドを定義する。
-  computed: {
+	computed: {
 
-    // mapGettersヘルパー。StoreのGetterをローカルのcomputedにマッピングし、コール可能にする。
-    ...mapGetters([
-    'x-Function'
-    ])
+		// mapGettersヘルパー。
+		// StoreのGetterをローカルのcomputedにマッピングし、コール可能にする。
+		...mapGetters([
+		'x-Function'
+		])
 
-  },
+	},
 
   // 取得データをキャッシュしたくないようなメソッドを定義する。
-  methods: {
+	methods: {
 
-    // mapMutationsヘルパー
-    ...mapMutations([
-    'y-Function'
-    ])
+		// mapMutationsヘルパー
+		...mapMutations([
+		'y-Function'
+		])
 
-    // mapActionsヘルパー
-    ...mapActions([
-    'z-Function'
-    ])
+		// mapActionsヘルパー
+		...mapActions([
+		'z-Function'
+		])
 	}
 });
 ```
 
 
 
-# 03-01. JQuery
+# 04-01. フロントサイドとサーバサイドの間のデータ通信
 
-### ◆ Web APIとは
-
-![API](https://user-images.githubusercontent.com/42175286/58460636-04960300-8169-11e9-8fa0-18a307f3425b.png)
-
-> In computer programming, an application programming interface (API) is a set of subroutine definitions, communication protocols, and tools for building software. In general terms, it is a set of clearly defined methods of communication among various components.
-
-> コンピュータプログラミングでは、アプリケーションプログラミングインターフェイス（API）は、サブルーティン定義、通信プロトコル、ソフトウェアを構築するための一連の方法。 一般的に、様々なコンポーネント間で明確に定義された一連の通信方法のことを言う。
-
-
-
-### ◆ AJAXを用いたWeb APIの実装
+### ◆ 通信の大まかな流れ
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
 1. ページ上で任意のイベントが発生。（ボタンクリックなど）
-1. JavaScriptとXMLHttpRequestを用いて、ルーティングを基にコントローラにリクエストを送信。
-1. コントローラはデータをJSON形式でレスポンス。
+1. GET送信の場合、クエリストリングを生成する。
+1. AJax（XMLHttpRequest）を用いて、ルーティングを基にコントローラにリクエストを送信。
+1. コントローラはオブジェクトをJSON形式でレスポンス。
+1. JSON型オブジェクトを解析（パース）する。
+1. JavaScriptでのオブジェクトがマークアップ言語に出力される。
 1. DOMを用いて、マークアップ言語を解析し、Webページを表示する。
+
+
+
+# 04-02. GET送信
+
+ネットワークのノートも参照せよ。
+
+### ◆ GET送信におけるHTTPリクエスト
+
+GET送信ではクエリストリングが生成され、HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる。URLに情報が記述されるため、履歴で確認できてしまう。リクエスト情報は、以下の要素に分類できる。
+
+```
+http://127.0.0.1/example.php + ? + クエリストリング
+```
+
+
+
+### ◆ クエリストリングの生成
+
+**【実装例】**
+
+```javascript
+// JavaScriptによるオブジェクトの表現。
+// クラス宣言。
+class Example {
+  fruit: ["ばなな", "りんご"],
+  account: 200,
+}
+```
+
+⬇︎
+
+```
+// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分。
+// ...の部分には、データ型を表す記号などが含まれる。
+http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
+```
+
+
+
+# 04-03.  Ajaxによる非同期通信
 
 **【実装例】**
 
 ```javascript
 // HTMLあるいはTWIGから、このようなオブジェクトが送信されてきたとする。
-query = {
+const query = {
 	criteria: {
     id: 777,
-    name: hiroki
+    name: "hiroki"
 }
 ```
 ```javascript
-// Javascript側でのクラス定義
-class Staff
-{
+// クラス宣言によって定義されたオブジェクトは、個別ファイルで管理しておくのがベター。
+class Staff {
+  
+  
+  // コンストラクタ
+  constructor(property) {
+    this.id = property.id;
+    this.name = property.name;
+  }  
 
+  
 	// 自分自身をJSON型オブジェクトでサーバサイドから取得するメソッド
 	static find(query) {
 
@@ -470,14 +792,18 @@ class Staff
 		.always(()) => {
 			this.isLoaded = false;
 		});
-    
-		// 取得したJJSON型オブジェクトからJS型オブジェクトを生成する。
-		static staffInstance(data) {
-			return new Staff({
-				id: data.id,
-				name: data.name
-			});
-		}                       
+  }    
+
+  
+	// 取得したJSON型オブジェクトをJavaScriptのオブジェクトにシリアライズする。
+	static parse(data) {
+		return new Shain({
+        
+		// コンストラクタに渡される。
+		id: data.id,
+		name: data.name
+		});
+	}                       
 }
 
 // 外部ファイルから読み込めるように設定しておく。  
@@ -486,19 +812,20 @@ module.exports = Staff;
 
 
 
-# 04-01. フロントとサーバの間のデータ形式変換
+# 04-04.  JSON型オブジェクトの解析（パース）
 
-### ◆ オブジェクトデータの形式変換
+### ◆ シリアライズとデシリアライズ
 
-データを送受信できるように、データを形式変換することをシリアライズまたはデシリアライズという。
+フロントサイドとサーバサイドの間で、JSON型オブジェクトを送受信できるように解析（パース）することを、シリアライズまたはデシリアライズという。
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
 
 **【実装例】**
 
 ```javascript
-// JavaScriptによるオブジェクトの表現
-Example: {
+// JavaScriptでのオブジェクトの表現。
+// クラス宣言。
+class Example {
 	fruit: ["ばなな", "りんご"],
 	account: 200,
 }
@@ -506,18 +833,21 @@ Example: {
 
 ⬇︎⬆︎
 
-```javascript
-// JSON形式によるオブジェクトの表現
-"Example": {
-	"fruit": ["ばなな", "りんご"],
-	"account": "200",
+```json
+// JSONでのオブジェクトの表現。
+// 一番外側を波括弧で囲う。
+{
+  "Example": {
+    "fruit": ["ばなな", "りんご"],
+    "account": 200,
+  }
 }
 ```
 
 ⬇︎⬆︎
 
 ```PHP
-// PHPによるオブジェクトの表現
+// PHPでのオブジェクトの表現。
 class Example
 {
 	private fruit;
@@ -528,51 +858,17 @@ class Example
 
 
 
-### ◆ GET送信
-
-ネットワークのノートも参照せよ。
-
-- **クエリストリングの付加**
-
-GET送信ではクエリストリングが生成され、HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる。URLに情報が記述されるため、履歴で確認できてしまう。リクエスト情報は、以下の要素に分類できる。
-
-```
-http://127.0.0.1/example.php + ? + クエリストリング
-```
-
-- **オブジェクトデータのクエリストリングへの変換**
-
-**【実装例】**
-
-```javascript
-// JavaScriptによるオブジェクトの表現
-Example: {
-	fruit: ["ばなな", "りんご"],
-	account: 200,
-}
-```
-
-⬇︎
-
-```
-// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分。
-// ...の部分には、データ型を表す記号などが含まれる。
-http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
-```
-
-
-
-# 05-01. マークアップ言語のツリー構造化
+# 04-05. マークアップ言語
 
 ### ◆ マークアップ言語の歴史
 
 Webページをテキストによって構成するための言語をマークアップ言語という。1970年、IBMが、タグによって、テキスト文章に構造や意味を持たせるGML言語を発表した。
 
-![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.gif)
+![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.png)
 
 
 
-### ◆ XMLのツリー構造化
+### ◆ XMLのツリー構造化と構造解析
 
 XML形式テキストファイルはタグを用いて記述されている。最初に出現するルート要素は根（ルート）、またすべての要素や属性は、そこから延びる枝葉として意味づけられる。
 
@@ -601,19 +897,13 @@ XML形式テキストファイルはタグを用いて記述されている。�
 ]>
 ```
 
-  
-
-# 05-02. ツリー構造の解析
-
-### ◆ XMLによるツリー構造の解析
+- **ツリー構造の解析**
 
 DOMによる解析の場合、プロセッサはXMLを構文解析し、メモリ上にDOMツリーを展開する。一方で、SAXによる解析の場合、DOMのようにメモリ上にツリーを構築することなく、先頭から順にXMLを読み込み、要素の開始や要素の終わりといったイベントを生成し、その都度アプリケーションに通知する。
 
 ![DTDとDOM](https://user-images.githubusercontent.com/42175286/59777367-83f19f00-92ef-11e9-82e5-6ebcd59f4cba.gif)
 
-引用：＠IT，https://www.atmarkit.co.jp/ait/articles/0208/20/news002.html
 
 
-
-### ◆ HTMLによるツリー構造の解析
+### ◆ HTMLのツリー構造化と構造解析
 
