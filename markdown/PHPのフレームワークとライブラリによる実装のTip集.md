@@ -1,4 +1,4 @@
-# 01. フレームワーク：Symfony
+# 01. Symfonyフレームワーク
 
 ### ◆ 採用すべき最低限のクラス
 
@@ -72,7 +72,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 
 
-# 02. ライブラリ：Carbon
+# 02. Carbonライブラリ
 
 ### ◆ Date型
 
@@ -166,13 +166,13 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-# 03. ライブラリ：Pinq
+# 03. Pinqライブラリ
 
 SQLのSELECTやWHEREといった単語を用いて、```foreach()```のように、コレクションデータを走査できるライブラリ。
 
 
 
-# 04. ライブラリ：Doctrine
+# 04. Doctrineライブラリ
 
 ### ◆ ```createQueryBuilder()```
 
