@@ -74,8 +74,6 @@ Getterでは、プロパティを取得するだけではなく、何かしら�
 
 **【実装例】**
 
-- **Getter**
-
 ```PHP
 class ABC {
 
@@ -417,6 +415,8 @@ var_dump($result);
 
 
 
+# 01-03. 無名関数
+
 ### ◆ Closure（無名関数）の定義、変数格納後のコール
 
 - **```use()```のみに引数を渡す場合**
@@ -434,7 +434,7 @@ $optionName = function() use($item){
 echo $optionName;
   
 // 出力結果
-オプションA
+// オプションA
 ```
 
 - **```function()```と```use()```に引数を渡す場合**
@@ -452,7 +452,7 @@ $optionName = function($para) use($item){
 echo $optionName("BC");
   
 // 出力結果
-オプションABC
+// オプションABC
 ```
 
 - **プロパティの値に無名関数を格納しておく裏技**
@@ -474,7 +474,7 @@ $option->name = function($para) use($item){
 echo $option->name("BC");
 
 // 出力結果
-オプションABC
+// オプションABC
 ```
 
 
@@ -497,7 +497,7 @@ $optionName = call_user_func(function("BC") use($item){
 echo $optionName;
 
 // 出力結果
-オプションABC
+// オプションABC
 ```
 
 
@@ -523,14 +523,14 @@ function test($callback)
 // 関数の中でコールされるため、「後で呼び出される」という意味合いから、コールバック関数といえる。
 function callbackMethod()：String
 {
-    return "出力成功";
+    return "出力に成功しました。";
 }
 
 // 高階関数の引数として、コールバック関数を渡す
 test("callbackMethod");
 
 // 出力結果
-出力成功
+// 出力に成功しました。
 ```
 
 ```PHP
@@ -545,14 +545,14 @@ public function higher-order($param, $callback)
 // コールバック関数を定義
 public function callbackMethod($param)
 {
-    return $param."の出力成功";
+    return $param."の出力に成功しました。";
 }
  
 // 高階関数の第一引数にコールバック関数の引数、第二引数にコールバック関数を渡す
 higher-order("第一引数", "callbackMethod");
 
 // 出力結果
-第一引数の出力成功
+// 第一引数の出力に成功しました。
 ```
 
 - **無名関数を用いる場合**
@@ -572,12 +572,12 @@ public function higher-order($parentVar, $callback)
 // 親メソッドのスコープで定義されている変数を引数として渡す。（普段よくやっている値渡しと同じ）
 high-order($parentVar, function() use($parentVar)
         {
-            return $parentVar."の出力成功";
+            return $parentVar."の出力に成功しました。";
         }
 	)
 	
 // 出力結果
-親メソッドのスコープの変数の出力成功	
+// 親メソッドのスコープの変数の出力に成功しました。	
 ```
 
 
@@ -618,11 +618,51 @@ public function Shiborikomi($callback)
 
 
 
-# 01-03. 外部ファイルの読み込みとコール
+# 01-04. 継承とクラスチェーン
 
-### ◆ use文による読み込みとコール
+クラスからプロパティやメソッドをコールした時、そのクラスにこれらが存在しなければ、継承元まで辿る仕組みを『クラスチェーン』という。プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては、別ノートを参照せよ。
 
-PHPでは、```use```によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込み、コールできる。ただし、動的な値は持たず、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでコールしていたら、スパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、```use```で読み込んでコールして良いものを決めておくと良い。
+```PHP
+// 継承元クラス
+class Example
+{
+	public value;
+  
+	public function getValue()
+	{
+		return $this->value1; 
+	}  
+}
+```
+
+```PHP
+// 継承先クラス
+class SubExample extends Example
+{
+	public subValue;
+  
+	public function getSubValue()
+	{
+		return $this->subValue; 
+	}  
+}
+```
+
+```PHP
+$subExample = new SubExample;
+
+// SubExampleクラスにはgetValue()は無い。
+// 継承元まで辿り、Exampleクラスからメソッドがコールされる（クラスチェーン）。
+echo $subExample->getValue()
+```
+
+
+
+# 01-05. 外部クラスとメソッドの読み込み
+
+### ◆ ```use```によるクラスとメソッドの読み込み
+
+PHPでは、```use```によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込める。ただし、動的な値は持たず、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでいたら、スパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、```use```で読み込んで良いものを決めておくと良い。
 
 **【以下で読み込まれるクラスの実装例】**
 
@@ -633,7 +673,7 @@ namespace Domain/Entity1;
 // 定数を定義。
 const VALUE = "これは定数です。"
 
-class E1
+class Example1
 {
 	public function className()
 	{
@@ -650,7 +690,7 @@ use Domain/Entity2
 
 namespace Domain/Entity2;
 
-class E2
+class Example2
 {
 	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
 	$e1 = new Entity1/E1:
@@ -666,7 +706,7 @@ use Domain/Entity1/E1;
 
 namespace Domain/Entity2;
 
-class E2
+class Example2
 {
 	// 名前空間を読み込み、クラスまで辿り、インスタンス作成。
 	$e1 = new E1;
@@ -682,9 +722,9 @@ use Domain/Entity1/E1/className;
 
 namespace Domain/Entity2;
 
-class E2
+class Eeample2
 {
-	// E1クラスのclassName()をコール。
+	// Example1クラスのclassName()をコール。
 	echo className();
 }
 ```
@@ -697,16 +737,16 @@ use Domain/Entity1/E1/VALUE;
 
 namespace Domain/Entity2;
 
-class E2
+class Example2
 {
-	// E1クラスの定数を出力。
+	// Example1クラスの定数を出力。
 	echo VALUE;
 }
 ```
 
 
 
-### ◆ 親クラスの静的メソッドのコール
+### ◆ 親クラスの静的メソッドの読み込み
 
 ```PHP
 abstract class Example 
@@ -719,11 +759,11 @@ abstract class Example
 ```
 
 ```PHP
-class SubExample
+class SubExample extends Example
 {
 	public function subExample()	
 	{
-        // 親メソッドの静的メソッドをコール
+		// 親メソッドの静的メソッドを読み込む
 		$example = parent::example();
 	} 
 }
@@ -888,23 +928,25 @@ array_push($array, "Red");
 print_r($array);
 
 // 出力結果
-Array
-(
-    [0] => Blue
-    [1] => Green
-    [2] => Red
-)
+
+//	Array
+//	(
+//		[0] => Blue
+//		[1] => Green
+//		[2] => Red
+//	)
 
 // 配列の最初の要素を取り出す。
 $theFirst= array_shift($array);
 print_r($array);
 
 // 出力結果
-Array
-(
-    [0] => Green
-    [1] => Red
-)
+
+//	Array
+//	(
+//    [0] => Green
+//    [1] => Red
+//	)
 
 // 取り出された値の確認
 echo $theFirst // Blue
@@ -991,6 +1033,57 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 | 時間                 | 19:07:07            | 区切り記号なし、も可能                                       |
 | 日付と時間           | 2019-07-07 19:07:07 | 同上                                                         |
 | タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
+
+
+
+# 02-03. 定数
+
+### ◆ 定数が有効な場面
+
+計算処理では、可読性の観点から、できるだけ数値を直書きしない。数値に意味合いを持たせ、定数として扱うと可読性が高くなる。例えば、ValueObjectにおける定数がある。
+
+```PHP
+class requiedTime
+{
+  // 判定値、歩行速度の目安、車速度の目安、を定数で定義する。
+  const JUDGMENT_MINUTE = 21;
+  const WALKING_SPEED_PER_MINUTE = 80;
+  const CAR_SPEED_PER_MINUTE = 400;
+
+  
+  private $distance;
+
+  
+  public function __construct(int $distance)
+  {
+    $this->distance = $distance;
+  }
+
+  
+  public function isMinuteByWalking()
+  {
+    if ($this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE < self::JUDGMENT_MINUTE){
+      return true; 
+    }
+
+    return false;
+  }  
+
+  
+  public function minuteByWalking()
+  {
+    $minute = $this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE;
+    return ceil($minute);
+  }
+
+  
+  public function minuteByCar()
+  {
+    $minute = $this->distance * 1000 / self::CAR_SPEED_PER_MINUTE;
+    return ceil($minute);	
+  }
+}
+```
 
 
 
@@ -1090,10 +1183,8 @@ $request->get('hoge');
 ```PHP
 $fruit = "リンゴ";
 
-echo 'これは$fruitです。';
-
 // 出力結果
-これは、$fruitです。
+echo 'これは$fruitです。'; // これは、$fruitです。
 ```
 
 - **シングルクオーテーションと波括弧による変数展開**
@@ -1103,10 +1194,8 @@ echo 'これは$fruitです。';
 ```PHP
 $fruit = "リンゴ";
 
-echo 'これは{$fruit}です。';
-
 // 出力結果
-これは、{$fruit}です。
+echo 'これは{$fruit}です。'; // これは、{$fruit}です。
 ```
 
 - **ダブルクオーテーションによる変数展開**
@@ -1116,10 +1205,8 @@ echo 'これは{$fruit}です。';
 ```PHP
 $fruit = "リンゴ";
 
-echo "これは $fruit です。";
-
 // 出力結果
-これは リンゴ です。
+echo "これは $fruit です。"; // これは リンゴ です。
 ```
 
 - **ダブルクオーテーションと波括弧による変数展開**
@@ -1129,10 +1216,8 @@ echo "これは $fruit です。";
 ```PHP
 $fruit = "リンゴ";
 
-echo "これは{$fruit}です。";
-
 // 出力結果
-これは、リンゴです。
+echo "これは{$fruit}です。"; // これは、リンゴです。
 ```
 
 
@@ -1154,10 +1239,9 @@ $result = &$value; // 値の入れ物を参照先として代入
 $a = 2;
 $b = &$a;  // 変数aを&をつけて代入
 $a = 10;    // 変数aの値を変更
-echo $b;
 
-# 結果
-10
+// 出力結果
+echo $b; // 10
 ```
 
 - **値渡し**
@@ -1175,10 +1259,10 @@ $result = $value; // 1をコピーして代入
 $a = 2;
 $b = $a;  // 変数aを代入
 $a = 10;  // 変数aの値を変更
-echo $b;
 
-# 結果
-2
+
+// 出力結果
+echo $b; // 2
 ```
 
 
