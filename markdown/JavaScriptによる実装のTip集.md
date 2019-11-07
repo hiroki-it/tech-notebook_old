@@ -1,4 +1,4 @@
-# 01. Webページにおける処理の流れ
+# あ01-01. Webページにおける処理の流れ
 
 一例として、処理フローは、『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される。
 
@@ -8,49 +8,24 @@
 
 
 
-# 02-01. データ記述言語
+# 01-02. フロントサイドとサーバサイドの間のデータ通信
 
-### ◆ JSON：JavaScript Object Notation
+### ◆ イベント発火からWebページ表示までの流れ
 
-``` json
-// 一番外側を波括弧で囲う。
-{
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200,
-  }
-}
-```
+![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
-
-
-### ◆ YAML：YAML Ain't a Markup Language
-
-```yaml
-{
-  Example:
-    fruit:
-      - "ばなな"
-      - "りんご"
-    account: 200
-}  
-```
+1. ページ上で任意のイベントが発火する。（ページング操作、フォーム入力など）
+2. JQueryの```ajax()```が、クエリストリングを生成し、また、リクエストによって指定ルートにJSON型データを送信する。
+3. コントローラは、JSON型データを受信し、またそれを元にDBからオブジェクトを取得する。
+4. コントローラは、オブジェクトをJSON型データに変換し、レスポンスによって送信する。
+5. JQueryの```ajax()```が、JSON型データを受信する。
+6. JSON型データが、解析（パース）によってオブジェクトに変換される。
+7. オブジェクトがマークアップ言語に出力される。
+8. DOMを用いて、マークアップ言語を解析し、Webページを構成する。
 
 
 
-### ◆ マークアップ言語
-
-マークアップ言語の章を参照せよ。
-
-
-
-### ◆ CSV：Comma Separated Vector
-
-データ解析の入力ファイルとしてよく使うやつ。
-
-
-
-# 02-02. JavaScriptにおけるオブジェクト指向
+# 02-01. JavaScriptにおけるオブジェクト指向
 
 
 ### ◆ オブジェクトの定義方法
@@ -64,8 +39,8 @@ const exmaple = {
   
 	property: value,
   
-  setValue: function(value) {
-  	this.property = value;
+	setValue: function(value) {
+		this.property = value;
   }    
   
 	getValue: function() {
@@ -84,11 +59,11 @@ const exmaple = new Exmaple({
   
 	property: value,
   
-  setValue: function(value) {
-  	this.property = value;
-  }  
+	setValue: function(value) {
+		this.property = value;
+	}  
 	
-  getValue: function() {
+	getValue: function() {
 		return this.property;
 	}
 })
@@ -103,11 +78,11 @@ const exmaple = new Exmaple({
 // 関数宣言
 function Example(value) {
 	
-  this.property = value;
+	this.property = value;
 
 	this.setValue = function(value) {
-  	this.property = value;
-  }   
+		this.property = value;
+	}   
   
 	this.getValue = function(){
 		return this.property;
@@ -122,8 +97,22 @@ const Example = function(value) {
 	this.property = value;
   
 	this.setValue = function(value) {
-  	this.property = value;
-  }  
+		this.property = value;
+  };
+  
+	this.getValue = function() {
+		return this.property;
+	};
+}
+
+// 	アロー関数を用いた関数式の省略記法
+const Example = (value) => {
+  
+	this.property = value;
+  
+	this.setValue = function(value) {
+		this.property = value;
+  };
   
 	this.getValue = function() {
 		return this.property;
@@ -201,7 +190,7 @@ const Example = function(value) {
 	this.property = value;
   
 	this.setValue = function(value) {
-  	this.property = value;
+		this.property = value;
   }  
   
 	this.getValue = function() {
@@ -215,10 +204,10 @@ const Example = function(value) {
 // prototypeプロパティの継承先のオブジェクトを定義。
 const SubExample = function(subValue) {
 	
-  this.subProperty = subValue;
+	this.subProperty = subValue;
   
 	this.setSubValue = function(subValue) {
-  	this.subProperty = subValue;
+		this.subProperty = subValue;
   }  
   
 	this.getSubValue = function() {
@@ -242,11 +231,11 @@ console.log(result);
 // prototypeプロパティの継承先のオブジェクトを定義。
 const SubExample = function() {
 	
-  this.subProperty = subValue;
+	this.subProperty = subValue;
   
 	this.setSubValue = function(subValue) {
-  	this.subProperty = subValue;
-  }  
+		this.subProperty = subValue;
+	}  
   
 	this.getSubValue = function() {
 		return this.subProperty;
@@ -268,7 +257,7 @@ console.log(result);
 // Object.create()による継承。
 SubExample.prototype = Object.create(Example.prototype, {
 
-  // メソッドを追加する。
+	// メソッドを追加する。
 	this.printSubValue = function() {
 		return 'これは' + this.subProperty + 'です。';
 	};
@@ -290,7 +279,7 @@ console.log(result);
 
 
 
-# 03-01. Vueフレームワーク
+# 03-01. Vueフレームワークによるイベントの発火
 
 ### ◆ SPA：シングルページアプリケーション
 
@@ -324,7 +313,7 @@ new Vue({
 
 ```javascript
 var vExmapleComponent = {
-  // 親コンポーネントと子コンポーネントの対応関係
+	// 親コンポーネントと子コンポーネントの対応関係
 	template: require('./xxx/xxx/xxx'),
 }
 
@@ -415,13 +404,14 @@ new Vue({
 	component: {
 
 		// 親コンポーネントと子コンポーネントの対応関係。
-    // 子コンポーネントごとに異なるファイルを用意する。
+		// 子コンポーネントごとに異なるファイルを用意する。
 		'v-example-component-1': require('./xxx/xxx/xxx-1'),
 		'v-example-component-2': require('./xxx/xxx/xxx-2'),
 		'v-example-component-3': require('./xxx/xxx/xxx-3')
 		},
 
 		// 状態を変化させたいデータを、関数として定義しておき、初期状態を設定する。
+		// 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり、異なる値をもつ必要があるため、dataオプションはメソッドとして定義する。
 		data: function() {
 			return {
 				// プロパティ名: 値
@@ -434,39 +424,48 @@ new Vue({
 				};
 		},
 
-		// dataプロパティの状態を変化させ、親コンポーネントでコールされるメソッドを定義する。
+		// dataオプションの状態を変化させ、親コンポーネントでコールされるメソッドを定義する。
 		// メソッドは部品化されており、全てのメソッドが合わさって上記の条件に合致する。
 		method: {
 			changeQuery(criteriaObj) {
         
-        // 値無しプロパティを持つkeysオブジェクトを定義する。
+				// 値無しプロパティを持つkeysオブジェクトを定義する。
 				const keys = [
-          'criteria',
-          'limit',
+					'criteria',
+					'limit',
 				];
         
-        // プロパティ名を取り出す。
-        for (const key of keys) {
+				// プロパティ名を取り出す。
+				for (const key of keys) {
           
-          // criteriaObjのプロパティの値を、上記のkeysオブジェクトに格納する。
-          if (key in criteriaObj) {
+					// criteriaObjのプロパティの値を、上記のkeysオブジェクトに格納する。
+					if (key in criteriaObj) {
             
-            // ここでのthisはメソッド内のkeysオブジェクトを指す。
-            this[key] = criteriaObj[key];
-          }
-        }
+						// ここでのthisはメソッド内のkeysオブジェクトを指す。
+						this[key] = criteriaObj[key];
+				}
+			}
         
         
-			// dataプロパティの状態を変化させるメソッド。
- 			load(query) {
+			
+			load(query) {
           
-        // ここでのthisはdataプロパティを指す。
-        this.isLoaded = true;
-        this.staffData = [];
+				// ここでのthisはdataオプションを指す。
+				this.isLoaded = true;
+				this.staffData = [];
         
-        // JS型オブジェクトを返却する。
-        return Staff.find(query)
-      }  
+				// JSON型データをajax()に渡し、サーバからのレスポンスによって受信したデータを返却する。
+				return Staff.find(query)
+        
+					// 
+					// リクエストされたデータをdataオプションのプロパティに格納するメソッド。
+					.done((data) => {
+          
+					// 取得したJSON型データをJavaScriptのオブジェクトにシリアライズする。
+					// dataオプションのプロパティに格納する。
+					this.staffData = _.map(data.staffData, Staff.parse);
+          
+					})
 		},
 
 		// Vueインスタンス内の値の変化を監視する関数を定義する。
@@ -540,7 +539,7 @@ module.exports = {
 
 ### ◆ コンポーネントのルーティング
 
-Vueのライブラリの一つで、コンポーネントとルートをマッピングさせることによって、特定のルートがリクエストされた時に、特定のコンポーネントが動作するように設定することができる。
+Vueのライブラリの一つで、コンポーネントとルートをマッピングさせる。指定したルートからレスポンスが行われた時に、特定のコンポーネントが動作するように設定することができる。
 
 **【実装例】**
 
@@ -690,60 +689,9 @@ new Vue({
 
 
 
-# 04-01. フロントサイドとサーバサイドの間のデータ通信
+# 04-01.  Ajaxによる非同期通信
 
-### ◆ 通信の大まかな流れ
-
-![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
-
-1. ページ上で任意のイベントが発生。（ボタンクリックなど）
-1. GET送信の場合、クエリストリングを生成する。
-1. AJax（XMLHttpRequest）を用いて、ルーティングを基にコントローラにリクエストを送信。
-1. コントローラはオブジェクトをJSON形式でレスポンス。
-1. JSON型オブジェクトを解析（パース）する。
-1. JavaScriptでのオブジェクトがマークアップ言語に出力される。
-1. DOMを用いて、マークアップ言語を解析し、Webページを表示する。
-
-
-
-# 04-02. GET送信
-
-ネットワークのノートも参照せよ。
-
-### ◆ GET送信におけるHTTPリクエスト
-
-GET送信ではクエリストリングが生成され、HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる。URLに情報が記述されるため、履歴で確認できてしまう。リクエスト情報は、以下の要素に分類できる。
-
-```
-http://127.0.0.1/example.php + ? + クエリストリング
-```
-
-
-
-### ◆ クエリストリングの生成
-
-**【実装例】**
-
-```javascript
-// JavaScriptによるオブジェクトの表現。
-// クラス宣言。
-class Example {
-  fruit: ["ばなな", "りんご"],
-  account: 200,
-}
-```
-
-⬇︎
-
-```
-// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分。
-// ...の部分には、データ型を表す記号などが含まれる。
-http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
-```
-
-
-
-# 04-03.  Ajaxによる非同期通信
+### ◆ JQueryの```ajax()```を用いたAjaxの実装
 
 **【実装例】**
 
@@ -767,14 +715,24 @@ class Staff {
   }  
 
   
-	// 自分自身をJSON型オブジェクトでサーバサイドから取得するメソッド
+	// 自分自身をJSON型データでサーバサイドから取得するメソッド
 	static find(query) {
 
 		return $.ajax({
-			type: 'POST', // HTTPリクエストとしてPOSTメソッドを指定
-			url: '/xxx/xxx', // データの送信先のファイルのパスを指定
+      
+      // HTTPリクエストのメソッドとしてPOSTを指定
+			type: 'POST',
+      
+      // リクエスト先のファイルのパスを指定
+			url: '/xxx/xxx',
+      
+      // リクエストによって送信するデータはJSON形式を指定
 			contentType: 'application/json',
-			dataType: 'json', // レスポンスされるデータはJSON形式を指定
+      
+      // レスポンスによって受信するデータはJSON形式を指定
+			dataType: 'json',
+      
+      // リクエストによって送信するデータを指定
 			data: query,
 		});
     
@@ -795,7 +753,7 @@ class Staff {
   }    
 
   
-	// 取得したJSON型オブジェクトをJavaScriptのオブジェクトにシリアライズする。
+	// 取得したJSON型データをJavaScriptのオブジェクトにシリアライズする。
 	static parse(data) {
 		return new Shain({
         
@@ -812,11 +770,44 @@ module.exports = Staff;
 
 
 
-# 04-04.  JSON型オブジェクトの解析（パース）
+### ◆ GET送信におけるHTTPリクエスト
+
+- **クエリストリングによるデータの送信**
+
+GET送信ではデータからクエリストリングが生成され、HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる。URLに情報が記述されるため、履歴でデータの内容を確認できてしまう危険がある。
+
+```
+http://127.0.0.1/example.php + ? + クエリストリング
+```
+
+- **クエリストリングの生成**
+
+**【実装例】**
+
+```javascript
+// JavaScriptによるオブジェクトの表現。
+// クラス宣言。
+class Example {
+  fruit: ["ばなな", "りんご"],
+  account: 200,
+}
+```
+
+⬇︎
+
+```
+// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分。
+// ...の部分には、データ型を表す記号などが含まれる。
+http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
+```
+
+
+
+# 05-01.  JSON型データの解析（パース）
 
 ### ◆ シリアライズとデシリアライズ
 
-フロントサイドとサーバサイドの間で、JSON型オブジェクトを送受信できるように解析（パース）することを、シリアライズまたはデシリアライズという。
+フロントサイドとサーバサイドの間で、JSON型オブジェクトデータを送受信できるように解析（パース）することを、シリアライズまたはデシリアライズという。
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
 
@@ -834,7 +825,7 @@ class Example {
 ⬇︎⬆︎
 
 ```json
-// JSONでのオブジェクトの表現。
+// JSON型データの表現。
 // 一番外側を波括弧で囲う。
 {
   "Example": {
@@ -858,7 +849,43 @@ class Example
 
 
 
-# 04-05. マークアップ言語
+### ◆ データ記述言語の種類
+
+- **JSON：JavaScript Object Notation**
+
+``` json
+// 一番外側を波括弧で囲う。
+{
+  "Example": {
+    "fruit": ["ばなな", "りんご"],
+    "account": 200,
+  }
+}
+```
+
+- **YAML：YAML Ain't a Markup Language**
+
+```yaml
+{
+  Example:
+    fruit:
+      - "ばなな"
+      - "りんご"
+    account: 200
+}  
+```
+
+- **マークアップ言語**
+
+マークアップ言語の章を参照せよ。
+
+- **CSV：Comma Separated Vector**
+
+データ解析の入力ファイルとしてよく使うやつ。
+
+
+
+# 06-01. Webページの構成
 
 ### ◆ マークアップ言語の歴史
 
