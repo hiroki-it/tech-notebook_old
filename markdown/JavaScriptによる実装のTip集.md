@@ -1,4 +1,4 @@
-# あ01-01. Webページにおける処理の流れ
+# 01-01. Webページにおける処理の流れ
 
 一例として、処理フローは、『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される。
 
@@ -17,75 +17,81 @@
 1. ページ上で任意のイベントが発火する。（ページング操作、フォーム入力など）
 2. JQueryの```ajax()```が、クエリストリングを生成し、また、リクエストによって指定ルートにJSON型データを送信する。
 3. コントローラは、JSON型データを受信し、またそれを元にDBからオブジェクトを取得する。
-4. コントローラは、オブジェクトをJSON型データに変換し、レスポンスによって送信する。
+4. コントローラは、PHPのオブジェクトをJSON型データに変換し、レスポンスによって送信する。
 5. JQueryの```ajax()```が、JSON型データを受信する。
-6. JSON型データが、解析（パース）によってオブジェクトに変換される。
+6. JSON型データが、解析（パース）によってJavaScriptのオブジェクトに変換される。
 7. オブジェクトがマークアップ言語に出力される。
 8. DOMを用いて、マークアップ言語を解析し、Webページを構成する。
 
 
 
-# 02-01. JavaScriptにおけるオブジェクト指向
+# 02-01. オブジェクトの生成、初期化
 
+### ◆ リテラル表記の使用
 
-### ◆ オブジェクトの定義方法
-
-- **リテラル表記による定義**
-
-オブジェクトをリテラル表記で定義する方法。キャメルケース（小文字から始める記法）を用いる。
+オブジェクトをリテラル表記で生成する方法。キャメルケース（小文字から始める記法）を用いる。
 
 ```javascript
-const exmaple = {
+// リテラル表記
+const example = {
   
-	property: value,
+  // 慣習的にアンダーバーでprivateを表す。
+  _property: 0,
   
-	setValue: function(value) {
-		this.property = value;
-  }    
-  
-	getValue: function() {
-		return this.property;
+	set setValue(value) {
+		this._property = value;
+	},  
+	
+	get getValue() {
+		return this._property;
 	}
 }	
 ```
 
 
-- **```new Object()```による定義**
 
-```Object```オブジェクトから明示的にオブジェクトを定義する方法。キャメルケース（小文字から始める記法）を用いる。
+### ◆ コンストラクタ関数の使用
+
+- **```Object```コンストラクタ関数**
+
+キャメルケース（小文字から始める記法）を用いる。プロパティを生成するためには、値を格納する必要がある。関数宣言あるいは関数式で記述する。パスカルケース（大文字から始める記法）を用いる。ちなみに、オブジェクトのプロパティ値として生成された関数を、メソッドと呼ぶ。
 
 ```javascript
-const exmaple = new Exmaple({
+const example = new Object({
   
-	property: value,
+  _property: 0,
   
-	setValue: function(value) {
-		this.property = value;
-	}  
+	set setValue(value) {
+		this._property = value;
+	},  
 	
-	getValue: function() {
-		return this.property;
+	get getValue() {
+		return this._property;
 	}
 })
 ```
 
+- **```Function```コンストラクタ関数**
 
-- **construct関数による定義**
+```javascript
+const Example = new Function();
+```
 
-プロパティを定義するためには、値を格納する必要がある。関数宣言あるいは関数式で記述する。パスカルケース（大文字から始める記法）を用いる。
+ただし、公式からこのような記法は、非推奨とされている。以下の関数宣言、関数式、アロー関数の記法が推奨される。
 
 ```javascript
 // 関数宣言
-function Example(value) {
+function Example() {
 	
-	this.property = value;
+	this._property = value;
 
+	// プロパティ値として定義した関数を、メソッドという。
 	this.setValue = function(value) {
-		this.property = value;
-	}   
+		this._property = value;
+	};   
   
 	this.getValue = function(){
-		return this.property;
+		return this._property;
 	};
 }
 ```
@@ -94,42 +100,42 @@ function Example(value) {
 // 関数式
 const Example = function(value) {
   
-	this.property = value;
+	this._property = value;
   
 	this.setValue = function(value) {
-		this.property = value;
+		this._property = value;
   };
   
 	this.getValue = function() {
-		return this.property;
+		return this._property;
 	};
 }
 
-// 	アロー関数を用いた関数式の省略記法
+// アロー関数による関数式の省略記法
 const Example = (value) => {
   
-	this.property = value;
+	this._property = value;
   
 	this.setValue = function(value) {
-		this.property = value;
+		this._property = value;
   };
   
 	this.getValue = function() {
-		return this.property;
+		return this._property;
 	};
 }
 ```
 
-また、リテラル表記と```new Object()```による定義とは異なり、construct関数によって定義されたオブジェクトは、暗示的に```prototype```プロパティをもつ。
+リテラル表記と```Object```コンストラクタ関数による生成とは異なり、コンストラクタ関数によって定義されたオブジェクトは、暗示的に```prototype```プロパティをもつ。
 
 ```javascript
-// リテラル表記による定義
+// リテラル表記による生成
 const object1 = {};
 
-// new Object()による定義
+// Objectコンストラクタ関数による生成
 const object2 = new Object({});
 
-// construct関数による定義
+// ユーザ定義Functionコンストラクタ関数による生成
 const Object3 = function(){};
 
 // 出力結果
@@ -140,30 +146,18 @@ console.log(
 );
 ```
 
-- **糖衣構文である```class```による定義**
 
-ES6から、糖衣構文である```class```によって、オブジェクトを定義できるようになった。クラス宣言あるいはクラス式で記述する。パスカルケース（大文字から始める記法）を用いる。
+
+### ◆ ```class```の使用
+
+ES6から、糖衣構文の```class```によって、オブジェクトを定義できるようになった。クラス宣言あるいはクラス式で記述する。オブジェクトの生成時、```constructor()```でオブジェクトの初期化を行う。パスカルケース（大文字から始める記法）を用いる。
 
 ```javascript
 // クラス宣言
-class Exmaple {
-  // コンストラクタ
-	constructor(value)
-  {
-		this.property = value;
-	}
-	
-	getValue()
-  {
-		return this.property;
-	}
-}
-```
-
-```javascript
-// クラス式
-const Example = class {
+class Example {
   
+  // classでしか使えない。
+  // Setterの代わりにコンストラクタでImmutableを実現。
 	constructor(value) {
 		this.property = value;
 	}
@@ -174,7 +168,31 @@ const Example = class {
 }
 ```
 
+```javascript
+// クラス式
+const Example = class {
+  
+	// classでしか使えない。
+  // Setterの代わりにコンストラクタでImmutableを実現。
+	constructor(value) {
+		this._property = value;
+	}
+	
+	getValue() {
+		return this._property;
+	}
+}
+```
 
+- **生成、初期化**
+
+```javascript
+const example = new Example(1)
+```
+
+
+
+# 02-02. オブジェクトの操作
 
 ### ◆ 継承とプロトタイプチェーン
 
@@ -184,17 +202,17 @@ const Example = class {
 
 ```javascript
 // 大元となるオブジェクトは個別ファイルで管理しておくのがベター。
-// construct関数の関数式による定義。
+// コンストラクタ関数の関数式による定義。
 const Example = function(value) {
   
-	this.property = value;
+	this._property = value;
   
 	this.setValue = function(value) {
-		this.property = value;
+		this._property = value;
   }  
   
 	this.getValue = function() {
-		return this.property;
+		return this._property;
 	};
 }
 ```
@@ -216,7 +234,7 @@ const SubExample = function(subValue) {
 }
 
 // new Object()を用いた継承。
-SubExample.prototype = new Example();
+SubExample.prototype = new Object();
 
 // SubExampleクラスにはgetValue()は無い。
 // 継承元まで辿り、Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）。
@@ -271,11 +289,98 @@ console.log(result);
 
 
 
-### ◆ ```this```のスコープ範囲
+# 02-03. ```this```の参照先
+
+### ◆ メソッドとしてコールする場合
+
+```javascript
+const example = {
+  
+  // 慣習的にアンダーバーでprivateを表す。
+  _property: 0,
+  
+	set setValue(value) {
+		this._property = value;
+	},  
+	
+	get getValue() {
+		return this._property;
+	}
+}	
+```
+
+```javascript
+// メソッドとしてコールした場合、thisはexampleオブジェクトである。
+example.setValue(1);
+example.getValue(); // 1
+```
 
 
 
+### ◆ コンストラクタ関数としてコールする場合
 
+- **関数宣言と関数式によるコンストラクタ関数内の```this```の場合****
+
+```javascript
+param = 'global param';
+
+// 関数宣言
+function printParam(){
+  console.log(this.param);
+}
+
+let object = {
+  param: 'object param',
+  func: printParam
+}
+
+let object2 = {
+  param: 'object2 param',
+  func: printParam
+}
+```
+
+```javascript
+// コンストラクタ関数内のthisの場合
+object.printParam; // param
+
+object2.printParam; // param
+
+// コンストラクタ関数内のthisは、自身がコールされたオブジェクトを指す。ここでは、objectとobject2。
+```
+
+- **アロー関数によるコンストラクタ関数内の```this```の場合**
+
+アロー関数内の```this```の参照先には、十分な注意が必要である。今まで、JavaScriptでは、```this```の参照先が文脈によって変わることに批判が集まっていた。そこで、参照先が文脈によって変わらない機能が追加された。
+
+```javascript
+param = 'global param';
+
+// アロー関数による省略記法
+let printParam = () => {
+  console.log(this.param);
+}
+
+let object = {
+  param: 'object param',
+  func: printParam
+}
+
+let object2 = {
+  param: 'object2 param',
+  func: printParam
+}
+```
+
+```javascript
+// アロー関数内のthisの場合
+object.printParam; // global param
+
+object2.printParam; // global param
+
+// thisは、自身が定義されたオブジェクトを指す。ここでは、一番外側のWindowオブジェクト。
+// 参照先は文脈によって変わらない。
+```
 
 
 
@@ -312,7 +417,7 @@ new Vue({
 - **ローカル登録**
 
 ```javascript
-var vExmapleComponent = {
+var vExampleComponent = {
 	// 親コンポーネントと子コンポーネントの対応関係
 	template: require('./xxx/xxx/xxx'),
 }
@@ -360,7 +465,7 @@ Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModel
 
 1. 親コンポーネントのタグ内で設定された『```:example = "値"```』が、子コンポーネントの『```props: { "値" }```』に渡される。この値は読み込み専用で、変更できない。
 2. 各コンポーネントで個別に状態を変化させたいものは、propsオプションではなく、dataオプションとして扱う。
-3. ボタンをクリックした時、子コンポーネントの『```$emit("イベント名", "値")```』によって、親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し、値として渡される。値に応じたコンポーネント部分の変化が起こる。
+3. ボタンをクリックした時、子コンポーネントの『```$emit("イベント名", "値")```』によって、親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し、値が渡される。値に応じたコンポーネント部分の変化が起こる。
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
@@ -457,7 +562,7 @@ new Vue({
 				// JSON型データをajax()に渡し、サーバからのレスポンスによって受信したデータを返却する。
 				return Staff.find(query)
         
-					// 
+					// Ajaxによって返却されたJSON型データが自動的にdone()の引数になる。
 					// リクエストされたデータをdataオプションのプロパティに格納するメソッド。
 					.done((data) => {
           
