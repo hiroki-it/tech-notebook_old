@@ -184,9 +184,8 @@ const Example = class {
 }
 ```
 
-- **生成、初期化**
-
 ```javascript
+// 生成、初期化
 const example = new Example(1)
 ```
 
