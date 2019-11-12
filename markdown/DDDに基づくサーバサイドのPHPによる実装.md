@@ -90,9 +90,79 @@ Repositoryの抽象クラスは、ドメイン層に配置する。そして、R
 
 
 
-# 04-01. Entity
 
-### ◆ Entityとは
+# 04-01. Application層
+
+### ◆ Controllerの責務
+
+以下のような処理手順を組み合わせて、Use case（使用事例）を実装する。
+
+1. 最初に、リクエストによるJSON型データ送信を受け取る。
+2. JSON型データを連想配列にパースする。
+3. Repositoryのメソッドに連想配列を渡し、オブジェクトデータを取得する。
+4. Casterに、取得したオブジェクトデータを渡し、連想配列に変換する。以下のCasterの説明を参照せよ。
+5. 最後に、連想配列をJSON型データにパースし、JavaScriptに送信する。
+
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
+
+**【実装例】**
+
+```PHP
+class AcceptOrdersController
+{
+	// 単なるメソッドではなく、Use caseとなるようなメソッド
+	public function acceptOrders()
+	{
+	
+	}
+
+}  
+```
+
+**【Use caseの例】**
+
+オンラインショッピングにおけるUse case
+
+![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ユースケース図.png)
+
+
+
+### ◆ Caster（データ構造変換クラス）の責務
+
+
+
+責務として、レスポンスによるデータ送信時に、オブジェクトデータ（Entity）を連想配列に変換する。
+
+```PHP
+// Entityを連想配列に変換するメソッド
+private function castAcceptOrders(Array $toyOrderEntity)
+{
+  
+}  
+```
+
+
+
+# 05-01. Domain層のRepository
+
+リクエストによるデータ送信が行われる。Controllerは、Domain層の抽象メソッドをコールし、DBからデータを取得する。DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラスを配置する。
+
+```PHP
+abstract class getDogToyEntityRepository
+{
+
+	// 対応する具象メソッドはInfrastructure層のRepositoryに実装。
+	abstract public function arrayDogToyEntities();
+
+}
+```
+
+
+
+
+# 05-02. Entity
+
+### ◆ 責務
 
 オブジェクトをEntityとしてモデリング／実装したいのならば、以下に条件を満たす必要がある。
 
@@ -197,7 +267,9 @@ class ToyOrderEntity
 
 
 
-# 04-02. ValueObject
+# 05-03. ValueObject
+
+### ◆ 責務
 
 オブジェクトをValueObjectとしてモデリング／実装したいのならば、以下に条件を満たす必要がある。
 
@@ -244,7 +316,9 @@ class PaymentInfoVO
 
 ```
 
-### ◆ （1）一意に識別できるプロパティをもたず、対象のユビキタス言語に関するプロパティをメソッドを持つ
+
+
+### ◆（1）一意に識別できるプロパティをもたず、対象のユビキタス言語に関するプロパティをメソッドを持つ
 
 金額、数字、電話番号、文字列、日付、氏名、色などのユビキタス言語に関するプロパティとメソッドを実装する場合、一意で識別できるプロパティ（例えば、```$id```プロパティ）をもたないオブジェクトに、これらの実装を部品としてまとめておくべきである。このオブジェクトを、ValueObjectという。
 
@@ -258,7 +332,7 @@ class PaymentInfoVO
 
 
 
-### ◆ （2）プロパティの不変性
+### ◆（2）プロパティの不変性
 
 インスタンス化時に自動的に呼び出される```__construct()```を用いる。インスタンス化時に実行したい処理を記述できる。Setterを持たせずに、```__construct()```でのみ値の設定を行えば、ValueObjectのような、『Immutable』なオブジェクトを実現できる。
 
@@ -301,7 +375,7 @@ $test02 = new Test02("新しいプロパティ02の値");
 
 
 
-### ◆ （3）概念的な統一体
+### ◆（3）概念的な統一体
 
 ```
 
@@ -311,19 +385,19 @@ $test02 = new Test02("新しいプロパティ02の値");
 
 
 
-### ◆ （4）オブジェクトの交換可能性
+### ◆（4）オブジェクトの交換可能性
 
 オブジェクトが新しくインスタンス化された場合、以前に同一オブジェクトから生成されたインスタンスから新しく置き換える必要がある。
 
 
 
-### ◆ （5）オブジェクト間の等価性
+### ◆（5）オブジェクト間の等価性
 
 全てのプロパティの値が他のVOと同じ場合、同一のVOと見なされる。
 
  
 
-### ◆ （6）メソッドによってオブジェクトの状態が変わらない
+### ◆（6）メソッドによってオブジェクトの状態が変わらない
 
 **【実装例1】**
 
@@ -376,9 +450,9 @@ EntityとValueObjectのどちらとして、オブジェクトモデルをモデ
 
 
 
-# 04-03. TypeCode（標準型）
+# 05-04. TypeCode（標準型）
 
-### ◆ TypeCode（標準型）とは
+### ◆ 責務
 
 一意に識別する必要がないユビキタス言語の中でも、特に『区分』や『種類』などは、ValueObjectとしてではなく、TypeCodeとしてモデリング／実装する。VOまたはEnumによって実装する。
 
@@ -440,7 +514,7 @@ class ColorVO extends Enum
 
 
 
-# 04-04. Id
+# 05-05. Id
 
 - **実装例**
 
@@ -448,27 +522,13 @@ class ColorVO extends Enum
 
 
 
-# 04-05. Service
+# 05-06. Service
 
 他の３区分に分類できないもの（例：Id-Aを生成するId-B）。
 
 
 
-# 04-06. Repository
-
-### ◆ Repositoryとは
-
-構成したい集約とRepositoryは、一対一の関係になる。例えば、OrderのRouteEntityからなる集約を構成するRepositoryは、OrderRepositoryと名付ける。
-
-
-
-### ◆ 抽象クラス
-
-DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラスを配置する。
-
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
-
-
+# 06-01. Infrastructure層のRepository
 
 ### ◆ 集約の構成／データベースへのデータ追加
 
@@ -488,37 +548,39 @@ DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラス�
 
 ```PHP
 // 集約の構成とデータ追加を行う。
-class setDogToyEntityRepository(Request $request)
+class setDogToyEntityRepository
 {
   // 接続先したいデータベースが設定されたプロパティ
 	private $dbs;
   
+	public function setDataSet(Request $request)
+	{
   
-	$dogToyEntity = new DogToyEntity;
-  
-  
-	// 送信された値を取り出して格納。
-	$dogToyEntity->toyType = $request->xxx(),
-	$dogToyEntity->toyName	= $request->xxx(),
-	$dogToyEntity->number = $request->xxx(),
-	$dogToyEntity->priceVO = $request->xxx(new PriceVO()),
-	$dogToyEntity->colorVO = $request->xxx(new ColorVO()),
+		$dogToyEntity = new DogToyEntity;
   
   
-	// 集約を連想配列に分解する。
-	$date = [
-		'type' => $dogToyEntity->toyType,
-		'name' => $dogToyEntity->toyName,
-		'number' => $dogToyEntity->number,
-		'price' => $dogToyEntity->priceVO->price(),
-		'color_value' => $dogToyEntity->colorVO->value(),
-	];
+		// 送信された値を取り出して格納し、集約を生成。
+		$dogToyEntity->toyType = $request->xxx(),
+		$dogToyEntity->toyName	= $request->xxx(),
+		$dogToyEntity->number = $request->xxx(),
+		$dogToyEntity->priceVO = $request->xxx(new PriceVO()),
+		$dogToyEntity->colorVO = $request->xxx(new ColorVO()),
   
   
-	// データベースのテーブルに挿入する。
-	$this->dbs['app']->insert(dog_toy_table, $data);
+		// 集約を連想配列に分解する。
+		$date = [
+			'type' => $dogToyEntity->toyType,
+			'name' => $dogToyEntity->toyName,
+			'number' => $dogToyEntity->number,
+			'price' => $dogToyEntity->priceVO->price(),
+			'color_value' => $dogToyEntity->colorVO->value(),
+		];
   
   
+		// データベースのテーブルに挿入する。
+		$this->dbs['app']->insert(dog_toy_table, $data);
+	
+	}
 }
 ```
 
@@ -543,9 +605,21 @@ class getDogToyEntityRepository
   // 接続先したいデータベースが設定されたプロパティ
 	private $dbs;
 
-  
-	// データベースからデータを取得する。
-	public function fetchDataSet()
+
+	// 連想配列データから『RouteEntity』の集約を構成し、レスポンスする。
+	public function arrayDogToyEntities(): DogToyEntities
+	{	
+		$dogToyEntities = [];
+		foreach($this->fetchDataSet() as $fetchedData){
+			$dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
+		}
+        
+		return $toyOrderEntities;
+	}
+
+
+  	// データベースからデータを取得する。
+	private function fetchDataSet()
 	{
 		$select = [
 			'dog_toy.type AS dog_type',
@@ -558,20 +632,8 @@ class getDogToyEntityRepository
 		$query = $this->getFecthQuery($select);
 		return $query->getConnection()->executeQuery()->fetchAll(); 
 	}
-	
-	
-	// 連想配列データから『RouteEntity』の集約を構成し、レスポンスする。
-	public function arrayDogToyEntities(): DogToyEntities
-	{	
-		$dogToyEntities = [];
-		foreach($this->fetchDataSet() as $fetchedData){
-			$dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
-		}
-        
-		return $toyOrderEntities;
-	}
-  
-  
+
+
 	// 集約を行うメソッド
 	private function aggregateDogToyEntity(Array $fetchedData)
 	{
@@ -588,9 +650,9 @@ class getDogToyEntityRepository
 
 
 
-# 04-07. Factory
+# 06-02. Factory
 
-### ◆ Factoryとは
+### ◆ 責務
 
 責務として、構成した集約関係を加工して新たな集約を再構成する。
 
@@ -624,100 +686,3 @@ class Factory
     
 }
 ```
-
-
-
-# 04-08. Controller
-
-責務として、ドメイン層の抽象メソッドを組み合わせて、Use case（使用事例）を実装する。
-
-**【具体例】**
-
-オンラインショッピングにおけるUse case
-
-![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ユースケース図.png)
-
-**【実装例】**
-
-```PHP
-class AcceptOrdersController
-{
-	// 単なるメソッドではなく、Use caseとなるようなメソッドを定義
-	public function acceptOrders()
-	{
-	
-	}
-}	
-```
-
-
-
-
-
-# 05. カーネル
-
-![図2-9-ver2](https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png)
-
-
-### ◆ カーネルに必要なオブジェクト
-
-1. Requestオブジェクト：グローバル変数から収集した情報やHTTPリクエストのヘッダ情報やコンテンツ情報を保持
-1. カーネルオブジェクトの```handle()```：送られてきたURLを基にしたコントローラ／アクションへのルートの特定、特定されたコントローラ／アクションの実行、テンプレートのレンダリング
-1. Responseオブジェクト：HTTPレスポンスのヘッダ情報やコンテンツ情報などの情報を保持
-
-
-
-### ◆ オブジェクトから取り出されたメソッドの役割
-
-1. カーネルが、クラアントからのHTTPリクエストをリクエストオブジェクトとして受け取る。
-1. カーネルが、送られてきたURLとルート定義を基に、リクエストに対応するコントローラアクションを探し、実行させる。その後、テンプレートがURLを生成。
-1. カーネルが、その結果をレスポンスオブジェクトとしてクライアントに返す。
-   このカーネルを、特別に『HTTPカーネル』と呼ぶ。
-
-**【app.phpの実装例】**
-
-```PHP
-$kernel = new AppKernel('dev', true);
-
-if (PHP_VERSION_ID < 70000) {
-    $kernel->loadClassCache();
-}
-
-$request = Request::createFromGlobals();  //（１）
-
-$response = $kernel->handle($request); //（２）
-
-$response->send(); //（３）
-
-$kernel->terminate($request, $response);
-```
-
-**【Kernel.phpの実装例】**
-handle()が定義されているファイル。ここで定義されたhandle()が、C/Aへのルートの特定、特定されたC/Aの実行、テンプレートのレンダリングを行う。
-
-```PHP
-/** 
-* {@inheritdoc}
-*/
-public function handle
-(
-    Request $request,
-    $type = HttpKernelInterface::MASTER_REQUEST,
-    $catch = true
-)
-{
-	$this->boot();
-    
-	++$this->requestStackSize;
-    
-	$this->resetServices = true;
-
-	try {
-        return $this->getHttpKernel()->handle($request, $type, $catch);
-	
-    } finally {
-        --$this->requestStackSize;
-	}
-}
-```
-
