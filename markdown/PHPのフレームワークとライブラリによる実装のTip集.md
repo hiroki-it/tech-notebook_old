@@ -72,6 +72,72 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 
 
+### ◆ HttpKernelに関するクラス
+
+![図2-9-ver2](https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png)
+
+- **カーネルに必要なオブジェクト**
+
+1. Requestオブジェクト：グローバル変数から収集した情報やHTTPリクエストのヘッダ情報やコンテンツ情報を保持
+1. カーネルオブジェクトの```handle()```：送られてきたURLを基にしたコントローラ／アクションへのルートの特定、特定されたコントローラ／アクションの実行、テンプレートのレンダリング
+1. Responseオブジェクト：HTTPレスポンスのヘッダ情報やコンテンツ情報などの情報を保持
+
+- **オブジェクトから取り出されたメソッドの役割**
+
+1. カーネルが、クラアントからのHTTPリクエストをリクエストオブジェクトとして受け取る。
+1. カーネルが、送られてきたURLとルート定義を基に、リクエストに対応するコントローラアクションを探し、実行させる。その後、テンプレートがURLを生成。
+1. カーネルが、その結果をレスポンスオブジェクトとしてクライアントに返す。
+   このカーネルを、特別に『HTTPカーネル』と呼ぶ。
+
+**【app.phpの実装例】**
+
+```PHP
+use Symfony\Component\HttpFoundation\Request;
+
+
+$kernel = new AppKernel('dev', true);
+
+if (PHP_VERSION_ID < 70000) {
+    $kernel->loadClassCache();
+}
+
+$request = Request::createFromGlobals();  //（１）
+
+// 以下の実装ファイルも参照せよ。
+$response = $kernel->handle($request); //（２）
+
+$response->send(); //（３）
+
+$kernel->terminate($request, $response);
+```
+
+```handle()```が定義されているファイル。ここで定義された```handle()```が、C/Aへのルートの特定、特定されたC/Aの実行、テンプレートのレンダリングを行う。
+
+```PHP
+public function handle
+(
+    Request $request,
+    $type = HttpKernelInterface::MASTER_REQUEST,
+    $catch = true
+)
+{
+	$this->boot();
+    
+	++$this->requestStackSize;
+    
+	$this->resetServices = true;
+
+	try {
+        return $this->getHttpKernel()->handle($request, $type, $catch);
+	
+    } finally {
+        --$this->requestStackSize;
+	}
+}
+```
+
+
+
 # 02. Carbonライブラリ
 
 ### ◆ Date型
