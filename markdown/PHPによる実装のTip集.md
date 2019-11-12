@@ -1354,6 +1354,23 @@ $var = (object) $var;
 
 
 
+### ◆ 正規表現とパターン演算子
+
+- **正規表現を用いた文字列検索**
+
+```PHP
+
+```
+
+- **オプションとしてのパターン演算子**
+
+```PHP
+// jpegの大文字小文字
+preg_match('/jpeg$/i', $x);
+```
+
+
+
 # 02-06. データのキャッシュ
 
 ### ◆ プロパティを用いたキャッシュ
@@ -1404,80 +1421,11 @@ public function cachedResult($funcName)
 
 # 03-01. 条件式
 
-### ◆ if-elseとswitch-case-break
+### ◆ ```if```-```else```はできるだけ用いない
 
-**【実装例】**
+- **```if```-```else```を用いた場合**
 
-曜日を判定し、文字列を出力する。
-
-- **if-else**
-
-```PHP
-// 変数に Tue を格納
-$weeks = 'Tue';
- 
-// if文でTueに該当したら'火曜日'と表示する。
-if ($weeks == 'Mon') {
-  echo '月曜日';
-} else if($weeks == 'Tue'){
-  echo '火曜日';
-} else if($weeks == 'Wed'){
-  echo '水曜日';
-} else if($weeks == 'Thu'){
-  echo '木曜日';
-} else if($weeks == 'Fri'){
-  echo '金曜日';
-} else if($weeks == 'Sat'){
-  echo '土曜日';
-} else if($weeks == 'Sun'){
-  echo '日曜日';
-}
-
-// 実行結果
-火曜日
-```
-- **switch-case-break**
-
-```PHP
-// 変数に Tue を格納
-$weeks = 'Tue';
- 
-// 条件分岐でTueに該当したら'火曜日'と表示する。breakでif文を抜けなければ、全て実行されてしまう。
-switch ($weeks) {
-  case 'Mon':
-    echo '月曜日';
-    break;
-  case 'Tue':
-    echo '火曜日';
-    break;
-  case 'Wed':
-    echo '水曜日';
-    break;
-  case 'Thu':
-    echo '木曜日';
-    break;
-  case 'Fri':
-    echo '金曜日';
-    break;
-  case 'Sat':
-    echo '土曜日';
-    break;
-  case 'Sun':
-    echo '日曜日';
-    break;
-}
-
-// 実行結果
-火曜日
-```
-
-
-
-### ◆ if-elseはできるだけ用いない
-
-- **if-elseを用いた場合**
-
-冗長になってしまう。
+可読性が悪いため、避けるべき。
 
 ```PHP
 // マジックナンバーを使わずに、定数として定義
@@ -1512,7 +1460,7 @@ if(!empty($routeEntity->options) {
 return $result;
 ```
 
-- **if-elseを用いた場合（初期値と上書きのロジックを用いた場合）**
+- **初期値と上書きのロジックを用いた場合**
 
 よりすっきりした書き方になる。
 
@@ -1550,9 +1498,79 @@ return $result;
 
 
 
-### ◆ if-elseif-elseはできるだけ用いない
+### ◆ ```if```-```elseif```-```else```と```switch```-```case```-```break```
 
-- **決定表を用いて条件分岐を表現**
+**【実装例】**
+
+曜日を判定し、文字列を出力する。
+
+- **```if```-```elseif```-```else```**
+
+```PHP
+// 変数に Tue を格納
+$weeks = 'Tue';
+ 
+// if文でTueに該当したら'火曜日'と表示する。
+if ($weeks == 'Mon') {
+  echo '月曜日';
+} else if($weeks == 'Tue'){
+  echo '火曜日';
+} else if($weeks == 'Wed'){
+  echo '水曜日';
+} else if($weeks == 'Thu'){
+  echo '木曜日';
+} else if($weeks == 'Fri'){
+  echo '金曜日';
+} else if($weeks == 'Sat'){
+  echo '土曜日';
+} else {
+  echo '日曜日';
+}
+
+// 実行結果
+火曜日
+```
+
+- **```switch```-```case```-```break```**
+
+```PHP
+// 変数に Tue を格納
+$weeks = 'Tue';
+ 
+// 条件分岐でTueに該当したら'火曜日'と表示する。breakでif文を抜けなければ、全て実行されてしまう。
+switch ($weeks) {
+  case 'Mon':
+    echo '月曜日';
+    break;
+  case 'Tue':
+    echo '火曜日';
+    break;
+  case 'Wed':
+    echo '水曜日';
+    break;
+  case 'Thu':
+    echo '木曜日';
+    break;
+  case 'Fri':
+    echo '金曜日';
+    break;
+  case 'Sat':
+    echo '土曜日';
+    break;
+  case 'Sun':
+    echo '日曜日';
+    break;
+}
+
+// 実行結果
+火曜日
+```
+
+
+
+### ◆ ```if```-```elseif```-```else```はできるだけ用いない
+
+- **決定表を用いた条件分岐の整理**
 
 **【実装例】**
 
@@ -1564,7 +1582,9 @@ return $result;
 
 ![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/決定表.png)
 
-- **if-elseif-elseを用いた場合の場合**
+- **```if```-```elseif```-```else```を用いた場合**
+
+可読性が悪いため、避けるべき。
 
 ```PHP
 // 西暦を格納する。
@@ -1599,7 +1619,7 @@ public function leapYear(Int $year): String
 }
 ```
 
-- **if-elseif-elseを用いない条件分岐の場合**
+- **```if```と```return```を用いた場合**
 
 ```return```を用いることで、```if```が入れ子状になることを防ぐことができる。
 
@@ -1614,27 +1634,60 @@ public function leapYear(Int $year): String
 
     // (5)
     if($year <= 0){
-        throw new Exception("負の数は判定できません。");
+    	throw new Exception("負の数は判定できません。");
     }
 
     // (4)
     if($year % 4 != 0 ){
-        return "平年";
+    	return "平年";
     }
 
     // (3)
     if($year % 100 != 0){
-        return "うるう年";
+    	return "うるう年";
     }
 
     // (2)
     if($year % 400 != 0){
-        return "平年";
+    	return "平年";
     }
 
     // (1)
     return "うるう年";
     
+}
+```
+
+- **```switch```-```case```-```break```を用いた場合**
+
+```switch```-```case```-```break```によって、実装に、『◯◯の場合に切り換える』という意味合いを持たせられる。ここでは、メソッドに実装することを想定して、```break```ではなく```return```を用いている。
+
+```PHP
+public function leapYear(Int $year): String
+{
+	switch(true) {
+    
+    // (5)
+    case($year <= 0)
+    	throw new Exception("負の数は判定できません。");
+
+    // (4)
+		case($year % 4 != 0 ):
+    	return "平年";
+
+    // (3)
+    case($year % 100 != 0):
+    	return "うるう年";
+
+    // (2)
+    case($year % 400 != 0):
+    	return "平年";
+
+    // (1)
+    dafault:
+    	"うるう年";
+	}
+      
 }
 ```
 
@@ -1708,7 +1761,7 @@ class HttpRequestException extends Exception
 
 
 
-### ◆ if-throw文
+### ◆ ```if```-```throw```文
 
 特定の処理の中に、想定できる例外があり、それをエラー文として出力するために用いる。ここでは、全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている。
 
@@ -1722,7 +1775,7 @@ return $value;
 
 
 
-### ◆ try-catch文
+### ◆ ```try```-```catch```文
 
 特定の処理の中に、想定できない例外があり、それをエラー文として出力するために用いる。定義されたエラー文は、デバック画面に表示される。
 
