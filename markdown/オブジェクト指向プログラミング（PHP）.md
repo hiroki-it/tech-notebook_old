@@ -1,4 +1,4 @@
-# 01-01. アクセス修飾子
+# 01-01. カプセル化
 
 ### ◆ public
 
@@ -58,7 +58,396 @@ public static function computeExampleFee(Entity $order): Money
 
 
 
-# 01-02. メソッド
+# 01-02. クラス間の関係性
+
+![クラス図の線の種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス図の線の種類.png)
+
+
+
+### ◆ Association（関連）
+
+
+
+### ◆ Aggregation（集約）
+
+【Tireクラス】
+
+```
+class Tire {}
+```
+
+【CarXクラス】
+
+```PHP
+//CarXクラス定義
+class CarX  
+{
+    //CarXクラスがタイヤクラスを引数として扱えるように設定
+    public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
+    {
+        $this->tire1 = $t1;
+        $this->tire2 = $t2;
+        $this->tire3 = $t3;
+        $this->tire4 = $t4;
+    }
+}
+```
+
+【CarYクラス】
+
+```PHP
+//CarYクラス定義
+class CarY  
+{
+    //CarYクラスがタイヤクラスを引数として扱えるように設定
+    public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
+    {
+        //引数のTireクラスからプロパティにアクセス
+        $this->tire1 = $t1;
+        $this->tire2 = $t2;
+        $this->tire3 = $t3;
+        $this->tire4 = $t4;
+    }
+}
+```
+
+以下の様に、Tireクラスのインスタンスを、CarXクラスとCarYクラスの引数として用いている。
+Tireクラスの各インスタンスと、2つのCarクラスの双方向で、依存関係はない。
+
+```PHP
+//Tireクラスをインスタンス化
+$tire1 = new Tire();
+$tire2 = new Tire();
+$tire3 = new Tire();
+$tire4 = new Tire();
+$tire5 = new Tire();
+$tire6 = new Tire();
+
+//Tireクラスのインスタンスを引数として扱う
+$suv = new CarX($tire1, $tire2, $tire3, $tire4);
+
+//Tireクラスのインスタンスを引数として扱う
+$suv = new CarY($tire1, $tire2, $tire5, $tire6);
+```
+
+
+
+### ◆ Composition（合成）
+
+【Lockクラス】
+
+```PHP
+//Lockクラス定義
+class Lock {}
+```
+
+【Keyクラス】
+
+```PHP
+//Keyクラス定義
+class Key {
+
+    public function __construct()
+    {
+    
+    }
+}
+```
+
+【Carクラス】
+
+```PHP
+//Carクラスを定義
+class Car  
+{
+    
+    public function __construct()
+    {
+        //引数Lockクラスをインスタンス化
+        $lock = new Lock();
+    }
+}
+```
+
+以下の様に、LockクラスのLockインスタンスは、Carクラスの中で定義されているため、Lockインスタンスにはアクセスできない。また、Carクラスが起動しなければ、Lockインスタンスは起動できない。このように、LockインスタンスからCarクラスの方向には、強い依存関係がある。
+
+```PHP
+//エラーになる。$lockには直接アクセスできない。
+$key = new Key($lock);
+```
+
+
+
+### ◆  Dependency（依存）※関連、集約、合成の依存性の違い
+
+『Association ＞ Aggregation ＞ Composition』の順で、依存性が低い。
+
+![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)
+
+
+
+### ◆ Generalization（汎化）
+
+- **汎化におけるOverride**
+
+汎化の時、子クラスでメソッドの処理内容を再び実装すると、処理内容は上書きされる。
+
+【親クラス】
+
+```PHP
+// 通常クラス
+class Goods
+{
+    // 商品名プロパティ
+    private $name = "";
+
+    // 商品価格プロパティ
+    private $price = 0;
+
+    // コンストラクタ。商品名と商品価格を設定する
+    public function __construct(string $name, int $price)
+    {
+        $this->name = $name;
+        $this->price = $price;
+    }
+
+    // ★★★★★★注目★★★★★★
+    // 商品名と価格を表示するメソッド
+    public function printPrice(): void
+    {
+        print($this->name."の価格: ￥".$this->price."<br>");
+    }
+
+    // 商品名のゲッター
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    // 商品価格のゲッター
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+}
+```
+
+【子クラス】
+
+```PHP
+// 通常クラス
+class GoodsWithTax extends Goods
+{
+	// ★★★★★★注目★★★★★★
+    // printPriceメソッドをOverride
+    public function printPrice(): void
+    {
+        // 商品価格の税込み価格を計算し、表示
+        $priceWithTax = round($this->getPrice() * 1.08);  // （1）
+        print($this->getName()."の税込み価格: ￥".$priceWithTax."<br>");  // （2）
+    }
+}
+```
+
+- **抽象クラス**
+
+ビジネスロジックとして用いる。多重継承できない。
+
+  **【具体例1】**
+
+以下の条件の社員オブジェクトを実装したいとする。
+
+    1. 午前９時に出社
+    
+    2. 営業部・開発部・総務部があり、それぞれが異なる仕事を行う
+    
+    3. 午後６時に退社
+
+  この時、『働くメソッド』は部署ごとに異なってしまうが、どう実装したら良いのか…
+
+![抽象クラスと抽象メソッド-1](https://user-images.githubusercontent.com/42175286/59590447-12ff8b00-9127-11e9-802e-126279fcb0b1.PNG)
+
+  これを解決するために、例えば、次の２つが実装方法が考えられる。
+
+1. 営業部社員オブジェクト、開発部社員オブジェクト、総務部社員オブジェクトを別々に実装
+
+   ⇒メリット：同じ部署の他のオブジェクトに影響を与えられる。
+
+   ⇒デメリット：各社員オブジェクトで共通の処理を個別に実装しなければならない。共通の処理が同じコードで書かれる保証がない。
+
+  2. 一つの社員オブジェクトの中で、働くメソッドに部署ごとで変化する引数を設定
+
+  ⇒メリット：全部署の社員を一つのオブジェクトで呼び出せる。
+
+  ⇒デメリット：一つの修正が、全部署の社員の処理に影響を与えてしまう。
+
+抽象オブジェクトと抽象メソッドを用いると、2つのメリットを生かしつつ、デメリットを解消可能。
+
+![抽象クラスと抽象メソッド-2](https://user-images.githubusercontent.com/42175286/59590387-e8adcd80-9126-11e9-87b3-7659468af2f6.PNG)
+
+```PHP
+// 抽象クラス。型として提供したいものを定義する。
+abstract class ShainManagement
+{
+	// 定数の定義
+	const TIME_TO_ARRIVE = strtotime('10:00:00');
+	const TIME_TO_LEAVE = strtotime('19:00:00');
+	
+
+	// 具象メソッド。出勤時刻を表示。もし遅刻していたら、代わりに差分を表示。
+	// 子クラスへそのまま継承される。子クラスでオーバーライドしなくても良い。
+	public function toArrive()
+	{
+		$nowTime = strtotime( date('H:i:s') );
+	
+		// 出社時間より遅かった場合、遅刻と表示する。
+		if($nowTime > self::TIME_TO_ARRIVE){
+		
+			return sprintf(
+				"%s の遅刻です。",
+                date('H時i分s秒', $nowTime - self::TIME_TO_ARRIVE)
+			);
+		}
+		
+		return sprintf(
+            "%s に出勤しました。",
+            date('H時i分s秒', $nowTime)
+		);
+	
+	}
+	
+	
+	// 抽象メソッド。
+	// 処理内容を子クラスでOverrideしなければならない。
+	abstract function toWork();
+	
+	
+	// 具象メソッド。退社時間と残業時間を表示。
+	// 子クラスへそのまま継承される。子クラスでオーバーライドしなくても良い。
+	public function toLeave()
+	{
+		$nowTime = strtotime( date('H:i:s') );
+		
+		return sprintf(
+            "%sに退社しました。%s の残業です。",
+            date('H時i分s秒', $nowTime),
+            date('H時i分s秒', $nowTime - self::TIME_TO_LEAVE)
+		);
+	}
+}
+```
+
+```PHP
+// 子クラス
+class EnginnerShainManagement extend ShainManagement
+{
+	// 鋳型となった抽象クラスの抽象メソッドはOverrideしなければならない。
+	public function toWork
+	{
+		// 処理内容；
+	}
+}
+```
+
+**【具体例2】**
+
+プリウスと各世代プリウスが、抽象クラスと子クラスの関係にある。
+
+![抽象クラス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/抽象クラス.png)
+
+
+
+### ◆ Realization（実現）
+
+実装クラスが正常に機能するために最低限必要なメソッドの実装を強制する。これによって、必ず実装クラスを正常に働かせることができる。
+
+**【具体例】**
+
+オープンソースのライブラリは、ユーザが実装クラスを自身で追加実装することも考慮して、Realizationが用いられている。
+
+**【具体例】**
+
+各車は、モーター機能を必ず持っていなければ、正常に働くことができない。そこで、モータ機能に最低限必要なメソッドの実装を強制する。
+
+![インターフェースとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インターフェースとは.png)
+
+実装クラスに処理内容を記述しなければならない。すなわち、抽象クラスにメソッドの型のみ定義した場合と同じである。多重継承できる。
+
+![子インターフェースの多重継承_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/子インターフェースの多重継承_2.png)
+
+**【実装例】**
+
+```PHP
+// 鋳型
+// コミュニケーションのメソッドの実装を強制するインターフェース
+interface Communication
+{
+     // インターフェイスでは、実装を伴うメソッドやプロパティの宣言はできない
+     public function talk();
+     public function touch();
+     public function gesture();
+}
+```
+
+```PHP
+// 機能箱
+// 正常に機能するように、コミュニケーションのメソッドの実装を強制する。
+class Human implements Communication
+{
+	// メソッドの処理内容を定義しなければならない。
+     public function talk()
+     {
+          // 話す
+     }
+     
+     public function touch()
+     {
+          // 触る
+     }
+     
+     public function gesture()
+     {
+          // 身振り手振り
+     }
+}
+```
+
+
+
+### ◆ 通常クラス、抽象クラス、インターフェースの違い
+
+|                              |    通常クラス    |    抽象クラス    |                       インターフェース                       |
+| ---------------------------- | :--------------: | :--------------: | :----------------------------------------------------------: |
+| **役割**                     | 専用処理の部品化 | 共通処理の部品化 | 実装クラスが正常に機能するために最低限必要なメソッドの実装を強制 |
+| **子クラスでの継承先数**     |     単一継承     |     単一継承     |                      単一継承｜多重継承                      |
+| **メンバ変数のコール**       |   自身と継承先   |    継承先のみ    |                          実装先のみ                          |
+| **定数の定義**               |        〇        |        〇        |                              〇                              |
+| **抽象メソッドの定義**       |        ✕         |        〇        |                              〇                              |
+| **具象メソッドの定義**       |        〇        |        〇        |                              ✕                               |
+| **```construct()``` の定義** |        〇        |        〇        |                              ✕                               |
+
+**【具体例】**
+
+1. 種々の車クラスの共通処理のをもつ抽象クラスとして、Carクラスを作成。
+2. 各車は、エンジン機能を必ず持っていなければ、正常に働くことができない。そこで、エンジン機能に最低限必要なメソッドの実装を強制する。
+
+![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インターフェースと抽象クラスの使い分け.png)
+
+
+
+### ◆ Trait（※php独自の機能）
+
+再利用したいメソッドやプロパティを部品化し、利用したい時にクラスに取り込む。Traitを用いるときは、クラス内でTraitをuse宣言する。Trait自体は不完全なクラスであり、インスタンス化できない。
+
+![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
+
+
+
+
+
+
+
+# 01-03. メソッド
 
 ### ◆ メソッドの実装手順
 
@@ -415,7 +804,53 @@ var_dump($result);
 
 
 
-# 01-03. 無名関数
+### ◆ プロパティを用いた処理結果のキャッシュ
+
+大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
+
+```PHP
+public cachedResult;
+
+public funcCollection;
+
+
+public function callFunc__construct()
+{
+	$this->funcCollection = $this->funcCollection()
+}
+
+
+// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく。
+public function funcCollection()
+{
+  return  [
+    'computeProfit' => [$this, 'computeProfit']
+  ];
+}
+
+
+// 集計メソッド
+public function computeProfit()
+{
+	// 時間のかかる集計処理;
+}
+
+
+// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
+public function cachedResult($funcName)
+{
+  if(!isset($this->cachedResult[$funcName]){
+    
+    // Collectionに登録されているメソッド名を出力し、call_user_funcでメソッドをコールする。
+    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
+  }
+  return $this->cachedResult[$funcName];
+}
+```
+
+
+
+# 01-04. 無名関数
 
 ### ◆ Closure（無名関数）の定義、変数格納後のコール
 
@@ -618,7 +1053,7 @@ public function Shiborikomi($callback)
 
 
 
-# 01-04. 継承とクラスチェーン
+# 01-05. 継承におけるクラスチェーン
 
 クラスからプロパティやメソッドをコールした時、そのクラスにこれらが存在しなければ、継承元まで辿る仕組みを『クラスチェーン』という。プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては、別ノートを参照せよ。
 
@@ -658,7 +1093,7 @@ echo $subExample->getValue()
 
 
 
-# 01-05. 外部クラスとメソッドの読み込み
+# 01-06. 外部クラスとメソッドの読み込み
 
 ### ◆ ```use```によるクラスとメソッドの読み込み
 
@@ -1036,7 +1471,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 
 
-# 02-03. 定数
+# 03-01. 定数
 
 ### ◆ 定数が有効な場面
 
@@ -1087,7 +1522,7 @@ class requiedTime
 
 
 
-# 02-04. 変数
+# 03-02. 変数
 
 ### ◆ スーパーグローバル変数
 
@@ -1267,7 +1702,7 @@ echo $b; // 2
 
 
 
-# 02-05. 演算子
+# 03-03. 演算子
 
 ### ◆ 等価演算子を用いたインスタンスの比較
 
@@ -1371,55 +1806,7 @@ preg_match('/jpeg$/i', $x);
 
 
 
-# 02-06. データのキャッシュ
-
-### ◆ プロパティを用いたキャッシュ
-
-大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
-
-```PHP
-public cachedResult;
-
-public funcCollection;
-
-
-public function callFunc__construct()
-{
-	$this->funcCollection = $this->funcCollection()
-}
-
-
-// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく。
-public function funcCollection()
-{
-  return  [
-    'computeProfit' => [$this, 'computeProfit']
-  ];
-}
-
-
-// 集計メソッド
-public function computeProfit()
-{
-	// 時間のかかる集計処理;
-}
-
-
-// cacheプロパティに配列が設定されていた場合に値を設定し、設定されていた場合はそのまま使う。
-public function cachedResult($funcName)
-{
-  if(!isset($this->cachedResult[$funcName]){
-    
-    // Collectionに登録されているメソッド名を出力し、call_user_funcでメソッドをコールする。
-    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
-  }
-  return $this->cachedResult[$funcName];
-}
-```
-
-
-
-# 03-01. 条件式
+# 04-01. 条件式
 
 ### ◆ ```if```-```else```はできるだけ用いない
 
@@ -1705,7 +2092,7 @@ $csv['ID'] = $order->id;
 
 
 
-# 03-02. 例外処理
+# 04-02. 例外処理
 
 データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
 
@@ -1841,7 +2228,7 @@ class HttpRequestException extends Exception
 
 
 
-# 04-01. 反復処理
+# 05-01. 反復処理
 
 ### ◆ ```foreach()```
 
@@ -1970,51 +2357,11 @@ foreach($a as $x){
 
 
 
-# 05-01. 実装のモジュール化
-
-### ◆ STS分割法
-
-プログラムを、『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って、入力モジュール、処理モジュール、出力モジュール、の３つ分割する方法。（リクエスト ➔ DB ➔ レスポンス）
-
-![STS分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-1.png)
 
 
 
-### ◆ Transaction分割法
 
-データの種類によってTransaction（処理）の種類が決まるような場合に、プログラムを処理の種類ごとに分割する方法。
-
-![トランザクション分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-2.png)
-
-
-
-### ◆ 共通機能分割法
-
-プログラムを、共通の機能ごとに分割する方法
-
-![共通機能分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-3.jpg)
-
-
-
-### ◆ MVC
-
-ドメイン駆動設計のノートを参照せよ。
-
-
-
-### ◆ ドメイン駆動設計
-
-ドメイン駆動設計のノートを参照せよ。
-
-
-
-### ◆ デザインパターン
-
-デザインパターンのノートを参照せよ。
-
-
-
-# 06-01. ファイルパス
+# 05-02. ファイルパス
 
 ### ◆ 絶対パス
 
