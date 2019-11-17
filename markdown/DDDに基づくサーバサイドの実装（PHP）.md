@@ -50,11 +50,11 @@
 
 現在までに、ドメイン駆動設計の派生型がいくつか提唱されている。
 
-- **Layered architecture**
+- **Layeredアーキテクチャ**
 
-- **Hexagonal architecture**
+- **Hexagonalアーキテクチャ**
 
-- **Onion architecture**
+- **Onionアーキテクチャ**
 
   
 
