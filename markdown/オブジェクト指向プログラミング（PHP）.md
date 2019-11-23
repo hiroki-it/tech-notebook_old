@@ -22,7 +22,7 @@
 
 ![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
 
-
+- **プロパティにアクセスできない時の**
 
 ### ◆ static
 
@@ -804,9 +804,9 @@ var_dump($result);
 
 
 
-### ◆ プロパティを用いた処理結果のキャッシュ
+### ◆ プロパティを用いた処理結果の保持
 
-大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を格納しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
+大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を保持しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
 
 ```PHP
 public cachedResult;
@@ -1524,87 +1524,6 @@ class requiedTime
 
 # 03-02. 変数
 
-### ◆ スーパーグローバル変数
-
-スコープに関係なく、どのプログラムからでもアクセスできる連想配列変数
-
-![スーパーグローバル変数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/スーパーグローバル変数.png)
-
-- **```$_SERVER```に格納されている値**
-
-```PHP
-$_SERVER['SERVER_ADDR']           サーバのIPアドレス(例:192.168.0.1)
-$_SERVER['SERVER_NAME']           サーバの名前(例:www.example.com)
-$_SERVER['SERVER_PORT']           サーバのポート番号(例:80)
-$_SERVER['SERVER_PROTOCOL']       サーバプロトコル(例:HTTP/1.1)
-$_SERVER['SERVER_ADMIN']          サーバの管理者(例:root@localhost)
-$_SERVER['SERVER_SIGNATURE']      サーバのシグニチャ(例:Apache/2.2.15...)
-$_SERVER['SERVER_SOFTWARE']       サーバソフトウェア(例:Apache/2.2.15...)
-$_SERVER['GATEWAY_INTERFACE']     CGIバージョン(例:CGI/1.1)
-$_SERVER['DOCUMENT_ROOT']         ドキュメントルート(例:/var/www/html)
-$_SERVER['PATH']                  環境変数PATHの値(例:/sbin:/usr/sbin:/bin:/usr/bin)
-$_SERVER['PATH_TRANSLATED']       スクリプトファイル名(例:/var/www/html/test.php)
-$_SERVER['SCRIPT_FILENAME']       スクリプトファイル名(例:/var/www/html/test.php)
-$_SERVER['REQUEST_URI']           リクエストのURI(例:/test.php)
-$_SERVER['PHP_SELF']              PHPスクリプト名(例:/test.php)
-$_SERVER['SCRIPT_NAME']           スクリプト名(例:/test.php)
-$_SERVER['PATH_INFO']             URLの引数に指定されたパス名(例:/test.php/aaa)
-$_SERVER['ORIG_PATH_INFO']        PHPで処理される前のPATH_INFO情報
-$_SERVER['QUERY_STRING']          URLの?以降に記述された引数(例:q=123)
-$_SERVER['REMOTE_ADDR']           クライアントのIPアドレス(例:192.168.0.123)
-$_SERVER['REMOTE_HOST']           クライアント名(例:client32.example.com)
-$_SERVER['REMOTE_PORT']           クライアントのポート番号(例:64799)
-$_SERVER['REMOTE_USER']           クライアントのユーザ名(例:tanaka)
-$_SERVER['REQUEST_METHOD']        リクエストメソッド(例:GET)
-$_SERVER['REQUEST_TIME']          リクエストのタイムスタンプ(例:1351987425)
-$_SERVER['REQUEST_TIME_FLOAT']    リクエストのタイムスタンプ(マイクロ秒)(PHP 5.1.0以降)
-$_SERVER['REDIRECT_REMOTE_USER']  リダイレクトされた場合の認証ユーザ(例:tanaka)
-$_SERVER['HTTP_ACCEPT']           リクエストのAccept:ヘッダの値(例:text/html)
-$_SERVER['HTTP_ACCEPT_CHARSET']   リクエストのAccept-Charset:ヘッダの値(例:utf-8)
-$_SERVER['HTTP_ACCEPT_ENCODING']  リクエストのAccept-Encoding:ヘッダの値(例:gzip)
-$_SERVER['HTTP_ACCEPT_LANGUAGE']  リクエストのAccept-Language:ヘッダの値(ja,en-US)
-$_SERVER['HTTP_CACHE_CONTROL']    リクエストのCache-Control:ヘッダの値(例:max-age=0)
-$_SERVER['HTTP_CONNECTION']       リクエストのConnection:ヘッダの値(例:keep-alive)
-$_SERVER['HTTP_HOST']             リクエストのHost:ヘッダの値(例:www.example.com)
-$_SERVER['HTTP_REFERER']          リンクの参照元URL(例:http://www.example.com/)
-$_SERVER['HTTP_USER_AGENT']       リクエストのUser-Agent:ヘッダの値(例:Mozilla/5.0...)
-$_SERVER['HTTPS']                 HTTPSを利用しているか否か(例:on)
-$_SERVER['PHP_AUTH_DIGEST']       ダイジェスト認証時のAuthorization:ヘッダの値
-$_SERVER['PHP_AUTH_USER']         HTTP認証時のユーザ名
-$_SERVER['PHP_AUTH_PW']           HTTP認証時のパスワード
-$_SERVER['AUTH_TYPE']             HTTP認証時の認証形式
-```
-
-- **スーパーグローバル変数からの値取得（Symfony）**
-
-```PHP
-// $_GET['hoge']
-$request->query->get('hoge');
- 
-// $_POST['hoge']
-$request->request->get('hoge');
- 
-// ルーティングパラメータ / ex) @Route('/{hoge}')
-$request->attributes->get('hoge');
- 
-// $_COOKIE['hoge']
-$request->cookies->get('hoge');
- 
-// $_FILES['hoge']
-$request->files->get('hoge');
- 
-// $_SERVER['SCRIPT_FILENAME']
-$request->server->get('SCRIPT_FILENAME');
- 
-// $_SERVER['HTTP_USER_AGENT']
-$request->headers->get('User-Agent');
- 
-// query > attribute  > request の順で検索
-$request->get('hoge');
-```
-
-
-
 ### ◆ 変数展開
 
 文字列の中で、変数の中身を取り出すことを『変数展開』と呼ぶ。
@@ -2104,12 +2023,12 @@ $csv['ID'] = $order->id;
 
 |          | ```if(var)```、```!empty(var)``` | ```isset(var)```、```!is_null(​var)``` |
 | :------- | :------: | :-----------: |
-| ```0```  |    ✕     |       ✕       |
+| ```0```  |    ✕     |       **〇**       |
 | ```1```  |  **〇**  |    **〇**     |
-| ```""``` |    ✕     |       ✕       |
-| ```"あ"``` |    ✕     |       ✕       |
+| ```""``` |    ✕     |       **〇**       |
+| ```"あ"``` |    ✕     |       **〇**       |
 | NULL |    ✕     |       ✕       |
-| array() |    ✕     |       ✕       |
+| array(0) |    ✕     |       **〇**       |
 | array(1) |  **〇**  |    **〇**     |
 
 ```PHP
