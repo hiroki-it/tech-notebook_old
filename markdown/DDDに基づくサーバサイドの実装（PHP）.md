@@ -1,4 +1,6 @@
-# 01. Webページにおける処理の流れ
+[TOC]
+
+# 01-01. Webページにおける処理の流れ
 
 一例として、処理フローは、『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される。
 
@@ -8,7 +10,7 @@
 
 
 
-# 02. MVCとは
+# 02-01. MVCとは
 
 ドメイン駆動設計が考案される以前、MVCの考え方が主流であった。
 
@@ -339,15 +341,21 @@ class PaymentInfoVO
 **【実装例】**
 
 ```PHP
-class Test02
+class ExampleVO
 {
 
-		private $property02;
+		private $propertyA;
+  
+		private $propertyB;
 
-		// コンストラクタで$property02に値を設定
-		public function __construct($property02)
+		private $propertyC;
+
+		// コンストラクタで$propertyに値を設定
+		public function __construct($param)
 		{
-			$this->property02 = $property02;
+			$this->propertyA = $param['a'];
+			$this->propertyB = $param['b'];
+			$this->propertyC = $param['c'];
 		}
     
 }
