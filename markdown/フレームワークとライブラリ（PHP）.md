@@ -1,9 +1,9 @@
 <!-- TOC -->
 
 - [01. Symfonyフレームワーク](#01-symfonyフレームワーク)
-    - [◆ 採用すべき最低限のクラス](#◆-採用すべき最低限のクラス)
-    - [◆ Consoleに関するクラス](#◆-consoleに関するクラス)
-    - [◆ HttpKernelに関するクラス](#◆-httpkernelに関するクラス)
+- [02. Carbonライブラリ](#02-carbonライブラリ)
+- [03. Pinqライブラリ](#03-pinqライブラリ)
+- [04. Doctrineライブラリ](#04-doctrineライブラリ)
 
 <!-- /TOC -->
 ## 01. Symfonyフレームワーク
@@ -119,7 +119,7 @@ $response->send(); //（３）
 $kernel->terminate($request, $response);
 ```
 
-```handle()```が定義されているファイル。ここで定義された```handle()```が、C/Aへのルートの特定、特定されたC/Aの実行、テンプレートのレンダリングを行う。
+上記の```handle()```が定義されているファイル。ここで定義された```handle()```が、C/Aへのルートの特定、特定されたC/Aの実行、テンプレートのレンダリングを行う。
 
 ```PHP
 public function handle
@@ -143,6 +143,8 @@ public function handle
 	}
 }
 ```
+
+
 
 
 
@@ -238,13 +240,9 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
 
-
-
 ## 03. Pinqライブラリ
 
 SQLのSELECTやWHEREといった単語を用いて、```foreach()```のように、コレクションデータを走査できるライブラリ。
-
-
 
 ## 04. Doctrineライブラリ
 
