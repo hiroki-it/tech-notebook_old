@@ -1,13 +1,13 @@
 <!-- TOC -->
 
 - [01-01. RESTful設計のAPIに必要な実装](#01-01-restful設計のapiに必要な実装)
-        - [◆ 送信方法](#◆-送信方法)
+    - [◆ 送信方法](#◆-送信方法)
 - [02-01. フロントエンドとサーバサイドの間のRESTful API](#02-01-フロントエンドとサーバサイドの間のrestful-api)
-        - [◆ SilexフレームワークによるAPI](#◆-silexフレームワークによるapi)
+    - [◆ SilexフレームワークによるAPI](#◆-silexフレームワークによるapi)
 - [03-01. 異なるアプリケーション間のRESTful API](#03-01-異なるアプリケーション間のrestful-api)
 
 <!-- /TOC -->
-# 01-01. RESTful設計のAPIに必要な実装
+## 01-01. RESTful設計のAPIに必要な実装
 
 ### ◆ 送信方法
 
@@ -20,7 +20,7 @@
 
 
 
-# 02-01. フロントエンドとサーバサイドの間のRESTful API
+## 02-01. フロントエンドとサーバサイドの間のRESTful API
 
 ### ◆ SilexフレームワークによるAPI
 
@@ -65,5 +65,5 @@ class Route extends BaseRoute
 
 
 
-# 03-01. 異なるアプリケーション間のRESTful API
+## 03-01. 異なるアプリケーション間のRESTful API
 
