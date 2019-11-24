@@ -89,7 +89,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において、MVCは、�
 - **User Interface層**
 - **Application層**
 - **Domain層（ビジネロジックをコード化）**
-- **Infrastructure層（データベースとマッピング）**
+- **Infrastructure層（DBとマッピング）**
 
 
 
@@ -115,12 +115,12 @@ Repositoryの抽象クラスは、ドメイン層に配置する。そして、R
 
 ### ◆ Controllerの責務
 
-以下のような処理手順を組み合わせて、Use case（使用事例）を実装する。
+CRUDのReadの場合、以下のような処理手順を組み合わせて、Use case（使用事例）を実装する。
 
 1. 最初に、リクエストによるJSON型データ送信を受け取る。
 2. JSON型データを連想配列にパースする。
-3. Repositoryのメソッドに連想配列を渡し、オブジェクトデータを取得する。
-4. Casterに、取得したオブジェクトデータを渡し、連想配列に変換する。以下のCasterの説明を参照せよ。
+3. Repositoryのメソッドに連想配列を渡し、DBからオブジェクトデータをReadする。
+4. Casterに、Readしたオブジェクトデータを渡し、連想配列に変換する。以下のCasterの説明を参照せよ。
 5. 最後に、連想配列をJSON型データにパースし、JavaScriptに送信する。
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
@@ -165,7 +165,7 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 ## 05-01. Domain層のRepository
 
-リクエストによるデータ送信が行われる。Controllerは、Domain層の抽象メソッドをコールし、DBからデータを取得する。DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラスを配置する。
+リクエストによるデータ送信が行われる。Controllerは、Domain層の抽象メソッドをコールし、DBにおけるデータのCRUDを行う。DIPに基づくドメイン駆動設計の場合、Repositoryの抽象クラスを配置する。
 
 ```PHP
 abstract class getDogToyEntityRepository
@@ -279,7 +279,7 @@ class ToyOrderEntity
 	// 	Getterを実装
 	public function getXXX()
 	{
-		//  取得処理;
+		//  Read処理;
 	}  
   
 }	
@@ -470,10 +470,6 @@ class Money
 
 
 
-
-
-
-
 ## 05-04. TypeCode（標準型）
 
 ### ◆ 責務
@@ -554,7 +550,7 @@ class ColorVO extends Enum
 
 ## 06-01. Infrastructure層のRepository
 
-### ◆ 集約の構成／データベースへのデータ追加
+### ◆ 集約の構成／DBへのデータのCreate
 
 1. GETまたはPOSTによって、アプリケーション層から値が送信される。
 
@@ -564,7 +560,7 @@ class ColorVO extends Enum
 
 4. Repositoryによって、集約を連想配列に分解する。
 
-5. データベースのテーブルに挿入する。
+5. DBのテーブルに挿入する。
 
    ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
 
@@ -610,10 +606,10 @@ class setDogToyEntityRepository
 
 
 
-### ◆ データベースからのデータ取得／集約の再構成
+### ◆ DBにおけるデータのRead／集約の再構成
 
 1. アプリケーション層から集約がリクエストされる。
-2. データベースのテーブルからデータを取得。
+2. DBのテーブルからデータをRead。
 3. Repositoryによって、リクエストされたデータからEntityやValueObjectを構成する。さらに、それらから集約を構成する。
 4. Factoryによって、集約を加工する。
 5. 再構成された集約をアプリケーション層にレスポンス。
@@ -623,7 +619,7 @@ class setDogToyEntityRepository
 **【実装例】**
 
 ```PHP
-// データ取得と集約再構成を行う。
+// データのReadと集約再構成を行う。
 class getDogToyEntityRepository
 {
   // 接続先したいデータベースが設定されたプロパティ
@@ -642,7 +638,7 @@ class getDogToyEntityRepository
 	}
 
 
-  	// データベースからデータを取得する。
+  	// データベースからデータをReadする。
 	private function fetchDataSet()
 	{
 		$select = [
