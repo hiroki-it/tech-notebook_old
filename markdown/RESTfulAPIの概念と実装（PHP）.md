@@ -3,7 +3,10 @@
 <!-- TOC -->
 
 - [01-01. RESTful設計とWeb API](#01-01-restful設計とweb-api)
+    - [◆ REST](#◆-rest)
+    - [◆ RESTful API](#◆-restful-api)
 - [02-01. フロントエンドとサーバサイドの間のRESTful API](#02-01-フロントエンドとサーバサイドの間のrestful-api)
+    - [◆ SilexフレームワークによるRESTful API](#◆-silexフレームワークによるrestful-api)
 - [03-01. 異なるアプリケーション間のRESTful API](#03-01-異なるアプリケーション間のrestful-api)
 
 <!-- /TOC -->
@@ -27,12 +30,12 @@ RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWe
 
 ![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
 
-| **主な送信方法** | エンドポイント例 | DBの操作との対応   | CRUDとの対応 |
-| :--------------: | ---------------- | ------------------ | ------------ |
-|     **GET**      | /example/{id}    | DBデータの取得     | Read         |
-|     **POST**     | /example         | DBデータの新規作成 | Create       |
-|     **PUT**      | /example/{id}    | DBデータの更新     | Update       |
-|    **DELETE**    | /example/{id}    | DBデータの削除     | Delete       |
+| **送信方法** | 使い分け                    | エンドポイント例                        | パラメータ | JSONデータ型 |
+| :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- |
+|     **GET**      | DBデータのRead | http://www.example.co.jp/userInfo/{id}  | id | ```number``` |
+|     **POST**     | DBデータのCreate、PDFの作成、バイナリデータの送信、ログインなど | http://www.example.co.jp/userInfo/     | なし | なし |
+|     **PUT**      | DBデータのUpdate | http://www.example.co.jp/userInfo/{id} | id | ```number``` |
+|    **DELETE**    | DBデータのDelete | http://www.example.co.jp/userInfo/{id} | Id | ```number``` |
 
 
 
