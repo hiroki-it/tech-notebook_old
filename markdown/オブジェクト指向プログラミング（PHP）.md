@@ -64,12 +64,7 @@
     - [:pushpin: ```try```-```catch```文](#pushpin-try-catch文)
 - [04-03. 反復処理](#04-03-反復処理)
     - [:pushpin: ```foreach()```](#pushpin-foreach)
-    - [:pushpin: ```for()```](#pushpin-for)
-    - [:pushpin: 無限ループ](#pushpin-無限ループ)
-    - [:pushpin: 反復を含む流れ図における実装との対応](#pushpin-反復を含む流れ図における実装との対応)
-- [05-01. ファイルパス](#05-01-ファイルパス)
-    - [:pushpin: 絶対パス](#pushpin-絶対パス)
-    - [:pushpin: 相対パス](#pushpin-相対パス)
+    - [:pushpin: ```throw new \Exception(var_dump($var))```](#pushpin-throw-new-\exceptionvar_dumpvar)
 
 <!-- /TOC -->
 ## 01-01. カプセル化
@@ -2235,18 +2230,32 @@ class HttpRequestException extends Exception
 
 ### :pushpin: ```foreach()```
 
-- **配列を返却したい場合**
-
-```
-
-```
-
-
-
 - **いずれかの配列の要素を返却する場合**
 
-```
+```foreach()```は、単に配列を作るだけでなく、要素にアクセスするためにも使われる。
 
+```PHP
+// $options配列には、OptionA,B,Cエンティティのいずれかが格納されているものとします。
+public function checkOption(Array $options)
+{
+	foreach($options as $option){
+		
+		if($option->name() === 'オプションA'){
+			$result = 'オプションAが設定されています。'
+		}			
+		
+		if($option->name() === 'オプションB'){
+			$result = 'オプションBが設定されています。'			
+		}
+		
+		if($option->name() === 'オプションC'){
+			$result = 'オプションCが設定されています。'
+		}
+		
+	}
+	
+	return $result
+}
 ```
 
 
@@ -2382,3 +2391,40 @@ foreach($a as $x){
 
 ![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相対パス.png)
 
+## 05-02. ログでエラーが出力されない時の対処方法
+
+### :pushpin: ローカル環境 vs テスト環境
+
+ローカル環境とテスト環境で、ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブを比較し、キーや配列に格納されている値がどう異なっているかを調べる。　　　
+
+### :pushpin: ```var_dump($var)```
+
+- **変数の中身の確認方法**
+
+ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブ、で確認することができる。
+
+- **小ネタ**
+
+変数の中身が出力されていなかったら、```exit```をつけてみる。
+
+### :pushpin: ```var_dump($var)``` & ```throw new \Exception("")```
+
+- **変数の中身の確認方法**
+
+ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される。エラー画面の上部で、```var_dump($var)```の結果を確認することができる。
+
+- **小ネタ**
+
+```Exception```の前に、```\```（逆スラッシュ）をつけること。
+
+### :pushpin: ```throw new \Exception(var_dump($var))```
+
+- **変数の中身の確認方法**
+
+ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される。例外エラーの内容として、```var_dump($var)```の結果を確認することができる。
+
+- **小ネタ**
+
+```Exception```の前に、```\```（逆スラッシュ）をつけること。
+
+　　　　　　　
