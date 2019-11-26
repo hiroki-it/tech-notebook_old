@@ -3,17 +3,17 @@
 <!-- TOC -->
 
 - [01-01. RESTful設計とWeb API](#01-01-restful設計とweb-api)
-    - [◆ REST](#◆-rest)
-    - [◆ RESTful API](#◆-restful-api)
+    - [:pushpin: REST](#pushpin-rest)
+    - [:pushpin: RESTful API](#pushpin-restful-api)
 - [02-01. フロントエンドとサーバサイドの間のRESTful API](#02-01-フロントエンドとサーバサイドの間のrestful-api)
-    - [◆ SilexフレームワークによるRESTful API](#◆-silexフレームワークによるrestful-api)
+    - [:pushpin: SilexフレームワークによるRESTful API](#pushpin-silexフレームワークによるrestful-api)
 - [03-01. 異なるアプリケーション間のRESTful API](#03-01-異なるアプリケーション間のrestful-api)
 
 <!-- /TOC -->
 
 ## 01-01. RESTful設計とWeb API
 
-### ◆ REST
+### :pushpin: REST
 
 分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという。また、アーキテクチャスタイルについては、オブジェクト指向分析・設計のノートを参照せよ。RESTは、以下の特徴を持つ。
 
@@ -24,7 +24,7 @@
 
 
 
-### ◆ RESTful API
+### :pushpin: RESTful API
 
 RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWebAPIをRESTful APIという。例えば、RESTful APIの場合、DBにおけるUserInfoのCRUDに対して、一つの「/UserInfo」というURLを対応づけている。
 
@@ -33,7 +33,7 @@ RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWe
 | **送信方法** | 使い分け                    | エンドポイント例                        | パラメータ | JSONデータ型 |
 | :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- |
 |     **GET**      | DBデータのRead | http://www.example.co.jp/userInfo/{id}  | id | ```number``` |
-|     **POST**     | DBデータのCreate、PDFの作成、バイナリデータの送信、ログインなど | http://www.example.co.jp/userInfo/     | なし | なし |
+|     **POST**     | DBデータのCreate、PDFの作成、画像やPDFの送信、ログインなど | http://www.example.co.jp/userInfo/     | なし | なし |
 |     **PUT**      | DBデータのUpdate | http://www.example.co.jp/userInfo/{id} | id | ```number``` |
 |    **DELETE**    | DBデータのDelete | http://www.example.co.jp/userInfo/{id} | Id | ```number``` |
 
@@ -42,7 +42,7 @@ RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWe
 
 ## 02-01. フロントエンドとサーバサイドの間のRESTful API
 
-### ◆ SilexフレームワークによるRESTful API
+### :pushpin: SilexフレームワークによるRESTful API
 
 Silexフレームワークの```Application```クラスや```Route```クラスには、RESTful APIを実装するためのメソッドが用意されている。
 

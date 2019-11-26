@@ -3,23 +3,23 @@
 <!-- TOC -->
 
 - [01. Symfonyフレームワーク](#01-symfonyフレームワーク)
-    - [◆ 採用すべき最低限のクラス](#◆-採用すべき最低限のクラス)
-    - [◆ Consoleに関するクラス](#◆-consoleに関するクラス)
-    - [◆ HttpKernelに関するクラス](#◆-httpkernelに関するクラス)
+    - [:pushpin: 採用すべき最低限のクラス](#pushpin-採用すべき最低限のクラス)
+    - [:pushpin: Consoleに関するクラス](#pushpin-consoleに関するクラス)
+    - [:pushpin: HttpKernelに関するクラス](#pushpin-httpkernelに関するクラス)
 - [02. Carbonライブラリ](#02-carbonライブラリ)
-    - [◆ Date型](#◆-date型)
-    - [◆ ```instance()```](#◆-instance)
-    - [◆ ```create()```](#◆-create)
-    - [◆ ```createFromXXX()```](#◆-createfromxxx)
-    - [◆ ```parse()```](#◆-parse)
+    - [:pushpin: Date型](#pushpin-date型)
+    - [:pushpin: ```instance()```](#pushpin-instance)
+    - [:pushpin: ```create()```](#pushpin-create)
+    - [:pushpin: ```createFromXXX()```](#pushpin-createfromxxx)
+    - [:pushpin: ```parse()```](#pushpin-parse)
 - [03. Pinqライブラリ](#03-pinqライブラリ)
 - [04. Doctrineライブラリ](#04-doctrineライブラリ)
-    - [◆ ```createQueryBuilder()```](#◆-createquerybuilder)
+    - [:pushpin: ```createQueryBuilder()```](#pushpin-createquerybuilder)
 
 <!-- /TOC -->
 ## 01. Symfonyフレームワーク
 
-### ◆ 採用すべき最低限のクラス
+### :pushpin: 採用すべき最低限のクラス
 
 ```PHP
 // Consoleに関するクラス
@@ -53,7 +53,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 
 
-### ◆ Consoleに関するクラス
+### :pushpin: Consoleに関するクラス
 
 **【実装例】**
 
@@ -91,7 +91,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 
 
-### ◆ HttpKernelに関するクラス
+### :pushpin: HttpKernelに関するクラス
 
 ![図2-9-ver2](https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png)
 
@@ -161,7 +161,7 @@ public function handle
 
 ## 02. Carbonライブラリ
 
-### ◆ Date型
+### :pushpin: Date型
 
 厳密にはデータ型ではないが、便宜上、データ型とする。タイムスタンプとは、協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの。
 
@@ -174,7 +174,7 @@ public function handle
 
 
 
-### ◆ ```instance()``` 
+### :pushpin: ```instance()``` 
 
 DateTimeインスタンスを引数として、Carbonインスタンスを作成する。
 
@@ -189,7 +189,7 @@ echo $carbon;
 
 
 
-### ◆ ```create()```
+### :pushpin: ```create()```
 
 日時の文字列からCarbonインスタンスを作成する。
 
@@ -203,7 +203,7 @@ echo $carbon;
 
 
 
-### ◆ ```createFromXXX()```
+### :pushpin: ```createFromXXX()```
 
 指定の文字列から、Carbonインスタンスを作成する。
 
@@ -241,7 +241,7 @@ echo $carbonFromTimestamp;
 
 
 
-### ◆ ```parse()```
+### :pushpin: ```parse()```
 
 日付、時間、日時フォーマットから、Carbonインスタンスを作成する。
 
@@ -257,7 +257,7 @@ SQLのSELECTやWHEREといった単語を用いて、```foreach()```のように
 
 ## 04. Doctrineライブラリ
 
-### ◆ ```createQueryBuilder()```
+### :pushpin: ```createQueryBuilder()```
 
 ```getConnection()```を起点として、返り値から繰り返しメソッドを取得し、```fetchAll()```で、テーブルのクエリ名をキーとした連想配列が返される。
 
