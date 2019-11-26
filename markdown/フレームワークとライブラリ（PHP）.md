@@ -2,22 +2,25 @@
 
 <!-- TOC -->
 
-- [01. Symfonyフレームワーク](#01-symfonyフレームワーク)
+- [01-01. Symfonyフレームワーク](#01-01-symfonyフレームワーク)
     - [:pushpin: 採用すべき最低限のクラス](#pushpin-採用すべき最低限のクラス)
-    - [:pushpin: Consoleに関するクラス](#pushpin-consoleに関するクラス)
-    - [:pushpin: HttpKernelに関するクラス](#pushpin-httpkernelに関するクラス)
-- [02. Carbonライブラリ](#02-carbonライブラリ)
+- [01-02. Consoleに関するクラス](#01-02-consoleに関するクラス)
+    - [:pushpin: Commandクラス​](#pushpin-commandクラス​)
+    - [:pushpin: Commandの文法](#pushpin-commandの文法)
+- [01-03. HttpFoundationに関するクラス](#01-03-httpfoundationに関するクラス)
+    - [:pushpin: AppKernel](#pushpin-appkernel)
+- [02-01. Carbonライブラリ](#02-01-carbonライブラリ)
     - [:pushpin: Date型](#pushpin-date型)
     - [:pushpin: ```instance()```](#pushpin-instance)
     - [:pushpin: ```create()```](#pushpin-create)
     - [:pushpin: ```createFromXXX()```](#pushpin-createfromxxx)
     - [:pushpin: ```parse()```](#pushpin-parse)
-- [03. Pinqライブラリ](#03-pinqライブラリ)
-- [04. Doctrineライブラリ](#04-doctrineライブラリ)
+- [03-01. Pinqライブラリ](#03-01-pinqライブラリ)
+- [04-01. Doctrineライブラリ](#04-01-doctrineライブラリ)
     - [:pushpin: ```createQueryBuilder()```](#pushpin-createquerybuilder)
 
 <!-- /TOC -->
-## 01. Symfonyフレームワーク
+## 01-01. Symfonyフレームワーク
 
 ### :pushpin: 採用すべき最低限のクラス
 
@@ -53,7 +56,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 
 
-### :pushpin: Consoleに関するクラス
+## 01-02. Consoleに関するクラス
+
+### :pushpin: Commandクラス​ 
 
 **【実装例】**
 
@@ -91,7 +96,20 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 
 
-### :pushpin: HttpKernelに関するクラス
+### :pushpin: Commandの文法
+
+- **```for```**
+
+```bash
+# リストを変数fに繰り返し格納し、処理を行う。
+for f in *txt; do echo $f; done
+```
+
+
+
+## 01-03. HttpFoundationに関するクラス
+
+### :pushpin: AppKernel
 
 ![図2-9-ver2](https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png)
 
@@ -157,9 +175,7 @@ public function handle
 
 
 
-
-
-## 02. Carbonライブラリ
+## 02-01. Carbonライブラリ
 
 ### :pushpin: Date型
 
@@ -251,11 +267,11 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
 
-## 03. Pinqライブラリ
+## 03-01. Pinqライブラリ
 
 SQLのSELECTやWHEREといった単語を用いて、```foreach()```のように、コレクションデータを走査できるライブラリ。
 
-## 04. Doctrineライブラリ
+## 04-01. Doctrineライブラリ
 
 ### :pushpin: ```createQueryBuilder()```
 
