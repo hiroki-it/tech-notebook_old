@@ -1,92 +1,92 @@
 <!-- TOC -->
 
 - [01-01. カプセル化](#01-01-カプセル化)
-    - [◆ public](#◆-public)
-    - [◆ protected](#◆-protected)
-    - [◆ private](#◆-private)
-    - [◆ static](#◆-static)
+    - [:pushpin: public](#:pushpin:-public)
+    - [:pushpin: protected](#:pushpin:-protected)
+    - [:pushpin: private](#:pushpin:-private)
+    - [:pushpin: static](#:pushpin:-static)
 - [01-02. クラス間の関係性](#01-02-クラス間の関係性)
-    - [◆ Association（関連）](#◆-association関連)
-    - [◆ Aggregation（集約）](#◆-aggregation集約)
-    - [◆ Composition（合成）](#◆-composition合成)
-    - [◆  Dependency（依存）※関連、集約、合成の依存性の違い](#◆--dependency依存※関連集約合成の依存性の違い)
-    - [◆ Generalization（汎化）](#◆-generalization汎化)
-    - [◆ Realization（実現）](#◆-realization実現)
-    - [◆ 通常クラス、抽象クラス、インターフェースの違い](#◆-通常クラス抽象クラスインターフェースの違い)
-    - [◆ Trait（※php独自の機能）](#◆-trait※php独自の機能)
+    - [:pushpin: Association（関連）](#:pushpin:-association関連)
+    - [:pushpin: Aggregation（集約）](#:pushpin:-aggregation集約)
+    - [:pushpin: Composition（合成）](#:pushpin:-composition合成)
+    - [:pushpin:  Dependency（依存）※関連、集約、合成の依存性の違い](#:pushpin:--dependency依存※関連集約合成の依存性の違い)
+    - [:pushpin: Generalization（汎化）](#:pushpin:-generalization汎化)
+    - [:pushpin: Realization（実現）](#:pushpin:-realization実現)
+    - [:pushpin: 通常クラス、抽象クラス、インターフェースの違い](#:pushpin:-通常クラス抽象クラスインターフェースの違い)
+    - [:pushpin: Trait（※php独自の機能）](#:pushpin:-trait※php独自の機能)
 - [01-03. メソッド](#01-03-メソッド)
-    - [◆ メソッドの実装手順](#◆-メソッドの実装手順)
-    - [◆ 値を取得するアクセサメソッドの実装](#◆-値を取得するアクセサメソッドの実装)
-    - [◆ 値を設定するアクセサメソッドの実装](#◆-値を設定するアクセサメソッドの実装)
-    - [◆ メソッドチェーン](#◆-メソッドチェーン)
-    - [◆ マジックメソッド（Getter系）](#◆-マジックメソッドgetter系)
-    - [◆ マジックメソッド（Setter系）](#◆-マジックメソッドsetter系)
-    - [◆ Recursive call：再帰的プログラム](#◆-recursive-call再帰的プログラム)
-    - [◆ プロパティを用いた処理結果の保持](#◆-プロパティを用いた処理結果の保持)
-    - [◆ オプション引数](#◆-オプション引数)
+    - [:pushpin: メソッドの実装手順](#:pushpin:-メソッドの実装手順)
+    - [:pushpin: 値を取得するアクセサメソッドの実装](#:pushpin:-値を取得するアクセサメソッドの実装)
+    - [:pushpin: 値を設定するアクセサメソッドの実装](#:pushpin:-値を設定するアクセサメソッドの実装)
+    - [:pushpin: メソッドチェーン](#:pushpin:-メソッドチェーン)
+    - [:pushpin: マジックメソッド（Getter系）](#:pushpin:-マジックメソッドgetter系)
+    - [:pushpin: マジックメソッド（Setter系）](#:pushpin:-マジックメソッドsetter系)
+    - [:pushpin: Recursive call：再帰的プログラム](#:pushpin:-recursive-call再帰的プログラム)
+    - [:pushpin: プロパティを用いた処理結果の保持](#:pushpin:-プロパティを用いた処理結果の保持)
+    - [:pushpin: オプション引数](#:pushpin:-オプション引数)
 - [01-04. 無名関数](#01-04-無名関数)
-    - [◆ Closure（無名関数）の定義、変数格納後のコール](#◆-closure無名関数の定義変数格納後のコール)
-    - [◆ Closure（無名関数）の定義と即コール](#◆-closure無名関数の定義と即コール)
-    - [◆ 高階関数とClosure（無名関数）の組み合わせ](#◆-高階関数とclosure無名関数の組み合わせ)
-    - [◆ 高階関数を使いこなす！](#◆-高階関数を使いこなす)
+    - [:pushpin: Closure（無名関数）の定義、変数格納後のコール](#:pushpin:-closure無名関数の定義変数格納後のコール)
+    - [:pushpin: Closure（無名関数）の定義と即コール](#:pushpin:-closure無名関数の定義と即コール)
+    - [:pushpin: 高階関数とClosure（無名関数）の組み合わせ](#:pushpin:-高階関数とclosure無名関数の組み合わせ)
+    - [:pushpin: 高階関数を使いこなす！](#:pushpin:-高階関数を使いこなす)
 - [01-05. 継承におけるクラスチェーン](#01-05-継承におけるクラスチェーン)
 - [01-06. 外部クラスとメソッドの読み込み](#01-06-外部クラスとメソッドの読み込み)
-    - [◆ ```use```によるクラスとメソッドの読み込み](#◆-useによるクラスとメソッドの読み込み)
-    - [◆ 親クラスの静的メソッドの読み込み](#◆-親クラスの静的メソッドの読み込み)
+    - [:pushpin: ```use```によるクラスとメソッドの読み込み](#:pushpin:-useによるクラスとメソッドの読み込み)
+    - [:pushpin: 親クラスの静的メソッドの読み込み](#:pushpin:-親クラスの静的メソッドの読み込み)
 - [02-01. データ構造](#02-01-データ構造)
-    - [◆ Array型](#◆-array型)
-    - [◆ List型](#◆-list型)
-    - [◆ Object型](#◆-object型)
-    - [◆ Queue型](#◆-queue型)
-    - [◆ Stack型](#◆-stack型)
-    - [◆ ツリー構造](#◆-ツリー構造)
+    - [:pushpin: Array型](#:pushpin:-array型)
+    - [:pushpin: List型](#:pushpin:-list型)
+    - [:pushpin: Object型](#:pushpin:-object型)
+    - [:pushpin: Queue型](#:pushpin:-queue型)
+    - [:pushpin: Stack型](#:pushpin:-stack型)
+    - [:pushpin: ツリー構造](#:pushpin:-ツリー構造)
 - [02-02. データ型](#02-02-データ型)
-    - [◆ Boolean型](#◆-boolean型)
-    - [◆ Date型](#◆-date型)
+    - [:pushpin: Boolean型](#:pushpin:-boolean型)
+    - [:pushpin: Date型](#:pushpin:-date型)
 - [03-01. 定数](#03-01-定数)
-    - [◆ 定数が有効な場面](#◆-定数が有効な場面)
+    - [:pushpin: 定数が有効な場面](#:pushpin:-定数が有効な場面)
 - [03-02. 変数](#03-02-変数)
-    - [◆ 変数展開](#◆-変数展開)
-    - [◆ 参照渡しと値渡し](#◆-参照渡しと値渡し)
+    - [:pushpin: 変数展開](#:pushpin:-変数展開)
+    - [:pushpin: 参照渡しと値渡し](#:pushpin:-参照渡しと値渡し)
 - [03-03. 演算子](#03-03-演算子)
-    - [◆ 等価演算子を用いたインスタンスの比較](#◆-等価演算子を用いたインスタンスの比較)
-    - [◆ キャスト演算子](#◆-キャスト演算子)
-    - [◆ 正規表現とパターン演算子](#◆-正規表現とパターン演算子)
+    - [:pushpin: 等価演算子を用いたインスタンスの比較](#:pushpin:-等価演算子を用いたインスタンスの比較)
+    - [:pushpin: キャスト演算子](#:pushpin:-キャスト演算子)
+    - [:pushpin: 正規表現とパターン演算子](#:pushpin:-正規表現とパターン演算子)
 - [04-01. 条件式](#04-01-条件式)
-    - [◆ ```if```-```else```はできるだけ用いない](#◆-if-elseはできるだけ用いない)
-    - [◆ ```if```-```elseif```-```else```と```switch```-```case```-```break```](#◆-if-elseif-elseとswitch-case-break)
-    - [◆ ```if```-```elseif```-```else```はできるだけ用いない](#◆-if-elseif-elseはできるだけ用いない)
-    - [◆ オブジェクトごとにプロパティの値の有無が異なる時の出力](#◆-オブジェクトごとにプロパティの値の有無が異なる時の出力)
+    - [:pushpin: ```if```-```else```はできるだけ用いない](#:pushpin:-if-elseはできるだけ用いない)
+    - [:pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```](#:pushpin:-if-elseif-elseとswitch-case-break)
+    - [:pushpin: ```if```-```elseif```-```else```はできるだけ用いない](#:pushpin:-if-elseif-elseはできるだけ用いない)
+    - [:pushpin: オブジェクトごとにプロパティの値の有無が異なる時の出力](#:pushpin:-オブジェクトごとにプロパティの値の有無が異なる時の出力)
 - [04-02. 例外処理](#04-02-例外処理)
-    - [◆ 例外処理前の条件分岐](#◆-例外処理前の条件分岐)
-    - [◆ Exceptionクラスを継承した独自例外クラス](#◆-exceptionクラスを継承した独自例外クラス)
-    - [◆ ```if```-```throw```文](#◆-if-throw文)
-    - [◆ ```try```-```catch```文](#◆-try-catch文)
+    - [:pushpin: 例外処理前の条件分岐](#:pushpin:-例外処理前の条件分岐)
+    - [:pushpin: Exceptionクラスを継承した独自例外クラス](#:pushpin:-exceptionクラスを継承した独自例外クラス)
+    - [:pushpin: ```if```-```throw```文](#:pushpin:-if-throw文)
+    - [:pushpin: ```try```-```catch```文](#:pushpin:-try-catch文)
 - [04-03. 反復処理](#04-03-反復処理)
-    - [◆ ```foreach()```](#◆-foreach)
-    - [◆ ```for()```](#◆-for)
-    - [◆ 無限ループ](#◆-無限ループ)
-    - [◆ 反復を含む流れ図における実装との対応](#◆-反復を含む流れ図における実装との対応)
+    - [:pushpin: ```foreach()```](#:pushpin:-foreach)
+    - [:pushpin: ```for()```](#:pushpin:-for)
+    - [:pushpin: 無限ループ](#:pushpin:-無限ループ)
+    - [:pushpin: 反復を含む流れ図における実装との対応](#:pushpin:-反復を含む流れ図における実装との対応)
 - [05-01. ファイルパス](#05-01-ファイルパス)
-    - [◆ 絶対パス](#◆-絶対パス)
-    - [◆ 相対パス](#◆-相対パス)
+    - [:pushpin: 絶対パス](#:pushpin:-絶対パス)
+    - [:pushpin: 相対パス](#:pushpin:-相対パス)
 
 <!-- /TOC -->
 ## 01-01. カプセル化
 
-### ◆ public
+### :pushpin: public
 
 どのオブジェクトでも呼び出せる。
 
 
 
-### ◆ protected
+### :pushpin: protected
 
 同じクラス内と、その親クラスまたは子クラスでのみ呼び出せる。
 
 
 
-### ◆ private
+### :pushpin: private
 
 同じオブジェクト内でのみ呼び出せる。
 
@@ -98,7 +98,7 @@
 
 - **プロパティにアクセスできない時の**
 
-### ◆ static
+### :pushpin: static
 
 別ファイルでのメソッドの呼び出しにはインスタンス化が必要である。しかし、static修飾子をつけることで、インスタンス化しなくともコールできる。プロパティ値は用いず（静的）、引数の値のみを用いて処理を行うメソッドに対して用いる。
 
@@ -138,11 +138,11 @@ public static function computeExampleFee(Entity $order): Money
 
 
 
-### ◆ Association（関連）
+### :pushpin: Association（関連）
 
 
 
-### ◆ Aggregation（集約）
+### :pushpin: Aggregation（集約）
 
 【Tireクラス】
 
@@ -206,7 +206,7 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 
 
 
-### ◆ Composition（合成）
+### :pushpin: Composition（合成）
 
 【Lockクラス】
 
@@ -252,7 +252,7 @@ $key = new Key($lock);
 
 
 
-### ◆  Dependency（依存）※関連、集約、合成の依存性の違い
+### :pushpin:  Dependency（依存）※関連、集約、合成の依存性の違い
 
 『Association ＞ Aggregation ＞ Composition』の順で、依存性が低い。
 
@@ -260,7 +260,7 @@ $key = new Key($lock);
 
 
 
-### ◆ Generalization（汎化）
+### :pushpin: Generalization（汎化）
 
 - **汎化におけるOverride**
 
@@ -431,7 +431,7 @@ class EnginnerShainManagement extend ShainManagement
 
 
 
-### ◆ Realization（実現）
+### :pushpin: Realization（実現）
 
 実装クラスが正常に機能するために最低限必要なメソッドの実装を強制する。これによって、必ず実装クラスを正常に働かせることができる。
 
@@ -488,7 +488,7 @@ class Human implements Communication
 
 
 
-### ◆ 通常クラス、抽象クラス、インターフェースの違い
+### :pushpin: 通常クラス、抽象クラス、インターフェースの違い
 
 |                              |    通常クラス    |    抽象クラス    |                       インターフェース                       |
 | ---------------------------- | :--------------: | :--------------: | :----------------------------------------------------------: |
@@ -509,7 +509,7 @@ class Human implements Communication
 
 
 
-### ◆ Trait（※php独自の機能）
+### :pushpin: Trait（※php独自の機能）
 
 再利用したいメソッドやプロパティを部品化し、利用したい時にクラスに取り込む。Traitを用いるときは、クラス内でTraitをuse宣言する。Trait自体は不完全なクラスであり、インスタンス化できない。
 
@@ -523,7 +523,7 @@ class Human implements Communication
 
 ## 01-03. メソッド
 
-### ◆ メソッドの実装手順
+### :pushpin: メソッドの実装手順
 
 1. その会社のシステムで使われているライブラリ
 2. PHPのデフォルト関数（引用：PHP関数リファレンス，https://www.PHP.net/manual/ja/funcref.PHP）
@@ -531,7 +531,7 @@ class Human implements Communication
 
 
 
-### ◆ 値を取得するアクセサメソッドの実装
+### :pushpin: 値を取得するアクセサメソッドの実装
 
 Getterでは、プロパティを取得するだけではなく、何かしらの処理を加えたうえで取得すること。
 
@@ -556,7 +556,7 @@ class ABC {
 
 
 
-### ◆ 値を設定するアクセサメソッドの実装
+### :pushpin: 値を設定するアクセサメソッドの実装
 
 - **Setter**
 
@@ -619,7 +619,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 
 
-### ◆ メソッドチェーン
+### :pushpin: メソッドチェーン
 
 以下のような、オブジェクトAを最外層とした関係が存在しているとする。
 
@@ -687,7 +687,7 @@ $D = getObjB()->getObjC()->getObjC();
 
 
 
-### ◆ マジックメソッド（Getter系）
+### :pushpin: マジックメソッド（Getter系）
 
 オブジェクトに対して特定の操作が行われた時に自動的にコールされる特殊なメソッドのこと。自動的に呼び出される仕組みは謎。共通の処理を行うGetter（例えば、値を取得するだけのGetterなど）を無闇に増やしたくない場合に用いることで、コード量の肥大化を防ぐことができる。PHPには最初からマジックメソッドは組み込まれているが、自身で実装した場合、オーバーライドされてコールされる。
 
@@ -727,7 +727,7 @@ hogeプロパティは存在しないため、値を呼び出せません。
 
 
 
-### ◆ マジックメソッド（Setter系）
+### :pushpin: マジックメソッド（Setter系）
 
 定義されていないstaticメソッドや、アクセス権のないstaticメソッドを取得しようとした時に、代わりに呼び出される。自動的にコールされる仕組みは謎。共通の処理を行うSetter（例えば、値を設定するだけのSetterなど）を無闇に増やしたくない場合に用いることで、コード量の肥大化を防ぐことができる。PHPには最初からマジックメソッドは組み込まれているが、自身で実装した場合、オーバーライドされて呼び出される。
 
@@ -801,7 +801,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 
 
-### ◆ Recursive call：再帰的プログラム
+### :pushpin: Recursive call：再帰的プログラム
 
 自プログラムから自身自身をコールし、実行できるプログラムのこと。
 
@@ -878,7 +878,7 @@ var_dump($result);
 
 
 
-### ◆ プロパティを用いた処理結果の保持
+### :pushpin: プロパティを用いた処理結果の保持
 
 大量のデータを集計するメソッドは、その処理に時間がかかる。そこで、そのようなメソッドでは、一度コールされて集計を行った後、プロパティに返却値を保持しておく。そして、再びコールされた時には、返却値をプロパティから取り出す。
 
@@ -924,7 +924,7 @@ public function cachedResult($funcName)
 
 
 
-### ◆ オプション引数
+### :pushpin: オプション引数
 
 引数が与えられなければ、指定の値を渡す方法
 
@@ -936,7 +936,7 @@ public function cachedResult($funcName)
 
 ## 01-04. 無名関数
 
-### ◆ Closure（無名関数）の定義、変数格納後のコール
+### :pushpin: Closure（無名関数）の定義、変数格納後のコール
 
 - **```use()```のみに引数を渡す場合**
 
@@ -998,7 +998,7 @@ echo $option->name("BC");
 
 
 
-### ◆ Closure（無名関数）の定義と即コール
+### :pushpin: Closure（無名関数）の定義と即コール
 
 定義したその場でコールされる無名関数を『即時関数』と呼ぶ。無名関数をコールしたい時は、```call_user_func()```を用いる。
 
@@ -1021,7 +1021,7 @@ echo $optionName;
 
 
 
-### ◆ 高階関数とClosure（無名関数）の組み合わせ
+### :pushpin: 高階関数とClosure（無名関数）の組み合わせ
 
 関数を引数として受け取ったり、関数自体を返したりする関数を『高階関数』と呼ぶ。
 
@@ -1101,7 +1101,7 @@ high-order($parentVar, function() use($parentVar)
 
 
 
-### ◆ 高階関数を使いこなす！
+### :pushpin: 高階関数を使いこなす！
 
 ```PHP
 /**
@@ -1179,7 +1179,7 @@ echo $subExample->getValue()
 
 ## 01-06. 外部クラスとメソッドの読み込み
 
-### ◆ ```use```によるクラスとメソッドの読み込み
+### :pushpin: ```use```によるクラスとメソッドの読み込み
 
 PHPでは、```use```によって、外部ファイルの名前空間、クラス、メソッド、定数を読み込める。ただし、動的な値は持たず、静的に読み込むことに注意。しかし、チームの各エンジニアが好きな物を読み込んでいたら、スパゲッティコードになりかねない。そこで、チームでの開発では、記述ルールを設けて、```use```で読み込んで良いものを決めておくと良い。
 
@@ -1265,7 +1265,7 @@ class Example2
 
 
 
-### ◆ 親クラスの静的メソッドの読み込み
+### :pushpin: 親クラスの静的メソッドの読み込み
 
 ```PHP
 abstract class Example 
@@ -1294,7 +1294,7 @@ class SubExample extends Example
 
 処理において、データの集合を効率的に扱うためのデータ格納形式のこと。
 
-### ◆ Array型
+### :pushpin: Array型
 
 - **多次元配列**
 
@@ -1373,7 +1373,7 @@ echo reset($array); // あ
 
 
 
-### ◆ List型
+### :pushpin: List型
 
 配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、冗長ではあるが、以下のように実装する必要がある。
 
@@ -1408,7 +1408,7 @@ echo $a.$i.$u; // あいう
 
 
 
-### ◆ Object型
+### :pushpin: Object型
 
 ```PHP
 Fruit Object
@@ -1421,7 +1421,7 @@ Fruit Object
 
 
 
-### ◆ Queue型
+### :pushpin: Queue型
 
 ![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue1.gif)
 
@@ -1473,7 +1473,7 @@ echo $theFirst // Blue
 
 
 
-### ◆ Stack型
+### :pushpin: Stack型
 
 PHPでは、```array_push()```と```array_pop()```で実装可能。
 
@@ -1491,7 +1491,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 ![Stack3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack3.gif)
 
-### ◆ ツリー構造
+### :pushpin: ツリー構造
 
 - **二分探索木**
 
@@ -1523,7 +1523,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 ## 02-02. データ型
 
-### ◆ Boolean型
+### :pushpin: Boolean型
 
 - **Falseの定義**
 
@@ -1542,7 +1542,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 
 
-### ◆ Date型
+### :pushpin: Date型
 
 厳密にはデータ型ではないが、便宜上、データ型とする。タイムスタンプとは、協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの。
 
@@ -1557,7 +1557,7 @@ PHPでは、```array_push()```と```array_pop()```で実装可能。
 
 ## 03-01. 定数
 
-### ◆ 定数が有効な場面
+### :pushpin: 定数が有効な場面
 
 計算処理では、可読性の観点から、できるだけ数値を直書きしない。数値に意味合いを持たせ、定数として扱うと可読性が高くなる。例えば、ValueObjectにおける定数がある。
 
@@ -1608,7 +1608,7 @@ class requiedTime
 
 ## 03-02. 変数
 
-### ◆ 変数展開
+### :pushpin: 変数展開
 
 文字列の中で、変数の中身を取り出すことを『変数展開』と呼ぶ。
 
@@ -1660,7 +1660,7 @@ echo "これは{$fruit}です。"; // これは、リンゴです。
 
 
 
-### ◆ 参照渡しと値渡し
+### :pushpin: 参照渡しと値渡し
 
 - **参照渡し**
 
@@ -1707,7 +1707,7 @@ echo $b; // 2
 
 ## 03-03. 演算子
 
-### ◆ 等価演算子を用いたインスタンスの比較
+### :pushpin: 等価演算子を用いたインスタンスの比較
 
 - **イコールが2つの場合**
 
@@ -1756,7 +1756,7 @@ if($a === $b){
 
 
 
-### ◆ キャスト演算子
+### :pushpin: キャスト演算子
 
 **【実装例】**
 
@@ -1792,7 +1792,7 @@ $var = (object) $var;
 
 
 
-### ◆ 正規表現とパターン演算子
+### :pushpin: 正規表現とパターン演算子
 
 - **正規表現を用いた文字列検索**
 
@@ -1811,7 +1811,7 @@ preg_match('/jpeg$/i', $x);
 
 ## 04-01. 条件式
 
-### ◆ ```if```-```else```はできるだけ用いない
+### :pushpin: ```if```-```else```はできるだけ用いない
 
 - **```if```-```else```を用いた場合**
 
@@ -1888,7 +1888,7 @@ return $result;
 
 
 
-### ◆ ```if```-```elseif```-```else```と```switch```-```case```-```break```
+### :pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```
 
 **【実装例】**
 
@@ -1958,7 +1958,7 @@ switch ($weeks) {
 
 
 
-### ◆ ```if```-```elseif```-```else```はできるだけ用いない
+### :pushpin: ```if```-```elseif```-```else```はできるだけ用いない
 
 - **決定表を用いた条件分岐の整理**
 
@@ -2083,7 +2083,7 @@ public function leapYear(Int $year): String
 
 
 
-### ◆ オブジェクトごとにプロパティの値の有無が異なる時の出力
+### :pushpin: オブジェクトごとにプロパティの値の有無が異なる時の出力
 
 ```PHP
 // 全てのオブジェクトが必ず持っているわけではなく、
@@ -2099,7 +2099,7 @@ $csv['ID'] = $order->id;
 
 データベースから取得した後に直接表示する値の場合、データベースでNullにならないように制約をかけられるため、変数の中身に例外判定を行う必要はない。しかし、データベースとは別に新しく作られる値の場合、例外判定が必要になる。
 
-### ◆ 例外処理前の条件分岐
+### :pushpin: 例外処理前の条件分岐
 
 〇：```TRUE```
 
@@ -2129,7 +2129,7 @@ if($this->$var){
 
 
 
-### ◆ Exceptionクラスを継承した独自例外クラス
+### :pushpin: Exceptionクラスを継承した独自例外クラス
 
 ```PHP
 // HttpRequestに対処する例外クラス
@@ -2151,7 +2151,7 @@ class HttpRequestException extends Exception
 
 
 
-### ◆ ```if```-```throw```文
+### :pushpin: ```if```-```throw```文
 
 特定の処理の中に、想定できる例外があり、それをエラー文として出力するために用いる。ここでは、全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている。
 
@@ -2165,7 +2165,7 @@ return $value;
 
 
 
-### ◆ ```try```-```catch```文
+### :pushpin: ```try```-```catch```文
 
 特定の処理の中に、想定できない例外があり、それをエラー文として出力するために用いる。定義されたエラー文は、デバック画面に表示される。
 
@@ -2233,7 +2233,7 @@ class HttpRequestException extends Exception
 
 ## 04-03. 反復処理
 
-### ◆ ```foreach()```
+### :pushpin: ```foreach()```
 
 - **配列を返却したい場合**
 
@@ -2255,7 +2255,7 @@ class HttpRequestException extends Exception
 
 
 
-### ◆ ```for()```
+### :pushpin: ```for()```
 
 - **要素の位置を繰り返しズラす場合**
 
@@ -2272,7 +2272,7 @@ moveFile(fromPos < toPos)
 
 
 
-### ◆ 無限ループ
+### :pushpin: 無限ループ
 
 反復処理では、何らかの状態になった時に反復処理を終えなければならない。しかし、終えることができないと、無限ループが発生してしまう。
 
@@ -2294,7 +2294,7 @@ while($i < 4){
 
 
 
-### ◆ 反復を含む流れ図における実装との対応
+### :pushpin: 反復を含む流れ図における実装との対応
 
 『N個の正負の整数の中から、正の数のみの合計を求める』という処理を行うとする。
 
@@ -2362,7 +2362,7 @@ foreach($a as $x){
 
 ## 05-01. ファイルパス
 
-### ◆ 絶対パス
+### :pushpin: 絶対パス
 
 ルートディレクトリ（fruit.com）から、指定のファイル（apple.png）までのパス。
 
@@ -2372,7 +2372,7 @@ foreach($a as $x){
 
 ![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/絶対パス.png)
 
-### ◆ 相対パス
+### :pushpin: 相対パス
 
 起点となる場所（apple.html）から、指定のディレクトリやファイル（apple.png）の場所までを辿るパス。例えば、apple.htmlのページでapple.pngを使用したいとする。この時、『 .. 』を用いて一つ上の階層に行き、青の後、imgフォルダを指定する。
 
