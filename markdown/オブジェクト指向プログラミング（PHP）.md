@@ -64,6 +64,16 @@
     - [:pushpin: ```try```-```catch```文](#pushpin-try-catch文)
 - [04-03. 反復処理](#04-03-反復処理)
     - [:pushpin: ```foreach()```](#pushpin-foreach)
+    - [:pushpin: ```for()```](#pushpin-for)
+    - [:pushpin: 無限ループ](#pushpin-無限ループ)
+    - [:pushpin: 反復を含む流れ図における実装との対応](#pushpin-反復を含む流れ図における実装との対応)
+- [05-01. ファイルパス](#05-01-ファイルパス)
+    - [:pushpin: 絶対パス](#pushpin-絶対パス)
+    - [:pushpin: 相対パス](#pushpin-相対パス)
+- [05-02. ログでエラーが出力されない時の対処方法](#05-02-ログでエラーが出力されない時の対処方法)
+    - [:pushpin: ローカル環境 vs テスト環境](#pushpin-ローカル環境-vs-テスト環境)
+    - [:pushpin: ```var_dump($var)```](#pushpin-var_dumpvar)
+    - [:pushpin: ```var_dump($var)``` & ```throw new \Exception("")```](#pushpin-var_dumpvar--throw-new-\exception)
     - [:pushpin: ```throw new \Exception(var_dump($var))```](#pushpin-throw-new-\exceptionvar_dumpvar)
 
 <!-- /TOC -->
@@ -2232,7 +2242,7 @@ class HttpRequestException extends Exception
 
 - **いずれかの配列の要素を返却する場合**
 
-```foreach()```は、単に配列を作るだけでなく、要素にアクセスするためにも使われる。
+単に配列を作るだけでなく、要素にアクセスするためにも使われる。
 
 ```PHP
 // $options配列には、OptionA,B,Cエンティティのいずれかが格納されているものとします。
@@ -2415,7 +2425,7 @@ foreach($a as $x){
 
 - **小ネタ**
 
-```Exception```の前に、```\```（逆スラッシュ）をつけること。
+クラスを読み込むために、```Exception```の前に、```\```（逆スラッシュ）をつけること。
 
 ### :pushpin: ```throw new \Exception(var_dump($var))```
 
@@ -2425,6 +2435,6 @@ foreach($a as $x){
 
 - **小ネタ**
 
-```Exception```の前に、```\```（逆スラッシュ）をつけること。
+クラスを読み込むために、```Exception```の前に、```\```（逆スラッシュ）をつけること。
 
 　　　　　　　
