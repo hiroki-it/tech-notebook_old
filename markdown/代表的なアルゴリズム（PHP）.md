@@ -176,51 +176,51 @@ var_dump($result);
 
 適当な値を基準値（Pivot）とし，それより小さな値のグループと大きな値のグループに分割する。同様にして、両グループの中でPivotを選び，二つのグループに分割する。グループ内の値が一つになるまで、この処理を繰り返していく。
 
-![クイックソート-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-1.JPG)
+![クイックソート-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-1.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-2.JPG)
+![クイックソート-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-2.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-3.JPG)
+![クイックソート-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-3.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-4.JPG)
+![クイックソート-4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-4.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-5](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-5.JPG)
+![クイックソート-5](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-5.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-6](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-6.JPG)
+![クイックソート-6](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-6.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-7](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-7.JPG)
+![クイックソート-7](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-7.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-8](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-8.JPG)
+![クイックソート-8](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-8.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-9](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-9.JPG)
+![クイックソート-9](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-9.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-10](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-10.JPG)
+![クイックソート-10](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-10.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-11](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-11.JPG)
+![クイックソート-11](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-11.jpg)
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-![クイックソート-12](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-12.JPG)
+![クイックソート-12](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-12.jpg)
 
 
 

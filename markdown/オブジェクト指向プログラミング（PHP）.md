@@ -1476,6 +1476,12 @@ print_r($array);
 echo $theFirst // Blue
 ```
 
+- **メッセージQsueue**
+
+送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる。また、受信側の好きなタイミングでメッセージを取り出すことができる。
+
+![メッセージキュー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/メッセージキュー.jpg)
+
 
 
 ### :pushpin: Stack型
