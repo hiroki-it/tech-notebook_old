@@ -5,8 +5,8 @@
 - [01-01. Symfonyフレームワーク](#01-01-symfonyフレームワーク)
     - [:pushpin: 採用すべき最低限のクラス](#pushpin-採用すべき最低限のクラス)
 - [01-02. Consoleに関するクラス](#01-02-consoleに関するクラス)
-    - [:pushpin: Commandクラス​](#pushpin-commandクラス​)
-    - [:pushpin: Commandの文法](#pushpin-commandの文法)
+    - [:pushpin: Commandクラス](#pushpin-commandクラス)
+    - [:pushpin: バッチファイル](#pushpin-バッチファイル)
 - [01-03. HttpFoundationに関するクラス](#01-03-httpfoundationに関するクラス)
     - [:pushpin: AppKernel](#pushpin-appkernel)
 - [02-01. Carbonライブラリ](#02-01-carbonライブラリ)
@@ -58,7 +58,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 ## 01-02. Consoleに関するクラス
 
-### :pushpin: Commandクラス​ 
+### :pushpin: Commandクラス
+
+Commandクラスによって定義されたコマンドは、バッチファイル（```.bat```）に一連の処理として組み合わせられる。
 
 **【実装例】**
 
@@ -94,15 +96,29 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 }
 ```
 
-
-
-### :pushpin: Commandの文法
+### :pushpin: バッチファイル
 
 - **```for```**
 
 ```bash
-# リストを変数fに繰り返し格納し、処理を行う。
-for f in *txt; do echo $f; done
+# txtファイルを変数fに繰り返し格納し、処理を行う。
+for f in *txt do echo $f; done;
+```
+
+- **Cronによるコマンド自動実行**
+
+**【具体例】**
+
+10秒ごとに、コマンドを自動実行する。
+
+```bash
+# 10秒ごとに、コマンド処理を実行。
+for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
+```
+
+```bash
+# 15時ごとに、コマンド処理を実行。
+0 15 * * * * create:example;
 ```
 
 
