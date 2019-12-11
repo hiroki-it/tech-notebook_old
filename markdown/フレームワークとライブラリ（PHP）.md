@@ -15,9 +15,13 @@
     - [:pushpin: ```create()```](#pushpin-create)
     - [:pushpin: ```createFromXXX()```](#pushpin-createfromxxx)
     - [:pushpin: ```parse()```](#pushpin-parse)
-- [03-01. Pinqライブラリ](#03-01-pinqライブラリ)
-- [04-01. Doctrineライブラリ](#04-01-doctrineライブラリ)
+- [02-02. Pinqライブラリ](#02-02-pinqライブラリ)
+- [02-03. Doctrineライブラリ](#02-03-doctrineライブラリ)
     - [:pushpin: ```createQueryBuilder()```](#pushpin-createquerybuilder)
+- [03-01. ライブラリ、パッケージの管理](#03-01-ライブラリパッケージの管理)
+    - [:pushpin: ライブラリ管理ツール](#pushpin-ライブラリ管理ツール)
+    - [:pushpin: パッケージ管理ツール](#pushpin-パッケージ管理ツール)
+    - [:pushpin: モジュール管理ツール](#pushpin-モジュール管理ツール)
 
 <!-- /TOC -->
 ## 01-01. Symfonyフレームワーク
@@ -283,15 +287,18 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
 
-## 03-01. Pinqライブラリ
+
+## 02-02. Pinqライブラリ
 
 SQLのSELECTやWHEREといった単語を用いて、```foreach()```のように、コレクションデータを走査できるライブラリ。
 
-## 04-01. Doctrineライブラリ
+
+
+## 02-03. Doctrineライブラリ
 
 ### :pushpin: ```createQueryBuilder()```
 
-```getConnection()```を起点として、返り値から繰り返しメソッドを取得し、```fetchAll()```で、テーブルのクエリ名をキーとした連想配列が返される。
+データベース接続に関わる```getConnection()```を起点として、返り値から繰り返しメソッドを取得し、```fetchAll()```で、テーブルのクエリ名をキーとした連想配列が返される。
 
 **【実装例】**
 
@@ -336,3 +343,33 @@ class dogToyQuey(Value $toyType): Array
 
 }
 ```
+
+
+
+## 03-01. ライブラリ、パッケージの管理
+
+### :pushpin: ライブラリとパッケージの大まかな違い
+
+![ライブラリ、パッケージ、モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ライブラリ、パッケージ、モジュールの違い.png)
+
+
+
+### :pushpin: ライブラリ管理ツール
+
+- **PHP Composer**
+
+
+
+### :pushpin: パッケージ管理ツール
+
+- **Rpm**
+
+Linux系のパッケージを管理。
+
+- **Yum**
+
+Linux系のパッケージを管理。
+
+- **Npm**
+
+JavaScript系のパッケージを管理。
