@@ -33,9 +33,10 @@
 - [01-06. 外部クラスとメソッドの読み込み](#01-06-外部クラスとメソッドの読み込み)
     - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
     - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
-- [02-01. データ構造](#02-01-データ構造)
-    - [:pushpin: Array型](#pushpin-array型)
-    - [:pushpin: List型](#pushpin-list型)
+- [02-01. データ構造とPHPでの実現](#02-01-データ構造とphpでの実現)
+    - [:pushpin: HashMap型](#pushpin-hashmap型)
+    - [:pushpin: ArrayList型](#pushpin-arraylist型)
+    - [:pushpin: Linked List型](#pushpin-linked-list型)
     - [:pushpin: Object型](#pushpin-object型)
     - [:pushpin: Queue型](#pushpin-queue型)
     - [:pushpin: Stack型](#pushpin-stack型)
@@ -151,7 +152,7 @@ public static function computeExampleFee(Entity $order): Money
 
 【Tireクラス】
 
-```
+```PHP
 class Tire {}
 ```
 
@@ -336,11 +337,11 @@ class GoodsWithTax extends Goods
 
 以下の条件の社員オブジェクトを実装したいとする。
 
-    1. 午前９時に出社
-    
-    2. 営業部・開発部・総務部があり、それぞれが異なる仕事を行う
-    
-    3. 午後６時に退社
+1. 午前９時に出社
+   
+2. 営業部・開発部・総務部があり、それぞれが異なる仕事を行う
+   
+3. 午後６時に退社
 
   この時、『働くメソッド』は部署ごとに異なってしまうが、どう実装したら良いのか…
 
@@ -519,10 +520,6 @@ class Human implements Communication
 再利用したいメソッドやプロパティを部品化し、利用したい時にクラスに取り込む。Traitを用いるときは、クラス内でTraitをuse宣言する。Trait自体は不完全なクラスであり、インスタンス化できない。
 
 ![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
-
-
-
-
 
 
 
@@ -1295,38 +1292,15 @@ class SubExample extends Example
 
 
 
-## 02-01. データ構造
+## 02-01. データ構造とPHPでの実現
 
-処理において、データの集合を効率的に扱うためのデータ格納形式のこと。
+処理において、データの集合を効率的に扱うためのデータ格納形式をデータ構造という。完全に対応しているわけではないが、データ構造をPHPで実現したものを以下に示す。
 
-### :pushpin: Array型
+### :pushpin: HashMap型
 
-- **多次元配列**
+- **PHPにおけるHashMap型**
 
-中に配列をもつ配列のこと。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
-
-```PHP
-Array
-( 
-    [0] => Array
-        (
-            [0] => リンゴ
-            [1] => イチゴ
-            [2] => トマト
-        )
-
-    [1] => Array
-        (
-            [0] => メロン
-            [1] => キュウリ
-            [2] => ピーマン
-        )
-)
-```
-
-- **連想配列**
-
-中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ような配列のこと。下の例は、二次元配列かつ連想配列である。
+配列の中に配列をもち、キーに名前がついている（赤、緑、黄、果物、野菜）ようなデータ格納形式のこと。PHPでは、キー名ごとに値が格納された配列がそれに相当する。下の例は、二次元配列かつ連想配列である。
 
 ```PHP
 Array
@@ -1345,6 +1319,67 @@ Array
             [野菜] => ピーマン
         )
 )
+```
+
+
+
+### :pushpin: ArrayList型
+
+- **PHPにおけるArrayList型**
+
+PHPでは、番号キーごとに値が格納された配列がそれに相当する。
+
+```PHP
+Array
+(
+	[0] => A
+	[1] => B
+	[2] => C
+)
+```
+
+- **多次元配列**
+
+配列の中に配列をもつデータ格納形式のこと。多次元配列もArrayList型に含まれる。配列の入れ子構造が２段の場合、『二次元配列』と呼ぶ。
+
+```PHP
+Array
+( 
+	[0] => Array
+		(
+			[0] => リンゴ
+			[1] => イチゴ
+			[2] => トマト
+    )
+
+	[1] => Array
+		(
+			[0] => メロン
+			[1] => キュウリ
+			[2] => ピーマン
+		)
+)
+```
+
+- **PHPの```list()```との違い**
+
+PHPの```list()```は、List型とは意味合いが異なる。配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、冗長ではあるが、以下のように実装する必要がある。
+
+```PHP
+$array = array("あ", "い", "う");
+$a = $array[0];
+$i = $array[1];
+$u = $array[2];
+
+echo $a.$i.$u; // あいう
+```
+
+しかし、以下の様にList型を使うことによって、複数の変数への格納を一行で実装することができる。
+
+```PHP
+list($a, $i, $u) = array("あ", "い", "う")
+
+echo $a.$i.$u; // あいう
 ```
 
 - **配列内の要素の走査（スキャン）**
@@ -1378,26 +1413,9 @@ echo reset($array); // あ
 
 
 
-### :pushpin: List型
+### :pushpin: Linked List型
 
-配列の要素一つ一つを変数に格納したい場合、List型を使わなければ、冗長ではあるが、以下のように実装する必要がある。
-
-```PHP
-$array = array("あ", "い", "う");
-$a = $array[0];
-$i = $array[1];
-$u = $array[2];
-
-echo $a.$i.$u; // あいう
-```
-
-しかし、以下の様にList型を使うことによって、複数の変数への格納を一行で実装することができる。
-
-```PHP
-list($a, $i, $u) = array("あ", "い", "う")
-
-echo $a.$i.$u; // あいう
-```
+値をポインタによって順序通り並べたデータ格納形式のこと。
 
 - **単方向List**
 
@@ -1410,6 +1428,7 @@ echo $a.$i.$u; // あいう
 - **循環List**
 
 ![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-3.gif)
+
 
 
 
@@ -1476,7 +1495,7 @@ print_r($array);
 echo $theFirst // Blue
 ```
 
-- **メッセージQsueue**
+- **メッセージQueue**
 
 送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる。また、受信側の好きなタイミングでメッセージを取り出すことができる。
 
