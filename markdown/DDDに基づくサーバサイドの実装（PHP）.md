@@ -574,7 +574,7 @@ class ColorVO extends Enum
 
 ## 06-01. Infrastructure層のRepository
 
-### :pushpin: 集約の構成／DBへのデータのCreate
+### :pushpin: 集約の構成、DBへのデータのCreate
 
 1. GETまたはPOSTによって、アプリケーション層から値が送信される。
 
@@ -630,7 +630,7 @@ class setDogToyEntityRepository
 
 
 
-### :pushpin: DBにおけるデータのRead／集約の再構成
+### :pushpin: DBにおけるデータのRead、集約の再構成
 
 1. アプリケーション層から集約がリクエストされる。
 2. DBのテーブルからデータをRead。
