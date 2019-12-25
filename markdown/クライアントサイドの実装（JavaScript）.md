@@ -17,7 +17,8 @@
 - [03-01. Vueフレームワークによるイベントの発火](#03-01-vueフレームワークによるイベントの発火)
     - [:pushpin: SPA：シングルページアプリケーション](#pushpin-spaシングルページアプリケーション)
     - [:pushpin: コンポーネントの登録](#pushpin-コンポーネントの登録)
-    - [:pushpin: 親子コンポーネント間のデータ通信](#pushpin-親子コンポーネント間のデータ通信)
+    - [:pushpin: 双方向データバインディング](#pushpin-双方向データバインディング)
+    - [:pushpin: ディレクティブ](#pushpin-ディレクティブ)
 - [03-02. Vue-Routerライブラリ](#03-02-vue-routerライブラリ)
     - [:pushpin: コンポーネントのルーティング](#pushpin-コンポーネントのルーティング)
 - [03-03. Vuexライブラリ](#03-03-vuexライブラリ)
@@ -437,6 +438,8 @@ Vueでは、SPAの仕組みが用いられている。
 
 - **SPアプリにおけるデータ通信の仕組み**
 
+Webページの部分ごとに、サーバとデータ通信できる。
+
 ![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SPアプリにおけるデータ通信の仕組み.png)
 
 - **従来WebアプリとSPアプリの処理速度の違い**
@@ -496,17 +499,17 @@ new Vue({
 
 
 
-### :pushpin: 親子コンポーネント間のデータ通信
+### :pushpin: 双方向データバインディング
 
 - **MVVMパターン**
 
-Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModelが『子コンポーネントのVueファイル』、Modelが『クラスが定義されたJSファイル』に相当する。
+Viewが『Twig＋親コンポーネント』、ViewModelが『Vueインスタンス＋子コンポーネントのVueファイル』、Modelが『クラスが定義されたJSファイル』に相当する。
 
 ![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVMパターン.png)
 
-- **データ通信の仕組み**
+- **双方向データバインディングの仕組み**
 
-親コンポーネント（出力先のコンポーネントタグ）では、子コンポーネント（出力内容）がタグ名でコールされる。
+Viewの親コンポーネント（出力先のコンポーネントタグ）では、ViewModelの子コンポーネント（出力内容）がタグ名でコールされる。ViewとViewModelのコンポーネント間での、データの双方向の受け渡しを双方向データバインディングという。
 
 1. 親コンポーネントのタグ内で設定された『```:example = "値"```』が、子コンポーネントの『```props: { "値" }```』に渡される。この値は読み込み専用で、変更できない。
 2. 各コンポーネントで個別に状態を変化させたいものは、propsオプションではなく、dataオプションとして扱う。
@@ -523,7 +526,8 @@ Viewが『Twig＋親コンポーネント＋Vueインスタンス』、ViewModel
 <div id="app">
   
 	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-	<!-- 対応するVueインスタンスのmethodオプションをコール-->
+  <!-- propsに渡すための値を設定。ディレクティブのメソッド処理内容に影響-->
+	<!-- 対応するVueインスタンスのmethodオプションをディレクティブに設定-->
 	<v-example-component-1
 		:criteria="criteria"
 		v-on change="changeQuery"
@@ -675,13 +679,25 @@ module.exports = {
 		updateCriteria (key, value) {
               
 		// 親コンポーネント（v-example-component-1）と紐づく処理
-		// chageイベントを発火させ、イベントに紐づくchangeQuery()の引数として値を渡す。
+		// changeイベントを発火させ、イベントに紐づくchangeQuery()の引数として値を渡す。
 		this.$emit('change', {'criteria': localCriteria});
 	},
 
 };
 </script>
 ```
+
+
+
+### :pushpin: ディレクティブ
+
+- **```v-on: イベント名="Vueインスタンスのメソッド"```（```@:```でも可）**
+
+```$emit()```でイベント名を指定されることによって、Vueインスタンス内の特定のメソッドを発火させる。
+
+- **```v-show="プロパティ名"```**
+
+```props```内のプロパティ名がもつ値が```TRUE```の時に表示し、```FALSE```の時に非表示にする。
 
 
 
