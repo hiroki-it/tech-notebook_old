@@ -36,8 +36,8 @@
 - [05-05. Id](#05-05-id)
 - [05-06. Service](#05-06-service)
 - [06-01. Infrastructure層のRepository](#06-01-infrastructure層のrepository)
-    - [:pushpin: 集約の構成／DBへのデータのCreate](#pushpin-集約の構成／dbへのデータのcreate)
-    - [:pushpin: DBにおけるデータのRead／集約の再構成](#pushpin-dbにおけるデータのread／集約の再構成)
+    - [:pushpin: 集約の構成、DBへのデータのCreate](#pushpin-集約の構成dbへのデータのcreate)
+    - [:pushpin: DBにおけるデータのRead、集約の再構成](#pushpin-dbにおけるデータのread集約の再構成)
 - [06-02. Factory](#06-02-factory)
     - [:pushpin: 責務](#pushpin-責務-3)
 
