@@ -15,7 +15,7 @@
 
 ### :pushpin: REST
 
-分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという。また、アーキテクチャスタイルについては、オブジェクト指向分析・設計のノートを参照せよ。RESTは、以下の特徴を持つ。
+分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
 
 - **Addressability**
 - **Stateless**
@@ -26,7 +26,11 @@
 
 ### :pushpin: RESTful API
 
-RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWebAPIをRESTful APIという。例えば、RESTful APIの場合、DBにおけるUserInfoのCRUDに対して、一つの「/UserInfo」というURLを対応づけている。
+RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
+
+- **エンドポイント**
+
+APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
 
 ![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
 
@@ -39,7 +43,7 @@ RESTに基づいた設計をRESTfulという。RESTful設計が用いられたWe
 
 - **パスパラメータとクエリパラメータの使い分け（再掲）**
 
-パスパラメータはデータをリクエストするために用いる。また、クエリパラメータはデータを、検索処理、フィルタ処理、ソート処理をリクエストするために用いる。
+パスパラメータはデータをリクエストするために用いる．また，クエリパラメータはデータを，検索処理，フィルタ処理，ソート処理をリクエストするために用いる．
 
 ```yaml
 # 完全修飾ドメイン名 + ルート + パスパラメータ + ? + クエリパラメータ
@@ -54,7 +58,7 @@ http://127.0.0.1 + testform.php + 777 + ? + text1=a&text2=b
 
 ### :pushpin: SilexフレームワークによるRESTful API
 
-Silexフレームワークの```Application```クラスや```Route```クラスには、RESTful APIを実装するためのメソッドが用意されている。
+Silexフレームワークの```Application```クラスや```Route```クラスには，RESTful APIを実装するためのメソッドが用意されている．
 
 ```PHP
 namespace Silex;
