@@ -22,7 +22,7 @@
 <!-- /TOC -->
 ## 01. 並び替えのアルゴリズム
 
-例えば、次のような表では、どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか。
+例えば，次のような表では，どのような仕組みで「昇順」「降順」への並び替えが行われるのだろうか．
 
 ![ソートの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ソートの仕組み.gif)
 
@@ -35,61 +35,61 @@
 
 **【最小選択法の実装例】**
 
-1. 比較基準値を決める。
-2. 最初の数値を比較基準値とし、n個の中から最も小さい数字を探し、それと入れ替える。
-3. 次に、残りのn-1個の中から最も小さい数字を探し、それを2番目の数字と入れ替える。
-4. この処理をn-1回繰り返す。
+1. 比較基準値を決める．
+2. 最初の数値を比較基準値とし，n個の中から最も小さい数字を探し，それと入れ替える．
+3. 次に，残りのn-1個の中から最も小さい数字を探し，それを2番目の数字と入れ替える．
+4. この処理をn-1回繰り返す．
 
 ```PHP
 function minSelectSort(Array $array): Array
 {
 
-	// 比較基準値を固定し、それ以外の数値と比べていく。
+	// 比較基準値を固定し，それ以外の数値と比べていく．
 	for($i = 0; $i < count($array)-1; $i++){
 	
-		// 比較基準値を仮の最小値として定義。
+		// 比較基準値を仮の最小値として定義．
         $min = $array[$i];
     	
 		// 比較基準値の位置を定義
 		$position = $i;
 		
-		// 比較基準値の位置以降で、数値を固定し、順番に評価していく。
+		// 比較基準値の位置以降で，数値を固定し，順番に評価していく．
 		for($j = $position + 1; $j < count($array); $j++){
 		
-			// 比較基準値の位置以降に小さい数値があれば、比較基準値と最小値を更新。
+			// 比較基準値の位置以降に小さい数値があれば，比較基準値と最小値を更新．
 			if($min > $array[$j]){
 				$position = $j;
 				$min = $array[$j];
 			}
 		}
 		
-		// 比較基準値の位置が更新されていなかった場合、親のfor文から抜ける。
+		// 比較基準値の位置が更新されていなかった場合，親のfor文から抜ける．
 		if($i == $position){
 			break;
 		}
 
-		// 親のfor文の最小値を更新。
+		// 親のfor文の最小値を更新．
 		$array[$i] = $min;
 		
-		// 次に2番目を比較基準値とし、同じ処理を繰り返していく。
+		// 次に2番目を比較基準値とし，同じ処理を繰り返していく．
 	}
 	return $array;
 }
 ```
 
 ```PHP
-// 実際に使ってみる。
+// 実際に使ってみる．
 $array = array(10,2,12,7,16,8,13)
 $result = selectSort($array);
 var_dump($result); 
 
-// 昇順に並び替えられている。
+// 昇順に並び替えられている．
 2, 7, 8, 10, 12, 13, 16
 ```
 
 **【アルゴリズム解説】**
 
-データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく。
+データ中の最小値を求め，次にそれを除いた部分の中から最小値を求める．この操作を繰り返していく．
 
 ![選択ソート1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/選択ソート1.gif)
 
@@ -112,19 +112,19 @@ var_dump($result);
 **【実装例】**
 
 1. 適当な値を基準値（Pivot）とする （※できれば中央値が望ましい）
-2. Pivotより小さい数を前方、大きい数を後方に分割する。
-3. 二分割された各々のデータを、それぞれソートする。
-4. ソートを繰り返し実行する。
+2. Pivotより小さい数を前方，大きい数を後方に分割する．
+3. 二分割された各々のデータを，それぞれソートする．
+4. ソートを繰り返し実行する．
 
 ```PHP
 function quickSort(Array $array): Array 
 {
-	// 配列の要素数が一つしかない場合、クイックソートする必要がないので、返却する。
+	// 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
 	if (count($array) <= 1) {
 		return $array;
 	}
 
-	// 一番最初の値をPivotとする。
+	// 一番最初の値をPivotとする．
 	$pivot = array_shift($array); 
 
 	// グループを定義
@@ -146,16 +146,16 @@ function quickSort(Array $array): Array
 
 	}
 
-    // 処理の周回ごとに、結果の配列を結合。
+    // 処理の周回ごとに，結果の配列を結合．
 	return array_merge
 	(
-		// 左のグループを再帰的にクイックソート。
+		// 左のグループを再帰的にクイックソート．
 		quickSort($left),
 		
-		// Pivotを結果に組み込む。
+		// Pivotを結果に組み込む．
 		array($pivot),
 		
-		// 左のグループを再帰的にクイックソート。
+		// 左のグループを再帰的にクイックソート．
 		quickSort($right)
 	);
 
@@ -163,18 +163,18 @@ function quickSort(Array $array): Array
 ```
 
 ```PHP
-// 実際に使ってみる。
+// 実際に使ってみる．
 $array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
 $result = quickSort($array);
 var_dump($result); 
 
-// 昇順に並び替えられている。
+// 昇順に並び替えられている．
 1, 2, 3, 4, 5, 6, 7, 8 
 ```
 
 **【アルゴリズム解説】**
 
-適当な値を基準値（Pivot）とし，それより小さな値のグループと大きな値のグループに分割する。同様にして、両グループの中でPivotを選び，二つのグループに分割する。グループ内の値が一つになるまで、この処理を繰り返していく。
+適当な値を基準値（Pivot）とし，それより小さな値のグループと大きな値のグループに分割する．同様にして，両グループの中でPivotを選び，二つのグループに分割する．グループ内の値が一つになるまで，この処理を繰り返していく．
 
 ![クイックソート-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クイックソート-1.jpg)
 
@@ -226,7 +226,7 @@ var_dump($result);
 
 ### :pushpin: 基本交換法（バブルソート）
 
-隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法。
+隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法．
 
 ![バブルソート1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/バブルソート1.gif)
 
@@ -262,7 +262,7 @@ var_dump($result);
 
 ### :pushpin: 基本挿入法（挿入ソート）
 
-既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法。
+既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法．
 
 
 
@@ -280,7 +280,7 @@ var_dump($result);
 
 ### :pushpin: 線形探索法
 
-  今回は、配列内で「６」を探す。
+  今回は，配列内で「６」を探す．
 
 ![線形探索法1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/線形探索法1.gif)
 
@@ -294,7 +294,7 @@ var_dump($result);
 
 ### :pushpin: 二分探索法
 
-  前提として、ソートによって、すでにデータが整列させられているとする。今回は、配列内で「６」を探す。
+  前提として，ソートによって，すでにデータが整列させられているとする．今回は，配列内で「６」を探す．
 
 ![二分探索法1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/二分探索法1.gif)
 
@@ -330,7 +330,7 @@ var_dump($result);
 
 ![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
 
-地点間の距離を表で表す。ただし、同地点間の距離は『0』、隣り合わない地点間の距離は『-1』とする。
+地点間の距離を表で表す．ただし，同地点間の距離は『0』，隣り合わない地点間の距離は『-1』とする．
 
 ![ダイクストラ法_距離テーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ダイクストラ法_距離テーブル.png)
 
@@ -351,7 +351,7 @@ $matrix = array(
 ```
 
 ```PHP
-// 各地点間の距離、出発地点、開始地点を引数にとる。
+// 各地点間の距離，出発地点，開始地点を引数にとる．
 public function bestFirstSearchByDijkstra(
 	Array $matrix,
 	Int $startPoint,
@@ -363,7 +363,7 @@ public function bestFirstSearchByDijkstra(
 	
 	if($startPoint < self::POINT_NUMBER
 		|| self::POINT_NUMBER < $goalPoint){
-			throw new Exception('存在しない地点番号は設定できません。'）；
+			throw new Exception('存在しない地点番号は設定できません．'）；
 	}
 	
 	// 出発地点を定数で定義
@@ -372,8 +372,8 @@ public function bestFirstSearchByDijkstra(
 	// 到着地点を定数で定義
 	define('GOAL_POINT', $goalPoint));
 	
-	// 無限大の定数のINFを使いたいが、定数は上書きできないため、代わりに-1を使用。
-	// 各頂点に対して、最短ルート地点番号、地点間距離の初期値、最短距離確定フラグを設定。
+	// 無限大の定数のINFを使いたいが，定数は上書きできないため，代わりに-1を使用．
+	// 各頂点に対して，最短ルート地点番号，地点間距離の初期値，最短距離確定フラグを設定．
 	for($i = 0; $i < self::POINT_NUMBER; $i ++){
 		$route[$i] = -1;
 		$distance[$i] = -1;
@@ -385,7 +385,7 @@ public function bestFirstSearchByDijkstra(
 	// $distance = array_fill(0, self::POINT_NUMBER, -1);
 	// $fix = array_fill(0, self::POINT_NUMBER, false);
 	
-	// 出発地点から出発地点への距離をゼロとする。
+	// 出発地点から出発地点への距離をゼロとする．
 	$distance[self::START_POINT] = 0;
 	
 	// 
@@ -409,8 +409,8 @@ public function bestFirstSearchByDijkstra(
 			}
 		}
 		
-		今の自分には、これ以上は難しい…
-		未来の俺、頑張ってくれ…
+		今の自分には，これ以上は難しい…
+		未来の俺，頑張ってくれ…
 	
 	}
 ```
@@ -421,7 +421,7 @@ $startPoint = 0
 
 $goalPoint = 6
 
-とした時、出発地点（0）から1ステップ行ける地点までの距離（pDist）を取得し、確定させる。
+とした時，出発地点（0）から1ステップ行ける地点までの距離（pDist）を取得し，確定させる．
 
 ![最短経路探索処理ループ_1回目](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/最短経路探索処理ループ_1回目.png)
 
@@ -435,7 +435,7 @@ $goalPoint = 6
 
 **【アルゴリズム解説】**
 
-正のコストの経路のみの場合、用いることができる方法。
+正のコストの経路のみの場合，用いることができる方法．
 
 ![ダイクストラ法_01](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ダイクストラ法_01.png)
 
@@ -509,10 +509,10 @@ $goalPoint = 6
 
 ### :pushpin: Check Digit Check
 
-バーコードやクレジットカードなどの読み取りチェックで使われている誤り検出方法。
+バーコードやクレジットカードなどの読み取りチェックで使われている誤り検出方法．
 
-1. Check Digitを算出する。
-2. 算出されたCheck Digitが正しいかを検証する。
+1. Check Digitを算出する．
+2. 算出されたCheck Digitが正しいかを検証する．
 
 ![チェックディジット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/チェックディジット.gif)
 
