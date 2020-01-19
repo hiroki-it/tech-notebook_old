@@ -19,9 +19,9 @@
 - [02-03. Doctrineライブラリ](#02-03-doctrineライブラリ)
     - [:pushpin: ```createQueryBuilder()```](#pushpin-createquerybuilder)
 - [03-01. ライブラリ，パッケージの管理](#03-01-ライブラリパッケージの管理)
+    - [:pushpin: ライブラリとパッケージの大まかな違い](#pushpin-ライブラリとパッケージの大まかな違い)
     - [:pushpin: ライブラリ管理ツール](#pushpin-ライブラリ管理ツール)
     - [:pushpin: パッケージ管理ツール](#pushpin-パッケージ管理ツール)
-    - [:pushpin: モジュール管理ツール](#pushpin-モジュール管理ツール)
 
 <!-- /TOC -->
 ## 01-01. Symfonyフレームワーク
@@ -357,6 +357,11 @@ class dogToyQuey(Value $toyType): Array
 ### :pushpin: ライブラリ管理ツール
 
 - **PHP Composer**
+
+```bash
+// phpのメモリ上限を無しにしてcomposer updateを行う方法
+php -d memory_limit=-1 /usr/local/bin/composer update
+```
 
 
 
