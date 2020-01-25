@@ -1,20 +1,34 @@
 <!-- TOC -->
 
-- [01-01. カプセル化](#01-01-カプセル化)
-    - [:pushpin: public](#pushpin-public)
-    - [:pushpin: protected](#pushpin-protected)
-    - [:pushpin: private](#pushpin-private)
-    - [:pushpin: static](#pushpin-static)
-- [01-02. クラス間の関係性](#01-02-クラス間の関係性)
+- [01-01. クラス間の関係性](#01-01-クラス間の関係性)
+    - [:pushpin: Association，Aggregation，Compositionの違い](#pushpin-associationaggregationcompositionの違い)
     - [:pushpin: Association（関連）](#pushpin-association関連)
     - [:pushpin: Aggregation（集約）](#pushpin-aggregation集約)
     - [:pushpin: Composition（合成）](#pushpin-composition合成)
-    - [:pushpin:  Dependency（依存）※関連，集約，合成の依存性の違い](#pushpin--dependency依存※関連集約合成の依存性の違い)
+    - [:pushpin: Dependency（依存）](#pushpin-dependency依存)
+    - [:pushpin: Dependency Injection（依存性の注入）](#pushpin-dependency-injection依存性の注入)
     - [:pushpin: Generalization（汎化）](#pushpin-generalization汎化)
     - [:pushpin: Realization（実現）](#pushpin-realization実現)
     - [:pushpin: 通常クラス，抽象クラス，インターフェースの違い](#pushpin-通常クラス抽象クラスインターフェースの違い)
     - [:pushpin: Trait（※php独自の機能）](#pushpin-trait※php独自の機能)
-- [01-03. メソッド](#01-03-メソッド)
+- [01-02. 入れ子クラス](#01-02-入れ子クラス)
+    - [:pushpin: PHPの場合](#pushpin-phpの場合)
+    - [:pushpin: Javaの場合](#pushpin-javaの場合)
+- [01-03. 総称型](#01-03-総称型)
+    - [:pushpin: PHPの場合](#pushpin-phpの場合-1)
+    - [:pushpin: Javaの場合](#pushpin-javaの場合-1)
+- [01-04. クラス間の関係性の理想的状態](#01-04-クラス間の関係性の理想的状態)
+    - [:pushpin: 凝集度](#pushpin-凝集度)
+    - [:pushpin: 結合度](#pushpin-結合度)
+- [02-01. 操作（メソッド）とデータ（プロパティ）](#02-01-操作メソッドとデータプロパティ)
+    - [:pushpin: 操作（メソッド）](#pushpin-操作メソッド)
+    - [:pushpin: データ（プロパティ）](#pushpin-データプロパティ)
+- [02-02. メソッドとデータのカプセル化](#02-02-メソッドとデータのカプセル化)
+    - [:pushpin: public](#pushpin-public)
+    - [:pushpin: protected](#pushpin-protected)
+    - [:pushpin: private](#pushpin-private)
+    - [:pushpin: static](#pushpin-static)
+- [03-01. メソッド](#03-01-メソッド)
     - [:pushpin: メソッドの実装手順](#pushpin-メソッドの実装手順)
     - [:pushpin: 値を取得するアクセサメソッドの実装](#pushpin-値を取得するアクセサメソッドの実装)
     - [:pushpin: 値を設定するアクセサメソッドの実装](#pushpin-値を設定するアクセサメソッドの実装)
@@ -22,130 +36,86 @@
     - [:pushpin: マジックメソッド（Getter系）](#pushpin-マジックメソッドgetter系)
     - [:pushpin: マジックメソッド（Setter系）](#pushpin-マジックメソッドsetter系)
     - [:pushpin: Recursive call：再帰的プログラム](#pushpin-recursive-call再帰的プログラム)
-    - [:pushpin: プロパティを用いた処理結果の保持](#pushpin-プロパティを用いた処理結果の保持)
+    - [:pushpin: データを用いた処理結果の保持](#pushpin-データを用いた処理結果の保持)
     - [:pushpin: オプション引数](#pushpin-オプション引数)
-- [01-04. 無名関数](#01-04-無名関数)
+- [03-02. 無名関数](#03-02-無名関数)
     - [:pushpin: Closure（無名関数）の定義，変数格納後のコール](#pushpin-closure無名関数の定義変数格納後のコール)
     - [:pushpin: Closure（無名関数）の定義と即コール](#pushpin-closure無名関数の定義と即コール)
     - [:pushpin: 高階関数とClosure（無名関数）の組み合わせ](#pushpin-高階関数とclosure無名関数の組み合わせ)
     - [:pushpin: 高階関数を使いこなす！](#pushpin-高階関数を使いこなす)
-- [01-05. 継承におけるクラスチェーン](#01-05-継承におけるクラスチェーン)
-- [01-06. 外部クラスとメソッドの読み込み](#01-06-外部クラスとメソッドの読み込み)
-    - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
-    - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
-- [02-01. PHPにおけるデータ構造の実装方法](#02-01-phpにおけるデータ構造の実装方法)
+- [04-01. PHPにおけるデータ構造の実装方法](#04-01-phpにおけるデータ構造の実装方法)
     - [:pushpin: Array型](#pushpin-array型)
     - [:pushpin: LinkedList型](#pushpin-linkedlist型)
     - [:pushpin: Queue型](#pushpin-queue型)
     - [:pushpin: Stack型](#pushpin-stack型)
     - [:pushpin: Tree型](#pushpin-tree型)
-- [02-02. Javaにおけるデータ構造の実装方法](#02-02-javaにおけるデータ構造の実装方法)
+- [04-02. Javaにおけるデータ構造の実装方法](#04-02-javaにおけるデータ構造の実装方法)
     - [:pushpin: Array型](#pushpin-array型-1)
     - [:pushpin: LinkedList型](#pushpin-linkedlist型-1)
     - [:pushpin: Queue型](#pushpin-queue型-1)
     - [:pushpin: Stack型](#pushpin-stack型-1)
     - [:pushpin: Tree型](#pushpin-tree型-1)
-- [02-03. データ型](#02-03-データ型)
-    - [:pushpin: Boolean型](#pushpin-boolean型)
-    - [:pushpin: Date型](#pushpin-date型)
-    - [:pushpin: Object型](#pushpin-object型)
-- [03-01. 定数](#03-01-定数)
+- [04-03. データ型](#04-03-データ型)
+    - [:pushpin: スカラー型](#pushpin-スカラー型)
+    - [:pushpin: 複合型](#pushpin-複合型)
+    - [:pushpin: その他のデータ型](#pushpin-その他のデータ型)
+- [04-04. 定数](#04-04-定数)
     - [:pushpin: 定数が有効な場面](#pushpin-定数が有効な場面)
-- [03-02. 変数](#03-02-変数)
+- [04-05. 変数](#04-05-変数)
     - [:pushpin: 変数展開](#pushpin-変数展開)
     - [:pushpin: 参照渡しと値渡し](#pushpin-参照渡しと値渡し)
-- [03-03. 演算子](#03-03-演算子)
+- [05-01. 演算子](#05-01-演算子)
     - [:pushpin: 等価演算子を用いたインスタンスの比較](#pushpin-等価演算子を用いたインスタンスの比較)
     - [:pushpin: キャスト演算子](#pushpin-キャスト演算子)
     - [:pushpin: 正規表現とパターン演算子](#pushpin-正規表現とパターン演算子)
-- [04-01. 条件式](#04-01-条件式)
+- [05-02. 条件式](#05-02-条件式)
     - [:pushpin: ```if```-```else```はできるだけ用いない](#pushpin-if-elseはできるだけ用いない)
     - [:pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```](#pushpin-if-elseif-elseとswitch-case-break)
     - [:pushpin: ```if```-```elseif```-```else```はできるだけ用いない](#pushpin-if-elseif-elseはできるだけ用いない)
-    - [:pushpin: オブジェクトごとにプロパティの値の有無が異なる時の出力](#pushpin-オブジェクトごとにプロパティの値の有無が異なる時の出力)
-- [04-02. 例外処理](#04-02-例外処理)
+    - [:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力](#pushpin-オブジェクトごとにデータの値の有無が異なる時の出力)
+- [05-03. 例外処理](#05-03-例外処理)
     - [:pushpin: 例外処理前の条件分岐](#pushpin-例外処理前の条件分岐)
     - [:pushpin: Exceptionクラスを継承した独自例外クラス](#pushpin-exceptionクラスを継承した独自例外クラス)
     - [:pushpin: ```if```-```throw```文](#pushpin-if-throw文)
     - [:pushpin: ```try```-```catch```文](#pushpin-try-catch文)
-- [04-03. 反復処理](#04-03-反復処理)
+- [05-03. 反復処理](#05-03-反復処理)
     - [:pushpin: ```foreach()```](#pushpin-foreach)
     - [:pushpin: ```for()```](#pushpin-for)
     - [:pushpin: 無限ループ](#pushpin-無限ループ)
     - [:pushpin: 反復を含む流れ図における実装との対応](#pushpin-反復を含む流れ図における実装との対応)
-- [05-01. ファイルパス](#05-01-ファイルパス)
-    - [:pushpin: 絶対パス](#pushpin-絶対パス)
-    - [:pushpin: 相対パス](#pushpin-相対パス)
-- [05-02. ログでエラーが出力されない時の対処方法](#05-02-ログでエラーが出力されない時の対処方法)
+- [05-04. ログでエラーが出力されない時の対処方法](#05-04-ログでエラーが出力されない時の対処方法)
     - [:pushpin: ローカル環境 vs テスト環境](#pushpin-ローカル環境-vs-テスト環境)
     - [:pushpin: ```var_dump($var)```](#pushpin-var_dumpvar)
     - [:pushpin: ```var_dump($var)``` & ```throw new \Exception("")```](#pushpin-var_dumpvar--throw-new-\exception)
     - [:pushpin: ```throw new \Exception(var_dump($var))```](#pushpin-throw-new-\exceptionvar_dumpvar)
+- [06-01. クラスの継承](#06-01-クラスの継承)
+    - [:pushpin: クラスチェーンによる継承元の参照](#pushpin-クラスチェーンによる継承元の参照)
+- [06-02. 外部クラスとメソッドの読み込み](#06-02-外部クラスとメソッドの読み込み)
+    - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
+    - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
+- [07-01. ファイルパス](#07-01-ファイルパス)
+    - [:pushpin: 絶対パス](#pushpin-絶対パス)
+    - [:pushpin: 相対パス](#pushpin-相対パス)
 
 <!-- /TOC -->
-## 01-01. カプセル化
-
-### :pushpin: public
-
-どのオブジェクトでも呼び出せる．
 
 
 
-### :pushpin: protected
-
-同じクラス内と，その親クラスまたは子クラスでのみ呼び出せる．
 
 
-
-### :pushpin: private
-
-同じオブジェクト内でのみ呼び出せる．
-
-- **Encapsulation（カプセル化）**
-
-カプセル化とは，システムの実装方法を外部から隠すこと．オブジェクト内のプロパティにアクセスするには，直接データを扱う事はできず，オブジェクト内のメソッドをコールし，アクセスしなければならない．
-
-![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
-
-- **プロパティにアクセスできない時の**
-
-### :pushpin: static
-
-別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．プロパティ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．
-
-**【実装例】**
-
-```PHP
-// インスタンスを作成する集約メソッドは，プロパティ値にアクセスしないため，常に同一の処理を行う．
-public static function aggregateDogToyEntity(Array $fetchedData)
-{
-	return new DogToyEntity
-	(
-		new ColorVO($fetchedData['dog_toy_type']),
-		$fetchedData['dog_toy_name'],
-		$fetchedData['number'],
-		new PriceVO($fetchedData['dog_toy_price']),
-		new ColorVO($fetchedData['color_value'])
-	);
-}	
-```
-
-**【実装例】**
-
-```PHP
-// 受け取ったOrderエンティティから値を取り出すだけで，プロパティ値は呼び出していない．
-public static function computeExampleFee(Entity $order): Money
-{
-	$money = new Money($order->exampleFee);
-	return $money;
-}
-```
-
-
-
-## 01-02. クラス間の関係性
+## 01-01. クラス間の関係性
 
 ![クラス図の線の種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス図の線の種類.png)
+
+
+
+### :pushpin: Association，Aggregation，Compositionの違い
+
+『Association ＞ Aggregation ＞ Composition』の順で，依存性が低い．
+
+![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)
+
+
 
 
 
@@ -154,6 +124,8 @@ public static function computeExampleFee(Entity $order): Money
 
 
 ### :pushpin: Aggregation（集約）
+
+クラスのインスタンスを，他のクラスの引数として渡すような関係性は，『集約』である．
 
 【Tireクラス】
 
@@ -187,7 +159,7 @@ class CarY
     //CarYクラスがタイヤクラスを引数として扱えるように設定
     public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
     {
-        //引数のTireクラスからプロパティにアクセス
+        //引数のTireクラスからデータにアクセス
         $this->tire1 = $t1;
         $this->tire2 = $t2;
         $this->tire3 = $t3;
@@ -218,6 +190,8 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 
 
 ### :pushpin: Composition（合成）
+
+クラスのインスタンスを，他のクラスの引数として渡すのではなく，クラスの中でインスタンス化するような関係性は，『合成』である．
 
 【Lockクラス】
 
@@ -263,11 +237,29 @@ $key = new Key($lock);
 
 
 
-### :pushpin:  Dependency（依存）※関連，集約，合成の依存性の違い
+### :pushpin: Dependency（依存）
 
-『Association ＞ Aggregation ＞ Composition』の順で，依存性が低い．
+一方のクラスを変更すると，もう一方のクラスも変更が必要になるような関係性は，『依存』である．
 
-![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)
+
+
+### :pushpin: Dependency Injection（依存性の注入）
+
+依存（Dependency）対象のクラスのインスタンスを，外部から注入（Injection）する設計手法．
+
+- **Setter Injection**
+
+
+メソッドの特に，セッターの引数から，依存対象のクラスのインスタンスを注入する方法．
+
+- **Constructor Injection**
+
+メソッドの特に，```__construct()``` の引数から，依存対象のクラスのインスタンスを注入する方法．
+
+- **Method Injection**
+
+上記二つに属さないメソッドの引数から，依存対象のクラスのインスタンスを注入する方法．
+
 
 
 
@@ -283,10 +275,10 @@ $key = new Key($lock);
 // 通常クラス
 class Goods
 {
-    // 商品名プロパティ
+    // 商品名データ
     private $name = "";
 
-    // 商品価格プロパティ
+    // 商品価格データ
     private $price = 0;
 
     // コンストラクタ．商品名と商品価格を設定する
@@ -467,7 +459,7 @@ class EnginnerShainManagement extend ShainManagement
 // コミュニケーションのメソッドの実装を強制するインターフェース
 interface Communication
 {
-     // インターフェイスでは，実装を伴うメソッドやプロパティの宣言はできない
+     // インターフェイスでは，実装を伴うメソッドやデータの宣言はできない
      public function talk();
      public function touch();
      public function gesture();
@@ -522,13 +514,373 @@ class Human implements Communication
 
 ### :pushpin: Trait（※php独自の機能）
 
-再利用したいメソッドやプロパティを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
+再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
 
 ![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
 
 
 
-## 01-03. メソッド
+## 01-02. 入れ子クラス
+
+### :pushpin: PHPの場合
+
+PHPには組み込まれていない．
+
+
+
+### :pushpin: Javaの場合
+
+クラスの中にクラスをカプセル化する機能．データやメソッドと同じ記法で，内部クラスでは，外部クラスのメンバを呼び出すことができる．
+
+- **非静的内部クラス**
+
+PHPとは異なり，変数定義に『$』は用いないことに注意．
+
+```java
+// 外部クラスを定義
+class OuterClass
+{
+	private int value;
+		
+	// Setterとして，コンストラクタを使用．
+	OuterClass(Int value)
+	{
+		this.value = value;
+	}
+	
+	// 外部クラスのデータを取得するメソッド．
+	public int value()
+	{
+		return this.value;
+	}
+	
+	
+	// 内部クラスを定義 
+	class InnerClass
+	{
+		// 外部クラスのデータを取得して2倍するメソッド．
+	 	public int valueTimesTwo()
+	 	{
+	 		return OuterClass.this.value*2;
+	 	}
+	
+	}
+		
+	// 内部クラスをインスタンス化するメソッド．
+	public InnerClass InnerClassInstance()
+	{
+		// 外部クラスのインスタンス化 
+		OuterClass outerCLS = new OuterClass();
+		
+		// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
+		OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
+	}
+}
+```
+
+- **静的内部クラス**
+
+呼び出すメソッドと呼び出されるメンバの両方をstaticとしなければならない．
+
+```java
+// 外部クラスを定義
+class OuterClass
+{
+	// 静的データとする．
+	private int value;
+		
+	// Setterとして，コンストラクタを使用．
+	OuterClass(Int value)
+	{
+		this.value = value;
+	}
+	
+	// 静的内部クラスを定義 
+	static class InnerClass
+	{
+		// 外部クラスのデータを取得するメソッド．
+	 	public int value()
+	 	{
+	 		return OuterClass.this.value;
+	 	}
+	
+	}
+		
+	// 内部クラスをインスタンス化する静的メソッド．
+	public static InnerClass InnerClassInstance()
+	{
+		// 外部クラスのインスタンス化 
+		OuterClass outerCLS = new OuterClass();
+		
+		// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
+		OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
+	}
+}
+```
+
+
+
+## 01-03. 総称型
+
+### :pushpin: PHPの場合
+
+PHPには組み込まれていない．
+
+
+
+### :pushpin: Javaの場合
+
+オブジェクトにデータ型を引数として渡すことで，データの型宣言を行える機能．型宣言を毎回行わなければならず，煩わしいJavaならではの機能．PHPとは異なり，変数定義に『$』は用いないことに注意．
+
+```java
+class Example<T>{
+	
+	private T t;
+	
+	public Example(T t)
+	{
+		this.t = t;
+	}
+	
+	public T getT()
+	{
+		return t;
+	}
+}
+```
+
+- **総称型を用いない場合**
+
+リスト内の要素は，Object型として取り出されるため，キャスト（明示的型変換）が必要．
+
+```java
+List list = new ArrayList();
+l.add("Java");
+l.add("Scala");
+l.add("Ruby");
+
+// 文字列へのキャストが必要
+String str = (String)list.get(0);
+```
+
+- **総称型を用いる場合**
+
+```java
+List<String> list = new ArrayList<String>();
+list.add("Java");
+list.add("Scala");
+list.add("Ruby");
+String str = list.get(0);
+</string></string>
+
+List<String> list = new ArrayList<String>();
+list.add(10.1);    // String型でないのでコンパイルエラー
+</string></string>
+```
+
+
+
+## 01-04. クラス間の関係性の理想的状態
+
+クラス間関係性には理想的な状態がある．それによって，処理を，どのクラスのデータと操作に振り分けていくかが決まる．
+
+
+
+### :pushpin: 凝集度
+
+- **機能的強度**
+
+最も理想的な凝集．クラスのまとまりが機能単位になるように，処理を振り分ける．
+
+
+
+### :pushpin: 結合度
+
+- **データ結合**
+
+最も理想的な結合．スカラ型のデータを，依存対象のクラスの引数として渡すクラス間相互関係．
+
+**【実装例1】**
+
+ModuleAとModuleBは，データ結合の関係にある．
+
+```PHP
+class ModuleA
+{
+    public function methodA(int $a, int $b, string $c)
+    {
+        return "$a + $b".$c;
+    }
+}
+```
+```PHP
+class ModuleB
+{
+    public function methodB()
+    {
+        $moduleA= new ModuleA();
+        $result = $moduleA->methodA(1, 2, "です."); // 3です．
+    }
+}
+```
+
+**【実装例2】**
+
+デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．
+
+```PHP
+/**
+ * 距離に応じて，移動手段のオブジェクトを作り分けるファクトリクラス
+ */
+class TransportationMethodsFactory
+{
+    public static function createInstance($distance)
+    {
+        $walking = new Walking($distance);
+        $car = new Car($distance);
+
+        if($walking->needsWalking()) {
+            return $walking;
+        }
+
+        return $car;
+    }
+}
+```
+
+- **スタンプ結合**
+
+object型のデータを，共通域にない独立したクラスを，依存対象のクラスの引数として渡すクラス間相互関係．
+
+**【実装例】**
+
+ModuleAとModuleBは，スタンプ結合の関係にある．
+
+```PHP
+class Common
+{
+		private $value;
+  
+  
+		public function __construct(int $value)
+		{
+				$this->value = $value
+  
+  
+		public function getValue()
+		{
+				return $this->value;
+		}
+}
+```
+
+```PHP
+class ModuleA
+{
+		public function methodA()
+		{
+      	$common = new Common(1);
+      
+        $moduleB = new ModuleB;
+      
+				return $moduleB->methodB($common); // 1
+		}
+}
+```
+
+```PHP
+class ModuleB
+{
+		public function methodB(Common $common)
+		{
+				return $common->getValue(); // 1
+		}
+}
+```
+
+
+
+
+## 02-01. 操作（メソッド）とデータ（プロパティ）
+
+本資料の以降では，大きく，操作（メソッド）とデータ（プロパティ）に分けて，説明していく．
+
+
+
+### :pushpin: 操作（メソッド）
+
+クラスは，データを操作する．この操作はメソッドとも呼ばれる．
+
+
+
+### :pushpin: データ（プロパティ）
+
+クラスは，データをもつ．このデータはプロパティとも呼ばれる．
+
+
+
+
+## 02-02. メソッドとデータのカプセル化
+
+### :pushpin: public
+
+どのオブジェクトでも呼び出せる．
+
+
+
+### :pushpin: protected
+
+同じクラス内と，その親クラスまたは子クラスでのみ呼び出せる．
+
+
+
+### :pushpin: private
+
+同じオブジェクト内でのみ呼び出せる．
+
+- **Encapsulation（カプセル化）**
+
+カプセル化とは，システムの実装方法を外部から隠すこと．オブジェクト内のデータにアクセスするには，直接データを扱う事はできず，オブジェクト内のメソッドをコールし，アクセスしなければならない．
+
+![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
+
+- **データにアクセスできない時の**
+
+### :pushpin: static
+
+別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．データ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．
+
+**【実装例】**
+
+```PHP
+// インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
+public static function aggregateDogToyEntity(Array $fetchedData)
+{
+	return new DogToyEntity
+	(
+		new ColorVO($fetchedData['dog_toy_type']),
+		$fetchedData['dog_toy_name'],
+		$fetchedData['number'],
+		new PriceVO($fetchedData['dog_toy_price']),
+		new ColorVO($fetchedData['color_value'])
+	);
+}	
+```
+
+**【実装例】**
+
+```PHP
+// 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
+public static function computeExampleFee(Entity $order): Money
+{
+	$money = new Money($order->exampleFee);
+	return $money;
+}
+```
+
+
+
+## 03-01. メソッド
 
 ### :pushpin: メソッドの実装手順
 
@@ -540,7 +892,7 @@ class Human implements Communication
 
 ### :pushpin: 値を取得するアクセサメソッドの実装
 
-Getterでは，プロパティを取得するだけではなく，何かしらの処理を加えたうえで取得すること．
+Getterでは，データを取得するだけではなく，何かしらの処理を加えたうえで取得すること．
 
 **【実装例】**
 
@@ -553,7 +905,7 @@ class ABC {
     {
         // 単なるGetterではなく，例外処理も加える．
         if(!isset($this->property){
-            throw new ErrorException('プロパティに値がセットされていません．')
+            throw new ErrorException('データに値がセットされていません．')
         }
         return $this->property;
     }
@@ -587,7 +939,7 @@ class Test01 {
 
 - **マジックメソッドの```__construct()```**
 
-Setterを持たせずに，```__construct()```だけを持たせれば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
+マジックメソッドの```__construct()```を持たせることで，このデータを持っていなければならないとい制約を明示することがでできる．Setterを持たせずに，```__construct()```だけを持たせれば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
 
 **【実装例】**
 
@@ -606,23 +958,25 @@ class Test02 {
 ```
 - **『Mutable』と『Immutable』を実現できる理由**
 
-Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にプロパティの値を上書きできる．
+Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．
 
 ```PHP
 $test01 = new Test01
 
-$test01->setProperty01("プロパティ01の値")
+$test01->setProperty01("データ01の値")
 
-$test01->setProperty01("新しいプロパティ01の値")
+$test01->setProperty01("新しいデータ01の値")
 ```
 
-一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
+一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なクラスとなる．
 
 ```PHP
-$test02 = new Test02("プロパティ02の値")
+$test02 = new Test02("データ02の値")
 
-$test02 = new Test02("新しいプロパティ02の値")
+$test02 = new Test02("新しいデータ02の値")
 ```
+
+Entityは，Mutableであるため，Setterと```__construct()```の両方を持つことができる．ValueObjectは，Immutableのため，```__construct()```しか持つことができない．
 
 
 
@@ -630,7 +984,7 @@ $test02 = new Test02("新しいプロパティ02の値")
 
 以下のような，オブジェクトAを最外層とした関係が存在しているとする．
 
-【オブジェクトA（オブジェクトBをプロパティに持つ）】
+【オブジェクトA（オブジェクトBをデータに持つ）】
 
 ```PHP
 class Obj_A{
@@ -644,7 +998,7 @@ class Obj_A{
 }
 ```
 
-【オブジェクトB（オブジェクトCをプロパティに持つ）】
+【オブジェクトB（オブジェクトCをデータに持つ）】
 
 ```PHP
 class Obj_B{
@@ -658,7 +1012,7 @@ class Obj_B{
 }
 ```
 
-【オブジェクトC（オブジェクトDをプロパティに持つ）】
+【オブジェクトC（オブジェクトDをデータに持つ）】
 
 ```PHP
 class Obj_C{
@@ -700,7 +1054,7 @@ $D = getObjB()->getObjC()->getObjC();
 
 - **```__get()```**
 
-定義されていないプロパティや，アクセス権のないプロパティを取得しようとした時に，代わりに呼び出される．メソッドは定義しているが，プロパティは定義していないような状況で用いる．
+定義されていないデータや，アクセス権のないデータを取得しようとした時に，代わりに呼び出される．メソッドは定義しているが，データは定義していないような状況で用いる．
 
 ```PHP
 class Example
@@ -711,24 +1065,24 @@ class Example
 	// 引数と返却値のデータ型を指定
 	public function __get(String $name): String
 	{
-		echo "{$name}プロパティは存在しないため，プロパティ値を取得できません．"
+		echo "{$name}データは存在しないため，データ値を取得できません．"
 	}
 
 }
 ```
 
 ```PHP
-// 存在しないプロパティを取得．
+// 存在しないデータを取得．
 $example = new Example();
 $example->hoge;
 
 // 結果
-hogeプロパティは存在しないため，値を呼び出せません．
+hogeデータは存在しないため，値を呼び出せません．
 ```
 
 - **```__call()```**
 
-定義されていないメソッドや，アクセス権のないメソッドを取得しようとした時に，代わりにコールされる．プロパティは定義しているが，メソッドは定義していないような状況で用いる．
+定義されていないメソッドや，アクセス権のないメソッドを取得しようとした時に，代わりにコールされる．データは定義しているが，メソッドは定義していないような状況で用いる．
 
 - **```__callStatic()```**
 
@@ -740,7 +1094,7 @@ hogeプロパティは存在しないため，値を呼び出せません．
 
 - **```__set()```**
 
-定義されていないプロパティや，アクセス権のないプロパティに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）
+定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）
 
 ```PHP
 class Example
@@ -751,19 +1105,19 @@ class Example
 	// 引数と返り値のデータ型を指定
 	public function __set(String $name, String $value): String
     {
-    	echo "{$name}プロパティは存在しないため，{$value}を設定できません．"
+    	echo "{$name}データは存在しないため，{$value}を設定できません．"
     }
 
 }
 ```
 
 ```PHP
-// 存在しないプロパティに値をセット．
+// 存在しないデータに値をセット．
 $example = new Example();
 $example->hoge = "HOGE";
 
 // 結果
-hogeプロパティは存在しないため，HOGEを設定できません．
+hogeデータは存在しないため，HOGEを設定できません．
 ```
 
 - **マジックメソッドの```__construct()```**
@@ -788,22 +1142,22 @@ class Test02 {
 
 - **【『Mutable』と『Immutable』を実現できる理由】**
 
-Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にプロパティの値を上書きできる．
+Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
 ```PHP
 $test01 = new Test01
 
-$test01->setProperty01("プロパティ01の値")
+$test01->setProperty01("データ01の値")
 PHP
-$test01->setProperty01("新しいプロパティ01の値")
+$test01->setProperty01("新しいデータ01の値")
 ```
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
 
 ```PHP
-$test02 = new Test02("プロパティ02の値")
+$test02 = new Test02("データ02の値")
 
-$test02 = new Test02("新しいプロパティ02の値")
+$test02 = new Test02("新しいデータ02の値")
 ```
 
 
@@ -885,9 +1239,9 @@ var_dump($result);
 
 
 
-### :pushpin: プロパティを用いた処理結果の保持
+### :pushpin: データを用いた処理結果の保持
 
-大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，プロパティに返却値を保持しておく．そして，再びコールされた時には，返却値をプロパティから取り出す．
+大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
 
 ```PHP
 public cachedResult;
@@ -917,7 +1271,7 @@ public function computeProfit()
 }
 
 
-// cacheプロパティに配列が設定されていた場合に値を設定し，設定されていた場合はそのまま使う．
+// cacheデータに配列が設定されていた場合に値を設定し，設定されていた場合はそのまま使う．
 public function cachedResult($funcName)
 {
   if(!isset($this->cachedResult[$funcName]){
@@ -937,11 +1291,7 @@ public function cachedResult($funcName)
 
 
 
-
-
-
-
-## 01-04. 無名関数
+## 03-02. 無名関数
 
 ### :pushpin: Closure（無名関数）の定義，変数格納後のコール
 
@@ -981,7 +1331,7 @@ echo $optionName("BC");
 // オプションABC
 ```
 
-- **プロパティの値に無名関数を格納しておく裏技**
+- **データの値に無名関数を格納しておく裏技**
 
 ```PHP
 $item = new Item;
@@ -991,7 +1341,7 @@ $item = new Item;
 // function()に，コール時に新しく$paramを渡す．
 $option = new Option;
 
-// プロパティの値に無名関数を格納する．
+// データの値に無名関数を格納する．
 $option->name = function($para) use($item){
 									$item->getOptionName().$para;
 								};
@@ -1123,12 +1473,12 @@ public function Shiborikomi($callback)
 	throw new \LogicException;
 	}
 
-	// 自身が持つ配列型のプロパティを加工し，再格納する．
+	// 自身が持つ配列型のデータを加工し，再格納する．
 	$properties = [];
 	foreach ($this->properties as $property) {
         
-		// 引数の無名関数によって，プロパティに対する加工方法が異なる．
-		// 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自プロパティを絞り込むような処理を行える．
+		// 引数の無名関数によって，データに対する加工方法が異なる．
+		// 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
 		$returned = call_user_func($property, $callback);
 		if ($returned) {
 		
@@ -1137,167 +1487,14 @@ public function Shiborikomi($callback)
 		}
 	}
 
-	// 他のプロパティは静的に扱ったうえで，自身を返す．
+	// 他のデータは静的に扱ったうえで，自身を返す．
 	return new static($properties);
 }
 ```
 
 
 
-## 01-05. 継承におけるクラスチェーン
-
-クラスからプロパティやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで辿る仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
-
-```PHP
-// 継承元クラス
-class Example
-{
-	public value;
-  
-	public function getValue()
-	{
-		return $this->value1; 
-	}  
-}
-```
-
-```PHP
-// 継承先クラス
-class SubExample extends Example
-{
-	public subValue;
-  
-	public function getSubValue()
-	{
-		return $this->subValue; 
-	}  
-}
-```
-
-```PHP
-$subExample = new SubExample;
-
-// SubExampleクラスにはgetValue()は無い．
-// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
-echo $subExample->getValue()
-```
-
-
-
-## 01-06. 外部クラスとメソッドの読み込み
-
-### :pushpin: ```use```によるクラスとメソッドの読み込み
-
-PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
-
-**【以下で読み込まれるクラスの実装例】**
-
-```PHP
-// 名前空間を定義．
-namespace Domain/Entity1;
-
-// 定数を定義．
-const VALUE = "これは定数です．"
-
-class Example1
-{
-	public function className()
-	{
-		return "example1メソッドです．";
-	}
-}
-```
-
-- **名前空間の読み込み**
-
-```PHP
-// use文で名前空間を読み込む．
-use Domain/Entity2
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new Entity1/E1:
-	echo $e1;
-}
-```
-
-- **クラスの読み込み**
-
-```PHP
-// use文でクラス名を読み込む．
-use Domain/Entity1/E1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new E1;
-	echo $e1;
-}
-```
-
-- **メソッドの読み込み**
-
-```PHP
-// use文でメソッドを読み込む．
-use Domain/Entity1/E1/className;
-
-namespace Domain/Entity2;
-
-class Eeample2
-{
-	// Example1クラスのclassName()をコール．
-	echo className();
-}
-```
-
-- **定数の読み込み**
-
-```PHP
-// use文で定数を読み込む．
-use Domain/Entity1/E1/VALUE;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// Example1クラスの定数を出力．
-	echo VALUE;
-}
-```
-
-
-
-### :pushpin: 親クラスの静的メソッドの読み込み
-
-```PHP
-abstract class Example 
-{
-	public function example()
-	{
-		// 処理内容;
-	}
-}
-```
-
-```PHP
-class SubExample extends Example
-{
-	public function subExample()	
-	{
-		// 親メソッドの静的メソッドを読み込む
-		$example = parent::example();
-	} 
-}
-```
-
-
-
-## 02-01. PHPにおけるデータ構造の実装方法
+## 04-01. PHPにおけるデータ構造の実装方法
 
 ハードウェアが処理を行う時に，データの集合を効率的に扱うためのデータ格納形式をデータ構造という．データ構造のPHPによる実装方法を以下に示す．
 
@@ -1529,7 +1726,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 
 
-## 02-02. Javaにおけるデータ構造の実装方法
+## 04-02. Javaにおけるデータ構造の実装方法
 
 データ構造のJavaによる実装方法を以下に示す．
 
@@ -1571,42 +1768,33 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 
 
-## 02-03. データ型
+## 04-03. データ型
 
-### :pushpin: Boolean型
+### :pushpin: スカラー型
 
-- **Falseの定義**
+- **int**
+- **float**
+- **string**
 
-| データの種類 | 説明                     |
-| ------------ | ------------------------ |
-| ```$var =``` | 何も格納されていない変数 |
-| ```False```  | 文字としてのFalse        |
-| ```0```      | 数字、文字列             |
-| ```""```     | 空文字                   |
-| array()      | 要素数が0個の配列        |
-| NULL         | NULL値                   |
+- **boolean**
 
-- **Trueの定義**
-
-上記の値以外は，全て TRUEである．
-
-
-
-### :pushpin: Date型
-
-厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．
-
-| フォーマット         | 実装方法            | 備考                                                         |
-| -------------------- | ------------------- | ------------------------------------------------------------ |
-| 日付                 | 2019-07-07          | 区切り記号なし、ドット、スラッシュなども可能                 |
-| 時間                 | 19:07:07            | 区切り記号なし、も可能                                       |
-| 日付と時間           | 2019-07-07 19:07:07 | 同上                                                         |
-| タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
+|   T／F    | データの種類 | 説明                     |
+| :-------: | ------------ | ------------------------ |
+| **FALSE** | ```$var =``` | 何も格納されていない変数 |
+|           | ```False```  | 文字としてのFalse        |
+|           | ```0```      | 数字、文字列             |
+|           | ```""```     | 空文字                   |
+|           | array()      | 要素数が0個の配列        |
+|           | NULL         | NULL値                   |
+| **TRUE**  | 上記以外の値 |                          |
 
 
 
+### :pushpin: 複合型
 
-### :pushpin: Object型
+
+- **array**
+- **object**
 
 ```PHP
 Fruit Object
@@ -1619,7 +1807,24 @@ Fruit Object
 
 
 
-## 03-01. 定数
+### :pushpin: その他のデータ型
+
+- **null**
+
+- **date**
+
+厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．
+
+| フォーマット         | 実装方法            | 備考                                                         |
+| -------------------- | ------------------- | ------------------------------------------------------------ |
+| 日付                 | 2019-07-07          | 区切り記号なし、ドット、スラッシュなども可能                 |
+| 時間                 | 19:07:07            | 区切り記号なし、も可能                                       |
+| 日付と時間           | 2019-07-07 19:07:07 | 同上                                                         |
+| タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
+
+
+
+## 04-04. 定数
 
 ### :pushpin: 定数が有効な場面
 
@@ -1670,7 +1875,7 @@ class requiedTime
 
 
 
-## 03-02. 変数
+## 04-05. 変数
 
 ### :pushpin: 変数展開
 
@@ -1769,7 +1974,7 @@ echo $b; // 2
 
 
 
-## 03-03. 演算子
+## 05-01. 演算子
 
 ### :pushpin: 等価演算子を用いたインスタンスの比較
 
@@ -1873,7 +2078,7 @@ preg_match('/jpeg$/i', $x);
 
 
 
-## 04-01. 条件式
+## 05-02. 条件式
 
 ### :pushpin: ```if```-```else```はできるだけ用いない
 
@@ -2149,19 +2354,19 @@ public function leapYear(Int $year): String
 
 
 
-### :pushpin: オブジェクトごとにプロパティの値の有無が異なる時の出力
+### :pushpin: オブジェクトごとにデータの値の有無が異なる時の出力
 
 ```PHP
 // 全てのオブジェクトが必ず持っているわけではなく，
 $csv['オリコ払い'] = $order->oricoCondition ? $order->oricoCondition->
 
-// 全てのオブジェクトが必ず持っているプロパティの場合には不要
+// 全てのオブジェクトが必ず持っているデータの場合には不要
 $csv['ID'] = $order->id;
 ```
 
 
 
-## 04-02. 例外処理
+## 05-03. 例外処理
 
 データベースから取得した後に直接表示する値の場合，データベースでNullにならないように制約をかけられるため，変数の中身に例外判定を行う必要はない．しかし，データベースとは別に新しく作られる値の場合，例外判定が必要になる．
 
@@ -2297,7 +2502,7 @@ class HttpRequestException extends Exception
 
 
 
-## 04-03. 反復処理
+## 05-03. 反復処理
 
 ### :pushpin: ```foreach()```
 
@@ -2331,7 +2536,7 @@ public function checkOption(Array $options)
 
 
 
-- **エンティティごとに，プロパティの値を持つか否かが異なる場合**
+- **エンティティごとに，データの値を持つか否かが異なる場合**
 
 
 
@@ -2440,29 +2645,7 @@ foreach($a as $x){
 
 
 
-## 05-01. ファイルパス
-
-### :pushpin: 絶対パス
-
-ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．
-
-```PHP
-<img src="http://fruits.com/img/apple.png">
-```
-
-![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/絶対パス.png)
-
-### :pushpin: 相対パス
-
-起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．
-
-```PHP
-<img src="../img/apple.png">
-```
-
-![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相対パス.png)
-
-## 05-02. ログでエラーが出力されない時の対処方法
+## 05-04. ログでエラーが出力されない時の対処方法
 
 ### :pushpin: ローカル環境 vs テスト環境
 
@@ -2498,4 +2681,183 @@ foreach($a as $x){
 
 クラスを読み込むために，```Exception```の前に，```\```（逆スラッシュ）をつけること．
 
-　　　　　　　
+
+
+
+## 06-01. クラスの継承
+
+### :pushpin: クラスチェーンによる継承元の参照
+
+クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
+
+```PHP
+// 継承元クラス
+class Example
+{
+	public value;
+  
+	public function getValue()
+	{
+		return $this->value1; 
+	}  
+}
+```
+
+```PHP
+// 継承先クラス
+class SubExample extends Example
+{
+	public subValue;
+  
+	public function getSubValue()
+	{
+		return $this->subValue; 
+	}  
+}
+```
+
+```PHP
+$subExample = new SubExample;
+
+// SubExampleクラスにはgetValue()は無い．
+// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
+echo $subExample->getValue()
+```
+
+
+
+## 06-02. 外部クラスとメソッドの読み込み
+
+### :pushpin: ```use```によるクラスとメソッドの読み込み
+
+PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
+
+**【以下で読み込まれるクラスの実装例】**
+
+```PHP
+// 名前空間を定義．
+namespace Domain/Entity1;
+
+// 定数を定義．
+const VALUE = "これは定数です．"
+
+class Example1
+{
+	public function className()
+	{
+		return "example1メソッドです．";
+	}
+}
+```
+
+- **名前空間の読み込み**
+
+```PHP
+// use文で名前空間を読み込む．
+use Domain/Entity2
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+	$e1 = new Entity1/E1:
+	echo $e1;
+}
+```
+
+- **クラスの読み込み**
+
+```PHP
+// use文でクラス名を読み込む．
+use Domain/Entity1/E1;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+	$e1 = new E1;
+	echo $e1;
+}
+```
+
+- **メソッドの読み込み**
+
+```PHP
+// use文でメソッドを読み込む．
+use Domain/Entity1/E1/className;
+
+namespace Domain/Entity2;
+
+class Eeample2
+{
+	// Example1クラスのclassName()をコール．
+	echo className();
+}
+```
+
+- **定数の読み込み**
+
+```PHP
+// use文で定数を読み込む．
+use Domain/Entity1/E1/VALUE;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// Example1クラスの定数を出力．
+	echo VALUE;
+}
+```
+
+
+
+### :pushpin: 親クラスの静的メソッドの読み込み
+
+```PHP
+abstract class Example 
+{
+	public function example()
+	{
+		// 処理内容;
+	}
+}
+```
+
+```PHP
+class SubExample extends Example
+{
+	public function subExample()	
+	{
+		// 親メソッドの静的メソッドを読み込む
+		$example = parent::example();
+	} 
+}
+```
+
+
+　　　
+
+## 07-01. ファイルパス
+
+### :pushpin: 絶対パス
+
+ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．
+
+```PHP
+<img src="http://fruits.com/img/apple.png">
+```
+
+![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/絶対パス.png)
+
+### :pushpin: 相対パス
+
+起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．
+
+```PHP
+<img src="../img/apple.png">
+```
+
+![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相対パス.png)
