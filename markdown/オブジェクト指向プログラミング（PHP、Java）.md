@@ -1,25 +1,36 @@
 <!-- TOC -->
 
-- [01-01. クラス間の関係性](#01-01-クラス間の関係性)
-    - [:pushpin: Association，Aggregation，Compositionの違い](#pushpin-associationaggregationcompositionの違い)
+- [01-01. インスタンス間の関係性](#01-01-インスタンス間の関係性)
     - [:pushpin: Association（関連）](#pushpin-association関連)
     - [:pushpin: Aggregation（集約）](#pushpin-aggregation集約)
     - [:pushpin: Composition（合成）](#pushpin-composition合成)
-    - [:pushpin: Dependency（依存）](#pushpin-dependency依存)
-    - [:pushpin: Dependency Injection（依存性の注入）](#pushpin-dependency-injection依存性の注入)
+- [01-02. クラス間の関係性](#01-02-クラス間の関係性)
     - [:pushpin: Generalization（汎化）](#pushpin-generalization汎化)
     - [:pushpin: Realization（実現）](#pushpin-realization実現)
     - [:pushpin: 通常クラス，抽象クラス，インターフェースの違い](#pushpin-通常クラス抽象クラスインターフェースの違い)
-    - [:pushpin: Trait（※php独自の機能）](#pushpin-trait※php独自の機能)
-- [01-02. 入れ子クラス](#01-02-入れ子クラス)
+- [01-03. クラス間，インスタンス間，クラス／インスタンス間の関係性](#01-03-クラス間インスタンス間クラス／インスタンス間の関係性)
+    - [:pushpin:  Dependency（依存）](#pushpin--dependency依存)
+    - [:pushpin: Dependency Injection（サプライヤーの注入）](#pushpin-dependency-injectionサプライヤーの注入)
+    - [:pushpin: DI Container（依存性注入コンテナ）](#pushpin-di-container依存性注入コンテナ)
+- [01-04. 結合度](#01-04-結合度)
+    - [:pushpin: データ結合](#pushpin-データ結合)
+    - [:pushpin: スタンプ結合](#pushpin-スタンプ結合)
+- [01-05. 凝集度](#01-05-凝集度)
+    - [:pushpin: 機能的強度](#pushpin-機能的強度)
+- [01-06. クラスの継承](#01-06-クラスの継承)
+    - [:pushpin: クラスチェーンによる継承元の参照](#pushpin-クラスチェーンによる継承元の参照)
+- [01-07. 外部クラスとメソッドの読み込み](#01-07-外部クラスとメソッドの読み込み)
+    - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
+    - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
+- [01-08. 入れ子クラス](#01-08-入れ子クラス)
     - [:pushpin: PHPの場合](#pushpin-phpの場合)
     - [:pushpin: Javaの場合](#pushpin-javaの場合)
-- [01-03. 総称型](#01-03-総称型)
+- [01-09. 総称型](#01-09-総称型)
     - [:pushpin: PHPの場合](#pushpin-phpの場合-1)
     - [:pushpin: Javaの場合](#pushpin-javaの場合-1)
-- [01-04. クラス間の関係性の理想的状態](#01-04-クラス間の関係性の理想的状態)
-    - [:pushpin: 凝集度](#pushpin-凝集度)
-    - [:pushpin: 結合度](#pushpin-結合度)
+- [01-10. Trait](#01-10-trait)
+    - [:pushpin: PHPの場合](#pushpin-phpの場合-2)
+    - [:pushpin: Javaの場合](#pushpin-javaの場合-2)
 - [02-01. 操作（メソッド）とデータ（プロパティ）](#02-01-操作メソッドとデータプロパティ)
     - [:pushpin: 操作（メソッド）](#pushpin-操作メソッド)
     - [:pushpin: データ（プロパティ）](#pushpin-データプロパティ)
@@ -88,44 +99,31 @@
     - [:pushpin: ```var_dump($var)```](#pushpin-var_dumpvar)
     - [:pushpin: ```var_dump($var)``` & ```throw new \Exception("")```](#pushpin-var_dumpvar--throw-new-\exception)
     - [:pushpin: ```throw new \Exception(var_dump($var))```](#pushpin-throw-new-\exceptionvar_dumpvar)
-- [06-01. クラスの継承](#06-01-クラスの継承)
-    - [:pushpin: クラスチェーンによる継承元の参照](#pushpin-クラスチェーンによる継承元の参照)
-- [06-02. 外部クラスとメソッドの読み込み](#06-02-外部クラスとメソッドの読み込み)
-    - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
-    - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
-- [07-01. ファイルパス](#07-01-ファイルパス)
+- [06-01. ファイルパス](#06-01-ファイルパス)
     - [:pushpin: 絶対パス](#pushpin-絶対パス)
     - [:pushpin: 相対パス](#pushpin-相対パス)
 
 <!-- /TOC -->
 
+## 01-01. インスタンス間の関係性
 
+![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インスタンス間の関係性のクラス図.png)
 
-
-
-## 01-01. クラス間の関係性
-
-![クラス図の線の種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス図の線の種類.png)
-
-
-
-### :pushpin: Association，Aggregation，Compositionの違い
-
-『Association ＞ Aggregation ＞ Composition』の順で，依存性が低い．
+以下，『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．
 
 ![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)
 
 
 
-
-
 ### :pushpin: Association（関連）
+
+関係性の種類と問わず，インスタンスを他インスタンスのデータとして保持する関係性は，『関連』である．
 
 
 
 ### :pushpin: Aggregation（集約）
 
-クラスのインスタンスを，他のクラスの引数として渡すような関係性は，『集約』である．
+インスタンスを他インスタンスの```__construct()```の引数として渡し，データとして保持する関係性は，『集約』である．
 
 【Tireクラス】
 
@@ -139,13 +137,22 @@ class Tire {}
 //CarXクラス定義
 class CarX  
 {
+		private $tire1;
+		
+		private $tire2;
+		
+		private $tire3;
+		
+		private $tire4;
+
     //CarXクラスがタイヤクラスを引数として扱えるように設定
     public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
-    {
-        $this->tire1 = $t1;
-        $this->tire2 = $t2;
-        $this->tire3 = $t3;
-        $this->tire4 = $t4;
+		{
+				// Tireクラスのインスタンスをデータとして保持
+				$this->tire1 = $t1;
+				$this->tire2 = $t2;
+				$this->tire3 = $t3;
+				$this->tire4 = $t4;
     }
 }
 ```
@@ -156,20 +163,27 @@ class CarX
 //CarYクラス定義
 class CarY  
 {
-    //CarYクラスがタイヤクラスを引数として扱えるように設定
-    public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
-    {
-        //引数のTireクラスからデータにアクセス
-        $this->tire1 = $t1;
-        $this->tire2 = $t2;
-        $this->tire3 = $t3;
-        $this->tire4 = $t4;
-    }
+		private $tire1;
+		
+		private $tire2;
+		
+		private $tire3;
+		
+		private $tire4;
+  
+		//CarYクラスがタイヤクラスを引数として扱えるように設定
+		public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
+		{
+				// Tireクラスのインスタンスをデータとして保持．
+				$this->tire1 = $t1;
+				$this->tire2 = $t2;
+				$this->tire3 = $t3;
+				$this->tire4 = $t4;
+		}
 }
 ```
 
 以下の様に，Tireクラスのインスタンスを，CarXクラスとCarYクラスの引数として用いている．
-Tireクラスの各インスタンスと，2つのCarクラスの双方向で，依存関係はない．
 
 ```PHP
 //Tireクラスをインスタンス化
@@ -191,7 +205,7 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 
 ### :pushpin: Composition（合成）
 
-クラスのインスタンスを，他のクラスの引数として渡すのではなく，クラスの中でインスタンス化するような関係性は，『合成』である．
+インスタンスを，他インスタンスの```__constructor```の引数として渡すのではなく，クラスの中でインスタンス化し，データとして保持する関係性は，『合成』である．
 
 【Lockクラス】
 
@@ -200,68 +214,35 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 class Lock {}
 ```
 
-【Keyクラス】
-
-```PHP
-//Keyクラス定義
-class Key {
-
-    public function __construct()
-    {
-    
-    }
-}
-```
-
 【Carクラス】
 
 ```PHP
 //Carクラスを定義
 class Car  
 {
+		private $lock;
     
-    public function __construct()
-    {
-        //引数Lockクラスをインスタンス化
-        $lock = new Lock();
-    }
+		public function __construct()
+		{
+				// 引数Lockクラスをインスタンス化
+				// Tireクラスのインスタンスをデータとして保持．
+				$this->lock = new Lock();
+		}
 }
 ```
 
-以下の様に，LockクラスのLockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．このように，LockインスタンスからCarクラスの方向には，強い依存関係がある．
+以下の様に，Lockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．このように，LockインスタンスからCarクラスの方向には，Compositionの関係性がある．
 
 ```PHP
-//エラーになる．$lockには直接アクセスできない．
-$key = new Key($lock);
+// Carクラスのインスタンスの中で，Lockクラスがインスタンス化される．
+$car = new Car();
 ```
 
 
 
-### :pushpin: Dependency（依存）
+## 01-02. クラス間の関係性
 
-一方のクラスを変更すると，もう一方のクラスも変更が必要になるような関係性は，『依存』である．
-
-
-
-### :pushpin: Dependency Injection（依存性の注入）
-
-依存（Dependency）対象のクラスのインスタンスを，外部から注入（Injection）する設計手法．
-
-- **Setter Injection**
-
-
-メソッドの特に，セッターの引数から，依存対象のクラスのインスタンスを注入する方法．
-
-- **Constructor Injection**
-
-メソッドの特に，```__construct()``` の引数から，依存対象のクラスのインスタンスを注入する方法．
-
-- **Method Injection**
-
-上記二つに属さないメソッドの引数から，依存対象のクラスのインスタンスを注入する方法．
-
-
-
+![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間の関係性のクラス図.png)
 
 ### :pushpin: Generalization（汎化）
 
@@ -335,9 +316,9 @@ class GoodsWithTax extends Goods
 以下の条件の社員オブジェクトを実装したいとする．
 
 1. 午前９時に出社
-   
+
 2. 営業部・開発部・総務部があり，それぞれが異なる仕事を行う
-   
+
 3. 午後６時に退社
 
   この時，『働くメソッド』は部署ごとに異なってしまうが，どう実装したら良いのか…
@@ -512,15 +493,338 @@ class Human implements Communication
 
 
 
-### :pushpin: Trait（※php独自の機能）
+## 01-03. クラス間，インスタンス間，クラス／インスタンス間の関係性
 
-再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
+### :pushpin:  Dependency（依存）
 
-![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
+クラス間，インスタンス間，クラス／インスタンス間について，サプライヤー（使用される）側が変更された場合に，クライアント（使用する）側にも変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．
+
+![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
+
+- **クラス間の場合**
+
+- **インスタンス間の場合**
+
+Association，Aggregation，Compositionの関係性
+
+- **クラス／インスタンス間の場合**
+
+クライアント側のインスタンスのメソッドが，『一時的に』，サプライヤー側のインスタンスを使用するような関係性．例えば，Service，Validator，Repository，Literalなどを使用する場合がある．
+
+参照リンク：
+
+https://stackoverflow.com/questions/1230889/difference-between-association-and-dependency
+
+https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-dependency-injection
 
 
 
-## 01-02. 入れ子クラス
+### :pushpin: Dependency Injection（サプライヤーの注入）
+
+サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．
+
+- **Setter Injection**
+
+
+メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．Aggregationの関係性を作ることができる．
+
+- **Constructor Injection**
+
+メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．Aggregationの関係性を作ることができる．
+
+- **Method Injection**
+
+上記二つ以外のメソッドの引数から，サプライヤー側（Serviveなど）のインスタンスを注入する方法．
+
+
+
+### :pushpin: DI Container（依存性注入コンテナ）
+
+サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，```__construct()```でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．
+
+
+
+## 01-04. 結合度
+
+依存には程度がある．それによって，処理を，どのクラスのデータと操作に振り分けていくかが決まる．結合度はモジュール間の依存度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．
+
+### :pushpin: データ結合
+
+最も理想的な結合．スカラ型のデータをサプライヤー側として，クライアント側のインスタンスの引数として渡すような関係．
+
+**【実装例1】**
+
+ModuleAとModuleBは，データ結合の関係にある．
+
+```PHP
+class ModuleA // コールされる側
+{
+    public function methodA(int $a, int $b, string $c)
+    {
+        return "$a + $b".$c;
+    }
+}
+```
+
+```PHP
+class ModuleB // コールする側
+{
+    public function methodB()
+    {
+        $moduleA= new ModuleA();
+        $result = $moduleA->methodA(1, 2, "です."); // スカラ型データを渡すだけ
+    }
+}
+```
+
+**【実装例2】**
+
+デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．Factoryクラスのインスタンスと，これをコールする他インスタンス は，データ結合の関係にある．
+
+```PHP
+/**
+ * コールされる側
+ *
+ * 距離に応じて，移動手段のオブジェクトを作り分けるファクトリクラス
+ */
+class TransportationMethodsFactory
+{
+    public static function createInstance($distance)
+    {
+        $walking = new Walking($distance);
+        $car = new Car($distance);
+
+        if($walking->needsWalking()) {
+            return $walking;
+        }
+
+        return $car;
+    }
+}
+```
+
+
+
+### :pushpin: スタンプ結合
+
+object型のデータをサプライヤー側として，クライアント側のインスタンスの引数として渡す関係．
+
+**【実装例】**
+
+ModuleAとModuleBは，スタンプ結合の関係にある．
+
+```PHP
+class Common
+{
+		private $value;
+  
+  
+		public function __construct(int $value)
+		{
+				$this->value = $value
+  
+  
+		public function getValue()
+		{
+				return $this->value;
+		}
+}
+```
+
+```PHP
+class ModuleA
+{
+		public function methodA()
+		{
+      	$common = new Common(1);
+      
+        $moduleB = new ModuleB;
+      
+				return $moduleB->methodB($common); // 1
+		}
+}
+```
+
+```PHP
+class ModuleB
+{
+		public function methodB(Common $common)
+		{
+				return $common->getValue(); // 1
+		}
+}
+```
+
+
+
+## 01-05. 凝集度
+
+凝集度は，モジュール内の機能の統一度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．
+
+### :pushpin: 機能的強度
+
+最も理想的な凝集．クラスのまとまりが機能単位になるように，処理を振り分ける．
+
+
+
+
+## 01-06. クラスの継承
+
+### :pushpin: クラスチェーンによる継承元の参照
+
+クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
+
+```PHP
+// 継承元クラス
+class Example
+{
+	public value;
+  
+	public function getValue()
+	{
+		return $this->value1; 
+	}  
+}
+```
+
+```PHP
+// 継承先クラス
+class SubExample extends Example
+{
+	public subValue;
+  
+	public function getSubValue()
+	{
+		return $this->subValue; 
+	}  
+}
+```
+
+```PHP
+$subExample = new SubExample;
+
+// SubExampleクラスにはgetValue()は無い．
+// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
+echo $subExample->getValue()
+```
+
+
+
+## 01-07. 外部クラスとメソッドの読み込み
+
+### :pushpin: ```use```によるクラスとメソッドの読み込み
+
+PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
+
+**【以下で読み込まれるクラスの実装例】**
+
+```PHP
+// 名前空間を定義．
+namespace Domain/Entity1;
+
+// 定数を定義．
+const VALUE = "これは定数です．"
+
+class Example1
+{
+	public function className()
+	{
+		return "example1メソッドです．";
+	}
+}
+```
+
+- **名前空間の読み込み**
+
+```PHP
+// use文で名前空間を読み込む．
+use Domain/Entity2
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+	$e1 = new Entity1/E1:
+	echo $e1;
+}
+```
+
+- **クラスの読み込み**
+
+```PHP
+// use文でクラス名を読み込む．
+use Domain/Entity1/E1;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+	$e1 = new E1;
+	echo $e1;
+}
+```
+
+- **メソッドの読み込み**
+
+```PHP
+// use文でメソッドを読み込む．
+use Domain/Entity1/E1/className;
+
+namespace Domain/Entity2;
+
+class Eeample2
+{
+	// Example1クラスのclassName()をコール．
+	echo className();
+}
+```
+
+- **定数の読み込み**
+
+```PHP
+// use文で定数を読み込む．
+use Domain/Entity1/E1/VALUE;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+	// Example1クラスの定数を出力．
+	echo VALUE;
+}
+```
+
+
+
+### :pushpin: 親クラスの静的メソッドの読み込み
+
+```PHP
+abstract class Example 
+{
+	public function example()
+	{
+		// 処理内容;
+	}
+}
+```
+
+```PHP
+class SubExample extends Example
+{
+	public function subExample()	
+	{
+		// 親メソッドの静的メソッドを読み込む
+		$example = parent::example();
+	} 
+}
+```
+
+
+　　　
+
+## 01-08. 入れ子クラス
 
 ### :pushpin: PHPの場合
 
@@ -620,7 +924,7 @@ class OuterClass
 
 
 
-## 01-03. 総称型
+## 01-09. 総称型
 
 ### :pushpin: PHPの場合
 
@@ -680,124 +984,17 @@ list.add(10.1);    // String型でないのでコンパイルエラー
 
 
 
-## 01-04. クラス間の関係性の理想的状態
+## 01-10. Trait
 
-クラス間関係性には理想的な状態がある．それによって，処理を，どのクラスのデータと操作に振り分けていくかが決まる．
+### :pushpin: PHPの場合
 
+再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
 
+![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
 
-### :pushpin: 凝集度
+### :pushpin: Javaの場合
 
-- **機能的強度**
-
-最も理想的な凝集．クラスのまとまりが機能単位になるように，処理を振り分ける．
-
-
-
-### :pushpin: 結合度
-
-- **データ結合**
-
-最も理想的な結合．スカラ型のデータを，依存対象のクラスの引数として渡すクラス間相互関係．
-
-**【実装例1】**
-
-ModuleAとModuleBは，データ結合の関係にある．
-
-```PHP
-class ModuleA
-{
-    public function methodA(int $a, int $b, string $c)
-    {
-        return "$a + $b".$c;
-    }
-}
-```
-```PHP
-class ModuleB
-{
-    public function methodB()
-    {
-        $moduleA= new ModuleA();
-        $result = $moduleA->methodA(1, 2, "です."); // 3です．
-    }
-}
-```
-
-**【実装例2】**
-
-デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．
-
-```PHP
-/**
- * 距離に応じて，移動手段のオブジェクトを作り分けるファクトリクラス
- */
-class TransportationMethodsFactory
-{
-    public static function createInstance($distance)
-    {
-        $walking = new Walking($distance);
-        $car = new Car($distance);
-
-        if($walking->needsWalking()) {
-            return $walking;
-        }
-
-        return $car;
-    }
-}
-```
-
-- **スタンプ結合**
-
-共通域にない独立したobject型のデータを，依存対象のクラスの引数として渡すクラス間相互関係．
-
-**【実装例】**
-
-ModuleAとModuleBは，スタンプ結合の関係にある．
-
-```PHP
-class Common
-{
-		private $value;
-  
-  
-		public function __construct(int $value)
-		{
-				$this->value = $value
-  
-  
-		public function getValue()
-		{
-				return $this->value;
-		}
-}
-```
-
-```PHP
-class ModuleA
-{
-		public function methodA()
-		{
-      	$common = new Common(1);
-      
-        $moduleB = new ModuleB;
-      
-				return $moduleB->methodB($common); // 1
-		}
-}
-```
-
-```PHP
-class ModuleB
-{
-		public function methodB(Common $common)
-		{
-				return $common->getValue(); // 1
-		}
-}
-```
-
+Javaには組み込まれていない．
 
 
 
@@ -2683,164 +2880,7 @@ foreach($a as $x){
 
 
 
-
-## 06-01. クラスの継承
-
-### :pushpin: クラスチェーンによる継承元の参照
-
-クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
-
-```PHP
-// 継承元クラス
-class Example
-{
-	public value;
-  
-	public function getValue()
-	{
-		return $this->value1; 
-	}  
-}
-```
-
-```PHP
-// 継承先クラス
-class SubExample extends Example
-{
-	public subValue;
-  
-	public function getSubValue()
-	{
-		return $this->subValue; 
-	}  
-}
-```
-
-```PHP
-$subExample = new SubExample;
-
-// SubExampleクラスにはgetValue()は無い．
-// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
-echo $subExample->getValue()
-```
-
-
-
-## 06-02. 外部クラスとメソッドの読み込み
-
-### :pushpin: ```use```によるクラスとメソッドの読み込み
-
-PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
-
-**【以下で読み込まれるクラスの実装例】**
-
-```PHP
-// 名前空間を定義．
-namespace Domain/Entity1;
-
-// 定数を定義．
-const VALUE = "これは定数です．"
-
-class Example1
-{
-	public function className()
-	{
-		return "example1メソッドです．";
-	}
-}
-```
-
-- **名前空間の読み込み**
-
-```PHP
-// use文で名前空間を読み込む．
-use Domain/Entity2
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new Entity1/E1:
-	echo $e1;
-}
-```
-
-- **クラスの読み込み**
-
-```PHP
-// use文でクラス名を読み込む．
-use Domain/Entity1/E1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new E1;
-	echo $e1;
-}
-```
-
-- **メソッドの読み込み**
-
-```PHP
-// use文でメソッドを読み込む．
-use Domain/Entity1/E1/className;
-
-namespace Domain/Entity2;
-
-class Eeample2
-{
-	// Example1クラスのclassName()をコール．
-	echo className();
-}
-```
-
-- **定数の読み込み**
-
-```PHP
-// use文で定数を読み込む．
-use Domain/Entity1/E1/VALUE;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-	// Example1クラスの定数を出力．
-	echo VALUE;
-}
-```
-
-
-
-### :pushpin: 親クラスの静的メソッドの読み込み
-
-```PHP
-abstract class Example 
-{
-	public function example()
-	{
-		// 処理内容;
-	}
-}
-```
-
-```PHP
-class SubExample extends Example
-{
-	public function subExample()	
-	{
-		// 親メソッドの静的メソッドを読み込む
-		$example = parent::example();
-	} 
-}
-```
-
-
-　　　
-
-## 07-01. ファイルパス
+## 06-01. ファイルパス
 
 ### :pushpin: 絶対パス
 
