@@ -24,8 +24,8 @@
     - [:pushpin: RouteEntityとは](#pushpin-routeentityとは)
 - [05-03. ValueObject](#05-03-valueobject)
     - [:pushpin: 責務](#pushpin-責務-1)
-    - [:pushpin: 一意に識別できるプロパティをもたず，対象のユビキタス言語に関するプロパティをメソッドを持つ](#pushpin-一意に識別できるプロパティをもたず対象のユビキタス言語に関するプロパティをメソッドを持つ)
-    - [:pushpin: プロパティの不変性](#pushpin-プロパティの不変性)
+    - [:pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ](#pushpin-一意に識別できるデータをもたず対象のユビキタス言語に関するデータをメソッドを持つ)
+    - [:pushpin: データの不変性](#pushpin-データの不変性)
     - [:pushpin: 概念的な統一体](#pushpin-概念的な統一体)
     - [:pushpin: オブジェクトの交換可能性](#pushpin-オブジェクトの交換可能性)
     - [:pushpin: オブジェクト間の等価性](#pushpin-オブジェクト間の等価性)
@@ -212,7 +212,7 @@ abstract class getDogToyEntityRepository
 
 （ユビキタス言語の例）顧客，注文など
 
-1. 状態を変化させる必要があるプロパティをもつ．
+1. 状態を変化させる必要があるデータをもつ．
 2. オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される． 
 
 ![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_エンティティ.jpg)
@@ -327,7 +327,7 @@ EntityとValueObjectのどちらとして，オブジェクトモデルをモデ
  */
 class PaymentInfoVO
 {
-    // 予め実装したImmutableObjectトレイトを用いて，プロパティの不変性を実現
+    // 予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
     use ImmutableObject;
 
     /**
@@ -362,9 +362,9 @@ class PaymentInfoVO
 
 
 
-### :pushpin: 一意に識別できるプロパティをもたず，対象のユビキタス言語に関するプロパティをメソッドを持つ
+### :pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ
 
-金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するプロパティとメソッドを実装する場合，一意で識別できるプロパティ（例えば，```$id```プロパティ）をもたないオブジェクトに，これらの実装を部品としてまとめておくべきである．このオブジェクトを，ValueObjectという．
+金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータとメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトに，これらの実装を部品としてまとめておくべきである．このオブジェクトを，ValueObjectという．
 
 - **金額計算**
 
@@ -376,7 +376,7 @@ class PaymentInfoVO
 
 
 
-### :pushpin: プロパティの不変性
+### :pushpin: データの不変性
 
 インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
 
@@ -405,22 +405,22 @@ class ExampleVO
 
 - **『Immutable』を実現できる理由**
 
-Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にプロパティの値を上書きできてしまう．
+Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にデータの値を上書きできてしまう．
 
 ```PHP
 $test01 = new Test01;
 
-$test01->setProperty01("プロパティ01の値");
+$test01->setProperty01("データ01の値");
 
-$test01->setProperty01("新しいプロパティ01の値");
+$test01->setProperty01("新しいデータ01の値");
 ```
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
 
 ```PHP
-$test02 = new Test02("プロパティ02の値");
+$test02 = new Test02("データ02の値");
 
-$test02 = new Test02("新しいプロパティ02の値");
+$test02 = new Test02("新しいデータ02の値");
 ```
 
 
@@ -443,7 +443,7 @@ $test02 = new Test02("新しいプロパティ02の値");
 
 ### :pushpin: オブジェクト間の等価性
 
-全てのプロパティの値が他のVOと同じ場合，同一のVOと見なされる．
+全てのデータの値が他のVOと同じ場合，同一のVOと見なされる．
 
  
 
@@ -455,13 +455,13 @@ $test02 = new Test02("新しいプロパティ02の値");
 // （1）ドメイン層の氏名を扱うVO
 class NameVO
 {
-		// （2）予め実装したImmutableObjectトレイトを用いて，プロパティの不変性を実現
+		// （2）予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
     use ImmutableObject;
 
-    // 苗字プロパティ
+    // 苗字データ
     private $lastName;
     
-    // 名前プロパティ
+    // 名前データ
     private $firstName;
     
     // （6） メソッドによってオブジェクトの状態が変わらない
@@ -520,11 +520,11 @@ class ColorVO extends Enum
 	];
 
 
-	// 色値プロパティ
+	// 色値データ
 	private $colorValue;
 	
 	
-	// 色名プロパティ．
+	// 色名データ．
 	private $colorName;
 	
 	
@@ -534,7 +534,7 @@ class ColorVO extends Enum
         String $value
 	)
 	{
-		// $kbnValueに応じて，色名をcolornameプロパティにセットする．
+		// $kbnValueに応じて，色名をcolornameデータにセットする．
 		$this->colorValue = $value;
 		$this->colorname = $this->defs[$value]['colorName'];
 	}
@@ -594,7 +594,7 @@ class ColorVO extends Enum
 // 集約の構成とデータ追加を行う．
 class setDogToyEntityRepository
 {
-  // 接続先したいデータベースが設定されたプロパティ
+  // 接続先したいデータベースが設定されたデータ
 	private $dbs;
   
 	public function setDataSet(Request $request)
@@ -646,7 +646,7 @@ class setDogToyEntityRepository
 // データのReadと集約再構成を行う．
 class getDogToyEntityRepository
 {
-  // 接続先したいデータベースが設定されたプロパティ
+  // 接続先したいデータベースが設定されたデータ
 	private $dbs;
 
 
