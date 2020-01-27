@@ -12,34 +12,42 @@
     - [:pushpin: ドメイン駆動設計の派生型](#pushpin-ドメイン駆動設計の派生型)
 - [03-02. Layeredアーキテクチャ型ドメイン駆動設計](#03-02-layeredアーキテクチャ型ドメイン駆動設計)
     - [:pushpin: 責務の分担方法](#pushpin-責務の分担方法)
-- [03-03. Dependency Inversion Principle（依存性逆転の原則）](#03-03-dependency-inversion-principle依存性逆転の原則)
-    - [:pushpin: DIPとは](#pushpin-dipとは)
-    - [:pushpin: DIPに基づくドメイン駆動設計](#pushpin-dipに基づくドメイン駆動設計)
+- [03-03. DIPに基づくドメイン駆動設計](#03-03-dipに基づくドメイン駆動設計)
 - [04-01. Application層](#04-01-application層)
-    - [:pushpin: Controllerの責務](#pushpin-controllerの責務)
-    - [:pushpin: Caster（データ構造変換クラス）の責務](#pushpin-casterデータ構造変換クラスの責務)
-- [05-01. Domain層のRepository](#05-01-domain層のrepository)
-- [05-02. Entity](#05-02-entity)
+- [04-02. Controller](#04-02-controller)
     - [:pushpin: 責務](#pushpin-責務)
-    - [:pushpin: RouteEntityとは](#pushpin-routeentityとは)
-- [05-03. ValueObject](#05-03-valueobject)
+- [04-03. Caster（データ型変換パターン）](#04-03-casterデータ型変換パターン)
     - [:pushpin: 責務](#pushpin-責務-1)
+- [04-04. Application Service](#04-04-application-service)
+    - [:pushpin: 責務](#pushpin-責務-2)
+- [05-01. Domain層](#05-01-domain層)
+- [05-02. 抽象Repository](#05-02-抽象repository)
+    - [:pushpin: 責務](#pushpin-責務-3)
+- [05-03. Entity](#05-03-entity)
+    - [:pushpin: 責務](#pushpin-責務-4)
+    - [:pushpin: RouteEntityとは](#pushpin-routeentityとは)
+- [05-04. ValueObject](#05-04-valueobject)
+    - [:pushpin: 責務](#pushpin-責務-5)
     - [:pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ](#pushpin-一意に識別できるデータをもたず対象のユビキタス言語に関するデータをメソッドを持つ)
     - [:pushpin: データの不変性](#pushpin-データの不変性)
     - [:pushpin: 概念的な統一体](#pushpin-概念的な統一体)
     - [:pushpin: オブジェクトの交換可能性](#pushpin-オブジェクトの交換可能性)
     - [:pushpin: オブジェクト間の等価性](#pushpin-オブジェクト間の等価性)
     - [:pushpin: メソッドによってオブジェクトの状態が変わらない](#pushpin-メソッドによってオブジェクトの状態が変わらない)
-- [05-04. TypeCode（標準型）](#05-04-typecode標準型)
-    - [:pushpin: 責務](#pushpin-責務-2)
+- [05-05. TypeCode（標準型）](#05-05-typecode標準型)
+    - [:pushpin: 責務](#pushpin-責務-6)
     - [:pushpin: EnumによるTypeCodeの実装](#pushpin-enumによるtypecodeの実装)
-- [05-05. Id](#05-05-id)
-- [05-06. Service](#05-06-service)
-- [06-01. Infrastructure層のRepository](#06-01-infrastructure層のrepository)
-    - [:pushpin: 集約の構成，DBへのデータのCreate](#pushpin-集約の構成dbへのデータのcreate)
-    - [:pushpin: DBにおけるデータのRead，集約の再構成](#pushpin-dbにおけるデータのread集約の再構成)
-- [06-02. Factory](#06-02-factory)
-    - [:pushpin: 責務](#pushpin-責務-3)
+- [05-06. Id](#05-06-id)
+    - [:pushpin: 責務](#pushpin-責務-7)
+- [05-07. Domain Service](#05-07-domain-service)
+    - [:pushpin: 責務](#pushpin-責務-8)
+- [06-01. Infrastructure層](#06-01-infrastructure層)
+- [06-02. 具象Repository](#06-02-具象repository)
+    - [:pushpin: 責務](#pushpin-責務-9)
+    - [:pushpin: DBに対するCreate操作](#pushpin-dbに対するcreate操作)
+    - [:pushpin: DBに対するRead操作](#pushpin-dbに対するread操作)
+- [06-03. Factory](#06-03-factory)
+    - [:pushpin: 責務](#pushpin-責務-10)
 
 <!-- /TOC -->
 ## 01-01. Webページにおける処理の流れ
@@ -117,18 +125,11 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 
 
-## 03-03. Dependency Inversion Principle（依存性逆転の原則）
+## 03-03. DIPに基づくドメイン駆動設計
 
-### :pushpin: DIPとは
+**※詳しくは，オブジェクト指向プログラミングのノートを参照**
 
-1. 上位のモジュールは，下位のモジュールに依存してはならない．どちらのモジュールも『抽象』に依存すべきである．
-2. 『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．
-
-
-
-### :pushpin: DIPに基づくドメイン駆動設計
-
-Repositoryの抽象クラスは，ドメイン層に配置する．そして，Repositoryの実装クラスはInfrastructure層に配置する．抽象クラスで抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能．
+Repositoryの抽象クラスを，より上位のドメイン層に配置する．Repositoryの実装クラスを，より下位のInfrastructure層に配置する．これにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
 ![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
 
@@ -137,7 +138,11 @@ Repositoryの抽象クラスは，ドメイン層に配置する．そして，R
 
 ## 04-01. Application層
 
-### :pushpin: Controllerの責務
+
+
+## 04-02. Controller
+
+### :pushpin: 責務
 
 CRUDのReadの場合，以下のような処理手順を組み合わせて，Use case（使用事例）を実装する．
 
@@ -171,11 +176,11 @@ class AcceptOrdersController
 
 
 
-### :pushpin: Caster（データ構造変換クラス）の責務
+## 04-03. Caster（データ型変換パターン）
 
+### :pushpin: 責務
 
-
-責務として，レスポンスによるデータ送信時に，オブジェクトデータ（Entity）を連想配列に変換する．
+デザインパターンの一つ．レスポンスによるデータ送信時に，オブジェクトデータ（Entity）を連想配列に変換する．
 
 ```PHP
 // Entityを連想配列に変換するメソッド
@@ -187,7 +192,28 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 
 
-## 05-01. Domain層のRepository
+## 04-04. Application Service
+
+### :pushpin: 責務
+
+ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．
+
+**【実装例】**
+
+```
+
+```
+
+
+
+
+## 05-01. Domain層
+
+
+
+## 05-02. 抽象Repository
+
+### :pushpin: 責務
 
 リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．
 
@@ -204,7 +230,7 @@ abstract class getDogToyEntityRepository
 
 
 
-## 05-02. Entity
+## 05-03. Entity
 
 ### :pushpin: 責務
 
@@ -311,7 +337,7 @@ class ToyOrderEntity
 
 
 
-## 05-03. ValueObject
+## 05-04. ValueObject
 
 ### :pushpin: 責務
 
@@ -494,7 +520,7 @@ class Money
 
 
 
-## 05-04. TypeCode（標準型）
+## 05-05. TypeCode（標準型）
 
 ### :pushpin: 責務
 
@@ -558,33 +584,45 @@ class ColorVO extends Enum
 
 
 
-## 05-05. Id
+## 05-06. Id
 
-- **実装例**
-
-
+### :pushpin: 責務
 
 
 
-## 05-06. Service
+## 05-07. Domain Service
 
-他の３区分に分類できないもの（例：Id-Aを生成するId-B）．
+### :pushpin: 責務
 
 
 
-## 06-01. Infrastructure層のRepository
+## 06-01. Infrastructure層
 
-### :pushpin: 集約の構成，DBへのデータのCreate
+
+
+## 06-02. 具象Repository
+
+### :pushpin: 責務
+
+DBの操作を行う．
+
+
+
+### :pushpin: DBに対するCreate操作
 
 1. GETまたはPOSTによって，アプリケーション層から値が送信される．
 
-2. Repositoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
+2. Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
 
-3. Factoryによって，集約を加工する．
+3. Repositoryによって，最終的な集約を構成する．
 
 4. Repositoryによって，集約を連想配列に分解する．
 
-5. DBのテーブルに挿入する．
+5. ```add()```によって，Repositoryに集約を登録する．
+
+6. ```store()```によって，Transaction処理にRepositoryを登録する．
+
+7. DBに対して，Createの操作を行う．
 
    ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
 
@@ -630,12 +668,12 @@ class setDogToyEntityRepository
 
 
 
-### :pushpin: DBにおけるデータのRead，集約の再構成
+### :pushpin: DBに対するRead操作
 
 1. アプリケーション層から集約がリクエストされる．
-2. DBのテーブルからデータをRead．
-3. Repositoryによって，リクエストされたデータからEntityやValueObjectを構成する．さらに，それらから集約を構成する．
-4. Factoryによって，集約を加工する．
+2. DBに対して，Readの操作を行う．
+3. Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
+4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
 
 ![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ取得.jpg)
@@ -694,7 +732,7 @@ class getDogToyEntityRepository
 
 
 
-## 06-02. Factory
+## 06-03. Factory
 
 ### :pushpin: 責務
 
