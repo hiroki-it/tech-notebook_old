@@ -12,33 +12,37 @@
     - [:pushpin:  Dependency（依存）](#pushpin--dependency依存)
     - [:pushpin: Dependency Injection（サプライヤーの注入）](#pushpin-dependency-injectionサプライヤーの注入)
     - [:pushpin: DI Container（依存性注入コンテナ）](#pushpin-di-container依存性注入コンテナ)
-- [01-04. 結合度](#01-04-結合度)
+- [01-04. Dependency Inversion Principle（依存性逆転の原則）](#01-04-dependency-inversion-principle依存性逆転の原則)
+    - [:pushpin: DIPとは](#pushpin-dipとは)
+    - [:pushpin: DIPに基づかない設計 vs. 基づく設計](#pushpin-dipに基づかない設計-vs-基づく設計)
+    - [:pushpin: DIPに基づくドメイン駆動設計](#pushpin-dipに基づくドメイン駆動設計)
+- [01-05. 結合度](#01-05-結合度)
     - [:pushpin: データ結合](#pushpin-データ結合)
     - [:pushpin: スタンプ結合](#pushpin-スタンプ結合)
-- [01-05. 凝集度](#01-05-凝集度)
+- [01-06. 凝集度](#01-06-凝集度)
     - [:pushpin: 機能的強度](#pushpin-機能的強度)
-- [01-06. クラスの継承](#01-06-クラスの継承)
+- [01-07. クラスの継承](#01-07-クラスの継承)
     - [:pushpin: クラスチェーンによる継承元の参照](#pushpin-クラスチェーンによる継承元の参照)
-- [01-07. 外部クラスとメソッドの読み込み](#01-07-外部クラスとメソッドの読み込み)
+- [01-08. 外部クラスとメソッドの読み込み](#01-08-外部クラスとメソッドの読み込み)
     - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
     - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
-- [01-08. 入れ子クラス](#01-08-入れ子クラス)
+- [01-09. 入れ子クラス](#01-09-入れ子クラス)
     - [:pushpin: PHPの場合](#pushpin-phpの場合)
     - [:pushpin: Javaの場合](#pushpin-javaの場合)
-- [01-09. 総称型](#01-09-総称型)
+- [01-10. 総称型](#01-10-総称型)
     - [:pushpin: PHPの場合](#pushpin-phpの場合-1)
     - [:pushpin: Javaの場合](#pushpin-javaの場合-1)
-- [01-10. Trait](#01-10-trait)
+- [01-11. Trait](#01-11-trait)
     - [:pushpin: PHPの場合](#pushpin-phpの場合-2)
     - [:pushpin: Javaの場合](#pushpin-javaの場合-2)
 - [02-01. 操作（メソッド）とデータ（プロパティ）](#02-01-操作メソッドとデータプロパティ)
     - [:pushpin: 操作（メソッド）](#pushpin-操作メソッド)
     - [:pushpin: データ（プロパティ）](#pushpin-データプロパティ)
 - [02-02. メソッドとデータのカプセル化](#02-02-メソッドとデータのカプセル化)
-    - [:pushpin: public](#pushpin-public)
-    - [:pushpin: protected](#pushpin-protected)
-    - [:pushpin: private](#pushpin-private)
-    - [:pushpin: static](#pushpin-static)
+    - [:pushpin: ```public```](#pushpin-public)
+    - [:pushpin: ```protected```](#pushpin-protected)
+    - [:pushpin: ```private```](#pushpin-private)
+    - [:pushpin: ```static```](#pushpin-static)
 - [03-01. メソッド](#03-01-メソッド)
     - [:pushpin: メソッドの実装手順](#pushpin-メソッドの実装手順)
     - [:pushpin: 値を取得するアクセサメソッドの実装](#pushpin-値を取得するアクセサメソッドの実装)
@@ -84,11 +88,12 @@
     - [:pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```](#pushpin-if-elseif-elseとswitch-case-break)
     - [:pushpin: ```if```-```elseif```-```else```はできるだけ用いない](#pushpin-if-elseif-elseはできるだけ用いない)
     - [:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力](#pushpin-オブジェクトごとにデータの値の有無が異なる時の出力)
-- [05-03. 例外処理](#05-03-例外処理)
+- [05-03. 例外処理とログ出力](#05-03-例外処理とログ出力)
     - [:pushpin: 例外処理前の条件分岐](#pushpin-例外処理前の条件分岐)
     - [:pushpin: Exceptionクラスを継承した独自例外クラス](#pushpin-exceptionクラスを継承した独自例外クラス)
     - [:pushpin: ```if```-```throw```文](#pushpin-if-throw文)
     - [:pushpin: ```try```-```catch```文](#pushpin-try-catch文)
+    - [:pushpin: ログの出力](#pushpin-ログの出力)
 - [05-03. 反復処理](#05-03-反復処理)
     - [:pushpin: ```foreach()```](#pushpin-foreach)
     - [:pushpin: ```for()```](#pushpin-for)
@@ -436,7 +441,6 @@ class EnginnerShainManagement extend ShainManagement
 **【実装例】**
 
 ```PHP
-// 鋳型
 // コミュニケーションのメソッドの実装を強制するインターフェース
 interface Communication
 {
@@ -448,7 +452,6 @@ interface Communication
 ```
 
 ```PHP
-// 機能箱
 // 正常に機能するように，コミュニケーションのメソッドの実装を強制する．
 class Human implements Communication
 {
@@ -497,19 +500,21 @@ class Human implements Communication
 
 ### :pushpin:  Dependency（依存）
 
-クラス間，インスタンス間，クラス／インスタンス間について，サプライヤー（使用される）側が変更された場合に，クライアント（使用する）側にも変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．
+クラス間，インスタンス間，クラス／インスタンス間について，依存される側が変更された場合に，依存する側で変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．
 
 ![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
 - **クラス間の場合**
 
+Generalizatoin，Realizationの関係性．
+
 - **インスタンス間の場合**
 
-Association，Aggregation，Compositionの関係性
+この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持する．Association，Aggregation，Compositionの関係性．
 
 - **クラス／インスタンス間の場合**
 
-クライアント側のインスタンスのメソッドが，『一時的に』，サプライヤー側のインスタンスを使用するような関係性．例えば，Service，Validator，Repository，Literalなどを使用する場合がある．
+この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持せず，メソッドの処理の中で，『一時的に』サプライヤー側のインスタンスを使用するような関係性．例えば，Controllerのメソッドが，ServiceやValidatorのインスタンスを使用する場合がある．
 
 参照リンク：
 
@@ -526,15 +531,15 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 - **Setter Injection**
 
 
-メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．Aggregationの関係性を作ることができる．
+メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
 
 - **Constructor Injection**
 
-メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．Aggregationの関係性を作ることができる．
+メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
 
 - **Method Injection**
 
-上記二つ以外のメソッドの引数から，サプライヤー側（Serviveなど）のインスタンスを注入する方法．
+上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させない．
 
 
 
@@ -544,7 +549,41 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 
 
-## 01-04. 結合度
+## 01-04. Dependency Inversion Principle（依存性逆転の原則）
+
+### :pushpin: DIPとは
+
+- 上位レイヤーは，下位レイヤーに依存してはならない．どちらのレイヤーも『抽象』に依存すべきである．
+
+- 『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．
+
+
+
+### :pushpin: DIPに基づかない設計 vs. 基づく設計
+
+- **DIPに基づかない設計の場合（従来）**
+
+より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
+
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
+
+- **DIPに基づく設計の場合**
+
+抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインター府フェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
+
+![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づく設計の場合.png)
+
+
+
+### :pushpin: DIPに基づくドメイン駆動設計
+
+Repositoryの抽象クラスを，より上位のドメイン層に配置する．Repositoryの実装クラスを，より下位のInfrastructure層に配置する．これにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
+
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
+
+
+
+## 01-05. 結合度
 
 依存には程度がある．それによって，処理を，どのクラスのデータと操作に振り分けていくかが決まる．結合度はモジュール間の依存度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．
 
@@ -657,7 +696,7 @@ class ModuleB
 
 
 
-## 01-05. 凝集度
+## 01-06. 凝集度
 
 凝集度は，モジュール内の機能の統一度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．
 
@@ -668,7 +707,7 @@ class ModuleB
 
 
 
-## 01-06. クラスの継承
+## 01-07. クラスの継承
 
 ### :pushpin: クラスチェーンによる継承元の参照
 
@@ -710,7 +749,7 @@ echo $subExample->getValue()
 
 
 
-## 01-07. 外部クラスとメソッドの読み込み
+## 01-08. 外部クラスとメソッドの読み込み
 
 ### :pushpin: ```use```によるクラスとメソッドの読み込み
 
@@ -824,7 +863,7 @@ class SubExample extends Example
 
 　　　
 
-## 01-08. 入れ子クラス
+## 01-09. 入れ子クラス
 
 ### :pushpin: PHPの場合
 
@@ -924,7 +963,7 @@ class OuterClass
 
 
 
-## 01-09. 総称型
+## 01-10. 総称型
 
 ### :pushpin: PHPの場合
 
@@ -984,7 +1023,7 @@ list.add(10.1);    // String型でないのでコンパイルエラー
 
 
 
-## 01-10. Trait
+## 01-11. Trait
 
 ### :pushpin: PHPの場合
 
@@ -1019,19 +1058,19 @@ Javaには組み込まれていない．
 
 ## 02-02. メソッドとデータのカプセル化
 
-### :pushpin: public
+### :pushpin: ```public```
 
 どのオブジェクトでも呼び出せる．
 
 
 
-### :pushpin: protected
+### :pushpin: ```protected```
 
 同じクラス内と，その親クラスまたは子クラスでのみ呼び出せる．
 
 
 
-### :pushpin: private
+### :pushpin: ```private```
 
 同じオブジェクト内でのみ呼び出せる．
 
@@ -1043,7 +1082,7 @@ Javaには組み込まれていない．
 
 - **データにアクセスできない時の**
 
-### :pushpin: static
+### :pushpin: ```static```
 
 別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．データ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．
 
@@ -2563,7 +2602,7 @@ $csv['ID'] = $order->id;
 
 
 
-## 05-03. 例外処理
+## 05-03. 例外処理とログ出力
 
 データベースから取得した後に直接表示する値の場合，データベースでNullにならないように制約をかけられるため，変数の中身に例外判定を行う必要はない．しかし，データベースとは別に新しく作られる値の場合，例外判定が必要になる．
 
@@ -2695,6 +2734,14 @@ class HttpRequestException extends Exception
 	{
 		parent::__construct("HTTPリクエストに失敗しました", 400);
 	}
+```
+
+
+
+### :pushpin: ログの出力
+
+```PHP
+
 ```
 
 
