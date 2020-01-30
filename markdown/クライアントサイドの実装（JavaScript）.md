@@ -1013,18 +1013,19 @@ class Example
 }    
 ```
 
-
+### :pushpin: Jsonのクエリ言語
 
 ### :pushpin: データ記述言語の種類
 
 - **JSON：JavaScript Object Notation**
 
-``` json
-// 一番外側を波括弧で囲う．
+一番外側を波括弧で囲う．
+
+```json
 {
   "Example": {
     "fruit": ["ばなな", "りんご"],
-    "account": 200,
+    "account": 200
   }
 }
 ```
