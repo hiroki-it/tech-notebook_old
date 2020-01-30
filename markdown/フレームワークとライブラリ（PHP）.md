@@ -195,6 +195,12 @@ public function handle
 
 
 
+## 01-04. Service Container
+
+Symfonyから提供されるDIコンテナのこと．
+
+
+
 ## 02-01. Carbonライブラリ
 
 ### :pushpin: Date型
