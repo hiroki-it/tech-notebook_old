@@ -77,14 +77,14 @@ const example = {
   // 慣習的にアンダーバーでprivateを表す．
   _property: 0,
   
-	set setValue(value) {
-		this._property = value;
-	},  
-	
-	get getValue() {
-		return this._property;
-	}
-}	
+    set setValue(value) {
+        this._property = value;
+    },  
+    
+    get getValue() {
+        return this._property;
+    }
+}
 ```
 
 
@@ -97,16 +97,16 @@ const example = {
 
 ```javascript
 const example = new Object({
+
+    _property: 0,
   
-  _property: 0,
-  
-	set setValue(value) {
-		this._property = value;
-	},  
-	
-	get getValue() {
-		return this._property;
-	}
+    set setValue(value) {
+        this._property = value;
+    },  
+    
+    get getValue() {
+        return this._property;
+    }
 })
 ```
 
@@ -121,17 +121,17 @@ const Example = new Function();
 ```javascript
 // 関数宣言
 function Example() {
-	
-	this._property = value;
+    
+    this._property = value;
 
-	// プロパティ値として定義した関数を，メソッドという．
-	this.setValue = function(value) {
-		this._property = value;
-	};   
+    // プロパティ値として定義した関数を，メソッドという．
+    this.setValue = function(value) {
+        this._property = value;
+    };   
   
-	this.getValue = function(){
-		return this._property;
-	};
+    this.getValue = function(){
+        return this._property;
+    };
 }
 ```
 
@@ -139,29 +139,29 @@ function Example() {
 // 関数式
 const Example = function(value) {
   
-	this._property = value;
+    this._property = value;
   
-	this.setValue = function(value) {
-		this._property = value;
+    this.setValue = function(value) {
+        this._property = value;
   };
   
-	this.getValue = function() {
-		return this._property;
-	};
+    this.getValue = function() {
+        return this._property;
+    };
 }
 
 // アロー関数による関数式の省略記法
 const Example = (value) => {
   
-	this._property = value;
+    this._property = value;
   
-	this.setValue = function(value) {
-		this._property = value;
+    this.setValue = function(value) {
+        this._property = value;
   };
   
-	this.getValue = function() {
-		return this._property;
-	};
+    this.getValue = function() {
+        return this._property;
+    };
 }
 ```
 
@@ -179,9 +179,9 @@ const Object3 = function(){};
 
 // 出力結果
 console.log(
-	object1.prototype, // undefined
-	object2.prototype,  // undefined
-	Object3.prototype // Object3 {}
+    object1.prototype, // undefined
+    object2.prototype,  // undefined
+    Object3.prototype // Object3 {}
 );
 ```
 
@@ -197,13 +197,13 @@ class Example {
   
   // classでしか使えない．
   // Setterの代わりにコンストラクタでImmutableを実現．
-	constructor(value) {
-		this.property = value;
-	}
-	
-	getValue() {
-		return this.property;
-	}
+    constructor(value) {
+        this.property = value;
+    }
+    
+    getValue() {
+        return this.property;
+    }
 }
 ```
 
@@ -211,15 +211,15 @@ class Example {
 // クラス式
 const Example = class {
   
-	// classでしか使えない．
+    // classでしか使えない．
   // Setterの代わりにコンストラクタでImmutableを実現．
-	constructor(value) {
-		this._property = value;
-	}
-	
-	getValue() {
-		return this._property;
-	}
+    constructor(value) {
+        this._property = value;
+    }
+    
+    getValue() {
+        return this._property;
+    }
 }
 ```
 
@@ -243,15 +243,15 @@ const example = new Example(1)
 // コンストラクタ関数の関数式による定義．
 const Example = function(value) {
   
-	this._property = value;
+    this._property = value;
   
-	this.setValue = function(value) {
-		this._property = value;
+    this.setValue = function(value) {
+        this._property = value;
   }  
   
-	this.getValue = function() {
-		return this._property;
-	};
+    this.getValue = function() {
+        return this._property;
+    };
 }
 ```
 
@@ -261,16 +261,16 @@ const Example = function(value) {
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
 // prototypeプロパティの継承先のオブジェクトを定義．
 const SubExample = function(subValue) {
-	
-	this.subProperty = subValue;
+    
+    this.subProperty = subValue;
   
-	this.setSubValue = function(subValue) {
-		this.subProperty = subValue;
+    this.setSubValue = function(subValue) {
+        this.subProperty = subValue;
   }  
   
-	this.getSubValue = function() {
-		return this.subProperty;
-	};
+    this.getSubValue = function() {
+        return this.subProperty;
+    };
 }
 
 // new Object()を用いた継承．
@@ -288,16 +288,16 @@ console.log(result);
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
 // prototypeプロパティの継承先のオブジェクトを定義．
 const SubExample = function() {
-	
-	this.subProperty = subValue;
+    
+    this.subProperty = subValue;
   
-	this.setSubValue = function(subValue) {
-		this.subProperty = subValue;
-	}  
+    this.setSubValue = function(subValue) {
+        this.subProperty = subValue;
+    }  
   
-	this.getSubValue = function() {
-		return this.subProperty;
-	};
+    this.getSubValue = function() {
+        return this.subProperty;
+    };
 }
 
 // Object.create()を用いた継承．
@@ -315,10 +315,10 @@ console.log(result);
 // Object.create()による継承．
 SubExample.prototype = Object.create(Example.prototype, {
 
-	// メソッドを追加する．
-	this.printSubValue = function() {
-		return 'これは' + this.subProperty + 'です．';
-	};
+    // メソッドを追加する．
+    this.printSubValue = function() {
+        return 'これは' + this.subProperty + 'です．';
+    };
   
 });
 
@@ -341,13 +341,13 @@ const example = {
   // 慣習的にアンダーバーでprivateを表す．
   _property: 0,
   
-	set setValue(value) {
-		this._property = value;
-	},  
-	
-	get getValue() {
-		return this._property;
-	}
+    set setValue(value) {
+        this._property = value;
+    },  
+    
+    get getValue() {
+        return this._property;
+    }
 }	
 ```
 
@@ -454,11 +454,11 @@ Webページの部分ごとに，サーバとデータ通信できる．
 
 ```javascript
 Vue.component('v-example-component',{
-	template: require('./xxx/xxx/xxx')
+    template: require('./xxx/xxx/xxx')
 })
 
 new Vue({
-	el: '#app'
+    el: '#app'
 })
 ```
 
@@ -466,18 +466,18 @@ new Vue({
 
 ```javascript
 var vExampleComponent = {
-	// 親コンポーネントと子コンポーネントの対応関係
-	template: require('./xxx/xxx/xxx'),
+    // 親コンポーネントと子コンポーネントの対応関係
+    template: require('./xxx/xxx/xxx'),
 }
 
 new Vue({
 
-	el: '#app'
+    el: '#app'
   
-	components: {
-		// 親コンポーネントにオブジェクト名をつける．
-		'v-example-component': vExampleComponent
-	}
+    components: {
+        // 親コンポーネントにオブジェクト名をつける．
+        'v-example-component': vExampleComponent
+    }
   
 })
 ```
@@ -487,12 +487,12 @@ new Vue({
 ```javascript
 new Vue({
 
-	el: '#app'
+    el: '#app'
   
-	components: {
-		// 親コンポーネントと子コンポーネントの対応関係
-		'v-example-component': require('./xxx/xxx/xxx'),
-	}
+    components: {
+        // 親コンポーネントと子コンポーネントの対応関係
+        'v-example-component': require('./xxx/xxx/xxx'),
+    }
   
 })
 ```
@@ -525,23 +525,23 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
 <div id="app">
   
-	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
+    <!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
   <!-- propsに渡すための値を設定．ディレクティブのメソッドの引数に影響する-->
-	<!-- 対応するVueインスタンスのmethodオプションをディレクティブに設定-->
-	<v-example-component-1
-		:criteria="criteria"
-		v-on change="changeQuery"
+    <!-- 対応するVueインスタンスのmethodオプションをディレクティブに設定-->
+    <v-example-component-1
+        :criteria="criteria"
+        v-on change="changeQuery"
   ></v-example-component-1>
 
-	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-	<v-example-component-2
+    <!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
+    <v-example-component-2
                          
-	></v-example-component-2>
+    ></v-example-component-2>
 
-	<!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-	<v-example-component-3
+    <!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
+    <v-example-component-3
                          
-	></v-example-component-3>
+    ></v-example-component-3>
   
 </div>
 ```
@@ -551,81 +551,81 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
 new Vue({
 
-	//　データの受け渡しを行うHTML（TWIG）のIDを，『#ID名』で設定する．
-	el: '#app',
+    //　データの受け渡しを行うHTML（TWIG）のIDを，『#ID名』で設定する．
+    el: '#app',
 
-	// 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
-	component: {
+    // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+    component: {
 
-		// 親コンポーネントと子コンポーネントの対応関係．
-		// 子コンポーネントごとに異なるファイルを用意する．
-		'v-example-component-1': require('./xxx/xxx/xxx-1'),
-		'v-example-component-2': require('./xxx/xxx/xxx-2'),
-		'v-example-component-3': require('./xxx/xxx/xxx-3')
-		},
+        // 親コンポーネントと子コンポーネントの対応関係．
+        // 子コンポーネントごとに異なるファイルを用意する．
+        'v-example-component-1': require('./xxx/xxx/xxx-1'),
+        'v-example-component-2': require('./xxx/xxx/xxx-2'),
+        'v-example-component-3': require('./xxx/xxx/xxx-3')
+        },
 
-		// 状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
-		// 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり，異なる値をもつ必要があるため，dataオプションはメソッドとして定義する．
-		data: function() {
-			return {
-				// プロパティ名: 値
-				isLoaded: false,
-				staffData: [],
-				criteria: {
-					id: null,
-					name: null
-					},
-				};
-		},
+        // 状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
+        // 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり，異なる値をもつ必要があるため，dataオプションはメソッドとして定義する．
+        data: function() {
+            return {
+                // プロパティ名: 値
+                isLoaded: false,
+                staffData: [],
+                criteria: {
+                    id: null,
+                    name: null
+                    },
+                };
+        },
 
-		// dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．
-		// メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．
-		method: {
-			changeQuery(criteriaObj) {
+        // dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．
+        // メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．
+        method: {
+            changeQuery(criteriaObj) {
         
-				// 値無しプロパティを持つkeysオブジェクトを定義する．
-				const keys = [
-					'criteria',
-					'limit',
-				];
+                // 値無しプロパティを持つkeysオブジェクトを定義する．
+                const keys = [
+                    'criteria',
+                    'limit',
+                ];
         
-				// プロパティ名を取り出す．
-				for (const key of keys) {
+                // プロパティ名を取り出す．
+                for (const key of keys) {
           
-					// criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．
-					if (key in criteriaObj) {
+                    // criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．
+                    if (key in criteriaObj) {
             
-						// ここでのthisはメソッド内のkeysオブジェクトを指す．
-						this[key] = criteriaObj[key];
-				}
-			}
+                        // ここでのthisはメソッド内のkeysオブジェクトを指す．
+                        this[key] = criteriaObj[key];
+                }
+            }
         
         
-			
-			load(query) {
+            
+            load(query) {
           
-				// ここでのthisはdataオプションを指す．
-				this.isLoaded = true;
-				this.staffData = [];
+                // ここでのthisはdataオプションを指す．
+                this.isLoaded = true;
+                this.staffData = [];
         
-				// JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却する．
-				return Staff.find(query)
+                // JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却する．
+                return Staff.find(query)
         
-					// Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．
-					// リクエストされたデータをdataオプションのプロパティに格納するメソッド．
-					.done((data) => {
+                    // Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．
+                    // リクエストされたデータをdataオプションのプロパティに格納するメソッド．
+                    .done((data) => {
           
-					// ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
-					// dataオプションのプロパティに格納する．
-					this.staffData = _.map(data.staffData, Staff.parse);
+                    // ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
+                    // dataオプションのプロパティに格納する．
+                    this.staffData = _.map(data.staffData, Staff.parse);
           
-					})
-		},
+                    })
+        },
 
-		// Vueインスタンス内の値の変化を監視する関数を定義する．
-		watch: {
+        // Vueインスタンス内の値の変化を監視する関数を定義する．
+        watch: {
       
-		},
+        },
 });
 ```
 - **子コンポーネント**
@@ -649,39 +649,39 @@ new Vue({
 module.exports = {
       
       
-	// 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
-	component: {
+    // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+    component: {
 
-		// 子コンポーネントと孫コンポーネントの対応関係
-		'v-example-component-4': require('./xxx/xxx/xxx-4'),
-	},
-      
-
-	// 親コンポーネントからpropsオブジェクトのプロパティに，criteriaの値が格納される．
-	props: {
-		'criteria': {
-			type: Object,
-			required: true
-		},
-	},
+        // 子コンポーネントと孫コンポーネントの対応関係
+        'v-example-component-4': require('./xxx/xxx/xxx-4'),
+    },
       
 
-	// 状態を変化させたいデータを関数として定義しておき，初期状態を格納する．
-	data: function() {
-		return {
-		
-		};
-	},
+    // 親コンポーネントからpropsオブジェクトのプロパティに，criteriaの値が格納される．
+    props: {
+        'criteria': {
+            type: Object,
+            required: true
+        },
+    },
+      
+
+    // 状態を変化させたいデータを関数として定義しておき，初期状態を格納する．
+    data: function() {
+        return {
+        
+        };
+    },
       
       
-	// 任意の関数を定義する．
-	method: {
-		updateCriteria (key, value) {
+    // 任意の関数を定義する．
+    method: {
+        updateCriteria (key, value) {
               
-		// 親コンポーネント（v-example-component-1）と紐づく処理
-		// changeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
-		this.$emit('change', {'criteria': localCriteria});
-	},
+        // 親コンポーネント（v-example-component-1）と紐づく処理
+        // changeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
+        this.$emit('change', {'criteria': localCriteria});
+    },
 
 };
 </script>
@@ -715,8 +715,8 @@ const vueRouter = require('vue-router').default;
 
 // VueRouterインスタンスを作成する．
 const router = new VueRouter({[
-	// ここに，パスとコンポーネント名の対応を記述する．
-	// 書き方は要勉強．     
+    // ここに，パスとコンポーネント名の対応を記述する．
+    // 書き方は要勉強．     
 })
 
 // 外部ファイルが，VueRouterインスタンスを読み込めるようにしておく．
@@ -773,40 +773,40 @@ const vuex = require('vuex')
 module.exports = new Vuex.Store({
 
   // Stateには多くを設定せず，Vueインスタンスのdataオプションに設定しておく．
-	// 初期stateに値を設定しておく．
-	state: {    
-		staffData: [],
-	},
+    // 初期stateに値を設定しておく．
+    state: {    
+        staffData: [],
+    },
 
     
-	// 引数で渡したexArrayの要素を，初期stateのexArrayの要素として格納する．
-	// 矢印はアロー関数を表し，無名関数の即コールを省略することができる．
-	mutation: {
+    // 引数で渡したexArrayの要素を，初期stateのexArrayの要素として格納する．
+    // 矢印はアロー関数を表し，無名関数の即コールを省略することができる．
+    mutation: {
         
-		mutate(state, staffData) {
-			exArray.forEach(
+        mutate(state, staffData) {
+            exArray.forEach(
                 
-				// アロー関数を用いなければ，以下のように記述できる．
-				// function(element) { state.exArray.push(element); }
-				// 引数で渡されたexArrayの要素を，stateのexArrayに格納する．
-				(element) => { state.exArray.push(element); }
-			);  
-		},
+                // アロー関数を用いなければ，以下のように記述できる．
+                // function(element) { state.exArray.push(element); }
+                // 引数で渡されたexArrayの要素を，stateのexArrayに格納する．
+                (element) => { state.exArray.push(element); }
+            );  
+        },
         
-	},
-	
-	// ここに，複数のコンポーネントで共通してコールしたいcomputedをまとめて定義しておく．
-	getters: {
-        
-			staffData(state) {
-				return state.staffData;
-			},
-			
-	},
+    },
     
-	actions: {
+    // ここに，複数のコンポーネントで共通してコールしたいcomputedをまとめて定義しておく．
+    getters: {
         
-	},
+            staffData(state) {
+                return state.staffData;
+            },
+            
+    },
+    
+    actions: {
+        
+    },
 });  
 ```
 
@@ -822,34 +822,34 @@ const mapMutaions = require('vuex').mapMutaions;
 
 new Vue({
   
-	el: '#app'
+    el: '#app'
   
-	store,
+    store,
 
   // Readされたデータをキャッシュしたいようなメソッドを定義する．
-	computed: {
+    computed: {
 
-		// mapGettersヘルパー．
-		// StoreのGetterをローカルのcomputedにマッピングし，コール可能にする．
-		...mapGetters([
-		'x-Function'
-		])
+        // mapGettersヘルパー．
+        // StoreのGetterをローカルのcomputedにマッピングし，コール可能にする．
+        ...mapGetters([
+        'x-Function'
+        ])
 
-	},
+    },
 
   // Readされたデータをキャッシュしたくないようなメソッドを定義する．
-	methods: {
+    methods: {
 
-		// mapMutationsヘルパー
-		...mapMutations([
-		'y-Function'
-		])
+        // mapMutationsヘルパー
+        ...mapMutations([
+        'y-Function'
+        ])
 
-		// mapActionsヘルパー
-		...mapActions([
-		'z-Function'
-		])
-	}
+        // mapActionsヘルパー
+        ...mapActions([
+        'z-Function'
+        ])
+    }
 });
 ```
 
@@ -864,7 +864,7 @@ new Vue({
 ```javascript
 // HTMLあるいはTWIGから，このようなオブジェクトが送信されてきたとする．
 const query = {
-	criteria: {
+    criteria: {
     id: 777,
     name: "hiroki"
 }
@@ -881,53 +881,53 @@ class Staff {
   }  
 
   
-	// 自分自身をJSON型データでサーバサイドからReadするメソッド
-	static find(query) {
+    // 自分自身をJSON型データでサーバサイドからReadするメソッド
+    static find(query) {
 
-		return $.ajax({
+        return $.ajax({
       
       // HTTPリクエストのメソッドとしてPOSTを指定
-			type: 'POST',
+            type: 'POST',
       
       // リクエスト先のファイルのパスを指定
-			url: '/xxx/xxx',
+            url: '/xxx/xxx',
       
       // リクエストによって送信するデータはJSON形式を指定
-			contentType: 'application/json',
+            contentType: 'application/json',
       
       // レスポンスによって受信するデータはJSON形式を指定
-			dataType: 'json',
+            dataType: 'json',
       
       // リクエストによって送信するデータを指定
-			data: query,
-		});
+            data: query,
+        });
     
-		// ajax()の処理が成功した場合に起こる処理．
-		.done((data) => {
+        // ajax()の処理が成功した場合に起こる処理．
+        .done((data) => {
       
-		});
+        });
     
-		// ajax()の処理が失敗した場合に起こる処理．
-		.fail(() => {
-			toastr.error('', 'エラーが発生しました．');
-		});
+        // ajax()の処理が失敗した場合に起こる処理．
+        .fail(() => {
+            toastr.error('', 'エラーが発生しました．');
+        });
     
-		// ajax()の成功失敗に関わらず，必ず起こる処理．
-		.always(()) => {
-			this.isLoaded = false;
-		});
+        // ajax()の成功失敗に関わらず，必ず起こる処理．
+        .always(()) => {
+            this.isLoaded = false;
+        });
   }    
 
   
-	// ReadされたJSON型データをJavaScriptのオブジェクトにシリアライズする．
-	static parse(data) {
-		return new Shain({
+    // ReadされたJSON型データをJavaScriptのオブジェクトにシリアライズする．
+    static parse(data) {
+        return new Shain({
         
-		// コンストラクタに渡される．
-		id: data.id,
-		name: data.name
-		});
-	}                       
+        // コンストラクタに渡される．
+        id: data.id,
+        name: data.name
+        });
+    }                       
 }
 
 // 外部ファイルから読み込めるように設定しておく．  
@@ -983,8 +983,8 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 // JavaScriptでのオブジェクトの表現．
 // クラス宣言．
 class Example {
-	fruit: ["ばなな", "りんご"],
-	account: 200,
+    fruit: ["ばなな", "りんご"],
+    account: 200,
 }
 ```
 
@@ -1007,9 +1007,9 @@ class Example {
 // PHPでのオブジェクトの表現．
 class Example
 {
-	private fruit;
+    private fruit;
     
-	private account;
+    private account;
 }    
 ```
 
@@ -1080,14 +1080,14 @@ XML形式テキストファイルはタグを用いて記述されている．�
 
 ```dtd
 <!DOCTYPE Enployee[
-	<!ELEMENT Name (First, Last)>
-	<!ELEMENT First (#PCDATA)>
-	<!ELEMENT Last (#PCDATA)>
-	<!ELEMENT Email (#PCDATA)>
-	<!ELEMENT Organization (Name, Address, Country)>
-	<!ELEMENT Name (#PCDATA)>
-	<!ELEMENT Address (#PCDATA)>
-	<!ELEMENT Country (#PCDATA)>
+    <!ELEMENT Name (First, Last)>
+    <!ELEMENT First (#PCDATA)>
+    <!ELEMENT Last (#PCDATA)>
+    <!ELEMENT Email (#PCDATA)>
+    <!ELEMENT Organization (Name, Address, Country)>
+    <!ELEMENT Name (#PCDATA)>
+    <!ELEMENT Address (#PCDATA)>
+    <!ELEMENT Country (#PCDATA)>
 ]>
 ```
 

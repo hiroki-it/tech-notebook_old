@@ -142,22 +142,22 @@ class Tire {}
 //CarXクラス定義
 class CarX  
 {
-		private $tire1;
-		
-		private $tire2;
-		
-		private $tire3;
-		
-		private $tire4;
+        private $tire1;
+        
+        private $tire2;
+        
+        private $tire3;
+        
+        private $tire4;
 
     //CarXクラスがタイヤクラスを引数として扱えるように設定
-    public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
-		{
-				// Tireクラスのインスタンスをデータとして保持
-				$this->tire1 = $t1;
-				$this->tire2 = $t2;
-				$this->tire3 = $t3;
-				$this->tire4 = $t4;
+    public function __construct(Tire $t1, Tire $t2, Tire $t3, Tire $t4)
+    {
+        // Tireクラスのインスタンスをデータとして保持
+        $this->tire1 = $t1;
+        $this->tire2 = $t2;
+        $this->tire3 = $t3;
+        $this->tire4 = $t4;
     }
 }
 ```
@@ -168,23 +168,23 @@ class CarX
 //CarYクラス定義
 class CarY  
 {
-		private $tire1;
-		
-		private $tire2;
-		
-		private $tire3;
-		
-		private $tire4;
+        private $tire1;
+        
+        private $tire2;
+        
+        private $tire3;
+        
+        private $tire4;
   
-		//CarYクラスがタイヤクラスを引数として扱えるように設定
-		public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
-		{
-				// Tireクラスのインスタンスをデータとして保持．
-				$this->tire1 = $t1;
-				$this->tire2 = $t2;
-				$this->tire3 = $t3;
-				$this->tire4 = $t4;
-		}
+        //CarYクラスがタイヤクラスを引数として扱えるように設定
+        public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
+        {
+                // Tireクラスのインスタンスをデータとして保持．
+                $this->tire1 = $t1;
+                $this->tire2 = $t2;
+                $this->tire3 = $t3;
+                $this->tire4 = $t4;
+        }
 }
 ```
 
@@ -225,14 +225,14 @@ class Lock {}
 //Carクラスを定義
 class Car  
 {
-		private $lock;
+        private $lock;
     
-		public function __construct()
-		{
-				// 引数Lockクラスをインスタンス化
-				// Tireクラスのインスタンスをデータとして保持．
-				$this->lock = new Lock();
-		}
+        public function __construct()
+        {
+                // 引数Lockクラスをインスタンス化
+                // Tireクラスのインスタンスをデータとして保持．
+                $this->lock = new Lock();
+        }
 }
 ```
 
@@ -301,7 +301,7 @@ class Goods
 // 通常クラス
 class GoodsWithTax extends Goods
 {
-	// ★★★★★★注目★★★★★★
+    // ★★★★★★注目★★★★★★
     // printPriceメソッドをOverride
     public function printPrice(): void
     {
@@ -352,63 +352,63 @@ class GoodsWithTax extends Goods
 // 抽象クラス．型として提供したいものを定義する．
 abstract class ShainManagement
 {
-	// 定数の定義
-	const TIME_TO_ARRIVE = strtotime('10:00:00');
-	const TIME_TO_LEAVE = strtotime('19:00:00');
-	
+    // 定数の定義
+    const TIME_TO_ARRIVE = strtotime('10:00:00');
+    const TIME_TO_LEAVE = strtotime('19:00:00');
+    
 
-	// 具象メソッド．出勤時刻を表示．もし遅刻していたら，代わりに差分を表示．
-	// 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
-	public function toArrive()
-	{
-		$nowTime = strtotime( date('H:i:s') );
-	
-		// 出社時間より遅かった場合，遅刻と表示する．
-		if($nowTime > self::TIME_TO_ARRIVE){
-		
-			return sprintf(
-				"%s の遅刻です．",
+    // 具象メソッド．出勤時刻を表示．もし遅刻していたら，代わりに差分を表示．
+    // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
+    public function toArrive()
+    {
+        $nowTime = strtotime( date('H:i:s') );
+    
+        // 出社時間より遅かった場合，遅刻と表示する．
+        if($nowTime > self::TIME_TO_ARRIVE){
+        
+            return sprintf(
+                "%s の遅刻です．",
                 date('H時i分s秒', $nowTime - self::TIME_TO_ARRIVE)
-			);
-		}
-		
-		return sprintf(
+            );
+        }
+        
+        return sprintf(
             "%s に出勤しました．",
             date('H時i分s秒', $nowTime)
-		);
-	
-	}
-	
-	
-	// 抽象メソッド．
-	// 処理内容を子クラスでOverrideしなければならない．
-	abstract function toWork();
-	
-	
-	// 具象メソッド．退社時間と残業時間を表示．
-	// 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
-	public function toLeave()
-	{
-		$nowTime = strtotime( date('H:i:s') );
-		
-		return sprintf(
+        );
+    
+    }
+    
+    
+    // 抽象メソッド．
+    // 処理内容を子クラスでOverrideしなければならない．
+    abstract function toWork();
+    
+    
+    // 具象メソッド．退社時間と残業時間を表示．
+    // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
+    public function toLeave()
+    {
+        $nowTime = strtotime( date('H:i:s') );
+        
+        return sprintf(
             "%sに退社しました．%s の残業です．",
             date('H時i分s秒', $nowTime),
             date('H時i分s秒', $nowTime - self::TIME_TO_LEAVE)
-		);
-	}
+        );
+    }
 }
 ```
 
 ```PHP
 // 子クラス
-class EnginnerShainManagement extend ShainManagement
+class EnginnerShainManagement extends ShainManagement
 {
-	// 鋳型となった抽象クラスの抽象メソッドはOverrideしなければならない．
-	public function toWork
-	{
-		// 処理内容；
-	}
+    // 鋳型となった抽象クラスの抽象メソッドはOverrideしなければならない．
+    public function toWork()
+    {
+        // 処理内容；
+    }
 }
 ```
 
@@ -455,7 +455,7 @@ interface Communication
 // 正常に機能するように，コミュニケーションのメソッドの実装を強制する．
 class Human implements Communication
 {
-	// メソッドの処理内容を定義しなければならない．
+    // メソッドの処理内容を定義しなければならない．
      public function talk()
      {
           // 話す
@@ -671,42 +671,43 @@ ModuleAとModuleBは，スタンプ結合の関係にある．
 ```PHP
 class Common
 {
-		private $value;
+    private $value;
   
   
-		public function __construct(int $value)
-		{
-				$this->value = $value
+    public function __construct(int $value) 
+    {
+            $this->value = $value;
+    }
   
   
-		public function getValue()
-		{
-				return $this->value;
-		}
+    public function getValue()
+    {
+        return $this->value;
+    }
 }
 ```
 
 ```PHP
 class ModuleA
 {
-		public function methodA()
-		{
-      	$common = new Common(1);
+        public function methodA()
+        {
+        $common = new Common(1);
       
         $moduleB = new ModuleB;
       
-				return $moduleB->methodB($common); // 1
-		}
+                return $moduleB->methodB($common); // 1
+        }
 }
 ```
 
 ```PHP
 class ModuleB
 {
-		public function methodB(Common $common)
-		{
-				return $common->getValue(); // 1
-		}
+        public function methodB(Common $common)
+        {
+                return $common->getValue(); // 1
+        }
 }
 ```
 
@@ -733,12 +734,12 @@ class ModuleB
 // 継承元クラス
 class Example
 {
-	public value;
+    private $value1;
   
-	public function getValue()
-	{
-		return $this->value1; 
-	}  
+    public function getValue()
+    {
+        return $this->value1; 
+    }  
 }
 ```
 
@@ -746,12 +747,12 @@ class Example
 // 継承先クラス
 class SubExample extends Example
 {
-	public subValue;
+    public subValue;
   
-	public function getSubValue()
-	{
-		return $this->subValue; 
-	}  
+    public function getSubValue()
+    {
+        return $this->subValue; 
+    }  
 }
 ```
 
@@ -760,7 +761,7 @@ $subExample = new SubExample;
 
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
-echo $subExample->getValue()
+echo $subExample->getValue();
 ```
 
 
@@ -778,14 +779,14 @@ PHPでは，```use```によって，外部ファイルの名前空間，クラ�
 namespace Domain/Entity1;
 
 // 定数を定義．
-const VALUE = "これは定数です．"
+const VALUE = "これは定数です．";
 
 class Example1
 {
-	public function className()
-	{
-		return "example1メソッドです．";
-	}
+    public function className()
+    {
+        return "example1メソッドです．";
+    }
 }
 ```
 
@@ -799,9 +800,9 @@ namespace Domain/Entity2;
 
 class Example2
 {
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new Entity1/E1:
-	echo $e1;
+    // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+    $e1 = new Entity1/E1:
+    echo $e1;
 }
 ```
 
@@ -815,9 +816,9 @@ namespace Domain/Entity2;
 
 class Example2
 {
-	// 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-	$e1 = new E1;
-	echo $e1;
+    // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+    $e1 = new E1;
+    echo $e1;
 }
 ```
 
@@ -831,8 +832,8 @@ namespace Domain/Entity2;
 
 class Eeample2
 {
-	// Example1クラスのclassName()をコール．
-	echo className();
+    // Example1クラスのclassName()をコール．
+    echo className();
 }
 ```
 
@@ -846,8 +847,8 @@ namespace Domain/Entity2;
 
 class Example2
 {
-	// Example1クラスの定数を出力．
-	echo VALUE;
+    // Example1クラスの定数を出力．
+    echo VALUE;
 }
 ```
 
@@ -858,21 +859,21 @@ class Example2
 ```PHP
 abstract class Example 
 {
-	public function example()
-	{
-		// 処理内容;
-	}
+    public function example()
+    {
+        // 処理内容;
+    }
 }
 ```
 
 ```PHP
 class SubExample extends Example
 {
-	public function subExample()	
-	{
-		// 親メソッドの静的メソッドを読み込む
-		$example = parent::example();
-	} 
+    public function subExample()	
+    {
+        // 親メソッドの静的メソッドを読み込む
+        $example = parent::example();
+    } 
 }
 ```
 
@@ -899,41 +900,41 @@ PHPとは異なり，変数定義に『$』は用いないことに注意．
 // 外部クラスを定義
 class OuterClass
 {
-	private int value;
-		
-	// Setterとして，コンストラクタを使用．
-	OuterClass(Int value)
-	{
-		this.value = value;
-	}
-	
-	// 外部クラスのデータを取得するメソッド．
-	public int value()
-	{
-		return this.value;
-	}
-	
-	
-	// 内部クラスを定義 
-	class InnerClass
-	{
-		// 外部クラスのデータを取得して2倍するメソッド．
-	 	public int valueTimesTwo()
-	 	{
-	 		return OuterClass.this.value*2;
-	 	}
-	
-	}
-		
-	// 内部クラスをインスタンス化するメソッド．
-	public InnerClass InnerClassInstance()
-	{
-		// 外部クラスのインスタンス化 
-		OuterClass outerCLS = new OuterClass();
-		
-		// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
-		OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
-	}
+    private int value;
+        
+    // Setterとして，コンストラクタを使用．
+    OuterClass(Int value)
+    {
+        this.value = value;
+    }
+    
+    // 外部クラスのデータを取得するメソッド．
+    public int value()
+    {
+        return this.value;
+    }
+    
+    
+    // 内部クラスを定義 
+    class InnerClass
+    {
+        // 外部クラスのデータを取得して2倍するメソッド．
+        public int valueTimesTwo()
+        {
+            return OuterClass.this.value*2;
+        }
+    
+    }
+        
+    // 内部クラスをインスタンス化するメソッド．
+    public InnerClass InnerClassInstance()
+    {
+        // 外部クラスのインスタンス化 
+        OuterClass outerCLS = new OuterClass();
+        
+        // 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
+        OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
+    }
 }
 ```
 
@@ -945,35 +946,35 @@ class OuterClass
 // 外部クラスを定義
 class OuterClass
 {
-	// 静的データとする．
-	private int value;
-		
-	// Setterとして，コンストラクタを使用．
-	OuterClass(Int value)
-	{
-		this.value = value;
-	}
-	
-	// 静的内部クラスを定義 
-	static class InnerClass
-	{
-		// 外部クラスのデータを取得するメソッド．
-	 	public int value()
-	 	{
-	 		return OuterClass.this.value;
-	 	}
-	
-	}
-		
-	// 内部クラスをインスタンス化する静的メソッド．
-	public static InnerClass InnerClassInstance()
-	{
-		// 外部クラスのインスタンス化 
-		OuterClass outerCLS = new OuterClass();
-		
-		// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
-		OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
-	}
+    // 静的データとする．
+    private int value;
+        
+    // Setterとして，コンストラクタを使用．
+    OuterClass(Int value)
+    {
+        this.value = value;
+    }
+    
+    // 静的内部クラスを定義 
+    static class InnerClass
+    {
+        // 外部クラスのデータを取得するメソッド．
+        public int value()
+        {
+            return OuterClass.this.value;
+        }
+    
+    }
+        
+    // 内部クラスをインスタンス化する静的メソッド．
+    public static InnerClass InnerClassInstance()
+    {
+        // 外部クラスのインスタンス化 
+        OuterClass outerCLS = new OuterClass();
+        
+        // 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
+        OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
+    }
 }
 ```
 
@@ -993,18 +994,18 @@ PHPには組み込まれていない．
 
 ```java
 class Example<T>{
-	
-	private T t;
-	
-	public Example(T t)
-	{
-		this.t = t;
-	}
-	
-	public T getT()
-	{
-		return t;
-	}
+    
+    private T t;
+    
+    public Example(T t)
+    {
+        this.t = t;
+    }
+    
+    public T getT()
+    {
+        return t;
+    }
 }
 ```
 
@@ -1108,14 +1109,14 @@ Javaには組み込まれていない．
 // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
 public static function aggregateDogToyEntity(Array $fetchedData)
 {
-	return new DogToyEntity
-	(
-		new ColorVO($fetchedData['dog_toy_type']),
-		$fetchedData['dog_toy_name'],
-		$fetchedData['number'],
-		new PriceVO($fetchedData['dog_toy_price']),
-		new ColorVO($fetchedData['color_value'])
-	);
+    return new DogToyEntity
+    (
+        new ColorVO($fetchedData['dog_toy_type']),
+        $fetchedData['dog_toy_name'],
+        $fetchedData['number'],
+        new PriceVO($fetchedData['dog_toy_price']),
+        new ColorVO($fetchedData['color_value'])
+    );
 }	
 ```
 
@@ -1125,8 +1126,8 @@ public static function aggregateDogToyEntity(Array $fetchedData)
 // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
 public static function computeExampleFee(Entity $order): Money
 {
-	$money = new Money($order->exampleFee);
-	return $money;
+    $money = new Money($order->exampleFee);
+    return $money;
 }
 ```
 
@@ -1180,7 +1181,7 @@ class Test01 {
 
     private $property01;
 
-	// Setterで$property01に値を設定
+    // Setterで$property01に値を設定
     public function setProperty($property01)
     {
         $this->property01 = $property01;
@@ -1200,7 +1201,7 @@ class Test02 {
 
     private $property02;
 
-	// コンストラクタで$property02に値を設定
+    // コンストラクタで$property02に値を設定
     public function __construct($property02)
     {
         $this->property02 = $property02;
@@ -1213,19 +1214,19 @@ class Test02 {
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．
 
 ```PHP
-$test01 = new Test01
+$test01 = new Test01;
 
-$test01->setProperty01("データ01の値")
+$test01->setProperty01("データ01の値");
 
-$test01->setProperty01("新しいデータ01の値")
+$test01->setProperty01("新しいデータ01の値");
 ```
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なクラスとなる．
 
 ```PHP
-$test02 = new Test02("データ02の値")
+$test02 = new Test02("データ02の値");
 
-$test02 = new Test02("新しいデータ02の値")
+$test02 = new Test02("新しいデータ02の値");
 ```
 
 Entityは，Mutableであるため，Setterと```__construct()```の両方を持つことができる．ValueObjectは，Immutableのため，```__construct()```しか持つことができない．
@@ -1240,13 +1241,13 @@ Entityは，Mutableであるため，Setterと```__construct()```の両方を持
 
 ```PHP
 class Obj_A{
-	private $objB;
-	
-	// 返却値のデータ型を指定
-	public function getObjB(): ObjB
-	{
-		return $this->objB;
-	}
+    private $objB;
+    
+    // 返却値のデータ型を指定
+    public function getObjB(): ObjB
+    {
+        return $this->objB;
+    }
 }
 ```
 
@@ -1254,13 +1255,13 @@ class Obj_A{
 
 ```PHP
 class Obj_B{
-	private $objC;
+    private $objC;
  
-	// 返却値のデータ型を指定
-	public function getObjC(): ObjC
-	{
-		return $this->objC;
-	}
+    // 返却値のデータ型を指定
+    public function getObjC(): ObjC
+    {
+        return $this->objC;
+    }
 }
 ```
 
@@ -1268,13 +1269,13 @@ class Obj_B{
 
 ```PHP
 class Obj_C{
-	private $objD;
+    private $objD;
  
- 	// 返却値のデータ型を指定
-	public function getObjD(): ObjD
-	{
-		return $this->objD;
-	}
+    // 返却値のデータ型を指定
+    public function getObjD(): ObjD
+    {
+        return $this->objD;
+    }
 }
 ```
 
@@ -1312,13 +1313,13 @@ $D = getObjB()->getObjC()->getObjC();
 class Example
 {
 
-	private $example = [];
-	
-	// 引数と返却値のデータ型を指定
-	public function __get(String $name): String
-	{
-		echo "{$name}データは存在しないため，データ値を取得できません．"
-	}
+    private $example = [];
+    
+    // 引数と返却値のデータ型を指定
+    public function __get(String $name): String
+    {
+        echo "{$name}データは存在しないため，データ値を取得できません．"
+    }
 
 }
 ```
@@ -1352,12 +1353,12 @@ hogeデータは存在しないため，値を呼び出せません．
 class Example
 {
 
-	private $example = [];
-	
-	// 引数と返り値のデータ型を指定
-	public function __set(String $name, String $value): String
+    private $example = [];
+    
+    // 引数と返り値のデータ型を指定
+    public function __set(String $name, String $value): String
     {
-    	echo "{$name}データは存在しないため，{$value}を設定できません．"
+        echo "{$name}データは存在しないため，{$value}を設定できません．"
     }
 
 }
@@ -1383,7 +1384,7 @@ class Test02 {
 
     private $property02;
 
-	// コンストラクタで$property02に値を設定
+    // コンストラクタで$property02に値を設定
     public function __construct($property02)
     {
         $this->property02 = $property02;
@@ -1397,19 +1398,19 @@ class Test02 {
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
 ```PHP
-$test01 = new Test01
+$test01 = new Test01;
 
-$test01->setProperty01("データ01の値")
-PHP
-$test01->setProperty01("新しいデータ01の値")
+$test01->setProperty01("データ01の値");
+
+$test01->setProperty01("新しいデータ01の値");
 ```
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
 
 ```PHP
-$test02 = new Test02("データ02の値")
+$test02 = new Test02("データ02の値");
 
-$test02 = new Test02("新しいデータ02の値")
+$test02 = new Test02("新しいデータ02の値");
 ```
 
 
@@ -1436,45 +1437,45 @@ $test02 = new Test02("新しいデータ02の値")
 ```PHP
 function quickSort(Array $array): Array 
 {
-	// 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
-	if (count($array) <= 1) {
-		return $array;
-	}
+    // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
+    if (count($array) <= 1) {
+        return $array;
+    }
 
-	// 一番最初の値をPivotとする．
-	$pivot = array_shift($array); 
+    // 一番最初の値をPivotとする．
+    $pivot = array_shift($array); 
 
-	// グループを定義
-	$left = $right = [];
+    // グループを定義
+    $left = $right = [];
 
-	foreach ($array as $value) {
+    foreach ($array as $value) {
 
-		if ($value < $pivot) {
-		
-			// Pivotより小さい数は左グループに格納
-			$left[] = $value;
-		
-		} else {
-		
-			// Pivotより大きい数は右グループに格納
-			$right[] = $value;
-			
-			}
+        if ($value < $pivot) {
+        
+            // Pivotより小さい数は左グループに格納
+            $left[] = $value;
+        
+        } else {
+        
+            // Pivotより大きい数は右グループに格納
+            $right[] = $value;
+            
+            }
 
-	}
+    }
 
     // 処理の周回ごとに，結果の配列を結合．
-	return array_merge
-	(
-		// 左のグループを再帰的にクイックソート．
-		quickSort($left),
-		
-		// Pivotを結果に組み込む．
-		array($pivot),
-		
-		// 左のグループを再帰的にクイックソート．
-		quickSort($right)
-	);
+    return array_merge
+    (
+        // 左のグループを再帰的にクイックソート．
+        quickSort($left),
+        
+        // Pivotを結果に組み込む．
+        array($pivot),
+        
+        // 左のグループを再帰的にクイックソート．
+        quickSort($right)
+    );
 
 }
 ```
@@ -1496,14 +1497,13 @@ var_dump($result);
 大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
 
 ```PHP
-public cachedResult;
+private $cachedResult;
 
-public funcCollection;
-
+private $funcCollection;
 
 public function callFunc__construct()
 {
-	$this->funcCollection = $this->funcCollection()
+    $this->funcCollection = $this->funcCollection();
 }
 
 
@@ -1519,14 +1519,14 @@ public function funcCollection()
 // 集計メソッド
 public function computeProfit()
 {
-	// 時間のかかる集計処理;
+    // 時間のかかる集計処理;
 }
 
 
 // cacheデータに配列が設定されていた場合に値を設定し，設定されていた場合はそのまま使う．
 public function cachedResult($funcName)
 {
-  if(!isset($this->cachedResult[$funcName]){
+  if(!isset($this->cachedResult[$funcName])){
     
     // Collectionに登録されているメソッド名を出力し，call_user_funcでメソッドをコールする．
     $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
@@ -1555,9 +1555,9 @@ $item = new Item;
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // use()に，親メソッド（$optionName）のスコープの$itemを渡す．
 $optionName = function() use($item){
-								$item->getOptionName();
-							});
-	
+                                $item->getOptionName();
+                            });
+    
 // function()には引数が設定されていないので，コール時に引数は不要．
 echo $optionName;
   
@@ -1573,9 +1573,9 @@ $item = new Item;
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // 親メソッド（$optionName）のスコープの$itemを，use()に渡す．
 $optionName = function($para) use($item){
-								$item->getOptionName().$para;
-							};
-	
+                                $item->getOptionName().$para;
+                            };
+    
 // コール時に，$paramをfunction()に渡す．
 echo $optionName("BC");
   
@@ -1595,9 +1595,9 @@ $option = new Option;
 
 // データの値に無名関数を格納する．
 $option->name = function($para) use($item){
-									$item->getOptionName().$para;
-								};
-	
+                                    $item->getOptionName().$para;
+                                };
+    
 // コール時に，$paramをfunction()に渡す．
 echo $option->name("BC");
 
@@ -1619,7 +1619,7 @@ $item = new Item;
 $optionName = call_user_func(function("BC") use($item){
                                   $item->getOptionName().$para;
                                });
-	
+    
 // $paramはすでに即コール時に渡されている．
 // これはコールではなく，即コール時に格納された返却値の出力．
 echo $optionName;
@@ -1649,7 +1649,7 @@ function test($callback)
 
 // コールバックを定義
 // 関数の中でコールされるため，「後で呼び出される」という意味合いから，コールバック関数といえる．
-function callbackMethod()：String
+function callbackMethod():string
 {
     return "出力に成功しました．";
 }
@@ -1665,7 +1665,7 @@ test("callbackMethod");
 // 第一引数と第二引数の場合
 
 // 高階関数を定義
-public function higher-order($param, $callback)
+public function higherOrder($param, $callback)
 {
     return $callback($param);
 }
@@ -1677,7 +1677,7 @@ public function callbackMethod($param)
 }
  
 // 高階関数の第一引数にコールバック関数の引数，第二引数にコールバック関数を渡す
-higher-order("第一引数", "callbackMethod");
+higherOrder("第一引数", "callbackMethod");
 
 // 出力結果
 // 第一引数の出力に成功しました．
@@ -1689,21 +1689,21 @@ higher-order("第一引数", "callbackMethod");
 
 ```PHP
 // 高階関数のように，関数を引数として渡す．
-public function higher-order($parentVar, $callback)
+public function higherOrder($parentVar, $callback)
 {
-	$parentVar = "&親メソッドのスコープの変数"
-	return $callback($parentVar)
+    $parentVar = "&親メソッドのスコープの変数";
+    return $callback($parentVar);
 }
 
 // 第二引数の無名関数．関数の中でコールされるため，「後でコールされる」という意味合いから，コールバック関数といえる．
 // コールバック関数は再利用されないため，名前をつけずに無名関数とすることが多い．
 // 親メソッドのスコープで定義されている変数を引数として渡す．（普段よくやっている値渡しと同じ）
-high-order($parentVar, function() use($parentVar)
+higherOrder($parentVar, function() use($parentVar)
         {
             return $parentVar."の出力に成功しました．";
         }
-	)
-	
+    );
+    
 // 出力結果
 // 親メソッドのスコープの変数の出力に成功しました．	
 ```
@@ -1714,33 +1714,33 @@ high-order($parentVar, function() use($parentVar)
 
 ```PHP
 /**
- * @var Array
+ * @var array
  */
 protected $properties;
 
 // 非無名メソッドあるいは無名メソッドを引数で渡す．
 public function Shiborikomi($callback)
 {
-	if (!is_callable($callback)) {
-	throw new \LogicException;
-	}
+    if (!is_callable($callback)) {
+    throw new \LogicException;
+    }
 
-	// 自身が持つ配列型のデータを加工し，再格納する．
-	$properties = [];
-	foreach ($this->properties as $property) {
+    // 自身が持つ配列型のデータを加工し，再格納する．
+    $properties = [];
+    foreach ($this->properties as $property) {
         
-		// 引数の無名関数によって，データに対する加工方法が異なる．
-		// 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
-		$returned = call_user_func($property, $callback);
-		if ($returned) {
-		
-			// 再格納．
-			$properties[] = $returned;
-		}
-	}
+        // 引数の無名関数によって，データに対する加工方法が異なる．
+        // 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
+        $returned = call_user_func($property, $callback);
+        if ($returned) {
+        
+            // 再格納．
+            $properties[] = $returned;
+        }
+    }
 
-	// 他のデータは静的に扱ったうえで，自身を返す．
-	return new static($properties);
+    // 他のデータは静的に扱ったうえで，自身を返す．
+    return new static($properties);
 }
 ```
 
@@ -1761,9 +1761,9 @@ public function Shiborikomi($callback)
 ```PHP
 Array
 (
-	[0] => A
-	[1] => B
-	[2] => C
+    [0] => A
+    [1] => B
+    [2] => C
 )
 ```
 
@@ -1773,19 +1773,19 @@ Array
 
 ```PHP
 ( 
-	[0] => Array
-		(
-			[0] => リンゴ
-			[1] => イチゴ
-			[2] => トマト
+    [0] => Array
+        (
+            [0] => リンゴ
+            [1] => イチゴ
+            [2] => トマト
     )
 
-	[1] => Array
-		(
-			[0] => メロン
-			[1] => キュウリ
-			[2] => ピーマン
-		)
+    [1] => Array
+        (
+            [0] => メロン
+            [1] => キュウリ
+            [2] => ピーマン
+        )
 )
 ```
 
@@ -1863,7 +1863,7 @@ echo $a.$i.$u; // あいう
 しかし，以下の様に，```list()```を使うことによって，複数の変数への格納を一行で実装することができる．
 
 ```PHP
-list($a, $i, $u) = array("あ", "い", "う")
+list($a, $i, $u) = array("あ", "い", "う");
 
 echo $a.$i.$u; // あいう
 ```
@@ -1917,7 +1917,7 @@ print_r($array);
 //	)
 
 // 取り出された値の確認
-echo $theFirst // Blue
+echo $theFirst; // Blue
 ```
 
 - **メッセージQueue**
@@ -2051,9 +2051,9 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 ```PHP
 Fruit Object
 (
-	[id:private] => 1
-	[name:private] => リンゴ
-	[price:private] => 100
+    [id:private] => 1
+    [name:private] => リンゴ
+    [price:private] => 100
 )
 ```
 
@@ -2120,7 +2120,7 @@ class requiedTime
   public function minuteByCar()
   {
     $minute = $this->distance * 1000 / self::CAR_SPEED_PER_MINUTE;
-    return ceil($minute);	
+    return ceil($minute);
   }
 }
 ```
@@ -2238,7 +2238,7 @@ echo $b; // 2
 class Example {};
 
 if(new Example == new Example){
-	echo '同じです';
+    echo '同じです';
 } else { echo '異なります' }
 
 // 実行結果
@@ -2253,7 +2253,7 @@ if(new Example == new Example){
 class Example {};
 
 if(new Example === new Example){
-	echo '同じです';
+    echo '同じです';
 } else { echo '異なります' }
 
 // 実行結果
@@ -2268,7 +2268,7 @@ class Example {};
 $a = $b = new Example;
 
 if($a === $b){
-	echo '同じです';
+    echo '同じです';
 } else { echo '異なります' }
 
 // 実行結果
@@ -2343,29 +2343,29 @@ preg_match('/jpeg$/i', $x);
 const noOptionItem = 0;
 
 // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options) {
+if(!empty($routeEntity->options)) {
     foreach ($routeEntity->options as $option) {
     
-    	// if文を通過した場合，メソッドの返却値が格納される．
+        // if文を通過した場合，メソッドの返却値が格納される．
         // 通過しない場合，定数が格納される．
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
-		} else {
-			$result['optionItemA'] = noOptionItem;
-			}
-		
+        } else {
+            $result['optionItemA'] = noOptionItem;
+            }
+        
         if ($option->isOptionItemB()) {
             $result['optionItemB'] = $option->optionItemB();
-		} else {
-			$result['optionItemB'] = noOptionItem;
-			}
-			
+        } else {
+            $result['optionItemB'] = noOptionItem;
+            }
+            
         if ($option->isOptionItemC()) {
             $result['optionItemC'] = $option->optionItemC();
-		} else {
-			$result['optionItemC'] = noOptionItem;
-			}		
-	};
+        } else {
+            $result['optionItemC'] = noOptionItem;
+            }		
+    };
 }
 
 return $result;
@@ -2385,23 +2385,23 @@ $result['optionItemB'] = noOptionItem;
 $result['optionItemC'] = noOptionItem;
 
 // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options) {
+if(!empty($routeEntity->options)) {
     foreach ($routeEntity->options as $option) {
     
-		// if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
+        // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
         // 通過しない場合，初期値0が用いられる．
         if ($option->isOptionItemA()) {
             $result['optionItemA'] = $option->optionItemA();
-		}
-		
+        }
+        
         if ($option->isOptionItemB()) {
             $result['optionItemB'] = $option->optionItemB();
-		}		
+        }		
 
         if ($option->isOptionItemC()) {
             $result['optionItemC'] = $option->optionItemC();
-		}
-	};
+        }
+    };
 }
 
 return $result;
@@ -2526,8 +2526,8 @@ public function leapYear(Int $year): String
 
     // (1)
     } else{
-    	return "うるう年";
-    	
+        return "うるう年";
+        
     }
 }
 ```
@@ -2547,22 +2547,22 @@ public function leapYear(Int $year): String
 
     // (5)
     if($year <= 0){
-    	throw new Exception("負の数は判定できません．");
+        throw new Exception("負の数は判定できません．");
     }
 
     // (4)
     if($year % 4 != 0 ){
-    	return "平年";
+        return "平年";
     }
 
     // (3)
     if($year % 100 != 0){
-    	return "うるう年";
+        return "うるう年";
     }
 
     // (2)
     if($year % 400 != 0){
-    	return "平年";
+        return "平年";
     }
 
     // (1)
@@ -2578,28 +2578,28 @@ public function leapYear(Int $year): String
 ```PHP
 public function leapYear(Int $year): String
 {
-	switch(true) {
+    switch(true) {
     
     // (5)
-    case($year <= 0)
-    	throw new Exception("負の数は判定できません．");
+    case($year <= 0):
+        throw new Exception("負の数は判定できません．");
 
     // (4)
-		case($year % 4 != 0 ):
-    	return "平年";
+        case($year % 4 != 0 ):
+        return "平年";
 
     // (3)
     case($year % 100 != 0):
-    	return "うるう年";
+        return "うるう年";
 
     // (2)
     case($year % 400 != 0):
-    	return "平年";
+        return "平年";
 
     // (1)
     dafault:
-    	"うるう年";
-	}
+        "うるう年";
+    }
       
 }
 ```
@@ -2641,12 +2641,12 @@ $csv['ID'] = $order->id;
 ```PHP
 # 右辺には，上記に当てはまらない状態『TRUE』が置かれている．
 if($this->$var == TRUE){
-	// 処理A;
+    // 処理A;
 }
 
 # ただし，基本的に右辺は省略すべき．
 if($this->$var){
-	// 処理A;
+    // 処理A;
 }
 ```
 
@@ -2658,17 +2658,17 @@ if($this->$var){
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
-	// インスタンスが作成された時に実行される処理
-	public function __construct()
-	{
-		parent::__construct("HTTPリクエストに失敗しました", 400);
-	}
-	
-	// 新しいメソッドを定義
-	public function example()
-	{
-		// なんらかの処理;
-	}
+    // インスタンスが作成された時に実行される処理
+    public function __construct()
+    {
+        parent::__construct("HTTPリクエストに失敗しました", 400);
+    }
+    
+    // 新しいメソッドを定義
+    public function example()
+    {
+        // なんらかの処理;
+    }
 }
 ```
 
@@ -2680,7 +2680,7 @@ class HttpRequestException extends Exception
 
 ```PHP
 if (empty($value)) {
-	throw new Exception('Variable is empty');
+    throw new Exception('Variable is empty');
 }
 
 return $value;
@@ -2707,13 +2707,13 @@ try{
 // try文で指定のExceptionが投げられた時に，指定のcatch文に入る
 // あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）
 }catch(WebAPIException $e){
-   	// エラー文を出力．
-   	print $e->getMessage();
+    // エラー文を出力．
+    print $e->getMessage();
 
     
 }catch(HttpRequestException $e){
-   	// エラー文を出力．
-   	print $e->getMessage();
+    // エラー文を出力．
+    print $e->getMessage();
 
     
 // Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため，最後に記述するべき．
@@ -2734,22 +2734,23 @@ try{
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
-	// インスタンスが作成された時に実行される処理
-	public function __construct()
-	{
-		parent::__construct("HTTPリクエストに失敗しました", 400);
-	}
+    // インスタンスが作成された時に実行される処理
+    public function __construct()
+    {
+        parent::__construct("HTTPリクエストに失敗しました", 400);
+    }
 ```
 
 ```PHP
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
-	// インスタンスが作成された時に実行される処理
-	public function __construct()
-	{
-		parent::__construct("HTTPリクエストに失敗しました", 400);
-	}
+    // インスタンスが作成された時に実行される処理
+    public function __construct()
+    {
+        parent::__construct("HTTPリクエストに失敗しました", 400);
+    }
+}
 ```
 
 
@@ -2774,23 +2775,23 @@ class HttpRequestException extends Exception
 // $options配列には，OptionA,B,Cエンティティのいずれかが格納されているものとします．
 public function checkOption(Array $options)
 {
-	foreach($options as $option){
-		
-		if($option->name() === 'オプションA'){
-			$result = 'オプションAが設定されています．'
-		}			
-		
-		if($option->name() === 'オプションB'){
-			$result = 'オプションBが設定されています．'			
-		}
-		
-		if($option->name() === 'オプションC'){
-			$result = 'オプションCが設定されています．'
-		}
-		
-	}
-	
-	return $result
+    foreach($options as $option){
+        
+        if($option->name() === 'オプションA'){
+            $result = 'オプションAが設定されています．'
+        }			
+        
+        if($option->name() === 'オプションB'){
+            $result = 'オプションBが設定されています．'			
+        }
+        
+        if($option->name() === 'オプションC'){
+            $result = 'オプションCが設定されています．'
+        }
+        
+    }
+    
+    return $result;
 }
 ```
 
@@ -2805,13 +2806,13 @@ public function checkOption(Array $options)
 - **要素の位置を繰り返しズラす場合**
 
 ```PHP
-moveFile(fromPos < toPos)
+moveFile($fromPos < $toPos)
 {
-	if(fromPos < toPos){
-		for(i = fromPos ; i ≦ toPos - 1; ++ 1){
-			File[i] = File[i + 1];
-		}
-	}
+    if($fromPos < $toPos){
+        for($i = fromPos ; $i ≦ $toPos - 1; ++ 1){
+            File[$i] = File[$i + 1];
+        }
+    }
 }
 ```
 
@@ -2828,10 +2829,10 @@ moveFile(fromPos < toPos)
 $i = 0; 
 while($i < 4){
     
-	echo $i;
+    echo $i;
     
-	// 改行
-	echo PHP_EOL;
+    // 改行
+    echo PHP_EOL;
 }
 ```
 
@@ -2852,13 +2853,13 @@ $a = array(1, -1, 2, ... ,N);
 ```
 
 ```PHP
-sum = 0;
+$sum = 0;
 
-for(i = 0; i < N; i++){
-	$x = $a[i]
-	if($x > 0){
-		sum += $x;
-	}
+for($i = 0; $i < N; $i++){
+    $x = $a[$i];
+    if($x > 0){
+        $sum += $x;
+    }
 }
 ```
 
@@ -2871,17 +2872,17 @@ $a = array(1, -1, 2, ... ,N);
 ```
 
 ```PHP
-sum = 0;
+$sum = 0;
 
 // 反復数の初期値
-i = 0;
+$i = 0;
 
-while(i < N){
-	$x = $a[i];
-	if($x > 0){
-		sum += $x
-	}
-	i += 1;
+while($i < N){
+    $x = $a[$i];
+    if($x > 0){
+        $sum += $x;
+    }
+    $i += 1;
 }
 ```
 
@@ -2894,11 +2895,11 @@ $a = array(1, -1, 2, ... ,N);
 ```
 
 ```PHP
-sum = 0;
+$sum = 0;
 
 foreach($a as $x){
     if($x > 0){
-        sum += $x;
+        $sum += $x;
     }
 }
 ```
