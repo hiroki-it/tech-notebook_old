@@ -77,24 +77,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 class createExampleCommand extends \Symfony\Component\Console\Command\Command
 {
   // オプションの設定
-	protected function configure()
-	{
-		// コマンド名
-		$this->setName('create:example');
+    protected function configure()
+    {
+        // コマンド名
+        $this->setName('create:example');
     
-		// コマンド名の後に追加したい引数名
-		$this->addArgument('year-month', InputArgument::REQUIRED, '処理年月を設定してください．')
-	}
+        // コマンド名の後に追加したい引数名
+        $this->addArgument('year-month', InputArgument::REQUIRED, '処理年月を設定してください．')
+    }
   
-	// コマンドの処理内容
-	protected function execute(InputeInterface $input, OutputInterface $output)
-	{
-		try {
-				// 日時フォーマットからCarbonインスタンスを作成する．
-				$year_month = Carbon::createFromFormat('Y-m', $input->getArgument('year-month'));
-		
-		} catch (\Exception $e) {
-			// エラーログの文章を作成
+    // コマンドの処理内容
+    protected function execute(InputeInterface $input, OutputInterface $output)
+    {
+        try {
+                // 日時フォーマットからCarbonインスタンスを作成する．
+                $year_month = Carbon::createFromFormat('Y-m', $input->getArgument('year-month'));
+        
+        } catch (\Exception $e) {
+            // エラーログの文章を作成
   }  
   
 }
@@ -178,18 +178,18 @@ public function handle
     $catch = true
 )
 {
-	$this->boot();
+    $this->boot();
     
-	++$this->requestStackSize;
+    ++$this->requestStackSize;
     
-	$this->resetServices = true;
+    $this->resetServices = true;
 
-	try {
+    try {
         return $this->getHttpKernel()->handle($request, $type, $catch);
-	
+    
     } finally {
         --$this->requestStackSize;
-	}
+    }
 }
 ```
 
@@ -344,7 +344,7 @@ class dogToyQuey(Value $toyType): Array
                                       $queryBuilder->getParameters(),
                       )
     
-											// レコードを取得する．
+                                            // レコードを取得する．
                       ->fetchAll();
 
 }
