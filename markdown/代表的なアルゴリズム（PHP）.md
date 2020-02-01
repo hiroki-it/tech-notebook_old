@@ -44,36 +44,36 @@
 function minSelectSort(Array $array): Array
 {
 
-	// 比較基準値を固定し，それ以外の数値と比べていく．
-	for($i = 0; $i < count($array)-1; $i++){
-	
-		// 比較基準値を仮の最小値として定義．
+    // 比較基準値を固定し，それ以外の数値と比べていく．
+    for($i = 0; $i < count($array)-1; $i++){
+    
+        // 比較基準値を仮の最小値として定義．
         $min = $array[$i];
-    	
-		// 比較基準値の位置を定義
-		$position = $i;
-		
-		// 比較基準値の位置以降で，数値を固定し，順番に評価していく．
-		for($j = $position + 1; $j < count($array); $j++){
-		
-			// 比較基準値の位置以降に小さい数値があれば，比較基準値と最小値を更新．
-			if($min > $array[$j]){
-				$position = $j;
-				$min = $array[$j];
-			}
-		}
-		
-		// 比較基準値の位置が更新されていなかった場合，親のfor文から抜ける．
-		if($i == $position){
-			break;
-		}
+        
+        // 比較基準値の位置を定義
+        $position = $i;
+        
+        // 比較基準値の位置以降で，数値を固定し，順番に評価していく．
+        for($j = $position + 1; $j < count($array); $j++){
+        
+            // 比較基準値の位置以降に小さい数値があれば，比較基準値と最小値を更新．
+            if($min > $array[$j]){
+                $position = $j;
+                $min = $array[$j];
+            }
+        }
+        
+        // 比較基準値の位置が更新されていなかった場合，親のfor文から抜ける．
+        if($i == $position){
+            break;
+        }
 
-		// 親のfor文の最小値を更新．
-		$array[$i] = $min;
-		
-		// 次に2番目を比較基準値とし，同じ処理を繰り返していく．
-	}
-	return $array;
+        // 親のfor文の最小値を更新．
+        $array[$i] = $min;
+        
+        // 次に2番目を比較基準値とし，同じ処理を繰り返していく．
+    }
+    return $array;
 }
 ```
 
@@ -119,45 +119,45 @@ var_dump($result);
 ```PHP
 function quickSort(Array $array): Array 
 {
-	// 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
-	if (count($array) <= 1) {
-		return $array;
-	}
+    // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
+    if (count($array) <= 1) {
+        return $array;
+    }
 
-	// 一番最初の値をPivotとする．
-	$pivot = array_shift($array); 
+    // 一番最初の値をPivotとする．
+    $pivot = array_shift($array); 
 
-	// グループを定義
-	$left = $right = [];
+    // グループを定義
+    $left = $right = [];
 
-	foreach ($array as $value) {
+    foreach ($array as $value) {
 
-		if ($value < $pivot) {
-		
-			// Pivotより小さい数は左グループに格納
-			$left[] = $value;
-		
-		} else {
-		
-			// Pivotより大きい数は右グループに格納
-			$right[] = $value;
-			
-			}
+        if ($value < $pivot) {
+        
+            // Pivotより小さい数は左グループに格納
+            $left[] = $value;
+        
+        } else {
+        
+            // Pivotより大きい数は右グループに格納
+            $right[] = $value;
+            
+            }
 
-	}
+    }
 
     // 処理の周回ごとに，結果の配列を結合．
-	return array_merge
-	(
-		// 左のグループを再帰的にクイックソート．
-		quickSort($left),
-		
-		// Pivotを結果に組み込む．
-		array($pivot),
-		
-		// 左のグループを再帰的にクイックソート．
-		quickSort($right)
-	);
+    return array_merge
+    (
+        // 左のグループを再帰的にクイックソート．
+        quickSort($left),
+        
+        // Pivotを結果に組み込む．
+        array($pivot),
+        
+        // 左のグループを再帰的にクイックソート．
+        quickSort($right)
+    );
 
 }
 ```
@@ -353,66 +353,66 @@ $matrix = array(
 ```PHP
 // 各地点間の距離，出発地点，開始地点を引数にとる．
 public function bestFirstSearchByDijkstra(
-	Array $matrix,
-	Int $startPoint,
-	Int $goalPoint
+    Array $matrix,
+    Int $startPoint,
+    Int $goalPoint
 )
 {
-	// 地点数を定数で定義
-	define('POINT_NUMBER', count($matrix));
-	
-	if($startPoint < self::POINT_NUMBER
-		|| self::POINT_NUMBER < $goalPoint){
-			throw new Exception('存在しない地点番号は設定できません．'）；
-	}
-	
-	// 出発地点を定数で定義
-	define('START_POINT', $startPoint);
-	
-	// 到着地点を定数で定義
-	define('GOAL_POINT', $goalPoint));
-	
-	// 無限大の定数のINFを使いたいが，定数は上書きできないため，代わりに-1を使用．
-	// 各頂点に対して，最短ルート地点番号，地点間距離の初期値，最短距離確定フラグを設定．
-	for($i = 0; $i < self::POINT_NUMBER; $i ++){
-		$route[$i] = -1;
-		$distance[$i] = -1;
-		$fixFlg[$i] = false;
-		}
-		
-	// 【別の書き方】
-	// $cost = array_fill(0, self::POINT_NUMBER, -1);
-	// $distance = array_fill(0, self::POINT_NUMBER, -1);
-	// $fix = array_fill(0, self::POINT_NUMBER, false);
-	
-	// 出発地点から出発地点への距離をゼロとする．
-	$distance[self::START_POINT] = 0;
-	
-	// 
-	while(true)｛
-		$i = 0;
-		
-		while($i < self::POINT_NUMBER){
-			if(!$fixFlg[$i]){
-				break 1;
-			}
-			$i += 1;
-		}
-		
-		if($i === self::POINT_NUMBER){
-			break 1;
-		}
-		
-		for($j = $i + 1; j < self::POINT_NUMBER; $j ++){
-			if(!$fixFlg[$i] && $distance[$j] < $distance[$i]){
-				$i = $j;
-			}
-		}
-		
-		今の自分には，これ以上は難しい…
-		未来の俺，頑張ってくれ…
-	
-	}
+    // 地点数を定数で定義
+    define('POINT_NUMBER', count($matrix));
+    
+    if($startPoint < self::POINT_NUMBER
+        || self::POINT_NUMBER < $goalPoint){
+            throw new Exception('存在しない地点番号は設定できません．'）；
+    }
+    
+    // 出発地点を定数で定義
+    define('START_POINT', $startPoint);
+    
+    // 到着地点を定数で定義
+    define('GOAL_POINT', $goalPoint));
+    
+    // 無限大の定数のINFを使いたいが，定数は上書きできないため，代わりに-1を使用．
+    // 各頂点に対して，最短ルート地点番号，地点間距離の初期値，最短距離確定フラグを設定．
+    for($i = 0; $i < self::POINT_NUMBER; $i ++){
+        $route[$i] = -1;
+        $distance[$i] = -1;
+        $fixFlg[$i] = false;
+        }
+        
+    // 【別の書き方】
+    // $cost = array_fill(0, self::POINT_NUMBER, -1);
+    // $distance = array_fill(0, self::POINT_NUMBER, -1);
+    // $fix = array_fill(0, self::POINT_NUMBER, false);
+    
+    // 出発地点から出発地点への距離をゼロとする．
+    $distance[self::START_POINT] = 0;
+    
+    // 
+    while(true)｛
+        $i = 0;
+        
+        while($i < self::POINT_NUMBER){
+            if(!$fixFlg[$i]){
+                break 1;
+            }
+            $i += 1;
+        }
+        
+        if($i === self::POINT_NUMBER){
+            break 1;
+        }
+        
+        for($j = $i + 1; j < self::POINT_NUMBER; $j ++){
+            if(!$fixFlg[$i] && $distance[$j] < $distance[$i]){
+                $i = $j;
+            }
+        }
+        
+        今の自分には，これ以上は難しい…
+        未来の俺，頑張ってくれ…
+    
+    }
 ```
 
 **【最短経路探索処理の解説】**

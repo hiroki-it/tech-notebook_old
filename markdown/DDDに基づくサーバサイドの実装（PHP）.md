@@ -159,11 +159,11 @@ CRUDのReadの場合，以下のような処理手順を組み合わせて，Use
 ```PHP
 class AcceptOrdersController
 {
-	// 単なるメソッドではなく，Use caseとなるようなメソッド
-	public function acceptOrders()
-	{
-	
-	}
+    // 単なるメソッドではなく，Use caseとなるようなメソッド
+    public function acceptOrders()
+    {
+    
+    }
 
 }  
 ```
@@ -221,8 +221,8 @@ private function castAcceptOrders(Array $toyOrderEntity)
 abstract class getDogToyEntityRepository
 {
 
-	// 対応する具象メソッドはInfrastructure層のRepositoryに実装．
-	abstract public function arrayDogToyEntities();
+    // 対応する具象メソッドはInfrastructure層のRepositoryに実装．
+    abstract public function arrayDogToyEntities();
 
 }
 ```
@@ -248,51 +248,51 @@ abstract class getDogToyEntityRepository
 ```PHP
 class DogToyEntity
 {
-	// おもちゃタイプ
-	private $toyType;
-	
-	// おもちゃ商品名
-	private $toyName;
-	
-	// 数量
-	private $number;
-	
-	// 価格VO
-	private $priceVO;
-	
-	// 色VO
-	private $colorVO;
-	
-	
-	// Setterを実装
-	public function __construct
-	(
-		Value $toyType,
-		String $toyName,
-		Int $number,
-		priceVO $priceVO,
-		ColorVO $colorVO
-	)
-	{
-		$this->toyType $toyType,
-		$this->toyName = $toyName,
-		$this->number = $number,
-		$this->priceVO = $priceVO,
-		$this->colorVO = $colorVO
-	}
-		
-	// Getterを実装
-	public function toyNameWithColor()
-	{
-		if($this->toyName && $this->colorVO->colorName());
-		return sprintf
-		(
-			'%s（%s）',
-			$this->toyName,
-			$this->colorVO->colorName()
-		)
-	}
-	
+    // おもちゃタイプ
+    private $toyType;
+    
+    // おもちゃ商品名
+    private $toyName;
+    
+    // 数量
+    private $number;
+    
+    // 価格VO
+    private $priceVO;
+    
+    // 色VO
+    private $colorVO;
+    
+    
+    // Setterを実装
+    public function __construct
+    (
+        int $toyType,
+        string $toyName,
+        int $number,
+        priceVO $priceVO,
+        ColorVO $colorVO
+    )
+    {
+        $this->toyType = $toyType;
+        $this->toyName = $toyName;
+        $this->number = $number;
+        $this->priceVO = $priceVO;
+        $this->colorVO = $colorVO;
+    }
+        
+    // Getterを実装
+    public function toyNameWithColor()
+    {
+        if($this->toyName && $this->colorVO->colorName());
+        return sprintf
+        (
+            '%s（%s）',
+            $this->toyName,
+            $this->colorVO->colorName()
+        );
+    }
+    
 }
 ```
 
@@ -309,30 +309,30 @@ class DogToyEntity
 ```PHP
 class ToyOrderEntity
 {
-	// 犬用おもちゃ
-	private $dogToyEntity;
-	
-	// 猫用おもちゃ
-	private $catToyEntity;
-	
-	// Setterを実装
-	public function __construct
-	(
-		DogToyEntity $dogToyEntity,
-		CatToyEntity $catToyEntity
-	)
-	{
-		$this->dogToyEntity = $dogToyEntity;
-		$this->catToyEntity = $catToyEntity;
-	}
+    // 犬用おもちゃ
+    private $dogToyEntity;
+    
+    // 猫用おもちゃ
+    private $catToyEntity;
+    
+    // Setterを実装
+    public function __construct
+    (
+        DogToyEntity $dogToyEntity,
+        CatToyEntity $catToyEntity
+    )
+    {
+        $this->dogToyEntity = $dogToyEntity;
+        $this->catToyEntity = $catToyEntity;
+    }
   
-	// 	Getterを実装
-	public function getXXX()
-	{
-		//  Read処理;
-	}  
+    // 	Getterを実装
+    public function getXXX()
+    {
+        //  Read処理;
+    }  
   
-}	
+}
 ```
 
 
@@ -383,7 +383,7 @@ class PaymentInfoVO
      * @var Money
      */
     private $price;    
-
+}
 ```
 
 
@@ -412,19 +412,19 @@ class PaymentInfoVO
 class ExampleVO
 {
 
-		private $propertyA;
+        private $propertyA;
   
-		private $propertyB;
+        private $propertyB;
 
-		private $propertyC;
+        private $propertyC;
 
-		// コンストラクタで$propertyに値を設定
-		public function __construct($param)
-		{
-			$this->propertyA = $param['a'];
-			$this->propertyB = $param['b'];
-			$this->propertyC = $param['c'];
-		}
+        // コンストラクタで$propertyに値を設定
+        public function __construct($param)
+        {
+            $this->propertyA = $param['a'];
+            $this->propertyB = $param['b'];
+            $this->propertyC = $param['c'];
+        }
     
 }
 ```
@@ -481,7 +481,7 @@ $test02 = new Test02("新しいデータ02の値");
 // （1）ドメイン層の氏名を扱うVO
 class NameVO
 {
-		// （2）予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
+        // （2）予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
     use ImmutableObject;
 
     // 苗字データ
@@ -493,7 +493,7 @@ class NameVO
     // （6） メソッドによってオブジェクトの状態が変わらない
     public function fullName(): String
     {
-    	return $this->lastName . $this->firstName;
+        return $this->lastName . $this->firstName;
     }
     
     // 
@@ -535,50 +535,50 @@ class Money
 ```PHP
 class ColorVO extends Enum
 {
-	const RED = '1';
-	const BLUE = '2';
+    const RED = '1';
+    const BLUE = '2';
 
 
-	// 『self::定数名』で，定義の値へアクセスする．
-	private $defs = [
-		self::RED => ['colorname' => 'レッド'];
-		self::BLUE => ['colorname' => 'ブルー'];
-	];
+    // 『self::定数名』で，定義の値へアクセスする．
+    private $defs = [
+        self::RED => ['colorname' => 'レッド'],
+        self::BLUE => ['colorname' => 'ブルー']
+    ];
 
 
-	// 色値データ
-	private $colorValue;
-	
-	
-	// 色名データ．
-	private $colorName;
-	
-	
-	// インスタンス化の時に，『色の区分値』を受け取る．
-	public function __construct
-	(
+    // 色値データ
+    private $colorValue;
+    
+    
+    // 色名データ．
+    private $colorName;
+    
+    
+    // インスタンス化の時に，『色の区分値』を受け取る．
+    public function __construct
+    (
         String $value
-	)
-	{
-		// $kbnValueに応じて，色名をcolornameデータにセットする．
-		$this->colorValue = $value;
-		$this->colorname = $this->defs[$value]['colorName'];
-	}
+    )
+    {
+        // $kbnValueに応じて，色名をcolornameデータにセットする．
+        $this->colorValue = $value;
+        $this->colorname = $this->defs[$value]['colorName'];
+    }
     
     
-	// constructによってセットされた色値を返すメソッド．
-	public function colorValue() :Int
-	{
-		return $this->colorValue;
-	} 
+    // constructによってセットされた色値を返すメソッド．
+    public function colorValue() :Int
+    {
+        return $this->colorValue;
+    } 
 
 
-	// constructによってセットされた色名を返すメソッド．
-	public function colorName() :String
-	{
-		return $this->colorName;
-	} 
-	
+    // constructによってセットされた色名を返すメソッド．
+    public function colorName() :String
+    {
+        return $this->colorName;
+    } 
+    
 }
 ```
 
@@ -633,36 +633,36 @@ DBの操作を行う．
 class setDogToyEntityRepository
 {
   // 接続先したいデータベースが設定されたデータ
-	private $dbs;
+    private $dbs;
   
-	public function setDataSet(Request $request)
-	{
+    public function setDataSet(Request $request)
+    {
   
-		$dogToyEntity = new DogToyEntity;
-  
-  
-		// 送信された値を取り出して格納し，集約を生成．
-		$dogToyEntity->toyType = $request->xxx(),
-		$dogToyEntity->toyName	= $request->xxx(),
-		$dogToyEntity->number = $request->xxx(),
-		$dogToyEntity->priceVO = $request->xxx(new PriceVO()),
-		$dogToyEntity->colorVO = $request->xxx(new ColorVO()),
+        $dogToyEntity = new DogToyEntity;
   
   
-		// 集約を連想配列に分解する．
-		$date = [
-			'type' => $dogToyEntity->toyType,
-			'name' => $dogToyEntity->toyName,
-			'number' => $dogToyEntity->number,
-			'price' => $dogToyEntity->priceVO->price(),
-			'color_value' => $dogToyEntity->colorVO->value(),
-		];
+        // 送信された値を取り出して格納し，集約を生成．
+        $dogToyEntity->toyType = $request->xxx();
+        $dogToyEntity->toyName	= $request->xxx();
+        $dogToyEntity->number = $request->xxx();
+        $dogToyEntity->priceVO = $request->xxx(new PriceVO());
+        $dogToyEntity->colorVO = $request->xxx(new ColorVO());
   
   
-		// データベースのテーブルに挿入する．
-		$this->dbs['app']->insert(dog_toy_table, $data);
-	
-	}
+        // 集約を連想配列に分解する．
+        $data = [
+            'type' => $dogToyEntity->toyType,
+            'name' => $dogToyEntity->toyName,
+            'number' => $dogToyEntity->number,
+            'price' => $dogToyEntity->priceVO->price(),
+            'color_value' => $dogToyEntity->colorVO->value(),
+        ];
+  
+  
+        // データベースのテーブルに挿入する．
+        $this->dbs['app']->insert(dog_toy_table, $data);
+    
+    }
 }
 ```
 
@@ -685,47 +685,47 @@ class setDogToyEntityRepository
 class getDogToyEntityRepository
 {
   // 接続先したいデータベースが設定されたデータ
-	private $dbs;
+    private $dbs;
 
 
-	// 連想配列データから『RouteEntity』の集約を構成し，レスポンスする．
-	public function arrayDogToyEntities(): DogToyEntities
-	{	
-		$dogToyEntities = [];
-		foreach($this->fetchDataSet() as $fetchedData){
-			$dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
-		}
+    // 連想配列データから『RouteEntity』の集約を構成し，レスポンスする．
+    public function arrayDogToyEntities(): DogToyEntities
+    {
+        $dogToyEntities = [];
+        foreach($this->fetchDataSet() as $fetchedData){
+            $dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
+        }
         
-		return $toyOrderEntities;
-	}
+        return $dogToyEntities;
+    }
 
 
-  	// データベースからデータをReadする．
-	private function fetchDataSet()
-	{
-		$select = [
-			'dog_toy.type AS dog_type',
-			'dog_toy.name AS dog_toy_name',
-			'dog_toy.number AS number',
-			'dog_toy.price AS dog_toy_price',
-			'dog_toy.color_value AS color_value'
-		];
+    // データベースからデータをReadする．
+    private function fetchDataSet()
+    {
+        $select = [
+            'dog_toy.type AS dog_type',
+            'dog_toy.name AS dog_toy_name',
+            'dog_toy.number AS number',
+            'dog_toy.price AS dog_toy_price',
+            'dog_toy.color_value AS color_value'
+        ];
         
-		$query = $this->getFecthQuery($select);
-		return $query->getConnection()->executeQuery()->fetchAll(); 
-	}
+        $query = $this->getFecthQuery($select);
+        return $query->getConnection()->executeQuery()->fetchAll(); 
+    }
 
 
-	// 集約を行うメソッド
-	private function aggregateDogToyEntity(Array $fetchedData)
-	{
-		$dogToyEntity = new DogToyEntity;
-		$dogToyEntity->toyType = $fetchedData['dog_toy_type'];
-		$dogToyEntity->toyName = $fetchedData['dog_toy_name'];
-		$dogToyEntity->number = $fetchedData['number'];
-		$dogToyEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
-		$dogToyEntity->colorVO = new ColorVO($fetchedData['color_value']);
-	}
+    // 集約を行うメソッド
+    private function aggregateDogToyEntity(Array $fetchedData)
+    {
+        $dogToyEntity = new DogToyEntity;
+        $dogToyEntity->toyType = $fetchedData['dog_toy_type'];
+        $dogToyEntity->toyName = $fetchedData['dog_toy_name'];
+        $dogToyEntity->number = $fetchedData['number'];
+        $dogToyEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
+        $dogToyEntity->colorVO = new ColorVO($fetchedData['color_value']);
+    }
   
 }
 ```
@@ -745,26 +745,26 @@ class getDogToyEntityRepository
 class Factory
 {
   
-	private $factory;
+    private $factory;
 
     
-	public function __construct
-	(
+    public function __construct
+    (
         Factory $factory
-	)
-	{
-		$this->$factory = $factory;
-	}
-	
-  
-	public function factoryToyOrderEntity()
-	{
-		isset($this->factory){
-			$toyToyOrderEntity = //なんらかの集約処理;
-			}
+    )
+    {
+        $this->$factory = $factory;
+    }
     
-		return $toyOrderEntity;
-	}
+  
+    public function factoryToyOrderEntity()
+    {
+        if(isset($this->factory)){
+            $toyOrderEntity = ;//なんらかの集約処理;
+            }
+    
+        return $toyOrderEntity;
+    }
     
 }
 ```
