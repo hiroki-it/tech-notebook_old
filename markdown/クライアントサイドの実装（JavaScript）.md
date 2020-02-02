@@ -293,19 +293,19 @@ const SubExample = function() {
   
     this.setSubValue = function(subValue) {
         this.subProperty = subValue;
-    }  
+    };
   
     this.getSubValue = function() {
         return this.subProperty;
     };
-}
+};
 
 // Object.create()を用いた継承．
 SubExample.prototype = Object.create(Example.prototype);
 
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）．
-var result = SubExample.getValue()
+var result = SubExample.getValue();
 console.log(result);
 ```
 
@@ -323,7 +323,7 @@ SubExample.prototype = Object.create(Example.prototype, {
 });
 
 // SubExampleクラスにはprintSubValue()が追加された．
-var result = SubExample.printSubValue()
+var result = SubExample.printSubValue();
 console.log(result);
 ```
 
@@ -403,12 +403,12 @@ param = 'global param';
 // アロー関数による省略記法
 let printParam = () => {
   console.log(this.param);
-}
+};
 
 let object = {
   param: 'object param',
   func: printParam
-}
+};
 
 let object2 = {
   param: 'object2 param',
@@ -455,7 +455,7 @@ Webページの部分ごとに，サーバとデータ通信できる．
 ```javascript
 Vue.component('v-example-component',{
     template: require('./xxx/xxx/xxx')
-})
+});
 
 new Vue({
     el: '#app'
@@ -468,11 +468,11 @@ new Vue({
 var vExampleComponent = {
     // 親コンポーネントと子コンポーネントの対応関係
     template: require('./xxx/xxx/xxx'),
-}
+};
 
 new Vue({
 
-    el: '#app'
+    el: '#app',
   
     components: {
         // 親コンポーネントにオブジェクト名をつける．
@@ -487,7 +487,7 @@ new Vue({
 ```javascript
 new Vue({
 
-    el: '#app'
+    el: '#app',
   
     components: {
         // 親コンポーネントと子コンポーネントの対応関係
@@ -620,13 +620,13 @@ new Vue({
                     this.staffData = _.map(data.staffData, Staff.parse);
           
                     })
-        },
+        }
 
         // Vueインスタンス内の値の変化を監視する関数を定義する．
         watch: {
       
-        },
-});
+        }
+})
 ```
 - **子コンポーネント**
 
@@ -683,7 +683,7 @@ module.exports = {
         this.$emit('change', {'criteria': localCriteria});
     },
 
-};
+}
 </script>
 ```
 
@@ -714,7 +714,7 @@ Vueのライブラリの一つで，コンポーネントとルートをマッ�
 const vueRouter = require('vue-router').default;
 
 // VueRouterインスタンスを作成する．
-const router = new VueRouter({[
+const router = new VueRouter({
     // ここに，パスとコンポーネント名の対応を記述する．
     // 書き方は要勉強．     
 })
@@ -822,7 +822,7 @@ const mapMutaions = require('vuex').mapMutaions;
 
 new Vue({
   
-    el: '#app'
+    el: '#app',
   
     store,
 
@@ -843,12 +843,12 @@ new Vue({
         // mapMutationsヘルパー
         ...mapMutations([
         'y-Function'
-        ])
+        ]),
 
         // mapActionsヘルパー
         ...mapActions([
         'z-Function'
-        ])
+        ]),
     }
 });
 ```
@@ -867,6 +867,7 @@ const query = {
     criteria: {
     id: 777,
     name: "hiroki"
+    }
 }
 ```
 ```javascript
@@ -900,20 +901,20 @@ class Staff {
       
       // リクエストによって送信するデータを指定
             data: query,
-        });
+        })
     
         // ajax()の処理が成功した場合に起こる処理．
         .done((data) => {
       
-        });
+        })
     
         // ajax()の処理が失敗した場合に起こる処理．
         .fail(() => {
             toastr.error('', 'エラーが発生しました．');
-        });
+        })
     
         // ajax()の成功失敗に関わらず，必ず起こる処理．
-        .always(()) => {
+        .always(() => {
             this.isLoaded = false;
         });
   }    
@@ -954,8 +955,8 @@ http://127.0.0.1/example.php + ? + クエリストリング
 // JavaScriptによるオブジェクトの表現．
 // クラス宣言．
 class Example {
-  fruit: ["ばなな", "りんご"],
-  account: 200,
+  fruit: ["ばなな", "りんご"];
+  account: 200;
 }
 ```
 
@@ -983,8 +984,8 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 // JavaScriptでのオブジェクトの表現．
 // クラス宣言．
 class Example {
-    fruit: ["ばなな", "りんご"],
-    account: 200,
+    fruit: ["ばなな", "りんご"];
+    account: 200;
 }
 ```
 
@@ -996,7 +997,7 @@ class Example {
 {
   "Example": {
     "fruit": ["ばなな", "りんご"],
-    "account": 200,
+    "account": 200
   }
 }
 ```
@@ -1007,9 +1008,9 @@ class Example {
 // PHPでのオブジェクトの表現．
 class Example
 {
-    private fruit;
+    private $fruit;
     
-    private account;
+    private $account;
 }    
 ```
 

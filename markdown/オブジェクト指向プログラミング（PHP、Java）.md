@@ -800,9 +800,13 @@ namespace Domain/Entity2;
 
 class Example2
 {
-    // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-    $e1 = new Entity1/E1:
-    echo $e1;
+    public function method()
+    {
+
+        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+        $e1 = new Entity1/E1:
+        echo $e1;
+    }
 }
 ```
 
@@ -810,15 +814,18 @@ class Example2
 
 ```PHP
 // use文でクラス名を読み込む．
-use Domain/Entity1/E1;
+use Domain/Entity1/Example1;
 
 namespace Domain/Entity2;
 
 class Example2
 {
-    // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-    $e1 = new E1;
-    echo $e1;
+    public function method()
+    {
+        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+        $e1 = new E1;
+        echo $e1;
+    }
 }
 ```
 
@@ -826,14 +833,17 @@ class Example2
 
 ```PHP
 // use文でメソッドを読み込む．
-use Domain/Entity1/E1/className;
+use Domain/Entity1/Example1;
 
 namespace Domain/Entity2;
 
 class Eeample2
 {
-    // Example1クラスのclassName()をコール．
-    echo className();
+    public function method()
+    {
+        // Example1クラスのclassName()をコール．
+        echo className();
+    }
 }
 ```
 
@@ -841,14 +851,17 @@ class Eeample2
 
 ```PHP
 // use文で定数を読み込む．
-use Domain/Entity1/E1/VALUE;
+use Domain/Entity1/Example1;
 
 namespace Domain/Entity2;
 
 class Example2
 {
     // Example1クラスの定数を出力．
-    echo VALUE;
+    public function method()
+    {    
+        echo Example1::VALUE;
+    }
 }
 ```
 
@@ -869,7 +882,7 @@ abstract class Example
 ```PHP
 class SubExample extends Example
 {
-    public function subExample()	
+    public function subExample()
     {
         // 親メソッドの静的メソッドを読み込む
         $example = parent::example();
@@ -877,8 +890,6 @@ class SubExample extends Example
 }
 ```
 
-
-　　　
 
 ## 01-09. 入れ子クラス
 
@@ -1487,7 +1498,7 @@ $result = quickSort($array);
 var_dump($result); 
 
 // 昇順に並び替えられている．
-1, 2, 3, 4, 5, 6, 7, 8 
+// 1, 2, 3, 4, 5, 6, 7, 8 
 ```
 
 
@@ -1556,7 +1567,7 @@ $item = new Item;
 // use()に，親メソッド（$optionName）のスコープの$itemを渡す．
 $optionName = function() use($item){
                                 $item->getOptionName();
-                            });
+                            };
     
 // function()には引数が設定されていないので，コール時に引数は不要．
 echo $optionName;
@@ -1778,7 +1789,7 @@ Array
             [0] => リンゴ
             [1] => イチゴ
             [2] => トマト
-    )
+        )
 
     [1] => Array
         (
@@ -2239,10 +2250,10 @@ class Example {};
 
 if(new Example == new Example){
     echo '同じです';
-} else { echo '異なります' }
+} else { echo '異なります'; }
 
 // 実行結果
-同じです
+// 同じです
 ```
 
 - **イコールが3つの場合**
@@ -2254,10 +2265,10 @@ class Example {};
 
 if(new Example === new Example){
     echo '同じです';
-} else { echo '異なります' }
+} else { echo '異なります'; }
 
 // 実行結果
-異なります
+// 異なります
 ```
 
 同一のインスタンスの場合のみ，『同じもの』として認識される．
@@ -2269,10 +2280,10 @@ $a = $b = new Example;
 
 if($a === $b){
     echo '同じです';
-} else { echo '異なります' }
+} else { echo '異なります'; }
 
 // 実行結果
-同じです
+// 同じです
 ```
 
 
@@ -2282,7 +2293,7 @@ if($a === $b){
 **【実装例】**
 
 ```PHP
-$var = 10;　// $varはInt型．
+$var = 10; // $varはInt型．
 
 // キャスト演算子でデータ型を変換
 $var = (string) $var; // $varはString型
@@ -2293,16 +2304,12 @@ $var = (string) $var; // $varはString型
 ```PHP
 // Int型
 $var = (int) $var;
-(integer)
 
 // Boolean型
 $var = (bool) $var;
-(boolean)
 
 // Float型
 $var = (float) $var;
-(double)
-(real)
 
 // Array型
 $var = (array) $var;
@@ -2439,7 +2446,7 @@ if ($weeks == 'Mon') {
 }
 
 // 実行結果
-火曜日
+// 火曜日
 ```
 
 - **```switch```-```case```-```break```**
@@ -2476,7 +2483,7 @@ switch ($weeks) {
 }
 
 // 実行結果
-火曜日
+// 火曜日
 ```
 
 
@@ -2598,7 +2605,7 @@ public function leapYear(Int $year): String
 
     // (1)
     dafault:
-        "うるう年";
+        return "うるう年";
     }
       
 }
@@ -2739,6 +2746,7 @@ class HttpRequestException extends Exception
     {
         parent::__construct("HTTPリクエストに失敗しました", 400);
     }
+}
 ```
 
 ```PHP
