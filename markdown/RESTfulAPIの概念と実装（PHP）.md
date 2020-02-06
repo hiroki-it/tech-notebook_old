@@ -24,7 +24,9 @@
 
 
 
-### :pushpin: RESTful API
+### :pushpin: RESTful API へのリクエスト
+
+- **RESTful APIとは**
 
 RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
 
@@ -49,6 +51,46 @@ APIにリソースをリクエストするためのURLのこと．エンドポ�
 # 完全修飾ドメイン名 + ルート + パスパラメータ + ? + クエリパラメータ
 
 http://127.0.0.1 + testform.php + 777 + ? + text1=a&text2=b
+```
+
+
+
+### :pushpin: RESTful APIからのレスポンス
+
+- **スキーマ**
+
+例えば，APIが，以下のようなJSON型データをレスポンスするとする．
+
+```json
+{
+    "name": "山田太郎",
+    "age": 42,
+    "hobbies": ["野球", "柔道"]
+}
+```
+
+ここで，以下のように，レスポンスデータの各データ型をJSON型（あるいはYAML型）で記述しておく．これをスキーマという，スキーマは，レスポンスデータのバリデーションを行う時に用いる．
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "hobbies": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["name"]
+}
 ```
 
 
