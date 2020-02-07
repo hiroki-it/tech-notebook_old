@@ -48,6 +48,9 @@
     - [:pushpin: DBに対するRead操作](#pushpin-dbに対するread操作)
 - [06-03. Factory](#06-03-factory)
     - [:pushpin: 責務](#pushpin-責務-10)
+- [07-01. CQRS：Command Query Responsibility Segregation（コマンドクエリ責務分離）](#07-01-cqrscommand-query-responsibility-segregationコマンドクエリ責務分離)
+    - [:pushpin: Command（書き込み）](#pushpin-command書き込み)
+    - [:pushpin: Query（読み出し）](#pushpin-query読み出し)
 
 <!-- /TOC -->
 ## 01-01. Webページにおける処理の流れ
