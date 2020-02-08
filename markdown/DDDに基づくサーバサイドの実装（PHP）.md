@@ -2,31 +2,30 @@
 
 <!-- TOC -->
 
-- [01-01. Webページにおける処理の流れ](#01-01-webページにおける処理の流れ)
-- [02-01. MVCとは](#02-01-mvcとは)
+- [01-01. MVCとは](#01-01-mvcとは)
     - [:pushpin: MVCからドメイン駆動設計への発展](#pushpin-mvcからドメイン駆動設計への発展)
-- [03-01. ドメイン駆動設計とは](#03-01-ドメイン駆動設計とは)
+- [02-01. ドメイン駆動設計とは](#02-01-ドメイン駆動設計とは)
     - [:pushpin: ドメインエキスパートとユビキタス言語](#pushpin-ドメインエキスパートとユビキタス言語)
     - [:pushpin: 戦略的設計](#pushpin-戦略的設計)
     - [:pushpin: 戦術的設計](#pushpin-戦術的設計)
     - [:pushpin: ドメイン駆動設計の派生型](#pushpin-ドメイン駆動設計の派生型)
-- [03-02. Layeredアーキテクチャ型ドメイン駆動設計](#03-02-layeredアーキテクチャ型ドメイン駆動設計)
+- [02-02. Layeredアーキテクチャ型ドメイン駆動設計](#02-02-layeredアーキテクチャ型ドメイン駆動設計)
     - [:pushpin: 責務の分担方法](#pushpin-責務の分担方法)
-- [03-03. DIPに基づくドメイン駆動設計](#03-03-dipに基づくドメイン駆動設計)
-- [04-01. Application層](#04-01-application層)
-- [04-02. Controller](#04-02-controller)
+- [02-03. DIPに基づくドメイン駆動設計](#02-03-dipに基づくドメイン駆動設計)
+- [03-01. Application層](#03-01-application層)
+- [03-02. Controller](#03-02-controller)
     - [:pushpin: 責務](#pushpin-責務)
-- [04-03. Caster（データ型変換パターン）](#04-03-casterデータ型変換パターン)
+- [03-03. Caster（データ型変換パターン）](#03-03-casterデータ型変換パターン)
     - [:pushpin: 責務](#pushpin-責務-1)
-- [04-04. Application Service](#04-04-application-service)
+- [03-04. Application Service](#03-04-application-service)
     - [:pushpin: 責務](#pushpin-責務-2)
-- [05-01. Domain層](#05-01-domain層)
-- [05-02. 抽象Repository](#05-02-抽象repository)
+- [04-01. Domain層](#04-01-domain層)
+- [04-02. 抽象Repository](#04-02-抽象repository)
     - [:pushpin: 責務](#pushpin-責務-3)
-- [05-03. Entity](#05-03-entity)
+- [04-03. Entity](#04-03-entity)
     - [:pushpin: 責務](#pushpin-責務-4)
     - [:pushpin: RouteEntityとは](#pushpin-routeentityとは)
-- [05-04. ValueObject](#05-04-valueobject)
+- [04-04. ValueObject](#04-04-valueobject)
     - [:pushpin: 責務](#pushpin-責務-5)
     - [:pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ](#pushpin-一意に識別できるデータをもたず対象のユビキタス言語に関するデータをメソッドを持つ)
     - [:pushpin: データの不変性](#pushpin-データの不変性)
@@ -34,36 +33,26 @@
     - [:pushpin: オブジェクトの交換可能性](#pushpin-オブジェクトの交換可能性)
     - [:pushpin: オブジェクト間の等価性](#pushpin-オブジェクト間の等価性)
     - [:pushpin: メソッドによってオブジェクトの状態が変わらない](#pushpin-メソッドによってオブジェクトの状態が変わらない)
-- [05-05. TypeCode（標準型）](#05-05-typecode標準型)
+- [04-05. TypeCode（標準型）](#04-05-typecode標準型)
     - [:pushpin: 責務](#pushpin-責務-6)
     - [:pushpin: EnumによるTypeCodeの実装](#pushpin-enumによるtypecodeの実装)
-- [05-06. Id](#05-06-id)
+- [04-06. Id](#04-06-id)
     - [:pushpin: 責務](#pushpin-責務-7)
-- [05-07. Domain Service](#05-07-domain-service)
+- [04-07. Domain Service](#04-07-domain-service)
     - [:pushpin: 責務](#pushpin-責務-8)
-- [06-01. Infrastructure層](#06-01-infrastructure層)
-- [06-02. 具象Repository](#06-02-具象repository)
+- [05-01. Infrastructure層](#05-01-infrastructure層)
+- [05-02. 具象Repository](#05-02-具象repository)
     - [:pushpin: 責務](#pushpin-責務-9)
-    - [:pushpin: DBに対するCreate操作](#pushpin-dbに対するcreate操作)
-    - [:pushpin: DBに対するRead操作](#pushpin-dbに対するread操作)
-- [06-03. Factory](#06-03-factory)
+    - [:pushpin: DBに対する書き込み（Create，Update，Delete）](#pushpin-dbに対する書き込みcreateupdatedelete)
+    - [:pushpin: DBに対する読み出し（Read）](#pushpin-dbに対する読み出しread)
+- [05-03. Factory](#05-03-factory)
     - [:pushpin: 責務](#pushpin-責務-10)
-- [07-01. CQRS：Command Query Responsibility Segregation（コマンドクエリ責務分離）](#07-01-cqrscommand-query-responsibility-segregationコマンドクエリ責務分離)
+- [06-01. CQRS：Command Query Responsibility Segregation（コマンドクエリ責務分離）](#06-01-cqrscommand-query-responsibility-segregationコマンドクエリ責務分離)
     - [:pushpin: Command（書き込み）](#pushpin-command書き込み)
     - [:pushpin: Query（読み出し）](#pushpin-query読み出し)
 
 <!-- /TOC -->
-## 01-01. Webページにおける処理の流れ
-
-一例として，処理フローは，『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される．
-
-![Vuex と DDD-1](https://user-images.githubusercontent.com/42175286/58743936-d7519980-8475-11e9-83b2-0d10505206b9.png)
-
-![Vuex と DDD-2](https://user-images.githubusercontent.com/42175286/58744171-a1aeaf80-8479-11e9-9844-f9beb6f13327.png)
-
-
-
-## 02-01. MVCとは
+## 01-01. MVCとは
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
@@ -77,7 +66,7 @@
 
 
 
-## 03-01. ドメイン駆動設計とは
+## 02-01. ドメイン駆動設計とは
 
 ### :pushpin: ドメインエキスパートとユビキタス言語
 
@@ -113,7 +102,7 @@
 
   
 
-## 03-02. Layeredアーキテクチャ型ドメイン駆動設計
+## 02-02. Layeredアーキテクチャ型ドメイン駆動設計
 
 ### :pushpin: 責務の分担方法
 
@@ -128,7 +117,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 
 
-## 03-03. DIPに基づくドメイン駆動設計
+## 02-03. DIPに基づくドメイン駆動設計
 
 **※詳しくは，オブジェクト指向プログラミングのノートを参照**
 
@@ -139,11 +128,11 @@ Repositoryの抽象クラスを，より上位のドメイン層に配置する�
 
 
 
-## 04-01. Application層
+## 03-01. Application層
 
 
 
-## 04-02. Controller
+## 03-02. Controller
 
 ### :pushpin: 責務
 
@@ -179,7 +168,7 @@ class AcceptOrdersController
 
 
 
-## 04-03. Caster（データ型変換パターン）
+## 03-03. Caster（データ型変換パターン）
 
 ### :pushpin: 責務
 
@@ -195,7 +184,7 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 
 
-## 04-04. Application Service
+## 03-04. Application Service
 
 ### :pushpin: 責務
 
@@ -210,11 +199,11 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 
 
-## 05-01. Domain層
+## 04-01. Domain層
 
 
 
-## 05-02. 抽象Repository
+## 04-02. 抽象Repository
 
 ### :pushpin: 責務
 
@@ -233,7 +222,7 @@ abstract class getDogToyEntityRepository
 
 
 
-## 05-03. Entity
+## 04-03. Entity
 
 ### :pushpin: 責務
 
@@ -340,7 +329,7 @@ class ToyOrderEntity
 
 
 
-## 05-04. ValueObject
+## 04-04. ValueObject
 
 ### :pushpin: 責務
 
@@ -523,7 +512,7 @@ class Money
 
 
 
-## 05-05. TypeCode（標準型）
+## 04-05. TypeCode（標準型）
 
 ### :pushpin: 責務
 
@@ -587,23 +576,23 @@ class ColorVO extends Enum
 
 
 
-## 05-06. Id
+## 04-06. Id
 
 ### :pushpin: 責務
 
 
 
-## 05-07. Domain Service
+## 04-07. Domain Service
 
 ### :pushpin: 責務
 
 
 
-## 06-01. Infrastructure層
+## 05-01. Infrastructure層
 
 
 
-## 06-02. 具象Repository
+## 05-02. 具象Repository
 
 ### :pushpin: 責務
 
@@ -611,7 +600,7 @@ DBの操作を行う．
 
 
 
-### :pushpin: DBに対するCreate操作
+### :pushpin: DBに対する書き込み（Create，Update，Delete）
 
 1. GETまたはPOSTによって，アプリケーション層から値が送信される．
 
@@ -625,7 +614,7 @@ DBの操作を行う．
 
 6. ```store()```によって，Transaction処理にRepositoryを登録する．
 
-7. DBに対して，Createの操作を行う．
+7. DBに対して，書き込みを行う．
 
    ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
 
@@ -671,10 +660,10 @@ class setDogToyEntityRepository
 
 
 
-### :pushpin: DBに対するRead操作
+### :pushpin: DBに対する読み出し（Read）
 
 1. アプリケーション層から集約がリクエストされる．
-2. DBに対して，Readの操作を行う．
+2. DBに対して，読み出しを行う．
 3. Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
 4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
@@ -735,7 +724,7 @@ class getDogToyEntityRepository
 
 
 
-## 06-03. Factory
+## 05-03. Factory
 
 ### :pushpin: 責務
 
@@ -774,7 +763,7 @@ class Factory
 
 
 
-## 07-01. CQRS：Command Query Responsibility Segregation（コマンドクエリ責務分離）
+## 06-01. CQRS：Command Query Responsibility Segregation（コマンドクエリ責務分離）
 
 DBへのアクセス処理を書き込みと読み出しに分離する設計モデルのこと．DDDに部分的に組み込むことができる．
 
