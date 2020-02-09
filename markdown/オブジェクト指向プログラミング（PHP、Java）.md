@@ -53,6 +53,7 @@
     - [:pushpin: Recursive call：再帰的プログラム](#pushpin-recursive-call再帰的プログラム)
     - [:pushpin: データを用いた処理結果の保持](#pushpin-データを用いた処理結果の保持)
     - [:pushpin: オプション引数](#pushpin-オプション引数)
+    - [:pushpin: 値の返却](#pushpin-値の返却)
 - [03-02. 無名関数](#03-02-無名関数)
     - [:pushpin: Closure（無名関数）の定義，変数格納後のコール](#pushpin-closure無名関数の定義変数格納後のコール)
     - [:pushpin: Closure（無名関数）の定義と即コール](#pushpin-closure無名関数の定義と即コール)
@@ -75,7 +76,8 @@
     - [:pushpin: 複合型](#pushpin-複合型)
     - [:pushpin: その他のデータ型](#pushpin-その他のデータ型)
 - [04-04. 定数](#04-04-定数)
-    - [:pushpin: 定数が有効な場面](#pushpin-定数が有効な場面)
+    - [:pushpin: 定数が役に立つ場面](#pushpin-定数が役に立つ場面)
+    - [:pushpin: マジカル定数](#pushpin-マジカル定数)
 - [04-05. 変数](#04-05-変数)
     - [:pushpin: 変数展開](#pushpin-変数展開)
     - [:pushpin: 参照渡しと値渡し](#pushpin-参照渡しと値渡し)
@@ -88,8 +90,8 @@
     - [:pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```](#pushpin-if-elseif-elseとswitch-case-break)
     - [:pushpin: ```if```-```elseif```-```else```はできるだけ用いない](#pushpin-if-elseif-elseはできるだけ用いない)
     - [:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力](#pushpin-オブジェクトごとにデータの値の有無が異なる時の出力)
-- [05-03. 例外処理とログ出力](#05-03-例外処理とログ出力)
-    - [:pushpin: 例外処理前の条件分岐](#pushpin-例外処理前の条件分岐)
+- [05-03. バリデーション（例外処理＋ログ出力）](#05-03-バリデーション例外処理＋ログ出力)
+    - [:pushpin: 条件分岐](#pushpin-条件分岐)
     - [:pushpin: Exceptionクラスを継承した独自例外クラス](#pushpin-exceptionクラスを継承した独自例外クラス)
     - [:pushpin: ```if```-```throw```文](#pushpin-if-throw文)
     - [:pushpin: ```try```-```catch```文](#pushpin-try-catch文)
@@ -241,6 +243,35 @@ class Car
 ```PHP
 // Carクラスのインスタンスの中で，Lockクラスがインスタンス化される．
 $car = new Car();
+```
+
+- **```new static()``` vs. ```new self()```**
+
+どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
+
+```PHP
+class A
+{
+    public static function get_self()
+    {
+        return new self();
+    }
+
+    public static function get_static()
+    {
+        return new static();
+    }
+}
+```
+```PHP
+class B extends A {}
+```
+```PHP
+echo get_class(B::get_self());   // 継承元のクラスA
+
+echo get_class(B::get_static()); // 継承先のクラスB
+
+echo get_class(A::get_static()); // 継承元のクラスA
 ```
 
 
@@ -555,7 +586,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 - **アンチパターンのService Locater Pattern**
 
-インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう実装方法．
+インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう誤った実装方法．
 
 **【実装例】**
 
@@ -1554,7 +1585,25 @@ public function cachedResult($funcName)
 
 
 
+### :pushpin: 値の返却
+
+- **```return```**
+
+メソッドがコールされた場所に値を返却した後，その処理が終わる．
+
+- **```yield```**
+
+メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．
+
+```
+
+```
+
+
+
 ## 03-02. 無名関数
+
+特定の処理が，```private```メソッドとして切り分けるほどでもないが，他の部分と明示的に区分けたい時は，無名関数を用いるとよい．
 
 ### :pushpin: Closure（無名関数）の定義，変数格納後のコール
 
@@ -2089,7 +2138,7 @@ Fruit Object
 
 ## 04-04. 定数
 
-### :pushpin: 定数が有効な場面
+### :pushpin: 定数が役に立つ場面
 
 計算処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．例えば，ValueObjectにおける定数がある．
 
@@ -2134,6 +2183,48 @@ class requiedTime
     return ceil($minute);
   }
 }
+```
+
+
+
+### :pushpin: マジカル定数
+
+自動的に値が格納されている定数．
+
+- **```__FUNCTION__```**
+
+この定数がコールされたメソッド名が格納されている．
+
+```PHP
+class ExampleA
+{
+  public function a()
+  {
+    echo __FUNCTION__;
+  }
+}
+```
+```PHP
+$exampleA = new ExmapleA;
+$exampleA->a(); // a が返却される．
+```
+
+- **```__METHOD__```**
+
+この定数がコールされたクラス名とメソッド名が，```{クラス名}::{メソッド名}```の形式で格納されている．
+
+```PHP
+class ExampleB
+{
+  public function b()
+  {
+    echo __METHOD__;
+  }
+}
+```
+```PHP
+$exampleB = new ExmapleB;
+$exampleB->b(); // ExampleB::b が返却される．
 ```
 
 
@@ -2625,11 +2716,11 @@ $csv['ID'] = $order->id;
 
 
 
-## 05-03. 例外処理とログ出力
+## 05-03. バリデーション（例外処理＋ログ出力）
 
-データベースから取得した後に直接表示する値の場合，データベースでNullにならないように制約をかけられるため，変数の中身に例外判定を行う必要はない．しかし，データベースとは別に新しく作られる値の場合，例外判定が必要になる．
+データベースから取得した後に直接表示する値の場合，データベースでNullにならないように制約をかけられるため，変数の中身に例外判定を行う必要はない．しかし，データベースとは別に新しく作られる値の場合，バリデーションと例外判定が必要になる．
 
-### :pushpin: 例外処理前の条件分岐
+### :pushpin: 条件分岐
 
 〇：```TRUE```
 
@@ -2637,13 +2728,14 @@ $csv['ID'] = $order->id;
 
 |          | ```if($var)```、```!empty($var)``` | ```isset($var)```、```!is_null($var)``` |
 | :------- | :------: | :-----------: |
-| ```0```  |    ✕     |       **〇**       |
-| ```1```  |  **〇**  |    **〇**     |
-| ```""``` |    ✕     |       **〇**       |
-| ```"あ"``` |    ✕     |       **〇**       |
-| NULL |    ✕     |       ✕       |
-| array(0) |    ✕     |       **〇**       |
-| array(1) |  **〇**  |    **〇**     |
+| **```0```** |    ✕     |       **〇**       |
+| **```1```** |  **〇**  |    **〇**     |
+| **```""```** |    ✕     |       **〇**       |
+| **```"あ"```** |    ✕     |       **〇**       |
+| **NULL** |    ✕     |       ✕       |
+| **array(0)** |    ✕     |       **〇**       |
+| **array(1)** |  **〇**  |    **〇**     |
+| **使いどころ** | 0を受け付けない処理の時 | それ以外の処理の時 |
 
 ```PHP
 # 右辺には，上記に当てはまらない状態『TRUE』が置かれている．
