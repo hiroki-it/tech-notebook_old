@@ -4,7 +4,8 @@
 
 - [01-01. RESTful設計とWeb API](#01-01-restful設計とweb-api)
     - [:pushpin: REST](#pushpin-rest)
-    - [:pushpin: RESTful API](#pushpin-restful-api)
+    - [:pushpin: RESTful API へのリクエスト](#pushpin-restful-api-へのリクエスト)
+    - [:pushpin: RESTful APIからのレスポンス](#pushpin-restful-apiからのレスポンス)
 - [02-01. フロントエンドとサーバサイドの間のRESTful API](#02-01-フロントエンドとサーバサイドの間のrestful-api)
     - [:pushpin: SilexフレームワークによるRESTful API](#pushpin-silexフレームワークによるrestful-api)
 - [03-01. 異なるアプリケーション間のRESTful API](#03-01-異なるアプリケーション間のrestful-api)
