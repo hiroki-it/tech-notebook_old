@@ -23,9 +23,9 @@
     - [:pushpin: 機能的強度](#pushpin-機能的強度)
 - [01-07. クラスの継承](#01-07-クラスの継承)
     - [:pushpin: クラスチェーンによる継承元の参照](#pushpin-クラスチェーンによる継承元の参照)
+    - [:pushpin: 継承元の静的メソッドを参照](#pushpin-継承元の静的メソッドを参照)
 - [01-08. 外部クラスとメソッドの読み込み](#01-08-外部クラスとメソッドの読み込み)
     - [:pushpin: ```use```によるクラスとメソッドの読み込み](#pushpin-useによるクラスとメソッドの読み込み)
-    - [:pushpin: 親クラスの静的メソッドの読み込み](#pushpin-親クラスの静的メソッドの読み込み)
 - [01-09. 入れ子クラス](#01-09-入れ子クラス)
     - [:pushpin: PHPの場合](#pushpin-phpの場合)
     - [:pushpin: Javaの場合](#pushpin-javaの場合)
@@ -379,6 +379,8 @@ class GoodsWithTax extends Goods
 
 ![抽象クラスと抽象メソッド-2](https://user-images.githubusercontent.com/42175286/59590387-e8adcd80-9126-11e9-87b3-7659468af2f6.PNG)
 
+**【実装例】**
+
 ```PHP
 // 抽象クラス．型として提供したいものを定義する．
 abstract class ShainManagement
@@ -612,7 +614,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
 
-![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
 
 - **DIPに基づく設計の場合**
 
@@ -761,6 +763,8 @@ class ModuleB
 
 クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
 
+**【実装例】**
+
 ```PHP
 // 継承元クラス
 class Example
@@ -793,6 +797,33 @@ $subExample = new SubExample;
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
 echo $subExample->getValue();
+```
+
+
+
+### :pushpin: 継承元の静的メソッドを参照
+
+**【実装例】**
+
+```PHP
+abstract class Example 
+{
+    public function example()
+    {
+        // 処理内容;
+    }
+}
+```
+
+```PHP
+class SubExample extends Example
+{
+    public function subExample()
+    {
+        // 継承元の静的メソッドを参照．
+        $example = parent::example();
+    } 
+}
 ```
 
 
@@ -898,30 +929,6 @@ class Example2
 
 
 
-### :pushpin: 親クラスの静的メソッドの読み込み
-
-```PHP
-abstract class Example 
-{
-    public function example()
-    {
-        // 処理内容;
-    }
-}
-```
-
-```PHP
-class SubExample extends Example
-{
-    public function subExample()
-    {
-        // 親メソッドの静的メソッドを読み込む
-        $example = parent::example();
-    } 
-}
-```
-
-
 ## 01-09. 入れ子クラス
 
 ### :pushpin: PHPの場合
@@ -937,6 +944,8 @@ PHPには組み込まれていない．
 - **非静的内部クラス**
 
 PHPとは異なり，変数定義に『$』は用いないことに注意．
+
+**【実装例】**
 
 ```java
 // 外部クラスを定義
@@ -983,6 +992,8 @@ class OuterClass
 - **静的内部クラス**
 
 呼び出すメソッドと呼び出されるメンバの両方をstaticとしなければならない．
+
+**【実装例】**
 
 ```java
 // 外部クラスを定義
@@ -1034,6 +1045,8 @@ PHPには組み込まれていない．
 
 オブジェクトにデータ型を引数として渡すことで，データの型宣言を行える機能．型宣言を毎回行わなければならず，煩わしいJavaならではの機能．PHPとは異なり，変数定義に『$』は用いないことに注意．
 
+**【実装例】**
+
 ```java
 class Example<T>{
     
@@ -1055,6 +1068,8 @@ class Example<T>{
 
 リスト内の要素は，Object型として取り出されるため，キャスト（明示的型変換）が必要．
 
+**【実装例】**
+
 ```java
 List list = new ArrayList();
 l.add("Java");
@@ -1066,6 +1081,8 @@ String str = (String)list.get(0);
 ```
 
 - **総称型を用いる場合**
+
+**【実装例】**
 
 ```java
 List<String> list = new ArrayList<String>();
@@ -1351,6 +1368,8 @@ $D = getObjB()->getObjC()->getObjC();
 
 定義されていないデータや，アクセス権のないデータを取得しようとした時に，代わりに呼び出される．メソッドは定義しているが，データは定義していないような状況で用いる．
 
+**【実装例】**
+
 ```PHP
 class Example
 {
@@ -1390,6 +1409,8 @@ hogeデータは存在しないため，値を呼び出せません．
 - **```__set()```**
 
 定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）
+
+**【実装例】**
 
 ```PHP
 class Example
@@ -1476,6 +1497,8 @@ $test02 = new Test02("新しいデータ02の値");
 3. 二分割された各々のデータを，それぞれソートする．
 4. ソートを繰り返し実行する．
 
+**【実装例】**
+
 ```PHP
 function quickSort(Array $array): Array 
 {
@@ -1538,6 +1561,8 @@ var_dump($result);
 
 大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
 
+**【実装例】**
+
 ```PHP
 private $cachedResult;
 
@@ -1595,8 +1620,27 @@ public function cachedResult($funcName)
 
 メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．
 
-```
+**【実装例】**
 
+```PHP
+function getOneToThree()
+{
+    for ($i = 1; $i <= 3; $i++) {
+        // yield を返却した後、$i の値が維持される．
+        yield $i;
+    }
+}
+```
+```PHP
+$oneToThree = getOneToThree();
+
+foreach ($oneToThree as $value) {
+    echo "$value\n";
+}
+
+// 1
+// 2
+// 3
 ```
 
 
@@ -1608,6 +1652,8 @@ public function cachedResult($funcName)
 ### :pushpin: Closure（無名関数）の定義，変数格納後のコール
 
 - **```use()```のみに引数を渡す場合**
+
+**【実装例】**
 
 ```PHP
 $item = new Item;
@@ -1627,6 +1673,8 @@ echo $optionName;
 
 - **```function()```と```use()```に引数を渡す場合**
 
+**【実装例】**
+
 ```PHP
 $item = new Item;
 
@@ -1644,6 +1692,8 @@ echo $optionName("BC");
 ```
 
 - **データの値に無名関数を格納しておく裏技**
+
+**【実装例】**
 
 ```PHP
 $item = new Item;
@@ -1670,6 +1720,8 @@ echo $option->name("BC");
 ### :pushpin: Closure（無名関数）の定義と即コール
 
 定義したその場でコールされる無名関数を『即時関数』と呼ぶ．無名関数をコールしたい時は，```call_user_func()```を用いる．
+
+**【実装例】**
 
 ```PHP
 $item = new Item;
@@ -2206,7 +2258,7 @@ class ExampleA
 ```
 ```PHP
 $exampleA = new ExmapleA;
-$exampleA->a(); // a が返却される．
+$example->a(); // a が返却される．
 ```
 
 - **```__METHOD__```**
@@ -2726,16 +2778,16 @@ $csv['ID'] = $order->id;
 
 ✕：```FALSE```
 
-|          | ```if($var)```、```!empty($var)``` | ```isset($var)```、```!is_null($var)``` |
-| :------- | :------: | :-----------: |
-| **```0```** |    ✕     |       **〇**       |
-| **```1```** |  **〇**  |    **〇**     |
-| **```""```** |    ✕     |       **〇**       |
-| **```"あ"```** |    ✕     |       **〇**       |
-| **NULL** |    ✕     |       ✕       |
-| **array(0)** |    ✕     |       **〇**       |
-| **array(1)** |  **〇**  |    **〇**     |
-| **使いどころ** | 0を受け付けない処理の時 | それ以外の処理の時 |
+|          | ```isset($var)```、```!is_null($var)``` | ```if($var)```、```!empty($var)``` |
+| :------- | :-----------: | :------: |
+| **```0```** |       **〇**       |    ✕     |
+| **```1```** |    **〇**     |  **〇**  |
+| **```""```** |       **〇**       |    ✕     |
+| **```"あ"```** |       **〇**       |    ✕     |
+| **NULL** |       ✕       |    ✕     |
+| **array(0)** |       **〇**       |    ✕     |
+| **array(1)** |    **〇**     |  **〇**  |
+| **使いどころ** | null以外の値の格納判定 | より厳密に，数値と配列のみ格納判定 |
 
 ```PHP
 # 右辺には，上記に当てはまらない状態『TRUE』が置かれている．
