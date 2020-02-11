@@ -31,28 +31,32 @@
 
 RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
 
+- **URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）**
+
+パスパラメータはデータをリクエストするために用いる．また，クエリパラメータは，GET送信の時に，データの検索処理／フィルタ処理／ソート処理をリクエストするために用いる．GET送信については，リクエストメッセージの説明を参照せよ．
+
+| 完全修飾ドメイン名             | ルート         | パスパラメータ | ？      | クエリパラメータ（GET送信時のみ） |
+| ------------------------------ | -------------- | -------------- | ------- | --------------------------------- |
+| ```http://www.example.co.jp``` | ```userInfo``` | ```{id}```     | ```?``` | ```text1=a&text2=b```             |
+
+**【URLの具体例】**
+
+```
+http://www.example.co.jp/userInfo/777?text1=a&text2=b
+```
+
 - **エンドポイント**
 
 APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
 
 ![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
 
-| **送信方法** | 使い分け                    | エンドポイント例                        | パスパラメータ | JSONデータ型 |
-| :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- |
-|     **GET**      | DBデータのRead | http://www.example.co.jp/userInfo/{id}  | id | ```number``` |
-|     **POST**     | DBデータのCreate、PDFの作成、画像やPDFの送信、ログインなど | http://www.example.co.jp/userInfo/     | なし | なし |
-|     **PUT**      | DBデータのUpdate | http://www.example.co.jp/userInfo/{id} | id | ```number``` |
-|    **DELETE**    | DBデータのDelete | http://www.example.co.jp/userInfo/{id} | Id | ```number``` |
-
-- **パスパラメータとクエリパラメータの使い分け（再掲）**
-
-パスパラメータはデータをリクエストするために用いる．また，クエリパラメータはデータを，検索処理，フィルタ処理，ソート処理をリクエストするために用いる．
-
-```yaml
-# 完全修飾ドメイン名 + ルート + パスパラメータ + ? + クエリパラメータ
-
-http://127.0.0.1 + testform.php + 777 + ? + text1=a&text2=b
-```
+| **送信方法** | 分類 | 使い分け                    | エンドポイント例                        | パスパラメータ | JSONデータ型 |
+| :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- | ---------------- |
+|     **GET**      |   読み  | DBデータのRead | ```http://www.example.co.jp/userInfo/{id}```  | id | ```number``` |
+|     **POST**     |     書き     | ・DBのCreate操作<br>・PDFの作成<br>・画像やPDFの送信<br>・ログイン | ```http://www.example.co.jp/userInfo/```     | なし | なし |
+|     **PUT**      |   書き    | DBのUpdate操作 | ```http://www.example.co.jp/userInfo/{id}``` | id | ```number``` |
+|    **DELETE**    |    書き    | DBのDelete操作 | ```http://www.example.co.jp/userInfo/{id}``` | Id | ```number``` |
 
 
 
