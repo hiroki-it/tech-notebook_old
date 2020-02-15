@@ -9,6 +9,7 @@
     - [:pushpin: バッチファイル](#pushpin-バッチファイル)
 - [01-03. HttpFoundationに関するクラス](#01-03-httpfoundationに関するクラス)
     - [:pushpin: AppKernel](#pushpin-appkernel)
+- [01-04. Service Container](#01-04-service-container)
 - [02-01. Carbonライブラリ](#02-01-carbonライブラリ)
     - [:pushpin: Date型](#pushpin-date型)
     - [:pushpin: ```instance()```](#pushpin-instance)
@@ -349,38 +350,3 @@ class dogToyQuey(Value $toyType): Array
 
 }
 ```
-
-
-
-## 03-01. ライブラリ，パッケージの管理
-
-### :pushpin: ライブラリとパッケージの大まかな違い
-
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ライブラリ，パッケージ，モジュールの違い.png)
-
-
-
-### :pushpin: ライブラリ管理ツール
-
-- **PHP Composer**
-
-```bash
-// phpのメモリ上限を無しにしてcomposer updateを行う方法
-php -d memory_limit=-1 /usr/local/bin/composer update
-```
-
-
-
-### :pushpin: パッケージ管理ツール
-
-- **Rpm**
-
-Linux系のパッケージを管理．
-
-- **Yum**
-
-Linux系のパッケージを管理．
-
-- **Npm**
-
-JavaScript系のパッケージを管理．

@@ -1,3 +1,5 @@
+# 目次
+
 <!-- TOC -->
 
 - [01-01. インスタンス間の関係性](#01-01-インスタンス間の関係性)
@@ -50,6 +52,7 @@
     - [:pushpin: メソッドチェーン](#pushpin-メソッドチェーン)
     - [:pushpin: マジックメソッド（Getter系）](#pushpin-マジックメソッドgetter系)
     - [:pushpin: マジックメソッド（Setter系）](#pushpin-マジックメソッドsetter系)
+    - [:pushpin: マジックメソッド（その他）](#pushpin-マジックメソッドその他)
     - [:pushpin: Recursive call：再帰的プログラム](#pushpin-recursive-call再帰的プログラム)
     - [:pushpin: データを用いた処理結果の保持](#pushpin-データを用いた処理結果の保持)
     - [:pushpin: オプション引数](#pushpin-オプション引数)
@@ -111,7 +114,6 @@
     - [:pushpin: 相対パス](#pushpin-相対パス)
 
 <!-- /TOC -->
-
 ## 01-01. インスタンス間の関係性
 
 ![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インスタンス間の関係性のクラス図.png)
@@ -1142,7 +1144,9 @@ Javaには組み込まれていない．
 
 ### :pushpin: ```protected```
 
-同じクラス内と，その親クラスまたは子クラスでのみ呼び出せる．
+同じクラス内と，その子クラス，その親クラスでのみ呼び出せる．
+
+https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 
 
@@ -1475,6 +1479,12 @@ $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
 ```
+
+
+
+### :pushpin: マジックメソッド（その他）
+
+- **```__invoke()```**
 
 
 
