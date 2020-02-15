@@ -11,7 +11,6 @@
 - [03-01. 異なるアプリケーション間のRESTful API](#03-01-異なるアプリケーション間のrestful-api)
 
 <!-- /TOC -->
-
 ## 01-01. RESTful設計とWeb API
 
 ### :pushpin: REST
@@ -51,12 +50,12 @@ APIにリソースをリクエストするためのURLのこと．エンドポ�
 
 ![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
 
-| **送信方法** | 分類 | 使い分け                    | エンドポイント例                        | パスパラメータ | JSONデータ型 |
+| **送信方法** | サーバ側の処理 | 使い分け                    | エンドポイント例                        | パスパラメータ | 注意点 |
 | :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- | ---------------- |
-|     **GET**      |   読み  | DBデータのRead | ```http://www.example.co.jp/userInfo/{id}```  | id | ```number``` |
-|     **POST**     |     書き     | ・DBのCreate操作<br>・PDFの作成<br>・画像やPDFの送信<br>・ログイン | ```http://www.example.co.jp/userInfo/```     | なし | なし |
-|     **PUT**      |   書き    | DBのUpdate操作 | ```http://www.example.co.jp/userInfo/{id}``` | id | ```number``` |
-|    **DELETE**    |    書き    | DBのDelete操作 | ```http://www.example.co.jp/userInfo/{id}``` | Id | ```number``` |
+|     **GET**      |   読み  | DBデータのRead | ```http://www.example.co.jp/userInfo/{id}```  | id |  |
+|     **POST**     |     書き     | ・DBのCreate操作<br>・DBのUpdate操作<br>・PDFの作成<br>・画像やPDFの送信<br>・ログイン | ```http://www.example.co.jp/userInfo/```     | なし |  |
+|     **PUT**      |   書き    | ・DBのCreate操作<br/>・DBのUpdate操作 | ```http://www.example.co.jp/userInfo/{id}``` | id | これよりもPOSTを使う |
+|    **DELETE**    |    書き    | DBのDelete操作 | ```http://www.example.co.jp/userInfo/{id}``` | Id |  |
 
 
 
