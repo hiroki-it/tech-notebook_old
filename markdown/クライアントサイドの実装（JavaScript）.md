@@ -2,9 +2,7 @@
 
 <!-- TOC -->
 
-- [01-01. Webページにおける処理の流れ](#01-01-webページにおける処理の流れ)
-- [01-02. MVCとは](#01-02-mvcとは)
-    - [:pushpin: イベント発火からWebページ表示までの流れ](#pushpin-イベント発火からwebページ表示までの流れ)
+- [01-01. イベント発火からWebページ表示までの流れ](#01-01-イベント発火からwebページ表示までの流れ)
 - [02-01. オブジェクトの生成，初期化](#02-01-オブジェクトの生成初期化)
     - [:pushpin: リテラル表記の使用](#pushpin-リテラル表記の使用)
     - [:pushpin: コンストラクタ関数の使用](#pushpin-コンストラクタ関数の使用)
@@ -29,6 +27,7 @@
     - [:pushpin: GET送信におけるHTTPリクエスト](#pushpin-get送信におけるhttpリクエスト)
 - [05-01. JSON型データの解析（パース）](#05-01-json型データの解析パース)
     - [:pushpin: シリアライズとデシリアライズ](#pushpin-シリアライズとデシリアライズ)
+    - [:pushpin: Jsonのクエリ言語](#pushpin-jsonのクエリ言語)
     - [:pushpin: データ記述言語の種類](#pushpin-データ記述言語の種類)
 - [06-01. Webページの構成](#06-01-webページの構成)
     - [:pushpin: マークアップ言語の歴史](#pushpin-マークアップ言語の歴史)
@@ -36,20 +35,7 @@
     - [:pushpin: HTMLのツリー構造化と構造解析](#pushpin-htmlのツリー構造化と構造解析)
 
 <!-- /TOC -->
-
-## 01-01. Webページにおける処理の流れ
-
-一例として，処理フローは，『(Vuex) ⇄ (AJAX )⇄ (DDD) ⇄  (DB) 』で実装される．
-
-![Vuex と DDD-1](https://user-images.githubusercontent.com/42175286/58743936-d7519980-8475-11e9-83b2-0d10505206b9.png)
-
-![Vuex と DDD-2](https://user-images.githubusercontent.com/42175286/58744171-a1aeaf80-8479-11e9-9844-f9beb6f13327.png)
-
-
-
-## 01-02. MVCとは
-
-### :pushpin: イベント発火からWebページ表示までの流れ
+## 01-01. イベント発火からWebページ表示までの流れ
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
@@ -1014,7 +1000,17 @@ class Example
 }    
 ```
 
+
+
 ### :pushpin: Jsonのクエリ言語
+
+- **JMESPath**
+
+```
+
+```
+
+
 
 ### :pushpin: データ記述言語の種類
 
