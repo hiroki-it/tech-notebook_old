@@ -9,23 +9,29 @@
 - [01-02. 各仮想化のパフォーマンスの比較](#01-02-各仮想化のパフォーマンスの比較)
     - [:pushpin: 起動速度の違い](#pushpin-起動速度の違い)
     - [:pushpin: 処理速度の違い](#pushpin-処理速度の違い)
-- [02-01. 仮想サーバ（仮想マシン）の構築](#02-01-仮想サーバ仮想マシンの構築)
+- [02-01. Providerによる仮想サーバ（仮想マシン）の構築](#02-01-providerによる仮想サーバ仮想マシンの構築)
+    - [:pushpin: Providerの操作](#pushpin-providerの操作)
+    - [:pushpin: Provisionerの操作](#pushpin-provisionerの操作)
     - [:pushpin: VagrantによるProviderとProvisionerの操作](#pushpin-vagrantによるproviderとprovisionerの操作)
-    - [:pushpin: Providerによる仮想サーバの構築](#pushpin-providerによる仮想サーバの構築)
-    - [:pushpin: Provisionerによるソフトウェアのインストール](#pushpin-provisionerによるソフトウェアのインストール)
-- [02-02. Symfonyによるビルトインサーバの構築](#02-02-symfonyによるビルトインサーバの構築)
-- [03-01. コンテナの構築](#03-01-コンテナの構築)
-    - [:pushpin: Dockerの構造](#pushpin-dockerの構造)
-    - [:pushpin: コマンドで起動中のコンテナにssh接続するまでの手順まとめ](#pushpin-コマンドで起動中のコンテナにssh接続するまでの手順まとめ)
+- [03-01. Symfonyによるビルトインサーバの構築](#03-01-symfonyによるビルトインサーバの構築)
+- [04-01. Dockerによるコンテナの構築](#04-01-dockerによるコンテナの構築)
+    - [:pushpin: Dockerの操作](#pushpin-dockerの操作)
+- [04-02. コンテナにssh接続するまでの手順](#04-02-コンテナにssh接続するまでの手順)
+    - [:pushpin: 手順の流れ](#pushpin-手順の流れ)
     - [:pushpin: ベースとなるDockerイメージのインストール](#pushpin-ベースとなるdockerイメージのインストール)
     - [:pushpin: ベースとなるDockerイメージのカスタマイズとビルド](#pushpin-ベースとなるdockerイメージのカスタマイズとビルド)
     - [:pushpin: コンテナレイヤーの生成，コンテナの構築](#pushpin-コンテナレイヤーの生成コンテナの構築)
     - [:pushpin: 構築されたコンテナの起動／停止](#pushpin-構築されたコンテナの起動／停止)
     - [:pushpin: 起動中のコンテナにssh接続](#pushpin-起動中のコンテナにssh接続)
+- [04-03. コンテナの種類](#04-03-コンテナの種類)
     - [:pushpin: Data Volumeコンテナ](#pushpin-data-volumeコンテナ)
-- [03-02. docker-compose.ymlによる全手順の自動化](#03-02-docker-composeymlによる全手順の自動化)
+- [04-04. コンテナ間の仮想ネットワーク](#04-04-コンテナ間の仮想ネットワーク)
+    - [:pushpin: bridgeネットワーク](#pushpin-bridgeネットワーク)
+    - [:pushpin: noneネットワーク](#pushpin-noneネットワーク)
+    - [:pushpin: hostネットワーク](#pushpin-hostネットワーク)
+- [04-05. docker-compose.ymlによる全手順の自動化](#04-05-docker-composeymlによる全手順の自動化)
     - [:pushpin: docker-compose.ymlの記述方法](#pushpin-docker-composeymlの記述方法)
-- [04-01. ライブラリとパッケージ](#04-01-ライブラリとパッケージ)
+- [05-01. ライブラリとパッケージ](#05-01-ライブラリとパッケージ)
     - [:pushpin: ライブラリとパッケージの大まかな違い](#pushpin-ライブラリとパッケージの大まかな違い)
     - [:pushpin: ライブラリマネージャ](#pushpin-ライブラリマネージャ)
     - [:pushpin: パッケージマネージャ](#pushpin-パッケージマネージャ)
@@ -97,16 +103,42 @@ sysbenchというベンチマークツールを用いて，CPU・メモリ・フ
 
 
 
-## 02-01. 仮想サーバ（仮想マシン）の構築
+## 02-01. Providerによる仮想サーバ（仮想マシン）の構築
 
 ![Vagrantの仕組み_オリジナル](https://user-images.githubusercontent.com/42175286/60393574-b18de200-9b52-11e9-803d-ef44d6e50b08.png)
 
 
 
+### :pushpin: Providerの操作
+
+基本ソフトウェアにおける制御プログラムや一連のハードウェアを仮想的に構築できる．これを，仮想サーバ（仮想マシンとも）という．構築方法の違いによって，『ホスト型』，『ハイパーバイザ型』に分類できる．
+
+
+
+### :pushpin: Provisionerの操作
+
+Providerによって構築された仮想サーバに，Web開発のためのソフトウェアをインストールできる．具体的には，プログラミング言語やファイアウォールをインストールする．
+
+- **Ansible**
+
+Ansibleでは，ymlの文法を用いて関数処理を実行できる．
+
+| ファイル名   | 役割                                   |
+| ------------ | -------------------------------------- |
+| playbook.yml | ソフトウェアのインストールタスクの手順 |
+| inventory/*  | 反映先のサーバの情報                   |
+| group_vars/* | 複数のサーバへの設定                   |
+| host_vars/*  | 単一のサーバへの設定                   |
+
+
+
 ### :pushpin: VagrantによるProviderとProvisionerの操作
 
+ProviderとProvisionerの操作を自動化できる．チームメンバーが別々に仮想サーバを構築する場合，ProviderとProvisionerの処理によって作られる仮想サーバの環境に，違いが生じてしまう．Vagrantを使う場合，ProviderとProvisionerによる処理方法は，Vagrantfileに記述されている．このために，Vagrantを用いれば，チームメンバーが同じソフトウェアの下で，仮想サーバを構築し，ソフトウェアをインストールすることができる．
 
-ProviderとProvisionerを操作し，仮想サーバ（仮想マシンとも言う）．ソフトウェアのインストール，を自動化するソフトウェア．チームメンバーが別々に仮想サーバを構築する場合，ProviderとProvisionerの処理によって作られる仮想サーバの環境に，違いが生じてしまう．Vagrantを使う場合，ProviderとProvisionerによる処理方法は，Vagrantfileに記述されている．このために，Vagrantを用いれば，チームメンバーが同じソフトウェアの下で，仮想サーバを構築し，ソフトウェアをインストールすることができる．サーバの情報は，ENVファイルで以下の様に管理する．
+- **サーバの情報の管理方法**
+
+サーバの情報は，ENVファイルで以下の様に管理する．
 
 ```php
 #=======================================
@@ -123,7 +155,7 @@ DB_USER="hiroki"
 DB_PASSWORD="12345"
 ```
 
-- **```vagrant```コマンド**
+- **主な```vagrant```コマンド**
 
 | コマンド                        | 処理                       |
 | ------------------------------- | :------------------------- |
@@ -134,52 +166,29 @@ DB_PASSWORD="12345"
 
 
 
-### :pushpin: Providerによる仮想サーバの構築
-
-基本ソフトウェアにおける制御プログラムや一連のハードウェアを仮想的に構築する．構築方法の違いによって，『ホスト型』，『ハイパーバイザ型』に分類できる．
+## 03-01. Symfonyによるビルトインサーバの構築
 
 
 
-### :pushpin: Provisionerによるソフトウェアのインストール
+## 04-01. Dockerによるコンテナの構築
 
-Providerによって構築された仮想サーバに，Web開発のためのソフトウェアをインストールするソフトウェア．具体的には，プログラミング言語やファイアウォールをインストールする．
+### :pushpin: Dockerの操作
 
-- **Ansible**
+- **Dockerクライアント**
 
-Ansibleでは，ymlの文法を用いて関数処理を実行できる．
-
-| ファイル名   | 役割                                   |
-| ------------ | -------------------------------------- |
-| playbook.yml | ソフトウェアのインストールタスクの手順 |
-| inventory/*  | 反映先のサーバの情報                   |
-| group_vars/* | 複数のサーバへの設定                   |
-| host_vars/*  | 単一のサーバへの設定                   |
-
-
-
-## 02-02. Symfonyによるビルトインサーバの構築
-
-
-
-## 03-01. コンテナの構築
-
-### :pushpin: Dockerの構造
-
-![Dockerアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerアーキテクチャ.png)
-
-Dockerは，クライアント，Dockerホスト，Dockerイメージを保管できるDockerレジストリから構成される．
+Dockerクライアントは，ssh接続によって，Dockerデーモンを操作できる．
 
 - **Dockerデーモン**
 
-クライアント側は，Dockerデーモンを介して，Dockerホスト側を操作することになる．
+ホストOS上で稼働し，Dockerの操作を担う．Dockerクライアントは，Dockerデーモンを通して，Docker全体を操作できる．
 
-- **Dockerレジストリ**
-
-DockerHub，AWS EC2 Container Registry，などがある．
+![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerの仕組み.png)
 
 
 
-### :pushpin: コマンドで起動中のコンテナにssh接続するまでの手順まとめ
+## 04-02. コンテナにssh接続するまでの手順
+
+### :pushpin: 手順の流れ
 
 ![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerfileの作成からコンテナ構築までの手順.png)
 
@@ -321,19 +330,43 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 
 
+## 04-03. コンテナの種類
+
 ### :pushpin: Data Volumeコンテナ
 
 - **Data Volumeとは**
 
-永続化したいデータを保存しておくローカルディレクトリのこと．Volume内のデータを扱うためには，コンテナ構築時に，Data Volumeをコンテナ側のディレクトリにマウントする必要がある．
+永続化したいデータを保存しておくディレクトリのこと．Volume内のデータを扱うためには，コンテナ構築時に，Data Volumeをコンテナ側のディレクトリにマウントする必要がある．
 
 - **Data Volumeコンテナによる永続化データの提供**
 
-コンテナのデータ永続化手法では，Data Volumeコンテナの構築が推奨されている．一旦，DataVolumeをコンテナ （Data Volumeコンテナ）にマウントしておく．そして，他のコンテナでDataVolumeを使用したい時は，Data Volumeコンテナとディレクトリを共有する．
+コンテナのデータ永続化手法では，Data Volumeコンテナの構築が推奨されている．一旦，DataVolumeのディレクトリをコンテナ （Data Volumeコンテナ）のディレクトリにマウントしておく．そして，他のコンテナでDataVolumeを使用したい時は，Data Volumeコンテナとディレクトリを共有することによって，データを要求する．
 
 
 
-## 03-02. docker-compose.ymlによる全手順の自動化
+## 04-04. コンテナ間の仮想ネットワーク
+
+### :pushpin: bridgeネットワーク
+
+複数のコンテナ間に対して，仮想ネットワークで接続させる．また，仮想ネットワークを物理ネットワークとBridge接続する．ほとんどの場合，この方法を用いる．
+
+![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerエンジン内の仮想ネットワーク.jpg)
+
+
+
+### :pushpin: noneネットワーク
+
+特定のコンテナに対して，ホストOSや他のコンテナとは，ネットワーク接続しない．
+
+
+
+### :pushpin: hostネットワーク
+
+特定のコンテナに対して，ホストOSと同じネットワーク情報をもたせる．
+
+
+
+## 04-05. docker-compose.ymlによる全手順の自動化
 
 ### :pushpin: docker-compose.ymlの記述方法
 
@@ -359,7 +392,7 @@ Dockerfileを基にしたDockerイメージのビルド，コンテナレイヤ�
 
 
 
-## 04-01. ライブラリとパッケージ
+## 05-01. ライブラリとパッケージ
 
 ### :pushpin: ライブラリとパッケージの大まかな違い
 
