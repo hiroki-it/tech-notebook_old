@@ -94,11 +94,11 @@
 
 現在までに，ドメイン駆動設計の派生型がいくつか提唱されている．
 
-- **Layeredアーキテクチャ**
+#### ・Layeredアーキテクチャ
 
-- **Hexagonalアーキテクチャ**
+#### ・Hexagonalアーキテクチャ
 
-- **Onionアーキテクチャ**
+#### ・Onionアーキテクチャ
 
   
 
@@ -110,10 +110,10 @@
 
 Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，以下の4層に再編成できる．
 
-- **User Interface層**
-- **Application層**
-- **Domain層（ビジネロジックをコード化）**
-- **Infrastructure層（DBとマッピング）**
+#### ・User Interface層
+#### ・Application層
+#### ・Domain層（ビジネロジックをコード化）
+#### ・Infrastructure層（DBとマッピング）
 
 
 
@@ -219,7 +219,7 @@ abstract class getDogToyEntityRepository
 }
 ```
 
-- **抽象Repositoryと具象Repositoryの対応付け**
+#### ・抽象Repositoryと具象Repositoryの対応付け
 
 Application層
 
@@ -388,15 +388,15 @@ class PaymentInfoVO
 
 金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，ValueObjectという．
 
-- **金額データと計算**
+#### ・金額データと計算
 
 金額データの計算をController内処理やEntity内メソッドで行うのではなく，金額計算を行うValueObjectのメソッドとして分割する．
 
-- **所要時間データと計算**
+#### ・所要時間データと計算
 
 所要時間データの計算をController内処理やEntity内メソッドで行うのではなく，所要時間計算を行うValueObjectのメソッドとして分割する．
 
-- **住所データと処理**
+#### ・住所データと処理
 
 郵便番号データとその処理をValueObjectとして分割する．
 
@@ -429,7 +429,7 @@ class ExampleVO
 }
 ```
 
-- **『Immutable』を実現できる理由**
+#### ・『Immutable』を実現できる理由
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にデータの値を上書きできてしまう．
 
@@ -738,7 +738,7 @@ class getDogToyEntityRepository
 
 責務として，構成した集約関係を加工して新たな集約を再構成する．
 
-- **実装例**
+#### ・実装例
 
 ```PHP
 // 構成した集約関係を加工して新たな集約を再構成する
