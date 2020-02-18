@@ -289,7 +289,7 @@ RUN yum -y install php-mbstring
 RUN yum -y install php-pear
 ```
 
-これは，以下のように一行でまとめれ...
+これは，以下のように一行でまとめられ...
 
 ```dockerfile
 # ベースイメージ上に，複数のイメージレイヤーを複数インストール
