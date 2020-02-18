@@ -89,9 +89,9 @@
     - [:pushpin: キャスト演算子](#pushpin-キャスト演算子)
     - [:pushpin: 正規表現とパターン演算子](#pushpin-正規表現とパターン演算子)
 - [05-02. 条件式](#05-02-条件式)
-    - [:pushpin: ```if```-```else```はできるだけ用いない](#pushpin-if-elseはできるだけ用いない)
     - [:pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```](#pushpin-if-elseif-elseとswitch-case-break)
-    - [:pushpin: ```if```-```elseif```-```else```はできるだけ用いない](#pushpin-if-elseif-elseはできるだけ用いない)
+    - [:pushpin: ```if```-```else```はできるだけ用いずに初期値と上書き](#pushpin-if-elseはできるだけ用いずに初期値と上書き)
+    - [:pushpin: ```if```-```elseif```-```else```は用いずに早期リターン](#pushpin-if-elseif-elseは用いずに早期リターン)
     - [:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力](#pushpin-オブジェクトごとにデータの値の有無が異なる時の出力)
 - [05-03. バリデーション（例外処理＋ログ出力）](#05-03-バリデーション例外処理＋ログ出力)
     - [:pushpin: 条件分岐](#pushpin-条件分岐)
@@ -247,7 +247,7 @@ class Car
 $car = new Car();
 ```
 
-- **```new static()``` vs. ```new self()```**
+#### ・```new static()``` vs. ```new self()```
 
 どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
 
@@ -284,7 +284,7 @@ echo get_class(A::get_static()); // 継承元のクラスA
 
 ### :pushpin: Generalization（汎化）
 
-- **汎化におけるOverride**
+#### ・汎化におけるOverride
 
 汎化の時，子クラスでメソッドの処理内容を再び実装すると，処理内容は上書きされる．
 
@@ -345,7 +345,7 @@ class GoodsWithTax extends Goods
 }
 ```
 
-- **抽象クラス**
+#### ・抽象クラス
 
 ビジネスロジックとして用いる．多重継承できない．
 
@@ -539,15 +539,15 @@ class Human implements Communication
 
 ![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
-- **クラス間の場合**
+#### ・クラス間の場合
 
 Generalizatoin，Realizationの関係性．
 
-- **インスタンス間の場合**
+#### ・インスタンス間の場合
 
 この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持する．Association，Aggregation，Compositionの関係性．
 
-- **クラス／インスタンス間の場合**
+#### ・クラス／インスタンス間の場合
 
 この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持しない．サプライヤー側を読みこみ，メソッドの処理の中で，『一時的に』サプライヤー側のインスタンスを使用するような関係性．例えば，Controllerのメソッドが，ServiceやValidatorのインスタンスを使用する場合がある．
 
@@ -563,16 +563,16 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．
 
-- **Setter Injection**
+#### ・Setter Injection
 
 
 メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
 
-- **Constructor Injection**
+#### ・Constructor Injection
 
 メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
 
-- **Method Injection**
+#### ・Method Injection
 
 上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持せず，読み込んでメソッドを使用する．
 
@@ -588,7 +588,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 ```
 
-- **アンチパターンのService Locater Pattern**
+#### ・アンチパターンのService Locater Pattern
 
 インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう誤った実装方法．
 
@@ -612,13 +612,13 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 ### :pushpin: DIPに基づかない設計 vs. 基づく設計
 
-- **DIPに基づかない設計の場合（従来）**
+#### ・DIPに基づかない設計の場合（従来）
 
 より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
 
-![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
 
-- **DIPに基づく設計の場合**
+#### ・DIPに基づく設計の場合
 
 抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
 
@@ -854,7 +854,7 @@ class Example1
 }
 ```
 
-- **名前空間の読み込み**
+#### ・名前空間の読み込み
 
 ```PHP
 // use文で名前空間を読み込む．
@@ -874,7 +874,7 @@ class Example2
 }
 ```
 
-- **クラスの読み込み**
+#### ・クラスの読み込み
 
 ```PHP
 // use文でクラス名を読み込む．
@@ -893,7 +893,7 @@ class Example2
 }
 ```
 
-- **メソッドの読み込み**
+#### ・メソッドの読み込み
 
 ```PHP
 // use文でメソッドを読み込む．
@@ -911,7 +911,7 @@ class Eeample2
 }
 ```
 
-- **定数の読み込み**
+#### ・定数の読み込み
 
 ```PHP
 // use文で定数を読み込む．
@@ -943,7 +943,7 @@ PHPには組み込まれていない．
 
 クラスの中にクラスをカプセル化する機能．データやメソッドと同じ記法で，内部クラスでは，外部クラスのメンバを呼び出すことができる．
 
-- **非静的内部クラス**
+#### ・非静的内部クラス
 
 PHPとは異なり，変数定義に『$』は用いないことに注意．
 
@@ -991,7 +991,7 @@ class OuterClass
 }
 ```
 
-- **静的内部クラス**
+#### ・静的内部クラス
 
 呼び出すメソッドと呼び出されるメンバの両方をstaticとしなければならない．
 
@@ -1066,7 +1066,7 @@ class Example<T>{
 }
 ```
 
-- **総称型を用いない場合**
+#### ・総称型を用いない場合
 
 リスト内の要素は，Object型として取り出されるため，キャスト（明示的型変換）が必要．
 
@@ -1082,7 +1082,7 @@ l.add("Ruby");
 String str = (String)list.get(0);
 ```
 
-- **総称型を用いる場合**
+#### ・総称型を用いる場合
 
 **【実装例】**
 
@@ -1154,13 +1154,11 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 同じオブジェクト内でのみ呼び出せる．
 
-- **Encapsulation（カプセル化）**
+#### ・Encapsulation（カプセル化）
 
 カプセル化とは，システムの実装方法を外部から隠すこと．オブジェクト内のデータにアクセスするには，直接データを扱う事はできず，オブジェクト内のメソッドをコールし，アクセスしなければならない．
 
 ![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
-
-- **データにアクセスできない時の**
 
 ### :pushpin: ```static```
 
@@ -1233,7 +1231,7 @@ class ABC {
 
 ### :pushpin: 値を設定するアクセサメソッドの実装
 
-- **Setter**
+#### ・Setter
 
 『Mutable』なオブジェクトを実現できる．
 
@@ -1253,7 +1251,7 @@ class Test01 {
 }    
 ```
 
-- **マジックメソッドの```__construct()```**
+#### ・マジックメソッドの```__construct()```
 
 マジックメソッドの```__construct()```を持たせることで，このデータを持っていなければならないとい制約を明示することがでできる．Setterを持たせずに，```__construct()```だけを持たせれば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
 
@@ -1272,7 +1270,7 @@ class Test02 {
     
 }
 ```
-- **『Mutable』と『Immutable』を実現できる理由**
+#### ・『Mutable』と『Immutable』を実現できる理由
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．
 
@@ -1368,7 +1366,7 @@ $D = getObjB()->getObjC()->getObjC();
 
 オブジェクトに対して特定の操作が行われた時に自動的にコールされる特殊なメソッドのこと．自動的に呼び出される仕組みは謎．共通の処理を行うGetter（例えば，値を取得するだけのGetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされてコールされる．
 
-- **```__get()```**
+#### ・```__get()```
 
 定義されていないデータや，アクセス権のないデータを取得しようとした時に，代わりに呼び出される．メソッドは定義しているが，データは定義していないような状況で用いる．
 
@@ -1398,11 +1396,11 @@ $example->hoge;
 hogeデータは存在しないため，値を呼び出せません．
 ```
 
-- **```__call()```**
+#### ・```__call()```
 
 定義されていないメソッドや，アクセス権のないメソッドを取得しようとした時に，代わりにコールされる．データは定義しているが，メソッドは定義していないような状況で用いる．
 
-- **```__callStatic()```**
+#### ・```__callStatic()```
 
 
 
@@ -1410,7 +1408,7 @@ hogeデータは存在しないため，値を呼び出せません．
 
 定義されていないstaticメソッドや，アクセス権のないstaticメソッドを取得しようとした時に，代わりに呼び出される．自動的にコールされる仕組みは謎．共通の処理を行うSetter（例えば，値を設定するだけのSetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされて呼び出される．
 
-- **```__set()```**
+#### ・```__set()```
 
 定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）
 
@@ -1440,7 +1438,7 @@ $example->hoge = "HOGE";
 hogeデータは存在しないため，HOGEを設定できません．
 ```
 
-- **マジックメソッドの```__construct()```**
+#### ・マジックメソッドの```__construct()```
 
 インスタンス化時に自動的に呼び出されるメソッド．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
 
@@ -1460,7 +1458,7 @@ class Test02 {
 }
 ```
 
-- **【『Mutable』と『Immutable』を実現できる理由】**
+#### ・【『Mutable』と『Immutable』を実現できる理由】
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
@@ -1484,7 +1482,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### :pushpin: マジックメソッド（その他）
 
-- **```__invoke()```**
+#### ・```__invoke()```
 
 
 
@@ -1622,18 +1620,18 @@ public function cachedResult($funcName)
 
 ### :pushpin: 値の返却
 
-- **```return```**
+#### ・```return```
 
 メソッドがコールされた場所に値を返却した後，その処理が終わる．
 
-- **```yield```**
+#### ・```yield```
 
-メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．
+メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．返却値は，array型である．
 
 **【実装例】**
 
 ```PHP
-function getOneToThree()
+function getOneToThree(): array
 {
     for ($i = 1; $i <= 3; $i++) {
         // yield を返却した後、$i の値が維持される．
@@ -1661,7 +1659,7 @@ foreach ($oneToThree as $value) {
 
 ### :pushpin: Closure（無名関数）の定義，変数格納後のコール
 
-- **```use()```のみに引数を渡す場合**
+#### ・```use()```のみに引数を渡す場合
 
 **【実装例】**
 
@@ -1681,7 +1679,7 @@ echo $optionName;
 // オプションA
 ```
 
-- **```function()```と```use()```に引数を渡す場合**
+#### ・```function()```と```use()```に引数を渡す場合
 
 **【実装例】**
 
@@ -1701,7 +1699,7 @@ echo $optionName("BC");
 // オプションABC
 ```
 
-- **データの値に無名関数を格納しておく裏技**
+#### ・データの値に無名関数を格納しておく裏技
 
 **【実装例】**
 
@@ -1756,7 +1754,7 @@ echo $optionName;
 
 関数を引数として受け取ったり，関数自体を返したりする関数を『高階関数』と呼ぶ．
 
-- **無名関数を用いない場合**
+#### ・無名関数を用いない場合
 
 **【実装例】**
 
@@ -1805,7 +1803,7 @@ higherOrder("第一引数", "callbackMethod");
 // 第一引数の出力に成功しました．
 ```
 
-- **無名関数を用いる場合**
+#### ・無名関数を用いる場合
 
 **【実装例】**
 
@@ -1876,7 +1874,7 @@ public function Shiborikomi($callback)
 
 同じデータ型のデータを並べたデータ格納様式のこと．
 
-- **インデックス配列**
+#### ・インデックス配列
 
 番号キーごとに値が格納されたArray型のこと．
 
@@ -1889,7 +1887,7 @@ Array
 )
 ```
 
-- **多次元配列**
+#### ・多次元配列
 
 配列の中に配列をもつArray型のこと．配列の入れ子構造が２段の場合，『二次元配列』と呼ぶ．
 
@@ -1911,7 +1909,7 @@ Array
 )
 ```
 
-- **連想配列**
+#### ・連想配列
 
 キー名（赤，緑，黄，果物，野菜）ごとに値が格納されたArray型のこと．下の例は，二次元配列かつ連想配列である．
 
@@ -1934,13 +1932,13 @@ Array
 )
 ```
 
-- **配列内の要素の走査（スキャン）**
+#### ・配列内の要素の走査（スキャン）
 
 配列内の要素を順に調べていくことを『走査（スキャン）』という．例えば，```foreach()```は，配列内の全ての要素を走査する処理である．下図では，連想配列が表現されている．
 
 ![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/配列の走査.png)
 
-- **内部ポインタを用いた配列要素の出力**
+#### ・内部ポインタを用いた配列要素の出力
 
 『内部ポインタ』とは，配列において，参照したい要素を位置で指定するためのカーソルのこと．
 
@@ -1969,7 +1967,7 @@ echo reset($array); // あ
 
 PHPで用いることはあまりないデータ格納様式．詳しくは，JavaにおけるLinkedList型を参照せよ．
 
-- **PHPの```list()```とは何なのか**
+#### ・PHPの```list()```とは何なのか
 
 PHPの```list()```は，List型とは意味合いが異なる．配列の要素一つ一つを変数に格納したい場合，List型を使わなければ，冗長ではあるが，以下のように実装する必要がある．
 
@@ -2042,7 +2040,7 @@ print_r($array);
 echo $theFirst; // Blue
 ```
 
-- **メッセージQueue**
+#### ・メッセージQueue
 
 送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる．また，受信側の好きなタイミングでメッセージを取り出すことができる．
 
@@ -2072,7 +2070,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 ### :pushpin: Tree型
 
-- **二分探索木**
+#### ・二分探索木
 
   各ノードにデータが格納されている．
 
@@ -2080,7 +2078,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 
 
-- **ヒープ**
+#### ・ヒープ
 
   Priority Queueを実現するときに用いられる．各ノードにデータが格納されている．
 
@@ -2106,11 +2104,11 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 ### :pushpin: Array型
 
-- **ArrayList**
+#### ・ArrayList
 
 ArrayListクラスによって実装されるArray型．PHPのインデックス配列に相当する．
 
-- **HashMap**
+#### ・HashMap
 
 HashMapクラスによって実装されるArray型．PHPの連想配列に相当する．
 
@@ -2120,15 +2118,15 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 値をポインタによって順序通り並べたデータ格納形式のこと．
 
-- **単方向List**
+#### ・単方向List
 
 ![p555-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-1.gif)
 
-- **双方向List**
+#### ・双方向List
 
 ![p555-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-2.gif)
 
-- **循環List**
+#### ・循環List
 
 ![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-3.gif)
 
@@ -2146,11 +2144,13 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 ### :pushpin: スカラー型
 
-- **int**
-- **float**
-- **string**
+#### ・int
 
-- **boolean**
+#### ・float
+
+#### ・string
+
+#### ・boolean
 
 |   T／F    | データの種類 | 説明                     |
 | :-------: | ------------ | ------------------------ |
@@ -2167,8 +2167,9 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 ### :pushpin: 複合型
 
 
-- **array**
-- **object**
+#### ・array
+
+#### ・object
 
 ```PHP
 Fruit Object
@@ -2183,9 +2184,9 @@ Fruit Object
 
 ### :pushpin: その他のデータ型
 
-- **null**
+#### ・null
 
-- **date**
+#### ・date
 
 厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．
 
@@ -2253,7 +2254,7 @@ class requiedTime
 
 自動的に値が格納されている定数．
 
-- **```__FUNCTION__```**
+#### ・```__FUNCTION__```
 
 この定数がコールされたメソッド名が格納されている．
 
@@ -2271,7 +2272,7 @@ $exampleA = new ExmapleA;
 $example->a(); // a が返却される．
 ```
 
-- **```__METHOD__```**
+#### ・```__METHOD__```
 
 この定数がコールされたクラス名とメソッド名が，```{クラス名}::{メソッド名}```の形式で格納されている．
 
@@ -2299,7 +2300,7 @@ $exampleB->b(); // ExampleB::b が返却される．
 
 ※Paizaで検証済み．
 
-- **シングルクオーテーションによる変数展開**
+#### ・シングルクオーテーションによる変数展開
 
 シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．
 
@@ -2310,7 +2311,7 @@ $fruit = "リンゴ";
 echo 'これは$fruitです．'; // これは，$fruitです．
 ```
 
-- **シングルクオーテーションと波括弧による変数展開**
+#### ・シングルクオーテーションと波括弧による変数展開
 
 シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．
 
@@ -2321,7 +2322,7 @@ $fruit = "リンゴ";
 echo 'これは{$fruit}です．'; // これは，{$fruit}です．
 ```
 
-- **ダブルクオーテーションによる変数展開**
+#### ・ダブルクオーテーションによる変数展開
 
 変数の前後に半角スペースを置いた場合にのみ，変数は展開される．（※半角スペースがないとエラーになる）
 
@@ -2332,7 +2333,7 @@ $fruit = "リンゴ";
 echo "これは $fruit です．"; // これは リンゴ です．
 ```
 
-- **ダブルクオーテーションと波括弧による変数展開**
+#### ・ダブルクオーテーションと波括弧による変数展開
 
 波括弧を用いると，明示的に変数として扱うことができる．これによって，変数の前後に半角スペースを置かなくとも，変数は展開される．
 
@@ -2347,7 +2348,7 @@ echo "これは{$fruit}です．"; // これは，リンゴです．
 
 ### :pushpin: 参照渡しと値渡し
 
-- **参照渡し**
+#### ・参照渡し
 
 「参照渡し」とは，変数に代入した値の参照先（メモリアドレス）を渡すこと．
 
@@ -2367,7 +2368,7 @@ $a = 10;    // 変数aの値を変更
 echo $b; // 10
 ```
 
-- **値渡し**
+#### ・値渡し
 
 「値渡し」とは，変数に代入した値のコピーを渡すこと．
 
@@ -2394,7 +2395,7 @@ echo $b; // 2
 
 ### :pushpin: 等価演算子を用いたインスタンスの比較
 
-- **イコールが2つの場合**
+#### ・イコールが2つの場合
 
 同じオブジェクトから別々に作られたインスタンスであっても，『同じもの』として認識される．
 
@@ -2409,7 +2410,7 @@ if(new Example == new Example){
 // 同じです
 ```
 
-- **イコールが3つの場合**
+#### ・イコールが3つの場合
 
 同じオブジェクトから別々に作られたインスタンスであっても，『異なるもの』として認識される．
 
@@ -2475,13 +2476,13 @@ $var = (object) $var;
 
 ### :pushpin: 正規表現とパターン演算子
 
-- **正規表現を用いた文字列検索**
+#### ・正規表現を用いた文字列検索
 
 ```PHP
 
 ```
 
-- **オプションとしてのパターン演算子**
+#### ・オプションとしてのパターン演算子
 
 ```PHP
 // jpegの大文字小文字
@@ -2492,90 +2493,13 @@ preg_match('/jpeg$/i', $x);
 
 ## 05-02. 条件式
 
-### :pushpin: ```if```-```else```はできるだけ用いない
-
-- **```if```-```else```を用いた場合**
-
-可読性が悪いため，避けるべき．
-
-```PHP
-// マジックナンバーを使わずに，定数として定義
-const noOptionItem = 0;
-
-// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options)) {
-    foreach ($routeEntity->options as $option) {
-    
-        // if文を通過した場合，メソッドの返却値が格納される．
-        // 通過しない場合，定数が格納される．
-        if ($option->isOptionItemA()) {
-            $result['optionItemA'] = $option->optionItemA();
-        } else {
-            $result['optionItemA'] = noOptionItem;
-            }
-        
-        if ($option->isOptionItemB()) {
-            $result['optionItemB'] = $option->optionItemB();
-        } else {
-            $result['optionItemB'] = noOptionItem;
-            }
-            
-        if ($option->isOptionItemC()) {
-            $result['optionItemC'] = $option->optionItemC();
-        } else {
-            $result['optionItemC'] = noOptionItem;
-            }		
-    };
-}
-
-return $result;
-```
-
-- **初期値と上書きのロジックを用いた場合**
-
-よりすっきりした書き方になる．
-
-```PHP
-// マジックナンバーを使わずに，定数として定義
-const noOptionItem = 0;
-
-// 初期値0を設定
-$result['optionItemA'] = noOptionItem;
-$result['optionItemB'] = noOptionItem;
-$result['optionItemC'] = noOptionItem;
-
-// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options)) {
-    foreach ($routeEntity->options as $option) {
-    
-        // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
-        // 通過しない場合，初期値0が用いられる．
-        if ($option->isOptionItemA()) {
-            $result['optionItemA'] = $option->optionItemA();
-        }
-        
-        if ($option->isOptionItemB()) {
-            $result['optionItemB'] = $option->optionItemB();
-        }		
-
-        if ($option->isOptionItemC()) {
-            $result['optionItemC'] = $option->optionItemC();
-        }
-    };
-}
-
-return $result;
-```
-
-
-
 ### :pushpin: ```if```-```elseif```-```else```と```switch```-```case```-```break```
 
 **【実装例】**
 
 曜日を判定し，文字列を出力する．
 
-- **```if```-```elseif```-```else```**
+#### ・```if```-```elseif```-```else```
 
 ```PHP
 // 変数に Tue を格納
@@ -2602,7 +2526,9 @@ if ($weeks == 'Mon') {
 // 火曜日
 ```
 
-- **```switch```-```case```-```break```**
+#### ・```switch```-```case```-```break```
+
+定数ごとに処理が変わる時，こちらの方が可読性が高い．
 
 ```PHP
 // 変数に Tue を格納
@@ -2641,9 +2567,86 @@ switch ($weeks) {
 
 
 
-### :pushpin: ```if```-```elseif```-```else```はできるだけ用いない
+### :pushpin: ```if```-```else```はできるだけ用いずに初期値と上書き
 
-- **決定表を用いた条件分岐の整理**
+#### ・```if```-```else```を用いた場合
+
+可読性が悪いため，避けるべき．
+
+```PHP
+// マジックナンバーを使わずに，定数として定義
+const noOptionItem = 0;
+
+// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+if(!empty($routeEntity->options)) {
+    foreach ($routeEntity->options as $option) {
+    
+        // if文を通過した場合，メソッドの返却値が格納される．
+        // 通過しない場合，定数が格納される．
+        if ($option->isOptionItemA()) {
+            $result['optionItemA'] = $option->optionItemA();
+        } else {
+            $result['optionItemA'] = noOptionItem;
+            }
+        
+        if ($option->isOptionItemB()) {
+            $result['optionItemB'] = $option->optionItemB();
+        } else {
+            $result['optionItemB'] = noOptionItem;
+            }
+            
+        if ($option->isOptionItemC()) {
+            $result['optionItemC'] = $option->optionItemC();
+        } else {
+            $result['optionItemC'] = noOptionItem;
+            }		
+    };
+}
+
+return $result;
+```
+
+#### ・初期値と上書きのロジックを用いた場合
+
+よりすっきりした書き方になる．
+
+```PHP
+// マジックナンバーを使わずに，定数として定義
+const noOptionItem = 0;
+
+// 初期値0を設定
+$result['optionItemA'] = noOptionItem;
+$result['optionItemB'] = noOptionItem;
+$result['optionItemC'] = noOptionItem;
+
+// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+if(!empty($routeEntity->options)) {
+    foreach ($routeEntity->options as $option) {
+    
+        // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
+        // 通過しない場合，初期値0が用いられる．
+        if ($option->isOptionItemA()) {
+            $result['optionItemA'] = $option->optionItemA();
+        }
+        
+        if ($option->isOptionItemB()) {
+            $result['optionItemB'] = $option->optionItemB();
+        }		
+
+        if ($option->isOptionItemC()) {
+            $result['optionItemC'] = $option->optionItemC();
+        }
+    };
+}
+
+return $result;
+```
+
+
+
+### :pushpin: ```if```-```elseif```-```else```は用いずに早期リターン
+
+#### ・決定表を用いた条件分岐の整理
 
 **【実装例】**
 
@@ -2655,7 +2658,7 @@ switch ($weeks) {
 
 ![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/決定表.png)
 
-- **```if```-```elseif```-```else```を用いた場合**
+#### ・```if```-```elseif```-```else```を用いた場合
 
 可読性が悪いため，避けるべき．
 
@@ -2692,9 +2695,9 @@ public function leapYear(Int $year): String
 }
 ```
 
-- **```if```と```return```を用いた場合**
+#### ・```if```と```return```を用いた場合
 
-```return```を用いることで，```if```が入れ子状になることを防ぐことができる．
+```return```を用いることで，```if```が入れ子状になることを防ぐことができる．これを，早期リターンともいう．
 
 ```PHP
 // 西暦を格納する．
@@ -2731,7 +2734,7 @@ public function leapYear(Int $year): String
 }
 ```
 
-- **```switch```-```case```-```break```を用いた場合**
+#### ・```switch```-```case```-```break```を用いた場合
 
 ```switch```-```case```-```break```によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，```break```ではなく```return```を用いている．
 
@@ -2797,7 +2800,7 @@ $csv['ID'] = $order->id;
 | **NULL** |       ✕       |    ✕     |
 | **array(0)** |       **〇**       |    ✕     |
 | **array(1)** |    **〇**     |  **〇**  |
-| **使いどころ** | null以外の値の格納判定 | より厳密に，数値と配列のみ格納判定 |
+| **使いどころ** | null以外の値の格納判定 | ```""```とNULLを判定したい場合 |
 
 ```PHP
 # 右辺には，上記に当てはまらない状態『TRUE』が置かれている．
@@ -2929,7 +2932,7 @@ class HttpRequestException extends Exception
 
 ### :pushpin: ```foreach()```
 
-- **いずれかの配列の要素を返却する場合**
+#### ・いずれかの配列の要素を返却する場合
 
 単に配列を作るだけでなく，要素にアクセスするためにも使われる．
 
@@ -2959,13 +2962,13 @@ public function checkOption(Array $options)
 
 
 
-- **エンティティごとに，データの値を持つか否かが異なる場合**
+#### ・エンティティごとに，データの値を持つか否かが異なる場合
 
 
 
 ### :pushpin: ```for()```
 
-- **要素の位置を繰り返しズラす場合**
+#### ・要素の位置を繰り返しズラす場合
 
 ```PHP
 moveFile($fromPos < $toPos)
@@ -2984,7 +2987,7 @@ moveFile($fromPos < $toPos)
 
 反復処理では，何らかの状態になった時に反復処理を終えなければならない．しかし，終えることができないと，無限ループが発生してしまう．
 
-- **```break```**
+#### ・```break```
 
 ```PHP
 // 初期化
@@ -2998,7 +3001,7 @@ while($i < 4){
 }
 ```
 
-- **continue**
+#### ・continue
 
 
 
@@ -3006,7 +3009,7 @@ while($i < 4){
 
 『N個の正負の整数の中から，正の数のみの合計を求める』という処理を行うとする．
 
-- **```for()```**
+#### ・```for()```
 
 ![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_for文.png)
 
@@ -3025,7 +3028,7 @@ for($i = 0; $i < N; $i++){
 }
 ```
 
-- **```while()```**
+#### ・```while()```
 
 ![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_while文.png)
 
@@ -3048,7 +3051,7 @@ while($i < N){
 }
 ```
 
-- **```foreach()```**
+#### ・```foreach()```
 
 ![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_foreach文.png)
 
@@ -3076,31 +3079,31 @@ foreach($a as $x){
 
 ### :pushpin: ```var_dump($var)```
 
-- **変数の中身の確認方法**
+#### ・変数の中身の確認方法
 
 ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブ，で確認することができる．
 
-- **小ネタ**
+#### ・小ネタ
 
 変数の中身が出力されていなかったら，```exit```をつけてみる．
 
 ### :pushpin: ```var_dump($var)``` & ```throw new \Exception("")```
 
-- **変数の中身の確認方法**
+#### ・変数の中身の確認方法
 
 ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．エラー画面の上部で，```var_dump($var)```の結果を確認することができる．
 
-- **小ネタ**
+#### ・小ネタ
 
 クラスを読み込むために，```Exception```の前に，```\```（逆スラッシュ）をつけること．
 
 ### :pushpin: ```throw new \Exception(var_dump($var))```
 
-- **変数の中身の確認方法**
+#### ・変数の中身の確認方法
 
 ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．例外エラーの内容として，```var_dump($var)```の結果を確認することができる．
 
-- **小ネタ**
+#### ・小ネタ
 
 クラスを読み込むために，```Exception```の前に，```\```（逆スラッシュ）をつけること．
 
