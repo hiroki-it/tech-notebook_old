@@ -77,7 +77,7 @@ const example = {
 
 ### :pushpin: コンストラクタ関数の使用
 
-- **```Object```コンストラクタ関数**
+#### ・```Object```コンストラクタ関数
 
 キャメルケース（小文字から始める記法）を用いる．プロパティを生成するためには，値を格納する必要がある．関数宣言あるいは関数式で記述する．パスカルケース（大文字から始める記法）を用いる．ちなみに，オブジェクトのプロパティ値として生成された関数を，メソッドと呼ぶ．
 
@@ -96,7 +96,7 @@ const example = new Object({
 })
 ```
 
-- **```Function```コンストラクタ関数**
+#### ・```Function```コンストラクタ関数
 
 ```javascript
 const Example = new Function();
@@ -222,7 +222,7 @@ const example = new Example(1)
 
 オブジェクトが暗示的に持つ```prototype```プロパティに，別のオブジェクトのメンバを追加することによって，そのオブジェクトのプロトタイプを継承することができる．オブジェクトからプロパティやメソッドをコールした時，そのオブジェクトにこれらが存在しなければ，継承元まで辿る仕組みを『プロトタイプチェーン』という．クラスベースのオブジェクト指向で用いられるクラスチェーンについては，別ノートを参照せよ．
 
-- **```new Obejct()```を用いた継承**
+#### ・```new Obejct()```を用いた継承
 
 ```javascript
 // 大元となるオブジェクトは個別ファイルで管理しておくのがベター．
@@ -268,7 +268,7 @@ var result = SubExample.getValue()
 console.log(result);
 ```
 
-- **```Object.create()```を用いた継承とメンバ追加**
+#### ・```Object.create()```を用いた継承とメンバ追加
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
@@ -347,7 +347,7 @@ example.getValue(); // 1
 
 ### :pushpin: コンストラクタ関数としてコールする場合
 
-- **関数宣言と関数式によるコンストラクタ関数内の```this```の場合**
+#### ・関数宣言と関数式によるコンストラクタ関数内の```this```の場合
 
 コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．
 
@@ -379,7 +379,7 @@ object2.printParam; // param
 // コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．ここでは，objectとobject2．
 ```
 
-- **アロー関数によるコンストラクタ関数内の```this```の場合**
+#### ・アロー関数によるコンストラクタ関数内の```this```の場合
 
 アロー関数内の```this```の参照先には，十分な注意が必要である．今まで，JavaScriptでは，```this```の参照先が文脈によって変わることに批判が集まっていた．そこで，参照先が文脈によって変わらない機能が追加された．```this```は，自身が定義されたオブジェクトを指す．
 
@@ -422,13 +422,13 @@ object2.printParam; // global param
 
 Vueでは，SPAの仕組みが用いられている．
 
-- **SPアプリにおけるデータ通信の仕組み**
+#### ・SPアプリにおけるデータ通信の仕組み
 
 Webページの部分ごとに，サーバとデータ通信できる．
 
 ![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SPアプリにおけるデータ通信の仕組み.png)
 
-- **従来WebアプリとSPアプリの処理速度の違い**
+#### ・従来WebアプリとSPアプリの処理速度の違い
 
 ![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/従来WebアプリとSPアプリの処理速度の違い.png)
 
@@ -436,7 +436,7 @@ Webページの部分ごとに，サーバとデータ通信できる．
 
 ### :pushpin: コンポーネントの登録
 
-- **グローバル登録**
+#### ・グローバル登録
 
 ```javascript
 Vue.component('v-example-component',{
@@ -448,7 +448,7 @@ new Vue({
 })
 ```
 
-- **ローカル登録**
+#### ・ローカル登録
 
 ```javascript
 var vExampleComponent = {
@@ -487,13 +487,13 @@ new Vue({
 
 ### :pushpin: 双方向データバインディング
 
-- **MVVMパターン**
+#### ・MVVMパターン
 
 Viewが『Twig＋親コンポーネント』，ViewModelが『Vueインスタンス＋子コンポーネントのVueファイル』，Modelが『クラスが定義されたJSファイル』に相当する．
 
 ![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVMパターン.png)
 
-- **双方向データバインディングの仕組み**
+#### ・双方向データバインディングの仕組み
 
 Viewの親コンポーネント（出力先のコンポーネントタグ）では，ViewModelの子コンポーネント（出力内容）がタグ名でコールされる．ViewとViewModelのコンポーネント間での，データの双方向の受け渡しを双方向データバインディングという．
 
@@ -505,7 +505,7 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
 
 **【実装例】**
 
-- **親コンポーネント**
+#### ・親コンポーネント
 
 ```html
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
@@ -531,7 +531,7 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
   
 </div>
 ```
-- **Vueインスタンス**
+#### ・Vueインスタンス
 
 ```javascript
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
@@ -614,7 +614,7 @@ new Vue({
         }
 })
 ```
-- **子コンポーネント**
+#### ・子コンポーネント
 
 ```vue
 <!-- v-example-component-1の子コンポーネント -->
@@ -677,11 +677,11 @@ module.exports = {
 
 ### :pushpin: ディレクティブ
 
-- **```v-on: イベント名="Vueインスタンスのメソッド"```（```@:```でも可）**
+#### ・```v-on: イベント名="Vueインスタンスのメソッド"```（```@:```でも可）
 
 ```$emit()```でイベント名を指定されることによって，Vueインスタンス内の特定のメソッドを発火させる．
 
-- **```v-show="プロパティ名"```**
+#### ・```v-show="プロパティ名"```
 
 ```props```内のプロパティ名がもつ値が```TRUE```の時に表示し，```FALSE```の時に非表示にする．
 
@@ -719,20 +719,20 @@ Vuejsでライブラリの一つで，ページの状態管理を行うことが
 
 ![Vuex](https://user-images.githubusercontent.com/42175286/58393072-ef8d7700-8077-11e9-9633-d137b8e36077.png)
 
-- **Dispach**
+#### ・Dispach
 
 1. ユーザーのアクションによって，Vue Componentから，Vuexで定義したActionを呼び出す．
 2. まずDispatchされたActionは，APIにリクエストを投げる．そしてサーバーサイド側で定義したロジックによって何らかの処理が実行される．ここで注意するポイントは，「Actionは，必ず非同期処理 」
 
-- **Commit**
-  
+#### ・Commit
+
   サーバー側からレスポンスされたデータ（基本的にはJSONでリターンする）をMutationへ渡す．
 
-- **Mutate**
+#### ・Mutate
 
   MutationがStateを変更．ここで注意するポイントは，「Mutationは，必ず同期処理 」．
 
-- **Render**
+#### ・Render
 
    MutateされたStateを，Vue Component側に描画．
 
@@ -925,7 +925,7 @@ module.exports = Staff;
 
 ### :pushpin: GET送信におけるHTTPリクエスト
 
-- **クエリストリングによるデータの送信**
+#### ・クエリストリングによるデータの送信**
 
 GET送信ではデータからクエリストリングが生成され，HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる．URLに情報が記述されるため，履歴でデータの内容を確認できてしまう危険がある．
 
@@ -933,7 +933,7 @@ GET送信ではデータからクエリストリングが生成され，HTTPリ�
 http://127.0.0.1/example.php + ? + クエリストリング
 ```
 
-- **クエリストリングの生成**
+#### ・クエリストリングの生成**
 
 **【実装例】**
 
@@ -1004,7 +1004,7 @@ class Example
 
 ### :pushpin: Jsonのクエリ言語
 
-- **JMESPath**
+#### ・JMESPath**
 
 ```
 
@@ -1014,7 +1014,7 @@ class Example
 
 ### :pushpin: データ記述言語の種類
 
-- **JSON：JavaScript Object Notation**
+#### ・JSON：JavaScript Object Notation**
 
 一番外側を波括弧で囲う．
 
@@ -1027,7 +1027,7 @@ class Example
 }
 ```
 
-- **YAML：YAML Ain't a Markup Language**
+#### ・YAML：YAML Ain't a Markup Language**
 
 ```yaml
 {
@@ -1039,11 +1039,11 @@ class Example
 }  
 ```
 
-- **マークアップ言語**
+#### ・マークアップ言語**
 
 マークアップ言語の章を参照せよ．
 
-- **CSV：Comma Separated Vector**
+#### ・CSV：Comma Separated Vector**
 
 データ解析の入力ファイルとしてよく使うやつ．
 
@@ -1069,7 +1069,7 @@ XML形式テキストファイルはタグを用いて記述されている．�
 
 引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB
 
-- **スキーマ言語**
+#### ・スキーマ言語**
 
   XML形式テキストファイルにおいて，タグの付け方は自由である．しかし，利用者間で共通のルールを設けた方が良い．ルールを定義するための言語をスキーマ言語という．スキーマ言語に，DTD：Document Type Definition（文書型定義）がある．
 
@@ -1088,7 +1088,7 @@ XML形式テキストファイルはタグを用いて記述されている．�
 ]>
 ```
 
-- **ツリー構造の解析**
+#### ・ツリー構造の解析**
 
 DOMによる解析の場合，プロセッサはXMLを構文解析し，メモリ上にDOMツリーを展開する．一方で，SAXによる解析の場合，DOMのようにメモリ上にツリーを構築することなく，先頭から順にXMLを読み込み，要素の開始や要素の終わりといったイベントを生成し，その都度アプリケーションに通知する．
 

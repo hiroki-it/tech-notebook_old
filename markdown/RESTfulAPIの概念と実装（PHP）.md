@@ -17,20 +17,20 @@
 
 分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
 
-- **Addressability**
-- **Stateless**
-- **Connectability**
-- **Uniform Interface**
+#### ・Addressability
+#### ・Stateless
+#### ・Connectability
+#### ・Uniform Interface
 
 
 
 ### :pushpin: RESTful API へのリクエスト
 
-- **RESTful APIとは**
+#### ・RESTful APIとは
 
 RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
 
-- **URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）**
+#### ・URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）
 
 パスパラメータはデータをリクエストするために用いる．また，クエリパラメータは，GET送信の時に，データの検索処理／フィルタ処理／ソート処理をリクエストするために用いる．GET送信については，リクエストメッセージの説明を参照せよ．
 
@@ -44,7 +44,7 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 ```
 
-- **エンドポイント**
+#### ・エンドポイント
 
 APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
 
@@ -61,7 +61,7 @@ APIにリソースをリクエストするためのURLのこと．エンドポ�
 
 ### :pushpin: RESTful APIからのレスポンス
 
-- **スキーマ**
+#### ・スキーマ
 
 例えば，APIが，以下のようなJSON型データをレスポンスするとする．
 

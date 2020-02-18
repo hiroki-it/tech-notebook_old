@@ -30,7 +30,7 @@
 
 ![相関分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相関分析.png)
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
@@ -69,11 +69,11 @@ cor(ts, method = "pearson")
 
 <img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/単回帰分析.png" width = 60%>
 
-- **回帰方程式**
+#### ・回帰方程式
 
 ![単回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/単回帰式.png)
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
@@ -108,11 +108,11 @@ summary(Reg)
 
 ![重回帰分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/重回帰分析.png)
 
-- **回帰方程式**
+#### ・回帰方程式
 
 ![重回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/重回帰式.png)
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
@@ -172,13 +172,13 @@ summary(Reg)
 
 <img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ロジスティック回帰分析.png" width = 70%>
 
-- **回帰方程式**
+#### ・回帰方程式
 
 ![ロジスティック回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ロジスティック回帰式.png)
 
 
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
@@ -209,7 +209,7 @@ exp(result_lg2$coefficients)
 
 決定木モデルを分類モデルとして用いる場合の決定木分析．
 
-- **図解例**
+#### ・図解例
 
 赤い点：被験者が暑いと感じた日
 
@@ -221,7 +221,7 @@ exp(result_lg2$coefficients)
 
 ![決定木分析_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/決定木分析_2.png)
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
@@ -253,7 +253,7 @@ fancyRpartPlot(tree)
 
 ![階層クラスタ解析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/階層クラスタ解析.png)
 
-- **分析例**
+#### ・分析例
 
 ```R
 # データを読み込む．
