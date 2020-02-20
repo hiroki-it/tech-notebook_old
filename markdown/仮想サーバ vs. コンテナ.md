@@ -29,7 +29,7 @@
     - [:pushpin: bridgeネットワーク](#pushpin-bridgeネットワーク)
     - [:pushpin: noneネットワーク](#pushpin-noneネットワーク)
     - [:pushpin: hostネットワーク](#pushpin-hostネットワーク)
-- [04-05. docker-compose.ymlによる全手順の自動化](#04-05-docker-composeymlによる全手順の自動化)
+- [04-05. Docker Composeによるオーケストレーション](#04-05-docker-composeによるオーケストレーション)
     - [:pushpin: docker-compose.ymlの記述方法](#pushpin-docker-composeymlの記述方法)
 - [05-01. ライブラリとパッケージ](#05-01-ライブラリとパッケージ)
     - [:pushpin: ライブラリとパッケージの大まかな違い](#pushpin-ライブラリとパッケージの大まかな違い)
