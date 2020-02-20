@@ -17,12 +17,9 @@
     - [:pushpin: ```createFromXXX()```](#pushpin-createfromxxx)
     - [:pushpin: ```parse()```](#pushpin-parse)
 - [02-02. Pinqライブラリ](#02-02-pinqライブラリ)
-- [02-03. Doctrineライブラリ](#02-03-doctrineライブラリ)
+- [02-03. Guzzleライブラリ](#02-03-guzzleライブラリ)
+- [02-04. Doctrineライブラリ](#02-04-doctrineライブラリ)
     - [:pushpin: ```createQueryBuilder()```](#pushpin-createquerybuilder)
-- [03-01. ライブラリ，パッケージの管理](#03-01-ライブラリパッケージの管理)
-    - [:pushpin: ライブラリとパッケージの大まかな違い](#pushpin-ライブラリとパッケージの大まかな違い)
-    - [:pushpin: ライブラリ管理ツール](#pushpin-ライブラリ管理ツール)
-    - [:pushpin: パッケージ管理ツール](#pushpin-パッケージ管理ツール)
 
 <!-- /TOC -->
 ## 01-01. Symfonyフレームワーク
@@ -301,11 +298,42 @@ SQLのSELECTやWHEREといった単語を用いて，```foreach()```のように
 
 
 
-## 02-03. Doctrineライブラリ
+## 02-03. Guzzleライブラリ
+
+通常、リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う。しかし、Guzzleライブラリを使えば、サーバから他サーバに対して，リクエストメッセージの送受信ができる。
+
+#### ・リクエストメッセージをGET送信
+
+```PHP
+$client = new Client();
+
+// GET送信
+$response = $client->request("GET", {アクセスしたいURL});
+```
+
+#### ・レスポンスメッセージからボディを取得
+
+```PHP
+$client = new Client();
+
+// POST送信
+$response = $client->request("POST", {アクセスしたいURL});
+
+// レスポンスメッセージからボディのみを取得
+$body = json_decode($response->getBody(), true);
+```
+
+
+
+## 02-04. Doctrineライブラリ
 
 ### :pushpin: ```createQueryBuilder()```
 
 データベース接続に関わる```getConnection()```を起点として，返り値から繰り返しメソッドを取得し，```fetchAll()```で，テーブルのクエリ名をキーとした連想配列が返される．
+
+- **プレースホルダー**
+
+プリペアードステートメントともいう．SQL中にパラメータを設定し，値をパラメータに渡した上で，SQLとして発行する方法．処理速度が速い．また，パラメータに誤ってSQLが渡されても，これを実行できなくなるため，SQLインジェクションの対策にもなる
 
 **【実装例】**
 
@@ -345,7 +373,7 @@ class dogToyQuey(Value $toyType): Array
                                       $queryBuilder->getParameters(),
                       )
     
-                                            // レコードを取得する．
+                      // レコードを取得する．
                       ->fetchAll();
 
 }
