@@ -628,7 +628,10 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 ### :pushpin: DIPに基づくドメイン駆動設計
 
-Repositoryの抽象クラスを，より上位のドメイン層に配置する．Repositoryの実装クラスを，より下位のInfrastructure層に配置する．これにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
+1. Repositoryの抽象クラスを，より上位のドメイン層に配置する．
+2. Repositoryの実装クラスを，より下位のInfrastructure層に配置する．
+3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
+4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
 ![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
 
