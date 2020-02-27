@@ -146,7 +146,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 Circle CI，Jenkins
 
-![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/継続的インテグレーション.png)
+![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/継続的インテグレーション.png)
 
 
 
@@ -158,7 +158,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 実装内容は気にせず，入力に対して，適切な出力が行われているかをテストする．
 
-![p492-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p492-1.jpg)
+![p492-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p492-1.jpg)
 
 
 
@@ -166,7 +166,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 実装内容が適切かを確認しながら，入力に対して，適切な出力が行われているかをテストする．ホワイトボックステストには，以下の方法がある．何をテストするかに着目すれば，思い出しやすい．
 
-![p492-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p492-2.jpg)
+![p492-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p492-2.jpg)
 
 **【実装例】**
 
@@ -180,7 +180,7 @@ if (A = 1 && B = 1) {
 
 #### ・命令網羅（『全ての処理』が実行されるかをテスト）
 
-![p494-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-1.png)
+![p494-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p494-1.png)
 
 全ての命令が実行されるかをテスト（ここでは処理は1つ）．
 
@@ -190,7 +190,7 @@ A = 1，B = 1 の時，```return X``` が実行されること．
 
 #### ・判定条件網羅（『全ての判定』が実行されるかをテスト）
 
-![p494-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-2.png)
+![p494-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p494-2.png)
 
 全ての判定が実行されるかをテスト（ここでは判定は```TRUE```か```FALSE```の2つ）．
 
@@ -201,7 +201,7 @@ A = 1，B = 0 の時，```return X``` が実行されないこと．
 
 #### ・条件網羅（『各条件の取り得る全ての値』が実行されるかをテスト）
 
-![p494-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-3.png)
+![p494-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p494-3.png)
 
 各条件が，取り得る全ての値で実行されるかをテスト（ここでは，Aが0と1，Bが0と1になる組み合わせなので，2つ）
 
@@ -217,7 +217,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 #### ・複数条件網羅（『各条件が取り得る全ての値』，かつ『全ての組み合わせ』が実行されるかをテスト）
 
-![p494-4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-4.png)
+![p494-4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p494-4.png)
 
 各条件が，取り得る全ての値で，かつ全ての組み合わせが実行されるかをテスト（ここでは4つ）
 
@@ -234,13 +234,13 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 単体テストの次に行うテスト．複数のモジュールを繋げ，モジュール間のインターフェイスが適切に動いているかを検証．
 
-![結合テスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p491-1.jpg)
+![結合テスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-1.jpg)
 
 ### Top-down テスト
 
 上位のモジュールから下位のモジュールに向かって，結合テストを行う場合，下位には Stub と呼ばれるダミーモジュールを作成する．
 
-![トップダウンテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トップダウンテスト.jpg)
+![トップダウンテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トップダウンテスト.jpg)
 
 
 
@@ -248,7 +248,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 下位のモジュールから上位のモジュールに向かって，結合テストを行う場合，上位には Driver と呼ばれるダミーモジュールを作成する．
 
-![ボトムアップテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ボトムアップテスト.jpg)
+![ボトムアップテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ボトムアップテスト.jpg)
 
 
 
@@ -261,7 +261,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ## 04-01. テスト仕様書に基づくUser Acceptance テスト（総合テスト）
 
-![p491-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p491-2.jpg)
+![p491-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-2.jpg)
 
 結合テストの次に行うテスト．システム全体が適切に動いているかをテストする．
 
@@ -275,7 +275,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ### Perfomance テスト
 
-![スループットとレスポンスタイム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/スループットとレスポンスタイム.png)
+![スループットとレスポンスタイム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スループットとレスポンスタイム.png)
 
 非機能要件の一つである性能要件（スループット，レスポンスタイム，メモリのリソース量）を満たせているかをテストする．性能を評価する時，アクセス数を段階的に増加させて数回の性能テストを実施し，その結果を組み合わせてグラフ化する．例えば，性能目標を，⁠スループット：50件／秒⁠，⁠レスポンスタイム：3秒以内とする．今回のグラフでは，スループット：50件／秒の時のレスポンスタイムは2秒である．したがって，このシステムは性能目標を達成していることがわかる．
 
@@ -297,7 +297,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 システムを変更した後，他のプログラムに悪影響を与えていないかを検証．
 
-![p496](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p496.jpg)
+![p496](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p496.jpg)
 
 
 
@@ -307,11 +307,11 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 プロジェクトの時，残存テスト数と不良摘出数（バグ発見数）を縦軸にとり，時間を横軸にとることで，バグ管理図を作成する．それぞれの曲線の状態から，プロジェクトの進捗状況を読み取ることができる．
 
-![品質管理図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/品質管理図.jpg)
+![品質管理図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/品質管理図.jpg)
 
 不良摘出実績線（信頼度成長曲線）は，プログラムの品質の状態を表し，S字型でないものはプログラムの品質が良くないことを表す．
 
-![信頼度成長曲線の悪い例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/信頼度成長曲線の悪い例.jpg)
+![信頼度成長曲線の悪い例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/信頼度成長曲線の悪い例.jpg)
 
 
 
