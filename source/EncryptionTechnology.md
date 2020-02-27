@@ -1,0 +1,372 @@
+# 暗号化技術
+
+## 01-01. データを暗号化する目的
+
+### :pushpin: 盗聴（データの盗み取り）を防ぐため
+
+『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．暗号アルゴリズムに基づく暗号方式を用いてデータを暗号化することによって，盗聴を防ぐ．
+
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/盗聴_改竄_成りすまし_1.png)
+
+
+
+### :pushpin: 改竄（データの書き換え）を防ぐため
+
+『デジタル署名』や『ハッシュ関数』によって実現される．相手に送ったデータと相手が受け取ったデータが同じかどうかを確認することによって，改竄を防ぐ．
+
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/盗聴_改竄_成りすまし_2.png)
+
+
+
+### :pushpin: 成りすましを防ぐため
+
+『デジタル署名』によって実現される．正しい相手であることを証明することによって，成りすましを防ぐ．
+
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/盗聴_改竄_成りすまし_3.png)
+
+
+
+## 01-02. 暗号アルゴリズム
+
+データの暗号化のほとんどは，『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．それらの方式は，以下のアルゴリズムによって実装される．
+
+
+
+### :pushpin: 共通鍵暗号アルゴリズム
+
+共通鍵暗号方式を実装するためのアルゴリズム
+
+#### ・DES 暗号：Data Encryption Standard
+
+#### ・AES 暗号：Advanced Encryption Standard
+
+
+
+### :pushpin: 公開鍵暗号アルゴリズム
+
+公開鍵暗号方式を実装するためのアルゴリズム
+
+#### ・RSA 暗号：Rivest-Shamir-Adleman cryptosystem
+
+
+
+## 01-03. 暗号アルゴリズムに基づく暗号方式
+
+### :pushpin: 暗号方式の種類一覧
+
+|                        |       共通鍵暗号方式       |     公開鍵暗号方式     |
+| ---------------------- | :------------------------: | :--------------------: |
+| **暗号化アルゴリズム** |   共通鍵暗号アルゴリズム   | 公開鍵暗号アルゴリズム |
+| **アルゴリズムの種類** |    RC4、DES、3DES、AES     |      RSA、ElGamal      |
+| **暗号化に要する時間** |          より短い          |        より長い        |
+| **生成される暗号鍵**   |           共通鍵           |     秘密鍵、公開鍵     |
+| **鍵の配布方法**       | メール（盗聴に気を付ける） |      メール、PKI       |
+| **鍵の再利用**         |   再利用するべきではない   |    再利用してもよい    |
+
+
+
+### :pushpin: 共通鍵暗号方式
+
+サーバから受信者（クライアント）にあらかじめ秘密鍵を渡しておく．鍵の受け渡しを工夫しないと，共通鍵が盗聴される可能性がある（**鍵配送問題**）．
+
+**【具体例】**
+
+エクセルのファイルロック
+
+**長所**：処理が速い
+
+**短所**：鍵の配布が大変
+
+![p437](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p437.png)
+
+
+
+### :pushpin: 共通鍵の再利用の可否
+
+各受信者（クライアント）は，サーバから，受信者ごとに生成された共通鍵をもらう．鍵の再利用をするべきではない．
+
+![共通鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/共通鍵の再利用.png)
+
+
+
+### :pushpin: 公開鍵暗号方式
+
+![公開鍵暗号方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/公開鍵暗号方式.png)
+
+公開鍵暗号方式でも記載の通り，共通鍵暗号方式の鍵配送問題を解決すべく開発された．『RSA暗号』などによって実装される．
+
+**【サーバが行うこと】**
+
+1. サーバは，受信者（クライアント）から公開鍵をもらう．
+2. 公開鍵を用いて，情報を暗号化する．
+
+**【受信者（クライアント）が行うこと】**
+
+1. 受信者（クライアント）は，秘密鍵で情報を復号する．
+
+#### ・盗聴を防ぐことができる
+
+  受信者（クライアント）の公開鍵で暗号化した場合，受信者の秘密鍵でのみ復号可能．すなわち，第三者に復号（解読）されることはないと判断可能．
+
+
+
+### :pushpin: 公開鍵の再利用の可否
+
+各受信者（クライアント）は，サーバから，異なるサーバで再利用される公開鍵をもらう．ただし，サーバごとに異なる秘密鍵と公開鍵を用いてもよい．
+
+![公開鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/公開鍵の再利用.png)
+
+
+
+### :pushpin: ハイブリッド暗号方式
+
+共通鍵暗号方式と公開鍵暗号方式を組み合わせた暗号方式．両方の方式の長所と短所を補う．
+
+ ![ハイブリッド暗号](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ハイブリッド暗号.png)
+
+
+
+## 02-01. 暗号化方式を応用した暗号化技術
+
+### :pushpin: セキュアプロトコルの種類と扱われる階層
+
+プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
+
+![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/セキュアプロトコル.png)
+
+
+
+### :pushpin: データの作成，ヘッダ情報追加，カプセル化
+
+パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
+
+![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/パケットの構造.jpg)
+
+
+
+## 02-02. アプリケーション層におけるメールデータの暗号化技術
+
+### :pushpin: S/MIME：Secure MIME
+
+デジタル署名を含むデジタル証明書をメールに添付することによって，公開鍵の成りすましを防ぐセキュリティ技術．（デジタル証明書をS/MIMEに用いる場合，特にS/MIME証明書という．）
+
+ ![S_MIME](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/S_MIME.png)
+
+
+
+### :pushpin: 暗号ダイジェスト（デジタル署名）を用いたメールデータの暗号化
+
+『公開鍵暗号方式とは逆の仕組み（※つまり，公開鍵暗号方式ではない）』と『ハッシュ関数』を利用した暗号化．『成りすまし』と『改竄』を防ぐことができる．
+
+![デジタル署名](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デジタル署名.png)
+
+**【サーバが行うこと】**
+
+1. サーバは，受信者（クライアント）にあらかじめ公開鍵を配布しておく．
+2. 平文をハッシュ化し，ダイジェストにする．
+3. ダイジェストを秘密鍵で暗号化し，暗号ダイジェスト（デジタル署名）を作成する．
+4. 『平文』，『暗号ダイジェスト（デジタル署名）』を送信する．
+
+**【受信者（クライアント）が行うこと】**
+
+1. 受信者（クライアント）は，『平文』と『暗号ダイジェスト（デジタル署名）』を受信する．
+2. 平文をハッシュ化し，ダイジェストにする．
+3. 上記２つのダイジェストが同一なら，『成りすまし』と『改竄』が行われていないと判断
+
+#### ・改竄を防ぐことができる
+
+  サーバから送られた『平文』と『暗号ダイジェスト』のどちらかが，通信の途中で改竄された場合，これらのダイジェストが同じになることは確率的にありえない．したがって，確かに改竄されていないと判断可能．
+
+#### ・成りすましを防ぐことができる
+
+  特定の秘密鍵を持つのは，特定のサーバだけ．したがって，確かにサーバによって暗号化されたものだと判断可能．
+
+**★★公開鍵の成りすましを防ぐことができない★★**
+
+二者間だけのやり取りでは，あらかじめ受信者に渡される公開鍵が偽の送信者のものであっても，確かめる術がない．これを保障する仕組みに，PKI（公開鍵基盤）がある．
+
+
+
+### :pushpin: 暗号ダイジェスト（デジタル署名）を用いたWebデータの暗号化
+
+![Webデータの暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Webデータの暗号化.png)
+
+
+
+### :pushpin: 暗号ダイジェスト（デジタル署名）と公開鍵暗号方式を用いたメールデータの暗号化
+
+『成りすまし』と『改竄』を防げるデジタル署名に，『盗聴』を防げる公開鍵暗号方式を組み込んだ暗号化．
+
+![デジタル署名と暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デジタル署名と暗号化.png)
+
+
+
+### :pushpin: ハッシュ関数によるハッシュ化
+
+何かのデータを入力すると，規則性のない一定の桁数の値を出力する演算手法．
+
+![ハッシュ関数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ハッシュ関数.png)
+
+
+
+### :pushpin: PKI：Public Key Infrastructure（公開鍵基盤）による公開鍵の検証
+
+デジタル署名に用いた秘密鍵に対応する公開鍵は，成りすました人物による偽の公開鍵である可能性がある．第三者機関の認証局によって，公開鍵を検証するインフラのことを，公開鍵基盤という．
+
+![デジタル証明書（SSLサーバ証明書）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デジタル証明書（SSLサーバ証明書）.gif)
+
+**【サーバが行うこと】**
+
+1. サーバは，公開鍵と秘密鍵を作り，認証局に公開鍵とデジタル署名を提出．
+2. 認証局から，暗号ダイジェスト（デジタル署名）を含むデジタル証明書（SSLサーバ証明書）を発行してもらう．デジタル証明書（S/MIME証明書，SSLサーバ証明書）が，公開鍵の本人証明になる．デジタル証明書は，S/MIMEで用いる場合には，『S/MIME証明書』，SSL/TLSで用いる場合には，『SSLサーバ証明書』という．
+3. 受信者（クライアント）にメール，暗号ダイジェスト（デジタル署名）を含むデジタル証明書（SSLサーバ証明書）を送信．
+
+**【受信者（クライアント）が行うこと】**
+
+1. 受信者（クライアント）は，暗号ダイジェスト（デジタル署名）を含むデジタル証明書（S/MIME証明書，SSLサーバ証明書）を受信．
+2. 認証局からもらった公開鍵を用いて，デジタル証明書（S/MIME証明書，SSLサーバ証明書）の暗号ダイジェスト（デジタル署名）部分を復号し，ハッシュ値が同じなら，認証局そのものが成りすましでないと判断する．
+
+#### ・認証局そのものの成りすましの防止策
+
+デジタル証明書（S/MIME証明書，SSLサーバ証明書）を発行する認証局そのものが，成りすましの可能性がある．そこで，認証局をランク付けし，ルート認証局が下位ランクの認証局に権限を与えることで，下位の認証局の信頼性を持たせている．なお，ルート認証局は専門機関から厳しい審査を受けているため，ルート認証局自体がなりすましである可能性は非常に低い．
+
+![認証局自体の成りすまし防止](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/認証局自体の成りすまし防止.png)
+
+
+
+## 02-03. アプリケーション層におけるリモートログインやファイル転送の暗号化技術
+
+### :pushpin: SSH：Secure Shell
+
+公開鍵暗号方式に基づくセキュアプロトコル．アプリケーション層で，公開鍵暗号方式と，公開鍵認証方式やパスワード認証方式の技術を用いて，サーバにリモートログインを行う．例えば，クライアント側SSHソフトには，『OpenSSH』，『Apache MINA/SSHD』があり，またサーバ側SSHソフトには，『OpenSSH』，『TeraTerm』，『Putty』がある．
+
+#### ・仮想Webサーバへのリモートログイン
+
+物理Webサーバであっても，仮想Webサーバであっても，SSHによるリモートログインの仕組みは同じである．
+
+![ssh接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ssh接続.png)
+
+
+
+## 02-04. トランスポート層におけるヘッダ情報の暗号化技術
+
+プロトコルとしての暗号化技術を『セキュアプロトコル』という．
+
+### :pushpin: SSL/TLS：Secure Sockets Layer / Transport Layer Security
+
+ハイブリッド暗号方式に基づくセキュアプロトコル．トランスポート層で，パケットのヘッダ情報の暗号化を担う．具体的には，HTTPプロトコルで，GET送信のヘッダ部分，またPOST送信のヘッダ部分とボディ部分を暗号化する．デジタル証明書をSSLに用いる場合，特にSSLサーバ証明書という．
+
+![SSL_TLSプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SSL_TLSプロトコル.png)
+
+**【具体例】**
+
+Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例えば，オレオレ証明書を用いている）と，以下のような警告が表示される．SSLサーバ証明書については，公開鍵基盤の説明を参照せよ．
+
+![SSL接続に不備がある場合の警告](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SSL接続に不備がある場合の警告.jpg)
+
+
+
+### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）
+
+異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
+
+![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPN（ネットワーク間）.png)
+
+#### ・インターネットVPNでのSSL/TLS通信の利用
+
+VPNゲートウェイとのSSL/TLS通信によって，インターネットVPNを実現できる．
+
+![SSLによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SSLによるインターネットVPN.jpg)
+
+
+
+## 04-05. ネットワーク層におけるヘッダ情報の暗号化技術
+
+プロトコルとしての暗号化技術を『セキュアプロトコル』という．
+
+### :pushpin: IPsec：Internet Protocol Security
+
+共通鍵暗号方式に基づくセキュアプロトコル．ネットワーク層で，パケットのヘッダ情報の暗号化を担う．インターネットVPNの実現のために用いられる．盗聴を防ぐことができる．
+
+![IPsecによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPsecによるインターネットVPN.jpg)
+
+#### ・IPsecによるパケットのカプセル化
+
+![IPsecによるカプセル化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPsecによるカプセル化.jpg)
+
+
+
+### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）（再掲）
+
+異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
+
+![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPN（ネットワーク間）.png)
+
+
+
+## 03-01. アクセストークンによる認証／認可の仕組み
+
+### :pushpin: APIにおけるセキュリティ
+
+#### ・アクセストークンを用いたセキュリティ仕組み
+
+1. クライアント側が，HTTPリクエストにIDとパスワードを設定してリクエスト．
+2. アイデンティティプロバイダー（IdP）がIDを『認証』し，クライアント側にアクセストークンを発行．
+3. クライアント側が，HTTPリクエストのヘッダーにアクセストークンを設定してリクエスト．
+4. アクセストークンが『認可』されれば，API側がデータをレスポンスする．
+
+![アクセストークンを用いたセキュリティ仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/アクセストークンを用いたセキュリティの仕組み.jpg)
+
+#### ・Json Web Token：JWT
+
+最もよく使われているAPIのアクセスとして，JSONをベースとしたアクセストークンを用いるJWTがある．
+
+![JWT](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/JWT.png)
+
+
+
+## 06-01. その他のセキュリティ技術
+
+### :pushpin: メール受信におけるセキュリティ
+
+#### ・OP25B（Outbound Port 25 Blocking）
+
+#### ・SPF（Sender Policy Framework）
+
+
+
+
+
+### :pushpin: パスワードの保存方法
+
+平文で保存しておくと，流出した時に勝手に使用されてしまうため，ハッシュ値で保存するべきである．
+
+![ハッシュ値で保存](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ハッシュ値で保存.png)
+
+
+
+### :pushpin: 生体認証
+
+![生体認証-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/生体認証-1.png)
+
+
+
+![生体認証-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/生体認証-2.png)
+
+
+
+### :pushpin: Web beacon
+
+webページに，サーバに対してHTTPリクエストを送信するプログラムを設置し，送信されたリクエストを集計するアクセス解析方法．例えば，1x1の小さなGif「画像」などを設置する．
+
+
+
+### :pushpin: Penetration テスト
+
+既知のサイバー攻撃を意図的に行い，システムの脆弱性を確認するテストのこと．
+
+**【具体例】**
+
+株式会社LACによるPenetration テストサービス
+
+![ペネトレーションテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ペネトレーションテスト.png)
