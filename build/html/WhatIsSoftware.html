@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ソフトウェアとは &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="ハードウェアとは" href="WhatIsHardware.html" />
+    <link rel="prev" title="仮想サーバ(仮想マシン)とコンテナの構築" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ソフトウェアとは</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">01-01. ソフトウェアの具体例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-oss-open-source-software">:pushpin: OSS：Open Source Softwareとは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-oss">:pushpin: OSSの具体例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#os">・OS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">・データベース</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">・プログラミング言語</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">・フレームワーク</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#or-mapper">・OR Mapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">・バージョン管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web">・Webサーバ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・業務システム</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">・インフラ構築</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">・クラウド構築</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-linux-distribution-linux">:pushpin: Linux Distribution（Linuxの種類）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#redhat">・RedHat系</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debian">・Debian系</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slackware">・Slackware系</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">01-02. ソフトウェアについて</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">:pushpin: 応用ソフトウェア</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-middleware">:pushpin: Middleware</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#web-apache-nginx-web">・Webサーバソフトウェア（Apache，Nginx）をもつWebサーバ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ap-apache-nginx-unit-ap">・APサーバソフトウェア（Apache内蔵，NGINX Unit）をもつAPサーバ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db">・DBサーバをもつデータベース管理システム</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-os">:pushpin: 基本ソフトウェア（広義のOS）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">・制御プログラム（：別名カーネル）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">・言語プロセッサ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">・サービスプログラム</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-firmware">:pushpin: Firmware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">:pushpin: デバイスドライバ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">01-03. 応用ソフトウェアの種類</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">:pushpin: 応用ソフトウェア（アプリケーション）の一覧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">:pushpin: ネイティブアプリケーション</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-web">:pushpin: Webアプリケーションとクラウドアプリケーション</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id19">・Webアプリケーション</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">・クラウドアプリケーション</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">:pushpin: ハイブリッドアプリケーション</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">01-04. 基本ソフトウェアの汎用言語プログラム</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id23">:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id24">:pushpin: 基本ソフトウェア（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-javajava">:pushpin: コンパイラ型言語，インタプリタ型言語，JavaまたはJava仮想マシン型言語</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id25">・コンパイラとコンパイラ型言語</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">・インタプリタとインタプリタ型言語</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#javajava">・JavaやJava仮想マシン型言語</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">:pushpin: コンパイラによるコンパイラ型言語の翻訳（じ，こ，い，さい，せい，リンク，実行）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id28">・コンパイラ方式によるコンパイラ型言語のビルド</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">・コンパイラ方式の翻訳の流れ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">:pushpin: インタプリタによるインタプリタ型言語の翻訳（じ，こ，い，実行）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id31">・インタプリタ方式の翻訳の流れ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-javajavajava">:pushpin: Java仮想マシンによるJavaまたはJava仮想マシン型言語の翻訳</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id32">・中間言語方式の翻訳の流れ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cjavaos">・C言語とJavaのOSへの依存度比較</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id33">01-05. プログラムの実行開始のエントリポイント</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-php">:pushpin: PHPの場合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-java">:pushpin: Javaの場合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id34">01-06. 基本ソフトウェアの制御プログラム（カーネル）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id35">:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">:pushpin: 基本ソフトウェア（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id37">:pushpin: ジョブ管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">:pushpin: マスタスケジュラ，ジョブスケジュラ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reader">・Reader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#initiator">・Initiator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#terminator">・Terminator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writer">・Writer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-initiator">:pushpin: Initiatorによるジョブのジョブステップへの分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id39">:pushpin: タスク管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id40">・優先順方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41">・到着順方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#round-robin">・Round robin 方式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">:pushpin: 入出力管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id43">01-07. デバイスドライバ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#firmware">01-08. Firmware</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-bios-basic-input-output-system">:pushpin: BIOS：Basic Input/Output System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-uefi-united-extensible-firmware-interface">:pushpin: UEFI：United Extensible Firmware Interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ソフトウェアとは</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/WhatIsSoftware.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>ソフトウェアとは<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>01-01. ソフトウェアの具体例<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-oss-open-source-software">
+<h3>:pushpin: OSS：Open Source Softwareとは<a class="headerlink" href="#pushpin-oss-open-source-software" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下の条件を満たすソフトウェアをOSSと呼ぶ．</p>
+<ol class="simple">
+<li><p>利用者は，無償あるいは有償で自由に再配布できる．</p></li>
+<li><p>利用者は，ソースコードを入手できる．</p></li>
+<li><p>利用者は，コードを自由に変更できる．また，変更後に提供する場合，異なるライセンスを追加できる．</p></li>
+<li><p>差分情報の配布を認める場合には，同一性の保持を要求してもかまわない． ⇒ よくわからない</p></li>
+<li><p>提供者は，特定の個人やグループを差別できない．</p></li>
+<li><p>提供者は，特定の分野を差別できない．</p></li>
+<li><p>提供者は，全く同じOSSの再配布において，ライセンスを追加できない．</p></li>
+<li><p>提供者は，特定の製品でのみ有効なライセンスを追加できない．</p></li>
+<li><p>提供者は，他のソフトウェアを制限するライセンスを追加できない．</p></li>
+<li><p>提供者は，技術的に偏りのあるライセンスを追加できない．</p></li>
+</ol>
+</div>
+<div class="section" id="pushpin-oss">
+<h3>:pushpin: OSSの具体例<a class="headerlink" href="#pushpin-oss" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="OSS一覧" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/OSS%E4%B8%80%E8%A6%A7.png" /></p>
+<p>引用：https://openstandia.jp/oss_info/</p>
+<div class="section" id="os">
+<h4>・OS<a class="headerlink" href="#os" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>CentOS，Linux，Unix，Ubuntu</p>
+</div>
+<div class="section" id="id3">
+<h4>・データベース<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>MySQL，MariaDB</p>
+</div>
+<div class="section" id="id4">
+<h4>・プログラミング言語<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>言うまでもない．</p>
+</div>
+<div class="section" id="id5">
+<h4>・フレームワーク<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>言うまでもない．</p>
+</div>
+<div class="section" id="or-mapper">
+<h4>・OR Mapper<a class="headerlink" href="#or-mapper" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>言うまでもない．</p>
+</div>
+<div class="section" id="id6">
+<h4>・バージョン管理<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Git，Subversion</p>
+</div>
+<div class="section" id="web">
+<h4>・Webサーバ<a class="headerlink" href="#web" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Apache</p>
+</div>
+<div class="section" id="id7">
+<h4>・業務システム<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Redmine</p>
+</div>
+<div class="section" id="id8">
+<h4>・インフラ構築<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Chef，Puppet</p>
+</div>
+<div class="section" id="id9">
+<h4>・クラウド構築<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Docker</p>
+</div>
+</div>
+<div class="section" id="pushpin-linux-distribution-linux">
+<h3>:pushpin: Linux Distribution（Linuxの種類）<a class="headerlink" href="#pushpin-linux-distribution-linux" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>現在，Linuxは3つを源流として，いくつもの派生系へ分岐している．</p>
+<div class="section" id="redhat">
+<h4>・RedHat系<a class="headerlink" href="#redhat" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>RedHat，CentOS，Fedora</p>
+</div>
+<div class="section" id="debian">
+<h4>・Debian系<a class="headerlink" href="#debian" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Debian，Ubuntu，</p>
+</div>
+<div class="section" id="slackware">
+<h4>・Slackware系<a class="headerlink" href="#slackware" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Slackware</p>
+<p>![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Linux distribution.png)</p>
+</div>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>01-02. ソフトウェアについて<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin">
+<h3>:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ソフトウェアには，応用ソフトウェアとシステムソフトウェアがある．</p>
+<p><img alt="ソフトウェアとハードウェア" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%A8%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2.png" /></p>
+</div>
+<div class="section" id="id11">
+<h3>:pushpin: 応用ソフトウェア<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【具体例】</strong></p>
+<p>その辺のアプリ</p>
+</div>
+<div class="section" id="pushpin-middleware">
+<h3>:pushpin: Middleware<a class="headerlink" href="#pushpin-middleware" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【具体例】</strong></p>
+<div class="section" id="web-apache-nginx-web">
+<h4>・Webサーバソフトウェア（Apache，Nginx）をもつWebサーバ<a class="headerlink" href="#web-apache-nginx-web" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="ap-apache-nginx-unit-ap">
+<h4>・APサーバソフトウェア（Apache内蔵，NGINX Unit）をもつAPサーバ<a class="headerlink" href="#ap-apache-nginx-unit-ap" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="db">
+<h4>・DBサーバをもつデータベース管理システム<a class="headerlink" href="#db" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>※詳しくは，ネットワークのノートを参照せよ．</p>
+</div>
+</div>
+<div class="section" id="pushpin-os">
+<h3>:pushpin: 基本ソフトウェア（広義のOS）<a class="headerlink" href="#pushpin-os" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="基本ソフトウェアの構成" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%9F%BA%E6%9C%AC%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AE%E6%A7%8B%E6%88%90.png" /></p>
+<div class="section" id="id12">
+<h4>・制御プログラム（：別名カーネル）<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【具体例】</strong></p>
+<p>カーネル，マイクロカーネル，モノリシックカーネル</p>
+</div>
+<div class="section" id="id13">
+<h4>・言語プロセッサ<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【具体例】</strong></p>
+<p>アセンブラ，コンパイラ，インタプリタというプログラム</p>
+</div>
+<div class="section" id="id14">
+<h4>・サービスプログラム<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【具体例】</strong></p>
+<p>ファイル圧縮プログラム</p>
+</div>
+</div>
+<div class="section" id="pushpin-firmware">
+<h3>:pushpin: Firmware<a class="headerlink" href="#pushpin-firmware" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+<div class="section" id="id15">
+<h3>:pushpin: デバイスドライバ<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>01-03. 応用ソフトウェアの種類<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id17">
+<h3>:pushpin: 応用ソフトウェア（アプリケーション）の一覧<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">ネイティブアプリ</th>
+<th align="center">Webアプリとクラウドアプリ</th>
+<th align="center">ハイブリッドアプリ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>利用可能な通信状況</strong></td>
+<td align="center">On／Off</td>
+<td align="center">On</td>
+<td align="center">On／Off</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="id18">
+<h3>:pushpin: ネイティブアプリケーション<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ネイティブアプリ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%8D%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%82%A2%E3%83%97%E3%83%AA.png" /></p>
+<p>端末のシステムによって稼働するアプリのこと．一度ダウンロードしてしまえば，インターネットに繋がっていなくとも，使用できる．</p>
+<p><strong>【アプリ例】</strong></p>
+<p>Office，BookLiveのアプリ版</p>
+</div>
+<div class="section" id="pushpin-web">
+<h3>:pushpin: Webアプリケーションとクラウドアプリケーション<a class="headerlink" href="#pushpin-web" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="Webアプリ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Web%E3%82%A2%E3%83%97%E3%83%AA.png" /></p>
+<div class="section" id="id19">
+<h4>・Webアプリケーション<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Webサーバ上でWebシステムをレンダリングすることによって稼働するアプリのこと．URLをWebサーバにリクエストすることで利用でき，随時，Webサーバとデータ通信を行う．全ての人が無料で利用できるものと，お金を払った人だけが利用できるものがある．</p>
+<p><strong>【全ての人が無料で利用できるWebアプリ例】</strong></p>
+<p>Googleアプリ，Amazon，BookLiveのブラウザ版</p>
+<p><strong>【お金を払った人だけが特定のURLから利用できるWebアプリ例】</strong></p>
+<p>サイボウズ</p>
+</div>
+<div class="section" id="id20">
+<h4>・クラウドアプリケーション<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Webサーバ上のシステムによって稼働するアプリのうち，クラウドサービスを提供するもののこと．</p>
+<p><strong>【クラウドアプリ例】</strong></p>
+<p>Google Drive，Dropbox</p>
+</div>
+</div>
+<div class="section" id="id21">
+<h3>:pushpin: ハイブリッドアプリケーション<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="Webviewよるアプリパッケージ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Webview%E3%82%88%E3%82%8B%E3%82%A2%E3%83%97%E3%83%AA%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8.png" /></p>
+<p><img alt="ハイブリッドアプリ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%8F%E3%82%A4%E3%83%96%E3%83%AA%E3%83%83%E3%83%89%E3%82%A2%E3%83%97%E3%83%AA.png" /></p>
+<p>端末でWebviewを稼働させ，WebシステムのレンダリングなどをWebview上で行うアプリのこと．</p>
+<p><strong>【アプリ例】</strong></p>
+<p>クックパッド</p>
+</div>
+</div>
+<div class="section" id="id22">
+<h2>01-04. 基本ソフトウェアの汎用言語プログラム<a class="headerlink" href="#id22" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id23">
+<h3>:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）<a class="headerlink" href="#id23" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ソフトウェアとハードウェア" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%A8%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2.png" /></p>
+</div>
+<div class="section" id="id24">
+<h3>:pushpin: 基本ソフトウェア（再掲）<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="基本ソフトウェアの構成" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%9F%BA%E6%9C%AC%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AE%E6%A7%8B%E6%88%90.png" /></p>
+</div>
+<div class="section" id="pushpin-javajava">
+<h3>:pushpin: コンパイラ型言語，インタプリタ型言語，JavaまたはJava仮想マシン型言語<a class="headerlink" href="#pushpin-javajava" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プログラム言語のソースコードは，言語プロセッサによって機械語に変換された後，CPUによって読み込まれる．そして，ソースコードに書かれた様々な処理が実行される．</p>
+<div class="section" id="id25">
+<h4>・コンパイラとコンパイラ型言語<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>コンパイラという言語プロセッサによって，コンパイラ方式で翻訳される言語．</p>
+</div>
+<div class="section" id="id26">
+<h4>・インタプリタとインタプリタ型言語<a class="headerlink" href="#id26" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>インタプリタという言語プロセッサによって，インタプリタ方式で翻訳される言語をインタプリタ型言語という．</p>
+</div>
+<div class="section" id="javajava">
+<h4>・JavaやJava仮想マシン型言語<a class="headerlink" href="#javajava" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Java仮想マシンによって，中間言語方式で翻訳される．</p>
+<p><img alt="コンパイル型とインタプリタ型言語" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E5%9E%8B%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%97%E3%83%AA%E3%82%BF%E5%9E%8B%E8%A8%80%E8%AA%9E.jpg" /></p>
+</div>
+</div>
+<div class="section" id="id27">
+<h3>:pushpin: コンパイラによるコンパイラ型言語の翻訳（じ，こ，い，さい，せい，リンク，実行）<a class="headerlink" href="#id27" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．</p>
+<p><strong>【コンパイラ型言語の具体例】</strong></p>
+<p>C#</p>
+<p><img alt="コンパイラ言語" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%A9%E8%A8%80%E8%AA%9E.png" /></p>
+<div class="section" id="id28">
+<h4>・コンパイラ方式によるコンパイラ型言語のビルド<a class="headerlink" href="#id28" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>コンパイラ（C#）による翻訳では，ソースコードは機械語からなるオブジェクトコードに変換される．コンパイル後に，各オブジェクトコードはリンクされる．この一連のプロセスを『ビルド』という．</p>
+<p><img alt="ビルドとコンパイル" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%93%E3%83%AB%E3%83%89%E3%81%A8%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB.jpg" /></p>
+</div>
+<div class="section" id="id29">
+<h4>・コンパイラ方式の翻訳の流れ<a class="headerlink" href="#id29" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="字句解析，構文解析，意味解析，最適化" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%AD%97%E5%8F%A5%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%A7%8B%E6%96%87%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%84%8F%E5%91%B3%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%9C%80%E9%81%A9%E5%8C%96.png" /></p>
+<ol>
+<li><p><strong>Lexical analysis（字句解析）</strong></p>
+<p>ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．<img alt="構文規則と説明" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%A7%8B%E6%96%87%E8%A6%8F%E5%89%87%E3%81%A8%E8%AA%AC%E6%98%8E.png" /></p>
+</li>
+<li><p><strong>Syntax analysis（構文解析）</strong></p>
+<p>トークンの列をツリー構造に変換．</p>
+</li>
+<li><p><strong>Semantics analysis（意味解析）</strong></p>
+<p>ツリー構造を基に，ソースコードに論理的な誤りがないか解析．</p>
+</li>
+<li><p><strong>Code optimization（コード最適化）</strong></p>
+<p>ソースコードの冗長な部分を削除または編集．機械語をより短くするこができる．</p>
+</li>
+<li><p><strong>Code generation（コード生成）</strong></p>
+<p>最適化されたコードをバイナリ形式のオブジェクトコードに変換．</p>
+</li>
+<li><p><strong>リンク</strong></p>
+<p>オブジェクトコードをリンクする．</p>
+</li>
+<li><p><strong>命令の実行</strong></p>
+<p>リンクされたオブジェクトコードを基に，命令が実行される．</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="id30">
+<h3>:pushpin: インタプリタによるインタプリタ型言語の翻訳（じ，こ，い，実行）<a class="headerlink" href="#id30" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>コードを，一行ずつ機械語に変換し，順次，命令を実行する言語．</p>
+<p>※Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．</p>
+<p><strong>【インタプリタ型言語の具体例】</strong></p>
+<p>PHP，Ruby，JavaScript，Python</p>
+<p><img alt="インタプリタ言語" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%97%E3%83%AA%E3%82%BF%E8%A8%80%E8%AA%9E.png" /></p>
+<div class="section" id="id31">
+<h4>・インタプリタ方式の翻訳の流れ<a class="headerlink" href="#id31" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="字句解析，構文解析，意味解析，最適化" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%AD%97%E5%8F%A5%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%A7%8B%E6%96%87%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%84%8F%E5%91%B3%E8%A7%A3%E6%9E%90%EF%BC%8C%E6%9C%80%E9%81%A9%E5%8C%96.png" /></p>
+<ol>
+<li><p><strong>Lexical analysis（字句解析）</strong></p>
+<p>ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．<img alt="構文規則と説明" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%A7%8B%E6%96%87%E8%A6%8F%E5%89%87%E3%81%A8%E8%AA%AC%E6%98%8E.png" /></p>
+</li>
+<li><p><strong>Syntax analysis（構文解析）</strong></p>
+<p>トークンの列をツリー構造に変換．ソースコードから構造体を構築することを構文解析といい，htmlを構文解析してDOMツリーを構築する処理とは別物なので注意．</p>
+</li>
+<li><p><strong>Semantics analysis（意味解析）</strong></p>
+<p>ツリー構造を基に，ソースコードに論理的な誤りがないか解析．</p>
+</li>
+<li><p><strong>命令の実行</strong></p>
+<p>意味解析の結果を基に，命令が実行される．</p>
+</li>
+<li><p><strong>１から４をコード行ごとに繰り返す</strong></p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="pushpin-javajavajava">
+<h3>:pushpin: Java仮想マシンによるJavaまたはJava仮想マシン型言語の翻訳<a class="headerlink" href="#pushpin-javajavajava" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【JVM型言語の具体例】</strong></p>
+<p>Scala，Groovy，Kotlin</p>
+<div class="section" id="id32">
+<h4>・中間言語方式の翻訳の流れ<a class="headerlink" href="#id32" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="simple">
+<li><p>JavaまたはJVM型言語のソースコードを，Javaバイトコードを含むクラスファイルに変換する．</p></li>
+<li><p>JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．</p></li>
+<li><p>結果的に，OS（制御プログラム？）に依存せずに，命令を実行できる．（C言語）</p></li>
+</ol>
+<p><img alt="Javaによる言語処理_1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Java%E3%81%AB%E3%82%88%E3%82%8B%E8%A8%80%E8%AA%9E%E5%87%A6%E7%90%86_1.png" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Javaによる言語処理_2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Java%E3%81%AB%E3%82%88%E3%82%8B%E8%A8%80%E8%AA%9E%E5%87%A6%E7%90%86_2.png" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Javaによる言語処理_3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Java%E3%81%AB%E3%82%88%E3%82%8B%E8%A8%80%E8%AA%9E%E5%87%A6%E7%90%86_3.png" /></p>
+</div>
+<div class="section" id="cjavaos">
+<h4>・C言語とJavaのOSへの依存度比較<a class="headerlink" href="#cjavaos" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="CとJavaのOSへの依存度比較" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/C%E3%81%A8Java%E3%81%AEOS%E3%81%B8%E3%81%AE%E4%BE%9D%E5%AD%98%E5%BA%A6%E6%AF%94%E8%BC%83.png" /></p>
+<ul class="simple">
+<li><p>JVM言語</p></li>
+</ul>
+<p>ソースコード</p>
+</div>
+</div>
+</div>
+<div class="section" id="id33">
+<h2>01-05. プログラムの実行開始のエントリポイント<a class="headerlink" href="#id33" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-php">
+<h3>:pushpin: PHPの場合<a class="headerlink" href="#pushpin-php" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>動的型付け言語では，エントリポイントが指定プログラムの先頭行と決まっており，そこから枝分かれ状に処理が実行されていく．PHPでは，<code class="docutils literal notranslate"><span class="pre">index.php</span></code>がエントリポイントと決められている．その他のファイルにはエントリポイントは存在しない．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">use App\Kernel;</span>
+<span class="x">use Symfony\Component\ErrorHandler\Debug;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Request;</span>
+
+<span class="x">// まず最初に，bootstrap.phpを読み込む．</span>
+<span class="x">require dirname(__DIR__).&#39;/config/bootstrap.php&#39;;</span>
+
+<span class="x">if ($_SERVER[&#39;APP_DEBUG&#39;]) {</span>
+<span class="x">    umask(0000);</span>
+
+<span class="x">    Debug::enable();</span>
+<span class="x">}</span>
+
+<span class="x">if ($trustedProxies = $_SERVER[&#39;TRUSTED_PROXIES&#39;] ?? $_ENV[&#39;TRUSTED_PROXIES&#39;] ?? false) {</span>
+<span class="x">    Request::setTrustedProxies(explode(&#39;,&#39;, $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);</span>
+<span class="x">}</span>
+
+<span class="x">if ($trustedHosts = $_SERVER[&#39;TRUSTED_HOSTS&#39;] ?? $_ENV[&#39;TRUSTED_HOSTS&#39;] ?? false) {</span>
+<span class="x">    Request::setTrustedHosts([$trustedHosts]);</span>
+<span class="x">}</span>
+
+<span class="x">$kernel = new Kernel($_SERVER[&#39;APP_ENV&#39;], (bool) $_SERVER[&#39;APP_DEBUG&#39;]);</span>
+<span class="x">$request = Request::createFromGlobals();</span>
+<span class="x">$response = $kernel-&gt;handle($request);</span>
+<span class="x">$response-&gt;send();</span>
+<span class="x">$kernel-&gt;terminate($request, $response);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-java">
+<h3>:pushpin: Javaの場合<a class="headerlink" href="#pushpin-java" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>静的型付け言語では，エントリポイントが決まっておらず，自身で定義する必要がある．Javaでは，<code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">static</span> <span class="pre">void</span> <span class="pre">main(String</span> <span class="pre">args[])</span></code>と定義した場所がエントリポイントになる．</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Age</span>
+<span class="p">{</span>
+		<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="c1">// 定数を定義．</span>
+			<span class="kd">final</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+			<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;私の年齢は&quot;</span> <span class="o">+</span> <span class="n">age</span><span class="p">);</span>
+
+			<span class="c1">// 定数は再定義できないので，エラーになる．</span>
+			<span class="n">age</span> <span class="o">=</span> <span class="mi">31</span><span class="p">;</span>
+			<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;…いや，本当の年齢は&quot;</span> <span class="o">+</span> <span class="n">age</span><span class="p">);</span>
+		<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id34">
+<h2>01-06. 基本ソフトウェアの制御プログラム（カーネル）<a class="headerlink" href="#id34" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id35">
+<h3>:pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）<a class="headerlink" href="#id35" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ソフトウェアとハードウェア" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%A8%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2.png" /></p>
+</div>
+<div class="section" id="id36">
+<h3>:pushpin: 基本ソフトウェア（再掲）<a class="headerlink" href="#id36" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="基本ソフトウェアの構成" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%9F%BA%E6%9C%AC%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AE%E6%A7%8B%E6%88%90.png" /></p>
+</div>
+<div class="section" id="id37">
+<h3>:pushpin: ジョブ管理<a class="headerlink" href="#id37" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クライアントは，マスタスケジュールに対して，ジョブを実行するための命令を与える．</p>
+<p><img alt="ジョブ管理とタスク管理の概要" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B8%E3%83%A7%E3%83%96%E7%AE%A1%E7%90%86%E3%81%A8%E3%82%BF%E3%82%B9%E3%82%AF%E7%AE%A1%E7%90%86%E3%81%AE%E6%A6%82%E8%A6%81.jpg" /></p>
+</div>
+<div class="section" id="id38">
+<h3>:pushpin: マスタスケジュラ，ジョブスケジュラ<a class="headerlink" href="#id38" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ジョブとは，プロセスのセットのこと．マスタスケジュラは，ジョブスケジュラにジョブの実行を命令する．データをコンピュータに入力し，複数の処理が実行され，結果が出力されるまでの一連の処理のこと．『Task』と『Job』の定義は曖昧なので，『process』と『set of processes』を使うべきとのこと．</p>
+<p>引用：https://stackoverflow.com/questions/3073948/job-task-and-process-whats-the-difference/31212568</p>
+<p>複数のジョブ（プログラムやバッチ）の起動と終了を制御したり，ジョブの実行と終了を監視報告するソフトウェア．ややこしいことに，タスクスケジューラとも呼ぶ．</p>
+<div class="section" id="reader">
+<h4>・Reader<a class="headerlink" href="#reader" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ジョブ待ち行列に登録</p>
+</div>
+<div class="section" id="initiator">
+<h4>・Initiator<a class="headerlink" href="#initiator" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ジョブステップに分解</p>
+</div>
+<div class="section" id="terminator">
+<h4>・Terminator<a class="headerlink" href="#terminator" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>出力待ち行列に登録</p>
+</div>
+<div class="section" id="writer">
+<h4>・Writer<a class="headerlink" href="#writer" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>優先度順に出力の処理フローを実行</p>
+</div>
+</div>
+<div class="section" id="pushpin-initiator">
+<h3>:pushpin: Initiatorによるジョブのジョブステップへの分解<a class="headerlink" href="#pushpin-initiator" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Initiatorによって，ジョブはジョブステップに分解される．</p>
+<p><img alt="ジョブからジョブステップへの分解" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B8%E3%83%A7%E3%83%96%E3%81%8B%E3%82%89%E3%82%B8%E3%83%A7%E3%83%96%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%B8%E3%81%AE%E5%88%86%E8%A7%A3.png" /></p>
+</div>
+<div class="section" id="id39">
+<h3>:pushpin: タスク管理<a class="headerlink" href="#id39" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ジョブステップからタスクの生成" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B8%E3%83%A7%E3%83%96%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E3%81%8B%E3%82%89%E3%82%BF%E3%82%B9%E3%82%AF%E3%81%AE%E7%94%9F%E6%88%90.png" /></p>
+<p>タスクとは，スレッドに似たような，単一のプロセスのこと．Initiatorによるジョブステップから，タスク管理によって，タスクが生成される．タスクが生成されると実行可能状態になる．ディスパッチャによって実行可能状態から実行状態になる．</p>
+<div class="section" id="id40">
+<h4>・優先順方式<a class="headerlink" href="#id40" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>各タスクに優先度を設定し，優先度の高いタスクから順に，ディスパッチしていく方式．</p>
+</div>
+<div class="section" id="id41">
+<h4>・到着順方式<a class="headerlink" href="#id41" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>待ち行列に登録されたタスクから順に，ディスパッチしていく方式．</p>
+<p><img alt="到着順方式_1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%88%B0%E7%9D%80%E9%A0%86%E6%96%B9%E5%BC%8F_1.png" /></p>
+<p><strong>【具体例】</strong></p>
+<p>以下の様に，タスクがCPUに割り当てられていく．</p>
+<p><img alt="到着順方式_2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%88%B0%E7%9D%80%E9%A0%86%E6%96%B9%E5%BC%8F_2.png" /></p>
+</div>
+<div class="section" id="round-robin">
+<h4>・Round robin 方式<a class="headerlink" href="#round-robin" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Round robinは，『総当たり』の意味．一定時間（タイムクウォンタム）ごとに，実行状態にあるタスクが強制的に待ち行列に登録される．交代するように，他のタスクがディスパッチされる．</p>
+<p><img alt="ラウンドロビン方式" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%A9%E3%82%A6%E3%83%B3%E3%83%89%E3%83%AD%E3%83%93%E3%83%B3%E6%96%B9%E5%BC%8F.png" /></p>
+<p><strong>【具体例】</strong></p>
+<p>生成されたタスクの到着時刻と処理時間は以下のとおりである．強制的なディスパッチは，『20秒』ごとに起こるとする．</p>
+<p><img alt="優先順方式_1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%84%AA%E5%85%88%E9%A0%86%E6%96%B9%E5%BC%8F_1.png" /></p>
+<ol class="simple">
+<li><p>タスクAが0秒に待ち行列へ登録される．</p></li>
+<li><p>20秒間，タスクAは実行状態へ割り当てられる．</p></li>
+<li><p>20秒時点で，タスクAは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクBは，実行可能状態から実行状態にディスパッチされる．</p></li>
+<li><p>40秒時点で，タスクCは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクAは，実行可能状態から実行状態にディスパッチされる．</p></li>
+</ol>
+<p><img alt="優先順方式_2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%84%AA%E5%85%88%E9%A0%86%E6%96%B9%E5%BC%8F_2.png" /></p>
+</div>
+</div>
+<div class="section" id="id42">
+<h3>:pushpin: 入出力管理<a class="headerlink" href="#id42" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>アプリケーションから低速な周辺機器へデータを出力する時，まず，CPUはスプーラにデータを出力する．Spoolerは，全てのデータをまとめて出力するのではなく，一時的に補助記憶装置（Spool）にためておきながら，少しずつ出力する（Spooling）．</p>
+<p><img alt="スプーリング" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B9%E3%83%97%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0.jpg" /></p>
+</div>
+</div>
+<div class="section" id="id43">
+<h2>01-07. デバイスドライバ<a class="headerlink" href="#id43" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="firmware">
+<h2>01-08. Firmware<a class="headerlink" href="#firmware" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>システムソフトウェア（ミドルウェア ＋ 基本ソフトウェア）とハードウェアの間の段階にあるソフトウェア．ROMに組み込まれている．</p>
+<div class="section" id="pushpin-bios-basic-input-output-system">
+<h3>:pushpin: BIOS：Basic Input/Output System<a class="headerlink" href="#pushpin-bios-basic-input-output-system" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="BIOS" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/BIOS.jpg" /></p>
+</div>
+<div class="section" id="pushpin-uefi-united-extensible-firmware-interface">
+<h3>:pushpin: UEFI：United Extensible Firmware Interface<a class="headerlink" href="#pushpin-uefi-united-extensible-firmware-interface" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Windows 8以降で採用されている新しいFirmware</p>
+<p><img alt="UEFIとセキュアブート" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UEFI%E3%81%A8%E3%82%BB%E3%82%AD%E3%83%A5%E3%82%A2%E3%83%96%E3%83%BC%E3%83%88.jpg" /></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="WhatIsHardware.html" class="btn btn-neutral float-right" title="ハードウェアとは" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="CreationOfVirtualServer(VirtualMachine)AndContainer.html" class="btn btn-neutral float-left" title="仮想サーバ(仮想マシン)とコンテナの構築" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

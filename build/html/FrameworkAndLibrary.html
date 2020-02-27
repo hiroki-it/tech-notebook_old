@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>フレームワークとライブラリ &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="代表的なアルゴリズム" href="MainAlgorithm.html" />
+    <link rel="prev" title="テストの手法" href="Testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">フレームワークとライブラリ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#symfony">01-01. Symfonyフレームワーク</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: 採用すべき最低限のクラス</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#console">01-02. Consoleに関するクラス</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-command">:pushpin: Commandクラス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">:pushpin: バッチファイル</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for">・<code class="docutils literal notranslate"><span class="pre">for</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cron">・Cronによるコマンド自動実行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#httpfoundation">01-03. HttpFoundationに関するクラス</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-appkernel">:pushpin: AppKernel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">・カーネルに必要なオブジェクト</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">・オブジェクトから取り出されたメソッドの役割</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#service-container">01-04. Service Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#doctrine">02-01. Doctrineライブラリ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-createquerybuilder">:pushpin: <code class="docutils literal notranslate"><span class="pre">createQueryBuilder()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#carbon">03-01. Carbonライブラリ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-date">:pushpin: Date型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-instance">:pushpin: <code class="docutils literal notranslate"><span class="pre">instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-create">:pushpin: <code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-createfromxxx">:pushpin: <code class="docutils literal notranslate"><span class="pre">createFromXXX()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-parse">:pushpin: <code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pinq">04-01. Pinqライブラリ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guzzle">05-01. Guzzleライブラリ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get">・リクエストメッセージをGET送信</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">・レスポンスメッセージからボディを取得</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#respect-validation">06-01. Respect/Validationライブラリ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>フレームワークとライブラリ</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/FrameworkAndLibrary.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>フレームワークとライブラリ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="symfony">
+<h2>01-01. Symfonyフレームワーク<a class="headerlink" href="#symfony" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin">
+<h3>:pushpin: 採用すべき最低限のクラス<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// Consoleに関するクラス</span>
+<span class="x">use Symfony\Component\Console\Application;</span>
+<span class="x">use Symfony\Component\Console\Command\LockableTrait;</span>
+<span class="x">use Symfony\Component\Console\Input\InputArgument;</span>
+<span class="x">use Symfony\Component\Console\Input\InputInterface;</span>
+<span class="x">use Symfony\Component\Console\Output\OutputInterface;</span>
+
+<span class="x">// HttpFoundationに関するクラス</span>
+<span class="x">use Symfony\Component\HttpFoundation\Request;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+<span class="x">use Symfony\Component\HttpFoundation\ResponseHeaderBag;</span>
+<span class="x">use Symfony\Component\HttpFoundation\BinaryFileResponse;</span>
+<span class="x">use Symfony\Component\HttpFoundation\JsonResponse;</span>
+<span class="x">use Symfony\Component\HttpFoundation\RedirectResponse;</span>
+
+<span class="x">// HttpKernelに関するクラス</span>
+<span class="x">use Symfony\Component\HttpKernel\Event\FilterResponseEvent;</span>
+<span class="x">use Symfony\Component\HttpKernel\Event\GetResponseEvent;</span>
+<span class="x">use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;</span>
+<span class="x">use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;</span>
+
+<span class="x">// Securityに関するクラス</span>
+<span class="x">use Symfony\Component\Security\Csrf\CsrfToken;</span>
+<span class="x">use Symfony\Component\Security\Csrf\CsrfTokenManager;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="console">
+<h2>01-02. Consoleに関するクラス<a class="headerlink" href="#console" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-command">
+<h3>:pushpin: Commandクラス<a class="headerlink" href="#pushpin-command" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Commandクラスによって定義されたコマンドは，バッチファイル（<code class="docutils literal notranslate"><span class="pre">.bat</span></code>）に一連の処理として組み合わせられる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">use Symfony\Component\Console\Command\LockableTrait;</span>
+<span class="x">use Symfony\Component\Console\Input\InputArgument;</span>
+<span class="x">use Symfony\Component\Console\Input\InputInterface;</span>
+<span class="x">use Symfony\Component\Console\Output\OutputInterface;</span>
+
+<span class="x">class createExampleCommand extends \Symfony\Component\Console\Command\Command</span>
+<span class="x">{</span>
+<span class="x">  // オプションの設定</span>
+<span class="x">    protected function configure()</span>
+<span class="x">    {</span>
+<span class="x">        // コマンド名</span>
+<span class="x">        $this-&gt;setName(&#39;create:example&#39;);</span>
+<span class="x">    </span>
+<span class="x">        // コマンド名の後に追加したい引数名</span>
+<span class="x">        $this-&gt;addArgument(&#39;year-month&#39;, InputArgument::REQUIRED, &#39;処理年月を設定してください．&#39;)</span>
+<span class="x">    }</span>
+<span class="x">  </span>
+<span class="x">    // コマンドの処理内容</span>
+<span class="x">    protected function execute(InputeInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        try {</span>
+<span class="x">                // 日時フォーマットからCarbonインスタンスを作成する．</span>
+<span class="x">                $year_month = Carbon::createFromFormat(&#39;Y-m&#39;, $input-&gt;getArgument(&#39;year-month&#39;));</span>
+<span class="x">        </span>
+<span class="x">        } catch (\Exception $e) {</span>
+<span class="x">            // エラーログの文章を作成</span>
+<span class="x">  }  </span>
+<span class="x">  </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>:pushpin: バッチファイル<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="for">
+<h4>・<code class="docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#for" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># txtファイルを変数fに繰り返し格納し，処理を行う．</span>
+<span class="k">for</span> f in *txt <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$f</span><span class="p">;</span> <span class="k">done</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cron">
+<h4>・Cronによるコマンド自動実行<a class="headerlink" href="#cron" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【具体例】</strong></p>
+<p>10秒ごとに，コマンドを自動実行する．</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 10秒ごとに，コマンド処理を実行．</span>
+<span class="k">for</span> f in <span class="sb">`</span>seq <span class="m">0</span> <span class="m">10</span> <span class="m">59</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span> <span class="o">(</span>sleep <span class="o">{</span><span class="nv">$f</span><span class="o">}</span><span class="p">;</span> create:example<span class="o">)</span> <span class="p">&amp;</span> <span class="k">done</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 15時ごとに，コマンド処理を実行．</span>
+<span class="m">0</span> <span class="m">15</span> * * * * create:example<span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="httpfoundation">
+<h2>01-03. HttpFoundationに関するクラス<a class="headerlink" href="#httpfoundation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-appkernel">
+<h3>:pushpin: AppKernel<a class="headerlink" href="#pushpin-appkernel" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="図2-9-ver2" src="https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png" /></p>
+<div class="section" id="id3">
+<h4>・カーネルに必要なオブジェクト<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="simple">
+<li><p>Requestオブジェクト：グローバル変数から収集した情報やHTTPリクエストのヘッダ情報やコンテンツ情報を保持</p></li>
+<li><p>カーネルオブジェクトの<code class="docutils literal notranslate"><span class="pre">handle()</span></code>：送られてきたURLを基にしたコントローラ／アクションへのルートの特定，特定されたコントローラ／アクションの実行，テンプレートのレンダリング</p></li>
+<li><p>Responseオブジェクト：HTTPレスポンスのヘッダ情報やコンテンツ情報などの情報を保持</p></li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h4>・オブジェクトから取り出されたメソッドの役割<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="simple">
+<li><p>カーネルが，クラアントからのHTTPリクエストをリクエストオブジェクトとして受け取る．</p></li>
+<li><p>カーネルが，送られてきたURLとルート定義を基に，リクエストに対応するコントローラアクションを探し，実行させる．その後，テンプレートがURLを生成．</p></li>
+<li><p>カーネルが，その結果をレスポンスオブジェクトとしてクライアントに返す．
+このカーネルを，特別に『HTTPカーネル』と呼ぶ．</p></li>
+</ol>
+<p><strong>【app.phpの実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">use Symfony\Component\HttpFoundation\Request;</span>
+
+<span class="x">$kernel = new AppKernel(&#39;dev&#39;, true);</span>
+
+<span class="x">if (PHP_VERSION_ID &lt; 70000) {</span>
+<span class="x">    $kernel-&gt;loadClassCache();</span>
+<span class="x">}</span>
+
+<span class="x">$request = Request::createFromGlobals();  //（１）</span>
+
+<span class="x">// 以下の実装ファイルも参照せよ．</span>
+<span class="x">$response = $kernel-&gt;handle($request); //（２）</span>
+
+<span class="x">$response-&gt;send(); //（３）</span>
+
+<span class="x">$kernel-&gt;terminate($request, $response);</span>
+</pre></div>
+</div>
+<p>上記の<code class="docutils literal notranslate"><span class="pre">handle()</span></code>が定義されているファイル．ここで定義された<code class="docutils literal notranslate"><span class="pre">handle()</span></code>が，C/Aへのルートの特定，特定されたC/Aの実行，テンプレートのレンダリングを行う．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">public function handle</span>
+<span class="x">(</span>
+<span class="x">    Request $request,</span>
+<span class="x">    $type = HttpKernelInterface::MASTER_REQUEST,</span>
+<span class="x">    $catch = true</span>
+<span class="x">)</span>
+<span class="x">{</span>
+<span class="x">    $this-&gt;boot();</span>
+<span class="x">    </span>
+<span class="x">    ++$this-&gt;requestStackSize;</span>
+<span class="x">    </span>
+<span class="x">    $this-&gt;resetServices = true;</span>
+
+<span class="x">    try {</span>
+<span class="x">        return $this-&gt;getHttpKernel()-&gt;handle($request, $type, $catch);</span>
+<span class="x">    </span>
+<span class="x">    } finally {</span>
+<span class="x">        --$this-&gt;requestStackSize;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="service-container">
+<h2>01-04. Service Container<a class="headerlink" href="#service-container" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Symfonyから提供されるDIコンテナのこと．</p>
+</div>
+<div class="section" id="doctrine">
+<h2>02-01. Doctrineライブラリ<a class="headerlink" href="#doctrine" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-createquerybuilder">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">createQueryBuilder()</span></code><a class="headerlink" href="#pushpin-createquerybuilder" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>データベース接続に関わる<code class="docutils literal notranslate"><span class="pre">getConnection()</span></code>を起点として，返り値から繰り返しメソッドを取得し，<code class="docutils literal notranslate"><span class="pre">fetchAll()</span></code>で，テーブルのクエリ名をキーとした連想配列が返される．</p>
+<ul class="simple">
+<li><p><strong>プレースホルダー</strong></p></li>
+</ul>
+<p>プリペアードステートメントともいう．SQL中にパラメータを設定し，値をパラメータに渡した上で，SQLとして発行する方法．処理速度が速い．また，パラメータに誤ってSQLが渡されても，これを実行できなくなるため，SQLインジェクションの対策にもなる</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">use Doctrine\DBAL\Connection;</span>
+
+<span class="x">class dogToyQuey(Value $toyType): Array</span>
+<span class="x">{</span>
+<span class="x">  // QueryBuilderインスタンスを作成する</span>
+<span class="x">  $queryBuilder = $this-&gt;createQueryBuilder();</span>
+
+<span class="x">  // SELECTを設定する</span>
+<span class="x">  $queryBuilder-&gt;select([</span>
+<span class="x">                  &#39;dog_toy.type AS dog_toy_type&#39;,</span>
+<span class="x">                  &#39;dog_toy.name AS dog_toy_name&#39;,</span>
+<span class="x">                  &#39;dog_toy.number AS number&#39;,</span>
+<span class="x">                  &#39;dog_toy.price AS dog_toy_price&#39;,</span>
+<span class="x">                  &#39;dog_toy.color_value AS color_value&#39;</span>
+<span class="x">                  ])</span>
+
+<span class="x">                  // FROMを設定する．</span>
+<span class="x">                  -&gt;from(&#39;mst_dog_toy&#39;, &#39;dog_toy&#39;)</span>
+
+<span class="x">                  // WHEREを設定する．この時，値はプレースホルダーとしておく．</span>
+<span class="x">                  -&gt;where(&#39;dog_toy.type = :type&#39;))</span>
+
+<span class="x">                  // プレースホルダーに値を設定する．ここでは，引数で渡す『$toyType』とする．</span>
+<span class="x">                  -&gt;setParameter(&#39;type&#39;, $toyType);</span>
+
+<span class="x">  // データベースから『$toyType』に相当するレコードを取得する．</span>
+<span class="x">  return $queryBuilder-&gt;getConnection()</span>
+
+<span class="x">                      // 設定したSQLとプレースホルダーを取得する．</span>
+<span class="x">                      -&gt;executeQuery($queryBuilder-&gt;getSQL(),</span>
+<span class="x">                                      $queryBuilder-&gt;getParameters(),</span>
+<span class="x">                      )</span>
+<span class="x">    </span>
+<span class="x">                      // レコードを取得する．</span>
+<span class="x">                      -&gt;fetchAll();</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="carbon">
+<h2>03-01. Carbonライブラリ<a class="headerlink" href="#carbon" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-date">
+<h3>:pushpin: Date型<a class="headerlink" href="#pushpin-date" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>フォーマット</th>
+<th>実装方法</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日付</td>
+<td>2019-07-07</td>
+<td>区切り記号なし、ドット、スラッシュなども可能</td>
+</tr>
+<tr>
+<td>時間</td>
+<td>19:07:07</td>
+<td>区切り記号なし、も可能</td>
+</tr>
+<tr>
+<td>日時</td>
+<td>2019-07-07 19:07:07</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>タイムスタンプ（秒）</td>
+<td>1562494027</td>
+<td>1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="pushpin-instance">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">instance()</span></code><a class="headerlink" href="#pushpin-instance" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>DateTimeインスタンスを引数として，Carbonインスタンスを作成する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$datetime = new \DateTime(&#39;2019-07-07 19:07:07&#39;);</span>
+<span class="x">$carbon = Carbon::instance($datetime);</span>
+
+<span class="x">echo $carbon;</span>
+<span class="x">// 出力結果</span>
+<span class="x">2019-07-07 19:07:07</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-create">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">create()</span></code><a class="headerlink" href="#pushpin-create" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>日時の文字列からCarbonインスタンスを作成する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$carbon = Carbon::create(2019, 07, 07, 19, 07, 07);</span>
+
+<span class="x">echo $carbon;</span>
+<span class="x">// 出力結果</span>
+<span class="x">2019-07-07 19:07:07</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-createfromxxx">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">createFromXXX()</span></code><a class="headerlink" href="#pushpin-createfromxxx" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>指定の文字列から，Carbonインスタンスを作成する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 日時数字から，Carbonインスタンスを作成する．</span>
+<span class="x">$carbonFromeDate = Carbon::createFromDate(2019, 07, 07);</span>
+
+<span class="x">// 時間数字から，Carbonインスタンスを作成する．</span>
+<span class="x">$carbonFromTime = Carbon::createFromTime(19, 07, 07);</span>
+
+<span class="x">// 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．</span>
+<span class="x">// 第一引数でフォーマットを指定する必要がある．</span>
+<span class="x">$carbonFromFormat = Carbon::createFromFormat(&#39;Y-m-d H:m:s&#39;, &#39;2019-07-07 19:07:07&#39;);</span>
+
+<span class="x">// タイムスタンプフォーマットから，Carbonインスタンスを作成する．</span>
+<span class="x">$carbonFromTimestamp = Carbon::createFromTimestamp(1562494027);</span>
+
+<span class="x">echo $carbonFromeDate;</span>
+<span class="x">// 出力結果  </span>
+<span class="x">2019-07-07</span>
+<span class="x">  </span>
+<span class="x">echo $carbonFromTime;</span>
+<span class="x">// 出力結果  </span>
+<span class="x">19:07:07</span>
+
+<span class="x">echo $carbonFromFormat;</span>
+<span class="x">// 出力結果    </span>
+<span class="x">2019-07-07 19:07:07</span>
+
+<span class="x">echo $carbonFromTimestamp;</span>
+<span class="x">// 出力結果</span>
+<span class="x">2019-07-07 19:07:07</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-parse">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">parse()</span></code><a class="headerlink" href="#pushpin-parse" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>日付，時間，日時フォーマットから，Carbonインスタンスを作成する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// createFromFormat()とは異なり，フォーマットを指定する必要がない．</span>
+<span class="x">$carbon = Carbon::parse(&#39;2019-07-07 19:07:07&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pinq">
+<h2>04-01. Pinqライブラリ<a class="headerlink" href="#pinq" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>SQLのSELECTやWHEREといった単語を用いて，<code class="docutils literal notranslate"><span class="pre">foreach()</span></code>のように，コレクションデータを走査できるライブラリ．</p>
+</div>
+<div class="section" id="guzzle">
+<h2>05-01. Guzzleライブラリ<a class="headerlink" href="#guzzle" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>通常、リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う。しかし、Guzzleライブラリを使えば、サーバから他サーバに対して，リクエストメッセージの送受信ができる。</p>
+<div class="section" id="get">
+<h3>・リクエストメッセージをGET送信<a class="headerlink" href="#get" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$client = new Client();</span>
+
+<span class="x">// GET送信</span>
+<span class="x">$response = $client-&gt;request(&quot;GET&quot;, {アクセスしたいURL});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>・レスポンスメッセージからボディを取得<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$client = new Client();</span>
+
+<span class="x">// POST送信</span>
+<span class="x">$response = $client-&gt;request(&quot;POST&quot;, {アクセスしたいURL});</span>
+
+<span class="x">// レスポンスメッセージからボディのみを取得</span>
+<span class="x">$body = json_decode($response-&gt;getBody(), true);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="respect-validation">
+<h2>06-01. Respect/Validationライブラリ<a class="headerlink" href="#respect-validation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>リクエストされたデータが正しいかを，サーバサイド側で検証する．フロントエンドからリクエストされるデータに関しては，JavaScriptとPHPの両方によるバリデーションが必要である．</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="MainAlgorithm.html" class="btn btn-neutral float-right" title="代表的なアルゴリズム" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Testing.html" class="btn btn-neutral float-left" title="テストの手法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

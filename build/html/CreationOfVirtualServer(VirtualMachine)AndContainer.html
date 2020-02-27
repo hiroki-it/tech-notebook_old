@@ -1,0 +1,912 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>仮想サーバ(仮想マシン)とコンテナの構築 &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="ソフトウェアとは" href="WhatIsSoftware.html" />
+    <link rel="prev" title="仮想化技術の比較" href="ComparisonOfVirtualizationTechnologies.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">仮想サーバ(仮想マシン)とコンテナの構築</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#provider">02-01. Providerによる仮想サーバ（仮想マシン）の構築</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-provider">:pushpin: Providerの操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-provisioner">:pushpin: Provisionerの操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ansible">・Ansible</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-vagrantproviderprovisioner">:pushpin: VagrantによるProviderとProvisionerの操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">・サーバの情報の管理方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vagrant">・主な<code class="docutils literal notranslate"><span class="pre">vagrant</span></code>コマンド**</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symfony">03-01. Symfonyによるビルトインサーバの構築</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">04-01. Dockerによるコンテナの構築</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-docker">:pushpin: Dockerの操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">・Dockerクライアント</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">・Dockerデーモン</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh">04-02. コンテナにssh接続するまでの手順</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: 手順の流れ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">:pushpin: ベースとなるDockerイメージのインストール</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">・ベースとなるDockerイメージの種類</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・ベースとなるDockerイメージに関するコマンド</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">:pushpin: ベースとなるDockerイメージのカスタマイズとビルド</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dockerdockerfile">・DockerイメージのカスタマイズとDockerfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dockerfile">・Dockerfileの記述方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">・Dockerfileの記述方法の工夫</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">・Dockerイメージのビルドを行うコマンド</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">・Dockerfileを使用するメリット</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">:pushpin: コンテナレイヤーの生成，コンテナの構築</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">・コンテナレイヤーの生成，コンテナの構築，に関するコマンド</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">・ビルドされるDockerイメージとコンテナの役割の対応例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">:pushpin: 構築されたコンテナの起動／停止</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">・構築されたコンテナの操作に関するコマンド</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-ssh">:pushpin: 起動中のコンテナにssh接続</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">04-03. コンテナの種類</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-data-volume">:pushpin: Data Volumeコンテナ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-volume">・Data Volumeとは</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">・Data Volumeコンテナによる永続化データの提供</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">04-04. コンテナ間の仮想ネットワーク</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-bridge">:pushpin: bridgeネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-none">:pushpin: noneネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-host">:pushpin: hostネットワーク</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-compose">04-05. Docker Composeによるオーケストレーション</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-docker-compose-yml">:pushpin: docker-compose.ymlの記述方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">・記述項目</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">・全ての手順を実行するコマンド</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">05-01. ライブラリとパッケージ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id23">:pushpin: ライブラリとパッケージの大まかな違い</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id24">:pushpin: ライブラリマネージャ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#php-composer">・PHP Composer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id25">:pushpin: パッケージマネージャ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>仮想サーバ(仮想マシン)とコンテナの構築</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/CreationOfVirtualServer(VirtualMachine)AndContainer.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>仮想サーバ(仮想マシン)とコンテナの構築<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="provider">
+<h2>02-01. Providerによる仮想サーバ（仮想マシン）の構築<a class="headerlink" href="#provider" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><img alt="Vagrantの仕組み_オリジナル" src="https://user-images.githubusercontent.com/42175286/60393574-b18de200-9b52-11e9-803d-ef44d6e50b08.png" /></p>
+<div class="section" id="pushpin-provider">
+<h3>:pushpin: Providerの操作<a class="headerlink" href="#pushpin-provider" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>基本ソフトウェアにおける制御プログラムや一連のハードウェアを仮想的に構築できる．これを，仮想サーバ（仮想マシンとも）という．構築方法の違いによって，『ホスト型』，『ハイパーバイザ型』に分類できる．</p>
+</div>
+<div class="section" id="pushpin-provisioner">
+<h3>:pushpin: Provisionerの操作<a class="headerlink" href="#pushpin-provisioner" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Providerによって構築された仮想サーバに，Web開発のためのソフトウェアをインストールできる．具体的には，プログラミング言語やファイアウォールをインストールする．</p>
+<div class="section" id="ansible">
+<h4>・Ansible<a class="headerlink" href="#ansible" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Ansibleでは，ymlの文法を用いて関数処理を実行できる．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>ファイル名</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>playbook.yml</td>
+<td>ソフトウェアのインストールタスクの手順</td>
+</tr>
+<tr>
+<td>inventory/*</td>
+<td>反映先のサーバの情報</td>
+</tr>
+<tr>
+<td>group_vars/*</td>
+<td>複数のサーバへの設定</td>
+</tr>
+<tr>
+<td>host_vars/*</td>
+<td>単一のサーバへの設定</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="pushpin-vagrantproviderprovisioner">
+<h3>:pushpin: VagrantによるProviderとProvisionerの操作<a class="headerlink" href="#pushpin-vagrantproviderprovisioner" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ProviderとProvisionerの操作を自動化できる．チームメンバーが別々に仮想サーバを構築する場合，ProviderとProvisionerの処理によって作られる仮想サーバの環境に，違いが生じてしまう．Vagrantを使う場合，ProviderとProvisionerによる処理方法は，Vagrantfileに記述されている．このために，Vagrantを用いれば，チームメンバーが同じソフトウェアの下で，仮想サーバを構築し，ソフトウェアをインストールすることができる．</p>
+<div class="section" id="id2">
+<h4>・サーバの情報の管理方法<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>サーバの情報は，ENVファイルで以下の様に管理する．</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">#=======================================</span>
+<span class="x"># Webサーバ情報</span>
+<span class="x">#=======================================</span>
+<span class="x">WEB_HOST=&quot;XXX.X.X.X&quot;</span>
+
+<span class="x">#=======================================</span>
+<span class="x"># データベースサーバ情報</span>
+<span class="x">#=======================================</span>
+<span class="x">DB_HOST=&quot;YYY.Y.Y.Y&quot;</span>
+<span class="x">DB_NAME=&quot;example&quot;</span>
+<span class="x">DB_USER=&quot;hiroki&quot;</span>
+<span class="x">DB_PASSWORD=&quot;12345&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="vagrant">
+<h4>・主な<code class="docutils literal notranslate"><span class="pre">vagrant</span></code>コマンド**<a class="headerlink" href="#vagrant" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th align="left">処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>vagrant up</code></strong></td>
+<td align="left">仮想サーバ起動</td>
+</tr>
+<tr>
+<td><strong><code>vagrant halt</code></strong></td>
+<td align="left">仮想サーバ停止</td>
+</tr>
+<tr>
+<td><strong><code>vagrant ssh</code></strong></td>
+<td align="left">仮想サーバへのリモート接続</td>
+</tr>
+<tr>
+<td><strong><code>vagrant global-status</code></strong></td>
+<td align="left">起動中仮想サーバの一覧</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="section" id="symfony">
+<h2>03-01. Symfonyによるビルトインサーバの構築<a class="headerlink" href="#symfony" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="docker">
+<h2>04-01. Dockerによるコンテナの構築<a class="headerlink" href="#docker" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-docker">
+<h3>:pushpin: Dockerの操作<a class="headerlink" href="#pushpin-docker" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id3">
+<h4>・Dockerクライアント<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Dockerクライアントは，ssh接続によって，Dockerデーモンを操作できる．</p>
+</div>
+<div class="section" id="id4">
+<h4>・Dockerデーモン<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ホストOS上で稼働し，Dockerの操作を担う．Dockerクライアントは，Dockerデーモンを通して，Docker全体を操作できる．</p>
+<p><img alt="Dockerの仕組み" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Docker%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF.png" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="ssh">
+<h2>04-02. コンテナにssh接続するまでの手順<a class="headerlink" href="#ssh" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin">
+<h3>:pushpin: 手順の流れ<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="Dockerfileの作成からコンテナ構築までの手順" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerfile%E3%81%AE%E4%BD%9C%E6%88%90%E3%81%8B%E3%82%89%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E6%A7%8B%E7%AF%89%E3%81%BE%E3%81%A7%E3%81%AE%E6%89%8B%E9%A0%86.png" /></p>
+<ol class="simple">
+<li><p>DockerHubから，ベースとなるDockerイメージをインストールする．</p></li>
+<li><p>DockerfileがイメージレイヤーからなるDockerイメージをビルド．</p></li>
+<li><p>コマンドによって，Dockerイメージ上にコンテナレイヤーを生成し，コンテナを構築．</p></li>
+<li><p>コマンドによって，構築されたコンテナを起動．</p></li>
+<li><p>コマンドによって，起動中のコンテナにssh接続．</p></li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h3>:pushpin: ベースとなるDockerイメージのインストール<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>DockerHubには，カスタマイズする上でのベースとなるDockerイメージが提供されている．</p>
+<div class="section" id="id6">
+<h4>・ベースとなるDockerイメージの種類<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Dockerイメージ</th>
+<th>特徴</th>
+<th>相性の良いシステム例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>scratch</strong></td>
+<td>以下の通り，何も持っていない<br>・OS：無<br>・パッケージ：無<br>・パッケージマネージャ：無</td>
+<td>？</td>
+</tr>
+<tr>
+<td><strong>BusyBox</strong></td>
+<td>・OS：Linux（※ディストリビューションではない）<br>・パッケージ：基本ユーティリティツール<br>・パッケージマネージャ：無</td>
+<td>組み込みシステム</td>
+</tr>
+<tr>
+<td><strong>Alpine Linux</strong></td>
+<td>・OS：Linux（※ディストリビューションではない）<br/>・パッケージ：基本ユーティリティツール<br>・パッケージマネージャ：Apk</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="id7">
+<h4>・ベースとなるDockerイメージに関するコマンド<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th>処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>search {イメージ名}</code></strong></td>
+<td>レジストリ側に保管されているDockerイメージを検索</td>
+</tr>
+<tr>
+<td><strong><code>pull {イメージ名}</code></strong></td>
+<td>レジストリ側のDockerイメージをクライアント側にインストール</td>
+</tr>
+<tr>
+<td><strong><code>commit -a {作成者名} {コンテナ名} {DockerHubユーザ名}/{イメージ名}:{バージョンタグ}</code></strong></td>
+<td>コンテナからDockerイメージを作成</td>
+</tr>
+<tr>
+<td><strong><code>push {DockerHubユーザ名}/{イメージ名}:{バージョンタグ}</code></strong></td>
+<td>ホストOSで作成したDockerイメージをレジストリ側にアップロード</td>
+</tr>
+<tr>
+<td><strong><code>images</code></strong></td>
+<td>ホストOSにインストールされたDockerイメージを確認</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="id8">
+<h3>:pushpin: ベースとなるDockerイメージのカスタマイズとビルド<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="dockerdockerfile">
+<h4>・DockerイメージのカスタマイズとDockerfile<a class="headerlink" href="#dockerdockerfile" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="イメージレイヤーからなるDockerイメージのビルド" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC%E3%81%8B%E3%82%89%E3%81%AA%E3%82%8BDocker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%93%E3%83%AB%E3%83%89.png" /></p>
+<p>任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，ベースのイメージの上に，他のイメージレイヤーを積み重ねる必要がある．この時，Dockerfileを用いて，各命令によってイメージレイヤーを積み重ねていく．</p>
+</div>
+<div class="section" id="dockerfile">
+<h4>・Dockerfileの記述方法<a class="headerlink" href="#dockerfile" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，以下の5つ順番で命令を用いて，イメージレイヤーを積み重ねていく．命令は，慣例的に大文字で記述する．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>命令</th>
+<th>処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>FROM</code></strong></td>
+<td>ベースのDockerイメージを，コンテナにインストール</td>
+</tr>
+<tr>
+<td><strong><code>RUN</code></strong></td>
+<td>ベースイメージ上に，イメージレイヤーのDockerイメージをインストール</td>
+</tr>
+<tr>
+<td><strong><code>COPY</code></strong></td>
+<td>ホストOSのファイルを，コンテナの指定ディレクトリにコピー</td>
+</tr>
+<tr>
+<td><strong><code>CMD</code></strong></td>
+<td>イメージレイヤーをデーモン起動</td>
+</tr>
+<tr>
+<td><strong><code>EXPOSE</code></strong></td>
+<td>開放するポート番号を指定</td>
+</tr>
+</tbody>
+</table><p>必須ではないその他の命令には，以下がある．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>命令</th>
+<th>処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>ADD</code></strong></td>
+<td>・ホストOSのファイルを，コンテナの指定ディレクトリにコピー（<strong><code>COPY</code>と同じ</strong>）<br>・インターネットからファイルをダウンロードし，解凍も行う．</td>
+</tr>
+<tr>
+<td><strong><code>WORKDIR</code></strong></td>
+<td>絶対パスでディレクトリを指定</td>
+</tr>
+</tbody>
+</table><p><strong>【nginxのDockerイメージの例】</strong></p>
+<p>ubuntuのDockerイメージをベースとして，nginxのDockerイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，Shell形式，Exec形式がある．ここでは，Shell形式で記述する．</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c"># ベースのDockerイメージ（ubuntu）を，コンテナにインストール</span>
+<span class="k">FROM</span> <span class="s">ubuntu:latest</span>
+
+<span class="c"># ubuntu上に，イメージレイヤー（nginx）をインストール</span>
+<span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y -q nginx
+
+<span class="c"># ホストOSのindex.htmlファイルを，Dockerコンテナの指定ディレクトリにコピー</span>
+<span class="k">COPY</span> index.html /var/www/html
+
+<span class="c"># イメージレイヤー（nginx）をデーモン起動</span>
+<span class="k">CMD</span> nginx -g <span class="s1">&#39;daemon off;&#39;</span>
+
+<span class="c"># ポート番号80（HTTP）を開放</span>
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+</pre></div>
+</div>
+<p><strong>【mysqlのDockerイメージの例】</strong></p>
+</div>
+<div class="section" id="id9">
+<h4>・Dockerfileの記述方法の工夫<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Dockerfileの各命令によって，イメージ レイヤーが一つ増えてしまうため，同じ命令に異なるパラメータを与える時は，これを一つにまとめてしまう方が良い．例えば，以下のような時，</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c"># ベースイメージ上に，複数のイメージレイヤーを複数インストール</span>
+<span class="k">RUN</span> yum -y isntall httpd
+<span class="k">RUN</span> yum -y install php
+<span class="k">RUN</span> yum -y install php-mbstring
+<span class="k">RUN</span> yum -y install php-pear
+</pre></div>
+</div>
+<p>これは，以下のように一行でまとめられ...</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c"># ベースイメージ上に，複数のイメージレイヤーを複数インストール</span>
+<span class="k">RUN</span> yum -y install httpd php php-mbstring php-pear
+</pre></div>
+</div>
+<p>さらに，これは以下のようにも書くことができる．</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c"># ベースイメージ上に，複数のイメージレイヤーを複数インストール</span>
+<span class="k">RUN</span> yum -y install<span class="se">\</span>
+     httpd<span class="se">\</span>
+     php<span class="se">\</span>
+     php-mbstring<span class="se">\</span>
+     php-pear
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h4>・Dockerイメージのビルドを行うコマンド<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th>処理</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>build -f Dockerfile --no-cache .</code></strong></td>
+<td>キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド</td>
+<td>コマンド最後のドットを忘れない</td>
+</tr>
+<tr>
+<td><strong><code>build --no-cache</code></strong></td>
+<td>キャッシュ無しで，全てのDockerfileを基に，Dockerイメージをビルド</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="id11">
+<h4>・Dockerfileを使用するメリット<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．<img alt="Dockerfileのメリット" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerfile%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88.png" /></p>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>:pushpin: コンテナレイヤーの生成，コンテナの構築<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Dockerイメージの上にコンテナレイヤーを生成し，コンテナを構築する．</p>
+<div class="section" id="id13">
+<h4>・コンテナレイヤーの生成，コンテナの構築，に関するコマンド<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th>処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>create {イメージ名}</code></strong></td>
+<td>コンテナレイヤーを生成し，コンテナを構築．起動はしない．</td>
+</tr>
+</tbody>
+</table><p><img alt="Dockerイメージ上へのコンテナレイヤーの積み重ね" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Docker%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E4%B8%8A%E3%81%B8%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC%E3%81%AE%E7%A9%8D%E3%81%BF%E9%87%8D%E3%81%AD.png" /></p>
+</div>
+<div class="section" id="id14">
+<h4>・ビルドされるDockerイメージとコンテナの役割の対応例<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">ビルドされるDockerイメージ</th>
+<th align="left">コンテナの役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Redis</td>
+<td align="left"><strong>NoSQL（非RDB）</strong></td>
+</tr>
+<tr>
+<td align="left">MySQL</td>
+<td align="left"><strong>RDBMS</strong></td>
+</tr>
+<tr>
+<td align="left">Nginx</td>
+<td align="left"><strong>Webサーバソフトウェア</strong></td>
+</tr>
+<tr>
+<td align="left">PHP-FPM</td>
+<td align="left"><strong>APサーバソフトウェア</strong></td>
+</tr>
+<tr>
+<td align="left">MailDev</td>
+<td align="left"><strong>メールサーバソフトウェア</strong></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="id15">
+<h3>:pushpin: 構築されたコンテナの起動／停止<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id16">
+<h4>・構築されたコンテナの操作に関するコマンド<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">コマンド</th>
+<th>処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong><code>start</code></strong></td>
+<td>既存コンテナを起動</td>
+</tr>
+<tr>
+<td align="left"><strong><code>stop</code></strong></td>
+<td>起動中コンテナを停止</td>
+</tr>
+<tr>
+<td align="left"><strong><code>ps</code></strong></td>
+<td>起動中コンテナの一覧で表示</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="pushpin-ssh">
+<h3>:pushpin: 起動中のコンテナにssh接続<a class="headerlink" href="#pushpin-ssh" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th>処理</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>exec -it {コンテナ名} bash</code></strong></td>
+<td>起動中のコンテナにssh接続</td>
+<td>i：interactive<br>t：tty</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="id17">
+<h2>04-03. コンテナの種類<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-data-volume">
+<h3>:pushpin: Data Volumeコンテナ<a class="headerlink" href="#pushpin-data-volume" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="data-volume">
+<h4>・Data Volumeとは<a class="headerlink" href="#data-volume" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>永続化したいデータを保存しておくディレクトリのこと．Volume内のデータを扱うためには，コンテナ構築時に，Data Volumeをコンテナ側のディレクトリにマウントする必要がある．</p>
+</div>
+<div class="section" id="id18">
+<h4>・Data Volumeコンテナによる永続化データの提供<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>コンテナのデータ永続化手法では，Data Volumeコンテナの構築が推奨されている．一旦，DataVolumeのディレクトリをコンテナ （Data Volumeコンテナ）のディレクトリにマウントしておく．そして，他のコンテナでDataVolumeを使用したい時は，Data Volumeコンテナとディレクトリを共有することによって，データを要求する．</p>
+</div>
+</div>
+</div>
+<div class="section" id="id19">
+<h2>04-04. コンテナ間の仮想ネットワーク<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-bridge">
+<h3>:pushpin: bridgeネットワーク<a class="headerlink" href="#pushpin-bridge" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>複数のコンテナ間に対して，仮想ネットワークで接続させる．また，仮想ネットワークを物理ネットワークとBridge接続する．ほとんどの場合，この方法を用いる．</p>
+<p><img alt="Dockerエンジン内の仮想ネットワーク" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Docker%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E5%86%85%E3%81%AE%E4%BB%AE%E6%83%B3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF.jpg" /></p>
+</div>
+<div class="section" id="pushpin-none">
+<h3>:pushpin: noneネットワーク<a class="headerlink" href="#pushpin-none" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>特定のコンテナに対して，ホストOSや他のコンテナとは，ネットワーク接続しない．</p>
+</div>
+<div class="section" id="pushpin-host">
+<h3>:pushpin: hostネットワーク<a class="headerlink" href="#pushpin-host" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>特定のコンテナに対して，ホストOSと同じネットワーク情報をもたせる．</p>
+</div>
+</div>
+<div class="section" id="docker-compose">
+<h2>04-05. Docker Composeによるオーケストレーション<a class="headerlink" href="#docker-compose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-docker-compose-yml">
+<h3>:pushpin: docker-compose.ymlの記述方法<a class="headerlink" href="#pushpin-docker-compose-yml" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id20">
+<h4>・記述項目<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Dockerfileを基にしたDockerイメージのビルド，コンテナレイヤーの生成，コンテナの構築，コンテナの起動，を行うための管理ツール．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">記述項目</th>
+<th align="left">意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong><code>build</code></strong></td>
+<td align="left">Dockerfileの相対パス</td>
+</tr>
+<tr>
+<td align="left"><strong><code>ports</code></strong></td>
+<td align="left">コンテナで開放するポート番号（※ホストOSではランダム）</td>
+</tr>
+<tr>
+<td align="left"><strong><code>volumes</code></strong></td>
+<td align="left">Volumeのマウント先ディレクトリ</td>
+</tr>
+<tr>
+<td align="left"><strong><code>environment</code></strong></td>
+<td align="left">DBの環境変数</td>
+</tr>
+<tr>
+<td align="left"><strong><code>depends_on</code></strong></td>
+<td align="left">コンテナが起動する順番</td>
+</tr>
+<tr>
+<td align="left"><strong><code>networks</code></strong></td>
+<td align="left">複数のコンテナを起動する時に必要．要勉強</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="id21">
+<h4>・全ての手順を実行するコマンド<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>コマンド</th>
+<th>処理</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>up -d</code></strong></td>
+<td>・Dockerfileを基にイメージのビルド<br>・全てのコンテナレイヤーを生成し，コンテナを構築<br>・コンテナを起動</td>
+<td>すでにコンテナがある場合，それを再起動</td>
+</tr>
+<tr>
+<td><strong><code>run -d -it {イメージ名}</code></strong></td>
+<td>・Dockerfileを基にイメージをビルド<br>・指定のコンテナレイヤーを生成し，コンテナを構築（※依存含む）<br>・コンテナを起動</td>
+<td>すでにコンテナがあっても，それを残して構築／起動．以前のコンテナが削除されずに残ってしまう．</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="section" id="id22">
+<h2>05-01. ライブラリとパッケージ<a class="headerlink" href="#id22" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id23">
+<h3>:pushpin: ライブラリとパッケージの大まかな違い<a class="headerlink" href="#id23" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ライブラリ，パッケージ，モジュールの違い" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA%EF%BC%8C%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%EF%BC%8C%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E9%81%95%E3%81%84.png" /></p>
+</div>
+<div class="section" id="id24">
+<h3>:pushpin: ライブラリマネージャ<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="php-composer">
+<h4>・PHP Composer<a class="headerlink" href="#php-composer" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>// phpのメモリ上限を無しにしてcomposer updateを行う方法
+php -d <span class="nv">memory_limit</span><span class="o">=</span>-1 /usr/local/bin/composer update
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id25">
+<h3>:pushpin: パッケージマネージャ<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>対象</th>
+<th>パッケージマネージャ</th>
+<th>依存関係のインストール可否</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RedHat系</td>
+<td>Rpm：Red Hat Package Manager</td>
+<td>✕</td>
+</tr>
+<tr>
+<td>RedHat系</td>
+<td>Yum：Yellow dog Updater Modified</td>
+<td>〇</td>
+</tr>
+<tr>
+<td>Debian系</td>
+<td>Apt：Advanced Packaging Tool</td>
+<td>〇</td>
+</tr>
+<tr>
+<td>Alpine Linux</td>
+<td>Apk：Alpine Linux package management</td>
+<td>〇</td>
+</tr>
+<tr>
+<td>JavaScript系</td>
+<td>Npm：Node Package Manager</td>
+<td>〇</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="WhatIsSoftware.html" class="btn btn-neutral float-right" title="ソフトウェアとは" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ComparisonOfVirtualizationTechnologies.html" class="btn btn-neutral float-left" title="仮想化技術の比較" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

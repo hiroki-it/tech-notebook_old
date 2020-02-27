@@ -1,0 +1,698 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>オブジェクト指向分析と設計 &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="オブジェクト指向プログラミング" href="ObjectOrientedProgramming.html" />
+    <link rel="prev" title="このサイトについて" href="AboutThisSite.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">オブジェクト指向分析と設計</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">01-01. アーキテクチャスタイルと設計</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: アーキテクチャスタイルの種類</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">:pushpin: アーキテクチャスタイルと分析設計手法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">01-02. オブジェクト指向分析・設計</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">:pushpin: オブジェクト指向分析・設計を取り巻く歴史</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">:pushpin:  分析・設計で用いるダイアグラム図の種類</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-uml-unified-modeling-language">:pushpin: UML：Unified Modeling Language（統一モデリング言語）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#uml">・分析に用いられるUMLダイアグラム</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・設計に用いられるUMLダイアグラム</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">02-01. オブジェクト指向分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">:pushpin: オブジェクト指向分析とは</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">・オブジェクトの定義</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">:pushpin: 分析・設計で用いるダイアグラム図の種類（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-uml">:pushpin: 分析に用いるUMLダイアグラムの種類</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">:pushpin: UML以外のダイアグラムの種類</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">・リアルタイム構造化・分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">・概念データモデリング</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">02-02. 構造化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-dfd-data-flow-diagram">:pushpin: DFD：Data Flow Diagram（データフロー図）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">02-03. UMLの振舞図（機能の視点）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-use-case">:pushpin: Use case 図（使用事例図）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">:pushpin:  アクティビティ図</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id18">・アルゴリズムとフローチャート</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">02-04. UMLの振舞図（振舞の視点）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id20">:pushpin:  システムシーケンス図</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">02-05. リアルタイム構造化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">:pushpin: 状態遷移図</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">:pushpin: 状態遷移表</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">02-06. 概念データモデリング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-er-entity-relation-diagram">:pushpin: ER図：Entity Relation Diagram</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#entity-attribute">・Entity と Attribute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#relation-cardinality">・Relation と Cardinality（多重度）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">・1：1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#relation">・1：多（Relation が曖昧な状態）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">・1：1 以上</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">03-01. オブジェクト指向設計</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id28">:pushpin: オブジェクト指向設計とは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">:pushpin:  分析・設計で用いるダイアグラム図の種類（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">:pushpin: 設計に用いるUMLダイアグラムの種類</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">03-02. UMLの構造図（構造の視点）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id32">:pushpin: クラス図</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class">・Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#association">・Association（関連）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aggregation">・Aggregation（集約）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#composition">・Composition（合成）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependency">・Dependency（依存）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generalization">・Generalization（汎化）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#realization">・Realization（実現）＝ 抽象オブジェクト</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-cardinality">:pushpin: Cardinality（多重度）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id33">03-03. UMLの振舞図（振舞の視点）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id34">:pushpin: シーケンス図</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id35">04-01. モジュール化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-sts">:pushpin: STS分割法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-transaction">:pushpin: Transaction分割法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">:pushpin: 共通機能分割法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>オブジェクト指向分析と設計</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ObjectOrientedAnalysisAndDesign.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>オブジェクト指向分析と設計<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>01-01. アーキテクチャスタイルと設計<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin">
+<h3>:pushpin: アーキテクチャスタイルの種類<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="アーキテクチャスタイルの種類" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AE%E7%A8%AE%E9%A1%9E.png" /></p>
+</div>
+<div class="section" id="id3">
+<h3>:pushpin: アーキテクチャスタイルと分析設計手法<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th></th>
+<th>アーキテクチャスタイル</th>
+<th>スタイルに基づく設計</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>デプロイメント構成</strong></td>
+<td>クライアント／サーバ</td>
+<td>クライアントサイド／サーバサイド</td>
+</tr>
+<tr>
+<td><strong>システム構成</strong></td>
+<td>オブジェクト指向</td>
+<td>オブジェクト指向分析設計</td>
+</tr>
+<tr>
+<td></td>
+<td>Layeredアーキテクチャ</td>
+<td>Layeredアーキテクチャ設計</td>
+</tr>
+<tr>
+<td></td>
+<td>MVC</td>
+<td>MVC設計</td>
+</tr>
+<tr>
+<td><strong>データ通信領域</strong></td>
+<td>REST</td>
+<td>RESTful</td>
+</tr>
+<tr>
+<td><strong>ドメイン領域構成</strong></td>
+<td>ドメイン駆動</td>
+<td>ドメイン駆動設計</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="id4">
+<h2>01-02. オブジェクト指向分析・設計<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h3>:pushpin: オブジェクト指向分析・設計を取り巻く歴史<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="プログラミング言語と設計手法の歴史" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9E%E3%81%A8%E8%A8%AD%E8%A8%88%E6%89%8B%E6%B3%95%E3%81%AE%E6%AD%B4%E5%8F%B2.png" /></p>
+</div>
+<div class="section" id="id6">
+<h3>:pushpin:  分析・設計で用いるダイアグラム図の種類<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>分析・設計においては，ダイアグラム図を用いて，オブジェクトを表現することが必要になる．</p>
+<p><img alt="複数視点のモデル化とUML" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E8%A4%87%E6%95%B0%E8%A6%96%E7%82%B9%E3%81%AE%E3%83%A2%E3%83%87%E3%83%AB%E5%8C%96%E3%81%A8UML.jpg" /></p>
+</div>
+<div class="section" id="pushpin-uml-unified-modeling-language">
+<h3>:pushpin: UML：Unified Modeling Language（統一モデリング言語）<a class="headerlink" href="#pushpin-uml-unified-modeling-language" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ダイアグラム図のUMLには，構造図，振舞図，相互作用図に分類される．</p>
+<p>（※ちなみ，UMLは，システム設計だけでなく，データベース設計にも使える）</p>
+<p><img alt="UML-0" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-0.png" /></p>
+<div class="section" id="uml">
+<h4>・分析に用いられるUMLダイアグラム<a class="headerlink" href="#uml" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="UML-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-2.png" /></p>
+</div>
+<div class="section" id="id7">
+<h4>・設計に用いられるUMLダイアグラム<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="UML-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-1.png" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>02-01. オブジェクト指向分析<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id9">
+<h3>:pushpin: オブジェクト指向分析とは<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクト指向分析では，システム化の対象になる領域に存在する概念をオブジェクトモデリングする．</p>
+<div class="section" id="id10">
+<h4>・オブジェクトの定義<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<blockquote>
+<div><p>互いに密接に関連するデータと手続き（処理手順）をオブジェクトと呼ばれる一つのまとまりとして定義する手法のこと．</p>
+</div></blockquote>
+<p>!!! Note
+オブジェクトモデリングの方法として，『実体』の『状態』と『動作』を考える．<br />しかし，これは厳密ではない．<br />なぜなら，ビジネス領域を実装する時には，ほとんどの場合で，動作を持たない実体を表現することになるからである．<br />より厳密に理解するために，『実体』『状態』『状態の変更と表示』と考えるべき．</p>
+</div>
+</div>
+<div class="section" id="id11">
+<h3>:pushpin: 分析・設計で用いるダイアグラム図の種類（再掲）<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="複数視点のモデル化とUML" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E8%A4%87%E6%95%B0%E8%A6%96%E7%82%B9%E3%81%AE%E3%83%A2%E3%83%87%E3%83%AB%E5%8C%96%E3%81%A8UML.jpg" /></p>
+</div>
+<div class="section" id="pushpin-uml">
+<h3>:pushpin: 分析に用いるUMLダイアグラムの種類<a class="headerlink" href="#pushpin-uml" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="UML-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-2.png" /></p>
+</div>
+<div class="section" id="id12">
+<h3>:pushpin: UML以外のダイアグラムの種類<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id13">
+<h4>・リアルタイム構造化・分析<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="id14">
+<h4>・概念データモデリング<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="id15">
+<h2>02-02. 構造化<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-dfd-data-flow-diagram">
+<h3>:pushpin: DFD：Data Flow Diagram（データフロー図）<a class="headerlink" href="#pushpin-dfd-data-flow-diagram" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="データフロー図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%83%AD%E3%83%BC%E5%9B%B3.jpg" /></p>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>02-03. UMLの振舞図（機能の視点）<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-use-case">
+<h3>:pushpin: Use case 図（使用事例図）<a class="headerlink" href="#pushpin-use-case" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ユーザーの視点で，システムの利用例を表記する方法．</p>
+<p><strong>【具体例】</strong></p>
+<p>オンラインショッピングにおけるUse case</p>
+<p><img alt="ユースケース図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9%E5%9B%B3.png" /></p>
+</div>
+<div class="section" id="id17">
+<h3>:pushpin:  アクティビティ図<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ビジネスロジックや業務フローを手続き的に表記する方法．</p>
+<p><strong>【設計例】</strong></p>
+<p><img alt="アクティビティ図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3.png" /></p>
+<div class="section" id="id18">
+<h4>・アルゴリズムとフローチャート<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p549-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-1.gif" /></p>
+<p><img alt="p549-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-2.gif" /></p>
+<p><img alt="p549-3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-3.gif" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="id19">
+<h2>02-04. UMLの振舞図（振舞の視点）<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id20">
+<h3>:pushpin:  システムシーケンス図<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>アクターからアクターへの振舞の流れを，時間軸に沿って表記する方法．Alfortの設計ではこれが用いられた．</p>
+</div>
+</div>
+<div class="section" id="id21">
+<h2>02-05. リアルタイム構造化<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id22">
+<h3>:pushpin: 状態遷移図<a class="headerlink" href="#id22" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>「状態」を丸，「⁠遷移」を矢印で表現した分析モデル．矢印の横の説明は，遷移のきっかけとなる「イベント（入力）⁠／アクション（出力）⁠」を示す．</p>
+<p><img alt="状態遷移図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B9%E3%83%88%E3%83%83%E3%83%97%E3%82%A6%E3%82%A9%E3%83%83%E3%83%81%E7%8A%B6%E6%85%8B%E9%81%B7%E7%A7%BB%E5%9B%B3.jpg" /></p>
+</div>
+<div class="section" id="id23">
+<h3>:pushpin: 状態遷移表<a class="headerlink" href="#id23" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>状態遷移表を作成してみると，状態遷移図では，9つあるセルのうち4つのセルしか表現できておらず，残り5つのセルは表現されていないことに気づくことができる．</p>
+<p><img alt="状態遷移表" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B9%E3%83%88%E3%83%83%E3%83%97%E3%82%A6%E3%82%A9%E3%83%83%E3%83%81%E7%8A%B6%E6%85%8B%E9%81%B7%E7%A7%BB%E8%A1%A8.jpg" /></p>
+<p>**【例題】**12.2 という状態</p>
+<ol class="simple">
+<li><p>初期の状態を『a』として，最初が数字なので，a行の『b』へ移動．</p></li>
+<li><p>現在の状態『b』から，次は数字なので，b行の『b』へ移動．</p></li>
+<li><p>現在の状態『b』から，次は小数点なので，b行の『d』へ移動．</p></li>
+<li><p>現在の状態『d』から，次は数字なので，b行の『e』へ移動．</p></li>
+</ol>
+<p><img alt="状態遷移表" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%8A%B6%E6%85%8B%E9%81%B7%E7%A7%BB%E8%A1%A8.png" /></p>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>02-06. 概念データモデリング<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-er-entity-relation-diagram">
+<h3>:pushpin: ER図：Entity Relation Diagram<a class="headerlink" href="#pushpin-er-entity-relation-diagram" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>データベースの設計において，エンティティ間の関係を表すために用いられるダイアグラム図．『IE 記法』と『IDEF1X 記法』が一般的に用いられる．</p>
+<p><img alt="ER図（IE記法）" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ER%E5%9B%B3%EF%BC%88IE%E8%A8%98%E6%B3%95%EF%BC%89.png" /></p>
+<div class="section" id="entity-attribute">
+<h4>・Entity と Attribute<a class="headerlink" href="#entity-attribute" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="エンティティとアトリビュート" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E3%81%A8%E3%82%A2%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%83%88.png" /></p>
+</div>
+<div class="section" id="relation-cardinality">
+<h4>・Relation と Cardinality（多重度）<a class="headerlink" href="#relation-cardinality" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>エンティティ間の関係を表す．</p>
+<p><img alt="リレーションとカーディナリティ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%AA%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%AB%E3%83%BC%E3%83%87%E3%82%A3%E3%83%8A%E3%83%AA%E3%83%86%E3%82%A3.png" /></p>
+</div>
+<div class="section" id="id25">
+<h4>・1：1<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="1対1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1%E5%AF%BE1.png" /></p>
+</div>
+<div class="section" id="relation">
+<h4>・1：多（Relation が曖昧な状態）<a class="headerlink" href="#relation" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>設計が進むにつれ，「1：0 以上の関係」「1：1 以上の関係」のように具体化しく．</p>
+<p><img alt="1対1以上" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1%E5%AF%BE1%E4%BB%A5%E4%B8%8A.png" /></p>
+</div>
+<div class="section" id="id26">
+<h4>・1：1 以上<a class="headerlink" href="#id26" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="1対1以上" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1%E5%AF%BE1%E4%BB%A5%E4%B8%8A.png" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="id27">
+<h2>03-01. オブジェクト指向設計<a class="headerlink" href="#id27" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id28">
+<h3>:pushpin: オブジェクト指向設計とは<a class="headerlink" href="#id28" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクト指向設計では，オブジェクト指向分析で作られたダイアグラム図を基に，クラス図を作る．</p>
+</div>
+<div class="section" id="id29">
+<h3>:pushpin:  分析・設計で用いるダイアグラム図の種類（再掲）<a class="headerlink" href="#id29" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="複数視点のモデル化とUML" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E8%A4%87%E6%95%B0%E8%A6%96%E7%82%B9%E3%81%AE%E3%83%A2%E3%83%87%E3%83%AB%E5%8C%96%E3%81%A8UML.jpg" /></p>
+</div>
+<div class="section" id="id30">
+<h3>:pushpin: 設計に用いるUMLダイアグラムの種類<a class="headerlink" href="#id30" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="UML-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-1.png" /></p>
+</div>
+</div>
+<div class="section" id="id31">
+<h2>03-02. UMLの構造図（構造の視点）<a class="headerlink" href="#id31" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id32">
+<h3>:pushpin: クラス図<a class="headerlink" href="#id32" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスの構造，クラス間の関係，役割を表記する方法．</p>
+<div class="section" id="class">
+<h4>・Class<a class="headerlink" href="#class" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>１つのクラスを，クラス区画，属性区画，操作区画の３要素で表記する方法．</p>
+<p><img alt="UML" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3.png" /></p>
+</div>
+<div class="section" id="association">
+<h4>・Association（関連）<a class="headerlink" href="#association" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>２つのクラスを関連させる場合，クラスを線で繋ぐことで関連性を表記する方法．クラス図の実装の章を参照せよ．</p>
+<p><img alt="クラス図の関連表現" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3%E3%81%AE%E9%96%A2%E9%80%A3%E8%A1%A8%E7%8F%BE.png" /></p>
+</div>
+<div class="section" id="aggregation">
+<h4>・Aggregation（集約）<a class="headerlink" href="#aggregation" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラスと別のクラスが，全体と部分の関係であることを表記する方法．クラス図の実装の章を参照せよ．</p>
+<p><strong>【具体例】</strong></p>
+<p>社員は１つの会社に所属する場合</p>
+<p>「会社クラス」から見て，集約される「社員クラス」の数は1つである．逆に，「社員クラス」から見て，集約される「会社クラス」の数は0以上であるという表記．表記方法については，多重度を参照せよ．</p>
+<p><img alt="集約" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E9%9B%86%E7%B4%84.png" /></p>
+</div>
+<div class="section" id="composition">
+<h4>・Composition（合成）<a class="headerlink" href="#composition" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラス図の実装の章を参照せよ．</p>
+</div>
+<div class="section" id="dependency">
+<h4>・Dependency（依存）<a class="headerlink" href="#dependency" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="generalization">
+<h4>・Generalization（汎化）<a class="headerlink" href="#generalization" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラス間で属性，操作，関連を引継ぐことを表記する方法．サブクラスから見たスーパークラスとの関係を『汎化』，逆にスーパークラスから見たサブクラスとの関係を『特化』という．プログラミングにおける『継承』は，特化を実装する方法の一つ．</p>
+<p><img alt="汎化と特化" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%B1%8E%E5%8C%96%E3%81%A8%E7%89%B9%E5%8C%96.png" /></p>
+</div>
+<div class="section" id="realization">
+<h4>・Realization（実現）＝ 抽象オブジェクト<a class="headerlink" href="#realization" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラス図の実装の章を参照せよ．</p>
+</div>
+</div>
+<div class="section" id="pushpin-cardinality">
+<h3>:pushpin: Cardinality（多重度）<a class="headerlink" href="#pushpin-cardinality" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスと別のクラスが，何個と何個で関係しているかを表記する方法．</p>
+<p><strong>【具体例】</strong></p>
+<p>社員は１つの会社にしか所属できない場合</p>
+<p>「会社クラス」から見て，対する「社員クラス」の数は1つである．逆に，「社員クラス」から見て，対する「会社クラス」の数は0以上であるという表記．</p>
+<p><img alt="多重度" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%A4%9A%E9%87%8D%E5%BA%A6.png" /></p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">表記</th>
+<th align="center">対するクラスがいくつあるか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">必ず1</td>
+</tr>
+<tr>
+<td align="center">0.. 1</td>
+<td align="center">0以上1以下（つまり、0または1）</td>
+</tr>
+<tr>
+<td align="center">0.. n</td>
+<td align="center">0以上n以下</td>
+</tr>
+<tr>
+<td align="center">m.. n</td>
+<td align="center">m以上n以下</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">0以上無限大以下（つまり、0以上）</td>
+</tr>
+<tr>
+<td align="center">0.. *</td>
+<td align="center">0以上無限大以下（つまり、0以上）</td>
+</tr>
+</tbody>
+</table><p><strong>【具定例】</strong></p>
+<p>【 営業部エンティティ 】</p>
+<p>◁ー【 1課エンティティ 】</p>
+<p>◁ー【 2課エンティティ 】</p>
+<p>◁ー【 3課エンティティ 】</p>
+<p>親エンティティなし</p>
+<p>◁ー【 経営企画課エンティティ 】</p>
+<p>というクラスの継承関係があった時，これを抽象的にまとめると，</p>
+<p>【 部エンティティ(0.. *) 】</p>
+<p>◁ー【 (0.. 1)課エンティティ 】</p>
+<p>部エンティティから見て，対する課エンティティは0個以上である．</p>
+<p>課エンティティから見て，対する部エンティティは0または1個である．</p>
+</div>
+</div>
+<div class="section" id="id33">
+<h2>03-03. UMLの振舞図（振舞の視点）<a class="headerlink" href="#id33" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id34">
+<h3>:pushpin: シーケンス図<a class="headerlink" href="#id34" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>システムシーケンス図に具体的なオブジェクトを追加したもの．</p>
+<p><strong>【設計例1】</strong></p>
+<ol class="simple">
+<li><p>5つのライフライン（店員オブジェクト，管理画面オブジェクト，検索画面オブジェクト，商品DBオブジェクト，商品詳細画面オブジェクト）を設定する．</p></li>
+<li><p>各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．</p></li>
+</ol>
+<p><img alt="シーケンス図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E5%9B%B3.png" /></p>
+<p><strong>【設計例2】</strong></p>
+<ol class="simple">
+<li><p>3つのライフラインを設定する．</p></li>
+<li><p>各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．</p></li>
+</ol>
+<p><img alt="シーケンス図_2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E5%9B%B3_2.png" /></p>
+</div>
+</div>
+<div class="section" id="id35">
+<h2>04-01. モジュール化<a class="headerlink" href="#id35" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-sts">
+<h3>:pushpin: STS分割法<a class="headerlink" href="#pushpin-sts" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プログラムを，『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って，入力モジュール，処理モジュール，出力モジュール，の３つ分割する方法．（リクエスト ➔ DB ➔ レスポンス）</p>
+<p><img alt="STS分割法" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-1.png" /></p>
+</div>
+<div class="section" id="pushpin-transaction">
+<h3>:pushpin: Transaction分割法<a class="headerlink" href="#pushpin-transaction" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>データの種類によってTransaction（処理）の種類が決まるような場合に，プログラムを処理の種類ごとに分割する方法．</p>
+<p><img alt="トランザクション分割法" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-2.png" /></p>
+</div>
+<div class="section" id="id36">
+<h3>:pushpin: 共通機能分割法<a class="headerlink" href="#id36" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プログラムを，共通の機能ごとに分割する方法．</p>
+<p><img alt="共通機能分割法" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-3.jpg" /></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ObjectOrientedProgramming.html" class="btn btn-neutral float-right" title="オブジェクト指向プログラミング" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="AboutThisSite.html" class="btn btn-neutral float-left" title="このサイトについて" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
