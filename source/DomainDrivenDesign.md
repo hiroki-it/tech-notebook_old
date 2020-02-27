@@ -74,7 +74,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
 4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
 
 
@@ -95,7 +95,7 @@ CRUDのReadの場合，以下のような処理手順を組み合わせて，Use
 4. Casterに，Readしたオブジェクトデータを渡し，連想配列に変換する．以下のCasterの説明を参照せよ．
 5. 最後に，連想配列をJSON型データにパースし，JavaScriptに送信する．
 
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シリアライズとデシリアライズ.png)
 
 **【実装例】**
 
@@ -115,7 +115,7 @@ class AcceptOrdersController
 
 オンラインショッピングにおけるUse case
 
-![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ユースケース図.png)
+![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ユースケース図.png)
 
 
 
@@ -188,7 +188,7 @@ Application層
 1. 状態を変化させる必要があるデータをもつ．
 2. オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される． 
 
-![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_エンティティ.jpg)
+![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
 
 **【実装例】**
 
@@ -249,7 +249,7 @@ class DogToyEntity
 
   EntityやValueObjectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
 
-![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_集約関係.jpg)
+![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
 
 **【実装例】**
 
@@ -290,7 +290,7 @@ class ToyOrderEntity
 
 EntityとValueObjectのどちらとして，オブジェクトモデルをモデリング／実装すべきなのかについて考える．そもそも，大前提として，『オブジェクトモデルはできるだけ不変にすべき』というベストプラクティスがあり，その結果，ValueObjectというが生まれたと考えられる．実は，ValueObjectを使わずに全てEntityとしてモデリング／実装することは可能である．しかし，不変にしてもよいところも可変になり，可読性や信頼性を下げてしまう可能性がある．
 
-![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_バリューオブジェクト.jpg)
+![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_バリューオブジェクト.jpg)
 
 **【実装例】**
 
@@ -575,7 +575,7 @@ DBの操作を行う．
 
 7. DBに対して，書き込みを行う．
 
-   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ更新.png)
+   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_リポジトリ_データ更新.png)
 
 **【実装例】**
 
@@ -627,7 +627,7 @@ class setDogToyEntityRepository
 4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
 
-![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_リポジトリ_データ取得.jpg)
+![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
 
 **【実装例】**
 

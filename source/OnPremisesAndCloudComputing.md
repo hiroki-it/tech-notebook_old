@@ -4,7 +4,7 @@
 
 ベンダーが，システムを稼働させるために必要なソフトウェアとハードウェアをどこまで提供するかによって，サービスの名称が異なる．
 
-![オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png)
+![オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png)
 
 
 
@@ -56,11 +56,11 @@ Google Apps（Google Map，Google Cloud，Google Calender など）
 
 1. クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
 
-![デプロイサーバからインスタンスへのデプロイ.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デプロイサーバからインスタンスへのデプロイ.png)
+![デプロイサーバからインスタンスへのデプロイ.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デプロイサーバからインスタンスへのデプロイ.png)
 
 2. 本番環境（ここではクラウドWebサーバ）にインストールしておいたGitで，```pull```あるいは```clone```を実行し，GitHubからクラウドデプロイサーバにmasterブランチの状態を取り込む．
 
-![GitHub上のコードが本番環境にデプロイされるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/GitHub上のコードが本番環境にデプロイされるまで.png)
+![GitHub上のコードが本番環境にデプロイされるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GitHub上のコードが本番環境にデプロイされるまで.png)
 
 
 
@@ -68,13 +68,13 @@ Google Apps（Google Map，Google Cloud，Google Calender など）
 
 クラウドデプロイサーバに自動デプロイツール（例：Capistrano）を配置する．自動デプロイツールがクラウドWebサーバやDBサーバにリモート接続し，```pull```や```clone```を実行する．
 
-![Capistranoを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/image/Capistranoを用いた自動デプロイ.png)
+![Capistranoを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/image/Capistranoを用いた自動デプロイ.png)
 
 
 
 ### :pushpin: デプロイにAWS CodeDeployを用いる場合
 
-![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/CodeDeployを用いた自動デプロイ.png)
+![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CodeDeployを用いた自動デプロイ.png)
 
 
 
@@ -86,7 +86,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 以下のデザイン例では，Dualシステムが採用されている．
 
-![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWSのクラウドデザイン一例.png)
+![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSのクラウドデザイン一例.png)
 
 
 
@@ -106,7 +106,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 IAMユーザによる操作や，ロールのアタッチの履歴を記録し，ログファイルとしてS3に転送する．CloudWatchと連携することもできる．
 
-![CloudTrailとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/CloudTrailとは.jpeg)
+![CloudTrailとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CloudTrailとは.jpeg)
 
 
 
@@ -120,7 +120,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 API Gatewayは，メソッドリクエスト，統合リクエスト，統合レスポンス，メソッドレスポンス，から構成される．
 
-![APIGatewayの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/APIGatewayの仕組み.png)
+![APIGatewayの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/APIGatewayの仕組み.png)
 
 1. メソッドリクエストで，クライアントからリクエストメッセージを受信．また，これからデータを抽出．（※メッセージについては，アプリケーション層の説明を参照せよke）
 2. 統合リクエストで，データを編集し，指定のAWSサービスにこれを送信．
@@ -133,13 +133,13 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 クラウドメッセージキューとして働く．異なるVPC間でも，メッセージキューを同期できる．クラウドサーバで生成されたメッセージは，一旦SQSに追加される．コマンドによってバッチが実行され，メッセージが取り出される．その後，例えば，バッチ処理によってメッセージからデータが取り出されてファイルが生成され，S3に保存されるような処理が続く．スタンダード方式キューとFIFO方式：First In First Outキューがある．
 
-![AmazonSQSとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AmazonSQSとは.jpeg)
+![AmazonSQSとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AmazonSQSとは.jpeg)
 
 ### :pushpin: Lambdaと他FaaSの連携によるサーバレスアーキテクチャ
 
 Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
 
-![サーバレスアーキテクチャとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/サーバレスアーキテクチャとは.png)
+![サーバレスアーキテクチャとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サーバレスアーキテクチャとは.png)
 
 
 
@@ -166,7 +166,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 ### :pushpin: クラウドデザイン例（再掲）
 
-![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWSのクラウドデザイン一例.png)
+![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSのクラウドデザイン一例.png)
 
 
 
@@ -178,7 +178,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 パケットのヘッダ情報に記載された送信元IPアドレスやポート番号などによって，パケットを許可するべきかどうかを決定する．速度を重視する場合はこちら．ファイアウォールとWebサーバの間には，NATルータやNAPTルータが設置されている．これらによる送信元プライベートIPアドレスから送信元グローバルIPアドレスへの変換についても参照せよ．
 
-![パケットフィルタリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/パケットフィルタリング.gif)
+![パケットフィルタリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケットフィルタリング.gif)
 
 
 
@@ -186,7 +186,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってkクラウドWebサーバを立ち上げることによって，クラウドサーバをデュアル化することできる．
 
-![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPCが提供できるネットワークの範囲.png)
+![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCが提供できるネットワークの範囲.png)
 
 
 
@@ -194,7 +194,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 NATとインターネットゲートウェイを経由せずにVPCの外側と通信できるため，NATの負荷を抑え，またより安全に通信できる．
 
-![VPCエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPCエンドポイント.png)
+![VPCエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCエンドポイント.png)
 
 
 
@@ -208,7 +208,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにクラウドWebサーバを構築できる．
 
-![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWSリージョンマップ.PNG)
+![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSリージョンマップ.PNG)
 
 
 
@@ -228,7 +228,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAPT（動的NAT）を参照せよ．
 
-![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/InternetGatewayとNATGateway.png)
+![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/InternetGatewayとNATGateway.png)
 
 
 
@@ -245,7 +245,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 内部ネットワークに相当し，Amazon Aurora（クラウドデータベース）などが構築される．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
 
-![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/パブリックサブネットとプライベートサブネットの設計.png)
+![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
 
 
 
@@ -265,7 +265,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 図中で，サブネット3にはルートテーブル2が関連づけられており，サブネット3内のインスタンスの送信先のPrivate IPが，```10.0.0.0/16```の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，```0.0.0.0/0```（全てのIPアドレス）の範囲内にあれば，インターネットゲートウェイを送信先に選ぶ．
 
-![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ルートテーブル.png)
+![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルートテーブル.png)
 
 
 
@@ -293,7 +293,7 @@ GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 以下のデザイン例では，Dualシステムが採用されている．
 
-![GCPのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/GCPのクラウドデザイン一例.png)
+![GCPのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GCPのクラウドデザイン一例.png)
 
 ### :pushpin: GAE：Google App Engine：GAE
 

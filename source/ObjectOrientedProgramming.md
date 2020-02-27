@@ -2,11 +2,11 @@
 
 ## 01-01. インスタンス間の関係性
 
-![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インスタンス間の関係性のクラス図.png)
+![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インスタンス間の関係性のクラス図.png)
 
 以下，『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．
 
-![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)
+![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Association, Aggregation, Compositionの関係の強さの違い.png)
 
 
 
@@ -168,7 +168,7 @@ echo get_class(A::get_static()); // 継承元のクラスA
 
 ## 01-02. クラス間の関係性
 
-![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間の関係性のクラス図.png)
+![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/クラス間の関係性のクラス図.png)
 
 ### :pushpin: Generalization（汎化）
 
@@ -339,7 +339,7 @@ class EnginnerShainManagement extends ShainManagement
 
 プリウスと各世代プリウスが，抽象クラスと子クラスの関係にある．
 
-![抽象クラス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/抽象クラス.png)
+![抽象クラス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/抽象クラス.png)
 
 
 
@@ -355,11 +355,11 @@ class EnginnerShainManagement extends ShainManagement
 
 各車は，モーター機能を必ず持っていなければ，正常に働くことができない．そこで，モータ機能に最低限必要なメソッドの実装を強制する．
 
-![インターフェースとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インターフェースとは.png)
+![インターフェースとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インターフェースとは.png)
 
 実装クラスに処理内容を記述しなければならない．すなわち，抽象クラスにメソッドの型のみ定義した場合と同じである．多重継承できる．
 
-![子インターフェースの多重継承_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/子インターフェースの多重継承_2.png)
+![子インターフェースの多重継承_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/子インターフェースの多重継承_2.png)
 
 **【実装例】**
 
@@ -415,7 +415,7 @@ class Human implements Communication
 1. 種々の車クラスの共通処理のをもつ抽象クラスとして，Carクラスを作成．
 2. 各車は，エンジン機能を必ず持っていなければ，正常に働くことができない．そこで，抽象メソッドによって，エンジン機能に最低限必要なメソッドの実装を強制する．
 
-![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インターフェースと抽象クラスの使い分け.png)
+![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インターフェースと抽象クラスの使い分け.png)
 
 
 
@@ -425,7 +425,7 @@ class Human implements Communication
 
 クラス間，インスタンス間，クラス／インスタンス間について，依存される側が変更された場合に，依存する側で変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．
 
-![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
+![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
 #### ・クラス間の場合
 
@@ -504,13 +504,13 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
 
-![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づかない設計の場合.png)
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づかない設計の場合.png)
 
 #### ・DIPに基づく設計の場合
 
 抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
 
-![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIPに基づく設計の場合.png)
+![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づく設計の場合.png)
 
 
 
@@ -521,7 +521,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
 4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン駆動設計_依存性逆転の原則.jpg)
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
 
 
@@ -998,7 +998,7 @@ list.add(10.1);    // String型でないのでコンパイルエラー
 
 再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
 
-![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トレイト.png)
+![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トレイト.png)
 
 ### :pushpin: Javaの場合
 
@@ -1386,7 +1386,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある．
 
-![再帰的](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/再帰的.png)
+![再帰的](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/再帰的.png)
 
 **【実装例】**
 
@@ -1829,7 +1829,7 @@ Array
 
 配列内の要素を順に調べていくことを『走査（スキャン）』という．例えば，```foreach()```は，配列内の全ての要素を走査する処理である．下図では，連想配列が表現されている．
 
-![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/配列の走査.png)
+![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/配列の走査.png)
 
 #### ・内部ポインタを用いた配列要素の出力
 
@@ -1885,19 +1885,19 @@ echo $a.$i.$u; // あいう
 
 ### :pushpin: Queue型
 
-![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue1.gif)
+![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Queue1.gif)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
-
- 
-
-![Queue2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue2.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
 
  
 
-![Queue3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue3.gif)
+![Queue2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Queue2.gif)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
+
+ 
+
+![Queue3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Queue3.gif)
 
 PHPでは，```array_push()```と```array_shift()```を組み合わせることで実装できる．
 
@@ -1937,7 +1937,7 @@ echo $theFirst; // Blue
 
 送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる．また，受信側の好きなタイミングでメッセージを取り出すことができる．
 
-![メッセージキュー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/メッセージキュー.jpg)
+![メッセージキュー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/メッセージキュー.jpg)
 
 
 
@@ -1945,19 +1945,19 @@ echo $theFirst; // Blue
 
 PHPでは，```array_push()```と```array_pop()```で実装可能．
 
-![Stack1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack1.gif)
+![Stack1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Stack1.gif)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
-
- 
-
-![Stack2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack2.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
 
  
 
-![Stack3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack3.gif)
+![Stack2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Stack2.gif)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
+
+ 
+
+![Stack3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Stack3.gif)
 
 
 
@@ -1967,7 +1967,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
   各ノードにデータが格納されている．
 
-![二分探索木](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/二分探索木1.gif)
+![二分探索木](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/二分探索木1.gif)
 
 
 
@@ -1975,19 +1975,19 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
   Priority Queueを実現するときに用いられる．各ノードにデータが格納されている．
 
-![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ1.gif)
+![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ヒープ1.gif)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
 
-![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ2.gif)
+![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ヒープ2.gif)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
 
-![ヒープ2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ3.gif)
+![ヒープ2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ヒープ3.gif)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
 
-![. ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ヒープ4.gif)
+![. ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ヒープ4.gif)
 
 
 
@@ -2013,15 +2013,15 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 #### ・単方向List
 
-![p555-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-1.gif)
+![p555-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p555-1.gif)
 
 #### ・双方向List
 
-![p555-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-2.gif)
+![p555-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p555-2.gif)
 
 #### ・循環List
 
-![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-3.gif)
+![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p555-3.gif)
 
 
 
@@ -2551,7 +2551,7 @@ return $result;
 2. 記述内容を，条件部と動作部に分解し，決定表で表す．
 3. 決定表を，流れ図で表す．
 
-![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/決定表.png)
+![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/決定表.png)
 
 #### ・```if```-```elseif```-```else```を用いた場合
 
@@ -2914,7 +2914,7 @@ while($i < 4){
 
 #### ・```for()```
 
-![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_for文.png)
+![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_for文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -2933,7 +2933,7 @@ for($i = 0; $i < N; $i++){
 
 #### ・```while()```
 
-![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_while文.png)
+![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_while文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -2956,7 +2956,7 @@ while($i < N){
 
 #### ・```foreach()```
 
-![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/流れ図_foreach文.png)
+![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_foreach文.png)
 
 ```PHP
 $a = array(1, -1, 2, ... ,N);
@@ -3028,7 +3028,7 @@ foreach($a as $x){
 <img src="http://fruits.com/img/apple.png">
 ```
 
-![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/絶対パス.png)
+![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/絶対パス.png)
 
 ### :pushpin: 相対パス
 
@@ -3038,4 +3038,4 @@ foreach($a as $x){
 <img src="../img/apple.png">
 ```
 
-![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/相対パス.png)
+![相対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/相対パス.png)

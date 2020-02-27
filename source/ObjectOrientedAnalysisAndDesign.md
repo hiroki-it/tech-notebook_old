@@ -4,7 +4,7 @@
 
 ### :pushpin: アーキテクチャスタイルの種類
 
-![アーキテクチャスタイルの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/アーキテクチャスタイルの種類.png)
+![アーキテクチャスタイルの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/アーキテクチャスタイルの種類.png)
 
 
 
@@ -25,7 +25,7 @@
 
 ### :pushpin: オブジェクト指向分析・設計を取り巻く歴史
 
-![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/プログラミング言語と設計手法の歴史.png)
+![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プログラミング言語と設計手法の歴史.png)
 
 
 
@@ -33,7 +33,7 @@
 
 分析・設計においては，ダイアグラム図を用いて，オブジェクトを表現することが必要になる．
 
-![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/複数視点のモデル化とUML.jpg)
 
 
 
@@ -43,15 +43,15 @@
 
 （※ちなみ，UMLは，システム設計だけでなく，データベース設計にも使える）
 
-![UML-0](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-0.png)
+![UML-0](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-0.png)
 
 #### ・分析に用いられるUMLダイアグラム
 
-![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-2.png)
+![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-2.png)
 
 #### ・設計に用いられるUMLダイアグラム
 
-![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-1.png)
+![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-1.png)
 
 
 
@@ -75,13 +75,13 @@
 
 ###   :pushpin: 分析・設計で用いるダイアグラム図の種類（再掲）
 
-![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/複数視点のモデル化とUML.jpg)
 
 
 
 ### :pushpin: 分析に用いるUMLダイアグラムの種類
 
-![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-2.png)
+![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-2.png)
 
 
 
@@ -96,7 +96,7 @@
 
 ### :pushpin: DFD：Data Flow Diagram（データフロー図）
 
-![データフロー図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/データフロー図.jpg)
+![データフロー図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/データフロー図.jpg)
 
 
 
@@ -110,7 +110,7 @@
 
 オンラインショッピングにおけるUse case
 
-![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ユースケース図.png)
+![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ユースケース図.png)
 
 
 
@@ -120,15 +120,15 @@
 
 **【設計例】**
 
-![アクティビティ図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/アクティビティ図.png)
+![アクティビティ図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/アクティビティ図.png)
 
 #### ・アルゴリズムとフローチャート
 
-![p549-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-1.gif)
+![p549-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p549-1.gif)
 
-![p549-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-2.gif)
+![p549-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p549-2.gif)
 
-![p549-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p549-3.gif)
+![p549-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p549-3.gif)
 
 
 
@@ -146,7 +146,7 @@
 
 「状態」を丸，「⁠遷移」を矢印で表現した分析モデル．矢印の横の説明は，遷移のきっかけとなる「イベント（入力）⁠／アクション（出力）⁠」を示す．
 
-![状態遷移図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ストップウォッチ状態遷移図.jpg)
+![状態遷移図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ストップウォッチ状態遷移図.jpg)
 
 
 
@@ -154,7 +154,7 @@
 
 状態遷移表を作成してみると，状態遷移図では，9つあるセルのうち4つのセルしか表現できておらず，残り5つのセルは表現されていないことに気づくことができる．
 
-![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ストップウォッチ状態遷移表.jpg)
+![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ストップウォッチ状態遷移表.jpg)
 
 **【例題】**12.2 という状態
 
@@ -163,7 +163,7 @@
 3. 現在の状態『b』から，次は小数点なので，b行の『d』へ移動．
 4. 現在の状態『d』から，次は数字なので，b行の『e』へ移動．
 
-![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/状態遷移表.png)
+![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/状態遷移表.png)
 
 
 
@@ -173,31 +173,31 @@
 
 データベースの設計において，エンティティ間の関係を表すために用いられるダイアグラム図．『IE 記法』と『IDEF1X 記法』が一般的に用いられる．
 
-![ER図（IE記法）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ER図（IE記法）.png)
+![ER図（IE記法）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ER図（IE記法）.png)
 
 #### ・Entity と Attribute
 
-![エンティティとアトリビュート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/エンティティとアトリビュート.png)
+![エンティティとアトリビュート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/エンティティとアトリビュート.png)
 
 #### ・Relation と Cardinality（多重度）
 
   エンティティ間の関係を表す．
 
-![リレーションとカーディナリティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/リレーションとカーディナリティ.png)
+![リレーションとカーディナリティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/リレーションとカーディナリティ.png)
 
 #### ・1：1
 
-![1対1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1対1.png)
+![1対1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/1対1.png)
 
 #### ・1：多（Relation が曖昧な状態）
 
   設計が進むにつれ，「1：0 以上の関係」「1：1 以上の関係」のように具体化しく．
 
-![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1対1以上.png)
+![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/1対1以上.png)
 
 #### ・1：1 以上
 
-![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/1対1以上.png)
+![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/1対1以上.png)
 
 
 
@@ -211,13 +211,13 @@
 
 ### :pushpin:  分析・設計で用いるダイアグラム図の種類（再掲）
 
-![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/複数視点のモデル化とUML.jpg)
 
 
 
 ### :pushpin: 設計に用いるUMLダイアグラムの種類
 
-![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/UML-1.png)
+![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-1.png)
 
 
 
@@ -231,13 +231,13 @@
 
 １つのクラスを，クラス区画，属性区画，操作区画の３要素で表記する方法．
 
-![UML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス図.png)
+![UML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/クラス図.png)
 
 #### ・Association（関連）
 
 ２つのクラスを関連させる場合，クラスを線で繋ぐことで関連性を表記する方法．クラス図の実装の章を参照せよ．
 
-![クラス図の関連表現](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/クラス図の関連表現.png)
+![クラス図の関連表現](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/クラス図の関連表現.png)
 
 #### ・Aggregation（集約）
 
@@ -249,7 +249,7 @@
 
   「会社クラス」から見て，集約される「社員クラス」の数は1つである．逆に，「社員クラス」から見て，集約される「会社クラス」の数は0以上であるという表記．表記方法については，多重度を参照せよ．
 
-![集約](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/集約.png)
+![集約](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/集約.png)
 
 
 
@@ -263,7 +263,7 @@
 
   クラス間で属性，操作，関連を引継ぐことを表記する方法．サブクラスから見たスーパークラスとの関係を『汎化』，逆にスーパークラスから見たサブクラスとの関係を『特化』という．プログラミングにおける『継承』は，特化を実装する方法の一つ．
 
-![汎化と特化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/汎化と特化.png)
+![汎化と特化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/汎化と特化.png)
 
 #### ・Realization（実現）＝ 抽象オブジェクト
 
@@ -281,7 +281,7 @@
 
 「会社クラス」から見て，対する「社員クラス」の数は1つである．逆に，「社員クラス」から見て，対する「会社クラス」の数は0以上であるという表記．
 
-![多重度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/多重度.png)
+![多重度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/多重度.png)
 
 | 表記  |    対するクラスがいくつあるか    |
 | :---: | :------------------------------: |
@@ -337,14 +337,14 @@
 1. 5つのライフライン（店員オブジェクト，管理画面オブジェクト，検索画面オブジェクト，商品DBオブジェクト，商品詳細画面オブジェクト）を設定する．
 2. 各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．
 
-![シーケンス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シーケンス図.png)
+![シーケンス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シーケンス図.png)
 
 **【設計例2】**
 
 1. 3つのライフラインを設定する．
 2. 各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．
 
-![シーケンス図_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シーケンス図_2.png)
+![シーケンス図_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シーケンス図_2.png)
 
 
 
@@ -354,7 +354,7 @@
 
 プログラムを，『Source（入力処理）➔ Transform（変換処理）➔ Sink（出力処理）』のデータの流れに則って，入力モジュール，処理モジュール，出力モジュール，の３つ分割する方法．（リクエスト ➔ DB ➔ レスポンス）
 
-![STS分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-1.png)
+![STS分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p485-1.png)
 
 
 
@@ -362,7 +362,7 @@
 
 データの種類によってTransaction（処理）の種類が決まるような場合に，プログラムを処理の種類ごとに分割する方法．
 
-![トランザクション分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-2.png)
+![トランザクション分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p485-2.png)
 
 
 
@@ -370,6 +370,6 @@
 
 プログラムを，共通の機能ごとに分割する方法．
 
-![共通機能分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p485-3.jpg)
+![共通機能分割法](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p485-3.jpg)
 
 
