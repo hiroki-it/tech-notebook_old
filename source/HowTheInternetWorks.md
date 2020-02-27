@@ -1,0 +1,766 @@
+# ネットワークの仕組み
+
+## 01-01. ネットワークの全体像
+
+### :pushpin: インターネット，WAN，LAN
+
+ネットワークには，『インターネット』『WAN』『LAN』がある．家庭内LAN，学内LAN，企業内LAN，企業WANなど，さまざまなネットワークがあり，インターネットは，それぞれのネットワークを互いに接続しているネットワークである．
+
+![インターネットとWANとLAN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/インターネットとWANとLAN.png)
+
+
+
+### :pushpin: WAN，LANの具体例
+
+例えば，LANとしてEthernet，WANとしてデジタル専用線を用いる．
+
+![WAN，LANの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/WAN，LANの具体例.png)
+
+
+
+### :pushpin: WANの種類と歴史
+
+![WANの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/WANの種類と歴史.png)
+
+
+
+### :pushpin: グローバルネットワークとプライベートネットワーク
+
+ルータを境に，プライベートネットワークとグローバルネットワークに分けられる．ややこしいが，ルータにはグローバルIPアドレスが割り当てられている．
+
+![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/グローバルネットワークとプライベートネットワーク.PNG)
+
+
+
+### :pushpin: プライベートネットワークにおけるセグメント
+
+プライベートネットワークは，外部ネットワーク，非武装地帯，内部ネットワークに分類される．
+
+#### ・非武装地帯に設置するべきサーバの種類
+
+攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，『DNSサーバ』『Proxyサーバ』『Webサーバ』『メールサーバ』は，非武装地帯に設置するべき．
+
+#### ・内部ネットワークに設置するべきサーバの種類
+
+外部から直接リクエストを受けない．『データベースサーバ』は，内部ネットワークに設置するべき．
+
+![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/内部，DMZ，外部.png)
+
+
+
+### :pushpin: ネットワークにおけるデータ通信方法の種類
+
+#### ・回線交換方式
+
+  少数対少数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報は必要ない．
+
+  ![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/回線交換方式.png)
+
+#### ・パケット交換方式
+
+  通信するデータをパケット化する．多数対多数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報が必要になる．
+
+  ![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/パケット交換方式.png)
+
+
+
+## 02-01. OSI参照モデルとTCP階層モデル
+
+### :pushpin: データの作成，ヘッダ情報追加，カプセル化
+
+パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
+
+![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/パケットの構造.jpg)
+
+
+
+### :pushpin: OSI参照モデルにおいて各概念層で追加されるヘッダ情報の内容
+
+![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/OSI参照モデル.png)
+
+
+
+### :pushpin: プロトコルの分類と扱われる階層
+
+TCP/IPモデルで用いられるプロトコルのうち，最も代表的な「TCP」と「IP」から名前をとって「TCP/IP」と名付けられた．プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
+
+![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/セキュアプロトコル.png)
+
+
+
+## 02-02. 通信機器におけるヘッダ情報認識
+
+### :pushpin: 各概念層の実際の通信機器の対応関係
+
+![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/OSI参照モデルと通信機器.jpg)
+
+#### ・ネットワーク層
+
+#### ・データリンク層
+
+#### ・物理層
+
+Network Interface Card（（例）LANアダプタ，LANボード，LANカード），リピータ，LANケーブル
+
+
+
+### :pushpin: 通信機器における各層のヘッダ情報の認識
+
+送信元で作成されたパケットは，非カプセル化されながら，通信機器に認識される．
+
+![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/OSI参照モデルと通信機器でのパケット認識.jpg)
+
+
+
+## 02-03. アプリケーション層におけるデータ（メッセージ）の作成
+
+### :pushpin: URLとメールアドレスの構造
+
+#### ・各部品の名称
+
+![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/URLと電子メールの構造.png)
+
+#### ・完全修飾ドメイン名とサーバー中継
+
+完全修飾ドメイン名をもとにして，サーバーを中継していき，最終的なサーバにたどり着く．
+
+![ドメイン名の構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ドメイン名の構造.PNG)
+
+#### ・URLにおけるパスパラメータとクエリパラメータの使い分け
+
+パスパラメータはデータをリクエストするために用いる．また，クエリパラメータは，GET送信の時に，データの検索処理／フィルタ処理／ソート処理をリクエストするために用いる．GET送信については，リクエストメッセージの説明を参照せよ．
+
+| 完全修飾ドメイン名             | 送信先のポート番号（```80```の場合は省略可） | ルート         | パスパラメータ | ？      | クエリパラメータ（GET送信時のみ） |
+| ------------------------------ | ---------- | -------------- | -------------- | ------- | --------------------------------- |
+| ```http://www.example.co.jp``` | ```80```   | ```userInfo``` | ```{id}```     | ```?``` | ```text1=a&text2=b```             |
+
+**【URLの具体例】**
+
+```
+http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
+```
+
+
+
+#### ・各部品の様々な組み合わせ
+
+![ホスト名とドメイン名の組み合わせの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ホスト名とドメイン名の組み合わせの種類.gif)
+
+
+
+### :pushpin: RESTful APIに対するリクエストメッセージの構造
+
+アプリケーション層で生成されるデータを，メッセージという．リクエスト時にクライアント側で生成されるメッセージをリクエストメッセージ，レスポンス時にサーバ側で生成されるメッセージをレスポンスメッセージという．
+
+#### ・GET送信の場合
+
+クエリパラメータに送信するデータを記述する方法．リクエストメッセージは，以下の要素に分類できる．以下では，Web APIのうち，特にRESTfulAPIに対して送信するためのリクエストメッセージの構造を説明する．
+
+1. リクエスト行
+2. ヘッダー：リクエストの詳細情報（SSLによって暗号化される部分）．これに設定できるアクセストークンについては，セキュリティのノートを参照せよ．
+3. 送信方法：GET
+4. リクエストの対象：ファイルへのパス
+5. HTTPプロトコルのバージョン
+6. User-Agent：ブラウザのバージョン情報等
+7. Accept：ブラウザが想定する(利用可能な)MIMEのタイプ
+8. Referer：遷移元のページ
+9. Accept-Encoding：ブラウザがデコードできるエンコーディング形式
+10. Accept-Language：ブラウザが想定する(利用可能な)言語
+
+![GET送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061886-0ed95f80-7bb3-11e9-8998-f105a5e0ed40.png)
+
+#### ・POST送信の場合
+
+
+クエリパラメータを，URLに記述せず，メッセージボディに記述してリクエストメッセージを送る方法．以下では，Web APIのうち，特にRESTfulAPIに対して送信するためのリクエストメッセージの構造を説明する．メッセージボディに情報が記述されるため，履歴では確認できない．また，SSLによって暗号化されるため，傍受できない．リクエストメッセージは，以下の要素に分類できる．
+
+1. リクエスト行
+2. ヘッダー：リクエストの詳細情報（SSLによって暗号化される部分）．これに設定できるアクセストークンについては，セキュリティのノートを参照せよ．
+3. 空白行：ヘッダーとボディを分ける
+4. ボディ：画面での入力内容が入っている（SSLによって暗号化される部分）
+5. 送信方法：POST
+6. リクエストの対象：ファイルへのパス
+7. HTTPプロトコルのバージョン
+
+![POST送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061918-29abd400-7bb3-11e9-94d0-fd528901ba7c.png)
+
+#### ・例外として，ボディをもつGET送信の場合
+
+GET送信ではあるが，ボディーにクエリパラメータを記述して送信する方法がある．
+
+POSTMANで，GET送信にメッセージボディを含めることについて：
+https://github.com/postmanlabs/postman-app-support/issues/131
+
+
+
+### :pushpin: （補足）SOAP APIに対するリクエストメッセージの構造
+
+#### ・POST送信の場合
+
+![SOAP API](https://user-images.githubusercontent.com/42175286/59289616-6b5f0480-8cb1-11e9-987f-b1761c73fcf1.gif)
+
+
+
+### :pushpin: レスポンスメッセージの構造
+
+1. HTTPステータス
+2. ヘッダー：レスポンスの詳細情報がある（SSLによって暗号化される部分）．これに設定できるアクセストークンについては，セキュリティのノートを参照せよ．
+3. 空白行：ヘッダーとボディを分ける
+4. ボディ：HTMLや画像等が入る（SSLによって暗号化される部分）
+5. HTTPプロトコルのバージョン
+6. ステータスコード：200はサーバーのWebシステム処理が成功したことを表す
+7. Server：サーバーの名前とバージョン等です．
+8. Content-Type：出力するMIMEタイプ
+
+![HTTPリクエストに対するHTTPレスポンス](https://user-images.githubusercontent.com/42175286/58062092-fd448780-7bb3-11e9-8b33-e11595c4e1fc.PNG)
+
+
+
+### :pushpin: HTTPステータスの種類
+
+#### ・100番台：継続
+#### ・200番台：リクエスト成功
+#### ・300番台：リダイレクトに関するステータス
+#### ・400番台：リクエスト失敗
+#### ・500番台：サーバーエラー
+
+
+
+## 02-04. アプリケーション層におけるメールデータの作成
+
+### :pushpin: メール送信用プロトコル
+
+#### ・SMTP AUTH：Simple Mail Transfer Protocol AUTHentication**
+
+  メール送信にあたってユーザ認証の仕組みがないSMTPを拡張し，ユーザ認証機能を追加した仕様．
+
+
+
+
+### :pushpin: メール受信用プロトコル
+
+#### ・POP3：Post Official Protocol version 3
+
+  メールサーバに届いたメールを，受信機器にダウンロードし，受信機器で閲覧するプロトコル．メールの既読未読状況は，他の受信機器と共有される．
+
+#### ・IMAP4：Internet Message Access Protocol version 3
+
+  メールサーバに届いたメールを，受信機器にダウンロードせず，メールサーバに置いたまま閲覧するプロトコル．メールの既読未読状況は，他の受信機器と共有されない．
+
+  **【具体例】**
+
+  GmailでPOPかIMAPを設定可能
+
+![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/GmailでPOPかIMAPを設定.jpg)
+
+#### ・APOP：Authenticated POP
+
+  メール受信の際に，チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
+
+  
+
+## 02-05. トランスポート層におけるヘッダ情報追加
+
+### :pushpin: TCPによるヘッダ情報の追加と識別の仕組み
+
+![トランスポート層からアプリケーション層へのパケットの移動](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トランスポート層からアプリケーション層へのパケットの移動.PNG)
+
+#### ・リクエスト時（図の右矢印）
+
+まず，ネットワーク層でプライベートIPアドレスを用いて，リクエスト先のパソコンを識別する．その後，トランスポート層で，ポート番号を元にして，アプリケーション層の特定のソフトウェアにパケットを送信する．
+
+**【ポート番号の指定例】**
+
+ローカル環境のnginxのポート番号を```8080```と設定した場合，リクエスト時に以下のようにポート番号を指定すると，nginxにリクエストを送信できる．
+
+```
+http://localhost:8080/
+```
+
+#### ・レスポンス時（図の左矢印）
+
+アプリケーション層から送信されてきたパケットの通過したポート番号をヘッダ情報として追加する．これを，ネットワーク層へ送信する．
+
+
+
+### :pushpin: ポートスキャナ
+
+ポートスキャナを用いることによって，各ポートにアクセスし，応答があるかどうかや，どのようなソフトウェアが応答するかを調べ，一覧表示することができる．
+
+
+
+### :pushpin: ポート番号の種類
+
+アプリには，種類ごとにポート番号が割り当てられている．
+
+#### ・Well known ポート番号（0 ～ 1023）
+
+  IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号．Webサーバがリクエストを受信する時，またレスポンスを送信する時に使用される．ホストPCとゲストPC（仮想サーバ）との通信では，80番（HTTP）の受信に関する様々な設定が必要になる．
+
+  ![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ポート番号とプロトコルの対応関係.png)
+
+#### ・登録済みポート番号（1024 ～ 49151）
+
+  IANAが登録申請を受けて公開しているポート番号．企業が作成した独自のアプリなどに対して割り当てられる．クライアントがリクエストを送信する時，またレスポンスを受信する時に使用される．
+
+#### ・動的／非公式ポート番号（49152 ～ 65535）
+
+  自由に使用できるポート番号．クライアントがリクエストを送信する時，またレスポンスを受信する時に使用される．
+
+
+
+## 02-06. インターネット層におけるヘッダ情報追加
+
+### :pushpin: IPパケットのヘッダ情報を用いた宛先認識
+
+1. PC-Aは，構成したIPパケットをEthernetに乗せて，ルータAに送信．
+2. ルータAは，IPパケットをデジタル専用線に乗せて，ルータBに送信．
+3. ルータBは，構成したIPパケットをEthernetに乗せて，Webサーバに送信．
+
+![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ネットワークにおけるTCP_IPを用いたデータ通信.png)
+
+
+
+### :pushpin: IPv4アドレスの種類
+
+![プライベートIPアドレスとグローバルIPアドレス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/プライベートIPアドレスとグローバルIPアドレス.png)
+
+#### ・プライベートIPアドレス
+
+  LAN内で使用される．異なるプライベートネットワーク間では，同じIPv4アドレスが存在する．プライベートIPアドレスは，『```10.0.0.0``` ～ ```10.255.255.255```』，『```172.16.0.0``` ～ ```172.31.255.255```』，『```192.168.0.0``` ～ ```192.168.255.255```』で表される．
+
+#### ・グローバルIPアドレス
+
+  プロバイダが提供するIPv4アドレスである．パブリックネットワーク内に同じIPv4アドレスは存在せず，Network Information Centerへの使用申請が必要．プライベートIPアドレスの番号でなければ，グローバルIPアドレスである．NATはグローバルIPアドレスを持っており，プライベートネットワークとプライベートネットワーク間の双方向への通信時に，プライベートIPアドレスと相互変換する．
+
+  
+
+### :pushpin: プライベート／グローバルIPアドレスとbitとの関係
+
+例えば，プライベートIPアドレスの４つのオクテット（第一オクテットから第四オクテットまで）が１Byteの容量をもち，IPアドレス全体で４Byteの容量をもつ．ちなみに，```172```から始まるIPアドレスは，クラスBである．　
+
+![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPアドレスとbitの関係.png)
+
+
+
+### :pushpin: プライベート／グローバルIPアドレスのネットワーク部とホスト部
+
+![IPアドレスのホスト部とネットワーク部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPアドレスのホスト部とネットワーク部.png)
+
+#### ・クラスによるホスト部とネットワーク部の定義
+
+IPアドレスをクラスとして分類し，各クラスでIPアドレスのネットワーク部とホスト部を定義する方法．設定したIPアドレスの属するクラスによって，使用できるIPアドレスの範囲が決まってしまう．ホスト部とネットワーク部の定義方法が4種類しかないため，IPアドレスのパターン数（最大パソコン数）が多すぎたり，少なすぎたりしてしまう．
+
+|         使用可能なIPアドレスの範囲         | クラス | ネットワーク部のオクテット | ホスト部のオクテット |          二進数で見た時（n：ネ，h：ホ）          | IPアドレスのパターン数（最大パソコン数） | 備考 |
+| :------------------------------: | :------------: | :---------------------------------: | ---------------------- | :--------------------: | :--------------------: | :--------------------: |
+| ```0.0.0.0``` 〜 ```127.255.255.255``` |       A        |         第一のみ         |         第二から第四         | ```0nnnnnnn.hhhhhhhh.hhhhhhhh.hhhhhhhh``` |       2^24（16777216）個       |              |
+|   ```128.0.0.0``` 〜 ```191.255.255.255```   |       B        |         第一から第二         |         第三から第四         | ```10nnnnnn.nnnnnnnn.hhhhhhhh.hhhhhhhh``` |        2^16（65536）個        |        よく使う        |
+|   ```192.0.0.0``` 〜 ```223.255.255.255```   |       C        |         第一から第三         |         第四のみ         | ```110nnnnn.nnnnnnnn.nnnnnnnn.hhhhhhhh``` |         2^8（256）個         |                  |
+|   ```224.0.0.0``` 〜 ```239.255.255.255```   |       D        |           -           |           -            | ```1110xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx``` |           -            |                       |
+|   ```240.0.0.0``` 〜 ```255.255.255.255```   |       E        |           -           |           -            | ```1111xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx``` |           -            |                       |
+
+#### ・サブネットマスクよるネットワーク部とホスト部の定義
+
+『```1```』あるいは『```0```』で，IPアドレスのネットワーク部とホスト部を定義し，IPアドレスの後ろに記述する方法（**【具体例】**```192.168.42.23/24```）．設定したIPアドレスに対して，使用可能なIPアドレスの範囲を自由に定義することができる．ネットワーク部を『```1```』，ホスト部を『```0```』で表現する．サブネットマスクの表記方法には，二進数形式，IPアドレス形式，```1```の個数で表すCIDR形式による表現方法がある．
+
+|                二進数形式                 |    IPアドレス形式     | CIDR形式  | IPアドレスのパターン数（最大パソコン数） | 備考     |
+| :---------------------------------------: | :-------------------: | :-------: | :--------------------------------------: | -------- |
+| ```10000000.00000000.00000000.00000000``` |    ```128.0.0.0```    | ```/1```  |                                          |          |
+| ```11000000.00000000.00000000.00000000``` |    ```192.0.0.0```    | ```/2```  |                                          |          |
+|                    ...                    |          ...          |    ...    |                                          |          |
+| ```11111111.00000000.00000000.00000000``` |    ```255.0.0.0```    | ```/8```  |            2^24（16777216）個            |          |
+|                    ...                    |          ...          |    ...    |                                          |          |
+| ```11111111.11111110.00000000.00000000``` |   ```255.254.0.0```   | ```/15``` |                                          |          |
+| ```11111111.11111111.00000000.00000000``` |   ```255.255.0.0```   | ```/16``` |             2^16（65536）個              | よく使う |
+|                                           |          ...          |    ...    |                                          |          |
+| ```11111111.11111111.11111110.00000000``` |  ```255.255.254.0```  | ```/23``` |                                          |          |
+| ```11111111.11111111.11111111.00000000``` |  ```255.255.255.0```  | ```/24``` |               2^8（256）個               |          |
+|                    ...                    |          ...          |    ...    |                                          |          |
+| ```11111111.11111111.11111111.11111110``` | ```255.255.255.254``` | ```/31``` |                                          |          |
+| ```11111111.11111111.11111111.11111111``` | ```255.255.255.255``` | ```/32``` |                                          |          |
+
+**【使用例】**
+
+プライベートIPアドレスが```192.168.0.0```（```11000000.10101000.00000000.00000000```）で，使いたいIPアドレスのパターン数が65536個，または16777216個の場合に，サブネットマスクの表記，使用可能なIPアドレスの範囲は以下のようになる．
+
+| 使いたいIPアドレスのパターン数 |                 二進数形式による表記                  |         IPアドレス形式          |       CIDR形式       |      |         使用可能なIPアドレスの範囲          |
+| ------------------------------ | :---------------------------------------------------: | :-----------------------------: | :------------------: | ---- | :-----------------------------------------: |
+| 65536個                        | ```192.168.0.0/11111111.11111111.00000000.00000000``` |  ```192.168.0.0/255.255.0.0```  | ```192.168.0.0/16``` | ⇒    | ```192.168.0.1``` 〜  ```192.168.255.254``` |
+| 16777216個                     | ```192.168.0.0/11111111.11111111.11111111.11111111``` | ```192.168.0.0/255.255.255.0``` | ```192.168.0.0/24``` | ⇒    |  ```192.168.0.1``` 〜 ```192.168.0.254```   |
+
+
+
+### :pushpin: DNSサーバとhostsファイルの役割
+
+#### ・完全修飾ドメイン名とグローバルIPアドレスのマッピング
+
+![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPアドレスと完全修飾ドメイン名のマッピング4.png)
+
+例えば，外部WebサーバのグローバルIPアドレスが『203.142.205.139』であると知っている場合，URLのプロトコル部分以下を『```203.142.205.139```』としてリクエストすれば，外部Webサーバが提供するウェブサイトにアクセスできる．しかし，グローバルIPアドレスは数字の羅列であるため，人間には覚えにくい．そこで，グローバルIPアドレスの代わりに，完全修飾ドメイン名をURLの一部として用いる．
+
+#### ・hostsファイル
+
+DNSサーバよりも先に参照されるマッピングファイル．WebサーバのIPアドレスがDNSサーバに登録されていない時，またDNSサーバが不具合の時に，DNSサーバの代わりとして用いる．
+
+
+
+
+## 02-07. ルータの種類
+
+### :pushpin: NAT（静的NAT）：Network Address TranslationによるIPアドレスv4の変換
+
+一つのグローバルIPアドレスに対して，一つのプライベートIPアドレスを紐づけられる．グローバルIPアドレスを持ち，グローバルネットワークとプライベートネットワークの双方向への通信時に，IPアドレスを変換できる．
+
+#### ・リクエスト時のルータにおける変換
+
+プライベートネットワークから出る時に，パケットのヘッダ情報における『送信元』のプライベートIPアドレスをグローバルIPアドレスに変換する．
+
+例えば，GoogleでWebページを見ながら，Gmailアプリを起動している場合，リクエストにおけるパケット情報として…
+
+  **【変換例】**
+
+| 送信元プライベートIPアドレス |  ⇄   | 送信元グローバルIPアドレス |
+| :--------------------------: | :--: | :------------------------: |
+|      ```192.168.1.1```       |      |      ```200.1.1.1```       |
+
+1. 『送信元プライベートIPアドレス』『送信先グローバルIPアドレス』『メールサーバの待ち受けポート番号```110```（POP3）』を指定して，メールサーバにリクエスト
+
+   ```
+   # 送信元プライベートIPアドレスは明示されない
+   http://www.example.co.jp:110/
+   ```
+
+2. 『送信元プライベートIPアドレス』『送信先グローバルIPアドレス』『Webサーバの待ち受けポート番号```80```（HTTP）』を指定して，Webサーバにリクエスト．ただし．```80```は，省略可能．
+
+   ```
+   # 送信元プライベートIPアドレスは明示されない
+   # 80は省略可能
+   http://www.example.co.jp:80/
+   ```
+
+3. 『送信元プライベートIPアドレス』『送信先グローバルIPアドレス』『DNSサーバの待ち受けポート番号```53```（DNS）』を指定して，DNSサーバにリクエスト
+
+   ```
+   # 送信元プライベートIPアドレスは明示されない
+   http://www.example.co.jp:53/
+   ```
+
+4. これらの『送信元プライベートIPアドレス』が，NATルータで，グローバルIPアドレスに変換される．
+
+![プライベートからグローバルへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/プライベートからグローバルへのnat変換.png)
+
+#### ・レスポンス時の変換
+
+プライベートネットワークに入る時に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスをプライベートIPアドレスに変換する．
+
+![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/グローバルからプライベートへのnat変換.png)
+
+
+
+### :pushpin: NAPT（動的NAT）：Network Address Port TranslationによるIPアドレスとポート番号の変換
+
+一つのグローバルIPアドレスに対して，複数のプライベートIPアドレスを紐づけられる．グローバルネットワークとプライベートネットワークの双方向への通信時に，IPアドレスを変換できる．
+
+#### ・リクエスト時の変換
+
+プライベートネットワークから出る時に，パケットのヘッダ情報における『送信元』のプライベートIPアドレスをグローバルIPアドレスに変換する．ただし，異なるプライベートIPアドレスが同じグローバルIPに変換されてしまうため，これを識別するために，ポート番号を複数の異なるポート番号に変換し，グローバルIPアドレスに付け加える．
+
+  **【変換例】**
+
+| 送信元プライベートIPアドレス | 変換前ポート番号 |  ⇄   | 送信元グローバルIPアドレス | 変換後ポート番号 |
+| :--------------------------: | :--------------: | :--: | :------------------------: | :--------------: |
+|      ```192.168.2.1```       |   ```50011```    |      |   ```130.X.X.X:50011```    |   ```50011```    |
+|      ```192.168.3.1```       |   ```50011```    |      |   ```130.X.X.X:50012```    |   ```50012```    |
+
+![napt変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/napt変換.png)
+
+#### ・レスポンス時の変換
+
+プライベートネットワークに入る時に，付け加えられたポート番号を元に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスを，異なるプライベートIPアドレスに変換し分ける．
+
+![napt変換_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/napt変換_2.png)
+
+
+
+## 03-01. Webシステムを構成する主要な3層構造
+
+Webサーバ，APサーバ，DBサーバによるネットワークの仕組みをWebシステムという．ソフトウェアとハードウェアのノートも参照せよ．
+
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Webサーバ，APサーバ，DBサーバ.png)
+
+### :pushpin: WebサーバソフトウェアをもつWebサーバ
+
+Webサーバソフトウェア（Apache，Nginxなど）がインストールされている．また，Web兼APサーバソフトウェア（NGINX Unit）がインストールされていることもある．役割として，Webブラウザから静的コンテンツのリクエストがあった場合に，アプリケーションサーバにリクエストを行う．アプリケーションサーバからレスポンスを受け取り，Webブラウザにレスポンスを行う．
+
+#### ・サーバ変数（```$_SERVER```）
+
+```PHP
+$_SERVER['SERVER_ADDR']           サーバのIPアドレス(例:192.168.0.1)
+$_SERVER['SERVER_NAME']           サーバの名前(例:www.example.com)
+$_SERVER['SERVER_PORT']           サーバのポート番号(例:80)
+$_SERVER['SERVER_PROTOCOL']       サーバプロトコル(例:HTTP/1.1)
+$_SERVER['SERVER_ADMIN']          サーバの管理者(例:root@localhost)
+$_SERVER['SERVER_SIGNATURE']      サーバのシグニチャ(例:Apache/2.2.15...)
+$_SERVER['SERVER_SOFTWARE']       サーバソフトウェア(例:Apache/2.2.15...)
+$_SERVER['GATEWAY_INTERFACE']     CGIバージョン(例:CGI/1.1)
+$_SERVER['DOCUMENT_ROOT']         ドキュメントルート(例:/var/www/html)
+$_SERVER['PATH']                  環境変数PATHの値(例:/sbin:/usr/sbin:/bin:/usr/bin)
+$_SERVER['PATH_TRANSLATED']       スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['SCRIPT_FILENAME']       スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['REQUEST_URI']           リクエストのURI(例:/test.php)
+$_SERVER['PHP_SELF']              PHPスクリプト名(例:/test.php)
+$_SERVER['SCRIPT_NAME']           スクリプト名(例:/test.php)
+$_SERVER['PATH_INFO']             URLの引数に指定されたパス名(例:/test.php/aaa)
+$_SERVER['ORIG_PATH_INFO']        PHPで処理される前のPATH_INFO情報
+$_SERVER['QUERY_STRING']          URLの?以降に記述された引数(例:q=123)
+$_SERVER['REMOTE_ADDR']           クライアントのIPアドレス(例:192.168.0.123)
+$_SERVER['REMOTE_HOST']           クライアント名(例:client32.example.com)
+$_SERVER['REMOTE_PORT']           クライアントのポート番号(例:64799)
+$_SERVER['REMOTE_USER']           クライアントのユーザ名(例:tanaka)
+$_SERVER['REQUEST_METHOD']        リクエストメソッド(例:GET)
+$_SERVER['REQUEST_TIME']          リクエストのタイムスタンプ(例:1351987425)
+$_SERVER['REQUEST_TIME_FLOAT']    リクエストのタイムスタンプ(マイクロ秒)(PHP 5.1.0以降)
+$_SERVER['REDIRECT_REMOTE_USER']  リダイレクトされた場合の認証ユーザ(例:tanaka)
+$_SERVER['HTTP_ACCEPT']           リクエストのAccept:ヘッダの値(例:text/html)
+$_SERVER['HTTP_ACCEPT_CHARSET']   リクエストのAccept-Charset:ヘッダの値(例:utf-8)
+$_SERVER['HTTP_ACCEPT_ENCODING']  リクエストのAccept-Encoding:ヘッダの値(例:gzip)
+$_SERVER['HTTP_ACCEPT_LANGUAGE']  リクエストのAccept-Language:ヘッダの値(ja,en-US)
+$_SERVER['HTTP_CACHE_CONTROL']    リクエストのCache-Control:ヘッダの値(例:max-age=0)
+$_SERVER['HTTP_CONNECTION']       リクエストのConnection:ヘッダの値(例:keep-alive)
+$_SERVER['HTTP_HOST']             リクエストのHost:ヘッダの値(例:www.example.com)
+$_SERVER['HTTP_REFERER']          リンクの参照元URL(例:http://www.example.com/)
+$_SERVER['HTTP_USER_AGENT']       リクエストのUser-Agent:ヘッダの値(例:Mozilla/5.0...)
+$_SERVER['HTTPS']                 HTTPSを利用しているか否か(例:on)
+$_SERVER['PHP_AUTH_DIGEST']       ダイジェスト認証時のAuthorization:ヘッダの値
+$_SERVER['PHP_AUTH_USER']         HTTP認証時のユーザ名
+$_SERVER['PHP_AUTH_PW']           HTTP認証時のパスワード
+$_SERVER['AUTH_TYPE']             HTTP認証時の認証形式
+```
+
+#### ・リクエスト変数（```$_REQUEST```）
+
+GET変数（```$_GET```），POST変数（```$_POST```），COOKIE（```$_COOKIE```）をまとめた連想配列．
+
+#### ・セッション変数（```$_SESSION```）
+
+
+
+#### ・Symfonyフレームワークによる各変数の取得
+
+```PHP
+// $_GET['hoge']
+$request->query->get('hoge');
+ 
+// $_POST['hoge']
+$request->request->get('hoge');
+ 
+// ルーティングパラメータ / ex) @Route('/{hoge}')
+$request->attributes->get('hoge');
+ 
+// $_COOKIE['hoge']
+$request->cookies->get('hoge');
+ 
+// $_FILES['hoge']
+$request->files->get('hoge');
+ 
+// $_SERVER['SCRIPT_FILENAME']
+$request->server->get('SCRIPT_FILENAME');
+ 
+// $_SERVER['HTTP_USER_AGENT']
+$request->headers->get('User-Agent');
+ 
+// query > attribute  > request の順で検索
+$request->get('hoge');
+```
+
+
+
+### :pushpin: APサーバソフトウェアをもつAPサーバ
+
+PHPにおいては，APサーバソフトウェア（PHPならPHP-FPM，JavaならTomcat）がインストールされている．役割として，Webサーバから動的コンテンツのリクエストがあった場合に，プログラミング言語を言語プロセッサで翻訳し，DBサーバにリクエストを行う．DBサーバからのレスポンスを受け取り，Webサーバに動的なコンテンツのレスポンスを行う．
+
+
+
+### :pushpin: データベース管理システムをもつDBサーバ
+
+データベース管理システムがインストールされている．データベースの情報が保存されている．
+
+
+
+### :pushpin: サーバの処理能力向上
+
+#### ・スケールアップ ⇔ スケールダウン
+
+  サーバ自体のスペックをより高くすることで，サーバ当たりの処理能力を向上させる．その逆は，スケールダウン．設定で，仮想サーバのスペックを上げることも，これに該当する．
+
+  ![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/スケールアップ.png)
+
+#### ・スケールアウト ⇔ スケールイン
+
+  サーバの台数を増やすことで，サーバ全体の処理能力を向上させる．その逆は，スケールイン．
+
+  ![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/スケールアウト.png)
+
+
+
+## 03-02. Webシステムの構成方法
+
+### :pushpin: Dualシステム
+
+同じ処理を行う2つのシステムからなるシステム構成のこと．随時，処理結果を照合する．いずれかが故障した場合，異常が発生したシステムを切り離し，残る片方で処理を続けることによって，故障を乗り切る．
+
+![デュアルシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デュアルシステム.png)
+
+
+
+### :pushpin: Duplexシステム
+
+オンライン処理を行う主系システムと，バッチ処理を行う従系システムからなるシステム構成のこと．主系システムが故障した場合，主系システムのオンライン処理を従系システムに引き継ぎ，処理を続けることによって，故障を乗り切る．
+
+![デュプレックスシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デュプレックスシステム.png)
+
+従系システムの待機方法には２つの種類がある．
+
+#### ・ホットスタンバイ
+
+  ![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p613-1.png)
+
+#### ・コールドスタンバイ
+
+  ![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p613-2.png)
+
+
+
+### :pushpin: システムの稼働率
+
+並列システムの場合，両方の非稼働率をかけて，全体から引く．
+
+**【具体例】**
+
+１－(1－0.81) × (1－0.64) = 0.9316
+
+![稼働率の計算](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/稼働率の計算.jpg)
+
+
+
+## 03-03. Web API
+
+### :pushpin: RESTful API
+
+分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，これに基づいた設計をRESTfulという．RESTful APIについては，RESTfulAPIの概念と実装（PHP）のノートを参照せよ．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．
+
+![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
+
+
+
+### :pushpin: SOAP API
+
+1999年にMicrosoft社などによって発表された．2000年前半には企業システムのWebサービス化とともに普及するかに思われたが，複雑な構造であったため次第に敬遠されるようになった．その後，簡単な構造のRESTが好まれるようになった．
+
+
+
+## 03-04. サーバ間のリクエストとレスポンス
+
+### :pushpin: サーバ間のデータ通信に要する時間
+
+ネットワークのデータグローバル光回線が用いられている．光は，30万km／秒であり，円周4万kmの地球を7.5周／秒できることからもわかるように，遠く離れた国にあるWebサーバであっても，データ通信に要する時間は，１秒にも満たない．
+
+
+
+### :pushpin: フォワード／リバースProxyサーバの役割
+
+#### ・代理リクエスト機能（セキュリティのノートも参照）
+
+代理でリクエストを送るフォワードProxyサーバと，レスポンスを送るリバースProxyサーバに分類できる．
+
+![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/フォワードプロキシサーバーとリバースプロキシサーバ.png)
+
+#### ・キャッシュ機能
+
+リバースProxyサーバに，Webページのコンテンツをキャッシュとして保存することによって，Webサーバのアクセス負荷を抑える．ちなみに，ブラウザもキャッシュ機能を持っている．
+
+![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/プロキシサーバのキャッシュ機能.png)
+
+
+
+### :pushpin: フォワード／リバースProxyサーバの設置場所
+
+フォワードProxyサーバはプロバイダの会社に，リバースProxyサーバはリクエスト先の社内ネットワークに設置されている．
+
+![プロキシサーバの設置場所](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/プロキシサーバの設置場所.png)
+
+
+
+### :pushpin: フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
+
+![IPアドレスと完全修飾ドメイン名のマッピング3.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/IPアドレスと完全修飾ドメイン名のマッピング3.png)
+
+#### ・（1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
+
+1. クライアントPCは，完全修飾ドメイン名を，フォワードProxyサーバにリクエスト．
+2. フォワードProxyサーバは，完全修飾ドメイン名を，リバースProxyサーバに代理リクエスト．
+3. リバースProxyサーバは，完全修飾ドメイン名を，DNSサーバに代理リクエスト．
+4. DNSサーバは，完全修飾ドメインにマッピングされるIPv4アドレスを取得し，リバースProxyサーバにレスポンス．
+5. リバースProxyサーバは，IPv4アドレスを，フォワードProxyサーバに代理レスポンス．（※NATによるIPv4アドレスのネットワーク間変換が起こる）
+6. フォワードProxyサーバは，IPv4アドレスを，クライアントPCに代理レスポンス．
+
+#### ・（2）IPアドレスに対応するWebページのレスポンス
+
+1. クライアントPCは，レスポンスされたIPv4アドレスを基に，Webページを，リバースProxyサーバにリクエスト．
+2. リバースProxyサーバは，Webページを，Webサーバに代理リクエスト．
+3. Webサーバは，Webページを，リバースProxyサーバにレスポンス．
+4. リバースProxyサーバは，Webページを，クライアントPCに代理レスポンス．
+
+※上記の様に，リクエストとレスポンスが繰り返されるが，データ通信は光速なので，１秒もかからない．
+
+
+
+## 03-05. キャッシュ，Cookie，セッションID
+
+### :pushpin: キャッシュ
+
+Webページのコンテンツ（HTML，CSS，画像など）は，以下の場所にキャッシュとして保存される．
+
+#### ・リバースProxyサーバによるキャッシュ機能
+
+リバースProxyサーバに，キャッシュとして保存される．リバースProxyサーバの説明を参照せよ．
+
+#### ・ブラウザによるキャッシュ機能
+
+クライアントのブラウザに，キャッシュとして保存される．
+
+![ブラウザのキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ブラウザのキャッシュ.png)
+
+
+
+### :pushpin: CookieプロトコルによるCookie情報の送受信
+
+#### ・Cookie情報の送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）にデータを格納する．
+2. サーバは，レスポンスヘッダ情報のCookieプロトコルにCookie情報を埋め込んで送信する．
+3. ブラウザは，そのCookie情報を保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
+
+![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Cookieの仕組み.png)
+
+
+
+### :pushpin: CookieプロトコルによるセッションIDの送受信
+
+#### ・セッションIDの送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）にデータを格納する．
+2. サーバは，レスポンスヘッダ情報のCookieプロトコルにセッションIDを埋め込んで送信する．
+3. ブラウザは，そのセッションIDを保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
+
+![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/セッションIDの仕組み.png)
+
+#### ・セッションID送受信とページ遷移
+
+![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/セッションIdとページ遷移.png)
+
+
+
+
