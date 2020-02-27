@@ -1,0 +1,3433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>オブジェクト指向プログラミング &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="RESTful APIの概念と実装" href="ConceptAndImplementationOfRESTfulAPI.html" />
+    <link rel="prev" title="オブジェクト指向分析と設計" href="ObjectOrientedAnalysisAndDesign.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">オブジェクト指向プログラミング</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">01-01. インスタンス間の関係性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-association">:pushpin: Association（関連）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-aggregation">:pushpin: Aggregation（集約）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-composition">:pushpin: Composition（合成）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-static-vs-new-self">・<code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">static()</span></code> vs. <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">self()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">01-02. クラス間の関係性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-generalization">:pushpin: Generalization（汎化）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#override">・汎化におけるOverride</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">・抽象クラス</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-realization">:pushpin: Realization（実現）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: 通常クラス，抽象クラス，インターフェースの違い</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">01-03. クラス間，インスタンス間，クラス／インスタンス間の関係性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-dependency">:pushpin:  Dependency（依存）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">・クラス間の場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・インスタンス間の場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">・クラス／インスタンス間の場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-dependency-injection">:pushpin: Dependency Injection（サプライヤーの注入）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setter-injection">・Setter Injection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor-injection">・Constructor Injection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#method-injection">・Method Injection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-di-container">:pushpin: DI Container（依存性注入コンテナ）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#service-locater-pattern">・アンチパターンのService Locater Pattern</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dependency-inversion-principle">01-04. Dependency Inversion Principle（依存性逆転の原則）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-dip">:pushpin: DIPとは</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-dip-vs">:pushpin: DIPに基づかない設計 vs. 基づく設計</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dip">・DIPに基づかない設計の場合（従来）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">・DIPに基づく設計の場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">:pushpin: DIPに基づくドメイン駆動設計</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">01-05. 結合度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">:pushpin: データ結合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">:pushpin: スタンプ結合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">01-06. 凝集度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">:pushpin: 機能的強度</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">01-07. クラスの継承</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">:pushpin: クラスチェーンによる継承元の参照</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">:pushpin: 継承元の静的メソッドを参照</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">01-08. 外部クラスとメソッドの読み込み</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-use">:pushpin: <code class="docutils literal notranslate"><span class="pre">use</span></code>によるクラスとメソッドの読み込み</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">・名前空間の読み込み</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">・クラスの読み込み</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">・メソッドの読み込み</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">・定数の読み込み</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">01-09. 入れ子クラス</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-php">:pushpin: PHPの場合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-java">:pushpin: Javaの場合</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id25">・非静的内部クラス</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">・静的内部クラス</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">01-10. 総称型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id28">:pushpin: PHPの場合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">:pushpin: Javaの場合</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id30">・総称型を用いない場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">・総称型を用いる場合</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#trait">01-11. Trait</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id32">:pushpin: PHPの場合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id33">:pushpin: Javaの場合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id34">02-01. 操作（メソッド）とデータ（プロパティ）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id35">:pushpin: 操作（メソッド）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">:pushpin: データ（プロパティ）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id37">02-02. メソッドとデータのカプセル化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-public">:pushpin: <code class="docutils literal notranslate"><span class="pre">public</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-protected">:pushpin: <code class="docutils literal notranslate"><span class="pre">protected</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-private">:pushpin: <code class="docutils literal notranslate"><span class="pre">private</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encapsulation">・Encapsulation（カプセル化）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-static">:pushpin: <code class="docutils literal notranslate"><span class="pre">static</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id38">03-01. メソッド</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id39">:pushpin: メソッドの実装手順</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id40">:pushpin: 値を取得するアクセサメソッドの実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id41">:pushpin: 値を設定するアクセサメソッドの実装</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setter">・Setter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construct">・マジックメソッドの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mutableimmutable">・『Mutable』と『Immutable』を実現できる理由</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">:pushpin: メソッドチェーン</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-getter">:pushpin: マジックメソッド（Getter系）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get">・<code class="docutils literal notranslate"><span class="pre">__get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#call">・<code class="docutils literal notranslate"><span class="pre">__call()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callstatic">・<code class="docutils literal notranslate"><span class="pre">__callStatic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-setter">:pushpin: マジックメソッド（Setter系）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set">・<code class="docutils literal notranslate"><span class="pre">__set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43">・マジックメソッドの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">・【『Mutable』と『Immutable』を実現できる理由】</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id45">:pushpin: マジックメソッド（その他）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#invoke">・<code class="docutils literal notranslate"><span class="pre">__invoke()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-recursive-call">:pushpin: Recursive call：再帰的プログラム</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id46">:pushpin: データを用いた処理結果の保持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id47">:pushpin: オプション引数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id48">:pushpin: 値の返却</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#return">・<code class="docutils literal notranslate"><span class="pre">return</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yield">・<code class="docutils literal notranslate"><span class="pre">yield</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id49">03-02. 無名関数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-closure">:pushpin: Closure（無名関数）の定義，変数格納後のコール</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use">・<code class="docutils literal notranslate"><span class="pre">use()</span></code>のみに引数を渡す場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-use">・<code class="docutils literal notranslate"><span class="pre">function()</span></code>と<code class="docutils literal notranslate"><span class="pre">use()</span></code>に引数を渡す場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id50">・データの値に無名関数を格納しておく裏技</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">:pushpin: Closure（無名関数）の定義と即コール</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id52">:pushpin: 高階関数とClosure（無名関数）の組み合わせ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id53">・無名関数を用いない場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id54">・無名関数を用いる場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id55">:pushpin: 高階関数を使いこなす！</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#php">04-01. PHPにおけるデータ構造の実装方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-array">:pushpin: Array型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id56">・インデックス配列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id57">・多次元配列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id58">・連想配列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id59">・配列内の要素の走査（スキャン）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id60">・内部ポインタを用いた配列要素の出力</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-linkedlist">:pushpin: LinkedList型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phplist">・PHPの<code class="docutils literal notranslate"><span class="pre">list()</span></code>とは何なのか</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-queue">:pushpin: Queue型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#queue">・メッセージQueue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-stack">:pushpin: Stack型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-tree">:pushpin: Tree型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id61">・二分探索木</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id62">・ヒープ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#java">04-02. Javaにおけるデータ構造の実装方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id63">:pushpin: Array型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#arraylist">・ArrayList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hashmap">・HashMap</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id64">:pushpin: LinkedList型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#list">・単方向List</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id65">・双方向List</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id66">・循環List</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id67">:pushpin: Queue型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id68">:pushpin: Stack型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id69">:pushpin: Tree型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id70">04-03. データ型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id71">:pushpin: スカラー型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#int">・int</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#float">・float</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#string">・string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boolean">・boolean</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id72">:pushpin: 複合型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#array">・array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#object">・object</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id73">:pushpin: その他のデータ型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#null">・null</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#date">・date</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id74">04-04. 定数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id75">:pushpin: 定数が役に立つ場面</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id76">:pushpin: マジカル定数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function">・<code class="docutils literal notranslate"><span class="pre">__FUNCTION__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#method">・<code class="docutils literal notranslate"><span class="pre">__METHOD__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id77">04-05. 変数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id78">:pushpin: 変数展開</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id79">・シングルクオーテーションによる変数展開</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id80">・シングルクオーテーションと波括弧による変数展開</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id81">・ダブルクオーテーションによる変数展開</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id82">・ダブルクオーテーションと波括弧による変数展開</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id83">:pushpin: 参照渡しと値渡し</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id84">・参照渡し</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id85">・値渡し</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id86">05-01. 演算子</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id87">:pushpin: 等価演算子を用いたインスタンスの比較</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id88">・イコールが2つの場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id89">・イコールが3つの場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id90">:pushpin: キャスト演算子</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id91">:pushpin: 正規表現とパターン演算子</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id92">・正規表現を用いた文字列検索</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id93">・オプションとしてのパターン演算子</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id94">05-02. 条件式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-if-elseif-else-vs-switch-case-break">:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code> vs. <code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#if-elseif-else">・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#switch-case-break">・<code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-if-else">:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>はできるだけ用いずに初期値と上書き</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#if-else">・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>を用いた場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id95">・初期値と上書きのロジックを用いた場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-if-elseif-else">:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>は用いずに早期リターン</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id96">・決定表を用いた条件分岐の整理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id97">・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>を用いた場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ifreturn">・<code class="docutils literal notranslate"><span class="pre">if</span></code>と<code class="docutils literal notranslate"><span class="pre">return</span></code>を用いた場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id98">・<code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code>を用いた場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id99">:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id100">05-03. 例外処理，ログ出力，バリデーション</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id101">:pushpin: 条件分岐</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-exception">:pushpin: Exceptionクラスを継承した独自例外クラス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-if-throw">:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">throw</span></code>文</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-try-catch">:pushpin: <code class="docutils literal notranslate"><span class="pre">try</span></code>-<code class="docutils literal notranslate"><span class="pre">catch</span></code>文</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id102">:pushpin: ログの出力</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id103">:pushpin: バリデーション</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id104">05-03. 反復処理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-foreach">:pushpin: <code class="docutils literal notranslate"><span class="pre">foreach()</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id105">・いずれかの配列の要素を返却する場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id106">・エンティティごとに，データの値を持つか否かが異なる場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-for">:pushpin: <code class="docutils literal notranslate"><span class="pre">for()</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id107">・要素の位置を繰り返しズラす場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id108">:pushpin: 無限ループ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#break">・<code class="docutils literal notranslate"><span class="pre">break</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#continue">・continue</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id109">:pushpin: 反復を含む流れ図における実装との対応</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for">・<code class="docutils literal notranslate"><span class="pre">for()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#while">・<code class="docutils literal notranslate"><span class="pre">while()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#foreach">・<code class="docutils literal notranslate"><span class="pre">foreach()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id110">05-04. ログでエラーが出力されない時の対処方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-vs">:pushpin: ローカル環境 vs テスト環境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-var-dump-var">:pushpin: <code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id111">・変数の中身の確認方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id112">・小ネタ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-var-dump-var-throw-new-exception">:pushpin: <code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">\Exception(&quot;&quot;)</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id113">・変数の中身の確認方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id114">・小ネタ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-throw-new-exception-var-dump-var">:pushpin: <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">\Exception(var_dump($var))</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id115">・変数の中身の確認方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id116">・小ネタ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id117">06-01. ファイルパス</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id118">:pushpin: 絶対パス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id119">:pushpin: 相対パス</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>オブジェクト指向プログラミング</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ObjectOrientedProgramming.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>オブジェクト指向プログラミング<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>01-01. インスタンス間の関係性<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><img alt="インスタンス間の関係性のクラス図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E9%96%93%E3%81%AE%E9%96%A2%E4%BF%82%E6%80%A7%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3.png" /></p>
+<p>以下，『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．</p>
+<p>![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Association, Aggregation, Compositionの関係の強さの違い.png)</p>
+<div class="section" id="pushpin-association">
+<h3>:pushpin: Association（関連）<a class="headerlink" href="#pushpin-association" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>関係性の種類と問わず，インスタンスを他インスタンスのデータとして保持する関係性は，『関連』である．</p>
+</div>
+<div class="section" id="pushpin-aggregation">
+<h3>:pushpin: Aggregation（集約）<a class="headerlink" href="#pushpin-aggregation" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>インスタンスを他インスタンスの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>の引数として渡し，データとして保持する関係性は，『集約』である．</p>
+<p>【Tireクラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Tire {}</span>
+</pre></div>
+</div>
+<p>【CarXクラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">//CarXクラス定義</span>
+<span class="x">class CarX  </span>
+<span class="x">{</span>
+<span class="x">        private $tire1;</span>
+<span class="x">        </span>
+<span class="x">        private $tire2;</span>
+<span class="x">        </span>
+<span class="x">        private $tire3;</span>
+<span class="x">        </span>
+<span class="x">        private $tire4;</span>
+
+<span class="x">    //CarXクラスがタイヤクラスを引数として扱えるように設定</span>
+<span class="x">    public function __construct(Tire $t1, Tire $t2, Tire $t3, Tire $t4)</span>
+<span class="x">    {</span>
+<span class="x">        // Tireクラスのインスタンスをデータとして保持</span>
+<span class="x">        $this-&gt;tire1 = $t1;</span>
+<span class="x">        $this-&gt;tire2 = $t2;</span>
+<span class="x">        $this-&gt;tire3 = $t3;</span>
+<span class="x">        $this-&gt;tire4 = $t4;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>【CarYクラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">//CarYクラス定義</span>
+<span class="x">class CarY  </span>
+<span class="x">{</span>
+<span class="x">        private $tire1;</span>
+<span class="x">        </span>
+<span class="x">        private $tire2;</span>
+<span class="x">        </span>
+<span class="x">        private $tire3;</span>
+<span class="x">        </span>
+<span class="x">        private $tire4;</span>
+<span class="x">  </span>
+<span class="x">        //CarYクラスがタイヤクラスを引数として扱えるように設定</span>
+<span class="x">        public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)</span>
+<span class="x">        {</span>
+<span class="x">                // Tireクラスのインスタンスをデータとして保持．</span>
+<span class="x">                $this-&gt;tire1 = $t1;</span>
+<span class="x">                $this-&gt;tire2 = $t2;</span>
+<span class="x">                $this-&gt;tire3 = $t3;</span>
+<span class="x">                $this-&gt;tire4 = $t4;</span>
+<span class="x">        }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>以下の様に，Tireクラスのインスタンスを，CarXクラスとCarYクラスの引数として用いている．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">//Tireクラスをインスタンス化</span>
+<span class="x">$tire1 = new Tire();</span>
+<span class="x">$tire2 = new Tire();</span>
+<span class="x">$tire3 = new Tire();</span>
+<span class="x">$tire4 = new Tire();</span>
+<span class="x">$tire5 = new Tire();</span>
+<span class="x">$tire6 = new Tire();</span>
+
+<span class="x">//Tireクラスのインスタンスを引数として扱う</span>
+<span class="x">$suv = new CarX($tire1, $tire2, $tire3, $tire4);</span>
+
+<span class="x">//Tireクラスのインスタンスを引数として扱う</span>
+<span class="x">$suv = new CarY($tire1, $tire2, $tire5, $tire6);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-composition">
+<h3>:pushpin: Composition（合成）<a class="headerlink" href="#pushpin-composition" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>インスタンスを，他インスタンスの<code class="docutils literal notranslate"><span class="pre">__constructor</span></code>の引数として渡すのではなく，クラスの中でインスタンス化し，データとして保持する関係性は，『合成』である．</p>
+<p>【Lockクラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">//Lockクラス定義</span>
+<span class="x">class Lock {}</span>
+</pre></div>
+</div>
+<p>【Carクラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">//Carクラスを定義</span>
+<span class="x">class Car  </span>
+<span class="x">{</span>
+<span class="x">        private $lock;</span>
+<span class="x">    </span>
+<span class="x">        public function __construct()</span>
+<span class="x">        {</span>
+<span class="x">                // 引数Lockクラスをインスタンス化</span>
+<span class="x">                // Tireクラスのインスタンスをデータとして保持．</span>
+<span class="x">                $this-&gt;lock = new Lock();</span>
+<span class="x">        }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>以下の様に，Lockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．このように，LockインスタンスからCarクラスの方向には，Compositionの関係性がある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// Carクラスのインスタンスの中で，Lockクラスがインスタンス化される．</span>
+<span class="x">$car = new Car();</span>
+</pre></div>
+</div>
+<div class="section" id="new-static-vs-new-self">
+<h4>・<code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">static()</span></code> vs. <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">self()</span></code><a class="headerlink" href="#new-static-vs-new-self" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class A</span>
+<span class="x">{</span>
+<span class="x">    public static function get_self()</span>
+<span class="x">    {</span>
+<span class="x">        return new self();</span>
+<span class="x">    }</span>
+
+<span class="x">    public static function get_static()</span>
+<span class="x">    {</span>
+<span class="x">        return new static();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class B extends A {}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">echo get_class(B::get_self());   // 継承元のクラスA</span>
+
+<span class="x">echo get_class(B::get_static()); // 継承先のクラスB</span>
+
+<span class="x">echo get_class(A::get_static()); // 継承元のクラスA</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>01-02. クラス間の関係性<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><img alt="クラス間の関係性のクラス図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%AF%E3%83%A9%E3%82%B9%E9%96%93%E3%81%AE%E9%96%A2%E4%BF%82%E6%80%A7%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3.png" /></p>
+<div class="section" id="pushpin-generalization">
+<h3>:pushpin: Generalization（汎化）<a class="headerlink" href="#pushpin-generalization" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="override">
+<h4>・汎化におけるOverride<a class="headerlink" href="#override" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>汎化の時，子クラスでメソッドの処理内容を再び実装すると，処理内容は上書きされる．</p>
+<p>【親クラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 通常クラス</span>
+<span class="x">class Goods</span>
+<span class="x">{</span>
+<span class="x">    // 商品名データ</span>
+<span class="x">    private $name = &quot;&quot;;</span>
+
+<span class="x">    // 商品価格データ</span>
+<span class="x">    private $price = 0;</span>
+
+<span class="x">    // コンストラクタ．商品名と商品価格を設定する</span>
+<span class="x">    public function __construct(string $name, int $price)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;name = $name;</span>
+<span class="x">        $this-&gt;price = $price;</span>
+<span class="x">    }</span>
+
+<span class="x">    // ★★★★★★注目★★★★★★</span>
+<span class="x">    // 商品名と価格を表示するメソッド</span>
+<span class="x">    public function printPrice(): void</span>
+<span class="x">    {</span>
+<span class="x">        print($this-&gt;name.&quot;の価格: ￥&quot;.$this-&gt;price.&quot;&lt;br&gt;&quot;);</span>
+<span class="x">    }</span>
+
+<span class="x">    // 商品名のゲッター</span>
+<span class="x">    public function getName(): string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;name;</span>
+<span class="x">    }</span>
+
+<span class="x">    // 商品価格のゲッター</span>
+<span class="x">    public function getPrice(): int</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;price;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>【子クラス】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 通常クラス</span>
+<span class="x">class GoodsWithTax extends Goods</span>
+<span class="x">{</span>
+<span class="x">    // ★★★★★★注目★★★★★★</span>
+<span class="x">    // printPriceメソッドをOverride</span>
+<span class="x">    public function printPrice(): void</span>
+<span class="x">    {</span>
+<span class="x">        // 商品価格の税込み価格を計算し，表示</span>
+<span class="x">        $priceWithTax = round($this-&gt;getPrice() * 1.08);  // （1）</span>
+<span class="x">        print($this-&gt;getName().&quot;の税込み価格: ￥&quot;.$priceWithTax.&quot;&lt;br&gt;&quot;);  // （2）</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h4>・抽象クラス<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ビジネスロジックとして用いる．多重継承できない．</p>
+<p><strong>【具体例1】</strong></p>
+<p>以下の条件の社員オブジェクトを実装したいとする．</p>
+<ol class="simple">
+<li><p>午前９時に出社</p></li>
+<li><p>営業部・開発部・総務部があり，それぞれが異なる仕事を行う</p></li>
+<li><p>午後６時に退社</p></li>
+</ol>
+<p>この時，『働くメソッド』は部署ごとに異なってしまうが，どう実装したら良いのか…</p>
+<p><img alt="抽象クラスと抽象メソッド-1" src="https://user-images.githubusercontent.com/42175286/59590447-12ff8b00-9127-11e9-802e-126279fcb0b1.PNG" /></p>
+<p>これを解決するために，例えば，次の２つが実装方法が考えられる．</p>
+<ol>
+<li><p>営業部社員オブジェクト，開発部社員オブジェクト，総務部社員オブジェクトを別々に実装</p>
+<p>⇒メリット：同じ部署の他のオブジェクトに影響を与えられる．</p>
+<p>⇒デメリット：各社員オブジェクトで共通の処理を個別に実装しなければならない．共通の処理が同じコードで書かれる保証がない．</p>
+</li>
+<li><p>一つの社員オブジェクトの中で，働くメソッドに部署ごとで変化する引数を設定</p></li>
+</ol>
+<p>⇒メリット：全部署の社員を一つのオブジェクトで呼び出せる．</p>
+<p>⇒デメリット：一つの修正が，全部署の社員の処理に影響を与えてしまう．</p>
+<p>抽象オブジェクトと抽象メソッドを用いると，2つのメリットを生かしつつ，デメリットを解消可能．</p>
+<p><img alt="抽象クラスと抽象メソッド-2" src="https://user-images.githubusercontent.com/42175286/59590387-e8adcd80-9126-11e9-87b3-7659468af2f6.PNG" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 抽象クラス．型として提供したいものを定義する．</span>
+<span class="x">abstract class ShainManagement</span>
+<span class="x">{</span>
+<span class="x">    // 定数の定義</span>
+<span class="x">    const TIME_TO_ARRIVE = strtotime(&#39;10:00:00&#39;);</span>
+<span class="x">    const TIME_TO_LEAVE = strtotime(&#39;19:00:00&#39;);</span>
+<span class="x">    </span>
+
+<span class="x">    // 具象メソッド．出勤時刻を表示．もし遅刻していたら，代わりに差分を表示．</span>
+<span class="x">    // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．</span>
+<span class="x">    public function toArrive()</span>
+<span class="x">    {</span>
+<span class="x">        $nowTime = strtotime( date(&#39;H:i:s&#39;) );</span>
+<span class="x">    </span>
+<span class="x">        // 出社時間より遅かった場合，遅刻と表示する．</span>
+<span class="x">        if($nowTime &gt; self::TIME_TO_ARRIVE){</span>
+<span class="x">        </span>
+<span class="x">            return sprintf(</span>
+<span class="x">                &quot;%s の遅刻です．&quot;,</span>
+<span class="x">                date(&#39;H時i分s秒&#39;, $nowTime - self::TIME_TO_ARRIVE)</span>
+<span class="x">            );</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">        return sprintf(</span>
+<span class="x">            &quot;%s に出勤しました．&quot;,</span>
+<span class="x">            date(&#39;H時i分s秒&#39;, $nowTime)</span>
+<span class="x">        );</span>
+<span class="x">    </span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // 抽象メソッド．</span>
+<span class="x">    // 処理内容を子クラスでOverrideしなければならない．</span>
+<span class="x">    abstract function toWork();</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // 具象メソッド．退社時間と残業時間を表示．</span>
+<span class="x">    // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．</span>
+<span class="x">    public function toLeave()</span>
+<span class="x">    {</span>
+<span class="x">        $nowTime = strtotime( date(&#39;H:i:s&#39;) );</span>
+<span class="x">        </span>
+<span class="x">        return sprintf(</span>
+<span class="x">            &quot;%sに退社しました．%s の残業です．&quot;,</span>
+<span class="x">            date(&#39;H時i分s秒&#39;, $nowTime),</span>
+<span class="x">            date(&#39;H時i分s秒&#39;, $nowTime - self::TIME_TO_LEAVE)</span>
+<span class="x">        );</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 子クラス</span>
+<span class="x">class EnginnerShainManagement extends ShainManagement</span>
+<span class="x">{</span>
+<span class="x">    // 鋳型となった抽象クラスの抽象メソッドはOverrideしなければならない．</span>
+<span class="x">    public function toWork()</span>
+<span class="x">    {</span>
+<span class="x">        // 処理内容；</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>【具体例2】</strong></p>
+<p>プリウスと各世代プリウスが，抽象クラスと子クラスの関係にある．</p>
+<p><img alt="抽象クラス" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%8A%BD%E8%B1%A1%E3%82%AF%E3%83%A9%E3%82%B9.png" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-realization">
+<h3>:pushpin: Realization（実現）<a class="headerlink" href="#pushpin-realization" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>実装クラスが正常に機能するために最低限必要なメソッドの実装を強制する．これによって，必ず実装クラスを正常に働かせることができる．</p>
+<p><strong>【具体例】</strong></p>
+<p>オープンソースのライブラリは，ユーザが実装クラスを自身で追加実装することも考慮して，Realizationが用いられている．</p>
+<p><strong>【具体例】</strong></p>
+<p>各車は，モーター機能を必ず持っていなければ，正常に働くことができない．そこで，モータ機能に最低限必要なメソッドの実装を強制する．</p>
+<p><img alt="インターフェースとは" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%AF.png" /></p>
+<p>実装クラスに処理内容を記述しなければならない．すなわち，抽象クラスにメソッドの型のみ定義した場合と同じである．多重継承できる．</p>
+<p><img alt="子インターフェースの多重継承_2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%AD%90%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9%E3%81%AE%E5%A4%9A%E9%87%8D%E7%B6%99%E6%89%BF_2.png" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// コミュニケーションのメソッドの実装を強制するインターフェース</span>
+<span class="x">interface Communication</span>
+<span class="x">{</span>
+<span class="x">     // インターフェイスでは，実装を伴うメソッドやデータの宣言はできない</span>
+<span class="x">     public function talk();</span>
+<span class="x">     public function touch();</span>
+<span class="x">     public function gesture();</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 正常に機能するように，コミュニケーションのメソッドの実装を強制する．</span>
+<span class="x">class Human implements Communication</span>
+<span class="x">{</span>
+<span class="x">    // メソッドの処理内容を定義しなければならない．</span>
+<span class="x">     public function talk()</span>
+<span class="x">     {</span>
+<span class="x">          // 話す</span>
+<span class="x">     }</span>
+<span class="x">     </span>
+<span class="x">     public function touch()</span>
+<span class="x">     {</span>
+<span class="x">          // 触る</span>
+<span class="x">     }</span>
+<span class="x">     </span>
+<span class="x">     public function gesture()</span>
+<span class="x">     {</span>
+<span class="x">          // 身振り手振り</span>
+<span class="x">     }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin">
+<h3>:pushpin: 通常クラス，抽象クラス，インターフェースの違い<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th></th>
+<th align="center">通常クラス</th>
+<th align="center">抽象クラス</th>
+<th align="center">インターフェース</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>役割</strong></td>
+<td align="center">専用処理の部品化</td>
+<td align="center">共通処理の部品化</td>
+<td align="center">実装クラスが正常に機能するために最低限必要なメソッドの実装を強制</td>
+</tr>
+<tr>
+<td><strong>子クラスでの継承先数</strong></td>
+<td align="center">単一継承</td>
+<td align="center">単一継承</td>
+<td align="center">単一継承｜多重継承</td>
+</tr>
+<tr>
+<td><strong>メンバ変数のコール</strong></td>
+<td align="center">自身と継承先</td>
+<td align="center">継承先のみ</td>
+<td align="center">実装先のみ</td>
+</tr>
+<tr>
+<td><strong>定数の定義</strong></td>
+<td align="center">〇</td>
+<td align="center">〇</td>
+<td align="center">〇</td>
+</tr>
+<tr>
+<td><strong>抽象メソッドの定義</strong></td>
+<td align="center">✕</td>
+<td align="center">〇</td>
+<td align="center">〇（abstractは省略）</td>
+</tr>
+<tr>
+<td><strong>具象メソッドの定義</strong></td>
+<td align="center">〇</td>
+<td align="center">〇</td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td><strong><code>construct()</code> の定義</strong></td>
+<td align="center">〇</td>
+<td align="center">〇</td>
+<td align="center">✕</td>
+</tr>
+</tbody>
+</table><p><strong>【具体例】</strong></p>
+<ol class="simple">
+<li><p>種々の車クラスの共通処理のをもつ抽象クラスとして，Carクラスを作成．</p></li>
+<li><p>各車は，エンジン機能を必ず持っていなければ，正常に働くことができない．そこで，抽象メソッドによって，エンジン機能に最低限必要なメソッドの実装を強制する．</p></li>
+</ol>
+<p><img alt="インターフェースと抽象クラスの使い分け" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9%E3%81%A8%E6%8A%BD%E8%B1%A1%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91.png" /></p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>01-03. クラス間，インスタンス間，クラス／インスタンス間の関係性<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-dependency">
+<h3>:pushpin:  Dependency（依存）<a class="headerlink" href="#pushpin-dependency" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラス間，インスタンス間，クラス／インスタンス間について，依存される側が変更された場合に，依存する側で変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．</p>
+<p><img alt="クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%AF%E3%83%A9%E3%82%B9%E9%96%93%EF%BC%8C%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E9%96%93%EF%BC%8C%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E9%96%93%E3%81%AE%E9%96%A2%E4%BF%82%E6%80%A7%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3.png" /></p>
+<div class="section" id="id6">
+<h4>・クラス間の場合<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Generalizatoin，Realizationの関係性．</p>
+</div>
+<div class="section" id="id7">
+<h4>・インスタンス間の場合<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持する．Association，Aggregation，Compositionの関係性．</p>
+</div>
+<div class="section" id="id8">
+<h4>・クラス／インスタンス間の場合<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>この場合，依存する側をクライアント，依存される側をサプライヤーという．クライアント側はサプライヤー側をデータとして保持しない．サプライヤー側を読みこみ，メソッドの処理の中で，『一時的に』サプライヤー側のインスタンスを使用するような関係性．例えば，Controllerのメソッドが，ServiceやValidatorのインスタンスを使用する場合がある．</p>
+<p>参照リンク：</p>
+<p>https://stackoverflow.com/questions/1230889/difference-between-association-and-dependency</p>
+<p>https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-dependency-injection</p>
+</div>
+</div>
+<div class="section" id="pushpin-dependency-injection">
+<h3>:pushpin: Dependency Injection（サプライヤーの注入）<a class="headerlink" href="#pushpin-dependency-injection" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．</p>
+<div class="section" id="setter-injection">
+<h4>・Setter Injection<a class="headerlink" href="#setter-injection" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．</p>
+</div>
+<div class="section" id="constructor-injection">
+<h4>・Constructor Injection<a class="headerlink" href="#constructor-injection" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>メソッドの特に，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code> の引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．</p>
+</div>
+<div class="section" id="method-injection">
+<h4>・Method Injection<a class="headerlink" href="#method-injection" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持せず，読み込んでメソッドを使用する．</p>
+</div>
+</div>
+<div class="section" id="pushpin-di-container">
+<h3>:pushpin: DI Container（依存性注入コンテナ）<a class="headerlink" href="#pushpin-di-container" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．コンテナへの登録ファイル，インスタンスへのコンテナ渡しのファイルを実装する．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="section" id="service-locater-pattern">
+<h4>・アンチパターンのService Locater Pattern<a class="headerlink" href="#service-locater-pattern" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう誤った実装方法．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="dependency-inversion-principle">
+<h2>01-04. Dependency Inversion Principle（依存性逆転の原則）<a class="headerlink" href="#dependency-inversion-principle" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-dip">
+<h3>:pushpin: DIPとは<a class="headerlink" href="#pushpin-dip" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><p>上位レイヤーは，下位レイヤーに依存してはならない．どちらのレイヤーも『抽象』に依存すべきである．</p></li>
+<li><p>『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．</p></li>
+</ul>
+</div>
+<div class="section" id="pushpin-dip-vs">
+<h3>:pushpin: DIPに基づかない設計 vs. 基づく設計<a class="headerlink" href="#pushpin-dip-vs" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="dip">
+<h4>・DIPに基づかない設計の場合（従来）<a class="headerlink" href="#dip" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．</p>
+<p><img alt="DIPに基づかない設計の場合" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIP%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8B%E3%81%AA%E3%81%84%E8%A8%AD%E8%A8%88%E3%81%AE%E5%A0%B4%E5%90%88.png" /></p>
+</div>
+<div class="section" id="id9">
+<h4>・DIPに基づく設計の場合<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．</p>
+<p><img alt="DIPに基づく設計の場合" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DIP%E3%81%AB%E5%9F%BA%E3%81%A5%E3%81%8F%E8%A8%AD%E8%A8%88%E3%81%AE%E5%A0%B4%E5%90%88.png" /></p>
+</div>
+</div>
+<div class="section" id="id10">
+<h3>:pushpin: DIPに基づくドメイン駆動設計<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>Repositoryの抽象クラスを，より上位のドメイン層に配置する．</p></li>
+<li><p>Repositoryの実装クラスを，より下位のInfrastructure層に配置する．</p></li>
+<li><p>両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．</p></li>
+<li><p>これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．</p></li>
+</ol>
+<p><img alt="ドメイン駆動設計_逆転依存性の原則" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E4%BE%9D%E5%AD%98%E6%80%A7%E9%80%86%E8%BB%A2%E3%81%AE%E5%8E%9F%E5%89%87.jpg" /></p>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>01-05. 結合度<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>依存には，引数の渡し方によって，程度がある．それによって，処理を，どのクラスのデータと操作に振り分けていくかが決まる．結合度はモジュール間の依存度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．</p>
+<div class="section" id="id12">
+<h3>:pushpin: データ結合<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>最も理想的な結合．スカラ型のデータをサプライヤー側として，クライアント側のインスタンスの引数として渡すような関係．</p>
+<p><strong>【実装例1】</strong></p>
+<p>ModuleAとModuleBは，データ結合の関係にある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ModuleA // コールされる側</span>
+<span class="x">{</span>
+<span class="x">    public function methodA(int $a, int $b, string $c)</span>
+<span class="x">    {</span>
+<span class="x">        return &quot;$a + $b&quot;.$c;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ModuleB // コールする側</span>
+<span class="x">{</span>
+<span class="x">    public function methodB()</span>
+<span class="x">    {</span>
+<span class="x">        $moduleA= new ModuleA();</span>
+<span class="x">        $result = $moduleA-&gt;methodA(1, 2, &quot;です.&quot;); // スカラ型データを渡すだけ</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>【実装例2】</strong></p>
+<p>デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．Factoryクラスのインスタンスと，これをコールする他インスタンス は，データ結合の関係にある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * コールされる側</span>
+<span class="x"> *</span>
+<span class="x"> * 距離に応じて，移動手段のオブジェクトを作り分けるファクトリクラス</span>
+<span class="x"> */</span>
+<span class="x">class TransportationMethodsFactory</span>
+<span class="x">{</span>
+<span class="x">    public static function createInstance($distance)</span>
+<span class="x">    {</span>
+<span class="x">        $walking = new Walking($distance);</span>
+<span class="x">        $car = new Car($distance);</span>
+
+<span class="x">        if($walking-&gt;needsWalking()) {</span>
+<span class="x">            return $walking;</span>
+<span class="x">        }</span>
+
+<span class="x">        return $car;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>:pushpin: スタンプ結合<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>object型のデータをサプライヤー側として，クライアント側のインスタンスの引数として渡す関係．</p>
+<p><strong>【実装例】</strong></p>
+<p>ModuleAとModuleBは，スタンプ結合の関係にある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Common</span>
+<span class="x">{</span>
+<span class="x">    private $value;</span>
+<span class="x">  </span>
+<span class="x">  </span>
+<span class="x">    public function __construct(int $value) </span>
+<span class="x">    {</span>
+<span class="x">            $this-&gt;value = $value;</span>
+<span class="x">    }</span>
+<span class="x">  </span>
+<span class="x">  </span>
+<span class="x">    public function getValue()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;value;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ModuleA</span>
+<span class="x">{</span>
+<span class="x">        public function methodA()</span>
+<span class="x">        {</span>
+<span class="x">        $common = new Common(1);</span>
+<span class="x">      </span>
+<span class="x">        $moduleB = new ModuleB;</span>
+<span class="x">      </span>
+<span class="x">                return $moduleB-&gt;methodB($common); // 1</span>
+<span class="x">        }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ModuleB</span>
+<span class="x">{</span>
+<span class="x">        public function methodB(Common $common)</span>
+<span class="x">        {</span>
+<span class="x">                return $common-&gt;getValue(); // 1</span>
+<span class="x">        }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>01-06. 凝集度<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>凝集度は，モジュール内の機能の統一度合いについて用いられる用語であるが，より理解しやすくするために，特にクラスを用いて説明する．</p>
+<div class="section" id="id15">
+<h3>:pushpin: 機能的強度<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>最も理想的な凝集．クラスのまとまりが機能単位になるように，処理を振り分ける．</p>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>01-07. クラスの継承<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id17">
+<h3>:pushpin: クラスチェーンによる継承元の参照<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 継承元クラス</span>
+<span class="x">class Example</span>
+<span class="x">{</span>
+<span class="x">    private $value1;</span>
+<span class="x">  </span>
+<span class="x">    public function getValue()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;value1; </span>
+<span class="x">    }  </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 継承先クラス</span>
+<span class="x">class SubExample extends Example</span>
+<span class="x">{</span>
+<span class="x">    public subValue;</span>
+<span class="x">  </span>
+<span class="x">    public function getSubValue()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;subValue; </span>
+<span class="x">    }  </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$subExample = new SubExample;</span>
+
+<span class="x">// SubExampleクラスにはgetValue()は無い．</span>
+<span class="x">// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．</span>
+<span class="x">echo $subExample-&gt;getValue();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id18">
+<h3>:pushpin: 継承元の静的メソッドを参照<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">abstract class Example </span>
+<span class="x">{</span>
+<span class="x">    public function example()</span>
+<span class="x">    {</span>
+<span class="x">        // 処理内容;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class SubExample extends Example</span>
+<span class="x">{</span>
+<span class="x">    public function subExample()</span>
+<span class="x">    {</span>
+<span class="x">        // 継承元の静的メソッドを参照．</span>
+<span class="x">        $example = parent::example();</span>
+<span class="x">    } </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id19">
+<h2>01-08. 外部クラスとメソッドの読み込み<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-use">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">use</span></code>によるクラスとメソッドの読み込み<a class="headerlink" href="#pushpin-use" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PHPでは，<code class="docutils literal notranslate"><span class="pre">use</span></code>によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，<code class="docutils literal notranslate"><span class="pre">use</span></code>で読み込んで良いものを決めておくと良い．</p>
+<p><strong>【以下で読み込まれるクラスの実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 名前空間を定義．</span>
+<span class="x">namespace Domain/Entity1;</span>
+
+<span class="x">// 定数を定義．</span>
+<span class="x">const VALUE = &quot;これは定数です．&quot;;</span>
+
+<span class="x">class Example1</span>
+<span class="x">{</span>
+<span class="x">    public function className()</span>
+<span class="x">    {</span>
+<span class="x">        return &quot;example1メソッドです．&quot;;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="section" id="id20">
+<h4>・名前空間の読み込み<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// use文で名前空間を読み込む．</span>
+<span class="x">use Domain/Entity2</span>
+
+<span class="x">namespace Domain/Entity2;</span>
+
+<span class="x">class Example2</span>
+<span class="x">{</span>
+<span class="x">    public function method()</span>
+<span class="x">    {</span>
+
+<span class="x">        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．</span>
+<span class="x">        $e1 = new Entity1/E1:</span>
+<span class="x">        echo $e1;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id21">
+<h4>・クラスの読み込み<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// use文でクラス名を読み込む．</span>
+<span class="x">use Domain/Entity1/Example1;</span>
+
+<span class="x">namespace Domain/Entity2;</span>
+
+<span class="x">class Example2</span>
+<span class="x">{</span>
+<span class="x">    public function method()</span>
+<span class="x">    {</span>
+<span class="x">        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．</span>
+<span class="x">        $e1 = new E1;</span>
+<span class="x">        echo $e1;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id22">
+<h4>・メソッドの読み込み<a class="headerlink" href="#id22" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// use文でメソッドを読み込む．</span>
+<span class="x">use Domain/Entity1/Example1;</span>
+
+<span class="x">namespace Domain/Entity2;</span>
+
+<span class="x">class Eeample2</span>
+<span class="x">{</span>
+<span class="x">    public function method()</span>
+<span class="x">    {</span>
+<span class="x">        // Example1クラスのclassName()をコール．</span>
+<span class="x">        echo className();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id23">
+<h4>・定数の読み込み<a class="headerlink" href="#id23" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// use文で定数を読み込む．</span>
+<span class="x">use Domain/Entity1/Example1;</span>
+
+<span class="x">namespace Domain/Entity2;</span>
+
+<span class="x">class Example2</span>
+<span class="x">{</span>
+<span class="x">    // Example1クラスの定数を出力．</span>
+<span class="x">    public function method()</span>
+<span class="x">    {    </span>
+<span class="x">        echo Example1::VALUE;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>01-09. 入れ子クラス<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-php">
+<h3>:pushpin: PHPの場合<a class="headerlink" href="#pushpin-php" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PHPには組み込まれていない．</p>
+</div>
+<div class="section" id="pushpin-java">
+<h3>:pushpin: Javaの場合<a class="headerlink" href="#pushpin-java" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスの中にクラスをカプセル化する機能．データやメソッドと同じ記法で，内部クラスでは，外部クラスのメンバを呼び出すことができる．</p>
+<div class="section" id="id25">
+<h4>・非静的内部クラス<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>PHPとは異なり，変数定義に『$』は用いないことに注意．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// 外部クラスを定義</span>
+<span class="kd">class</span> <span class="nc">OuterClass</span>
+<span class="p">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+        
+    <span class="c1">// Setterとして，コンストラクタを使用．</span>
+    <span class="n">OuterClass</span><span class="p">(</span><span class="n">Int</span> <span class="n">value</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// 外部クラスのデータを取得するメソッド．</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">value</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="na">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    
+    <span class="c1">// 内部クラスを定義 </span>
+    <span class="kd">class</span> <span class="nc">InnerClass</span>
+    <span class="p">{</span>
+        <span class="c1">// 外部クラスのデータを取得して2倍するメソッド．</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">valueTimesTwo</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">OuterClass</span><span class="p">.</span><span class="na">this</span><span class="p">.</span><span class="na">value</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+    
+    <span class="p">}</span>
+        
+    <span class="c1">// 内部クラスをインスタンス化するメソッド．</span>
+    <span class="kd">public</span> <span class="n">InnerClass</span> <span class="nf">InnerClassInstance</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 外部クラスのインスタンス化 </span>
+        <span class="n">OuterClass</span> <span class="n">outerCLS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OuterClass</span><span class="p">();</span>
+        
+        <span class="c1">// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．</span>
+        <span class="n">OuterClass</span><span class="p">.</span><span class="na">InnerClass</span> <span class="n">innerCLS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">outerCLS</span><span class="p">.</span><span class="na">InnerClass</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id26">
+<h4>・静的内部クラス<a class="headerlink" href="#id26" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>呼び出すメソッドと呼び出されるメンバの両方をstaticとしなければならない．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// 外部クラスを定義</span>
+<span class="kd">class</span> <span class="nc">OuterClass</span>
+<span class="p">{</span>
+    <span class="c1">// 静的データとする．</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+        
+    <span class="c1">// Setterとして，コンストラクタを使用．</span>
+    <span class="n">OuterClass</span><span class="p">(</span><span class="n">Int</span> <span class="n">value</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// 静的内部クラスを定義 </span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">InnerClass</span>
+    <span class="p">{</span>
+        <span class="c1">// 外部クラスのデータを取得するメソッド．</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">value</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">OuterClass</span><span class="p">.</span><span class="na">this</span><span class="p">.</span><span class="na">value</span><span class="p">;</span>
+        <span class="p">}</span>
+    
+    <span class="p">}</span>
+        
+    <span class="c1">// 内部クラスをインスタンス化する静的メソッド．</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">InnerClass</span> <span class="nf">InnerClassInstance</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 外部クラスのインスタンス化 </span>
+        <span class="n">OuterClass</span> <span class="n">outerCLS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OuterClass</span><span class="p">();</span>
+        
+        <span class="c1">// 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．</span>
+        <span class="n">OuterClass</span><span class="p">.</span><span class="na">InnerClass</span> <span class="n">innerCLS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">outerCLS</span><span class="p">.</span><span class="na">InnerClass</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id27">
+<h2>01-10. 総称型<a class="headerlink" href="#id27" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id28">
+<h3>:pushpin: PHPの場合<a class="headerlink" href="#id28" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PHPには組み込まれていない．</p>
+</div>
+<div class="section" id="id29">
+<h3>:pushpin: Javaの場合<a class="headerlink" href="#id29" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクトにデータ型を引数として渡すことで，データの型宣言を行える機能．型宣言を毎回行わなければならず，煩わしいJavaならではの機能．PHPとは異なり，変数定義に『$』は用いないことに注意．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">Example</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">{</span>
+    
+    <span class="kd">private</span> <span class="n">T</span> <span class="n">t</span><span class="p">;</span>
+    
+    <span class="kd">public</span> <span class="nf">Example</span><span class="p">(</span><span class="n">T</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="kd">public</span> <span class="n">T</span> <span class="nf">getT</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">t</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="id30">
+<h4>・総称型を用いない場合<a class="headerlink" href="#id30" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>リスト内の要素は，Object型として取り出されるため，キャスト（明示的型変換）が必要．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="p">();</span>
+<span class="n">l</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Java&quot;</span><span class="p">);</span>
+<span class="n">l</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Scala&quot;</span><span class="p">);</span>
+<span class="n">l</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Ruby&quot;</span><span class="p">);</span>
+
+<span class="c1">// 文字列へのキャストが必要</span>
+<span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id31">
+<h4>・総称型を用いる場合<a class="headerlink" href="#id31" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Java&quot;</span><span class="p">);</span>
+<span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Scala&quot;</span><span class="p">);</span>
+<span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Ruby&quot;</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mf">10.1</span><span class="p">);</span>    <span class="c1">// String型でないのでコンパイルエラー</span>
+<span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="trait">
+<h2>01-11. Trait<a class="headerlink" href="#trait" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id32">
+<h3>:pushpin: PHPの場合<a class="headerlink" href="#id32" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．</p>
+<p><img alt="トレイト" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%88%E3%83%AC%E3%82%A4%E3%83%88.png" /></p>
+</div>
+<div class="section" id="id33">
+<h3>:pushpin: Javaの場合<a class="headerlink" href="#id33" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Javaには組み込まれていない．</p>
+</div>
+</div>
+<div class="section" id="id34">
+<h2>02-01. 操作（メソッド）とデータ（プロパティ）<a class="headerlink" href="#id34" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>本資料の以降では，大きく，操作（メソッド）とデータ（プロパティ）に分けて，説明していく．</p>
+<div class="section" id="id35">
+<h3>:pushpin: 操作（メソッド）<a class="headerlink" href="#id35" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスは，データを操作する．この操作はメソッドとも呼ばれる．</p>
+</div>
+<div class="section" id="id36">
+<h3>:pushpin: データ（プロパティ）<a class="headerlink" href="#id36" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスは，データをもつ．このデータはプロパティとも呼ばれる．</p>
+</div>
+</div>
+<div class="section" id="id37">
+<h2>02-02. メソッドとデータのカプセル化<a class="headerlink" href="#id37" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-public">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">public</span></code><a class="headerlink" href="#pushpin-public" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>どのオブジェクトでも呼び出せる．</p>
+</div>
+<div class="section" id="pushpin-protected">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">protected</span></code><a class="headerlink" href="#pushpin-protected" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>同じクラス内と，その子クラス，その親クラスでのみ呼び出せる．</p>
+<p>https://qiita.com/miyapei/items/6c43e8b38317afb5fdce</p>
+</div>
+<div class="section" id="pushpin-private">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">private</span></code><a class="headerlink" href="#pushpin-private" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>同じオブジェクト内でのみ呼び出せる．</p>
+<div class="section" id="encapsulation">
+<h4>・Encapsulation（カプセル化）<a class="headerlink" href="#encapsulation" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>カプセル化とは，システムの実装方法を外部から隠すこと．オブジェクト内のデータにアクセスするには，直接データを扱う事はできず，オブジェクト内のメソッドをコールし，アクセスしなければならない．</p>
+<p><img alt="カプセル化" src="https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-static">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">static</span></code><a class="headerlink" href="#pushpin-static" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．データ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．</span>
+<span class="x">public static function aggregateDogToyEntity(Array $fetchedData)</span>
+<span class="x">{</span>
+<span class="x">    return new DogToyEntity</span>
+<span class="x">    (</span>
+<span class="x">        new ColorVO($fetchedData[&#39;dog_toy_type&#39;]),</span>
+<span class="x">        $fetchedData[&#39;dog_toy_name&#39;],</span>
+<span class="x">        $fetchedData[&#39;number&#39;],</span>
+<span class="x">        new PriceVO($fetchedData[&#39;dog_toy_price&#39;]),</span>
+<span class="x">        new ColorVO($fetchedData[&#39;color_value&#39;])</span>
+<span class="x">    );</span>
+<span class="x">}	</span>
+</pre></div>
+</div>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．</span>
+<span class="x">public static function computeExampleFee(Entity $order): Money</span>
+<span class="x">{</span>
+<span class="x">    $money = new Money($order-&gt;exampleFee);</span>
+<span class="x">    return $money;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id38">
+<h2>03-01. メソッド<a class="headerlink" href="#id38" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id39">
+<h3>:pushpin: メソッドの実装手順<a class="headerlink" href="#id39" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>その会社のシステムで使われているライブラリ</p></li>
+<li><p>PHPのデフォルト関数（引用：PHP関数リファレンス，https://www.PHP.net/manual/ja/funcref.PHP）</p></li>
+<li><p>新しいライブラリ</p></li>
+</ol>
+</div>
+<div class="section" id="id40">
+<h3>:pushpin: 値を取得するアクセサメソッドの実装<a class="headerlink" href="#id40" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Getterでは，データを取得するだけではなく，何かしらの処理を加えたうえで取得すること．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ABC {</span>
+
+<span class="x">    private $property; </span>
+
+<span class="x">    public function getEditProperty()</span>
+<span class="x">    {</span>
+<span class="x">        // 単なるGetterではなく，例外処理も加える．</span>
+<span class="x">        if(!isset($this-&gt;property){</span>
+<span class="x">            throw new ErrorException(&#39;データに値がセットされていません．&#39;)</span>
+<span class="x">        }</span>
+<span class="x">        return $this-&gt;property;</span>
+<span class="x">    }</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id41">
+<h3>:pushpin: 値を設定するアクセサメソッドの実装<a class="headerlink" href="#id41" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="setter">
+<h4>・Setter<a class="headerlink" href="#setter" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>『Mutable』なオブジェクトを実現できる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Test01 {</span>
+
+<span class="x">    private $property01;</span>
+
+<span class="x">    // Setterで$property01に値を設定</span>
+<span class="x">    public function setProperty($property01)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;property01 = $property01;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">}    </span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="construct">
+<h4>・マジックメソッドの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code><a class="headerlink" href="#construct" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>マジックメソッドの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>を持たせることで，このデータを持っていなければならないとい制約を明示することがでできる．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>だけを持たせれば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Test02 {</span>
+
+<span class="x">    private $property02;</span>
+
+<span class="x">    // コンストラクタで$property02に値を設定</span>
+<span class="x">    public function __construct($property02)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;property02 = $property02;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mutableimmutable">
+<h4>・『Mutable』と『Immutable』を実現できる理由<a class="headerlink" href="#mutableimmutable" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Test01クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property01</span></code>に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test01 = new Test01;</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;データ01の値&quot;);</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;新しいデータ01の値&quot;);</span>
+</pre></div>
+</div>
+<p>一方で，Test02クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>の値は上書きできない．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>だけを持たせれば，『Immutable』なクラスとなる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test02 = new Test02(&quot;データ02の値&quot;);</span>
+
+<span class="x">$test02 = new Test02(&quot;新しいデータ02の値&quot;);</span>
+</pre></div>
+</div>
+<p>Entityは，Mutableであるため，Setterと<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>の両方を持つことができる．ValueObjectは，Immutableのため，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>しか持つことができない．</p>
+</div>
+</div>
+<div class="section" id="id42">
+<h3>:pushpin: メソッドチェーン<a class="headerlink" href="#id42" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のような，オブジェクトAを最外層とした関係が存在しているとする．</p>
+<p>【オブジェクトA（オブジェクトBをデータに持つ）】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Obj_A{</span>
+<span class="x">    private $objB;</span>
+<span class="x">    </span>
+<span class="x">    // 返却値のデータ型を指定</span>
+<span class="x">    public function getObjB(): ObjB</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;objB;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>【オブジェクトB（オブジェクトCをデータに持つ）】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Obj_B{</span>
+<span class="x">    private $objC;</span>
+<span class="x"> </span>
+<span class="x">    // 返却値のデータ型を指定</span>
+<span class="x">    public function getObjC(): ObjC</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;objC;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>【オブジェクトC（オブジェクトDをデータに持つ）】</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Obj_C{</span>
+<span class="x">    private $objD;</span>
+<span class="x"> </span>
+<span class="x">    // 返却値のデータ型を指定</span>
+<span class="x">    public function getObjD(): ObjD</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;objD;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>以下のように，返却値のオブジェクトを用いて，より深い層に連続してアクセスしていく場合…</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$ObjA = new Obj_A;</span>
+
+<span class="x">$ObjB = $ObjA-&gt;getObjB();</span>
+
+<span class="x">$ObjC = $B-&gt;getObjB();</span>
+
+<span class="x">$ObjD = $C-&gt;getObjD();</span>
+</pre></div>
+</div>
+<p>以下のように，メソッドチェーンという書き方が可能．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$D = getObjB()-&gt;getObjC()-&gt;getObjC();</span>
+
+<span class="x">// $D には ObjD が格納されている．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-getter">
+<h3>:pushpin: マジックメソッド（Getter系）<a class="headerlink" href="#pushpin-getter" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクトに対して特定の操作が行われた時に自動的にコールされる特殊なメソッドのこと．自動的に呼び出される仕組みは謎．共通の処理を行うGetter（例えば，値を取得するだけのGetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされてコールされる．</p>
+<div class="section" id="get">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__get()</span></code><a class="headerlink" href="#get" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>定義されていないデータや，アクセス権のないデータを取得しようとした時に，代わりに呼び出される．メソッドは定義しているが，データは定義していないような状況で用いる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Example</span>
+<span class="x">{</span>
+
+<span class="x">    private $example = [];</span>
+<span class="x">    </span>
+<span class="x">    // 引数と返却値のデータ型を指定</span>
+<span class="x">    public function __get(String $name): String</span>
+<span class="x">    {</span>
+<span class="x">        echo &quot;{$name}データは存在しないため，データ値を取得できません．&quot;</span>
+<span class="x">    }</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 存在しないデータを取得．</span>
+<span class="x">$example = new Example();</span>
+<span class="x">$example-&gt;hoge;</span>
+
+<span class="x">// 結果</span>
+<span class="x">hogeデータは存在しないため，値を呼び出せません．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="call">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__call()</span></code><a class="headerlink" href="#call" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>定義されていないメソッドや，アクセス権のないメソッドを取得しようとした時に，代わりにコールされる．データは定義しているが，メソッドは定義していないような状況で用いる．</p>
+</div>
+<div class="section" id="callstatic">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__callStatic()</span></code><a class="headerlink" href="#callstatic" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+<div class="section" id="pushpin-setter">
+<h3>:pushpin: マジックメソッド（Setter系）<a class="headerlink" href="#pushpin-setter" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>定義されていないstaticメソッドや，アクセス権のないstaticメソッドを取得しようとした時に，代わりに呼び出される．自動的にコールされる仕組みは謎．共通の処理を行うSetter（例えば，値を設定するだけのSetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされて呼び出される．</p>
+<div class="section" id="set">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__set()</span></code><a class="headerlink" href="#set" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Example</span>
+<span class="x">{</span>
+
+<span class="x">    private $example = [];</span>
+<span class="x">    </span>
+<span class="x">    // 引数と返り値のデータ型を指定</span>
+<span class="x">    public function __set(String $name, String $value): String</span>
+<span class="x">    {</span>
+<span class="x">        echo &quot;{$name}データは存在しないため，{$value}を設定できません．&quot;</span>
+<span class="x">    }</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 存在しないデータに値をセット．</span>
+<span class="x">$example = new Example();</span>
+<span class="x">$example-&gt;hoge = &quot;HOGE&quot;;</span>
+
+<span class="x">// 結果</span>
+<span class="x">hogeデータは存在しないため，HOGEを設定できません．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id43">
+<h4>・マジックメソッドの<code class="docutils literal notranslate"><span class="pre">__construct()</span></code><a class="headerlink" href="#id43" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>インスタンス化時に自動的に呼び出されるメソッド．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>でのみ値の設定を行えば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Test02 {</span>
+
+<span class="x">    private $property02;</span>
+
+<span class="x">    // コンストラクタで$property02に値を設定</span>
+<span class="x">    public function __construct($property02)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;property02 = $property02;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id44">
+<h4>・【『Mutable』と『Immutable』を実現できる理由】<a class="headerlink" href="#id44" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Test01クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property01</span></code>に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test01 = new Test01;</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;データ01の値&quot;);</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;新しいデータ01の値&quot;);</span>
+</pre></div>
+</div>
+<p>一方で，Test02クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>の値は上書きできない．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>だけを持たせれば，『Immutable』なオブジェクトとなる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test02 = new Test02(&quot;データ02の値&quot;);</span>
+
+<span class="x">$test02 = new Test02(&quot;新しいデータ02の値&quot;);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id45">
+<h3>:pushpin: マジックメソッド（その他）<a class="headerlink" href="#id45" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="invoke">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__invoke()</span></code><a class="headerlink" href="#invoke" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+<div class="section" id="pushpin-recursive-call">
+<h3>:pushpin: Recursive call：再帰的プログラム<a class="headerlink" href="#pushpin-recursive-call" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>自プログラムから自身自身をコールし，実行できるプログラムのこと．</p>
+<p><strong>【具体例】</strong></p>
+<p>ある関数 <code class="docutils literal notranslate"><span class="pre">f</span> </code>の定義の中に <code class="docutils literal notranslate"><span class="pre">f</span></code>自身を呼び出している箇所がある．</p>
+<p><img alt="再帰的" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%86%8D%E5%B8%B0%E7%9A%84.png" /></p>
+<p><strong>【実装例】</strong></p>
+<p>クイックソートのアルゴリズム（※詳しくは，別ノートを参照）</p>
+<ol class="simple">
+<li><p>適当な値を基準値（Pivot）とする （※できれば中央値が望ましい）</p></li>
+<li><p>Pivotより小さい数を前方，大きい数を後方に分割する．</p></li>
+<li><p>二分割された各々のデータを，それぞれソートする．</p></li>
+<li><p>ソートを繰り返し実行する．</p></li>
+</ol>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">function quickSort(Array $array): Array </span>
+<span class="x">{</span>
+<span class="x">    // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．</span>
+<span class="x">    if (count($array) &lt;= 1) {</span>
+<span class="x">        return $array;</span>
+<span class="x">    }</span>
+
+<span class="x">    // 一番最初の値をPivotとする．</span>
+<span class="x">    $pivot = array_shift($array); </span>
+
+<span class="x">    // グループを定義</span>
+<span class="x">    $left = $right = [];</span>
+
+<span class="x">    foreach ($array as $value) {</span>
+
+<span class="x">        if ($value &lt; $pivot) {</span>
+<span class="x">        </span>
+<span class="x">            // Pivotより小さい数は左グループに格納</span>
+<span class="x">            $left[] = $value;</span>
+<span class="x">        </span>
+<span class="x">        } else {</span>
+<span class="x">        </span>
+<span class="x">            // Pivotより大きい数は右グループに格納</span>
+<span class="x">            $right[] = $value;</span>
+<span class="x">            </span>
+<span class="x">            }</span>
+
+<span class="x">    }</span>
+
+<span class="x">    // 処理の周回ごとに，結果の配列を結合．</span>
+<span class="x">    return array_merge</span>
+<span class="x">    (</span>
+<span class="x">        // 左のグループを再帰的にクイックソート．</span>
+<span class="x">        quickSort($left),</span>
+<span class="x">        </span>
+<span class="x">        // Pivotを結果に組み込む．</span>
+<span class="x">        array($pivot),</span>
+<span class="x">        </span>
+<span class="x">        // 左のグループを再帰的にクイックソート．</span>
+<span class="x">        quickSort($right)</span>
+<span class="x">    );</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 実際に使ってみる．</span>
+<span class="x">$array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);</span>
+<span class="x">$result = quickSort($array);</span>
+<span class="x">var_dump($result); </span>
+
+<span class="x">// 昇順に並び替えられている．</span>
+<span class="x">// 1, 2, 3, 4, 5, 6, 7, 8 </span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id46">
+<h3>:pushpin: データを用いた処理結果の保持<a class="headerlink" href="#id46" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">private $cachedResult;</span>
+
+<span class="x">private $funcCollection;</span>
+
+<span class="x">public function callFunc__construct()</span>
+<span class="x">{</span>
+<span class="x">    $this-&gt;funcCollection = $this-&gt;funcCollection();</span>
+<span class="x">}</span>
+
+<span class="x">// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく．</span>
+<span class="x">public function funcCollection()</span>
+<span class="x">{</span>
+<span class="x">  return  [</span>
+<span class="x">    &#39;computeProfit&#39; =&gt; [$this, &#39;computeProfit&#39;]</span>
+<span class="x">  ];</span>
+<span class="x">}</span>
+
+<span class="x">// 集計メソッド</span>
+<span class="x">public function computeProfit()</span>
+<span class="x">{</span>
+<span class="x">    // 時間のかかる集計処理;</span>
+<span class="x">}</span>
+
+<span class="x">// cacheデータに配列が設定されていた場合に値を設定し，設定されていた場合はそのまま使う．</span>
+<span class="x">public function cachedResult($funcName)</span>
+<span class="x">{</span>
+<span class="x">  if(!isset($this-&gt;cachedResult[$funcName])){</span>
+<span class="x">    </span>
+<span class="x">    // Collectionに登録されているメソッド名を出力し，call_user_funcでメソッドをコールする．</span>
+<span class="x">    $this-&gt;cachedResult[$funcName] = call_user_func($this-&gt;funcCollection[$funcName])</span>
+<span class="x">  }</span>
+<span class="x">  return $this-&gt;cachedResult[$funcName];</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id47">
+<h3>:pushpin: オプション引数<a class="headerlink" href="#id47" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>引数が与えられなければ，指定の値を渡す方法</p>
+</div>
+<div class="section" id="id48">
+<h3>:pushpin: 値の返却<a class="headerlink" href="#id48" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="return">
+<h4>・<code class="docutils literal notranslate"><span class="pre">return</span></code><a class="headerlink" href="#return" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>メソッドがコールされた場所に値を返却した後，その処理が終わる．</p>
+</div>
+<div class="section" id="yield">
+<h4>・<code class="docutils literal notranslate"><span class="pre">yield</span></code><a class="headerlink" href="#yield" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>メソッドがコールされた場所に値を返却した後，そこで終わらず，<code class="docutils literal notranslate"><span class="pre">yield</span></code>の次の処理が続く．返却値は，array型である．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">function getOneToThree(): array</span>
+<span class="x">{</span>
+<span class="x">    for ($i = 1; $i &lt;= 3; $i++) {</span>
+<span class="x">        // yield を返却した後、$i の値が維持される．</span>
+<span class="x">        yield $i;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$oneToThree = getOneToThree();</span>
+
+<span class="x">foreach ($oneToThree as $value) {</span>
+<span class="x">    echo &quot;$value\n&quot;;</span>
+<span class="x">}</span>
+
+<span class="x">// 1</span>
+<span class="x">// 2</span>
+<span class="x">// 3</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id49">
+<h2>03-02. 無名関数<a class="headerlink" href="#id49" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>特定の処理が，<code class="docutils literal notranslate"><span class="pre">private</span></code>メソッドとして切り分けるほどでもないが，他の部分と明示的に区分けたい時は，無名関数を用いるとよい．</p>
+<div class="section" id="pushpin-closure">
+<h3>:pushpin: Closure（無名関数）の定義，変数格納後のコール<a class="headerlink" href="#pushpin-closure" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="use">
+<h4>・<code class="docutils literal notranslate"><span class="pre">use()</span></code>のみに引数を渡す場合<a class="headerlink" href="#use" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$item = new Item;</span>
+
+<span class="x">// 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．</span>
+<span class="x">// use()に，親メソッド（$optionName）のスコープの$itemを渡す．</span>
+<span class="x">$optionName = function() use($item){</span>
+<span class="x">                                $item-&gt;getOptionName();</span>
+<span class="x">                            };</span>
+<span class="x">    </span>
+<span class="x">// function()には引数が設定されていないので，コール時に引数は不要．</span>
+<span class="x">echo $optionName;</span>
+<span class="x">  </span>
+<span class="x">// 出力結果</span>
+<span class="x">// オプションA</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="function-use">
+<h4>・<code class="docutils literal notranslate"><span class="pre">function()</span></code>と<code class="docutils literal notranslate"><span class="pre">use()</span></code>に引数を渡す場合<a class="headerlink" href="#function-use" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$item = new Item;</span>
+
+<span class="x">// 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．</span>
+<span class="x">// 親メソッド（$optionName）のスコープの$itemを，use()に渡す．</span>
+<span class="x">$optionName = function($para) use($item){</span>
+<span class="x">                                $item-&gt;getOptionName().$para;</span>
+<span class="x">                            };</span>
+<span class="x">    </span>
+<span class="x">// コール時に，$paramをfunction()に渡す．</span>
+<span class="x">echo $optionName(&quot;BC&quot;);</span>
+<span class="x">  </span>
+<span class="x">// 出力結果</span>
+<span class="x">// オプションABC</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id50">
+<h4>・データの値に無名関数を格納しておく裏技<a class="headerlink" href="#id50" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$item = new Item;</span>
+
+<span class="x">// 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．</span>
+<span class="x">// use()に，親メソッドのスコープの$itemを渡す．</span>
+<span class="x">// function()に，コール時に新しく$paramを渡す．</span>
+<span class="x">$option = new Option;</span>
+
+<span class="x">// データの値に無名関数を格納する．</span>
+<span class="x">$option-&gt;name = function($para) use($item){</span>
+<span class="x">                                    $item-&gt;getOptionName().$para;</span>
+<span class="x">                                };</span>
+<span class="x">    </span>
+<span class="x">// コール時に，$paramをfunction()に渡す．</span>
+<span class="x">echo $option-&gt;name(&quot;BC&quot;);</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">// オプションABC</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id51">
+<h3>:pushpin: Closure（無名関数）の定義と即コール<a class="headerlink" href="#id51" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>定義したその場でコールされる無名関数を『即時関数』と呼ぶ．無名関数をコールしたい時は，<code class="docutils literal notranslate"><span class="pre">call_user_func()</span></code>を用いる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$item = new Item;</span>
+
+<span class="x">// use()に，親メソッドのスコープの$itemを渡す．</span>
+<span class="x">// 無名関数を定義し，同時にcall_user_func()で即コールする．さらに，$paramをfunction()に渡す．</span>
+<span class="x">$optionName = call_user_func(function(&quot;BC&quot;) use($item){</span>
+<span class="x">                                  $item-&gt;getOptionName().$para;</span>
+<span class="x">                               });</span>
+<span class="x">    </span>
+<span class="x">// $paramはすでに即コール時に渡されている．</span>
+<span class="x">// これはコールではなく，即コール時に格納された返却値の出力．</span>
+<span class="x">echo $optionName;</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">// オプションABC</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id52">
+<h3>:pushpin: 高階関数とClosure（無名関数）の組み合わせ<a class="headerlink" href="#id52" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>関数を引数として受け取ったり，関数自体を返したりする関数を『高階関数』と呼ぶ．</p>
+<div class="section" id="id53">
+<h4>・無名関数を用いない場合<a class="headerlink" href="#id53" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 第一引数のみの場合</span>
+
+<span class="x">// 高階関数を定義</span>
+<span class="x">function test($callback)</span>
+<span class="x">{</span>
+<span class="x">    echo $callback();</span>
+<span class="x">}</span>
+
+<span class="x">// コールバックを定義</span>
+<span class="x">// 関数の中でコールされるため，「後で呼び出される」という意味合いから，コールバック関数といえる．</span>
+<span class="x">function callbackMethod():string</span>
+<span class="x">{</span>
+<span class="x">    return &quot;出力に成功しました．&quot;;</span>
+<span class="x">}</span>
+
+<span class="x">// 高階関数の引数として，コールバック関数を渡す</span>
+<span class="x">test(&quot;callbackMethod&quot;);</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">// 出力に成功しました．</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 第一引数と第二引数の場合</span>
+
+<span class="x">// 高階関数を定義</span>
+<span class="x">public function higherOrder($param, $callback)</span>
+<span class="x">{</span>
+<span class="x">    return $callback($param);</span>
+<span class="x">}</span>
+
+<span class="x">// コールバック関数を定義</span>
+<span class="x">public function callbackMethod($param)</span>
+<span class="x">{</span>
+<span class="x">    return $param.&quot;の出力に成功しました．&quot;;</span>
+<span class="x">}</span>
+<span class="x"> </span>
+<span class="x">// 高階関数の第一引数にコールバック関数の引数，第二引数にコールバック関数を渡す</span>
+<span class="x">higherOrder(&quot;第一引数&quot;, &quot;callbackMethod&quot;);</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">// 第一引数の出力に成功しました．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id54">
+<h4>・無名関数を用いる場合<a class="headerlink" href="#id54" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 高階関数のように，関数を引数として渡す．</span>
+<span class="x">public function higherOrder($parentVar, $callback)</span>
+<span class="x">{</span>
+<span class="x">    $parentVar = &quot;&amp;親メソッドのスコープの変数&quot;;</span>
+<span class="x">    return $callback($parentVar);</span>
+<span class="x">}</span>
+
+<span class="x">// 第二引数の無名関数．関数の中でコールされるため，「後でコールされる」という意味合いから，コールバック関数といえる．</span>
+<span class="x">// コールバック関数は再利用されないため，名前をつけずに無名関数とすることが多い．</span>
+<span class="x">// 親メソッドのスコープで定義されている変数を引数として渡す．（普段よくやっている値渡しと同じ）</span>
+<span class="x">higherOrder($parentVar, function() use($parentVar)</span>
+<span class="x">        {</span>
+<span class="x">            return $parentVar.&quot;の出力に成功しました．&quot;;</span>
+<span class="x">        }</span>
+<span class="x">    );</span>
+<span class="x">    </span>
+<span class="x">// 出力結果</span>
+<span class="x">// 親メソッドのスコープの変数の出力に成功しました．	</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id55">
+<h3>:pushpin: 高階関数を使いこなす！<a class="headerlink" href="#id55" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @var array</span>
+<span class="x"> */</span>
+<span class="x">protected $properties;</span>
+
+<span class="x">// 非無名メソッドあるいは無名メソッドを引数で渡す．</span>
+<span class="x">public function Shiborikomi($callback)</span>
+<span class="x">{</span>
+<span class="x">    if (!is_callable($callback)) {</span>
+<span class="x">    throw new \LogicException;</span>
+<span class="x">    }</span>
+
+<span class="x">    // 自身が持つ配列型のデータを加工し，再格納する．</span>
+<span class="x">    $properties = [];</span>
+<span class="x">    foreach ($this-&gt;properties as $property) {</span>
+<span class="x">        </span>
+<span class="x">        // 引数の無名関数によって，データに対する加工方法が異なる．</span>
+<span class="x">        // 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．</span>
+<span class="x">        $returned = call_user_func($property, $callback);</span>
+<span class="x">        if ($returned) {</span>
+<span class="x">        </span>
+<span class="x">            // 再格納．</span>
+<span class="x">            $properties[] = $returned;</span>
+<span class="x">        }</span>
+<span class="x">    }</span>
+
+<span class="x">    // 他のデータは静的に扱ったうえで，自身を返す．</span>
+<span class="x">    return new static($properties);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="php">
+<h2>04-01. PHPにおけるデータ構造の実装方法<a class="headerlink" href="#php" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ハードウェアが処理を行う時に，データの集合を効率的に扱うためのデータ格納形式をデータ構造という．データ構造のPHPによる実装方法を以下に示す．</p>
+<div class="section" id="pushpin-array">
+<h3>:pushpin: Array型<a class="headerlink" href="#pushpin-array" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>同じデータ型のデータを並べたデータ格納様式のこと．</p>
+<div class="section" id="id56">
+<h4>・インデックス配列<a class="headerlink" href="#id56" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>番号キーごとに値が格納されたArray型のこと．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [0] =&gt; A</span>
+<span class="x">    [1] =&gt; B</span>
+<span class="x">    [2] =&gt; C</span>
+<span class="x">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id57">
+<h4>・多次元配列<a class="headerlink" href="#id57" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>配列の中に配列をもつArray型のこと．配列の入れ子構造が２段の場合，『二次元配列』と呼ぶ．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">( </span>
+<span class="x">    [0] =&gt; Array</span>
+<span class="x">        (</span>
+<span class="x">            [0] =&gt; リンゴ</span>
+<span class="x">            [1] =&gt; イチゴ</span>
+<span class="x">            [2] =&gt; トマト</span>
+<span class="x">        )</span>
+
+<span class="x">    [1] =&gt; Array</span>
+<span class="x">        (</span>
+<span class="x">            [0] =&gt; メロン</span>
+<span class="x">            [1] =&gt; キュウリ</span>
+<span class="x">            [2] =&gt; ピーマン</span>
+<span class="x">        )</span>
+<span class="x">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id58">
+<h4>・連想配列<a class="headerlink" href="#id58" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>キー名（赤，緑，黄，果物，野菜）ごとに値が格納されたArray型のこと．下の例は，二次元配列かつ連想配列である．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">Array</span>
+<span class="x">(</span>
+<span class="x">    [赤] =&gt; Array</span>
+<span class="x">        (</span>
+<span class="x">            [果物] =&gt; リンゴ</span>
+<span class="x">            [果物] =&gt; イチゴ</span>
+<span class="x">            [野菜] =&gt; トマト</span>
+<span class="x">        )</span>
+
+<span class="x">    [緑] =&gt; Array</span>
+<span class="x">        (</span>
+<span class="x">            [果物] =&gt; メロン</span>
+<span class="x">            [野菜] =&gt; キュウリ</span>
+<span class="x">            [野菜] =&gt; ピーマン</span>
+<span class="x">        )</span>
+<span class="x">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id59">
+<h4>・配列内の要素の走査（スキャン）<a class="headerlink" href="#id59" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>配列内の要素を順に調べていくことを『走査（スキャン）』という．例えば，<code class="docutils literal notranslate"><span class="pre">foreach()</span></code>は，配列内の全ての要素を走査する処理である．下図では，連想配列が表現されている．</p>
+<p><img alt="配列の走査" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E9%85%8D%E5%88%97%E3%81%AE%E8%B5%B0%E6%9F%BB.png" /></p>
+</div>
+<div class="section" id="id60">
+<h4>・内部ポインタを用いた配列要素の出力<a class="headerlink" href="#id60" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>『内部ポインタ』とは，配列において，参照したい要素を位置で指定するためのカーソルのこと．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$array = array(&quot;あ&quot;, &quot;い&quot;, &quot;う&quot;);</span>
+
+<span class="x">// 内部ポインタが現在指定している要素を出力．</span>
+<span class="x">echo current($array); // あ</span>
+
+<span class="x">// 内部ポインタを一つ進め，要素を出力．</span>
+<span class="x">echo next($array); // い</span>
+
+<span class="x">// 内部ポインタを一つ戻し，要素を出力．</span>
+<span class="x">echo prev($array); // あ</span>
+
+<span class="x">// 内部ポインタを最後まで進め，要素を出力．</span>
+<span class="x">echo end($array); // う</span>
+
+<span class="x">// 内部ポインタを最初まで戻し，要素を出力</span>
+<span class="x">echo reset($array); // あ</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pushpin-linkedlist">
+<h3>:pushpin: LinkedList型<a class="headerlink" href="#pushpin-linkedlist" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PHPで用いることはあまりないデータ格納様式．詳しくは，JavaにおけるLinkedList型を参照せよ．</p>
+<div class="section" id="phplist">
+<h4>・PHPの<code class="docutils literal notranslate"><span class="pre">list()</span></code>とは何なのか<a class="headerlink" href="#phplist" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>PHPの<code class="docutils literal notranslate"><span class="pre">list()</span></code>は，List型とは意味合いが異なる．配列の要素一つ一つを変数に格納したい場合，List型を使わなければ，冗長ではあるが，以下のように実装する必要がある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$array = array(&quot;あ&quot;, &quot;い&quot;, &quot;う&quot;);</span>
+<span class="x">$a = $array[0];</span>
+<span class="x">$i = $array[1];</span>
+<span class="x">$u = $array[2];</span>
+
+<span class="x">echo $a.$i.$u; // あいう</span>
+</pre></div>
+</div>
+<p>しかし，以下の様に，<code class="docutils literal notranslate"><span class="pre">list()</span></code>を使うことによって，複数の変数への格納を一行で実装することができる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">list($a, $i, $u) = array(&quot;あ&quot;, &quot;い&quot;, &quot;う&quot;);</span>
+
+<span class="x">echo $a.$i.$u; // あいう</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pushpin-queue">
+<h3>:pushpin: Queue型<a class="headerlink" href="#pushpin-queue" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="Queue1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue1.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Queue2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue2.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Queue3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Queue3.gif" /></p>
+<p>PHPでは，<code class="docutils literal notranslate"><span class="pre">array_push()</span></code>と<code class="docutils literal notranslate"><span class="pre">array_shift()</span></code>を組み合わせることで実装できる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$array = array(&quot;Blue&quot;, &quot;Green&quot;);</span>
+
+<span class="x">// 引数を，配列の最後に，要素として追加する．</span>
+<span class="x">array_push($array, &quot;Red&quot;);</span>
+<span class="x">print_r($array);</span>
+
+<span class="x">// 出力結果</span>
+
+<span class="x">//	Array</span>
+<span class="x">//	(</span>
+<span class="x">//		[0] =&gt; Blue</span>
+<span class="x">//		[1] =&gt; Green</span>
+<span class="x">//		[2] =&gt; Red</span>
+<span class="x">//	)</span>
+
+<span class="x">// 配列の最初の要素を取り出す．</span>
+<span class="x">$theFirst= array_shift($array);</span>
+<span class="x">print_r($array);</span>
+
+<span class="x">// 出力結果</span>
+
+<span class="x">//	Array</span>
+<span class="x">//	(</span>
+<span class="x">//    [0] =&gt; Green</span>
+<span class="x">//    [1] =&gt; Red</span>
+<span class="x">//	)</span>
+
+<span class="x">// 取り出された値の確認</span>
+<span class="x">echo $theFirst; // Blue</span>
+</pre></div>
+</div>
+<div class="section" id="queue">
+<h4>・メッセージQueue<a class="headerlink" href="#queue" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる．また，受信側の好きなタイミングでメッセージを取り出すことができる．</p>
+<p><img alt="メッセージキュー" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%82%AD%E3%83%A5%E3%83%BC.jpg" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-stack">
+<h3>:pushpin: Stack型<a class="headerlink" href="#pushpin-stack" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>PHPでは，<code class="docutils literal notranslate"><span class="pre">array_push()</span></code>と<code class="docutils literal notranslate"><span class="pre">array_pop()</span></code>で実装可能．</p>
+<p><img alt="Stack1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack1.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Stack2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack2.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="Stack3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Stack3.gif" /></p>
+</div>
+<div class="section" id="pushpin-tree">
+<h3>:pushpin: Tree型<a class="headerlink" href="#pushpin-tree" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id61">
+<h4>・二分探索木<a class="headerlink" href="#id61" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>各ノードにデータが格納されている．</p>
+<p><img alt="二分探索木" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E4%BA%8C%E5%88%86%E6%8E%A2%E7%B4%A2%E6%9C%A81.gif" /></p>
+</div>
+<div class="section" id="id62">
+<h4>・ヒープ<a class="headerlink" href="#id62" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Priority Queueを実現するときに用いられる．各ノードにデータが格納されている．</p>
+<p><img alt="ヒープ1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%92%E3%83%BC%E3%83%971.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="ヒープ1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%92%E3%83%BC%E3%83%972.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt="ヒープ2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%92%E3%83%BC%E3%83%973.gif" /></p>
+<p><img alt="矢印_80x82" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9F%A2%E5%8D%B0_80x82.jpg" /></p>
+<p><img alt=". " src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%92%E3%83%BC%E3%83%974.gif" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="java">
+<h2>04-02. Javaにおけるデータ構造の実装方法<a class="headerlink" href="#java" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>データ構造のJavaによる実装方法を以下に示す．</p>
+<div class="section" id="id63">
+<h3>:pushpin: Array型<a class="headerlink" href="#id63" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="arraylist">
+<h4>・ArrayList<a class="headerlink" href="#arraylist" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ArrayListクラスによって実装されるArray型．PHPのインデックス配列に相当する．</p>
+</div>
+<div class="section" id="hashmap">
+<h4>・HashMap<a class="headerlink" href="#hashmap" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>HashMapクラスによって実装されるArray型．PHPの連想配列に相当する．</p>
+</div>
+</div>
+<div class="section" id="id64">
+<h3>:pushpin: LinkedList型<a class="headerlink" href="#id64" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>値をポインタによって順序通り並べたデータ格納形式のこと．</p>
+<div class="section" id="list">
+<h4>・単方向List<a class="headerlink" href="#list" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p555-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-1.gif" /></p>
+</div>
+<div class="section" id="id65">
+<h4>・双方向List<a class="headerlink" href="#id65" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p555-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-2.gif" /></p>
+</div>
+<div class="section" id="id66">
+<h4>・循環List<a class="headerlink" href="#id66" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p555-3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p555-3.gif" /></p>
+</div>
+</div>
+<div class="section" id="id67">
+<h3>:pushpin: Queue型<a class="headerlink" href="#id67" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+<div class="section" id="id68">
+<h3>:pushpin: Stack型<a class="headerlink" href="#id68" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+<div class="section" id="id69">
+<h3>:pushpin: Tree型<a class="headerlink" href="#id69" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="id70">
+<h2>04-03. データ型<a class="headerlink" href="#id70" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id71">
+<h3>:pushpin: スカラー型<a class="headerlink" href="#id71" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="int">
+<h4>・int<a class="headerlink" href="#int" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="float">
+<h4>・float<a class="headerlink" href="#float" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="string">
+<h4>・string<a class="headerlink" href="#string" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="boolean">
+<h4>・boolean<a class="headerlink" href="#boolean" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">T／F</th>
+<th>データの種類</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>FALSE</strong></td>
+<td><code>$var =</code></td>
+<td>何も格納されていない変数</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td><code>False</code></td>
+<td>文字としてのFalse</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td><code>0</code></td>
+<td>数字、文字列</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td><code>""</code></td>
+<td>空文字</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>array()</td>
+<td>要素数が0個の配列</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>NULL</td>
+<td>NULL値</td>
+</tr>
+<tr>
+<td align="center"><strong>TRUE</strong></td>
+<td>上記以外の値</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="id72">
+<h3>:pushpin: 複合型<a class="headerlink" href="#id72" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="array">
+<h4>・array<a class="headerlink" href="#array" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="object">
+<h4>・object<a class="headerlink" href="#object" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">Fruit Object</span>
+<span class="x">(</span>
+<span class="x">    [id:private] =&gt; 1</span>
+<span class="x">    [name:private] =&gt; リンゴ</span>
+<span class="x">    [price:private] =&gt; 100</span>
+<span class="x">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id73">
+<h3>:pushpin: その他のデータ型<a class="headerlink" href="#id73" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="null">
+<h4>・null<a class="headerlink" href="#null" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="date">
+<h4>・date<a class="headerlink" href="#date" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>フォーマット</th>
+<th>実装方法</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日付</td>
+<td>2019-07-07</td>
+<td>区切り記号なし、ドット、スラッシュなども可能</td>
+</tr>
+<tr>
+<td>時間</td>
+<td>19:07:07</td>
+<td>区切り記号なし、も可能</td>
+</tr>
+<tr>
+<td>日付と時間</td>
+<td>2019-07-07 19:07:07</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>タイムスタンプ（秒）</td>
+<td>1562494027</td>
+<td>1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="section" id="id74">
+<h2>04-04. 定数<a class="headerlink" href="#id74" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id75">
+<h3>:pushpin: 定数が役に立つ場面<a class="headerlink" href="#id75" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>計算処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．例えば，ValueObjectにおける定数がある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class requiedTime</span>
+<span class="x">{</span>
+<span class="x">  // 判定値，歩行速度の目安，車速度の目安，を定数で定義する．</span>
+<span class="x">  const JUDGMENT_MINUTE = 21;</span>
+<span class="x">  const WALKING_SPEED_PER_MINUTE = 80;</span>
+<span class="x">  const CAR_SPEED_PER_MINUTE = 400;</span>
+
+<span class="x">  </span>
+<span class="x">  private $distance;</span>
+
+<span class="x">  </span>
+<span class="x">  public function __construct(int $distance)</span>
+<span class="x">  {</span>
+<span class="x">    $this-&gt;distance = $distance;</span>
+<span class="x">  }</span>
+
+<span class="x">  </span>
+<span class="x">  public function isMinuteByWalking()</span>
+<span class="x">  {</span>
+<span class="x">    if ($this-&gt;distance * 1000 / self::WALKING_SPEED_PER_MINUTE &lt; self::JUDGMENT_MINUTE){</span>
+<span class="x">      return true; </span>
+<span class="x">    }</span>
+
+<span class="x">    return false;</span>
+<span class="x">  }  </span>
+
+<span class="x">  </span>
+<span class="x">  public function minuteByWalking()</span>
+<span class="x">  {</span>
+<span class="x">    $minute = $this-&gt;distance * 1000 / self::WALKING_SPEED_PER_MINUTE;</span>
+<span class="x">    return ceil($minute);</span>
+<span class="x">  }</span>
+
+<span class="x">  </span>
+<span class="x">  public function minuteByCar()</span>
+<span class="x">  {</span>
+<span class="x">    $minute = $this-&gt;distance * 1000 / self::CAR_SPEED_PER_MINUTE;</span>
+<span class="x">    return ceil($minute);</span>
+<span class="x">  }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id76">
+<h3>:pushpin: マジカル定数<a class="headerlink" href="#id76" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>自動的に値が格納されている定数．</p>
+<div class="section" id="function">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__FUNCTION__</span></code><a class="headerlink" href="#function" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>この定数がコールされたメソッド名が格納されている．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ExampleA</span>
+<span class="x">{</span>
+<span class="x">  public function a()</span>
+<span class="x">  {</span>
+<span class="x">    echo __FUNCTION__;</span>
+<span class="x">  }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$exampleA = new ExmapleA;</span>
+<span class="x">$example-&gt;a(); // a が返却される．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="method">
+<h4>・<code class="docutils literal notranslate"><span class="pre">__METHOD__</span></code><a class="headerlink" href="#method" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>この定数がコールされたクラス名とメソッド名が，<code class="docutils literal notranslate"><span class="pre">{クラス名}::{メソッド名}</span></code>の形式で格納されている．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ExampleB</span>
+<span class="x">{</span>
+<span class="x">  public function b()</span>
+<span class="x">  {</span>
+<span class="x">    echo __METHOD__;</span>
+<span class="x">  }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$exampleB = new ExmapleB;</span>
+<span class="x">$exampleB-&gt;b(); // ExampleB::b が返却される．</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id77">
+<h2>04-05. 変数<a class="headerlink" href="#id77" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id78">
+<h3>:pushpin: 変数展開<a class="headerlink" href="#id78" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>文字列の中で，変数の中身を取り出すことを『変数展開』と呼ぶ．</p>
+<p>※Paizaで検証済み．</p>
+<div class="section" id="id79">
+<h4>・シングルクオーテーションによる変数展開<a class="headerlink" href="#id79" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$fruit = &quot;リンゴ&quot;;</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo &#39;これは$fruitです．&#39;; // これは，$fruitです．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id80">
+<h4>・シングルクオーテーションと波括弧による変数展開<a class="headerlink" href="#id80" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$fruit = &quot;リンゴ&quot;;</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo &#39;これは{$fruit}です．&#39;; // これは，{$fruit}です．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id81">
+<h4>・ダブルクオーテーションによる変数展開<a class="headerlink" href="#id81" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>変数の前後に半角スペースを置いた場合にのみ，変数は展開される．（※半角スペースがないとエラーになる）</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$fruit = &quot;リンゴ&quot;;</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo &quot;これは $fruit です．&quot;; // これは リンゴ です．</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id82">
+<h4>・ダブルクオーテーションと波括弧による変数展開<a class="headerlink" href="#id82" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>波括弧を用いると，明示的に変数として扱うことができる．これによって，変数の前後に半角スペースを置かなくとも，変数は展開される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$fruit = &quot;リンゴ&quot;;</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo &quot;これは{$fruit}です．&quot;; // これは，リンゴです．</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id83">
+<h3>:pushpin: 参照渡しと値渡し<a class="headerlink" href="#id83" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id84">
+<h4>・参照渡し<a class="headerlink" href="#id84" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>「参照渡し」とは，変数に代入した値の参照先（メモリアドレス）を渡すこと．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$value = 1;</span>
+<span class="x">$result = &amp;$value; // 値の入れ物を参照先として代入</span>
+</pre></div>
+</div>
+<p><strong>【実装例】</strong><code class="docutils literal notranslate"><span class="pre">$b</span></code>には，<code class="docutils literal notranslate"><span class="pre">$a</span></code>の参照によって10が格納される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$a = 2;</span>
+<span class="x">$b = &amp;$a;  // 変数aを&amp;をつけて代入</span>
+<span class="x">$a = 10;    // 変数aの値を変更</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo $b; // 10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id85">
+<h4>・値渡し<a class="headerlink" href="#id85" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>「値渡し」とは，変数に代入した値のコピーを渡すこと．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$value = 1;</span>
+<span class="x">$result = $value; // 1をコピーして代入</span>
+</pre></div>
+</div>
+<p><strong>【実装例】</strong><code class="docutils literal notranslate"><span class="pre">$b</span></code>には，<code class="docutils literal notranslate"><span class="pre">$a</span></code>の一行目の格納によって2が格納される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$a = 2;</span>
+<span class="x">$b = $a;  // 変数aを代入</span>
+<span class="x">$a = 10;  // 変数aの値を変更</span>
+
+<span class="x">// 出力結果</span>
+<span class="x">echo $b; // 2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id86">
+<h2>05-01. 演算子<a class="headerlink" href="#id86" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id87">
+<h3>:pushpin: 等価演算子を用いたインスタンスの比較<a class="headerlink" href="#id87" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id88">
+<h4>・イコールが2つの場合<a class="headerlink" href="#id88" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>同じオブジェクトから別々に作られたインスタンスであっても，『同じもの』として認識される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Example {};</span>
+
+<span class="x">if(new Example == new Example){</span>
+<span class="x">    echo &#39;同じです&#39;;</span>
+<span class="x">} else { echo &#39;異なります&#39;; }</span>
+
+<span class="x">// 実行結果</span>
+<span class="x">// 同じです</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id89">
+<h4>・イコールが3つの場合<a class="headerlink" href="#id89" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>同じオブジェクトから別々に作られたインスタンスであっても，『異なるもの』として認識される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Example {};</span>
+
+<span class="x">if(new Example === new Example){</span>
+<span class="x">    echo &#39;同じです&#39;;</span>
+<span class="x">} else { echo &#39;異なります&#39;; }</span>
+
+<span class="x">// 実行結果</span>
+<span class="x">// 異なります</span>
+</pre></div>
+</div>
+<p>同一のインスタンスの場合のみ，『同じもの』として認識される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class Example {};</span>
+
+<span class="x">$a = $b = new Example;</span>
+
+<span class="x">if($a === $b){</span>
+<span class="x">    echo &#39;同じです&#39;;</span>
+<span class="x">} else { echo &#39;異なります&#39;; }</span>
+
+<span class="x">// 実行結果</span>
+<span class="x">// 同じです</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id90">
+<h3>:pushpin: キャスト演算子<a class="headerlink" href="#id90" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$var = 10; // $varはInt型．</span>
+
+<span class="x">// キャスト演算子でデータ型を変換</span>
+<span class="x">$var = (string) $var; // $varはString型</span>
+</pre></div>
+</div>
+<p><strong>【その他のキャスト演算子】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// Int型</span>
+<span class="x">$var = (int) $var;</span>
+
+<span class="x">// Boolean型</span>
+<span class="x">$var = (bool) $var;</span>
+
+<span class="x">// Float型</span>
+<span class="x">$var = (float) $var;</span>
+
+<span class="x">// Array型</span>
+<span class="x">$var = (array) $var;</span>
+
+<span class="x">// Object型</span>
+<span class="x">$var = (object) $var;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id91">
+<h3>:pushpin: 正規表現とパターン演算子<a class="headerlink" href="#id91" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id92">
+<h4>・正規表現を用いた文字列検索<a class="headerlink" href="#id92" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id93">
+<h4>・オプションとしてのパターン演算子<a class="headerlink" href="#id93" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// jpegの大文字小文字</span>
+<span class="x">preg_match(&#39;/jpeg$/i&#39;, $x);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id94">
+<h2>05-02. 条件式<a class="headerlink" href="#id94" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-if-elseif-else-vs-switch-case-break">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code> vs. <code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code><a class="headerlink" href="#pushpin-if-elseif-else-vs-switch-case-break" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例】</strong></p>
+<p>曜日を判定し，文字列を出力する．</p>
+<div class="section" id="if-elseif-else">
+<h4>・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code><a class="headerlink" href="#if-elseif-else" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 変数に Tue を格納</span>
+<span class="x">$weeks = &#39;Tue&#39;;</span>
+<span class="x"> </span>
+<span class="x">// if文でTueに該当したら&#39;火曜日&#39;と表示する．</span>
+<span class="x">if ($weeks == &#39;Mon&#39;) {</span>
+<span class="x">  echo &#39;月曜日&#39;;</span>
+<span class="x">} else if($weeks == &#39;Tue&#39;){</span>
+<span class="x">  echo &#39;火曜日&#39;;</span>
+<span class="x">} else if($weeks == &#39;Wed&#39;){</span>
+<span class="x">  echo &#39;水曜日&#39;;</span>
+<span class="x">} else if($weeks == &#39;Thu&#39;){</span>
+<span class="x">  echo &#39;木曜日&#39;;</span>
+<span class="x">} else if($weeks == &#39;Fri&#39;){</span>
+<span class="x">  echo &#39;金曜日&#39;;</span>
+<span class="x">} else if($weeks == &#39;Sat&#39;){</span>
+<span class="x">  echo &#39;土曜日&#39;;</span>
+<span class="x">} else {</span>
+<span class="x">  echo &#39;日曜日&#39;;</span>
+<span class="x">}</span>
+
+<span class="x">// 実行結果</span>
+<span class="x">// 火曜日</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch-case-break">
+<h4>・<code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code><a class="headerlink" href="#switch-case-break" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>定数ごとに処理が変わる時，こちらの方が可読性が高い．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 変数に Tue を格納</span>
+<span class="x">$weeks = &#39;Tue&#39;;</span>
+<span class="x"> </span>
+<span class="x">// 条件分岐でTueに該当したら&#39;火曜日&#39;と表示する．breakでif文を抜けなければ，全て実行されてしまう．</span>
+<span class="x">switch ($weeks) {</span>
+<span class="x">  case &#39;Mon&#39;:</span>
+<span class="x">    echo &#39;月曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Tue&#39;:</span>
+<span class="x">    echo &#39;火曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Wed&#39;:</span>
+<span class="x">    echo &#39;水曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Thu&#39;:</span>
+<span class="x">    echo &#39;木曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Fri&#39;:</span>
+<span class="x">    echo &#39;金曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Sat&#39;:</span>
+<span class="x">    echo &#39;土曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  case &#39;Sun&#39;:</span>
+<span class="x">    echo &#39;日曜日&#39;;</span>
+<span class="x">    break;</span>
+<span class="x">  default:</span>
+<span class="x">    echo &#39;曜日がありません&#39;;  </span>
+<span class="x">}</span>
+
+<span class="x">// 実行結果</span>
+<span class="x">// 火曜日</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pushpin-if-else">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>はできるだけ用いずに初期値と上書き<a class="headerlink" href="#pushpin-if-else" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="if-else">
+<h4>・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>を用いた場合<a class="headerlink" href="#if-else" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>可読性が悪いため，避けるべき．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// マジックナンバーを使わずに，定数として定義</span>
+<span class="x">const noOptionItem = 0;</span>
+
+<span class="x">// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．</span>
+<span class="x">if(!empty($routeEntity-&gt;options)) {</span>
+<span class="x">    foreach ($routeEntity-&gt;options as $option) {</span>
+<span class="x">    </span>
+<span class="x">        // if文を通過した場合，メソッドの返却値が格納される．</span>
+<span class="x">        // 通過しない場合，定数が格納される．</span>
+<span class="x">        if ($option-&gt;isOptionItemA()) {</span>
+<span class="x">            $result[&#39;optionItemA&#39;] = $option-&gt;optionItemA();</span>
+<span class="x">        } else {</span>
+<span class="x">            $result[&#39;optionItemA&#39;] = noOptionItem;</span>
+<span class="x">            }</span>
+<span class="x">        </span>
+<span class="x">        if ($option-&gt;isOptionItemB()) {</span>
+<span class="x">            $result[&#39;optionItemB&#39;] = $option-&gt;optionItemB();</span>
+<span class="x">        } else {</span>
+<span class="x">            $result[&#39;optionItemB&#39;] = noOptionItem;</span>
+<span class="x">            }</span>
+<span class="x">            </span>
+<span class="x">        if ($option-&gt;isOptionItemC()) {</span>
+<span class="x">            $result[&#39;optionItemC&#39;] = $option-&gt;optionItemC();</span>
+<span class="x">        } else {</span>
+<span class="x">            $result[&#39;optionItemC&#39;] = noOptionItem;</span>
+<span class="x">            }		</span>
+<span class="x">    };</span>
+<span class="x">}</span>
+
+<span class="x">return $result;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id95">
+<h4>・初期値と上書きのロジックを用いた場合<a class="headerlink" href="#id95" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>よりすっきりした書き方になる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// マジックナンバーを使わずに，定数として定義</span>
+<span class="x">const noOptionItem = 0;</span>
+
+<span class="x">// 初期値0を設定</span>
+<span class="x">$result[&#39;optionItemA&#39;] = noOptionItem;</span>
+<span class="x">$result[&#39;optionItemB&#39;] = noOptionItem;</span>
+<span class="x">$result[&#39;optionItemC&#39;] = noOptionItem;</span>
+
+<span class="x">// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．</span>
+<span class="x">if(!empty($routeEntity-&gt;options)) {</span>
+<span class="x">    foreach ($routeEntity-&gt;options as $option) {</span>
+<span class="x">    </span>
+<span class="x">        // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．</span>
+<span class="x">        // 通過しない場合，初期値0が用いられる．</span>
+<span class="x">        if ($option-&gt;isOptionItemA()) {</span>
+<span class="x">            $result[&#39;optionItemA&#39;] = $option-&gt;optionItemA();</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">        if ($option-&gt;isOptionItemB()) {</span>
+<span class="x">            $result[&#39;optionItemB&#39;] = $option-&gt;optionItemB();</span>
+<span class="x">        }		</span>
+
+<span class="x">        if ($option-&gt;isOptionItemC()) {</span>
+<span class="x">            $result[&#39;optionItemC&#39;] = $option-&gt;optionItemC();</span>
+<span class="x">        }</span>
+<span class="x">    };</span>
+<span class="x">}</span>
+
+<span class="x">return $result;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pushpin-if-elseif-else">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>は用いずに早期リターン<a class="headerlink" href="#pushpin-if-elseif-else" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id96">
+<h4>・決定表を用いた条件分岐の整理<a class="headerlink" href="#id96" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<p>うるう年であるかを判定し，文字列を出力する．以下の手順で設計と実装を行う．</p>
+<ol class="simple">
+<li><p>条件分岐の処理順序の概要を日本で記述する．</p></li>
+<li><p>記述内容を，条件部と動作部に分解し，決定表で表す．</p></li>
+<li><p>決定表を，流れ図で表す．</p></li>
+</ol>
+<p><img alt="決定表" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%B1%BA%E5%AE%9A%E8%A1%A8.png" /></p>
+</div>
+<div class="section" id="id97">
+<h4>・<code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">elseif</span></code>-<code class="docutils literal notranslate"><span class="pre">else</span></code>を用いた場合<a class="headerlink" href="#id97" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>可読性が悪いため，避けるべき．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 西暦を格納する．</span>
+<span class="x">$year = N;</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">public function leapYear(Int $year): String</span>
+<span class="x">{</span>
+
+<span class="x">    // (5)</span>
+<span class="x">    if($year &lt;= 0){</span>
+<span class="x">        throw new Exception(&quot;負の数は判定できません．&quot;);</span>
+
+<span class="x">    // (4)</span>
+<span class="x">    } elseif($year % 4 != 0 ){</span>
+<span class="x">        return &quot;平年&quot;;</span>
+
+<span class="x">    // (3)</span>
+<span class="x">    } elseif($year % 100 != 0){</span>
+<span class="x">        return &quot;うるう年&quot;;</span>
+
+<span class="x">    // (2)</span>
+<span class="x">    } elseif($year % 400 != 0){</span>
+<span class="x">        return &quot;平年&quot;;</span>
+
+<span class="x">    // (1)</span>
+<span class="x">    } else{</span>
+<span class="x">        return &quot;うるう年&quot;;</span>
+<span class="x">        </span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ifreturn">
+<h4>・<code class="docutils literal notranslate"><span class="pre">if</span></code>と<code class="docutils literal notranslate"><span class="pre">return</span></code>を用いた場合<a class="headerlink" href="#ifreturn" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">return</span></code>を用いることで，<code class="docutils literal notranslate"><span class="pre">if</span></code>が入れ子状になることを防ぐことができる．これを，早期リターンともいう．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 西暦を格納する．</span>
+<span class="x">$year = N;</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">public function leapYear(Int $year): String</span>
+<span class="x">{</span>
+
+<span class="x">    // (5)</span>
+<span class="x">    if($year &lt;= 0){</span>
+<span class="x">        throw new Exception(&quot;負の数は判定できません．&quot;);</span>
+<span class="x">    }</span>
+
+<span class="x">    // (4)</span>
+<span class="x">    if($year % 4 != 0 ){</span>
+<span class="x">        return &quot;平年&quot;;</span>
+<span class="x">    }</span>
+
+<span class="x">    // (3)</span>
+<span class="x">    if($year % 100 != 0){</span>
+<span class="x">        return &quot;うるう年&quot;;</span>
+<span class="x">    }</span>
+
+<span class="x">    // (2)</span>
+<span class="x">    if($year % 400 != 0){</span>
+<span class="x">        return &quot;平年&quot;;</span>
+<span class="x">    }</span>
+
+<span class="x">    // (1)</span>
+<span class="x">    return &quot;うるう年&quot;;</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id98">
+<h4>・<code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code>を用いた場合<a class="headerlink" href="#id98" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">switch</span></code>-<code class="docutils literal notranslate"><span class="pre">case</span></code>-<code class="docutils literal notranslate"><span class="pre">break</span></code>によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，<code class="docutils literal notranslate"><span class="pre">break</span></code>ではなく<code class="docutils literal notranslate"><span class="pre">return</span></code>を用いている．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">public function leapYear(Int $year): String</span>
+<span class="x">{</span>
+<span class="x">    switch(true) {</span>
+<span class="x">    </span>
+<span class="x">    // (5)</span>
+<span class="x">    case($year &lt;= 0):</span>
+<span class="x">        throw new Exception(&quot;負の数は判定できません．&quot;);</span>
+
+<span class="x">    // (4)</span>
+<span class="x">        case($year % 4 != 0 ):</span>
+<span class="x">        return &quot;平年&quot;;</span>
+
+<span class="x">    // (3)</span>
+<span class="x">    case($year % 100 != 0):</span>
+<span class="x">        return &quot;うるう年&quot;;</span>
+
+<span class="x">    // (2)</span>
+<span class="x">    case($year % 400 != 0):</span>
+<span class="x">        return &quot;平年&quot;;</span>
+
+<span class="x">    // (1)</span>
+<span class="x">    dafault:</span>
+<span class="x">        return &quot;うるう年&quot;;</span>
+<span class="x">    }</span>
+<span class="x">      </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id99">
+<h3>:pushpin: オブジェクトごとにデータの値の有無が異なる時の出力<a class="headerlink" href="#id99" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 全てのオブジェクトが必ず持っているわけではなく，</span>
+<span class="x">$csv[&#39;オリコ払い&#39;] = $order-&gt;oricoCondition ? $order-&gt;oricoCondition-&gt;</span>
+
+<span class="x">// 全てのオブジェクトが必ず持っているデータの場合には不要</span>
+<span class="x">$csv[&#39;ID&#39;] = $order-&gt;id;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id100">
+<h2>05-03. 例外処理，ログ出力，バリデーション<a class="headerlink" href="#id100" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>データベースから取得した後に直接表示する値の場合，データベースでNullにならないように制約をかけられるため，変数の中身に例外判定を行う必要はない．しかし，データベースとは別に新しく作られる値の場合，バリデーションと例外判定が必要になる．</p>
+<div class="section" id="id101">
+<h3>:pushpin: 条件分岐<a class="headerlink" href="#id101" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>〇：<code class="docutils literal notranslate"><span class="pre">TRUE</span></code></p>
+<p>✕：<code class="docutils literal notranslate"><span class="pre">FALSE</span></code></p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left"></th>
+<th align="center"><code>isset($var)</code>，<code>!is_null($var)</code></th>
+<th align="center"><code>if($var)</code>，<code>!empty($var)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong><code>0</code></strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="left"><strong><code>1</code></strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center"><strong>〇</strong></td>
+</tr>
+<tr>
+<td align="left"><strong><code>""</code></strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="left"><strong><code>"あ"</code></strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="left"><strong><code>null</code></strong></td>
+<td align="center">✕</td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="left"><strong>array(0)</strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="left"><strong>array(1)</strong></td>
+<td align="center"><strong>〇</strong></td>
+<td align="center"><strong>〇</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>使いどころ</strong></td>
+<td align="center"><code>null</code>だけを判定したい場合</td>
+<td align="center"><code>null</code>と<code>""</code>と<code>[]</code>を判定したい場合</td>
+</tr>
+</tbody>
+</table><div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x"># 右辺には，上記に当てはまらない状態『TRUE』が置かれている．</span>
+<span class="x">if($this-&gt;$var == TRUE){</span>
+<span class="x">    // 処理A;</span>
+<span class="x">}</span>
+
+<span class="x"># ただし，基本的に右辺は省略すべき．</span>
+<span class="x">if($this-&gt;$var){</span>
+<span class="x">    // 処理A;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-exception">
+<h3>:pushpin: Exceptionクラスを継承した独自例外クラス<a class="headerlink" href="#pushpin-exception" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// HttpRequestに対処する例外クラス</span>
+<span class="x">class HttpRequestException extends Exception</span>
+<span class="x">{</span>
+<span class="x">    // インスタンスが作成された時に実行される処理</span>
+<span class="x">    public function __construct()</span>
+<span class="x">    {</span>
+<span class="x">        parent::__construct(&quot;HTTPリクエストに失敗しました&quot;, 400);</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // 新しいメソッドを定義</span>
+<span class="x">    public function example()</span>
+<span class="x">    {</span>
+<span class="x">        // なんらかの処理;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-if-throw">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">if</span></code>-<code class="docutils literal notranslate"><span class="pre">throw</span></code>文<a class="headerlink" href="#pushpin-if-throw" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>特定の処理の中に，想定できる例外があり，それをエラー文として出力するために用いる．ここでは，全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">if (empty($value)) {</span>
+<span class="x">    throw new Exception(&#39;Variable is empty&#39;);</span>
+<span class="x">}</span>
+
+<span class="x">return $value;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-try-catch">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">try</span></code>-<code class="docutils literal notranslate"><span class="pre">catch</span></code>文<a class="headerlink" href="#pushpin-try-catch" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>特定の処理の中に，想定できない例外があり，それをエラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// Exceptionを投げる</span>
+<span class="x">try{</span>
+<span class="x">    // WebAPIの接続に失敗した場合</span>
+<span class="x">    if(...){</span>
+<span class="x">        throw new WebAPIException();</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    if(...){</span>
+<span class="x">        throw new HttpRequestException();</span>
+<span class="x">    }</span>
+
+<span class="x">// try文で指定のExceptionが投げられた時に，指定のcatch文に入る</span>
+<span class="x">// あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）</span>
+<span class="x">}catch(WebAPIException $e){</span>
+<span class="x">    // エラー文を出力．</span>
+<span class="x">    print $e-&gt;getMessage();</span>
+
+<span class="x">    </span>
+<span class="x">}catch(HttpRequestException $e){</span>
+<span class="x">    // エラー文を出力．</span>
+<span class="x">    print $e-&gt;getMessage();</span>
+
+<span class="x">    </span>
+<span class="x">// Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため，最後に記述するべき．</span>
+<span class="x">}catch(Exception $e){</span>
+<span class="x">    // 特定できなかったことを示すエラーを出力</span>
+<span class="x">    throw new Exception(&quot;なんらかの例外が発生しました．&quot;);</span>
+
+<span class="x">        </span>
+<span class="x">// 正常と例外にかかわらず，必ず実行される．</span>
+<span class="x">}finally{</span>
+<span class="x">    // 正常と例外にかかわらず，必ずファイルを閉じるための処理</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>以下，上記で使用した独自の例外クラス．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// HttpRequestに対処する例外クラス</span>
+<span class="x">class HttpRequestException extends Exception</span>
+<span class="x">{</span>
+<span class="x">    // インスタンスが作成された時に実行される処理</span>
+<span class="x">    public function __construct()</span>
+<span class="x">    {</span>
+<span class="x">        parent::__construct(&quot;HTTPリクエストに失敗しました&quot;, 400);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// HttpRequestに対処する例外クラス</span>
+<span class="x">class HttpRequestException extends Exception</span>
+<span class="x">{</span>
+<span class="x">    // インスタンスが作成された時に実行される処理</span>
+<span class="x">    public function __construct()</span>
+<span class="x">    {</span>
+<span class="x">        parent::__construct(&quot;HTTPリクエストに失敗しました&quot;, 400);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id102">
+<h3>:pushpin: ログの出力<a class="headerlink" href="#id102" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id103">
+<h3>:pushpin: バリデーション<a class="headerlink" href="#id103" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id104">
+<h2>05-03. 反復処理<a class="headerlink" href="#id104" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-foreach">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">foreach()</span></code><a class="headerlink" href="#pushpin-foreach" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id105">
+<h4>・いずれかの配列の要素を返却する場合<a class="headerlink" href="#id105" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>単に配列を作るだけでなく，要素にアクセスするためにも使われる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// $options配列には，OptionA,B,Cエンティティのいずれかが格納されているものとします．</span>
+<span class="x">public function checkOption(Array $options)</span>
+<span class="x">{</span>
+<span class="x">    foreach($options as $option){</span>
+<span class="x">        </span>
+<span class="x">        if($option-&gt;name() === &#39;オプションA&#39;){</span>
+<span class="x">            $result = &#39;オプションAが設定されています．&#39;</span>
+<span class="x">        }			</span>
+<span class="x">        </span>
+<span class="x">        if($option-&gt;name() === &#39;オプションB&#39;){</span>
+<span class="x">            $result = &#39;オプションBが設定されています．&#39;			</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">        if($option-&gt;name() === &#39;オプションC&#39;){</span>
+<span class="x">            $result = &#39;オプションCが設定されています．&#39;</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    return $result;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id106">
+<h4>・エンティティごとに，データの値を持つか否かが異なる場合<a class="headerlink" href="#id106" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+<div class="section" id="pushpin-for">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">for()</span></code><a class="headerlink" href="#pushpin-for" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id107">
+<h4>・要素の位置を繰り返しズラす場合<a class="headerlink" href="#id107" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">moveFile($fromPos &lt; $toPos)</span>
+<span class="x">{</span>
+<span class="x">    if($fromPos &lt; $toPos){</span>
+<span class="x">        for($i = fromPos ; $i ≦ $toPos - 1; ++ 1){</span>
+<span class="x">            File[$i] = File[$i + 1];</span>
+<span class="x">        }</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id108">
+<h3>:pushpin: 無限ループ<a class="headerlink" href="#id108" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>反復処理では，何らかの状態になった時に反復処理を終えなければならない．しかし，終えることができないと，無限ループが発生してしまう．</p>
+<div class="section" id="break">
+<h4>・<code class="docutils literal notranslate"><span class="pre">break</span></code><a class="headerlink" href="#break" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 初期化</span>
+<span class="x">$i = 0; </span>
+<span class="x">while($i &lt; 4){</span>
+<span class="x">    </span>
+<span class="x">    echo $i;</span>
+<span class="x">    </span>
+<span class="x">    // 改行</span>
+<span class="x">    echo PHP_EOL;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="continue">
+<h4>・continue<a class="headerlink" href="#continue" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+<div class="section" id="id109">
+<h3>:pushpin: 反復を含む流れ図における実装との対応<a class="headerlink" href="#id109" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>『N個の正負の整数の中から，正の数のみの合計を求める』という処理を行うとする．</p>
+<div class="section" id="for">
+<h4>・<code class="docutils literal notranslate"><span class="pre">for()</span></code><a class="headerlink" href="#for" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="流れ図_for文" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%B5%81%E3%82%8C%E5%9B%B3_for%E6%96%87.png" /></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$a = array(1, -1, 2, ... ,N);</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$sum = 0;</span>
+
+<span class="x">for($i = 0; $i &lt; N; $i++){</span>
+<span class="x">    $x = $a[$i];</span>
+<span class="x">    if($x &gt; 0){</span>
+<span class="x">        $sum += $x;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="while">
+<h4>・<code class="docutils literal notranslate"><span class="pre">while()</span></code><a class="headerlink" href="#while" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="流れ図_while文" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%B5%81%E3%82%8C%E5%9B%B3_while%E6%96%87.png" /></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$a = array(1, -1, 2, ... ,N);</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$sum = 0;</span>
+
+<span class="x">// 反復数の初期値</span>
+<span class="x">$i = 0;</span>
+
+<span class="x">while($i &lt; N){</span>
+<span class="x">    $x = $a[$i];</span>
+<span class="x">    if($x &gt; 0){</span>
+<span class="x">        $sum += $x;</span>
+<span class="x">    }</span>
+<span class="x">    $i += 1;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="foreach">
+<h4>・<code class="docutils literal notranslate"><span class="pre">foreach()</span></code><a class="headerlink" href="#foreach" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="流れ図_foreach文" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E6%B5%81%E3%82%8C%E5%9B%B3_foreach%E6%96%87.png" /></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$a = array(1, -1, 2, ... ,N);</span>
+</pre></div>
+</div>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$sum = 0;</span>
+
+<span class="x">foreach($a as $x){</span>
+<span class="x">    if($x &gt; 0){</span>
+<span class="x">        $sum += $x;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id110">
+<h2>05-04. ログでエラーが出力されない時の対処方法<a class="headerlink" href="#id110" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-vs">
+<h3>:pushpin: ローカル環境 vs テスト環境<a class="headerlink" href="#pushpin-vs" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ローカル環境とテスト環境で，ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブを比較し，キーや配列に格納されている値がどう異なっているかを調べる．</p>
+<p></p>
+</div>
+<div class="section" id="pushpin-var-dump-var">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code><a class="headerlink" href="#pushpin-var-dump-var" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id111">
+<h4>・変数の中身の確認方法<a class="headerlink" href="#id111" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブ，で確認することができる．</p>
+</div>
+<div class="section" id="id112">
+<h4>・小ネタ<a class="headerlink" href="#id112" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>変数の中身が出力されていなかったら，<code class="docutils literal notranslate"><span class="pre">exit</span></code>をつけてみる．</p>
+</div>
+</div>
+<div class="section" id="pushpin-var-dump-var-throw-new-exception">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">\Exception(&quot;&quot;)</span></code><a class="headerlink" href="#pushpin-var-dump-var-throw-new-exception" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id113">
+<h4>・変数の中身の確認方法<a class="headerlink" href="#id113" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．エラー画面の上部で，<code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code>の結果を確認することができる．</p>
+</div>
+<div class="section" id="id114">
+<h4>・小ネタ<a class="headerlink" href="#id114" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラスを読み込むために，<code class="docutils literal notranslate"><span class="pre">Exception</span></code>の前に，<code class="docutils literal notranslate"><span class="pre">\</span></code>（逆スラッシュ）をつけること．</p>
+</div>
+</div>
+<div class="section" id="pushpin-throw-new-exception-var-dump-var">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">\Exception(var_dump($var))</span></code><a class="headerlink" href="#pushpin-throw-new-exception-var-dump-var" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id115">
+<h4>・変数の中身の確認方法<a class="headerlink" href="#id115" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．例外エラーの内容として，<code class="docutils literal notranslate"><span class="pre">var_dump($var)</span></code>の結果を確認することができる．</p>
+</div>
+<div class="section" id="id116">
+<h4>・小ネタ<a class="headerlink" href="#id116" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラスを読み込むために，<code class="docutils literal notranslate"><span class="pre">Exception</span></code>の前に，<code class="docutils literal notranslate"><span class="pre">\</span></code>（逆スラッシュ）をつけること．</p>
+</div>
+</div>
+</div>
+<div class="section" id="id117">
+<h2>06-01. ファイルパス<a class="headerlink" href="#id117" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id118">
+<h3>:pushpin: 絶対パス<a class="headerlink" href="#id118" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;img src=&quot;http://fruits.com/img/apple.png&quot;&gt;</span>
+</pre></div>
+</div>
+<p><img alt="絶対パス" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%B5%B6%E5%AF%BE%E3%83%91%E3%82%B9.png" /></p>
+</div>
+<div class="section" id="id119">
+<h3>:pushpin: 相対パス<a class="headerlink" href="#id119" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;img src=&quot;../img/apple.png&quot;&gt;</span>
+</pre></div>
+</div>
+<p><img alt="相対パス" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%9B%B8%E5%AF%BE%E3%83%91%E3%82%B9.png" /></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ConceptAndImplementationOfRESTfulAPI.html" class="btn btn-neutral float-right" title="RESTful APIの概念と実装" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ObjectOrientedAnalysisAndDesign.html" class="btn btn-neutral float-left" title="オブジェクト指向分析と設計" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

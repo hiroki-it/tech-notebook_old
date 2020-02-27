@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>テストの手法 &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="フレームワークとライブラリ" href="FrameworkAndLibrary.html" />
+    <link rel="prev" title="RESTful APIの概念と実装" href="ConceptAndImplementationOfRESTfulAPI.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">テストの手法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">01-01. テスト全体の手順</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phpstan">02-01. PHPStanによる静的解析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ciphpstan">CIツールによるPHPStanの自動実行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#phpunitunit-functional">03-01.  PHPUnitによるUnit／Functionalテストの要素</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phake">Phakeによるモックとスタブの定義</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mock">・<code class="docutils literal notranslate"><span class="pre">mock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verify">・<code class="docutils literal notranslate"><span class="pre">verify()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">テストの事前準備と後片付け</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">・<code class="docutils literal notranslate"><span class="pre">setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#teardown">・<code class="docutils literal notranslate"><span class="pre">tearDown()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">実際値と期待値の比較</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">03-02. PHPUnitによるUnit／Functionalテストの実装まとめ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unit">Unitテスト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional">Functionalテスト</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">・レスポンスが成功するか（ステータスコードが<code class="docutils literal notranslate"><span class="pre">200</span></code>番台か）だけに焦点を当てる場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・上記＋レスポンスされたデータが期待値と同じかにも焦点を当てる場合</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ciphpunit">CIツールによるPHPUnitの自動実行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">03-03. テスト仕様書に基づくUnit テスト</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">ブラックボックステスト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">ホワイトボックステスト</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">・命令網羅（『全ての処理』が実行されるかをテスト）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">・判定条件網羅（『全ての判定』が実行されるかをテスト）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">・条件網羅（『各条件の取り得る全ての値』が実行されるかをテスト）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">・複数条件網羅（『各条件が取り得る全ての値』，かつ『全ての組み合わせ』が実行されるかをテスト）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#integration">03-04. テスト仕様書に基づくIntegration テスト（結合テスト）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#top-down">Top-down テスト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bottom-up">Bottom-up テスト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scenario">Scenario テスト</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#user-acceptance">04-01. テスト仕様書に基づくUser Acceptance テスト（総合テスト）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Functional テスト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#perfomance">Perfomance テスト</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#throughput">・Throughput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response-time">・Response time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stress">Stress テスト</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#regression">04-02. Regression テスト（退行テスト）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">05-01. グラフによるテストの可視化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">バグ管理図</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>テストの手法</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Testing.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>テストの手法<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>01-01. テスト全体の手順<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="simple">
+<li><p>テスティングフレームワークによる静的解析を行う．</p></li>
+<li><p>テスティングフレームワークによるUnitテストとFunctionalテストを行う．</p></li>
+<li><p>テスト仕様書に基づくUnitテスト，Integrationテスト，User Acceptanceテストを行う．</p></li>
+<li><p>グラフによるテストの可視化</p></li>
+</ol>
+</div>
+<div class="section" id="phpstan">
+<h2>02-01. PHPStanによる静的解析<a class="headerlink" href="#phpstan" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="ciphpstan">
+<h3>CIツールによるPHPStanの自動実行<a class="headerlink" href="#ciphpstan" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="phpunitunit-functional">
+<h2>03-01.  PHPUnitによるUnit／Functionalテストの要素<a class="headerlink" href="#phpunitunit-functional" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="phake">
+<h3>Phakeによるモックとスタブの定義<a class="headerlink" href="#phake" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>テストコードにおいては，クラスの一部または全体を，処理を持たないもの（モック）に置き換える．</p>
+<div class="section" id="mock">
+<h4>・<code class="docutils literal notranslate"><span class="pre">mock()</span></code><a class="headerlink" href="#mock" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>クラス名（名前空間）を元に，モックを生成できる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// クラス名（名前空間）を引数として渡す．</span>
+<span class="x">$mock = Phake::mock(Example::class)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify">
+<h4>・<code class="docutils literal notranslate"><span class="pre">verify()</span></code><a class="headerlink" href="#verify" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>メソッドがn回以上コールされたかを検証できる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// モックを生成．</span>
+<span class="x">$mock = Phake::mock(Example::class)</span>
+
+<span class="x">// モックに対してスタブを作成．</span>
+<span class="x">\Phake::when($mock)</span>
+<span class="x">    -&gt;method($param)</span>
+<span class="x">    -&gt;thenReturn([]);</span>
+
+<span class="x">// メソッドがn回コールされたかを検証．</span>
+<span class="x">Phake::verify($mock, Phake::times($n))-&gt;method($param)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>テストの事前準備と後片付け<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="setup">
+<h4>・<code class="docutils literal notranslate"><span class="pre">setUp()</span></code><a class="headerlink" href="#setup" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>モックなどを事前に準備するために用いられる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase</span>
+<span class="x">{</span>
+<span class="x">    protected $exampleService</span>
+<span class="x">    </span>
+<span class="x">    protected function setUp()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;exampleService = Phake::mock(ExampleService::class);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="teardown">
+<h4>・<code class="docutils literal notranslate"><span class="pre">tearDown()</span></code><a class="headerlink" href="#teardown" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>テスト時に，グローバル変数やDIコンテナにデータを格納する場合，後のテストでもそのデータが誤って使用されてしまう可能性がある．そのために，テストの後片付けを行う．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase</span>
+<span class="x">{</span>
+<span class="x">    protected $container</span>
+<span class="x">    </span>
+<span class="x">    // メソッドの中で，最初に自動実行される．</span>
+<span class="x">    protected function setUp()</span>
+<span class="x">    {</span>
+<span class="x">        // DIコンテナにデータを格納する．</span>
+<span class="x">        $this-&gt;container[&#39;option&#39;]</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // メソッドの中で，最後に自動実行される．</span>
+<span class="x">    protected function tearDown()</span>
+<span class="x">    {</span>
+<span class="x">        // 次に，DIコンテナにデータを格納する．</span>
+<span class="x">        $this-&gt;container = null;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>実際値と期待値の比較<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>https://phpunit.readthedocs.io/ja/latest/assertions.html</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>03-02. PHPUnitによるUnit／Functionalテストの実装まとめ<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="unit">
+<h3>Unitテスト<a class="headerlink" href="#unit" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラスやメソッドが単体で処理が正しく動作するかをテストする．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// ここに実装例</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="functional">
+<h3>Functionalテスト<a class="headerlink" href="#functional" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>リクエストされるControllerに対してリクエストを行い，レスポンスが行われるかをテストする．レスポンス期待値のデータセットを<code class="docutils literal notranslate"><span class="pre">&#64;dataProvider</span></code>に定義し，データベースからレスポンスされた実際の値と一致するかでテストを行う．</p>
+<div class="section" id="id6">
+<h4>・レスポンスが成功するか（ステータスコードが<code class="docutils literal notranslate"><span class="pre">200</span></code>番台か）だけに焦点を当てる場合<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// ここに実装例</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h4>・上記＋レスポンスされたデータが期待値と同じかにも焦点を当てる場合<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>この場合，データベースにテストデータを作成する必要がある．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// ここに実装例</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ciphpunit">
+<h3>CIツールによるPHPUnitの自動実行<a class="headerlink" href="#ciphpunit" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>テストクラスを実装したうえで，新機能を設計実装する．</p></li>
+<li><p>リポジトリへPushすると，CIツールがGituHubからブランチの状態を取得する．</p></li>
+<li><p>CIツールによって，テストサーバの仮想化，インタプリタ，PHPUnitなどが自動実行される．</p></li>
+<li><p>結果を通知することも可能．</p></li>
+</ol>
+<p><strong>【自動化ツールアプリ例】</strong></p>
+<p>Circle CI，Jenkins</p>
+<p><img alt="継続的インテグレーション" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E7%B6%99%E7%B6%9A%E7%9A%84%E3%82%A4%E3%83%B3%E3%83%86%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.png" /></p>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>03-03. テスト仕様書に基づくUnit テスト<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>PHPUnitでのUnitテストとは意味合いが異なるので注意．</p>
+<div class="section" id="id9">
+<h3>ブラックボックステスト<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>実装内容は気にせず，入力に対して，適切な出力が行われているかをテストする．</p>
+<p><img alt="p492-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p492-1.jpg" /></p>
+</div>
+<div class="section" id="id10">
+<h3>ホワイトボックステスト<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>実装内容が適切かを確認しながら，入力に対して，適切な出力が行われているかをテストする．ホワイトボックステストには，以下の方法がある．何をテストするかに着目すれば，思い出しやすい．</p>
+<p><img alt="p492-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p492-2.jpg" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+　<span class="k">return</span> <span class="n">X</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上記のif文におけるテストとして，以下の４つの方法が考えられる．基本的には，複数条件網羅が用いられる．</p>
+<div class="section" id="id11">
+<h4>・命令網羅（『全ての処理』が実行されるかをテスト）<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p494-1" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-1.png" /></p>
+<p>全ての命令が実行されるかをテスト（ここでは処理は1つ）．</p>
+<p>すなわち…</p>
+<p>A = 1，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されること．</p>
+</div>
+<div class="section" id="id12">
+<h4>・判定条件網羅（『全ての判定』が実行されるかをテスト）<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p494-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-2.png" /></p>
+<p>全ての判定が実行されるかをテスト（ここでは判定は<code class="docutils literal notranslate"><span class="pre">TRUE</span></code>か<code class="docutils literal notranslate"><span class="pre">FALSE</span></code>の2つ）．</p>
+<p>すなわち…</p>
+<p>A = 1，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されること．
+A = 1，B = 0 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．</p>
+</div>
+<div class="section" id="id13">
+<h4>・条件網羅（『各条件の取り得る全ての値』が実行されるかをテスト）<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p494-3" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-3.png" /></p>
+<p>各条件が，取り得る全ての値で実行されるかをテスト（ここでは，Aが0と1，Bが0と1になる組み合わせなので，2つ）</p>
+<p>すなわち…</p>
+<p>A = 1，B = 0 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．
+A = 0，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．</p>
+<p>または，次の組み合わせでもよい．</p>
+<p>A = 1，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されること．
+A = 0，B = 0 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．</p>
+</div>
+<div class="section" id="id14">
+<h4>・複数条件網羅（『各条件が取り得る全ての値』，かつ『全ての組み合わせ』が実行されるかをテスト）<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="p494-4" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p494-4.png" /></p>
+<p>各条件が，取り得る全ての値で，かつ全ての組み合わせが実行されるかをテスト（ここでは4つ）</p>
+<p>すなわち…</p>
+<p>A = 1，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されること．
+A = 1，B = 0 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．
+A = 0，B = 1 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．
+A = 0，B = 0 の時，<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">X</span></code> が実行されないこと．</p>
+</div>
+</div>
+</div>
+<div class="section" id="integration">
+<h2>03-04. テスト仕様書に基づくIntegration テスト（結合テスト）<a class="headerlink" href="#integration" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>単体テストの次に行うテスト．複数のモジュールを繋げ，モジュール間のインターフェイスが適切に動いているかを検証．</p>
+<p><img alt="結合テスト" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p491-1.jpg" /></p>
+<div class="section" id="top-down">
+<h3>Top-down テスト<a class="headerlink" href="#top-down" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>上位のモジュールから下位のモジュールに向かって，結合テストを行う場合，下位には Stub と呼ばれるダミーモジュールを作成する．</p>
+<p><img alt="トップダウンテスト" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%88%E3%83%83%E3%83%97%E3%83%80%E3%82%A6%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88.jpg" /></p>
+</div>
+<div class="section" id="bottom-up">
+<h3>Bottom-up テスト<a class="headerlink" href="#bottom-up" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下位のモジュールから上位のモジュールに向かって，結合テストを行う場合，上位には Driver と呼ばれるダミーモジュールを作成する．</p>
+<p><img alt="ボトムアップテスト" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%9C%E3%83%88%E3%83%A0%E3%82%A2%E3%83%83%E3%83%97%E3%83%86%E3%82%B9%E3%83%88.jpg" /></p>
+</div>
+<div class="section" id="scenario">
+<h3>Scenario テスト<a class="headerlink" href="#scenario" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>実際の業務フローを参考にし，ユーザが操作する順にテストを行う．</p>
+</div>
+</div>
+<div class="section" id="user-acceptance">
+<h2>04-01. テスト仕様書に基づくUser Acceptance テスト（総合テスト）<a class="headerlink" href="#user-acceptance" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><img alt="p491-2" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p491-2.jpg" /></p>
+<p>結合テストの次に行うテスト．システム全体が適切に動いているかをテストする．</p>
+<div class="section" id="id15">
+<h3>Functional テスト<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>機能要件を満たせているかをテストする．PHPUnitでのFunctionalテストとは意味合いが異なるので注意．</p>
+</div>
+<div class="section" id="perfomance">
+<h3>Perfomance テスト<a class="headerlink" href="#perfomance" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="スループットとレスポンスタイム" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B9%E3%83%AB%E3%83%BC%E3%83%97%E3%83%83%E3%83%88%E3%81%A8%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%A0.png" /></p>
+<p>非機能要件の一つである性能要件（スループット，レスポンスタイム，メモリのリソース量）を満たせているかをテストする．性能を評価する時，アクセス数を段階的に増加させて数回の性能テストを実施し，その結果を組み合わせてグラフ化する．例えば，性能目標を，⁠スループット：50件／秒⁠，⁠レスポンスタイム：3秒以内とする．今回のグラフでは，スループット：50件／秒の時のレスポンスタイムは2秒である．したがって，このシステムは性能目標を達成していることがわかる．</p>
+<div class="section" id="throughput">
+<h4>・Throughput<a class="headerlink" href="#throughput" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>単位時間当たりに処理できる仕事数のこと．</p>
+</div>
+<div class="section" id="response-time">
+<h4>・Response time<a class="headerlink" href="#response-time" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>コンピュータが処理を終えるまでに要する時間のこと．</p>
+</div>
+</div>
+<div class="section" id="stress">
+<h3>Stress テスト<a class="headerlink" href="#stress" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="regression">
+<h2>04-02. Regression テスト（退行テスト）<a class="headerlink" href="#regression" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>システムを変更した後，他のプログラムに悪影響を与えていないかを検証．</p>
+<p><img alt="p496" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p496.jpg" /></p>
+</div>
+<div class="section" id="id16">
+<h2>05-01. グラフによるテストの可視化<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id17">
+<h3>バグ管理図<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プロジェクトの時，残存テスト数と不良摘出数（バグ発見数）を縦軸にとり，時間を横軸にとることで，バグ管理図を作成する．それぞれの曲線の状態から，プロジェクトの進捗状況を読み取ることができる．</p>
+<p><img alt="品質管理図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%93%81%E8%B3%AA%E7%AE%A1%E7%90%86%E5%9B%B3.jpg" /></p>
+<p>不良摘出実績線（信頼度成長曲線）は，プログラムの品質の状態を表し，S字型でないものはプログラムの品質が良くないことを表す．</p>
+<p><img alt="信頼度成長曲線の悪い例" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E4%BF%A1%E9%A0%BC%E5%BA%A6%E6%88%90%E9%95%B7%E6%9B%B2%E7%B7%9A%E3%81%AE%E6%82%AA%E3%81%84%E4%BE%8B.jpg" /></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="FrameworkAndLibrary.html" class="btn btn-neutral float-right" title="フレームワークとライブラリ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ConceptAndImplementationOfRESTfulAPI.html" class="btn btn-neutral float-left" title="RESTful APIの概念と実装" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
