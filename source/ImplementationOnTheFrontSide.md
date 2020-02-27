@@ -25,11 +25,11 @@ Vueでは，SPAの仕組みが用いられている．
 
 Webページの部分ごとに，サーバとデータ通信できる．
 
-![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SPアプリにおけるデータ通信の仕組み.png)
+![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SPアプリにおけるデータ通信の仕組み.png)
 
 #### ・従来WebアプリとSPアプリの処理速度の違い
 
-![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/従来WebアプリとSPアプリの処理速度の違い.png)
+![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/従来WebアプリとSPアプリの処理速度の違い.png)
 
 
 
@@ -90,7 +90,7 @@ new Vue({
 
 Viewが『Twig＋親コンポーネント』，ViewModelが『Vueインスタンス＋子コンポーネントのVueファイル』，Modelが『クラスが定義されたJSファイル』に相当する．
 
-![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVMパターン.png)
+![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/MVVMパターン.png)
 
 #### ・双方向データバインディングの仕組み
 
@@ -100,7 +100,7 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
 2. 各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
 3. ボタンをクリックした時，子コンポーネントの『```$emit("イベント名", "値")```』によって，親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
 **【実装例】**
 
@@ -341,7 +341,7 @@ Vuejsでライブラリの一つで，ページの状態管理を行うことが
 
 Vuexライブラリを経由してリクエストとレスポンスを行うことで，より効率的にページの状態管理が行える．
 
-![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VueコンポーネントツリーとVuexの関係.png)
+![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueコンポーネントツリーとVuexの関係.png)
 
 Vuexによる状態管理は，```Store```で実装していく．
 
@@ -561,7 +561,7 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 
 クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
 
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/シリアライズとデシリアライズ.png)
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シリアライズとデシリアライズ.png)
 
 **【実装例】**
 
@@ -654,7 +654,7 @@ class Example
 
 Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．
 
-![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マークアップ言語の歴史.png)
+![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マークアップ言語の歴史.png)
 
 
 

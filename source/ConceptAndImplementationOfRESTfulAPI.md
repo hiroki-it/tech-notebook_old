@@ -37,7 +37,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
 
-![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/RESTfulAPIを用いたリクエスト.png)
+![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/RESTfulAPIを用いたリクエスト.png)
 
 | **送信方法** | サーバ側の処理 | 使い分け                    | エンドポイント例                        | パスパラメータ | 注意点 |
 | :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- | ---------------- |

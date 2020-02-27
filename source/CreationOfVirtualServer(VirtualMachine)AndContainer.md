@@ -79,7 +79,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ホストOS上で稼働し，Dockerの操作を担う．Dockerクライアントは，Dockerデーモンを通して，Docker全体を操作できる．
 
-![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerの仕組み.png)
+![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerの仕組み.png)
 
 
 
@@ -87,7 +87,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ### :pushpin: 手順の流れ
 
-![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerfileの作成からコンテナ構築までの手順.png)
+![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileの作成からコンテナ構築までの手順.png)
 
 1. DockerHubから，ベースとなるDockerイメージをインストールする．
 2. DockerfileがイメージレイヤーからなるDockerイメージをビルド．
@@ -127,7 +127,7 @@ DockerHubには，カスタマイズする上でのベースとなるDockerイ�
 
 #### ・DockerイメージのカスタマイズとDockerfile
 
-![イメージレイヤーからなるDockerイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/イメージレイヤーからなるDockerイメージのビルド.png)
+![イメージレイヤーからなるDockerイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/イメージレイヤーからなるDockerイメージのビルド.png)
 
 任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，ベースのイメージの上に，他のイメージレイヤーを積み重ねる必要がある．この時，Dockerfileを用いて，各命令によってイメージレイヤーを積み重ねていく．
 
@@ -215,7 +215,7 @@ RUN yum -y install\
 
 #### ・Dockerfileを使用するメリット
 
-Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerfileのメリット.png)
+Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
 
 ### :pushpin: コンテナレイヤーの生成，コンテナの構築
 
@@ -227,7 +227,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 | ----------------------------- | -------------------------------------------------------- |
 | **```create {イメージ名}```** | コンテナレイヤーを生成し，コンテナを構築．起動はしない． |
 
-![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
+![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
 
 
 #### ・ビルドされるDockerイメージとコンテナの役割の対応例
@@ -282,7 +282,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 複数のコンテナ間に対して，仮想ネットワークで接続させる．また，仮想ネットワークを物理ネットワークとBridge接続する．ほとんどの場合，この方法を用いる．
 
-![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Dockerエンジン内の仮想ネットワーク.jpg)
+![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerエンジン内の仮想ネットワーク.jpg)
 
 
 
@@ -328,7 +328,7 @@ Dockerfileを基にしたDockerイメージのビルド，コンテナレイヤ�
 
 ### :pushpin: ライブラリとパッケージの大まかな違い
 
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ライブラリ，パッケージ，モジュールの違い.png)
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
 
 
 

@@ -6,13 +6,13 @@
 
 RDBは，データ同士がテーブル状に関係をもつデータ格納形式である．データはストレージに保存する．
 
-![データベース管理システムの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/データベース管理システムの仕組み.png)
+![データベース管理システムの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/データベース管理システムの仕組み.png)
 
 
 
 ### :pushpin: RDBMSとRDBの種類
 
-![DBMS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DBMS.jpg)
+![DBMS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DBMS.jpg)
 
 #### ・MariaDB
 
@@ -43,7 +43,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 ### :pushpin: NoSQLの種類
 
-![NoSQLの分類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/NoSQLの種類.jpg)
+![NoSQLの分類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/NoSQLの種類.jpg)
 
 
 
@@ -68,13 +68,13 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 データを追加するあるいは削除する場合，カラムではなく，レコードの増減を行う．カラムの増減の処理には時間がかかる．一方で，レコードの増減の処理には時間がかからない．
 
-![カラムの増減は✖，レコードの増減は〇](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/カラムの増減は✖，レコードの増減は〇-1.png)
+![カラムの増減は✖，レコードの増減は〇](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/カラムの増減は✖，レコードの増減は〇-1.png)
 
 **【具体例】**
 
 賞与を年1回から，2回・3回と変える場合，主キーを繰り返し，新しく賞与区分と金額区分を作る．
 
-![カラムの増減は✖，レコードの増減は〇-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/カラムの増減は✖，レコードの増減は〇-2.png)
+![カラムの増減は✖，レコードの増減は〇-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/カラムの増減は✖，レコードの増減は〇-2.png)
 
 
 
@@ -90,39 +90,39 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
    エクセルで作られた以下の表があると仮定．
 
-![非正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/非正規形.png)
+![非正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/非正規形.png)
 
 2. **第一正規化（繰り返し要素の排除）**
 
    レコードを1つずつに分割．
 
-   ![第一正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第一正規形.png)
+   ![第一正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第一正規形.png)
 
 3. **第二正規化（主キーの関数従属性を排除）**
 
    主キーと特定のカラムが連動する（関数従属性がある）場合，カラムを左表として独立させる．今回，主キーが2つあるので，まず受注Noから関数従属性を排除していく．受注Noと他3カラムが連動しており，左表として独立させる．主キーと連動していたカラムを除いたものを右表とする．また，主キーが重複するローを削除する．
 
-   ![第二正規形-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第二正規形-1.png)
+   ![第二正規形-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第二正規形-1.png)
 
    次に，商品IDの関数従属性を排除していく．商品IDと他2カラムに関数従属性があり，左表として独立させる．主キーと連動していたカラムを除いたものを右表とする．また，主キーが重複するローを削除する．これで，主キーの関数従属性の排除は終了．
 
-   ![第二正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第二正規形-2.png)
+   ![第二正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第二正規形-2.png)
 
-   ![第二正規形-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第二正規形-3.png)
+   ![第二正規形-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第二正規形-3.png)
 
 4. **第三正規化（主キー以外のカラムの関数従属性を排除）**
 
    次に主キー以外のカラムの関係従属性を排除していく．上記で独立させた3つの表のうち，一番左の表で，顧客IDと顧客名に関数従属性があるので，顧客IDを新しい主キーに設定し，左表として独立させる．主キーと連動していたカラムを除いたものを右表とする．
 
-![第三正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第三正規形-1.png)
+![第三正規形](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第三正規形-1.png)
 
-![第三正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第三正規形-2.png)
+![第三正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第三正規形-2.png)
 
 5. **まとめ**
 
    主キーの関係従属性の排除によって，受注表，商品表，数量表に分割できた．また，主キー以外の関係従属性の排除によって，顧客IDを新しい主キーとした顧客表に分割できた．
 
-![正規化後にどんな表ができるのか](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/正規化後にどんな表ができるのか.png)
+![正規化後にどんな表ができるのか](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/正規化後にどんな表ができるのか.png)
 
 **【具体例2】**
 
@@ -130,11 +130,11 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
    以下のような表の場合，行を分割し，異なる表と見なす．
 
-![非正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/非正規形-2.png)
+![非正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/非正規形-2.png)
 
 2. **第一正規化（繰り返し要素の排除）**
 
-   ![第一正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/第一正規形-2.png)
+   ![第一正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/第一正規形-2.png)
 
 
 
@@ -166,7 +166,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 ### :pushpin: RDBの操作
 
-![コミットメント制御](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/コミットメント制御.jpg)
+![コミットメント制御](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/コミットメント制御.jpg)
 
 |          処理内容          |   操作名    |     実装でのメソッド名      | システム障害からの回復           |
 | :------------------------: | :---------: | :-------------------------: | -------------------------------- |
@@ -231,11 +231,11 @@ try{
 
 トランザクションの終了後，DBMSは，処理速度を高めるために，ログファイルの更新後ログをいったんメモリ上で管理する．
 
-![DBMSによるメモリとディスクの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/DBMSによるメモリとディスクの使い分け.jpg)
+![DBMSによるメモリとディスクの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DBMSによるメモリとディスクの使い分け.jpg)
 
 そして，チェックポイントで，ログファイルの更新後ログをディスク上のデータファイルに反映させる．この時，チェックポイントは，自動実行または手動実行で作成する．
 
-![トランザクション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/トランザクション.jpg)
+![トランザクション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トランザクション.jpg)
 
 
 
@@ -243,7 +243,7 @@ try{
 
 データベースサーバのソフトウェア障害のこと．例えば，DBMSやOSのトラブル等によりシステム全体が停止する．
 
-![障害回復機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/システム障害の障害回復機能.jpg)
+![障害回復機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/システム障害の障害回復機能.jpg)
 
 #### ・ロールバック
 
@@ -265,7 +265,7 @@ try{
 
 データベースサーバのハードウェア障害のこと．例えば，ハードディスクの障害がある．ディスクを初期化／交換した後，バックアップファイルからデータベースを修復し，ログファイルの更新後ログ『a = 5』『b = 1』を用いて，修復できる限りロールフォワードを行う．
 
-![媒体障害の障害回復機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/媒体障害の障害回復機能.jpg)
+![媒体障害の障害回復機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/媒体障害の障害回復機能.jpg)
 
 **【具体例】**
 
@@ -319,17 +319,17 @@ INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
 
 ### :pushpin: なぜ排他制御が必要か
 
-![排他制御-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/排他制御-1.png)
+![排他制御-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/排他制御-1.png)
 
 #### ・排他制御を行った結果
 
-  ![排他制御-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/排他制御-2.png)
+  ![排他制御-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/排他制御-2.png)
 
   
 
 ### :pushpin: 排他制御におけるロックの種類
 
-![排他制御-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/排他制御-3.gif)
+![排他制御-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/排他制御-3.gif)
 
 -  **共有ロック**
 
@@ -343,11 +343,11 @@ CRUDの全ての操作を実行不可能にする．データのUpdate時に，�
 
 ### :pushpin: ロックの粒度
 
-![ロックの粒度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ロックの粒度-1.png)
+![ロックの粒度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロックの粒度-1.png)
 
 DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大きい．ロックの粒度が細かければ，トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）．しかし，ロックの粒度を細かくすればするほど，それだけデータベース管理システムのCPU負荷は大きくなる．
 
-![ロックの粒度-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/ロックの粒度-2.jpg)
+![ロックの粒度-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロックの粒度-2.jpg)
 
 
 
@@ -363,7 +363,7 @@ DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大き�
 
 #### ・専有ロックしたデータを専有ロック
 
-![Null](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/デッドロック.gif)
+![Null](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デッドロック.gif)
 
 
 
@@ -396,7 +396,7 @@ CREATE TABLE order_data (
 
 テーブルの中で，Rowデータを一意に特定できる値を『主キー』の値と呼ぶ．
 
-![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/主キー.jpg)
+![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/主キー.jpg)
 
 主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
 
@@ -422,7 +422,7 @@ CREATE TABLE order_data (
 
 #### ・親テーブルで参照される値は，子テーブルからは削除できない．
 
-![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/外部キー.png)
+![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/外部キー.png)
 
 
 
@@ -430,7 +430,7 @@ CREATE TABLE order_data (
 
 あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
 
-![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/p325.gif)
+![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p325.gif)
 
 **【実装例】**
 
@@ -538,7 +538,7 @@ from => join => where => group by => having => select => order by
 
 ### :pushpin: ```join```（結合）
 
-![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/内部結合のベン図.jpg)
+![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部結合のベン図.jpg)
 
 
 
@@ -546,7 +546,7 @@ from => join => where => group by => having => select => order by
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
-![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/LEFT_JOIN.png)
+![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/LEFT_JOIN.png)
 
 
 
@@ -907,19 +907,19 @@ while(result.next()){
 
 ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
 
-![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マッチング処理_1.PNG)
+![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_1.PNG)
 
 
 
 ### :pushpin: 突き合わせ処理のアルゴリズム
 
-![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マッチング処理_4.png)
+![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_4.png)
 
 **【突き合わせ処理の具体例】**
 
 とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
 
-![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マッチング処理_2.PNG)
+![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_2.PNG)
 
 前処理として，契約マスタデータと異動トランザクションデータに共通する識別子が同じ順番で並んでいる必要がある．
 
@@ -929,5 +929,5 @@ while(result.next()){
 4. 『契約マスタデータ < 異動トランザクションデータ』になるまで，データを突き合わせる．
 5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
-![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/マッチング処理_3.png)
+![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_3.png)
 
