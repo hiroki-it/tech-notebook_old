@@ -1,0 +1,1003 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ドメイン駆動設計 &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="CQRS" href="CQRS.html" />
+    <link rel="prev" title="代表的なアルゴリズム" href="MainAlgorithm.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ドメイン駆動設計</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mvc">01-01. MVCとは</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-mvc">:pushpin: MVCからドメイン駆動設計への発展</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">02-01. ドメイン駆動設計とは</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: ドメインエキスパートとユビキタス言語</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">:pushpin: 戦略的設計</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">:pushpin: 戦術的設計</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">:pushpin: ドメイン駆動設計の派生型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#layered">・Layeredアーキテクチャ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hexagonal">・Hexagonalアーキテクチャ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onion">・Onionアーキテクチャ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">02-02. Layeredアーキテクチャ型ドメイン駆動設計</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">:pushpin: 責務の分担方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-interface">・User Interface層</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#application">・Application層</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#domain">・Domain層（ビジネロジックをコード化）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#infrastructure-db">・Infrastructure層（DBとマッピング）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dip">02-03. DIPに基づくドメイン駆動設計</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-usecase">03-01. Application層（UseCase層）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controller">03-02. Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">:pushpin: 責務</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#caster">03-03. Caster（データ型変換パターン）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">:pushpin: 責務</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#application-service">03-04. Application Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">:pushpin: 責務</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">04-01. Domain層</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repository">04-02. 抽象Repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">:pushpin: 責務</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#repositoryrepository">・抽象Repositoryと具象Repositoryの対応付け</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#entity">04-03. Entity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">:pushpin: 責務</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-routeentity">:pushpin: RouteEntityとは</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#valueobject">04-04. ValueObject</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">:pushpin: 責務</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">:pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">・金額データと計算</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">・所要時間データと計算</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">・住所データと処理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">:pushpin: データの不変性</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#immutable">・『Immutable』を実現できる理由</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">:pushpin: 概念的な統一体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">:pushpin: オブジェクトの交換可能性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id22">:pushpin: オブジェクト間の等価性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">:pushpin: メソッドによってオブジェクトの状態が変わらない</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#typecode">04-05. TypeCode（標準型）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id24">:pushpin: 責務</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-enumtypecode">:pushpin: EnumによるTypeCodeの実装</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id">04-06. Id</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">:pushpin: 責務</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#domain-service">04-07. Domain Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id26">:pushpin: 責務</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#infrastructure">05-01. Infrastructure層</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">05-02. 具象Repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id28">:pushpin: 責務</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-db-create-update-delete">:pushpin: DBに対する書き込み（Create，Update，Delete）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-db-read">:pushpin: DBに対する読み出し（Read）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#factory">05-03. Factory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">:pushpin: 責務</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id30">・実装例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ドメイン駆動設計</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/DomainDrivenDesign.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>ドメイン駆動設計<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="mvc">
+<h2>01-01. MVCとは<a class="headerlink" href="#mvc" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．</p>
+<p><img alt="MVCモデル" src="https://user-images.githubusercontent.com/42175286/57635646-8838e700-75e2-11e9-837d-253c006b7725.png" /></p>
+<div class="section" id="pushpin-mvc">
+<h3>:pushpin: MVCからドメイン駆動設計への発展<a class="headerlink" href="#pushpin-mvc" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>しかし，特にModelの役割が抽象的過ぎたため，開発規模が大きくなるにつれて，Modelに役割を集中させ過ぎてしまうことがあった．それから，ドメイン駆動設計が登場したことによって，MVCは発展し，M・V・Cそれぞれの役割がより具体的で精密になった．</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>02-01. ドメイン駆動設計とは<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin">
+<h3>:pushpin: ドメインエキスパートとユビキタス言語<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ドメインエキスパート（現実世界の業務内容に詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，設計していく．設計の時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．</p>
+</div>
+<div class="section" id="id3">
+<h3>:pushpin: 戦略的設計<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>ドメインエキスパートと話し合い，現実世界の業務内容に含まれる『名詞』と『振舞』に着目．</p></li>
+<li><p>『名詞』と『振舞』を要素として，EntityやValueObjectを設計．</p></li>
+<li><p>設計されたEntityやValueObjectを用いて，ドメインモデリング（オブジェクト間の関連付け）を行う．</p></li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>:pushpin: 戦術的設計<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>戦略的設計を基に，各オブジェクトとオブジェクト間の関連性を実装していく．</p>
+<p><img alt="DDDの概念" src="https://user-images.githubusercontent.com/42175286/61179612-d305c800-a640-11e9-8c4a-3d31225af633.jpg" /></p>
+</div>
+<div class="section" id="id5">
+<h3>:pushpin: ドメイン駆動設計の派生型<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>現在までに，ドメイン駆動設計の派生型がいくつか提唱されている．</p>
+<div class="section" id="layered">
+<h4>・Layeredアーキテクチャ<a class="headerlink" href="#layered" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="hexagonal">
+<h4>・Hexagonalアーキテクチャ<a class="headerlink" href="#hexagonal" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="onion">
+<h4>・Onionアーキテクチャ<a class="headerlink" href="#onion" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>02-02. Layeredアーキテクチャ型ドメイン駆動設計<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id7">
+<h3>:pushpin: 責務の分担方法<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="ドメイン駆動設計" src="https://user-images.githubusercontent.com/42175286/58724663-2ec11c80-8418-11e9-96e9-bfc6848e9374.png" /></p>
+<p>Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，以下の4層に再編成できる．</p>
+<div class="section" id="user-interface">
+<h4>・User Interface層<a class="headerlink" href="#user-interface" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="application">
+<h4>・Application層<a class="headerlink" href="#application" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="domain">
+<h4>・Domain層（ビジネロジックをコード化）<a class="headerlink" href="#domain" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+<div class="section" id="infrastructure-db">
+<h4>・Infrastructure層（DBとマッピング）<a class="headerlink" href="#infrastructure-db" title="このヘッドラインへのパーマリンク">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="dip">
+<h2>02-03. DIPに基づくドメイン駆動設計<a class="headerlink" href="#dip" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><strong>※詳しくは，オブジェクト指向プログラミングのノートを参照</strong></p>
+<ol class="simple">
+<li><p>Repositoryの抽象クラスを，より上位のドメイン層に配置する．</p></li>
+<li><p>Repositoryの実装クラスを，より下位のInfrastructure層に配置する．</p></li>
+<li><p>両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．</p></li>
+<li><p>これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．</p></li>
+</ol>
+<p><img alt="ドメイン駆動設計_逆転依存性の原則" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E4%BE%9D%E5%AD%98%E6%80%A7%E9%80%86%E8%BB%A2%E3%81%AE%E5%8E%9F%E5%89%87.jpg" /></p>
+</div>
+<div class="section" id="application-usecase">
+<h2>03-01. Application層（UseCase層）<a class="headerlink" href="#application-usecase" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="controller">
+<h2>03-02. Controller<a class="headerlink" href="#controller" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id8">
+<h3>:pushpin: 責務<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>CRUDのReadの場合，以下のような処理手順を組み合わせて，Use case（使用事例）を実装する．</p>
+<ol class="simple">
+<li><p>最初に，リクエストによるJSON型データ送信を受け取る．</p></li>
+<li><p>JSON型データを連想配列にパースする．</p></li>
+<li><p>Repositoryのメソッドに連想配列を渡し，DBからオブジェクトデータをReadする．</p></li>
+<li><p>Casterに，Readしたオブジェクトデータを渡し，連想配列に変換する．以下のCasterの説明を参照せよ．</p></li>
+<li><p>最後に，連想配列をJSON型データにパースし，JavaScriptに送信する．</p></li>
+</ol>
+<p><img alt="シリアライズとデシリアライズ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%BA%E3%81%A8%E3%83%87%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%BA.png" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class AcceptOrdersController</span>
+<span class="x">{</span>
+<span class="x">    // 単なるメソッドではなく，Use caseとなるようなメソッド</span>
+<span class="x">    public function acceptOrders()</span>
+<span class="x">    {</span>
+<span class="x">    </span>
+<span class="x">    }</span>
+
+<span class="x">}  </span>
+</pre></div>
+</div>
+<p><strong>【Use caseの例】</strong></p>
+<p>オンラインショッピングにおけるUse case</p>
+<p><img alt="ユースケース図" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9%E5%9B%B3.png" /></p>
+</div>
+</div>
+<div class="section" id="caster">
+<h2>03-03. Caster（データ型変換パターン）<a class="headerlink" href="#caster" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id9">
+<h3>:pushpin: 責務<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デザインパターンの一つ．レスポンスによるデータ送信時に，オブジェクトデータ（Entity）を連想配列に変換する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// Entityを連想配列に変換するメソッド</span>
+<span class="x">private function castAcceptOrders(Array $toyOrderEntity)</span>
+<span class="x">{</span>
+<span class="x">  </span>
+<span class="x">}  </span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="application-service">
+<h2>03-04. Application Service<a class="headerlink" href="#application-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id10">
+<h3>:pushpin: 責務<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>04-01. Domain層<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="repository">
+<h2>04-02. 抽象Repository<a class="headerlink" href="#repository" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id12">
+<h3>:pushpin: 責務<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">abstract class getDogToyEntityRepository</span>
+<span class="x">{</span>
+
+<span class="x">    // 対応する具象メソッドはInfrastructure層のRepositoryに実装．</span>
+<span class="x">    abstract public function arrayDogToyEntities();</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="section" id="repositoryrepository">
+<h4>・抽象Repositoryと具象Repositoryの対応付け<a class="headerlink" href="#repositoryrepository" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Application層</p>
+</div>
+</div>
+</div>
+<div class="section" id="entity">
+<h2>04-03. Entity<a class="headerlink" href="#entity" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id13">
+<h3>:pushpin: 責務<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクトをEntityとしてモデリング／実装したいのならば，以下に条件を満たす必要がある．</p>
+<p>（ユビキタス言語の例）顧客，注文など</p>
+<ol class="simple">
+<li><p>状態を変化させる必要があるデータをもつ．</p></li>
+<li><p>オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される．</p></li>
+</ol>
+<p><img alt="ドメイン駆動設計_エンティティ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3.jpg" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class DogToyEntity</span>
+<span class="x">{</span>
+<span class="x">    // おもちゃタイプ</span>
+<span class="x">    private $toyType;</span>
+<span class="x">    </span>
+<span class="x">    // おもちゃ商品名</span>
+<span class="x">    private $toyName;</span>
+<span class="x">    </span>
+<span class="x">    // 数量</span>
+<span class="x">    private $number;</span>
+<span class="x">    </span>
+<span class="x">    // 価格VO</span>
+<span class="x">    private $priceVO;</span>
+<span class="x">    </span>
+<span class="x">    // 色VO</span>
+<span class="x">    private $colorVO;</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // Setterを実装</span>
+<span class="x">    public function __construct</span>
+<span class="x">    (</span>
+<span class="x">        int $toyType,</span>
+<span class="x">        string $toyName,</span>
+<span class="x">        int $number,</span>
+<span class="x">        priceVO $priceVO,</span>
+<span class="x">        ColorVO $colorVO</span>
+<span class="x">    )</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;toyType = $toyType;</span>
+<span class="x">        $this-&gt;toyName = $toyName;</span>
+<span class="x">        $this-&gt;number = $number;</span>
+<span class="x">        $this-&gt;priceVO = $priceVO;</span>
+<span class="x">        $this-&gt;colorVO = $colorVO;</span>
+<span class="x">    }</span>
+<span class="x">        </span>
+<span class="x">    // Getterを実装</span>
+<span class="x">    public function toyNameWithColor()</span>
+<span class="x">    {</span>
+<span class="x">        if($this-&gt;toyName &amp;&amp; $this-&gt;colorVO-&gt;colorName());</span>
+<span class="x">        return sprintf</span>
+<span class="x">        (</span>
+<span class="x">            &#39;%s（%s）&#39;,</span>
+<span class="x">            $this-&gt;toyName,</span>
+<span class="x">            $this-&gt;colorVO-&gt;colorName()</span>
+<span class="x">        );</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-routeentity">
+<h3>:pushpin: RouteEntityとは<a class="headerlink" href="#pushpin-routeentity" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>EntityやValueObjectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．</p>
+<p><img alt="ドメイン駆動設計_集約関係" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E9%9B%86%E7%B4%84%E9%96%A2%E4%BF%82.jpg" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ToyOrderEntity</span>
+<span class="x">{</span>
+<span class="x">    // 犬用おもちゃ</span>
+<span class="x">    private $dogToyEntity;</span>
+<span class="x">    </span>
+<span class="x">    // 猫用おもちゃ</span>
+<span class="x">    private $catToyEntity;</span>
+<span class="x">    </span>
+<span class="x">    // Setterを実装</span>
+<span class="x">    public function __construct</span>
+<span class="x">    (</span>
+<span class="x">        DogToyEntity $dogToyEntity,</span>
+<span class="x">        CatToyEntity $catToyEntity</span>
+<span class="x">    )</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;dogToyEntity = $dogToyEntity;</span>
+<span class="x">        $this-&gt;catToyEntity = $catToyEntity;</span>
+<span class="x">    }</span>
+<span class="x">  </span>
+<span class="x">    // 	Getterを実装</span>
+<span class="x">    public function getXXX()</span>
+<span class="x">    {</span>
+<span class="x">        //  Read処理;</span>
+<span class="x">    }  </span>
+<span class="x">  </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="valueobject">
+<h2>04-04. ValueObject<a class="headerlink" href="#valueobject" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id14">
+<h3>:pushpin: 責務<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>EntityとValueObjectのどちらとして，オブジェクトモデルをモデリング／実装すべきなのかについて考える．そもそも，大前提として，『オブジェクトモデルはできるだけ不変にすべき』というベストプラクティスがあり，その結果，ValueObjectというが生まれたと考えられる．実は，ValueObjectを使わずに全てEntityとしてモデリング／実装することは可能である．しかし，不変にしてもよいところも可変になり，可読性や信頼性を下げてしまう可能性がある．</p>
+<p><img alt="ドメイン駆動設計_バリューオブジェクト" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E3%83%90%E3%83%AA%E3%83%A5%E3%83%BC%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88.jpg" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * 支払情報オブジェクト</span>
+<span class="x"> */</span>
+<span class="x">class PaymentInfoVO</span>
+<span class="x">{</span>
+<span class="x">    // 予め実装したImmutableObjectトレイトを用いて，データの不変性を実現</span>
+<span class="x">    use ImmutableObject;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * 支払いID</span>
+<span class="x">     *</span>
+<span class="x">     * @var PaymentId</span>
+<span class="x">     */</span>
+<span class="x">    private $PaymentId;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * 支払い方法</span>
+<span class="x">     *</span>
+<span class="x">     * @var PaymentType</span>
+<span class="x">     */</span>
+<span class="x">    private $PaymentType;</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * 連絡先メールアドレス</span>
+<span class="x">     *</span>
+<span class="x">     * @var string|null</span>
+<span class="x">     */</span>
+<span class="x">    private $contactMail;</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * 金額</span>
+<span class="x">     *</span>
+<span class="x">     * @var Money</span>
+<span class="x">     */</span>
+<span class="x">    private $price;    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>:pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，<code class="docutils literal notranslate"><span class="pre">$id</span></code>データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，ValueObjectという．</p>
+<div class="section" id="id16">
+<h4>・金額データと計算<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>金額データの計算をController内処理やEntity内メソッドで行うのではなく，金額計算を行うValueObjectのメソッドとして分割する．</p>
+</div>
+<div class="section" id="id17">
+<h4>・所要時間データと計算<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>所要時間データの計算をController内処理やEntity内メソッドで行うのではなく，所要時間計算を行うValueObjectのメソッドとして分割する．</p>
+</div>
+<div class="section" id="id18">
+<h4>・住所データと処理<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>郵便番号データとその処理をValueObjectとして分割する．</p>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>:pushpin: データの不変性<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>インスタンス化時に自動的に呼び出される<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>でのみ値の設定を行えば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ExampleVO</span>
+<span class="x">{</span>
+
+<span class="x">        private $propertyA;</span>
+<span class="x">  </span>
+<span class="x">        private $propertyB;</span>
+
+<span class="x">        private $propertyC;</span>
+
+<span class="x">        // コンストラクタで$propertyに値を設定</span>
+<span class="x">        public function __construct($param)</span>
+<span class="x">        {</span>
+<span class="x">            $this-&gt;propertyA = $param[&#39;a&#39;];</span>
+<span class="x">            $this-&gt;propertyB = $param[&#39;b&#39;];</span>
+<span class="x">            $this-&gt;propertyC = $param[&#39;c&#39;];</span>
+<span class="x">        }</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<div class="section" id="immutable">
+<h4>・『Immutable』を実現できる理由<a class="headerlink" href="#immutable" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Test01クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property01</span></code>に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にデータの値を上書きできてしまう．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test01 = new Test01;</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;データ01の値&quot;);</span>
+
+<span class="x">$test01-&gt;setProperty01(&quot;新しいデータ01の値&quot;);</span>
+</pre></div>
+</div>
+<p>一方で，Test02クラスインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの<code class="docutils literal notranslate"><span class="pre">$property02</span></code>の値は上書きできない．Setterを持たせずに，<code class="docutils literal notranslate"><span class="pre">__construct()</span></code>だけを持たせれば，『Immutable』なオブジェクトとなる．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">$test02 = new Test02(&quot;データ02の値&quot;);</span>
+
+<span class="x">$test02 = new Test02(&quot;新しいデータ02の値&quot;);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id20">
+<h3>:pushpin: 概念的な統一体<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id21">
+<h3>:pushpin: オブジェクトの交換可能性<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>オブジェクトが新しくインスタンス化された場合，以前に同一オブジェクトから生成されたインスタンスから新しく置き換える必要がある．</p>
+</div>
+<div class="section" id="id22">
+<h3>:pushpin: オブジェクト間の等価性<a class="headerlink" href="#id22" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>全てのデータの値が他のVOと同じ場合，同一のVOと見なされる．</p>
+</div>
+<div class="section" id="id23">
+<h3>:pushpin: メソッドによってオブジェクトの状態が変わらない<a class="headerlink" href="#id23" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例1】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// （1）ドメイン層の氏名を扱うVO</span>
+<span class="x">class NameVO</span>
+<span class="x">{</span>
+<span class="x">        // （2）予め実装したImmutableObjectトレイトを用いて，データの不変性を実現</span>
+<span class="x">    use ImmutableObject;</span>
+
+<span class="x">    // 苗字データ</span>
+<span class="x">    private $lastName;</span>
+<span class="x">    </span>
+<span class="x">    // 名前データ</span>
+<span class="x">    private $firstName;</span>
+<span class="x">    </span>
+<span class="x">    // （6） メソッドによってオブジェクトの状態が変わらない</span>
+<span class="x">    public function fullName(): String</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;lastName . $this-&gt;firstName;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // </span>
+<span class="x">    protected static function computedPropertyNames()</span>
+<span class="x">    {</span>
+<span class="x">        return [</span>
+<span class="x">            &#39;fullName&#39;</span>
+<span class="x">        ];</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>【実装例2】</strong></p>
+<p>同様に，Immutableトレイトを基に，VOを生成する．</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// ドメイン層の金額を扱うVO</span>
+<span class="x">class Money</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="typecode">
+<h2>04-05. TypeCode（標準型）<a class="headerlink" href="#typecode" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id24">
+<h3>:pushpin: 責務<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，ValueObjectとしてではなく，TypeCodeとしてモデリング／実装する．VOまたはEnumによって実装する．</p>
+</div>
+<div class="section" id="pushpin-enumtypecode">
+<h3>:pushpin: EnumによるTypeCodeの実装<a class="headerlink" href="#pushpin-enumtypecode" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例1】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">class ColorVO extends Enum</span>
+<span class="x">{</span>
+<span class="x">    const RED = &#39;1&#39;;</span>
+<span class="x">    const BLUE = &#39;2&#39;;</span>
+
+<span class="x">    // 『self::定数名』で，定義の値へアクセスする．</span>
+<span class="x">    private $defs = [</span>
+<span class="x">        self::RED =&gt; [&#39;colorname&#39; =&gt; &#39;レッド&#39;],</span>
+<span class="x">        self::BLUE =&gt; [&#39;colorname&#39; =&gt; &#39;ブルー&#39;]</span>
+<span class="x">    ];</span>
+
+<span class="x">    // 色値データ</span>
+<span class="x">    private $colorValue;</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // 色名データ．</span>
+<span class="x">    private $colorName;</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // インスタンス化の時に，『色の区分値』を受け取る．</span>
+<span class="x">    public function __construct</span>
+<span class="x">    (</span>
+<span class="x">        String $value</span>
+<span class="x">    )</span>
+<span class="x">    {</span>
+<span class="x">        // $kbnValueに応じて，色名をcolornameデータにセットする．</span>
+<span class="x">        $this-&gt;colorValue = $value;</span>
+<span class="x">        $this-&gt;colorname = $this-&gt;defs[$value][&#39;colorName&#39;];</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    </span>
+<span class="x">    // constructによってセットされた色値を返すメソッド．</span>
+<span class="x">    public function colorValue() :Int</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;colorValue;</span>
+<span class="x">    } </span>
+
+<span class="x">    // constructによってセットされた色名を返すメソッド．</span>
+<span class="x">    public function colorName() :String</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;colorName;</span>
+<span class="x">    } </span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id">
+<h2>04-06. Id<a class="headerlink" href="#id" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id25">
+<h3>:pushpin: 責務<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="domain-service">
+<h2>04-07. Domain Service<a class="headerlink" href="#domain-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id26">
+<h3>:pushpin: 責務<a class="headerlink" href="#id26" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+<div class="section" id="infrastructure">
+<h2>05-01. Infrastructure層<a class="headerlink" href="#infrastructure" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="id27">
+<h2>05-02. 具象Repository<a class="headerlink" href="#id27" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id28">
+<h3>:pushpin: 責務<a class="headerlink" href="#id28" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>DBの操作を行う．</p>
+</div>
+<div class="section" id="pushpin-db-create-update-delete">
+<h3>:pushpin: DBに対する書き込み（Create，Update，Delete）<a class="headerlink" href="#pushpin-db-create-update-delete" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol>
+<li><p>GETまたはPOSTによって，アプリケーション層から値が送信される．</p></li>
+<li><p>Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．</p></li>
+<li><p>Repositoryによって，最終的な集約を構成する．</p></li>
+<li><p>Repositoryによって，集約を連想配列に分解する．</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add()</span></code>によって，Repositoryに集約を登録する．</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">store()</span></code>によって，Transaction処理にRepositoryを登録する．</p></li>
+<li><p>DBに対して，書き込みを行う．</p>
+<p><img alt="ドメイン駆動設計_リポジトリ_データ更新" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA_%E3%83%87%E3%83%BC%E3%82%BF%E6%9B%B4%E6%96%B0.png" /></p>
+</li>
+</ol>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 集約の構成とデータ追加を行う．</span>
+<span class="x">class setDogToyEntityRepository</span>
+<span class="x">{</span>
+<span class="x">  // 接続先したいデータベースが設定されたデータ</span>
+<span class="x">    private $dbs;</span>
+<span class="x">  </span>
+<span class="x">    public function setDataSet(Request $request)</span>
+<span class="x">    {</span>
+<span class="x">  </span>
+<span class="x">        $dogToyEntity = new DogToyEntity;</span>
+<span class="x">  </span>
+<span class="x">  </span>
+<span class="x">        // 送信された値を取り出して格納し，集約を生成．</span>
+<span class="x">        $dogToyEntity-&gt;toyType = $request-&gt;xxx();</span>
+<span class="x">        $dogToyEntity-&gt;toyName	= $request-&gt;xxx();</span>
+<span class="x">        $dogToyEntity-&gt;number = $request-&gt;xxx();</span>
+<span class="x">        $dogToyEntity-&gt;priceVO = $request-&gt;xxx(new PriceVO());</span>
+<span class="x">        $dogToyEntity-&gt;colorVO = $request-&gt;xxx(new ColorVO());</span>
+<span class="x">  </span>
+<span class="x">  </span>
+<span class="x">        // 集約を連想配列に分解する．</span>
+<span class="x">        $data = [</span>
+<span class="x">            &#39;type&#39; =&gt; $dogToyEntity-&gt;toyType,</span>
+<span class="x">            &#39;name&#39; =&gt; $dogToyEntity-&gt;toyName,</span>
+<span class="x">            &#39;number&#39; =&gt; $dogToyEntity-&gt;number,</span>
+<span class="x">            &#39;price&#39; =&gt; $dogToyEntity-&gt;priceVO-&gt;price(),</span>
+<span class="x">            &#39;color_value&#39; =&gt; $dogToyEntity-&gt;colorVO-&gt;value(),</span>
+<span class="x">        ];</span>
+<span class="x">  </span>
+<span class="x">  </span>
+<span class="x">        // データベースのテーブルに挿入する．</span>
+<span class="x">        $this-&gt;dbs[&#39;app&#39;]-&gt;insert(dog_toy_table, $data);</span>
+<span class="x">    </span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-db-read">
+<h3>:pushpin: DBに対する読み出し（Read）<a class="headerlink" href="#pushpin-db-read" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>アプリケーション層から集約がリクエストされる．</p></li>
+<li><p>DBに対して，読み出しを行う．</p></li>
+<li><p>Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．</p></li>
+<li><p>Repositoryによって，最終的な集約を構成する．</p></li>
+<li><p>再構成された集約をアプリケーション層にレスポンス．</p></li>
+</ol>
+<p><img alt="ドメイン駆動設計_リポジトリ_データ取得" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E9%A7%86%E5%8B%95%E8%A8%AD%E8%A8%88_%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA_%E3%83%87%E3%83%BC%E3%82%BF%E5%8F%96%E5%BE%97.jpg" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// データのReadと集約再構成を行う．</span>
+<span class="x">class getDogToyEntityRepository</span>
+<span class="x">{</span>
+<span class="x">  // 接続先したいデータベースが設定されたデータ</span>
+<span class="x">    private $dbs;</span>
+
+<span class="x">    // 連想配列データから『RouteEntity』の集約を構成し，レスポンスする．</span>
+<span class="x">    public function arrayDogToyEntities(): DogToyEntities</span>
+<span class="x">    {</span>
+<span class="x">        $dogToyEntities = [];</span>
+<span class="x">        foreach($this-&gt;fetchDataSet() as $fetchedData){</span>
+<span class="x">            $dogToyEntities[] = $this-&gt;aggregateDogToyEntity($fetchedData)</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">        return $dogToyEntities;</span>
+<span class="x">    }</span>
+
+<span class="x">    // データベースからデータをReadする．</span>
+<span class="x">    private function fetchDataSet()</span>
+<span class="x">    {</span>
+<span class="x">        $select = [</span>
+<span class="x">            &#39;dog_toy.type AS dog_type&#39;,</span>
+<span class="x">            &#39;dog_toy.name AS dog_toy_name&#39;,</span>
+<span class="x">            &#39;dog_toy.number AS number&#39;,</span>
+<span class="x">            &#39;dog_toy.price AS dog_toy_price&#39;,</span>
+<span class="x">            &#39;dog_toy.color_value AS color_value&#39;</span>
+<span class="x">        ];</span>
+<span class="x">        </span>
+<span class="x">        $query = $this-&gt;getFecthQuery($select);</span>
+<span class="x">        return $query-&gt;getConnection()-&gt;executeQuery()-&gt;fetchAll(); </span>
+<span class="x">    }</span>
+
+<span class="x">    // 集約を行うメソッド</span>
+<span class="x">    private function aggregateDogToyEntity(Array $fetchedData)</span>
+<span class="x">    {</span>
+<span class="x">        $dogToyEntity = new DogToyEntity;</span>
+<span class="x">        $dogToyEntity-&gt;toyType = $fetchedData[&#39;dog_toy_type&#39;];</span>
+<span class="x">        $dogToyEntity-&gt;toyName = $fetchedData[&#39;dog_toy_name&#39;];</span>
+<span class="x">        $dogToyEntity-&gt;number = $fetchedData[&#39;number&#39;];</span>
+<span class="x">        $dogToyEntity-&gt;priceVO = new PriceVO($fetchedData[&#39;dog_toy_price&#39;]);</span>
+<span class="x">        $dogToyEntity-&gt;colorVO = new ColorVO($fetchedData[&#39;color_value&#39;]);</span>
+<span class="x">    }</span>
+<span class="x">  </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="factory">
+<h2>05-03. Factory<a class="headerlink" href="#factory" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id29">
+<h3>:pushpin: 責務<a class="headerlink" href="#id29" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>責務として，構成した集約関係を加工して新たな集約を再構成する．</p>
+<div class="section" id="id30">
+<h4>・実装例<a class="headerlink" href="#id30" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// 構成した集約関係を加工して新たな集約を再構成する</span>
+<span class="x">class Factory</span>
+<span class="x">{</span>
+<span class="x">  </span>
+<span class="x">    private $factory;</span>
+
+<span class="x">    </span>
+<span class="x">    public function __construct</span>
+<span class="x">    (</span>
+<span class="x">        Factory $factory</span>
+<span class="x">    )</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;$factory = $factory;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">  </span>
+<span class="x">    public function factoryToyOrderEntity()</span>
+<span class="x">    {</span>
+<span class="x">        if(isset($this-&gt;factory)){</span>
+<span class="x">            $toyOrderEntity = ;//なんらかの集約処理;</span>
+<span class="x">            }</span>
+<span class="x">    </span>
+<span class="x">        return $toyOrderEntity;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="CQRS.html" class="btn btn-neutral float-right" title="CQRS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="MainAlgorithm.html" class="btn btn-neutral float-left" title="代表的なアルゴリズム" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

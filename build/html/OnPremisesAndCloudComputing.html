@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>オンプレミスとクラウドコンピューティング &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="仮想化技術の比較" href="ComparisonOfVirtualizationTechnologies.html" />
+    <link rel="prev" title="ネットワークの仕組み" href="HowTheInternetWorks.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">オンプレミスとクラウドコンピューティング</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">04-01. オンプレミスとクラウドコンピューティングの種類</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-on-premise">:pushpin: On premise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-iaas-infrastructure-as-a-service">:pushpin: IaaS：Infrastructure as a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-paas-platform-as-a-service">:pushpin: PaaS：Platform as a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-faas-platform-as-a-service">:pushpin: FaaS：Platform as a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-saas-software-as-a-service">:pushpin: SaaS：Software as a Service</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#aws">04-02. AWSにおけるクラウドサーバへのデプロイ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-web">:pushpin: クラウドデプロイサーバからクラウドWebサーバへのデプロイの手順</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: デプロイにデプロイツールを用いる場合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-aws-codedeploy">:pushpin: デプロイにAWS CodeDeployを用いる場合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">04-03. AWSにおけるグローバルネットワーク構成</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">:pushpin: クラウドデザイン例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-route-53-dns">:pushpin: Route 53（＝DNSサーバ）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-cloudfront">:pushpin: CloudFront（＝プロキシサーバ）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-cloudtrail">:pushpin: CloudTrail</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-s3-simple-storage-service">:pushpin: S3：Simple Storage Service（＝外付けストレージ）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-api-gateway">:pushpin: API Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-sqs-amazon-simple-queue-service">:pushpin: SQS：Amazon Simple Queue Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-lambdafaas">:pushpin: Lambdaと他FaaSの連携によるサーバレスアーキテクチャ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-cloudwatch">:pushpin: CloudWatch系</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cloud-watch-logs">・Cloud Watch Logs（＝ログ収集サーバに相当）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cloud-watch-events">・Cloud Watch Events**</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">04-04. AWSにおけるプライベートネットワーク構成</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">:pushpin: クラウドデザイン例（再掲）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">:pushpin: セキュリティグループ（＝パケットフィルタリング型ファイアウォール）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">・パケットフィルタリング型ファイアウォールとは（セキュリティのノートを参照せよ）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-vpc-virtual-private-cloud">:pushpin: VPC：Virtual Private Cloud（＝プライベートネットワーク）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-vpc">:pushpin: VPCエンドポイント</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-elb-elastic-load-balancing">:pushpin: ELB：Elastic Load Balancing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-regionavailability-zone">:pushpin: RegionとAvailability Zone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-internet-gateway-nat-gateway">:pushpin: Internet Gateway と NAT Gateway</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#internet-gateway">・Internet Gateway</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nat-gateway">・NAT Gateway</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-vpc-subnet">:pushpin: VPC subnet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#public-subnet">・Public subnet**</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#private-subnet">・Private subnet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-route-table">:pushpin: Route Table = マッピングテーブルに相当</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-acl">:pushpin: ネットワークACL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">:pushpin: データベース</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gcpweb">04-05. GCPによるWebサービスのリリース</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">:pushpin: クラウドデザイン例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-gae-google-app-engine-gae">:pushpin: GAE：Google App Engine：GAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-gce-google-compute-engine">:pushpin: GCE：Google Compute Engine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ImplementationOnTheFrontSide.html">イベント発火 〜 Webページ表示</a></li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>オンプレミスとクラウドコンピューティング</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/OnPremisesAndCloudComputing.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>オンプレミスとクラウドコンピューティング<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>04-01. オンプレミスとクラウドコンピューティングの種類<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ベンダーが，システムを稼働させるために必要なソフトウェアとハードウェアをどこまで提供するかによって，サービスの名称が異なる．</p>
+<p><img alt="オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%AA%E3%83%B3%E3%83%97%E3%83%AC%EF%BC%8C%E3%83%9B%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%EF%BC%8CIaaS%EF%BC%8CCaaS%EF%BC%8CPaaS%EF%BC%8CFaas%EF%BC%8CSaaS%E3%81%AE%E6%AF%94%E8%BC%83.png" /></p>
+<div class="section" id="pushpin-on-premise">
+<h3>:pushpin: On premise<a class="headerlink" href="#pushpin-on-premise" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ベンダーは関わらず，ユーザの設備によって，システムを運用すること．</p>
+</div>
+<div class="section" id="pushpin-iaas-infrastructure-as-a-service">
+<h3>:pushpin: IaaS：Infrastructure as a Service<a class="headerlink" href="#pushpin-iaas-infrastructure-as-a-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【Iaasアプリ例】</strong></p>
+<p>Amazon Web Service，Google Cloud Platform，Microsoft Azure，IBM Cloud</p>
+</div>
+<div class="section" id="pushpin-paas-platform-as-a-service">
+<h3>:pushpin: PaaS：Platform as a Service<a class="headerlink" href="#pushpin-paas-platform-as-a-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【Paasアプリ例】</strong></p>
+<p>Google App Engine，Windows Azure</p>
+</div>
+<div class="section" id="pushpin-faas-platform-as-a-service">
+<h3>:pushpin: FaaS：Platform as a Service<a class="headerlink" href="#pushpin-faas-platform-as-a-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ユーザ側は関数プログラムの実装のみを行い，それ以外はベンダー側に管理してもらうサービスのこと．</p>
+<p><strong>【サービス例】</strong></p>
+<p>Lambda</p>
+</div>
+<div class="section" id="pushpin-saas-software-as-a-service">
+<h3>:pushpin: SaaS：Software as a Service<a class="headerlink" href="#pushpin-saas-software-as-a-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>従来はパッケージとして提供していたアプリケーションを，Webアプリケーションとして提供するサービスのこと．</p>
+<p><strong>【サービス例】</strong></p>
+<p>Google Apps（Google Map，Google Cloud，Google Calender など）</p>
+</div>
+</div>
+<div class="section" id="aws">
+<h2>04-02. AWSにおけるクラウドサーバへのデプロイ<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-web">
+<h3>:pushpin: クラウドデプロイサーバからクラウドWebサーバへのデプロイの手順<a class="headerlink" href="#pushpin-web" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="simple">
+<li><p>クラウドデプロイサーバからクラウドWebサーバにリモート接続する．</p></li>
+</ol>
+<p><img alt="デプロイサーバからインスタンスへのデプロイ.png" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%82%B5%E3%83%BC%E3%83%90%E3%81%8B%E3%82%89%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E3%81%B8%E3%81%AE%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4.png" /></p>
+<ol class="simple">
+<li><p>本番環境（ここではクラウドWebサーバ）にインストールしておいたGitで，<code class="docutils literal notranslate"><span class="pre">pull</span></code>あるいは<code class="docutils literal notranslate"><span class="pre">clone</span></code>を実行し，GitHubからクラウドデプロイサーバにmasterブランチの状態を取り込む．</p></li>
+</ol>
+<p><img alt="GitHub上のコードが本番環境にデプロイされるまで" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/GitHub%E4%B8%8A%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89%E3%81%8C%E6%9C%AC%E7%95%AA%E7%92%B0%E5%A2%83%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%95%E3%82%8C%E3%82%8B%E3%81%BE%E3%81%A7.png" /></p>
+</div>
+<div class="section" id="pushpin">
+<h3>:pushpin: デプロイにデプロイツールを用いる場合<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドデプロイサーバに自動デプロイツール（例：Capistrano）を配置する．自動デプロイツールがクラウドWebサーバやDBサーバにリモート接続し，<code class="docutils literal notranslate"><span class="pre">pull</span></code>や<code class="docutils literal notranslate"><span class="pre">clone</span></code>を実行する．</p>
+<p><img alt="Capistranoを用いた自動デプロイ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/image/Capistrano%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E8%87%AA%E5%8B%95%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4.png" /></p>
+</div>
+<div class="section" id="pushpin-aws-codedeploy">
+<h3>:pushpin: デプロイにAWS CodeDeployを用いる場合<a class="headerlink" href="#pushpin-aws-codedeploy" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="CodeDeployを用いた自動デプロイ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/CodeDeploy%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E8%87%AA%E5%8B%95%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4.png" /></p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>04-03. AWSにおけるグローバルネットワーク構成<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．</p>
+<div class="section" id="id4">
+<h3>:pushpin: クラウドデザイン例<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のデザイン例では，Dualシステムが採用されている．</p>
+<p><img alt="AWSのクラウドデザイン一例" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWS%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E4%B8%80%E4%BE%8B.png" /></p>
+</div>
+<div class="section" id="pushpin-route-53-dns">
+<h3>:pushpin: Route 53（＝DNSサーバ）<a class="headerlink" href="#pushpin-route-53-dns" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とインスタンスのグローバルIPアドレスをマッピングしている．</p>
+</div>
+<div class="section" id="pushpin-cloudfront">
+<h3>:pushpin: CloudFront（＝プロキシサーバ）<a class="headerlink" href="#pushpin-cloudfront" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドプロキシサーバとして働く．Amazon S3へのアクセスをキャッシングする．</p>
+</div>
+<div class="section" id="pushpin-cloudtrail">
+<h3>:pushpin: CloudTrail<a class="headerlink" href="#pushpin-cloudtrail" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>IAMユーザによる操作や，ロールのアタッチの履歴を記録し，ログファイルとしてS3に転送する．CloudWatchと連携することもできる．</p>
+<p><img alt="CloudTrailとは" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/CloudTrail%E3%81%A8%E3%81%AF.jpeg" /></p>
+</div>
+<div class="section" id="pushpin-s3-simple-storage-service">
+<h3>:pushpin: S3：Simple Storage Service（＝外付けストレージ）<a class="headerlink" href="#pushpin-s3-simple-storage-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウド外付けストレージとして働く．Amazon S3に保存するCSSファイルや画像ファイルを管理できる．</p>
+</div>
+<div class="section" id="pushpin-api-gateway">
+<h3>:pushpin: API Gateway<a class="headerlink" href="#pushpin-api-gateway" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>API Gatewayは，メソッドリクエスト，統合リクエスト，統合レスポンス，メソッドレスポンス，から構成される．</p>
+<p><img alt="APIGatewayの仕組み" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/APIGateway%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF.png" /></p>
+<ol class="simple">
+<li><p>メソッドリクエストで，クライアントからリクエストメッセージを受信．また，これからデータを抽出．（※メッセージについては，アプリケーション層の説明を参照せよke）</p></li>
+<li><p>統合リクエストで，データを編集し，指定のAWSサービスにこれを送信．</p></li>
+<li><p>統合レスポンスで，指定のAWSサービスからデータを受信し，これを編集．</p></li>
+<li><p>メソッドレスポンスで，HTTPステータスを追加．また，データをレスポンスメッセージとして，クライアントに送信．</p></li>
+</ol>
+</div>
+<div class="section" id="pushpin-sqs-amazon-simple-queue-service">
+<h3>:pushpin: SQS：Amazon Simple Queue Service<a class="headerlink" href="#pushpin-sqs-amazon-simple-queue-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドメッセージキューとして働く．異なるVPC間でも，メッセージキューを同期できる．クラウドサーバで生成されたメッセージは，一旦SQSに追加される．コマンドによってバッチが実行され，メッセージが取り出される．その後，例えば，バッチ処理によってメッセージからデータが取り出されてファイルが生成され，S3に保存されるような処理が続く．スタンダード方式キューとFIFO方式：First In First Outキューがある．</p>
+<p><img alt="AmazonSQSとは" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AmazonSQS%E3%81%A8%E3%81%AF.jpeg" /></p>
+</div>
+<div class="section" id="pushpin-lambdafaas">
+<h3>:pushpin: Lambdaと他FaaSの連携によるサーバレスアーキテクチャ<a class="headerlink" href="#pushpin-lambdafaas" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．</p>
+<p><img alt="サーバレスアーキテクチャとは" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B5%E3%83%BC%E3%83%90%E3%83%AC%E3%82%B9%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%A8%E3%81%AF.png" /></p>
+</div>
+<div class="section" id="pushpin-cloudwatch">
+<h3>:pushpin: CloudWatch系<a class="headerlink" href="#pushpin-cloudwatch" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="cloud-watch-logs">
+<h4>・Cloud Watch Logs（＝ログ収集サーバに相当）<a class="headerlink" href="#cloud-watch-logs" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>AWSの各種サービスで生成されたログファイルを収集できる．</p>
+</div>
+<div class="section" id="cloud-watch-events">
+<h4>・Cloud Watch Events**<a class="headerlink" href="#cloud-watch-events" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>イベントやスケジュールを検知し，指定したアクションを行う．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>イベント例</th>
+<th>スケジュール例</th>
+<th></th>
+<th>アクション例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APIのコール</td>
+<td>Cron形式での日時指定</td>
+<td>⇒</td>
+<td>Lambdaによる関数の実行</td>
+</tr>
+<tr>
+<td>AWSコンソールへのログイン</td>
+<td></td>
+<td>⇒</td>
+<td>SQSによるメッセージの格納</td>
+</tr>
+<tr>
+<td>インスタンスの状態変化</td>
+<td></td>
+<td>⇒</td>
+<td>SNSによるメール通知</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>⇒</td>
+<td>...</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>04-04. AWSにおけるプライベートネットワーク構成<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id6">
+<h3>:pushpin: クラウドデザイン例（再掲）<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><img alt="AWSのクラウドデザイン一例" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWS%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E4%B8%80%E4%BE%8B.png" /></p>
+</div>
+<div class="section" id="id7">
+<h3>:pushpin: セキュリティグループ（＝パケットフィルタリング型ファイアウォール）<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドパケットフィルタリング型ファイアウォールとして働く．インバウンド（受信ルール）では，プロトコルや受信元IPアドレスを設定でき，アウトバウンド（送信ルール）では，プロトコルや送信先プロトコルを設定できる．</p>
+<div class="section" id="id8">
+<h4>・パケットフィルタリング型ファイアウォールとは（セキュリティのノートを参照せよ）<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>パケットのヘッダ情報に記載された送信元IPアドレスやポート番号などによって，パケットを許可するべきかどうかを決定する．速度を重視する場合はこちら．ファイアウォールとWebサーバの間には，NATルータやNAPTルータが設置されている．これらによる送信元プライベートIPアドレスから送信元グローバルIPアドレスへの変換についても参照せよ．</p>
+<p><img alt="パケットフィルタリング" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%91%E3%82%B1%E3%83%83%E3%83%88%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0.gif" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-vpc-virtual-private-cloud">
+<h3>:pushpin: VPC：Virtual Private Cloud（＝プライベートネットワーク）<a class="headerlink" href="#pushpin-vpc-virtual-private-cloud" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってkクラウドWebサーバを立ち上げることによって，クラウドサーバをデュアル化することできる．</p>
+<p><img alt="VPCが提供できるネットワークの範囲" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPC%E3%81%8C%E6%8F%90%E4%BE%9B%E3%81%A7%E3%81%8D%E3%82%8B%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E7%AF%84%E5%9B%B2.png" /></p>
+</div>
+<div class="section" id="pushpin-vpc">
+<h3>:pushpin: VPCエンドポイント<a class="headerlink" href="#pushpin-vpc" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>NATとインターネットゲートウェイを経由せずにVPCの外側と通信できるため，NATの負荷を抑え，またより安全に通信できる．</p>
+<p><img alt="VPCエンドポイント" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/VPC%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88.png" /></p>
+</div>
+<div class="section" id="pushpin-elb-elastic-load-balancing">
+<h3>:pushpin: ELB：Elastic Load Balancing<a class="headerlink" href="#pushpin-elb-elastic-load-balancing" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デュアル化させたインスタンスへのアクセスを自動的に分配し，サーバへの負荷を緩和するサービス．機能別に，NLB：Network Load Balancer，ALB：Application Load Balancer，CLB：Classic Load Balancer，の3種類に分類できる．</p>
+</div>
+<div class="section" id="pushpin-regionavailability-zone">
+<h3>:pushpin: RegionとAvailability Zone<a class="headerlink" href="#pushpin-regionavailability-zone" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにクラウドWebサーバを構築できる．</p>
+<p><img alt="AWSリージョンマップ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/AWS%E3%83%AA%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%83%9E%E3%83%83%E3%83%97.PNG" /></p>
+</div>
+<div class="section" id="pushpin-internet-gateway-nat-gateway">
+<h3>:pushpin: Internet Gateway と NAT Gateway<a class="headerlink" href="#pushpin-internet-gateway-nat-gateway" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Internet Gateway</th>
+<th align="center">NAT Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>機能</strong></td>
+<td align="center">グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT）</td>
+<td align="center">NAPT（動的NAT）</td>
+</tr>
+<tr>
+<td align="center"><strong>設置場所</strong></td>
+<td align="center">VPC上</td>
+<td align="center">Public subnet内</td>
+</tr>
+</tbody>
+</table><div class="section" id="internet-gateway">
+<h4>・Internet Gateway<a class="headerlink" href="#internet-gateway" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT）の機能を持つ．一つのPublic IPに対して，一つのクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAT（静的NAT）を参照せよ．</p>
+</div>
+<div class="section" id="nat-gateway">
+<h4>・NAT Gateway<a class="headerlink" href="#nat-gateway" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAPT（動的NAT）を参照せよ．</p>
+<p><img alt="InternetGatewayとNATGateway" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/InternetGateway%E3%81%A8NATGateway.png" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-vpc-subnet">
+<h3>:pushpin: VPC subnet<a class="headerlink" href="#pushpin-vpc-subnet" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドプライベートネットワークにおけるセグメントとして働く．</p>
+<div class="section" id="public-subnet">
+<h4>・Public subnet**<a class="headerlink" href="#public-subnet" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>非武装地帯に相当し，クラウドWebサーバが構築される．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，</p>
+</div>
+<div class="section" id="private-subnet">
+<h4>・Private subnet<a class="headerlink" href="#private-subnet" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>内部ネットワークに相当し，Amazon Aurora（クラウドデータベース）などが構築される．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．</p>
+<p><img alt="パブリックサブネットとプライベートサブネットの設計" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%91%E3%83%96%E3%83%AA%E3%83%83%E3%82%AF%E3%82%B5%E3%83%96%E3%83%8D%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%A9%E3%82%A4%E3%83%99%E3%83%BC%E3%83%88%E3%82%B5%E3%83%96%E3%83%8D%E3%83%83%E3%83%88%E3%81%AE%E8%A8%AD%E8%A8%88.png" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-route-table">
+<h3>:pushpin: Route Table = マッピングテーブルに相当<a class="headerlink" href="#pushpin-route-table" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドルータのマッピングテーブルとして働く．ルータについては，NATとNAPTを参照せよ．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">Destination（Private IPの範囲）</th>
+<th align="center">Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>xx.x.x.x/xx</code></td>
+<td align="center">Destinationの範囲内だった場合の送信先</td>
+</tr>
+</tbody>
+</table><p><strong>【具体例1】</strong></p>
+<p>図中で，サブネット2にはルートテーブル1が関連づけられており，サブネット2内のインスタンスの送信先のPrivate IPが，<code class="docutils literal notranslate"><span class="pre">10.0.0.0/16</span></code>の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，範囲外にあれば通信を破棄する．</p>
+<p><strong>【具体例2】</strong></p>
+<p>図中で，サブネット3にはルートテーブル2が関連づけられており，サブネット3内のインスタンスの送信先のPrivate IPが，<code class="docutils literal notranslate"><span class="pre">10.0.0.0/16</span></code>の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，<code class="docutils literal notranslate"><span class="pre">0.0.0.0/0</span></code>（全てのIPアドレス）の範囲内にあれば，インターネットゲートウェイを送信先に選ぶ．</p>
+<p><img alt="ルートテーブル" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%AB%E3%83%BC%E3%83%88%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB.png" /></p>
+</div>
+<div class="section" id="pushpin-acl">
+<h3>:pushpin: ネットワークACL<a class="headerlink" href="#pushpin-acl" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+<div class="section" id="id9">
+<h3>:pushpin: データベース<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>データベースの種類については，別のノートを参照せよ．</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Aurora</th>
+<th align="center">RDS</th>
+<th align="center">DynamoDB</th>
+<th align="center">ElasticCache</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>データベースの種類</strong></td>
+<td align="center">RDB</td>
+<td align="center">RDB</td>
+<td align="center">NoSQL</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="gcpweb">
+<h2>04-05. GCPによるWebサービスのリリース<a class="headerlink" href="#gcpweb" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．</p>
+<div class="section" id="id10">
+<h3>:pushpin: クラウドデザイン例<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のデザイン例では，Dualシステムが採用されている．</p>
+<p><img alt="GCPのクラウドデザイン一例" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/GCP%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E4%B8%80%E4%BE%8B.png" /></p>
+</div>
+<div class="section" id="pushpin-gae-google-app-engine-gae">
+<h3>:pushpin: GAE：Google App Engine：GAE<a class="headerlink" href="#pushpin-gae-google-app-engine-gae" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドデプロイサーバとして働く．AWSにおけるElastic Beanstalkに相当する．</p>
+</div>
+<div class="section" id="pushpin-gce-google-compute-engine">
+<h3>:pushpin: GCE：Google Compute Engine<a class="headerlink" href="#pushpin-gce-google-compute-engine" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラウドWebサーバとして働く．AWSにおけるEC2に相当する．</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ComparisonOfVirtualizationTechnologies.html" class="btn btn-neutral float-right" title="仮想化技術の比較" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="HowTheInternetWorks.html" class="btn btn-neutral float-left" title="ネットワークの仕組み" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

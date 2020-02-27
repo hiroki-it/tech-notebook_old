@@ -1,0 +1,992 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ja" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>イベント発火 〜 Webページ表示 &mdash; sphinx-tech-notebook 1.0.0 ドキュメント</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="統計解析" href="StatisticalAnalysis.html" />
+    <link rel="prev" title="プロトタイプベースのオブジェクト指向" href="PrototypeBasedObjectOriented.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sphinx-tech-notebook
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">はじめに：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AboutThisSite.html">このサイトについて</a></li>
+</ul>
+<p class="caption"><span class="caption-text">PHP：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedAnalysisAndDesign.html">オブジェクト指向分析と設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ObjectOrientedProgramming.html">オブジェクト指向プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConceptAndImplementationOfRESTfulAPI.html">RESTful APIの概念と実装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">テストの手法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FrameworkAndLibrary.html">フレームワークとライブラリ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MainAlgorithm.html">代表的なアルゴリズム</a></li>
+</ul>
+<p class="caption"><span class="caption-text">アーキテクチャ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DomainDrivenDesign.html">ドメイン駆動設計</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CQRS.html">CQRS</a></li>
+</ul>
+<p class="caption"><span class="caption-text">データベース：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OperatingDatabase.html">データベースの操作</a></li>
+</ul>
+<p class="caption"><span class="caption-text">セキュリティ：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MalwareAndCyberAttacks.html">Malwareとサイバー攻撃</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EncryptionTechnology.html">暗号化技術</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ネットワーク：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="HowTheInternetWorks.html">ネットワークの仕組み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OnPremisesAndCloudComputing.html">オンプレミスとクラウドコンピューティング</a></li>
+</ul>
+<p class="caption"><span class="caption-text">仮想化技術：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonOfVirtualizationTechnologies.html">仮想化技術の比較</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreationOfVirtualServer(VirtualMachine)AndContainer.html">仮想サーバ(仮想マシン)とコンテナの構築</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ソフトウェアとハードウェアの連携：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsSoftware.html">ソフトウェアとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WhatIsHardware.html">ハードウェアとは</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ハードウェアに対する命令：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MachineLanguageAndRadix.html">機械語と進数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">組み込み機器：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EmbeddedSystem.html">組み込み機器</a></li>
+</ul>
+<p class="caption"><span class="caption-text">システム開発：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SystemDevelopmentFlow.html">システム開発の流れ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">JavaScript：</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="PrototypeBasedObjectOriented.html">プロトタイプベースのオブジェクト指向</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">イベント発火 〜 Webページ表示</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">01-01. イベント発火からWebページ表示までの流れ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vue">02-01. Vueフレームワークによるイベントの発火</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-spa">:pushpin: SPA：シングルページアプリケーション</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sp">・SPアプリにおけるデータ通信の仕組み</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#websp">・従来WebアプリとSPアプリの処理速度の違い</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin">:pushpin: コンポーネントの登録</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">・グローバル登録</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">・ローカル登録</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">:pushpin: 双方向データバインディング</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mvvm">・MVVMパターン</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">・双方向データバインディングの仕組み</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">・親コンポーネント</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">・Vueインスタンス</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">・子コンポーネント</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">:pushpin: ディレクティブ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v-on-vue">・<code class="docutils literal notranslate"><span class="pre">v-on:</span> <span class="pre">イベント名=&quot;Vueインスタンスのメソッド&quot;</span></code>（<code class="docutils literal notranslate"><span class="pre">&#64;:</span></code>でも可）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v-show">・<code class="docutils literal notranslate"><span class="pre">v-show=&quot;プロパティ名&quot;</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#vue-router">02-02. Vue-Routerライブラリ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">:pushpin: コンポーネントのルーティング</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#vuex">02-03. Vuexライブラリ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">:pushpin: ページの状態管理の仕組み</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dispach">・Dispach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#commit">・Commit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mutate">・Mutate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#render">・Render</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-store">:pushpin: <code class="docutils literal notranslate"><span class="pre">Store</span></code>における状態管理の実装</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ajax">03-01. Ajaxによる非同期通信</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-jqueryajax-ajax">:pushpin: JQueryの<code class="docutils literal notranslate"><span class="pre">ajax()</span></code>を用いたAjaxの実装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-gethttp">:pushpin: GET送信におけるHTTPリクエスト</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">・クエリストリングによるデータの送信**</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">・クエリストリングの生成**</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#json">04-01. JSON型データの解析（パース）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">:pushpin: シリアライズとデシリアライズ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-json">:pushpin: Jsonのクエリ言語</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#jmespath">・JMESPath</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">:pushpin: データ記述言語の種類</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#json-javascript-object-notation">・JSON：JavaScript Object Notation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yaml-yaml-ain-t-a-markup-language">・YAML：YAML Ain't a Markup Language</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">・マークアップ言語</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csv-comma-separated-vector">・CSV：Comma Separated Vector</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">05-01. Webページの構成</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">:pushpin: マークアップ言語の歴史</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-xml">:pushpin: XMLのツリー構造化と構造解析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id19">・スキーマ言語</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">・ツリー構造の解析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pushpin-html">:pushpin: HTMLのツリー構造化と構造解析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">R言語：</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StatisticalAnalysis.html">統計解析</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-tech-notebook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>イベント発火 〜 Webページ表示</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ImplementationOnTheFrontSide.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="web">
+<h1>イベント発火 〜 Webページ表示<a class="headerlink" href="#web" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>01-01. イベント発火からWebページ表示までの流れ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><img alt="AJAXの処理フロー" src="https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png" /></p>
+<ol class="simple">
+<li><p>ページ上で任意のイベントが発火する．（ページング操作，フォーム入力など）</p></li>
+<li><p>JQueryの<code class="docutils literal notranslate"><span class="pre">ajax()</span></code>が，クエリストリングを生成し，また，リクエストによって指定ルートにJSON型データを送信する．</p></li>
+<li><p>コントローラは，JSON型データを受信し，またそれを元にDBからオブジェクトをReadする．</p></li>
+<li><p>コントローラは，PHPのオブジェクトをJSON型データに変換し，レスポンスによって送信する．</p></li>
+<li><p>JQueryの<code class="docutils literal notranslate"><span class="pre">ajax()</span></code>が，JSON型データを受信する．</p></li>
+<li><p>JSON型データが，解析（パース）によってJavaScriptのオブジェクトに変換される．</p></li>
+<li><p>オブジェクトがマークアップ言語に出力される．</p></li>
+<li><p>DOMを用いて，マークアップ言語を解析し，Webページを構成する．</p></li>
+</ol>
+</div>
+<div class="section" id="vue">
+<h2>02-01. Vueフレームワークによるイベントの発火<a class="headerlink" href="#vue" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-spa">
+<h3>:pushpin: SPA：シングルページアプリケーション<a class="headerlink" href="#pushpin-spa" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Vueでは，SPAの仕組みが用いられている．</p>
+<div class="section" id="sp">
+<h4>・SPアプリにおけるデータ通信の仕組み<a class="headerlink" href="#sp" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Webページの部分ごとに，サーバとデータ通信できる．</p>
+<p><img alt="SPアプリにおけるデータ通信の仕組み" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/SP%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E9%80%9A%E4%BF%A1%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF.png" /></p>
+</div>
+<div class="section" id="websp">
+<h4>・従来WebアプリとSPアプリの処理速度の違い<a class="headerlink" href="#websp" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><img alt="従来WebアプリとSPアプリの処理速度の違い" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E5%BE%93%E6%9D%A5Web%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8SP%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E5%87%A6%E7%90%86%E9%80%9F%E5%BA%A6%E3%81%AE%E9%81%95%E3%81%84.png" /></p>
+</div>
+</div>
+<div class="section" id="pushpin">
+<h3>:pushpin: コンポーネントの登録<a class="headerlink" href="#pushpin" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id2">
+<h4>・グローバル登録<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">&#39;v-example-component&#39;</span><span class="p">,{</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>・ローカル登録<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">vExampleComponent</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">// 親コンポーネントと子コンポーネントの対応関係</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx&#39;</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+
+    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+  
+    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// 親コンポーネントにオブジェクト名をつける．</span>
+        <span class="s1">&#39;v-example-component&#39;</span><span class="o">:</span> <span class="nx">vExampleComponent</span>
+    <span class="p">}</span>
+  
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>ただし，コンポーネントのオブジェクト名の定義は，以下のように省略することができる．</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+
+    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+  
+    <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// 親コンポーネントと子コンポーネントの対応関係</span>
+        <span class="s1">&#39;v-example-component&#39;</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx&#39;</span><span class="p">),</span>
+    <span class="p">}</span>
+  
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>:pushpin: 双方向データバインディング<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="mvvm">
+<h4>・MVVMパターン<a class="headerlink" href="#mvvm" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Viewが『Twig＋親コンポーネント』，ViewModelが『Vueインスタンス＋子コンポーネントのVueファイル』，Modelが『クラスが定義されたJSファイル』に相当する．</p>
+<p><img alt="MVVMパターン" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/MVVM%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3.png" /></p>
+</div>
+<div class="section" id="id5">
+<h4>・双方向データバインディングの仕組み<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Viewの親コンポーネント（出力先のコンポーネントタグ）では，ViewModelの子コンポーネント（出力内容）がタグ名でコールされる．ViewとViewModelのコンポーネント間での，データの双方向の受け渡しを双方向データバインディングという．</p>
+<ol class="simple">
+<li><p>親コンポーネントのタグ内で設定された『<code class="docutils literal notranslate"><span class="pre">:example</span> <span class="pre">=</span> <span class="pre">&quot;値&quot;</span></code>』が，子コンポーネントの『<code class="docutils literal notranslate"><span class="pre">props:</span> <span class="pre">{</span> <span class="pre">&quot;値&quot;</span> <span class="pre">}</span></code>』に渡される．この値は読み込み専用で，変更できない．</p></li>
+<li><p>各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．</p></li>
+<li><p>ボタンをクリックした時，子コンポーネントの『<code class="docutils literal notranslate"><span class="pre">$emit(&quot;イベント名&quot;,</span> <span class="pre">&quot;値&quot;)</span></code>』によって，親コンポーネントの『<code class="docutils literal notranslate"><span class="pre">v-on:</span> <span class="pre">イベント名　=　&quot;値&quot;</span> </code>』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．</p></li>
+</ol>
+<p><img alt="Vueコンポーネントツリーにおけるコンポーネント間の通信" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vue%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%83%84%E3%83%AA%E3%83%BC%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E9%96%93%E3%81%AE%E9%80%9A%E4%BF%A1.png" /></p>
+<p><strong>【実装例】</strong></p>
+</div>
+<div class="section" id="id6">
+<h4>・親コンポーネント<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む --&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;app&quot;</span><span class="p">&gt;</span>
+  
+    <span class="c">&lt;!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 --&gt;</span>
+  <span class="c">&lt;!-- propsに渡すための値を設定．ディレクティブのメソッドの引数に影響する--&gt;</span>
+    <span class="c">&lt;!-- 対応するVueインスタンスのmethodオプションをディレクティブに設定--&gt;</span>
+    <span class="p">&lt;</span><span class="nt">v-example-component-1</span>
+        <span class="na">:criteria</span><span class="o">=</span><span class="s">&quot;criteria&quot;</span>
+        <span class="na">v-on</span> <span class="na">change</span><span class="o">=</span><span class="s">&quot;changeQuery&quot;</span>
+  <span class="p">&gt;&lt;/</span><span class="nt">v-example-component-1</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">v-example-component-2</span>
+                         
+    <span class="p">&gt;&lt;/</span><span class="nt">v-example-component-2</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">v-example-component-3</span>
+                         
+    <span class="p">&gt;&lt;/</span><span class="nt">v-example-component-3</span><span class="p">&gt;</span>
+  
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h4>・Vueインスタンス<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成</span>
+<span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+
+    <span class="c1">//　データの受け渡しを行うHTML（TWIG）のIDを，『#ID名』で設定する．</span>
+    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+
+    <span class="c1">// 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』</span>
+    <span class="nx">component</span><span class="o">:</span> <span class="p">{</span>
+
+        <span class="c1">// 親コンポーネントと子コンポーネントの対応関係．</span>
+        <span class="c1">// 子コンポーネントごとに異なるファイルを用意する．</span>
+        <span class="s1">&#39;v-example-component-1&#39;</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx-1&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;v-example-component-2&#39;</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx-2&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;v-example-component-3&#39;</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./xxx/xxx/xxx-3&#39;</span><span class="p">)</span>
+        <span class="p">},</span>
+
+        <span class="c1">// 状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．</span>
+        <span class="c1">// 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり，異なる値をもつ必要があるため，dataオプションはメソッドとして定義する．</span>
+        <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="c1">// プロパティ名: 値</span>
+                <span class="nx">isLoaded</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="nx">staffData</span><span class="o">:</span> <span class="p">[],</span>
+                <span class="nx">criteria</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">id</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+                    <span class="nx">name</span><span class="o">:</span> <span class="kc">null</span>
+                    <span class="p">},</span>
+                <span class="p">};</span>
+        <span class="p">},</span>
+
+        <span class="c1">// dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．</span>
+        <span class="c1">// メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．</span>
+        <span class="nx">method</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">changeQuery</span><span class="p">(</span><span class="nx">criteriaObj</span><span class="p">)</span> <span class="p">{</span>
+        
+                <span class="c1">// 値無しプロパティを持つkeysオブジェクトを定義する．</span>
+                <span class="kr">const</span> <span class="nx">keys</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s1">&#39;criteria&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;limit&#39;</span><span class="p">,</span>
+                <span class="p">];</span>
+        
+                <span class="c1">// プロパティ名を取り出す．</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">keys</span><span class="p">)</span> <span class="p">{</span>
+          
+                    <span class="c1">// criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">criteriaObj</span><span class="p">)</span> <span class="p">{</span>
+            
+                        <span class="c1">// ここでのthisはメソッド内のkeysオブジェクトを指す．</span>
+                        <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">criteriaObj</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        
+        
+            
+            <span class="nx">load</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+          
+                <span class="c1">// ここでのthisはdataオプションを指す．</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">isLoaded</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">staffData</span> <span class="o">=</span> <span class="p">[];</span>
+        
+                <span class="c1">// JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却する．</span>
+                <span class="k">return</span> <span class="nx">Staff</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span>
+        
+                    <span class="c1">// Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．</span>
+                    <span class="c1">// リクエストされたデータをdataオプションのプロパティに格納するメソッド．</span>
+                    <span class="p">.</span><span class="nx">done</span><span class="p">((</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          
+                    <span class="c1">// ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．</span>
+                    <span class="c1">// dataオプションのプロパティに格納する．</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">staffData</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">staffData</span><span class="p">,</span> <span class="nx">Staff</span><span class="p">.</span><span class="nx">parse</span><span class="p">);</span>
+          
+                    <span class="p">})</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Vueインスタンス内の値の変化を監視する関数を定義する．</span>
+        <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+      
+        <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h4>・子コンポーネント<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>&lt;!-- v-example-component-1の子コンポーネント --&gt;
+&lt;!-- 子コンポーネントとして使用するためのtemplateタグ --&gt;
+&lt;!-- ここに，出力したいHTMLやTWIGを記述する． --&gt;
+&lt;template&gt;
+
+&lt;!-- 孫コンポーネント（出力先のコンポーネントタグ）を記述 --&gt;
+&lt;v-example-component-4
+                       
+&gt;&lt;/v-example-component-4&gt;  
+
+&lt;/template&gt;
+
+&lt;!-- 子コンポーネントのオプションを設定 --&gt;
+&lt;script&gt;
+module.exports = {
+      
+      
+    // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+    component: {
+
+        // 子コンポーネントと孫コンポーネントの対応関係
+        &#39;v-example-component-4&#39;: require(&#39;./xxx/xxx/xxx-4&#39;),
+    },
+      
+
+    // 親コンポーネントからpropsオブジェクトのプロパティに，criteriaの値が格納される．
+    props: {
+        &#39;criteria&#39;: {
+            type: Object,
+            required: true
+        },
+    },
+      
+
+    // 状態を変化させたいデータを関数として定義しておき，初期状態を格納する．
+    data: function() {
+        return {
+        
+        };
+    },
+      
+      
+    // 任意の関数を定義する．
+    method: {
+        updateCriteria (key, value) {
+              
+        // 親コンポーネント（v-example-component-1）と紐づく処理
+        // changeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
+        this.$emit(&#39;change&#39;, {&#39;criteria&#39;: localCriteria});
+    },
+
+}
+&lt;/script&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>:pushpin: ディレクティブ<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="v-on-vue">
+<h4>・<code class="docutils literal notranslate"><span class="pre">v-on:</span> <span class="pre">イベント名=&quot;Vueインスタンスのメソッド&quot;</span></code>（<code class="docutils literal notranslate"><span class="pre">&#64;:</span></code>でも可）<a class="headerlink" href="#v-on-vue" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">$emit()</span></code>でイベント名を指定されることによって，Vueインスタンス内の特定のメソッドを発火させる．</p>
+</div>
+<div class="section" id="v-show">
+<h4>・<code class="docutils literal notranslate"><span class="pre">v-show=&quot;プロパティ名&quot;</span></code><a class="headerlink" href="#v-show" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">props</span></code>内のプロパティ名がもつ値が<code class="docutils literal notranslate"><span class="pre">TRUE</span></code>の時に表示し，<code class="docutils literal notranslate"><span class="pre">FALSE</span></code>の時に非表示にする．</p>
+</div>
+</div>
+</div>
+<div class="section" id="vue-router">
+<h2>02-02. Vue-Routerライブラリ<a class="headerlink" href="#vue-router" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id10">
+<h3>:pushpin: コンポーネントのルーティング<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Vueのライブラリの一つで，コンポーネントとルートをマッピングさせる．指定したルートからレスポンスが行われた時に，特定のコンポーネントが動作するように設定することができる．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Vue-Routerライブラリを読み込む．</span>
+<span class="kr">const</span> <span class="nx">vueRouter</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vue-router&#39;</span><span class="p">).</span><span class="k">default</span><span class="p">;</span>
+
+<span class="c1">// VueRouterインスタンスを作成する．</span>
+<span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+    <span class="c1">// ここに，パスとコンポーネント名の対応を記述する．</span>
+    <span class="c1">// 書き方は要勉強．     </span>
+<span class="p">})</span>
+
+<span class="c1">// 外部ファイルが，VueRouterインスタンスを読み込めるようにしておく．</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="vuex">
+<h2>02-03. Vuexライブラリ<a class="headerlink" href="#vuex" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id11">
+<h3>:pushpin: ページの状態管理の仕組み<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Vuejsでライブラリの一つで，ページの状態管理を行うことができる．</p>
+<p><img alt="Vuex" src="https://user-images.githubusercontent.com/42175286/58393072-ef8d7700-8077-11e9-9633-d137b8e36077.png" /></p>
+<div class="section" id="dispach">
+<h4>・Dispach<a class="headerlink" href="#dispach" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="simple">
+<li><p>ユーザーのアクションによって，Vue Componentから，Vuexで定義したActionを呼び出す．</p></li>
+<li><p>まずDispatchされたActionは，APIにリクエストを投げる．そしてサーバーサイド側で定義したロジックによって何らかの処理が実行される．ここで注意するポイントは，「Actionは，必ず非同期処理 」</p></li>
+</ol>
+</div>
+<div class="section" id="commit">
+<h4>・Commit<a class="headerlink" href="#commit" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>サーバー側からレスポンスされたデータ（基本的にはJSONでリターンする）をMutationへ渡す．</p>
+</div>
+<div class="section" id="mutate">
+<h4>・Mutate<a class="headerlink" href="#mutate" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>MutationがStateを変更．ここで注意するポイントは，「Mutationは，必ず同期処理 」．</p>
+</div>
+<div class="section" id="render">
+<h4>・Render<a class="headerlink" href="#render" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>MutateされたStateを，Vue Component側に描画．</p>
+</div>
+</div>
+<div class="section" id="pushpin-store">
+<h3>:pushpin: <code class="docutils literal notranslate"><span class="pre">Store</span></code>における状態管理の実装<a class="headerlink" href="#pushpin-store" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Vuexライブラリを経由してリクエストとレスポンスを行うことで，より効率的にページの状態管理が行える．</p>
+<p><img alt="VueコンポーネントツリーとVuexの関係" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/Vue%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%83%84%E3%83%AA%E3%83%BC%E3%81%A8Vuex%E3%81%AE%E9%96%A2%E4%BF%82.png" /></p>
+<p>Vuexによる状態管理は，<code class="docutils literal notranslate"><span class="pre">Store</span></code>で実装していく．</p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Vuex store</span>
+<span class="c1">// 基本的に，一つのコンポーネントに対応するStoreは一つのみとする．</span>
+<span class="c1">// Vuexライブラリを読み込む．</span>
+<span class="kr">const</span> <span class="nx">vuex</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vuex&#39;</span><span class="p">)</span>
+
+<span class="c1">// 外部ファイルが，このStoreインスタンスを読み込めるようにする．</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vuex</span><span class="p">.</span><span class="nx">Store</span><span class="p">({</span>
+
+  <span class="c1">// Stateには多くを設定せず，Vueインスタンスのdataオプションに設定しておく．</span>
+    <span class="c1">// 初期stateに値を設定しておく．</span>
+    <span class="nx">state</span><span class="o">:</span> <span class="p">{</span>    
+        <span class="nx">staffData</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="p">},</span>
+
+    
+    <span class="c1">// 引数で渡したexArrayの要素を，初期stateのexArrayの要素として格納する．</span>
+    <span class="c1">// 矢印はアロー関数を表し，無名関数の即コールを省略することができる．</span>
+    <span class="nx">mutation</span><span class="o">:</span> <span class="p">{</span>
+        
+        <span class="nx">mutate</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">staffData</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">exArray</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span>
+                
+                <span class="c1">// アロー関数を用いなければ，以下のように記述できる．</span>
+                <span class="c1">// function(element) { state.exArray.push(element); }</span>
+                <span class="c1">// 引数で渡されたexArrayの要素を，stateのexArrayに格納する．</span>
+                <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="nx">state</span><span class="p">.</span><span class="nx">exArray</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span> <span class="p">}</span>
+            <span class="p">);</span>  
+        <span class="p">},</span>
+        
+    <span class="p">},</span>
+    
+    <span class="c1">// ここに，複数のコンポーネントで共通してコールしたいcomputedをまとめて定義しておく．</span>
+    <span class="nx">getters</span><span class="o">:</span> <span class="p">{</span>
+        
+            <span class="nx">staffData</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">staffData</span><span class="p">;</span>
+            <span class="p">},</span>
+            
+    <span class="p">},</span>
+    
+    <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+        
+    <span class="p">},</span>
+<span class="p">});</span>  
+</pre></div>
+</div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Vueコンポーネントツリー</span>
+<span class="c1">// Storeを読み込む．</span>
+<span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./_store&#39;</span><span class="p">)</span>
+
+<span class="c1">// Storeに定義されているgetters，mutation，actionsをローカルにマッピングできるように読み込む．</span>
+<span class="kr">const</span> <span class="nx">mapGetters</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vuex&#39;</span><span class="p">).</span><span class="nx">mapGetters</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">mapActions</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vuex&#39;</span><span class="p">).</span><span class="nx">mapActions</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">mapMutaions</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vuex&#39;</span><span class="p">).</span><span class="nx">mapMutaions</span><span class="p">;</span>
+
+<span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+  
+    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+  
+    <span class="nx">store</span><span class="p">,</span>
+
+  <span class="c1">// Readされたデータをキャッシュしたいようなメソッドを定義する．</span>
+    <span class="nx">computed</span><span class="o">:</span> <span class="p">{</span>
+
+        <span class="c1">// mapGettersヘルパー．</span>
+        <span class="c1">// StoreのGetterをローカルのcomputedにマッピングし，コール可能にする．</span>
+        <span class="p">...</span><span class="nx">mapGetters</span><span class="p">([</span>
+        <span class="s1">&#39;x-Function&#39;</span>
+        <span class="p">])</span>
+
+    <span class="p">},</span>
+
+  <span class="c1">// Readされたデータをキャッシュしたくないようなメソッドを定義する．</span>
+    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+
+        <span class="c1">// mapMutationsヘルパー</span>
+        <span class="p">...</span><span class="nx">mapMutations</span><span class="p">([</span>
+        <span class="s1">&#39;y-Function&#39;</span>
+        <span class="p">]),</span>
+
+        <span class="c1">// mapActionsヘルパー</span>
+        <span class="p">...</span><span class="nx">mapActions</span><span class="p">([</span>
+        <span class="s1">&#39;z-Function&#39;</span>
+        <span class="p">]),</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ajax">
+<h2>03-01. Ajaxによる非同期通信<a class="headerlink" href="#ajax" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="pushpin-jqueryajax-ajax">
+<h3>:pushpin: JQueryの<code class="docutils literal notranslate"><span class="pre">ajax()</span></code>を用いたAjaxの実装<a class="headerlink" href="#pushpin-jqueryajax-ajax" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// HTMLあるいはTWIGから，このようなオブジェクトが送信されてきたとする．</span>
+<span class="kr">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">criteria</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="mi">777</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;hiroki&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// クラス宣言によって定義されたオブジェクトは，個別ファイルで管理しておくのがベター．</span>
+<span class="kr">class</span> <span class="nx">Staff</span> <span class="p">{</span>
+  
+  
+  <span class="c1">// コンストラクタ</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">property</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">property</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">property</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>  
+
+  
+    <span class="c1">// 自分自身をJSON型データでサーバサイドからReadするメソッド</span>
+    <span class="kr">static</span> <span class="nx">find</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+      
+      <span class="c1">// HTTPリクエストのメソッドとしてPOSTを指定</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+      
+      <span class="c1">// リクエスト先のファイルのパスを指定</span>
+            <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/xxx/xxx&#39;</span><span class="p">,</span>
+      
+      <span class="c1">// リクエストによって送信するデータはJSON形式を指定</span>
+            <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+      
+      <span class="c1">// レスポンスによって受信するデータはJSON形式を指定</span>
+            <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+      
+      <span class="c1">// リクエストによって送信するデータを指定</span>
+            <span class="nx">data</span><span class="o">:</span> <span class="nx">query</span><span class="p">,</span>
+        <span class="p">})</span>
+    
+        <span class="c1">// ajax()の処理が成功した場合に起こる処理．</span>
+        <span class="p">.</span><span class="nx">done</span><span class="p">((</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      
+        <span class="p">})</span>
+    
+        <span class="c1">// ajax()の処理が失敗した場合に起こる処理．</span>
+        <span class="p">.</span><span class="nx">fail</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="nx">toastr</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;エラーが発生しました．&#39;</span><span class="p">);</span>
+        <span class="p">})</span>
+    
+        <span class="c1">// ajax()の成功失敗に関わらず，必ず起こる処理．</span>
+        <span class="p">.</span><span class="nx">always</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">isLoaded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">});</span>
+  <span class="p">}</span>    
+
+  
+    <span class="c1">// ReadされたJSON型データをJavaScriptのオブジェクトにシリアライズする．</span>
+    <span class="kr">static</span> <span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Shain</span><span class="p">({</span>
+        
+        <span class="c1">// コンストラクタに渡される．</span>
+        <span class="nx">id</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">name</span>
+        <span class="p">});</span>
+    <span class="p">}</span>                       
+<span class="p">}</span>
+
+<span class="c1">// 外部ファイルから読み込めるように設定しておく．  </span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Staff</span><span class="p">;</span>  
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-gethttp">
+<h3>:pushpin: GET送信におけるHTTPリクエスト<a class="headerlink" href="#pushpin-gethttp" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id12">
+<h4>・クエリストリングによるデータの送信**<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>GET送信ではデータからクエリストリングが生成され，HTTPリクエストが『<code class="docutils literal notranslate"><span class="pre">ルート</span> <span class="pre">+</span> <span class="pre">?</span> <span class="pre">+</span> <span class="pre">クエリストリング</span></code>』の形で送られる．URLに情報が記述されるため，履歴でデータの内容を確認できてしまう危険がある．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://127.0.0.1/example.php + ? + クエリストリング
+</pre></div>
+</div>
+</div>
+<div class="section" id="id13">
+<h4>・クエリストリングの生成**<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// JavaScriptによるオブジェクトの表現．</span>
+<span class="c1">// クラス宣言．</span>
+<span class="kr">class</span> <span class="nx">Example</span> <span class="p">{</span>
+  <span class="nx">fruit</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ばなな&quot;</span><span class="p">,</span> <span class="s2">&quot;りんご&quot;</span><span class="p">];</span>
+  <span class="nx">account</span><span class="o">:</span> <span class="mi">200</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>⬇︎</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分．
+// ...の部分には，データ型を表す記号などが含まれる．
+http://127.0.0.1/example.php + ? + fruit...=ばなな&amp;fruit...=りんご&amp;account...=200
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="json">
+<h2>04-01. JSON型データの解析（パース）<a class="headerlink" href="#json" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id14">
+<h3>:pushpin: シリアライズとデシリアライズ<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．</p>
+<p><img alt="シリアライズとデシリアライズ" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%BA%E3%81%A8%E3%83%87%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%BA.png" /></p>
+<p><strong>【実装例】</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// JavaScriptでのオブジェクトの表現．</span>
+<span class="c1">// クラス宣言．</span>
+<span class="kr">class</span> <span class="nx">Example</span> <span class="p">{</span>
+    <span class="nx">fruit</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ばなな&quot;</span><span class="p">,</span> <span class="s2">&quot;りんご&quot;</span><span class="p">];</span>
+    <span class="nx">account</span><span class="o">:</span> <span class="mi">200</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>⬇︎⬆︎</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// JSON型データの表現．
+// 一番外側を波括弧で囲う．
+{
+  &quot;Example&quot;: {
+    &quot;fruit&quot;: [&quot;ばなな&quot;, &quot;りんご&quot;],
+    &quot;account&quot;: 200
+  }
+}
+</pre></div>
+</div>
+<p>⬇︎⬆︎</p>
+<div class="highlight-PHP notranslate"><div class="highlight"><pre><span></span><span class="x">// PHPでのオブジェクトの表現．</span>
+<span class="x">class Example</span>
+<span class="x">{</span>
+<span class="x">    private $fruit;</span>
+<span class="x">    </span>
+<span class="x">    private $account;</span>
+<span class="x">}    </span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pushpin-json">
+<h3>:pushpin: Jsonのクエリ言語<a class="headerlink" href="#pushpin-json" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="jmespath">
+<h4>・JMESPath<a class="headerlink" href="#jmespath" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>:pushpin: データ記述言語の種類<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="json-javascript-object-notation">
+<h4>・JSON：JavaScript Object Notation<a class="headerlink" href="#json-javascript-object-notation" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>一番外側を波括弧で囲う．</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Example&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ばなな&quot;</span><span class="p">,</span> <span class="s2">&quot;りんご&quot;</span><span class="p">],</span>
+    <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="mi">200</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yaml-yaml-ain-t-a-markup-language">
+<h4>・YAML：YAML Ain't a Markup Language<a class="headerlink" href="#yaml-yaml-ain-t-a-markup-language" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="nt">  Example</span><span class="p">:</span>
+<span class="nt">    fruit</span><span class="p">:</span>
+      <span class="nv">- &quot;ばなな&quot;</span>
+      <span class="nv">- &quot;りんご&quot;</span>
+    <span class="nv">account</span><span class="p p-Indicator">:</span> <span class="nv">200</span>
+<span class="p p-Indicator">}</span>  
+</pre></div>
+</div>
+</div>
+<div class="section" id="id16">
+<h4>・マークアップ言語<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>マークアップ言語の章を参照せよ．</p>
+</div>
+<div class="section" id="csv-comma-separated-vector">
+<h4>・CSV：Comma Separated Vector<a class="headerlink" href="#csv-comma-separated-vector" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>データ解析の入力ファイルとしてよく使うやつ．</p>
+</div>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>05-01. Webページの構成<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id18">
+<h3>:pushpin: マークアップ言語の歴史<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．</p>
+<p><img alt="マークアップ言語の歴史" src="https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/markdown/image/%E3%83%9E%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E8%A8%80%E8%AA%9E%E3%81%AE%E6%AD%B4%E5%8F%B2.png" /></p>
+</div>
+<div class="section" id="pushpin-xml">
+<h3>:pushpin: XMLのツリー構造化と構造解析<a class="headerlink" href="#pushpin-xml" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>XML形式テキストファイルはタグを用いて記述されている．最初に出現するルート要素は根（ルート），またすべての要素や属性は，そこから延びる枝葉として意味づけられる．</p>
+<p><strong>【XMLのツリー構造化の例】</strong></p>
+<p><img alt="DOMの構造" src="https://user-images.githubusercontent.com/42175286/59778015-a59f5600-92f0-11e9-9158-36cc937876fb.png" /></p>
+<p>引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB</p>
+<div class="section" id="id19">
+<h4>・スキーマ言語<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>XML形式テキストファイルにおいて，タグの付け方は自由である．しかし，利用者間で共通のルールを設けた方が良い．ルールを定義するための言語をスキーマ言語という．スキーマ言語に，DTD：Document Type Definition（文書型定義）がある．</p>
+<p><strong>【DTDの実装例】</strong></p>
+<div class="highlight-dtd notranslate"><div class="highlight"><pre><span></span><span class="k">&lt;!DOCTYPE</span> <span class="nt">Enployee[</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Name</span> <span class="o">(</span><span class="nt">First</span><span class="o">,</span> <span class="nt">Last</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">First</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Last</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Email</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Organization</span> <span class="o">(</span><span class="nt">Name</span><span class="o">,</span> <span class="nt">Address</span><span class="o">,</span> <span class="nt">Country</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Name</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Address</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+    <span class="k">&lt;!ELEMENT</span> <span class="nt">Country</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">]&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id20">
+<h4>・ツリー構造の解析<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>DOMによる解析の場合，プロセッサはXMLを構文解析し，メモリ上にDOMツリーを展開する．一方で，SAXによる解析の場合，DOMのようにメモリ上にツリーを構築することなく，先頭から順にXMLを読み込み，要素の開始や要素の終わりといったイベントを生成し，その都度アプリケーションに通知する．</p>
+<p><img alt="DTDとDOM" src="https://user-images.githubusercontent.com/42175286/59777367-83f19f00-92ef-11e9-82e5-6ebcd59f4cba.gif" /></p>
+</div>
+</div>
+<div class="section" id="pushpin-html">
+<h3>:pushpin: HTMLのツリー構造化と構造解析<a class="headerlink" href="#pushpin-html" title="このヘッドラインへのパーマリンク">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="StatisticalAnalysis.html" class="btn btn-neutral float-right" title="統計解析" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="PrototypeBasedObjectOriented.html" class="btn btn-neutral float-left" title="プロトタイプベースのオブジェクト指向" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, hiroki
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
