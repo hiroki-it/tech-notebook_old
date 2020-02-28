@@ -338,7 +338,7 @@ SQLのSELECTやWHEREといった単語を用いて，```foreach()```のように
 
 通常、リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う。しかし、Guzzleライブラリを使えば、サーバから他サーバに対して，リクエストメッセージの送受信ができる。
 
-#### ・リクエストメッセージをGET送信
+### :pushpin: リクエストメッセージをGET送信
 
 ```PHP
 $client = new Client();
@@ -347,7 +347,7 @@ $client = new Client();
 $response = $client->request("GET", {アクセスしたいURL});
 ```
 
-#### ・レスポンスメッセージからボディを取得
+### :pushpin: レスポンスメッセージからボディを取得
 
 ```PHP
 $client = new Client();
