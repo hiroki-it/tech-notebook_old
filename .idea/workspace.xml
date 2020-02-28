@@ -1,7 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0caa05e-de46-433a-bf9b-fa310199004b" name="Default Changelist" comment="" />
+    <list default="true" id="e0caa05e-de46-433a-bf9b-fa310199004b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sphinx-tech-notebook.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/AboutThisSite.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/AboutThisSite.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/CQRS.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/CQRS.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/ComparisonOfVirtualizationTechnologies.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/ComparisonOfVirtualizationTechnologies.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/ConceptAndImplementationOfRESTfulAPI.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/ConceptAndImplementationOfRESTfulAPI.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/CreationOfVirtualServer(VirtualMachine)AndContainer.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/CreationOfVirtualServer(VirtualMachine)AndContainer.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/DomainDrivenDesign.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/DomainDrivenDesign.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/EmbeddedSystem.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/EmbeddedSystem.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/EncryptionTechnology.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/EncryptionTechnology.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/FrameworkAndLibrary.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/FrameworkAndLibrary.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/HowTheInternetWorks.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/HowTheInternetWorks.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/ImplementationOnTheFrontSide.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/ImplementationOnTheFrontSide.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/MachineLanguageAndRadix.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/MachineLanguageAndRadix.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/MainAlgorithm.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/MainAlgorithm.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/MalwareAndCyberAttacks.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/MalwareAndCyberAttacks.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/ObjectOrientedAnalysisAndDesign.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/ObjectOrientedAnalysisAndDesign.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/ObjectOrientedProgramming.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/ObjectOrientedProgramming.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/OnPremisesAndCloudComputing.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/OnPremisesAndCloudComputing.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/OperatingDatabase.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/OperatingDatabase.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/PrototypeBasedObjectOriented.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/PrototypeBasedObjectOriented.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/StatisticalAnalysis.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/StatisticalAnalysis.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/SystemDevelopmentFlow.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/SystemDevelopmentFlow.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/Testing.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/Testing.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/WhatIsHardware.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/WhatIsHardware.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/WhatIsSoftware.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/WhatIsSoftware.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/index.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/.buildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/AboutThisSite.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/AboutThisSite.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/CQRS.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/CQRS.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/ComparisonOfVirtualizationTechnologies.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/ComparisonOfVirtualizationTechnologies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/ConceptAndImplementationOfRESTfulAPI.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/ConceptAndImplementationOfRESTfulAPI.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/CreationOfVirtualServer(VirtualMachine)AndContainer.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/CreationOfVirtualServer(VirtualMachine)AndContainer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/DomainDrivenDesign.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/DomainDrivenDesign.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/EmbeddedSystem.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/EmbeddedSystem.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/EncryptionTechnology.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/EncryptionTechnology.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/FrameworkAndLibrary.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/FrameworkAndLibrary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/HowTheInternetWorks.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/HowTheInternetWorks.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/ImplementationOnTheFrontSide.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/ImplementationOnTheFrontSide.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/MachineLanguageAndRadix.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/MachineLanguageAndRadix.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/MainAlgorithm.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/MainAlgorithm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/MalwareAndCyberAttacks.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/MalwareAndCyberAttacks.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/ObjectOrientedAnalysisAndDesign.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/ObjectOrientedAnalysisAndDesign.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/ObjectOrientedProgramming.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/ObjectOrientedProgramming.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/OnPremisesAndCloudComputing.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/OnPremisesAndCloudComputing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/OperatingDatabase.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/OperatingDatabase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/PrototypeBasedObjectOriented.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/PrototypeBasedObjectOriented.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/StatisticalAnalysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/StatisticalAnalysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/SystemDevelopmentFlow.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/SystemDevelopmentFlow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/Testing.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/Testing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/WhatIsHardware.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/WhatIsHardware.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/WhatIsSoftware.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/WhatIsSoftware.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/CQRS.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/CQRS.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/ConceptAndImplementationOfRESTfulAPI.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/ConceptAndImplementationOfRESTfulAPI.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/CreationOfVirtualServer(VirtualMachine)AndContainer.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/CreationOfVirtualServer(VirtualMachine)AndContainer.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/DomainDrivenDesign.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/DomainDrivenDesign.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/EmbeddedSystem.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/EmbeddedSystem.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/EncryptionTechnology.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/EncryptionTechnology.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/HowTheInternetWorks.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/HowTheInternetWorks.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/ImplementationOnTheFrontSide.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/ImplementationOnTheFrontSide.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/MachineLanguageAndRadix.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/MachineLanguageAndRadix.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/MainAlgorithm.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/MainAlgorithm.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/MalwareAndCyberAttacks.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/MalwareAndCyberAttacks.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/ObjectOrientedAnalysisAndDesign.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/ObjectOrientedAnalysisAndDesign.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/ObjectOrientedProgramming.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/ObjectOrientedProgramming.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/OnPremisesAndCloudComputing.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/OnPremisesAndCloudComputing.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/OperatingDatabase.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/OperatingDatabase.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/StatisticalAnalysis.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/StatisticalAnalysis.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/SystemDevelopmentFlow.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/SystemDevelopmentFlow.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/Testing.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/Testing.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/WhatIsHardware.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/WhatIsHardware.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/WhatIsSoftware.md.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/WhatIsSoftware.md.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/index.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_static/twemoji.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_static/twemoji.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/genindex.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/objects.inv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/source/index.rst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,6 +95,9 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1YMC8iCoC86nhFYL9RkDvn1frSa" />
   <component name="ProjectViewState">
@@ -36,6 +123,9 @@
       <option name="presentableId" value="Default" />
       <updated>1582742918620</updated>
       <workItem from="1582742919974" duration="476000" />
+      <workItem from="1582911945424" duration="64000" />
+      <workItem from="1582912010812" duration="38000" />
+      <workItem from="1582912078470" duration="79000" />
     </task>
     <servers />
   </component>
