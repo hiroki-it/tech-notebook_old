@@ -17,9 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'sphinx-tech-notebook'
-copyright = '2020, hiroki'
-author = 'hiroki'
+project = 'Hiroki tech-notebook'
+author = 'Hiroki'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
@@ -32,7 +31,6 @@ release = '1.0.0'
 # ones.
 extensions = [
     'recommonmark',
-    'sphinxemoji.sphinxemoji',
     'sphinx_markdown_tables'
 ]
 
@@ -70,7 +68,7 @@ html_theme_options = {
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
-    'style_nav_header_background': 'white',
+    'style_nav_header_background': '#2980B9',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
