@@ -1,0 +1,14 @@
+#============
+# Folder
+#============
+.idea/
+build/
+infra/
+
+#============
+# File
+#============
+.gitignore
+make.bat
+Makefile
+README.md
