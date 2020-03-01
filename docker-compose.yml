@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: sphinx-app
+    build:
+      context: .
+      dockerfile: infra/app/Dockerfile
+    tty: true
+    volumes:
+      - ./:/var/www/sphinx-app
+      - ./logs/app:/tmp
+    ports:
+      - "8000:80"
