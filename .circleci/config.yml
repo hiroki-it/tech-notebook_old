@@ -1,15 +1,22 @@
 # バージョン
 version: 2
 
-# ビルドの設定
+# ジョブの設定
 jobs:
   build:
     docker:
       - image: hirokihasegawa/tech-notebook
+
+    # 作業ディレクトリの作成
+    working_directory: ~/tech-notebook
+
     steps:
+      - run:
+          # Gitの日本語を有効化
+          name: Setup git config
+          command: git config --global core.quotepath false
       - checkout
       - run:
-          name: Building html
+          # Htmlの生成
+          name: Build html
           command: make html
-      - store_artifacts:
-          path: build/html
