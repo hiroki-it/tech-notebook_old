@@ -18,7 +18,7 @@ RUN pip install\
 # ディレクトリの設定
 ENV CURRENT_DIR="var/www/sphinx-app"
 
-# ログイン後のディレクトリ
+# ssh接続後のディレクトリ
 WORKDIR ${CURRENT_DIR}
 
 # ポート番号
