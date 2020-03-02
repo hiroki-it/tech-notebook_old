@@ -55,7 +55,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: 仮想化技術
 
    ComparisonOfVirtualizationTechnologies.md
-   CreationOfVirtualServer(VirtualMachine)AndContainer.md
+   CreationOfVirtualServerAndContainer.md
 
 .. toctree::
    :maxdepth: 1
