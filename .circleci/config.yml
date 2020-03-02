@@ -1,0 +1,15 @@
+# バージョン
+version: 2
+
+# ビルドの設定
+jobs:
+  build:
+    docker:
+      - image: hirokihasegawa/tech-notebook
+    steps:
+      - checkout
+      - run:
+          name: Building html
+          command: make html
+      - store_artifacts:
+          path: build/html
