@@ -16,7 +16,7 @@ RUN pip install\
      sphinx_markdown_tables
 
 # ディレクトリの設定
-ENV CURRENT_DIR="var/www/sphinx-app"
+ENV CURRENT_DIR="var/www/sphinx"
 
 # ssh接続後のディレクトリ
 WORKDIR ${CURRENT_DIR}
