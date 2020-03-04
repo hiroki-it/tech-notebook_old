@@ -130,6 +130,9 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
     
     protected function setUp()
     {
+        // 基本的には，一番最初に記述する．
+        parent::setUp();
+        
         $this->exampleService = Phake::mock(ExampleService::class);
     }
 }
@@ -168,14 +171,14 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 
 ```PHP
 * @test
-* @dataProvider dataMethod
+* @dataProvider provideData
 */
 public function testMethod($paramA, $paramB, $paramC)
 {
    // 何らかの処理 
 }
 
-public function dataMethod(): array
+public function provideData(): array
 {
     return [
         // 配列データは複数あっても良い，
