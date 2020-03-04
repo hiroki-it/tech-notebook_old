@@ -10,6 +10,7 @@ jobs:
     # 作業ディレクトリの作成
     working_directory: ~/tech-notebook
 
+    # 実行コマンド
     steps:
       - run:
           # Gitの日本語を有効化
@@ -20,3 +21,7 @@ jobs:
           # Htmlの生成
           name: Build html
           command: make html
+      - run:
+          # 格納ディレクトリの掃除
+          name: Clean up html
+          command: make clean
