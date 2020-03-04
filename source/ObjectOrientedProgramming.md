@@ -1378,6 +1378,10 @@ $test02 = new Test02("新しいデータ02の値");
 
 
 
+#### ・```__clone()```
+
+
+
 ### :pushpin: Recursive call：再帰的プログラム
 
 自プログラムから自身自身をコールし，実行できるプログラムのこと．
@@ -1542,6 +1546,42 @@ foreach ($oneToThree as $value) {
 // 1
 // 2
 // 3
+```
+
+
+
+### :pushpin: 処理の途中終了
+
+#### ・```return;```
+
+
+```PHP
+function returnMethod()
+{
+    print "returnMethod()です。\n";
+    return; // 何も返さない．
+}
+```
+
+```PHP
+returnMethod(); // returnMethod()です。
+... // 処理は続く．
+```
+
+
+#### ・```exit;```
+
+```PHP
+function exitMethod()
+{
+    print "exitMethod()です。\n";
+    exit;
+}
+```
+
+```PHP
+exitMethod(); // exitMethod()です。
+// ここで，システム全体の処理が終了する．
 ```
 
 
@@ -2553,7 +2593,7 @@ return $result;
 
 ![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/決定表.png)
 
-#### ・```if```-```elseif```-```else```を用いた場合
+#### ・```if```-```elseif```-```else```は用いない
 
 可読性が悪いため，避けるべき．
 
@@ -2590,7 +2630,7 @@ public function leapYear(Int $year): String
 }
 ```
 
-#### ・```if```と```return```を用いた場合
+#### ・```if```と```return```を用いた早期リターン
 
 ```return```を用いることで，```if```が入れ子状になることを防ぐことができる．これを，早期リターンともいう．
 
@@ -2629,7 +2669,7 @@ public function leapYear(Int $year): String
 }
 ```
 
-#### ・```switch```-```case```-```break```を用いた場合
+#### ・```switch```-```case```-```break```を用いた早期リターン
 
 ```switch```-```case```-```break```によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，```break```ではなく```return```を用いている．
 
@@ -2659,6 +2699,32 @@ public function leapYear(Int $year): String
         return "うるう年";
     }
       
+}
+```
+
+#### ・ガード節を用いた早期リターン
+
+早期リターンのif文の波括弧を省略した記法を，ガード節という．
+
+```PHP
+public function leapYear(Int $year): String
+{
+
+    // (5)
+    if($year <= 0) throw new Exception("負の数は判定できません．");
+
+    // (4)
+    if($year % 4 != 0 ) return "平年";
+
+    // (3)
+    if($year % 100 != 0) return "うるう年";
+
+    // (2)
+    if($year % 400 != 0) return "平年";
+
+    // (1)
+    return "うるう年";
+    
 }
 ```
 
