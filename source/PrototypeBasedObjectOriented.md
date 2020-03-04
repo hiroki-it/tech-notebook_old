@@ -34,6 +34,7 @@ const example = {
 ```javascript
 const example = new Object({
 
+    // 慣習的にアンダーバーでprivateを表す．
     _property: 0,
   
     set setValue(value) {
@@ -52,13 +53,14 @@ const example = new Object({
 const Example = new Function();
 ```
 
-ただし，公式からこのような記法は，非推奨とされている．以下の関数宣言，関数式，アロー関数の記法が推奨される．
+ただし，公式からこのような記法は，非推奨とされている．以下の関数宣言，関数式，アロー関数による関数式省略，の記法が推奨される．
 
 ```javascript
 // 関数宣言
 function Example() {
     
-    this._property = value;
+    // 慣習的にアンダーバーでprivateを表す．
+    _property = 0;
 
     // プロパティ値として定義した関数を，メソッドという．
     this.setValue = function(value) {
@@ -74,8 +76,9 @@ function Example() {
 ```javascript
 // 関数式
 const Example = function(value) {
-  
-    this._property = value;
+    
+    // 慣習的にアンダーバーでprivateを表す．
+    _property = 0;
   
     this.setValue = function(value) {
         this._property = value;
@@ -88,8 +91,9 @@ const Example = function(value) {
 
 // アロー関数による関数式の省略記法
 const Example = (value) => {
-  
-    this._property = value;
+    
+    // 慣習的にアンダーバーでprivateを表す．
+    _property = 0;
   
     this.setValue = function(value) {
         this._property = value;
@@ -123,16 +127,17 @@ console.log(
 
 
 
-### :pushpin: ```class```の使用
+### :pushpin: 糖衣構文の```class```の使用
 
 ES6から，糖衣構文の```class```によって，オブジェクトを定義できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
 
 ```javascript
 // クラス宣言
 class Example {
-  
-  // classでしか使えない．
-  // Setterの代わりにコンストラクタでImmutableを実現．
+    
+    // classでしか使えない．
+    // Setterの代わりにコンストラクタでImmutableを実現．
+    // データの定義と格納が同時に行われる．
     constructor(value) {
         this.property = value;
     }
@@ -146,9 +151,10 @@ class Example {
 ```javascript
 // クラス式
 const Example = class {
-  
+    
     // classでしか使えない．
-  // Setterの代わりにコンストラクタでImmutableを実現．
+    // Setterの代わりにコンストラクタでImmutableを実現．
+    // データの定義と格納が同時に行われる．
     constructor(value) {
         this._property = value;
     }
@@ -179,7 +185,8 @@ const example = new Example(1)
 // コンストラクタ関数の関数式による定義．
 const Example = function(value) {
   
-    this._property = value;
+    // 慣習的にアンダーバーでprivateを表す．
+    _property = 0;
   
     this.setValue = function(value) {
         this._property = value;
@@ -198,6 +205,7 @@ const Example = function(value) {
 // prototypeプロパティの継承先のオブジェクトを定義．
 const SubExample = function(subValue) {
     
+    // 慣習的にアンダーバーでprivateを表す．
     this.subProperty = subValue;
   
     this.setSubValue = function(subValue) {
@@ -225,7 +233,8 @@ console.log(result);
 // prototypeプロパティの継承先のオブジェクトを定義．
 const SubExample = function() {
     
-    this.subProperty = subValue;
+    // 慣習的にアンダーバーでprivateを表す．
+    _property = 0;
   
     this.setSubValue = function(subValue) {
         this.subProperty = subValue;
