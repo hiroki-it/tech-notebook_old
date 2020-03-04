@@ -83,27 +83,23 @@ new Vue({
 
 
 
-### :pushpin: 双方向データバインディング
+### :pushpin: MVVMパターン
 
-#### ・MVVMパターン
+#### ・MVVMパターンとは
 
-Viewが『Twig＋親コンポーネント』，ViewModelが『Vueインスタンス＋子コンポーネントのVueファイル』，Modelが『クラスが定義されたJSファイル』に相当する．
+Viewが『Twig＋親コンポーネント（```.html```）』，ViewModelが『Vueインスタンス（```.js```）＋子コンポーネント（```.vue```）』，Modelが『クラス（```.js```）』に相当する．
 
 ![MVVMパターン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/MVVMパターン.png)
 
-#### ・双方向データバインディングの仕組み
-
-Viewの親コンポーネント（出力先のコンポーネントタグ）では，ViewModelの子コンポーネント（出力内容）がタグ名でコールされる．ViewとViewModelのコンポーネント間での，データの双方向の受け渡しを双方向データバインディングという．
-
-1. 親コンポーネントのタグ内で設定された『```:example = "値"```』が，子コンポーネントの『```props: { "値" }```』に渡される．この値は読み込み専用で，変更できない．
-2. 各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
-3. ボタンをクリックした時，子コンポーネントの『```$emit("イベント名", "値")```』によって，親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．
+#### ・双方向データバインディング（Props Down, Events Up）
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
-**【実装例】**
+Viewの親コンポーネント（出力先のコンポーネントタグ）では，ViewModelの子コンポーネント（出力内容）がタグ名でコールされる．親側Viewと子側ViewModelのコンポーネント間の対応付けをデータバインディング（Props Down, Events Up），またデータの双方向の受け渡しを双方向データバインディングという．
 
-#### ・親コンポーネント
+#### ・1. 親からのProps Down（```.html```）
+
+親コンポーネントのタグ内で設定された『```:example = "値"```』が，子コンポーネントの『```props: { "値" }```』に渡される．この値は読み込み専用で，変更できない．
 
 ```html
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
@@ -129,25 +125,28 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
   
 </div>
 ```
-#### ・Vueインスタンス
+#### ・2. Vueインスタンスによる親子間のバインディング（```.js```）
+
+各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
 
 ```javascript
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
 new Vue({
 
+    
     //　データの受け渡しを行うHTML（TWIG）のIDを，『#ID名』で設定する．
     el: '#app',
 
+    
     // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
     component: {
-
         // 親コンポーネントと子コンポーネントの対応関係．
         // 子コンポーネントごとに異なるファイルを用意する．
         'v-example-component-1': require('./xxx/xxx/xxx-1'),
         'v-example-component-2': require('./xxx/xxx/xxx-2'),
         'v-example-component-3': require('./xxx/xxx/xxx-3')
         },
-
+        // dataオプション
         // 状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
         // 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり，異なる値をもつ必要があるため，dataオプションはメソッドとして定義する．
         data: function() {
@@ -162,57 +161,52 @@ new Vue({
                 };
         },
 
+    
+        // methodオプション
         // dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．
         // メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．
         method: {
             changeQuery(criteriaObj) {
-        
                 // 値無しプロパティを持つkeysオブジェクトを定義する．
                 const keys = [
                     'criteria',
                     'limit',
                 ];
-        
                 // プロパティ名を取り出す．
                 for (const key of keys) {
-          
                     // criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．
                     if (key in criteriaObj) {
-            
                         // ここでのthisはメソッド内のkeysオブジェクトを指す．
                         this[key] = criteriaObj[key];
                 }
-            }
-        
-        
+         }
             
             load(query) {
-          
                 // ここでのthisはdataオプションを指す．
                 this.isLoaded = true;
                 this.staffData = [];
-        
-                // JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却する．
-                return Staff.find(query)
-        
-                    // Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．
-                    // リクエストされたデータをdataオプションのプロパティに格納するメソッド．
-                    .done((data) => {
-          
-                    // ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
-                    // dataオプションのプロパティに格納する．
-                    this.staffData = _.map(data.staffData, Staff.parse);
-          
-                    })
-        }
+                // JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却．
+                 return Staff.find(query)
+                // Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．
+                // リクエストされたデータをdataオプションのプロパティに格納するメソッド．
+                .done((data) => {
+                // ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
+                // dataオプションのプロパティに格納する．
+                this.staffData = _.map(data.staffData, Staff.parse);
+                })
+            }
 
+                
+        // watchオプション
         // Vueインスタンス内の値の変化を監視する関数を定義する．
         watch: {
       
         }
 })
 ```
-#### ・子コンポーネント
+#### ・3. 子からのEvents Up，孫へのProps Down（```.vue```）
+
+ボタンをクリックした時，子コンポーネントの『```$emit("イベント名", "値")```』によって，親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．また同時に，子コンポーネントのタグ内で設定された『```:example = "値"```』が，孫コンポーネントの『```props: { "値" }```』に渡される．各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
 
 ```vue
 <!-- v-example-component-1の子コンポーネント -->
@@ -220,17 +214,20 @@ new Vue({
 <!-- ここに，出力したいHTMLやTWIGを記述する． -->
 <template>
 
-    <!-- 孫コンポーネント（出力先のコンポーネントタグ）を記述 -->
+    <!-- 孫コンポーネントを記述 -->
     <v-example-component-4
-       
+     :aaa="a"
+     :bbb="b"
     ></v-example-component-4>  
 
-        <!-- 特定の条件の時のみ出力する -->
-        <template v-if="isXxx()">
-            <v-example-component-5
-                                   
-            ></v-example-component-5>  
-        </template>
+    <!-- 特定の条件の時のみ出力する孫コンポーネント -->
+    <!-- 値はpropsオプションから参照される -->
+    <template v-if="example.isOk()">
+        <v-example-component-5
+         :ccc="c"
+         :ddd="d"                          
+        ></v-example-component-5>  
+    </template>
 
 </template>
 
@@ -245,15 +242,21 @@ module.exports = {
 
         // 子コンポーネントと孫コンポーネントの対応関係
         'v-example-component-4': require('./xxx/xxx/xxx-4'),
+        'v-example-component-5': require('./xxx/xxx/xxx-5'),
     },
       
 
-    // 親コンポーネントからpropsオブジェクトのプロパティに，criteriaの値が格納される．
+    // 親コンポーネントまたはAjaxからpropsオブジェクトのプロパティに値が格納される．
     props: {
         'criteria': {
             type: Object,
-            required: true
+            required: true,
         },
+        
+        'example':{
+            type Object,
+            required:true,
+        }
     },
       
 
@@ -272,27 +275,74 @@ module.exports = {
         // 親コンポーネント（v-example-component-1）と紐づく処理
         // changeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
         this.$emit('change', {'criteria': localCriteria});
+            
+        // Ajaxから送信されてきたデータを用いて，propsを更新 
+        updateFuneral (key, value) {
+            
+        }    
     },
 
 }
 </script>
 ```
 
+#### ・4. モデルへのデータ送信（```.js```）
+
+サーバサイドからのデータ受信については，Ajaxの```.done()```の説明を参照せよ．
+
+```javascript
+class Example {
+    
+    // コンポーネントからデータを受信．
+    // プロパティの宣言と，同時に格納．
+    constructor(properties) {
+        this.isOk = properties.isOk;
+        ...
+    }
+    
+    // コンストラクタによって宣言されているので，アクセスできる．
+    isOk() {
+        // bool値を返却するとする．
+        return this.isOk;
+    }
+}
+```
 
 
-### :pushpin: ディレクティブ
 
-#### ・```v-on: イベント名="Vueインスタンスのメソッド"```（```@:```でも可）
+## 02-02. Vueにおけるディレクティブ
 
-```$emit()```でイベント名を指定されることによって，Vueインスタンス内の特定のメソッドを発火させる．
+### :pushpin: リアクティブディレクティブ
 
-#### ・```v-show="プロパティ名"```
+#### ・属性データバインディング
 
-```props```内のプロパティ名がもつ値が```TRUE```の時に表示し，```FALSE```の時に非表示にする．
+#### ・入力データバインディング
+
+#### ・スタイルバインディング
+
+#### ・クラスバインディング
+
+#### ・イベントハンドリング
+
+v-on: {イベント名}="{Vueインスタンスのメソッド}"（```@:```でも可）で記述する．```$emit()```でイベント名を指定されることによって，Vueインスタンス内の特定のメソッドを発火させる．
+
+#### ・条件付きレンダリング
+
+```v-if```あるいは```v-show```で，```v-xxx="{propsのプロパティ名}"```で記述する．親テンプレートから渡された```props```内のプロパティ名がもつ値が```TRUE```の時に表示し，```FALSE```の時に非表示にする．もし頻繁に表示と非表示の切り替えを行うようなら，```v-if```の方が，描画コストが重たくなるリスクが高くなる為，```v-show```推奨である．
 
 
 
-## 02-02. Vue-Routerライブラリ
+
+### :pushpin: リテラルディレクティブ
+
+
+
+### :pushpin: エンプティディレクティブ
+
+
+
+
+## 02-03. Vue-Routerライブラリ
 
 ### :pushpin: コンポーネントのルーティング
 
@@ -316,7 +366,7 @@ module.exports = router;
 
 
 
-## 02-03. Vuexライブラリ
+## 02-04. Vuexライブラリ
 
 ### :pushpin: ページの状態管理の仕組み
 
@@ -343,7 +393,7 @@ Vuejsでライブラリの一つで，ページの状態管理を行うことが
 
 
 
-### :pushpin: ```Store```における状態管理の実装
+### :pushpin: ```Vuex.Store()```における状態管理の実装
 
 Vuexライブラリを経由してリクエストとレスポンスを行うことで，より効率的にページの状態管理が行える．
 
@@ -446,7 +496,7 @@ new Vue({
 
 
 
-## 03-01. Ajaxによる非同期通信
+## 03-01. Ajaxによる非同期的なデータ送受信
 
 ### :pushpin: JQueryの```ajax()```を用いたAjaxの実装
 
@@ -466,7 +516,7 @@ const query = {
 class Staff {
   
   
-  // コンストラクタ
+  // コンポーネントからデータを受信．
     constructor(property) {
         this.id = property.id;
         this.name = property.name;
@@ -524,7 +574,7 @@ module.exports = Staff;
 
 ### :pushpin: GET送信におけるHTTPリクエスト
 
-#### ・クエリストリングによるデータの送信**
+#### ・クエリストリングによるデータの送信
 
 GET送信ではデータからクエリストリングが生成され，HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる．URLに情報が記述されるため，履歴でデータの内容を確認できてしまう危険がある．
 
@@ -532,7 +582,7 @@ GET送信ではデータからクエリストリングが生成され，HTTPリ�
 http://127.0.0.1/example.php + ? + クエリストリング
 ```
 
-#### ・クエリストリングの生成**
+#### ・クエリストリングの生成
 
 **【実装例】**
 
@@ -545,7 +595,7 @@ class Example {
 }
 ```
 
-⬇︎
+⇓
 
 ```
 // 『ルート + ? + クエリストリング』のクエリストリングに相当する部分．
