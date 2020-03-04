@@ -17,48 +17,116 @@
 
 ## 03-01.  PHPUnitによるUnit／Functionalテストの要素
 
-### Phakeによるモックとスタブの定義
+### :pushpin: Phakeによるモックオブジェクトとスタブの定義
 
-テストコードにおいては，クラスの一部または全体を，処理を持たないもの（モック）に置き換える．
+テストコードにおいては，クラスの一部または全体を，処理を持たないもの（モックオブジェクト）に置き換える．
 
 #### ・```mock()```
 
-クラス名（名前空間）を元に，モックを生成できる．
+クラス名（名前空間）を元に，モックオブジェクトを生成する．
 
 ```PHP
-// クラス名（名前空間）を引数として渡す．
+// クラスの名前空間を引数として渡す．
 $mock = Phake::mock(Example::class)
+```
+
+#### ・```when()```
+
+モックオブジェクトに対して，スタブを生成する．
+
+```PHP
+// $mockに対して，method()を設定し，$paramが渡された時に，[]（空配列）を返却するものとする．
+\Phake::when($mock)
+    ->method($param)
+    ->thenReturn([]);
 ```
 
 #### ・```verify()```
 
 メソッドがn回以上コールされたかを検証できる．
 
+**【実装例1】**
+
 ```PHP
-// モックを生成．
+// モックオブジェクトを生成．
 $mock = Phake::mock(Example::class)
 
-// モックに対してスタブを作成．
+// モックオブジェクトに対してスタブを生成．
 \Phake::when($mock)
     ->method($param)
     ->thenReturn([]);
 
-// メソッドがn回コールされたかを検証．
+// スタブをコール．
+$mock->method("A")
+
+// $mockのmethod()が$n回コールされ，その時の引数が$paramであったかを検証．
 Phake::verify($mock, Phake::times($n))->method($param)
+```
+
+**【実装例2】**
+
+先に，以下のような，実体的なクラスがあるとする．
+
+```PHP
+class Aggregation
+{
+    private $example;
+    
+    public function __construct($example)
+    {
+        $this->example = $example;
+    }
+    
+    public function aggMethod($param)
+    {
+        // privateメソッドをコール
+        $param = this->addB($param)
+        // ExampleクラスのexaMethodをコール．
+        return $this->example->exaMethod($param);
+    }
+    
+    private function addB($param)
+    {
+        return $param.'B';
+    }
+}
+
+```
+
+実体的なオブジェクトに対して，モックオブジェクトを設定していく．
+
+```PHP
+// モックオブジェクトを生成．
+$mock = Phake::mock(Example::class);
+
+// モックオブジェクトをもつ実体的な集約を生成．
+$aggregation = new Aggregation($mock);
+
+// 実体的な集約のもつモックオブジェクトに対してスタブを生成．
+\Phake::when($mock)
+    ->exaMethod($param)
+    ->thenReturn([]);
+
+// 実体的な集約のもつ実体的なメソッドをコールし，間接的に$mockのスタブをコール．
+// 集約のもつaddB()は，スタブのexaMethod()とは異なって実体的なので，処理が通る．
+$aggregation->aggMethod("A");
+
+// $mockのexaMethod()が1回コールされ，その時の引数がABであったかを検証．
+Phake::verify($mock, Phake::times(1))->exaMethod("AB");
 ```
 
 
 
-### テストの事前準備と後片付け
+### :pushpin: テストの事前準備と後片付け
 
 #### ・```setUp()```
 
-モックなどを事前に準備するために用いられる．
+モックオブジェクトなどを事前に準備するために用いられる．
 
 ```PHP
 class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 {
-    protected $exampleService
+    protected $exampleService;
     
     protected function setUp()
     {
@@ -74,13 +142,13 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 ```PHP
 class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 {
-    protected $container
+    protected $container;
     
     // メソッドの中で，最初に自動実行される．
     protected function setUp()
     {
         // DIコンテナにデータを格納する．
-        $this->container['option']
+        $this->container['option'];
     }
     
     // メソッドの中で，最後に自動実行される．
@@ -92,9 +160,35 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 }
 ```
 
+### :pushpin: テストデータの準備
+
+#### ・Data Provider
+
+テストメソッドのアノテーションに，```@dataProvider {データ名}```とすることで，テストメソッドに定義した配列データを渡すことができる．
+
+```PHP
+* @test
+* @dataProvider dataMethod
+*/
+public function testMethod($paramA, $paramB, $paramC)
+{
+   // 何らかの処理 
+}
+
+public function dataMethod(): array
+{
+    return [
+        // 配列データは複数あっても良い，
+        // testMethod()の引数と同じ順番で，配列データの要素が並ぶ．
+        ["あ", "い", "う"],
+        ["1", "2", "3"]
+    ]
+}
+```
 
 
-### 実際値と期待値の比較
+
+### :pushpin: 実際値と期待値の比較
 
 https://phpunit.readthedocs.io/ja/latest/assertions.html
 
@@ -102,7 +196,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 ## 03-02. PHPUnitによるUnit／Functionalテストの実装まとめ
 
-### Unitテスト
+### :pushpin: Unitテスト
 
 クラスやメソッドが単体で処理が正しく動作するかをテストする．
 
@@ -112,7 +206,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 
 
-### Functionalテスト
+### :pushpin: Functionalテスト
 
 リクエストされるControllerに対してリクエストを行い，レスポンスが行われるかをテストする．レスポンス期待値のデータセットを```@dataProvider```に定義し，データベースからレスポンスされた実際の値と一致するかでテストを行う．
 
@@ -132,7 +226,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 
 
-### CIツールによるPHPUnitの自動実行
+### :pushpin: CIツールによるPHPUnitの自動実行
 
 1. テストクラスを実装したうえで，新機能を設計実装する．
 
@@ -150,11 +244,11 @@ Circle CI，Jenkins
 
 
 
-## 03-03. テスト仕様書に基づくUnit テスト
+## :pushpin: 03-03. テスト仕様書に基づくUnit テスト
 
 PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
-### ブラックボックステスト
+### :pushpin: ブラックボックステスト
 
 実装内容は気にせず，入力に対して，適切な出力が行われているかをテストする．
 
@@ -162,7 +256,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 
 
-### ホワイトボックステスト
+### :pushpin: ホワイトボックステスト
 
 実装内容が適切かを確認しながら，入力に対して，適切な出力が行われているかをテストする．ホワイトボックステストには，以下の方法がある．何をテストするかに着目すれば，思い出しやすい．
 
@@ -236,7 +330,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ![結合テスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-1.jpg)
 
-### Top-down テスト
+### :pushpin: Top-down テスト
 
 上位のモジュールから下位のモジュールに向かって，結合テストを行う場合，下位には Stub と呼ばれるダミーモジュールを作成する．
 
@@ -244,7 +338,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### Bottom-up テスト
+### :pushpin: Bottom-up テスト
 
 下位のモジュールから上位のモジュールに向かって，結合テストを行う場合，上位には Driver と呼ばれるダミーモジュールを作成する．
 
@@ -252,28 +346,28 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### Scenario テスト
+### :pushpin: Scenario テスト
 
 実際の業務フローを参考にし，ユーザが操作する順にテストを行う．
 
 
 
 
-## 04-01. テスト仕様書に基づくUser Acceptance テスト（総合テスト）
+## 04-01. テスト仕様書に基づくSystemテスト（User Acceptanceテスト，総合テスト）
 
 ![p491-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-2.jpg)
 
-結合テストの次に行うテスト．システム全体が適切に動いているかをテストする．
+結合テストの次に行うテスト．システム全体が適切に動いているかをテストする．User Acceptanceテスト，また総合テストともいう．
 
 
 
-### Functional テスト
+### :pushpin: Functional テスト
 
 機能要件を満たせているかをテストする．PHPUnitでのFunctionalテストとは意味合いが異なるので注意．
 
 
 
-### Perfomance テスト
+### :pushpin: Perfomance テスト
 
 ![スループットとレスポンスタイム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スループットとレスポンスタイム.png)
 
@@ -289,7 +383,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### Stress テスト
+### :pushpin: Stress テスト
 
 
 
@@ -303,7 +397,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ## 05-01. グラフによるテストの可視化
 
-### バグ管理図
+### :pushpin: バグ管理図
 
 プロジェクトの時，残存テスト数と不良摘出数（バグ発見数）を縦軸にとり，時間を横軸にとることで，バグ管理図を作成する．それぞれの曲線の状態から，プロジェクトの進捗状況を読み取ることができる．
 
