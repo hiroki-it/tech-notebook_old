@@ -54,7 +54,7 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: 仮想化技術
 
-   ComparisonOfVirtualizationTechnologies.md
+   ComparisonOfVirtualizationTechnology.md
    CreationOfVirtualServerAndContainer.md
 
 .. toctree::
@@ -87,7 +87,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: JavaScript
       
    PrototypeBasedObjectOriented.md
-   ImplementationOnTheFrontSide.md
+   FiringEventAndRenderingPages.md
 
 .. toctree::
    :maxdepth: 1
