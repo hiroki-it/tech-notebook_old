@@ -19,7 +19,7 @@ Hiroki tech-notebook ドキュメントサイト
    ObjectOrientedAnalysisAndDesign.md
    ObjectOrientedProgramming.md
    ConceptAndImplementationOfRESTfulAPI.md
-   Testing.md
+   TestingFrameworkAndTestSpecification.md
    FrameworkAndLibrary.md
    MainAlgorithm.md
 
@@ -48,7 +48,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: ネットワーク
 
    HowTheInternetWorks.md
-   OnPremisesAndCloudComputing.md
+   FlowOfBuildTestDeployToAWS.md
 
 .. toctree::
    :maxdepth: 1

@@ -1,6 +1,6 @@
-# オンプレミスとクラウドコンピューティング
+# ビルド，テスト，AWSへのデプロイの流れ
 
-## 04-01. オンプレミスとクラウドコンピューティングの種類
+## 01-01. オンプレミスとクラウドコンピューティングの種類
 
 ベンダーが，システムを稼働させるために必要なソフトウェアとハードウェアをどこまで提供するかによって，サービスの名称が異なる．
 
@@ -50,9 +50,37 @@ Google Apps（Google Map，Google Cloud，Google Calender など）
 
 
 
-## 04-02. AWSにおけるクラウドサーバへのデプロイ
+## 02-01. CI/CDの流れ
 
-### :pushpin: クラウドデプロイサーバからクラウドWebサーバへのデプロイの手順
+### :pushpin: CI：Continuous Integration，CD：Continuous Deliveryとは
+
+Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に回して，システムの品質を継続的に担保することを，『Continuous Integration』という．また，変更内容をステージング環境などに自動的に反映し，継続的にリリースすることを，『Continuous Delivery』という．
+
+![cicdツールの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/cicdツールの種類.png)
+
+
+
+### :pushpin: CIツールによるビルドフェイズとテストフェイズの自動実行
+
+#### ・PHPUnitの自動実行
+
+1. テストクラスを実装したうえで，新機能を設計実装する．
+
+2. リポジトリへPushすると，CIツールがGituHubからブランチの状態を取得する．
+
+3. CIツールによって，テストサーバの仮想化，インタプリタ，PHPUnitなどが自動実行される．
+
+4. 結果を通知することも可能．
+
+![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/継続的インテグレーション.png)
+
+#### ・PHPStanの自動実行
+
+
+
+### :pushpin: CDツールによるデプロイフェイズの自動実行
+
+#### ・クラウドデプロイサーバにおけるCapisoranoによるデプロイ
 
 1. クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
 
@@ -62,23 +90,19 @@ Google Apps（Google Map，Google Cloud，Google Calender など）
 
 ![GitHub上のコードが本番環境にデプロイされるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GitHub上のコードが本番環境にデプロイされるまで.png)
 
+3. これらの手順を自動デプロイツール（例：Capistrano）が行う．クラウドデプロイサーバに自動デプロイツールを配置する．自動デプロイツールがクラウドWebサーバやDBサーバにリモート接続し，```pull```や```clone```を実行する．
 
-
-### :pushpin: デプロイにデプロイツールを用いる場合
-
-クラウドデプロイサーバに自動デプロイツール（例：Capistrano）を配置する．自動デプロイツールがクラウドWebサーバやDBサーバにリモート接続し，```pull```や```clone```を実行する．
-
-![Capistranoを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/image/Capistranoを用いた自動デプロイ.png)
+![Capistranoを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Capistranoを用いた自動デプロイ.png)
 
 
 
-### :pushpin: デプロイにAWS CodeDeployを用いる場合
+#### ・AWS CodeDeployによるデプロイ
 
 ![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CodeDeployを用いた自動デプロイ.png)
 
 
 
-## 04-03. AWSにおけるグローバルネットワーク構成
+## 03-01. AWSにおけるグローバルネットワーク構成
 
 AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
 
@@ -149,7 +173,7 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 AWSの各種サービスで生成されたログファイルを収集できる．
 
-#### ・Cloud Watch Events**
+#### ・Cloud Watch Events
 
 イベントやスケジュールを検知し，指定したアクションを行う．
 
@@ -162,7 +186,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 
-## 04-04. AWSにおけるプライベートネットワーク構成
+## 03-02. AWSにおけるプライベートネットワーク構成
 
 ### :pushpin: クラウドデザイン例（再掲）
 
@@ -212,7 +236,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 
 
-### :pushpin: Internet Gateway と NAT Gateway
+### :pushpin: Internet Gateway，NAT Gateway
 
 
 |              |                       Internet Gateway                       |   NAT Gateway   |
@@ -220,11 +244,11 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 |   **機能**   | グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT） | NAPT（動的NAT） |
 | **設置場所** |                            VPC上                             | Public subnet内 |
 
-#### ・Internet Gateway
+#### ・Internet Gatewayとは
 
 グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT）の機能を持つ．一つのPublic IPに対して，一つのクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAT（静的NAT）を参照せよ．
 
-#### ・NAT Gateway
+#### ・NAT Gatewayとは
 
 NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAPT（動的NAT）を参照せよ．
 
@@ -237,11 +261,11 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 クラウドプライベートネットワークにおけるセグメントとして働く．
 
-#### ・Public subnet**
+#### ・Public subnetとは
 
 非武装地帯に相当し，クラウドWebサーバが構築される．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，
 
-#### ・Private subnet
+#### ・Private subnetとは
 
 内部ネットワークに相当し，Amazon Aurora（クラウドデータベース）などが構築される．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
 
@@ -285,7 +309,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
-## 04-05. GCPによるWebサービスのリリース
+## 02-05. GCPによるWebサービスのリリース
 
 GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
 
