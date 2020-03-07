@@ -117,22 +117,6 @@ class AcceptOrdersController
 
 
 
-### :pushpin: Caster（データ型変換パターン）
-
-#### ・責務
-
-デザインパターンの一つ．レスポンスによるデータ送信時に，オブジェクトデータ（Entity）を連想配列に変換する．
-
-```PHP
-// Entityを連想配列に変換するメソッド
-private function castAcceptOrders(Array $toyOrderEntity)
-{
-  
-}  
-```
-
-
-
 ### :pushpin: Application Service
 
 #### ・責務
@@ -147,6 +131,34 @@ Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクト
 
 
 
+### :pushpin: Formパターン（データ検証パターン）
+
+#### ・責務
+
+デザインパターンの一つ．UnserInterface層からUserInterface層へのデータのリクエスト時に，受信したJSONデータを検証する．
+
+```PHP
+// ここに実装例
+```
+
+
+
+### :pushpin: Casterパターン（データ型変換パターン）
+
+#### ・責務
+
+デザインパターンの一つ．Application層からUser Interface層へのデータのレスポンス時に，送信するオブジェクトデータ（Route Entity）を連想配列に変換する．
+
+```PHP
+// Entityを連想配列に変換するメソッド
+private function castAcceptOrders(Array $toyOrderEntity)
+{
+  
+}  
+```
+
+
+
 
 ## 04-01. Domain層
 
@@ -155,6 +167,8 @@ Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクト
 #### ・責務
 
 リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．
+
+**【実装例】**
 
 ```PHP
 abstract class getDogToyEntityRepository
@@ -168,6 +182,8 @@ abstract class getDogToyEntityRepository
 
 #### ・抽象Repositoryと具象Repositoryのバインディング
 
+**【実装例】**
+
 ```PHP
 // ここに実装例
 ```
@@ -178,11 +194,11 @@ abstract class getDogToyEntityRepository
 
 
 
-### :pushpin: Specification
+### :pushpin: Specificationパターン（仕様パターン）
 
 #### ・責務
 
-ビジネスルールの検証，検索条件の生成，生成条件などのビジネスルールは、EntitiyやValue Objectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
+デザインパターンの一つ．ビジネスルールの検証，検索条件の生成，生成条件などのビジネスルールは、EntitiyやValue Objectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
 
 #### ・ビジネスルールの検証
 
@@ -279,7 +295,7 @@ class ToyOrderEntity
 
 
 
-#### ・RouteEntityとは
+#### ・Route Entityとは
 
 ![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
 
@@ -475,11 +491,9 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### :pushpin: 概念的な統一体
 
+```PHP
+// ここに実装例
 ```
-
-```
-
-
 
 
 
@@ -550,7 +564,7 @@ class Money
 
 Type Codeは概念的な呼び名で，実際は，標準的なライブラリとして利用できるEnumクラスに相当する．一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，Value Objectとしてではなく，Enumクラスとしてモデリング／実装する．
 
-### :pushpin: EnumによるType Codeの実装
+### :pushpin: Enumクラスを用いたType Codeの実装
 
 **【実装例】**
 
