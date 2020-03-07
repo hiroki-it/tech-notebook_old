@@ -1,7 +1,7 @@
 .. tech-notebook documentation master file, created by
-   sphinx-quickstart on Thu Feb 27 02:57:48 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+sphinx-quickstart on Thu Feb 27 02:57:48 2020.
+You can adapt this file completely to your liking, but it should at least
+contain the root `toctree` directive.
 
 Hiroki tech-notebook ドキュメントサイト
 ================================================
@@ -20,7 +20,8 @@ Hiroki tech-notebook ドキュメントサイト
    ObjectOrientedProgramming.md
    ConceptAndImplementationOfRESTfulAPI.md
    TestingFrameworkAndTestSpecification.md
-   FrameworkAndLibrary.md
+   SymfonyFramework.md
+   Library.md
    MainAlgorithm.md
 
 .. toctree::
@@ -61,8 +62,8 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: ソフトウェアとハードウェアの連携
 
-   WhatIsSoftware.md
-   WhatIsHardware.md
+   Software.md
+   Hardware.md
 
 .. toctree::
    :maxdepth: 1
@@ -94,3 +95,9 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: R言語
 
    StatisticalAnalysis.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: 個人的なGitの
+
+   TipsOfGit.md
