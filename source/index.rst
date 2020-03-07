@@ -98,6 +98,6 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: 個人的なGitの
+   :caption: Git
 
    TipsOfGit.md
