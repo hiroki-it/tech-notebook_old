@@ -32,20 +32,31 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 ```
 
+### :pushpin: Pimpleコンポーネント
+
+```PHP
+use Pimple\ConfigSupport;
+use Pimple\Container;
+use Pimple\DiSupport;
+use Pimple\ServiceProviderInterface;
+```
+
+
 ### :pushpin: Securityコンポーネント
 
 ```PHP
+use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 ```
 
-### :pushpin: Pimpleコンポーネント
+### :pushpin: EventDispatcherコンポーネント
 
 ```PHP
-use \Squid\Package\Pimple\ConfigSupport;
-use \Squid\Package\Pimple\DiSupport;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 ```
-
 
 
 ## 01-01. Doctrineライブラリ
