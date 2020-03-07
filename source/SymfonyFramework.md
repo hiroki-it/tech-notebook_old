@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 ```
 
+
+
 ### :pushpin: HttpFoundationコンポーネント
 
 ```PHP
@@ -23,6 +25,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 ```
 
+
+
 ### :pushpin: HttpKernelコンポーネント
 
 ```PHP
@@ -31,6 +35,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 ```
+
+
 
 ### :pushpin: Pimpleコンポーネント
 
@@ -42,6 +48,7 @@ use Pimple\ServiceProviderInterface;
 ```
 
 
+
 ### :pushpin: Securityコンポーネント
 
 ```PHP
@@ -49,6 +56,8 @@ use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 ```
+
+
 
 ### :pushpin: EventDispatcherコンポーネント
 
@@ -59,67 +68,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 ```
 
 
-## 01-01. Doctrineライブラリ
 
-### :pushpin: ```createQueryBuilder()```
-
-データベース接続に関わる```getConnection()```を起点として，返り値から繰り返しメソッドを取得し，```fetchAll()```で，テーブルのクエリ名をキーとした連想配列が返される．
-
-- **プレースホルダー**
-
-プリペアードステートメントともいう．SQL中にパラメータを設定し，値をパラメータに渡した上で，SQLとして発行する方法．処理速度が速い．また，パラメータに誤ってSQLが渡されても，これを実行できなくなるため，SQLインジェクションの対策にもなる
-
-**【実装例】**
+### :pushpin: Routingコンポーネント
 
 ```PHP
-use Doctrine\DBAL\Connection;
-
-
-class dogToyQuey(Value $toyType): Array
-{
-  // QueryBuilderインスタンスを作成する
-  $queryBuilder = $this->createQueryBuilder();
-
-  // SELECTを設定する
-  $queryBuilder->select([
-                  'dog_toy.type AS dog_toy_type',
-                  'dog_toy.name AS dog_toy_name',
-                  'dog_toy.number AS number',
-                  'dog_toy.price AS dog_toy_price',
-                  'dog_toy.color_value AS color_value'
-                  ])
-
-                  // FROMを設定する．
-                  ->from('mst_dog_toy', 'dog_toy')
-
-                  // WHEREを設定する．この時，値はプレースホルダーとしておく．
-                  ->where('dog_toy.type = :type'))
-
-                  // プレースホルダーに値を設定する．ここでは，引数で渡す『$toyType』とする．
-                  ->setParameter('type', $toyType);
-
-
-  // データベースから『$toyType』に相当するレコードを取得する．
-  return $queryBuilder->getConnection()
-
-                      // 設定したSQLとプレースホルダーを取得する．
-                      ->executeQuery($queryBuilder->getSQL(),
-                                      $queryBuilder->getParameters(),
-                      )
-    
-                      // レコードを取得する．
-                      ->fetchAll();
-
-}
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 ```
-
 
 
 
 
 ## 02-01. Consoleコンポーネント
 
-### :pushpin: Commandクラス
+### :pushpin: CLI：Command Line Interface
 
 Commandクラスによって定義されたコマンドは，バッチファイル（```.bat```）に一連の処理として組み合わせられる．
 
@@ -140,7 +101,11 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
         $this->setName('create:example');
     
         // コマンド名の後に追加したい引数名
-        $this->addArgument('year-month', InputArgument::REQUIRED, '処理年月を設定してください．')
+        $this->addArgument(
+          'year-month',
+          InputArgument::REQUIRED,
+          '処理年月を設定してください．'
+        )
     }
   
     // コマンドの処理内容
@@ -148,7 +113,10 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
     {
         try {
                 // 日時フォーマットからCarbonインスタンスを作成する．
-                $year_month = Carbon::createFromFormat('Y-m', $input->getArgument('year-month'));
+                $year_month = Carbon::createFromFormat(
+                  'Y-m',
+                  $input->getArgument('year-month')
+                );
         
         } catch (\Exception $e) {
             // エラーログの文章を作成
@@ -157,7 +125,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 }
 ```
 
-### :pushpin: バッチファイル
+### :pushpin: CLIをコールするバッチファイル
 
 #### ・```for```
 
@@ -166,7 +134,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 for f in *txt do echo $f; done;
 ```
 
-#### ・Cronによるコマンド自動実行
+#### ・Cronによるコマンドの自動実行
 
 **【具体例】**
 
@@ -258,4 +226,27 @@ public function handle
 
 Symfonyから提供されるDIコンテナのこと．
 
+
+
+## 02-04. Routingコンポーネント
+
+### :pushpin: RoutingConfigurator
+
+コントローラへのルーティングを設定する．
+
+```PHP
+use App\Controller\BlogApiController; // ルーティング先のコントローラを読み込み
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes) {
+    $routes->add('api_post_show', '/api/posts/{id}')
+        ->controller([BlogApiController::class, 'show'])
+        ->methods(['GET', 'HEAD'])
+    ;
+    $routes->add('api_post_edit', '/api/posts/{id}')
+        ->controller([BlogApiController::class, 'edit'])
+        ->methods(['PUT'])
+    ;
+};
+```
 

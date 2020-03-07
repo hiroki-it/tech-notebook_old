@@ -1,6 +1,8 @@
 # ドメイン駆動設計
 
-## 01-01. MVCとは
+## 01-01. MVC
+
+### :pushpin: MVCとは
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
@@ -16,25 +18,19 @@
 
 ## 02-01. ドメイン駆動設計とは
 
-### :pushpin: ドメインエキスパートとユビキタス言語
+### :pushpin: ビジネスルールに対するオブジェクト指向分析と設計
 
 #### ・ドメインエキスパート，ユビキタス言語とは
 
-ドメインエキスパート（現実世界の業務内容に詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，設計していく．設計の時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．
+ドメインエキスパート（現実世界のビジネスルールに詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，ビジネスルールに対して，オブジェクト指向分析と設計を行っていく．この時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．
 
-
-
-### :pushpin: 戦略的設計
+#### ・戦略的設計の手順
 
 1. ドメインエキスパートと話し合い，現実世界の業務内容に含まれる『名詞』と『振舞』に着目．
-2. 『名詞』と『振舞』を要素として，EntityやValueObjectを設計．
-3. 設計されたEntityやValueObjectを用いて，ドメインモデリング（オブジェクト間の関連付け）を行う．
+2. 『名詞』と『振舞』を要素として，オブジェクト指向分析と設計を行い，EntityやValue Objectを抽出していく．
+3. EntityやValue Objectを用いて，ドメインモデリング（オブジェクト間の関連付け）を行う．
 
-
-
-### :pushpin: 戦術的設計
-
-#### ・戦術的設計とは
+#### ・戦術的設計の手順
 
 戦略的設計を基に，各オブジェクトとオブジェクト間の関連性を実装していく．
 
@@ -69,7 +65,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 
 
-## 02-03. DIPに基づくドメイン駆動設計
+### :pushpin: DIPに基づくドメイン駆動設計
 
 **※詳しくは，オブジェクト指向プログラミングのノートを参照**
 
@@ -85,11 +81,9 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 ## 03-01. Application層（UseCase層）
 
+### :pushpin: Controller
 
-
-## 03-02. Controller
-
-### :pushpin: 責務
+#### ・責務
 
 CRUDのReadの場合，以下のような処理手順を組み合わせて，Use case（使用事例）を実装する．
 
@@ -123,9 +117,9 @@ class AcceptOrdersController
 
 
 
-## 03-03. Caster（データ型変換パターン）
+### :pushpin: Caster（データ型変換パターン）
 
-### :pushpin: 責務
+#### ・責務
 
 デザインパターンの一つ．レスポンスによるデータ送信時に，オブジェクトデータ（Entity）を連想配列に変換する．
 
@@ -139,16 +133,16 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 
 
-## 03-04. Application Service
+### :pushpin: Application Service
 
-### :pushpin: 責務
+#### ・責務
 
-ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．
+Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．
 
 **【実装例】**
 
-```
-
+```PHP
+// ここに実装例
 ```
 
 
@@ -156,11 +150,9 @@ private function castAcceptOrders(Array $toyOrderEntity)
 
 ## 04-01. Domain層
 
+### :pushpin: 抽象Repository
 
-
-## 04-02. 抽象Repository
-
-### :pushpin: 責務
+#### ・責務
 
 リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．
 
@@ -174,25 +166,124 @@ abstract class getDogToyEntityRepository
 }
 ```
 
-#### ・抽象Repositoryと具象Repositoryの対応付け
+#### ・抽象Repositoryと具象Repositoryのバインディング
 
-Application層
+```PHP
+// ここに実装例
+```
+
+
+
+### :pushpin: Entity
+
+
+
+### :pushpin: Specification
+
+#### ・責務
+
+ビジネスルールの検証，検索条件の生成，生成条件などのビジネスルールは、EntitiyやValue Objectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
+
+#### ・ビジネスルールの検証
+
+```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理．
+
+**【実装例】**
+
+```PHP
+// ここに実装例
+```
+
+#### ・検索条件の生成
+
+Criteriaオブジェクトとしても用いられる．
+
+**【実装例】**
+
+```PHP
+// ここに実装例
+```
+
+#### ・オブジェクトの生成 
+
+```PHP
+// ここに実装例
+```
+
+
+
+### :pushpin: Value Object
+
+以降の説明を参照．
 
 
 
 
-## 04-03. Entity
+### :pushpin: Type Code（標準型）
 
-### :pushpin: 責務
+以降の説明を参照．
+
+
+
+
+### :pushpin: Domain Service
+
+以降の説明を参照．
+
+
+
+
+## 04-02. Domain \ Entity
+
+###  :pushpin: Value Objectとの違い
+
+#### ・責務
 
 オブジェクトをEntityとしてモデリング／実装したいのならば，以下に条件を満たす必要がある．
 
 （ユビキタス言語の例）顧客，注文など
 
-1. 状態を変化させる必要があるデータをもつ．
-2. オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される． 
-
 ![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
+
+**【実装例】**
+
+```PHP
+class ToyOrderEntity
+{
+    // 犬用おもちゃ
+    private $dogToyEntity;
+    
+    // 猫用おもちゃ
+    private $catToyEntity;
+    
+    // Setterを実装
+    public function __construct
+    (
+        DogToyEntity $dogToyEntity,
+        CatToyEntity $catToyEntity
+    )
+    {
+        $this->dogToyEntity = $dogToyEntity;
+        $this->catToyEntity = $catToyEntity;
+    }
+  
+    // 	Getterを実装
+    public function getXXX()
+    {
+        //  Read処理;
+    }  
+  
+}
+```
+
+
+
+
+#### ・RouteEntityとは
+
+![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
+
+  EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
 
 **【実装例】**
 
@@ -249,50 +340,18 @@ class DogToyEntity
 
 
 
-### :pushpin: RouteEntityとは
-
-  EntityやValueObjectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
-
-![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
-
-**【実装例】**
-
-```PHP
-class ToyOrderEntity
-{
-    // 犬用おもちゃ
-    private $dogToyEntity;
-    
-    // 猫用おもちゃ
-    private $catToyEntity;
-    
-    // Setterを実装
-    public function __construct
-    (
-        DogToyEntity $dogToyEntity,
-        CatToyEntity $catToyEntity
-    )
-    {
-        $this->dogToyEntity = $dogToyEntity;
-        $this->catToyEntity = $catToyEntity;
-    }
-  
-    // 	Getterを実装
-    public function getXXX()
-    {
-        //  Read処理;
-    }  
-  
-}
-```
+### :pushpin: 状態を変化させる必要があるデータをもつ．
+### :pushpin: オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される． 
 
 
 
-## 04-04. ValueObject
+## 04-03. Domain \ Value Object
 
-### :pushpin: 責務
+### :pushpin: Entityとの違い
 
-EntityとValueObjectのどちらとして，オブジェクトモデルをモデリング／実装すべきなのかについて考える．そもそも，大前提として，『オブジェクトモデルはできるだけ不変にすべき』というベストプラクティスがあり，その結果，ValueObjectというが生まれたと考えられる．実は，ValueObjectを使わずに全てEntityとしてモデリング／実装することは可能である．しかし，不変にしてもよいところも可変になり，可読性や信頼性を下げてしまう可能性がある．
+#### ・責務
+
+金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，Value Objectという．
 
 ![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_バリューオブジェクト.jpg)
 
@@ -341,27 +400,29 @@ class PaymentInfoVO
 
 ### :pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ
 
-#### ・ValueObjectとは
-
-金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，ValueObjectという．
-
 #### ・金額データと計算
 
-金額データの計算をController内処理やEntity内メソッドで行うのではなく，金額計算を行うValueObjectのメソッドとして分割する．
+金額データの計算をController内処理やEntity内メソッドで行うのではなく，金額計算を行うValue Objectのメソッドとして分割する．
 
 #### ・所要時間データと計算
 
-所要時間データの計算をController内処理やEntity内メソッドで行うのではなく，所要時間計算を行うValueObjectのメソッドとして分割する．
+所要時間データの計算をController内処理やEntity内メソッドで行うのではなく，所要時間計算を行うValue Objectのメソッドとして分割する．
 
 #### ・住所データと処理
 
-郵便番号データとその処理をValueObjectとして分割する．
+郵便番号データとその処理をValue Objectとして分割する．
 
 
 
-### :pushpin: データの不変性
+### :pushpin: オブジェクトの持つデータの不変性
 
-インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，ValueObjectのような，『Immutable』なオブジェクトを実現できる．
+#### ・不変性に関するベストプラクティス
+
+EntityとValue Objectのどちらとして，オブジェクトをモデリング／実装すべきなのかについて考える．そもそも，大前提として，『オブジェクトの持つデータはできるだけ不変にすべき』というベストプラクティスがあり，その結果，Value Objectというが生まれたと考えられる．実は，Value Objectを使わずに全てEntityとしてモデリング／実装することは可能である．しかし，不変にしてもよいところも可変になり，可読性や信頼性を下げてしまう可能性がある．
+
+#### ・普遍性をコードで実現する方法
+
+インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
 
 **【実装例】**
 
@@ -390,6 +451,8 @@ class ExampleVO
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にデータの値を上書きできてしまう．
 
+**【実装例】**
+
 ```PHP
 $test01 = new Test01;
 
@@ -399,6 +462,8 @@ $test01->setProperty01("新しいデータ01の値");
 ```
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
+
+**【実装例】**
 
 ```PHP
 $test02 = new Test02("データ02の値");
@@ -432,7 +497,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### :pushpin: メソッドによってオブジェクトの状態が変わらない
 
-**【実装例1】**
+**【実装例】**
 
 ```PHP
 // （1）ドメイン層の氏名を扱うVO
@@ -463,7 +528,7 @@ class NameVO
 }
 ```
 
-**【実装例2】**
+**【実装例】**
 
 同様に，Immutableトレイトを基に，VOを生成する．
 
@@ -477,17 +542,17 @@ class Money
 
 
 
-## 04-05. TypeCode（標準型）
+## 04-04. Domain \ Type Code（標準型）
 
-### :pushpin: 責務
+### :pushpin: Value Objectとの違い
 
-一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，ValueObjectとしてではなく，TypeCodeとしてモデリング／実装する．VOまたはEnumによって実装する．
+#### ・責務
 
+Type Codeは概念的な呼び名で，実際は，標準的なライブラリとして利用できるEnumクラスに相当する．一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，Value Objectとしてではなく，Enumクラスとしてモデリング／実装する．
 
+### :pushpin: EnumによるType Codeの実装
 
-### :pushpin: EnumによるTypeCodeの実装
-
-**【実装例1】**
+**【実装例】**
 
 ```PHP
 class ColorVO extends Enum
@@ -541,54 +606,18 @@ class ColorVO extends Enum
 
 
 
-## 04-06. Id
-
-### :pushpin: 責務
-
-
-
-## 04-07. Domain Service
-
-### :pushpin: 責務
-
-
-
-## 04-08. Specification
-
-### :pushpin: 責務
-
-ビジネスルールの検証，検索条件の生成，生成条件などのビジネスルールは、EntitiyやValueObjectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
-
-#### ・ビジネスルールの検証
-
-```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理
-
-#### ・検索条件の生成
-
-Criteriaオブジェクトとしても用いられる．
-
-#### ・オブジェクトの生成 
-
-
-
 
 ## 05-01. Infrastructure層
 
+### :pushpin: 具象Repository
 
+#### ・DBに対する書き込み責務（Create，Update，Delete）
 
-## 05-02. 具象Repository
-
-### :pushpin: 責務
-
-DBの操作を行う．
-
-
-
-### :pushpin: DBに対する書き込み（Create，Update，Delete）
+DBに対する書き込み操作を行う．
 
 1. GETまたはPOSTによって，アプリケーション層から値が送信される．
 
-2. Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
+2. Factoryによって，送信された値からEntityやValue Objectを構成する．さらに，それらから集約を構成する．
 
 3. Repositoryによって，最終的な集約を構成する．
 
@@ -642,13 +671,13 @@ class setDogToyEntityRepository
 }
 ```
 
+#### ・DBに対する読み出し責務（Read）
 
-
-### :pushpin: DBに対する読み出し（Read）
+DBに対する書き込み操作を行う．
 
 1. アプリケーション層から集約がリクエストされる．
 2. DBに対して，読み出しを行う．
-3. Factoryによって，送信された値からEntityやValueObjectを構成する．さらに，それらから集約を構成する．
+3. Factoryによって，送信された値からEntityやValue Objectを構成する．さらに，それらから集約を構成する．
 4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
 
@@ -708,13 +737,13 @@ class getDogToyEntityRepository
 
 
 
-## 05-03. Factory
+### :pushpin: Factory
 
-### :pushpin: 責務
+#### ・責務
 
 責務として，構成した集約関係を加工して新たな集約を再構成する．
 
-#### ・実装例
+**【実装例】**
 
 ```PHP
 // 構成した集約関係を加工して新たな集約を再構成する
