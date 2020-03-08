@@ -1,6 +1,8 @@
-# イベント発火とWebページ表示
+# イベント発火とページレンダリング
 
 ## 01-01. イベント発火からWebページ表示までの流れ
+
+### :pushpin: JavaScript，JSON型データ，PHP，マークアップ言語の連携
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
@@ -15,23 +17,23 @@
 
 
 
-## 02-01. Vueフレームワークによるイベントの発火
-
 ### :pushpin: SPA：シングルページアプリケーション
 
-Vueでは，SPAの仕組みが用いられている．
+#### ・非同期通信に基づくSPAとは
 
-#### ・SPアプリにおけるデータ通信の仕組み
-
-Webページの部分ごとに，サーバとデータ通信できる．
+1つのWebページの中で，サーバとデータを非同期的に通信し，レンダリングすることができるアプリケーションのこと．Vueでは，SPAの仕組みが用いられている．
 
 ![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SPアプリにおけるデータ通信の仕組み.png)
 
 #### ・従来WebアプリとSPアプリの処理速度の違い
 
+サーバとデータを非同期的に通信できるため，1つのWebページの中で必要なデータだけを通信すればよく，レンダリングが速い．
+
 ![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/従来WebアプリとSPアプリの処理速度の違い.png)
 
 
+
+## 02-01. Vueフレームワークによるイベントの発火
 
 ### :pushpin: コンポーネントの登録
 
@@ -341,12 +343,17 @@ v-on: {イベント名}="{Vueインスタンスのメソッド}"（```@:```で�
 
 
 
+## 02-03. Vue-Routerライブラリによるルーティング
 
-## 02-03. Vue-Routerライブラリ
+### :pushpin: Vue-Routerとは
 
-### :pushpin: コンポーネントのルーティング
+![ルーティングコンポーネント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルーティングコンポーネント.png)
 
-Vueのライブラリの一つで，コンポーネントとルートをマッピングさせる．指定したルートからレスポンスが行われた時に，特定のコンポーネントが動作するように設定することができる．
+ルーティングモジュールの一つ．JQueryRouter，React-Routerに相当する．コンポーネントに対してルーティングを行い，```/{ルート}/パラメータ}```に応じて，コールするコンポーネントを動的に切り替えることができる．
+
+```
+http://www.example.co.jp:80/{ルート}/{パスパラメータ}?text1=a&text2=b
+```
 
 **【実装例】**
 
@@ -356,8 +363,7 @@ const vueRouter = require('vue-router').default;
 
 // VueRouterインスタンスを作成する．
 const router = new VueRouter({
-    // ここに，パスとコンポーネント名の対応を記述する．
-    // 書き方は要勉強．     
+    // ここに，コンポーネントを記述する． 
 })
 
 // 外部ファイルが，VueRouterインスタンスを読み込めるようにしておく．
@@ -366,11 +372,17 @@ module.exports = router;
 
 
 
-## 02-04. Vuexライブラリ
+## 02-04. Vuexライブラリによるデータの状態管理
 
-### :pushpin: ページの状態管理の仕組み
+### :pushpin: Vuexとは
 
-Vuejsでライブラリの一つで，ページの状態管理を行うことができる．
+![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueコンポーネントツリーとVuexの関係.png)
+
+Vuejsでライブラリの一つ．双方向データバインディングでは，親子コンポーネント間でしか，データを受け渡しできない．しかし，Vuexストア内で，データの状態を保持することによって，親子関係なく，データを一元的に受け渡しできるようになる．
+
+
+
+### :pushpin: Vuexストア内のデータの状態管理の仕組み
 
 ![Vuex](https://user-images.githubusercontent.com/42175286/58393072-ef8d7700-8077-11e9-9633-d137b8e36077.png)
 
@@ -381,7 +393,7 @@ Vuejsでライブラリの一つで，ページの状態管理を行うことが
 
 #### ・Commit
 
-  サーバー側からレスポンスされたデータ（基本的にはJSONでリターンする）をMutationへ渡す．
+  サーバー側からレスポンスされたデータ（基本的にはJSON形式データでリターンする）をMutationへ渡す．
 
 #### ・Mutate
 
@@ -393,13 +405,7 @@ Vuejsでライブラリの一つで，ページの状態管理を行うことが
 
 
 
-### :pushpin: ```Vuex.Store()```における状態管理の実装
-
-Vuexライブラリを経由してリクエストとレスポンスを行うことで，より効率的にページの状態管理が行える．
-
-![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueコンポーネントツリーとVuexの関係.png)
-
-Vuexによる状態管理は，```Store```で実装していく．
+### :pushpin: ```Vuex.Store()```によるVuexストアの実装
 
 **【実装例】**
 
@@ -500,10 +506,36 @@ new Vue({
 
 ### :pushpin: JQueryの```ajax()```を用いたAjaxの実装
 
+コンポーネントごとにリクエストメッセージを送る必要があるので，```ajax()```には，メソッド，URL，ヘッダー，ボディを設定する項目がある．リクエストメッセージの構造については，ネットワークのノートを参照せよ．
+
+#### ・GET送信の場合
+
+![GET送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061886-0ed95f80-7bb3-11e9-8998-f105a5e0ed40.png)
+
 **【実装例】**
 
+```ajax()```で，GET送信でリクエストするデータから，クエリパラメータを生成する．
+
 ```javascript
-// HTMLあるいはTWIGから，このようなオブジェクトが送信されてきたとする．
+// ここに実装例
+```
+
+```{キー名}={値}```が，```&```で結合され，クエリパラメータとなる．
+
+```
+# ...の部分には，データ型を表す記号などが含まれる．
+http://127.0.0.1/.../?fruit...=ばなな&fruit...=りんご&account...=200
+```
+
+#### ・POST送信の場合
+
+![POST送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061918-29abd400-7bb3-11e9-94d0-fd528901ba7c.png)
+
+**【実装例】**
+
+このようなJavaScriptのオブジェクトが送信されてきたとする．
+
+```javascript
 const query = {
     criteria: {
     id: 777,
@@ -511,103 +543,52 @@ const query = {
     }
 }
 ```
-```javascript
-// クラス宣言によって定義されたオブジェクトは，個別ファイルで管理しておくのがベター．
-class Staff {
-  
-  
-  // コンポーネントからデータを受信．
-    constructor(property) {
-        this.id = property.id;
-        this.name = property.name;
-  }  
 
-  
-    // 自分自身をJSON型データでサーバサイドに送受信する．
-    static find(query) {
-        return $.ajax({
-      　　　 // HTTPリクエストのメソッドとしてPOSTを指定
-            type: 'POST',
-      　　　 // リクエスト先のファイルのパスを指定
-            url: '/xxx/xxx',
-      　　　 // リクエストによって送信するデータはJSON形式を指定
-            contentType: 'application/json',
-      　　　 // レスポンスによって受信するデータはJSON形式を指定
-            dataType: 'json',
-            // リクエストによって送信するデータを指定
-            data: query,
-        })
-    
-        // ajax()の処理が成功した場合に起こる処理．
-        .done((data) => {
-      
-        })
-    
-        // ajax()の処理が失敗した場合に起こる処理．
-        .fail(() => {
-            toastr.error('', 'エラーが発生しました．');
-        })
-    
-        // ajax()の成功失敗に関わらず，必ず起こる処理．
-        .always(() => {
-            this.isLoaded = false;
-        });
-  }    
-
-  
-    // サーバサイドでReadされたJSON型データをJavaScriptのオブジェクトにシリアライズする．
-    static parse(data) {
-        return new Shain({
-        
-        // コンストラクタに渡される．
-        id: data.id,
-        name: data.name
-        });
-    }                       
-}
-
-// 外部ファイルから読み込めるように設定しておく．  
-module.exports = Staff;  
-```
-
-
-
-### :pushpin: GET送信におけるHTTPリクエスト
-
-#### ・クエリストリングによるデータの送信
-
-GET送信ではデータからクエリストリングが生成され，HTTPリクエストが『```ルート + ? + クエリストリング```』の形で送られる．URLに情報が記述されるため，履歴でデータの内容を確認できてしまう危険がある．
-
-```
-http://127.0.0.1/example.php + ? + クエリストリング
-```
-
-#### ・クエリストリングの生成
+リクエストメッセージをサーバサイド に送信し，またレスポンスを受信する．
 
 **【実装例】**
 
 ```javascript
-// JavaScriptによるオブジェクトの表現．
-// クラス宣言．
-class Example {
-    fruit: ["ばなな", "りんご"];
-    account: 200;
-}
-```
+static find(query) {
 
-⇓
+    return $.ajax({
+        //--- リクエストメッセージ ---//
+        // メソッドとURL
+        type: 'POST', // メソッドを指定
+        url: '/xxx/xxx', // ルートとパスパラメータを指定
+        // ヘッダー
+        contentType: 'application/json',　// 送信するデータの形式を指定
+        // ボディ
+        data: query, // クエリパラメータとして送信するデータを指定
+            
+        //--- レスポンスメッセージ ---//
+        dataType: 'json', // 受信するデータの形式を指定
+    })
 
-```
-// 『ルート + ? + クエリストリング』のクエリストリングに相当する部分．
-// ...の部分には，データ型を表す記号などが含まれる．
-http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account...=200
+    // ajax()の処理が成功した場合に起こる処理．
+    .done((data) => {
+ 
+    })
+
+    // ajax()の処理が失敗した場合に起こる処理．
+    .fail(() => {
+        toastr.error('', 'エラーが発生しました．');
+    })
+
+    // ajax()の成功失敗に関わらず，必ず起こる処理．
+    .always(() => {
+        this.isLoaded = false;
+    });
+} 
 ```
 
 
 
 ## 04-01. JSON型データの解析（パース）
 
-### :pushpin: シリアライズとデシリアライズ
+### :pushpin: シリアライズ，デシリアライズ
+
+#### ・シリアライズ，デシリアライズとは
 
 クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
 
@@ -615,19 +596,58 @@ http://127.0.0.1/example.php + ? + fruit...=ばなな&fruit...=りんご&account
 
 **【実装例】**
 
+サーバサイドでReadされたJSON型データを，JavaScriptのオブジェクトにデシリアライズ．
+
 ```javascript
-// JavaScriptでのオブジェクトの表現．
+class Shain {
+  
+    //-- シリアライズ（JavaScriptからJSONへ） --//
+    static createQuery(criteria) {
+        
+        // JavaScript上でのJSON型変数の定義方法
+        const query = {}
+      
+        // ID
+        if (criteria.id) {
+          query.id = _.trim(criteria.id);
+        }
+        // 氏名
+        if (criteria.name) {
+          query.name = _.trim(criteria.name);
+        }
+    }
+  
+    //-- デシリアライズ（JSONからJavaScriptへ） --//
+    static parse(data) {
+       return new Shain({
+            id: data.id,
+            name: data.name
+       });
+    }
+  
+}     
+```
+
+#### 1. JavaScriptによるオブジェクト
+
+**【実装例】**
+
+```javascript
 // クラス宣言．
 class Example {
     fruit: ["ばなな", "りんご"];
     account: 200;
 }
+
+// 外部ファイルから読み込めるようにする．  
+module.exports = Example;  
 ```
 
-⬇︎⬆︎
+#### 2. JSON型のオブジェクト
+
+**【実装例】**
 
 ```json
-// JSON型データの表現．
 // 一番外側を波括弧で囲う．
 {
   "Example": {
@@ -637,10 +657,11 @@ class Example {
 }
 ```
 
-⬇︎⬆︎
+#### 3. PHPによるオブジェクト
+
+**【実装例】**
 
 ```PHP
-// PHPでのオブジェクトの表現．
 class Example
 {
     private $fruit;
@@ -655,8 +676,10 @@ class Example
 
 #### ・JMESPath
 
-```
+**【実装例】**
 
+```javascript
+// ここに実装例
 ```
 
 
@@ -698,7 +721,7 @@ class Example
 
 
 
-## 05-01. Webページの構成
+## 05-01. マークアップ言語によるWebページの構成
 
 ### :pushpin: マークアップ言語の歴史
 
