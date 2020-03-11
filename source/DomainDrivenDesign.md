@@ -192,6 +192,8 @@ abstract class getDogToyEntityRepository
 
 ### :pushpin: Entity
 
+以降の説明を参照．
+
 
 
 ### :pushpin: Specificationパターン（仕様パターン）
