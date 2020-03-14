@@ -34,11 +34,48 @@
 
 
 
-## 02-01. Vueフレームワークによるイベントの発火
+## 02-01. VueにおけるMVVMアーキテクチャ
 
-### :pushpin: コンポーネントの登録
+### :pushpin: MVVMアーキテクチャ
+
+#### ・一般的なMVVMアーキテクチャとは
+
+View層とModel層の間にViewModel層を置き，View層とViewModel層の間でデータをやり取りすることによって，View層とModel層の間を疎結合にするための設計手法の一つ．
+
+![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/一般的なMVVMアーキテクチャ.png)
+
+#### ・VueにおけるMVVMアーキテクチャとは
+
+Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```）を，ViewModel層には子コンポーネント（```xxx-component.vue```）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
+
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMパターン.png)
+
+
+
+### :pushpin: データバインディングとは
+
+#### ・親子コンポーネント間の双方向データバインディングとは
+
+View層の親コンポーネント（```xxx.html```，```xxx.twig```）と，ViewModel層の子コンポーネント（```xxx-component.vue```）の間では，一方のデータが更新されると，もう一方のデータが渡されて自動的にデータが更新される．これを双方向データバインディングといい，```props```と```$emit()```を用いることで実現することができる．
+
+![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
+
+#### ・Props Down, Events Upとは
+
+双方向データバインディングは，『Props Down, Events Up』の処理によって実現される．
+
+1. View層の親コンポーネントのデータが更新されると，ViewModel層の子コンポーネントの```props```を自動的に更新する．（Props Down）
+2. 反対に，ViewModel層の子コンポーネントのデータが更新されると，```$emit()```をコールし，親コンポーネントのデータを自動的に更新する．（Events Up）
+
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
+
+
+
+### :pushpin: ViewModel層におけるコンポーネントの登録方法
 
 #### ・グローバル登録
+
+**【実装例】**
 
 ```javascript
 Vue.component('v-example-component',{
@@ -46,10 +83,13 @@ Vue.component('v-example-component',{
 });
 
 new Vue({
-    el: '#apv
+    el: '#app
+})
 ```
 
 #### ・ローカル登録
+
+**【実装例】**
 
 ```javascript
 var vExampleComponent = {
@@ -71,6 +111,8 @@ new Vue({
 
 ただし，コンポーネントのオブジェクト名の定義は，以下のように省略することができる．
 
+**【実装例】**
+
 ```javascript
 new Vue({
 
@@ -86,31 +128,23 @@ new Vue({
 
 
 
-### :pushpin: MVVMパターン
+### :pushpin: MVVMアーキテクチャの実装例
 
-#### ・MVVMパターンとは
-
-設計手法の一つ．親コンポーネント（```.../xxx.html```）が『View』に，子コンポーネント（```.../component/xxx.vue```）が『ViewModel』に，Vuex（```store.js```)や自前のモデル（```.../xxx.js```）『Model 』に相当する．
-
-![...](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/MVVMパターン.png)
-
-#### ・双方向データバインディング（Props Down, Events Up）
-
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
-
-Viewの親コンポーネント（出力先のコンポーネントタグ）では，ViewModelの子コンポーネント（出力内容）がタグ名でコールされる．親側Viewと子側ViewModelのコンポーネント間の対応付けをデータバインディング（Props Down, Events Up），またデータの双方向の受け渡しを双方向データバインディングという．
-
-#### ・1. 親からのProps Down（```.../xxx.html```）
+#### ・1. View層での親コンポーネント（```xxx.html```，```xxx.twig```）
 
 親コンポーネントのタグ内で設定された『```:example = "値"```』が，子コンポーネントの『```props: { "値" }```』に渡される．この値は読み込み専用で，変更できない．
+
+**【実装例】**
 
 ```html
 <!-- 全てのコンポーネントを紐づけるidをもつdivタグで囲む -->
 <div id="app">
   
-    <!-- 親コンポーネント（出力先のコンポーネントタグ）を記述 -->
-    <!-- propsに渡すための値を設定．ディレクティブのメソッドの引数に影響する-->
-    <!-- 対応するVueインスタンスのmethodオプションをディレクティブに設定-->
+    <!-- 
+    親コンポーネント（出力先のコンポーネントタグ）を記述
+    propsに渡すための値を設定．ディレクティブのメソッドの引数に影響する
+    対応するVueインスタンスのmethodオプションをディレクティブに設定
+    -->
     <v-example-component-1
         :criteria="criteria"
         v-on change="changeQuery"
@@ -128,9 +162,11 @@ Viewの親コンポーネント（出力先のコンポーネントタグ）で�
   
 </div>
 ```
-#### ・2. Vueインスタンスによる初期化・親子間のバインディング（```.../index.js```）
+#### ・2. ViewModel層でのVue初期化と親子間のバインディング（```index.js```）
 
 VueとVue-Routerの初期化や，親子コンポーネント間のバインディングを行う．各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
+
+**【実装例】**
 
 ```javascript
 // 一つのHTMLあるいはTWIGファイルに対応するVueインスタンスを生成
@@ -143,78 +179,96 @@ new Vue({
     
     // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
     component: {
-        // 親コンポーネントと子コンポーネントの対応関係．
-        // 子コンポーネントごとに異なるファイルを用意する．
+      
+        /* 
+        親コンポーネントと子コンポーネントの対応関係．
+        子コンポーネントごとに異なるファイルを用意する．
+        */
         'v-example-component-1': require('./xxx/xxx/xxx-1'),
         'v-example-component-2': require('./xxx/xxx/xxx-2'),
         'v-example-component-3': require('./xxx/xxx/xxx-3')
         },
-        // dataオプション
-        // 状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
-        // 異なる場所にある同じコンポーネントは異なるVueインスタンスからなり，異なる値をもつ必要があるため，dataオプションはメソッドとして定義する．
-        data: function() {
-            return {
-                // プロパティ名: 値
-                isLoaded: false,
-                staffData: [],
-                criteria: {
-                    id: null,
-                    name: null
-                    },
-                };
-        },
+  
+        　　/* dataオプション
+           状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
+           異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
+           異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義する．
+           */
+    data: function() {
+          return {
+              // プロパティ名: 値
+              isLoaded: false,
+              staffData: [],
+              criteria: {
+                  id: null,
+                  name: null
+                  },
+              };
+      },
 
     
-        // methodオプション
-        // dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．
-        // メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．
-        method: {
-            changeQuery(criteriaObj) {
-                // 値無しプロパティを持つkeysオブジェクトを定義する．
-                const keys = [
-                    'criteria',
-                    'limit',
-                ];
-                // プロパティ名を取り出す．
-                for (const key of keys) {
-                    // criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．
-                    if (key in criteriaObj) {
-                        // ここでのthisはメソッド内のkeysオブジェクトを指す．
-                        this[key] = criteriaObj[key];
-                }
-         }
+      /* methodオプション
+      dataオプションの状態を変化させ，親コンポーネントでコールされるメソッドを定義する．
+      メソッドは部品化されており，全てのメソッドが合わさって上記の条件に合致する．
+      */
+      method: {
+          changeQuery(criteriaObj) {
+              // 値無しプロパティを持つkeysオブジェクトを定義する．
+              const keys = [
+                  'criteria',
+                  'limit',
+              ];
+              // プロパティ名を取り出す．
+              for (const key of keys) {
+                  // criteriaObjのプロパティの値を，上記のkeysオブジェクトに格納する．
+                  if (key in criteriaObj) {
+                      // ここでのthisはメソッド内のkeysオブジェクトを指す．
+                      this[key] = criteriaObj[key];
+              }
+       }
             
-            load(query) {
-                // ここでのthisはdataオプションを指す．
-                this.isLoaded = true;
-                this.staffData = [];
-                // JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却．
-                 return Staff.find(query)
-                // Ajaxによって返却されたJSON型データが自動的にdone()の引数になる．
-                // リクエストされたデータをdataオプションのプロパティに格納するメソッド．
-                .done((data) => {
-                // ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
-                // dataオプションのプロパティに格納する．
-                this.staffData = _.map(data.staffData, Staff.parse);
-                })
-            }
+          load(query) {
+              // ここでのthisはdataオプションを指す．
+              this.isLoaded = true;
+              this.staffData = [];
+              // JSON型データをajax()に渡し，サーバからのレスポンスによって受信したデータを返却．
+               return Staff.find(query)
+            
+              /* done()
+              Ajaxによって返却されたJSON型データが自動的に引数になる．
+              リクエストされたデータをdataオプションのプロパティに格納するメソッド．
+              */
+              .done((data) => {
+                 
+              /*
+              ReadしたJSON型データをJavaScriptのオブジェクトにシリアライズする．
+              dataオプションのプロパティに格納する．
+              */
+              this.staffData = _.map(data.staffData, Staff.parse);
+              })
+          }
 
                 
-        // watchオプション
-        // Vueインスタンス内の値の変化を監視する関数を定義する．
+        /* watchオプション
+        Vueインスタンス内の値の変化を監視する関数を定義する．
+        */
         watch: {
       
         }
 })
 ```
-#### ・3. 子からのEvents Up，孫へのProps Down（```.../component/xxx.vue```）
+#### ・3. ViewModel層での子コンポーネント（```xxx-component.vue```）
 
 ボタンをクリックした時，子コンポーネントの『```$emit("イベント名", "値")```』によって，親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．また同時に，子コンポーネントのタグ内で設定された『```:example = "値"```』が，孫コンポーネントの『```props: { "値" }```』に渡される．各コンポーネントで個別に状態を変化させたいものは，propsオプションではなく，dataオプションとして扱う．
 
+**【実装例】**
+
 ```vue
-<!-- v-example-component-1の子コンポーネント -->
-<!-- 子コンポーネントとして使用するためのtemplateタグ -->
-<!-- ここに，出力したいHTMLやTWIGを記述する． -->
+<!-- 
+v-example-component-1の子コンポーネント
+子コンポーネントとして使用するためのtemplateタグ
+ここに，出力したいHTMLやTWIGを記述する． 
+-->
 <template>
   <!-- 孫コンポーネントを記述 -->
   <v-example-component-4
@@ -222,8 +276,10 @@ new Vue({
    :bbb="b"
   ></v-example-component-4>  
 
-  <!-- 特定の条件の時のみ出力する孫コンポーネント -->
-  <!-- 値はpropsオプションから参照される -->
+  <!-- 
+  特定の条件の時のみ出力する孫コンポーネント
+  値はpropsオプションから参照される
+  -->
   <template v-if="example.isOk()">
     <v-example-component-5
       :ccc="c"
@@ -272,8 +328,10 @@ module.exports = {
   method: {
       updateCriteria (key, value) {
               
-    // 親コンポーネント（v-example-component-1）と紐づく処理
-    // changeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
+    /*
+    親コンポーネント（v-example-component-1）と紐づく処理
+    hangeイベントを発火させ，イベントに紐づくchangeQuery()の引数として値を渡す．
+    */
     this.$emit('change', {'criteria': localCriteria});
             
     // Ajaxから送信されてきたデータを用いて，propsを更新 
@@ -286,19 +344,23 @@ module.exports = {
 </script>
 ```
 
-#### ・4. Vuexからなるモデルへのデータ送信（```.../store.js```）
+#### ・4-1. Model層でのVuexからなるオブジェクト（```store.js```）
 
 Vuexについては，以降の説明を参照せよ．
 
-#### ・5. 自前のモデルへのデータ送信（```.../xxx.js```）
+#### ・4-2. Model層でのJavaScriptからなるオブジェクト（```xxx.js```）
 
 クラス宣言で実装する．モデルとサーバサイド間のデータ送受信については，Ajaxの説明を参照せよ．
+
+**【実装例】**
 
 ```javascript
 class Example {
     
-    // コンポーネントからデータを受信．
-    // プロパティの宣言と，同時に格納．
+    /*
+    コンポーネントからデータを受信．
+    プロパティの宣言と，同時に格納．
+    */
     constructor(properties) {
         this.isOk = properties.isOk;
         ...
@@ -314,39 +376,33 @@ class Example {
 
 
 
-## 02-02. Vueにおけるリアクティブディレクティブ
+## 02-02. Vueにおける個人的な頻出ディレクティブ
 
-### :pushpin: 属性データバインディング
-
-### :pushpin: 入力データバインディング
-
-### :pushpin: スタイルバインディング
-
-### :pushpin: クラスバインディング
-
-### :pushpin: イベントハンドリング（```v-on```）
+### :pushpin: イベントハンドリング
 
 #### ・```v-on:```とは
 
 ![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueにおけるemitとv-onの連携.png)
 
-親コンポーネントにおけるイベントハンドラ（```methods:```内メソッド）や，インラインJSステートメントを，子コンポーネントのイベントにバインディングする方法．
+親コンポーネントにおけるイベントハンドラ関数（```methods:```内メソッド）や，インラインJSステートメントを，子コンポーネントのイベントにバインディングする方法．
 
 ```vue
-v-on:{イベント名}="{イベントハンドラ（methods: 内メソッド）}"
+v-on:{イベント名}="{イベントハンドラ関数（methods: 内メソッド）}"
 ```
 
 または，省略して，
 
 ```vue
-@:{イベント名}="{イベントハンドラ}"
+@:{イベント名}="{イベントハンドラ関数}"
 ```
 
 で記述する．
 
 **【実装例】**
 
-親コンポーネントでは，コールする子コンポーネントの```search```イベントに対して，```result```というイベントハンドラーをバインディングさせておく．
+親コンポーネントでは，コールする子コンポーネントの```search```イベントに対して，```result```というイベントハンドラ関数をバインディングさせておく．
+
+**【実装例】**
 
 ```html
 <div>
@@ -356,7 +412,7 @@ v-on:{イベント名}="{イベントハンドラ（methods: 内メソッド）}
 </div>
 ```
 
-一方で，子コンポーネントでは，```submit```イベントに```search()```というイベントハンドラーをバインディングさせる．このイベントハンドラーは，フォーム入力で```submit```イベントが発火した時に，```search()```をコールする．そして，その中の```emit()```が，親コンポーネントの```search```イベントを発火させる．イベント発火によって，```result``` がコールされる．
+一方で，子コンポーネントでは，```submit```イベントに```search()```というイベントハンドラ関数をバインディングさせる．このイベントハンドラ関数は，フォーム入力で```submit```イベントが発火した時に，```search()```をコールする．そして，その中の```emit()```が，親コンポーネントの```search```イベントを発火させる．イベント発火によって，```result``` がコールされる．
 
 ```vue
 <template>
@@ -382,20 +438,45 @@ v-on:{イベント名}="{イベントハンドラ（methods: 内メソッド）}
 </script>      
 ```
 
-#### ・```v-on:click="{イベントハンドラ}"```
+#### ・```v-on:click="{イベントハンドラ関数}"```
 
-クリックイベントとイベントハンドラをバインディングする．
+クリックイベントとイベントハンドラ関数をバインディングする．
 
-#### ・ ```v-on:change="{イベントハンドラ}"```
+#### ・ ```v-on:change="{イベントハンドラ関数}"```
 
-```input```タグや，```select```タグ内の値の変更イベントとイベントハンドラをバインディングする．
-
-
+```input```タグや，```select```タグ内の値の変更イベントとイベントハンドラ関数をバインディングする．
 
 
-### :pushpin: 条件付きレンダリング（```v-show```／```v-if```）
+
+### :pushpin: 条件付きレンダリング
+
+#### ・```v-show```／```v-if```とは
 
 ```v-show```または```v-if```で，```v-xxx="{propsのプロパティ名}"```で記述する．親テンプレートから渡された```props```内のプロパティ名がもつ値が```TRUE```の時に表示し，```FALSE```の時に非表示にする．もし頻繁に表示と非表示の切り替えを行うようなら，```v-if```の方が，描画コストが重たくなるリスクが高くなる為，```v-show```推奨である．
+
+
+
+### :pushpin: 属性データバインディング
+
+#### ・```v-bind```とは
+
+※要勉強
+
+
+
+### :pushpin: フォーム入力データバインディング
+
+#### ・```v-model```とは
+
+※要勉強
+
+
+
+### :pushpin:  その他のディレクティブ
+
+#### ・```v-cloak```とは
+
+※要勉強
 
 
 
@@ -452,9 +533,9 @@ Vuejsでライブラリの一つで，MVVMのモデルに相当する機能を�
 
 データの状態の変化をいくつか管理する．クラスベースオブジェクト指向でいうところの，データ（プロパティ）に相当する．
 
-#### ・```mutation:{}```
+#### ・```mutations:{}```
 
-データに状態（```state```）を設定するメソッドをいくつか持つ．保守性の観点から，```mutation:{}```におくメソッド間は同期的に実行されるようにしておかなければならない．クラスベースオブジェクト指向でいうところの，Setterメソッドに相当する．
+データに状態（```state```）を設定するメソッドをいくつか持つ．保守性の観点から，```mutations:{}```におくメソッド間は同期的に実行されるようにしておかなければならない．クラスベースオブジェクト指向でいうところの，Setterメソッドに相当する．
 
 #### ・```getters:{}```
 
@@ -477,40 +558,51 @@ const vuex = require('vuex')
 // 外部ファイルが，このStoreインスタンスを読み込めるようにする．
 module.exports = new Vuex.Store({
   
-    // データから状態を取得するメソッドをいくつか持つ
-    // クラスベースオブジェクト指向のGetterメソッドに相当.
+    /* getters
+    データから状態を取得するメソッドをいくつか持つ
+    クラスベースオブジェクト指向のGetterメソッドに相当.
+    */
     getters: {
         staffData(state) {
             return state.staffData;
         },
     },
 
-    // 状態の変化を管理したいデータをいくつかもつ．
-    // クラスベースオブジェクト指向のプロパティに相当．
+    /* state
+    状態の変化を管理したいデータをいくつかもつ．
+    クラスベースオブジェクト指向のプロパティに相当．
+    */
     state: {
         // stateには多くを設定せず，Vueインスタンスのdataオプションに設定しておく．
         staffData: [],
     },
     
-    // データの状態（state）を変化させるメソッドをいくつかもつ．
-    // クラスベースオブジェクト指向のSetterメソッドに相当．
-    mutation: {
+    /* mutations
+    データの状態（state）を変化させるメソッドをいくつかもつ．
+    クラスベースオブジェクト指向のSetterメソッドに相当．
+    */
+    mutations: {
         mutate(state, staffData) {
             exArray.forEach(
                 
-                // 矢印はアロー関数を表し，無名関数の即コールを省略することができる．
-                // 引数で渡されたexArrayの要素を，stateのexArrayに格納する．
+                /*
+                矢印はアロー関数を表し，無名関数の即コールを省略することができる．
+                引数で渡されたexArrayの要素を，stateのexArrayに格納する．
+                */
                 (element) => { state.exArray.push(element); }
                 
-                // ※アロー関数を用いなければ，以下のように記述できる．
-                // function(element) { state.exArray.push(element); }
+                /* ※アロー関数を用いなければ，以下のように記述できる．
+                function(element) { state.exArray.push(element); }
+                */
             );  
         },
         
     },
     
-    // mutations{}のメソッドを間接的にコールするためのメソッドをいくつか持つ．
-    // クラスベースオブジェクト指向のSetterメソッドに相当．
+    /* actions
+    mutations{}のメソッドを間接的にコールするためのメソッドをいくつか持つ．
+    クラスベースオブジェクト指向のSetterメソッドに相当．
+    */
     actions: {
         
     },
@@ -560,7 +652,7 @@ module.exports = new Vuex.Store({
 // Vuex.Store()を読み込む．
 const store = require('./_store')
 
-// Vuex.Store()のgetters，mutation，actionsをマッピングできるように読み込む．
+// Vuex.Store()のgetters，mutations，actionsをマッピングできるように読み込む．
 const mapGetters = require('vuex').mapGetters;
 const mapActions = require('vuex').mapActions;
 const mapMutaions = require('vuex').mapMutaions;
@@ -571,8 +663,9 @@ module.exports = {
     // Readされたデータをキャッシュしたいようなメソッドを定義．
     computed: {
 
-        // mapGettersヘルパー．
-        // StoreのGetterをローカルのcomputed:{}にマッピングし，コールできるようにする．
+        /* mapGettersヘルパー．
+        StoreのGetterをローカルのcomputed:{}にマッピングし，コールできるようにする．
+        */
         ...mapGetters([
         'x-Function'
         ])
