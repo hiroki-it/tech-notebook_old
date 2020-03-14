@@ -34,7 +34,7 @@
 
 
 
-## 02-01. VueにおけるMVVMアーキテクチャ
+## 02-01. Vueを用いたMVVMアーキテクチャ
 
 ### :pushpin: MVVMアーキテクチャ
 
@@ -44,11 +44,11 @@ View層とModel層の間にViewModel層を置き，View層とViewModel層の間�
 
 ![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/一般的なMVVMアーキテクチャ.png)
 
-#### ・VueにおけるMVVMアーキテクチャとは
+#### ・Vueを用いたMVVMアーキテクチャとは
 
 Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```）を，ViewModel層には子コンポーネント（```xxx-component.vue```）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMパターン.png)
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
 
 
 
