@@ -1,4 +1,4 @@
-# taiwopイベント発火とページレンダリング
+# イベント発火とページレンダリング
 
 ## 01-01. SPA：Single Page Application
 
@@ -22,19 +22,72 @@
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
 
-1. ページ上で任意のイベントが発火する．（ページング操作，フォーム入力など）
-2. イベント
-3. JQueryの```ajax()```が，クエリストリングを生成し，また，リクエストによって指定ルートにJSON型データを送信する．
-4. コントローラは，JSON型データを受信し，またそれを元にDBからオブジェクトをReadする．
-5. コントローラは，PHPのオブジェクトをJSON型データに変換し，レスポンスによって送信する．
-6. JQueryの```ajax()```が，JSON型データを受信する．
-7. JSON型データが，解析（パース）によってJavaScriptのオブジェクトに変換される．
-8. オブジェクトがマークアップ言語に出力される．
-9. DOMを用いて，マークアップ言語を解析し，Webページを構成する．
+1. urlにアクセスすることにより，サーバからデータがレスポンスされる．
+2. DOMのマークアップ言語の解析により，Webページが構成される．
+3. ページ上で任意のイベントが発火する．（ページング操作，フォーム入力など）
+4. イベント
+5. JQueryの```ajax()```が，クエリストリングを生成し，また，リクエストによって指定ルートにJSON型データを送信する．
+6. コントローラは，JSON型データを受信し，またそれを元にDBからオブジェクトをReadする．
+7. コントローラは，PHPのオブジェクトをJSON型データに変換し，レスポンスによって送信する．
+8. JQueryの```ajax()```が，JSON型データを受信する．
+9. JSON型データが，解析（パース）によってJavaScriptのオブジェクトに変換される．
+10. オブジェクトがマークアップ言語に出力される．
+11. DOMを用いて，Webページを再び構成する．
 
 
 
-## 02-01. Vueを用いたMVVMアーキテクチャ
+## 02-01. マークアップ言語によるWebページの構成
+
+### :pushpin: マークアップ言語の歴史
+
+Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．
+
+![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マークアップ言語の歴史.png)
+
+
+
+### :pushpin: XMLのツリー構造化と構造解析
+
+XML形式テキストファイルはタグを用いて記述されている．最初に出現するルート要素は根（ルート），またすべての要素や属性は，そこから延びる枝葉として意味づけられる．
+
+**【XMLのツリー構造化の例】**
+
+![DOMの構造](https://user-images.githubusercontent.com/42175286/59778015-a59f5600-92f0-11e9-9158-36cc937876fb.png)
+
+引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB
+
+#### ・スキーマ言語
+
+  XML形式テキストファイルにおいて，タグの付け方は自由である．しかし，利用者間で共通のルールを設けた方が良い．ルールを定義するための言語をスキーマ言語という．スキーマ言語に，DTD：Document Type Definition（文書型定義）がある．
+
+**【DTDの実装例】**
+
+```dtd
+<!DOCTYPE Enployee[
+    <!ELEMENT Name (First, Last)>
+    <!ELEMENT First (#PCDATA)>
+    <!ELEMENT Last (#PCDATA)>
+    <!ELEMENT Email (#PCDATA)>
+    <!ELEMENT Organization (Name, Address, Country)>
+    <!ELEMENT Name (#PCDATA)>
+    <!ELEMENT Address (#PCDATA)>
+    <!ELEMENT Country (#PCDATA)>
+]>
+```
+
+#### ・ツリー構造の解析
+
+DOMによる解析の場合，プロセッサはXMLを構文解析し，メモリ上にDOMツリーを展開する．一方で，SAXによる解析の場合，DOMのようにメモリ上にツリーを構築することなく，先頭から順にXMLを読み込み，要素の開始や要素の終わりといったイベントを生成し，その都度アプリケーションに通知する．
+
+![DTDとDOM](https://user-images.githubusercontent.com/42175286/59777367-83f19f00-92ef-11e9-82e5-6ebcd59f4cba.gif)
+
+
+
+### :pushpin: HTMLのツリー構造化と構造解析
+
+
+
+## 03-01. Vueを用いたMVVMアーキテクチャ
 
 ### :pushpin: MVVMアーキテクチャ
 
@@ -182,7 +235,6 @@ new Vue({
 
   
     /* dataオプション
-    ・状態を変化させたいデータを，関数として定義しておき，初期状態を設定．
     ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
     ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義．
     */
@@ -311,7 +363,6 @@ module.exports = {
   },
       
   /* dataオプション
-  ・状態を変化させたいデータを，関数として定義しておき，初期状態を設定する．
   ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
   ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義する．
   */
@@ -388,7 +439,7 @@ class Example {
 
 
 
-## 02-02. Vueにおける個人的な頻出ディレクティブ
+## 03-02. Vueにおける個人的な頻出ディレクティブ
 
 ### :pushpin: イベントハンドリング
 
@@ -494,13 +545,13 @@ new Vue({
 
 
 
-## 02-03. Vue-Routerライブラリによるルーティング
+## 03-03. Vue-Routerライブラリによるルーティング
 
 ### :pushpin: Vue-Routerとは
 
 ![ルーティングコンポーネント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルーティングコンポーネント.png)
 
-ルーティングモジュールの一つ．JQueryRouter，React-Routerに相当する．コンポーネントに対してルーティングを行い，```/{ルート}/パラメータ}```に応じて，コールするコンポーネントを動的に切り替えることができる．
+ルーティングライブラリの一つ．コンポーネントに対してルーティングを行い，```/{ルート}/パラメータ}```に応じて，コールするコンポーネントを動的に切り替えることができる．
 
 ```
 http://www.example.co.jp:80/{ルート}/{パスパラメータ}?text1=a&text2=b
@@ -526,11 +577,17 @@ module.exports = router;
 
 
 
-## 02-04. Vuexライブラリによるデータの状態変化の管理
+### :pushpin: その他のRouterライブラリ
+
+JQueryにはJQueryRouter，ReactにはReact-Routerがある．
+
+
+
+## 03-04. Vuexライブラリによるデータの状態変化の管理
 
 ### :pushpin: Vuexとは
 
-Vuejsでライブラリの一つで，MVVMのモデルに相当する機能を提供する．異なるコンポーネントで共通したデータを扱いたくとも，双方向データバインディングでは，親子コンポーネント間でしか，データを受け渡しできない．しかし，Vuexストア内で，データの状態の変化を管理することによって，親子関係なく，全てのコンポーネント間でデータを受け渡しできるようになる．
+Vuejsでライブラリの一つで，MVVMアーキテクチャのモデルに相当する機能を提供する．異なるコンポーネントで共通したデータを扱いたくとも，双方向データバインディングでは，親子コンポーネント間でしか，データを受け渡しできない．しかし，Vuexストア内で，データの状態の変化を管理することによって，親子関係なく，全てのコンポーネント間でデータを受け渡しできるようになる．
 
 ※Vuexからなるモデルはどうあるべきか，について要勉強
 
@@ -595,6 +652,7 @@ module.exports = new Vuex.Store({
     ・クラスベースオブジェクト指向のSetterメソッドに相当．
     */
     mutations: {
+        // Vuexのstateを第一引数，外部からセットしたい値を第二引数
         mutate(state, staffData) {
             exArray.forEach(
                 
@@ -604,7 +662,8 @@ module.exports = new Vuex.Store({
                 */
                 (element) => { state.exArray.push(element); }
                 
-                /* ※アロー関数を用いなければ，以下のように記述できる．
+                /* 
+                ※アロー関数を用いなければ，以下のように記述できる．
                 function(element) { state.exArray.push(element); }
                 */
             );  
@@ -614,12 +673,16 @@ module.exports = new Vuex.Store({
     
     /* actions
     ・mutations{}のメソッドを間接的にコールするためのメソッドをいくつか持つ．
+    ・contextオブジェクトからcommit機能を取り出す必要がある．（※省略記法あり）
     ・クラスベースオブジェクト指向のSetterメソッドに相当．
     */
     actions: {
-        
-    },
-});  
+        // 省略記法（Argument destructuring)
+        mutate ({commit})
+           commit('mutate')
+        }  
+    }
+})
 ```
 
 
@@ -704,89 +767,44 @@ module.exports = {
 
 
 
-## 03-01. Ajaxによる非同期的なデータ送受信
+## 04-01. JSON型データの解析（パース）
 
-### :pushpin: JQueryの```ajax()```を用いたAjaxの実装
+### :pushpin: データ記述言語の種類
 
-コンポーネントごとにリクエストメッセージを送る必要があるので，```ajax()```には，メソッド，URL，ヘッダー，ボディを設定する項目がある．リクエストメッセージの構造については，ネットワークのノートを参照せよ．
+#### ・JSON：JavaScript Object Notation
 
-#### ・GET送信の場合
+一番外側を波括弧で囲う．
 
-![GET送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061886-0ed95f80-7bb3-11e9-8998-f105a5e0ed40.png)
-
-**【実装例】**
-
-```ajax()```で，GET送信でリクエストするデータから，クエリパラメータを生成する．
-
-```javascript
-// ここに実装例
-```
-
-```{キー名}={値}```が，```&```で結合され，クエリパラメータとなる．
-
-```
-# ...の部分には，データ型を表す記号などが含まれる．
-http://127.0.0.1/.../?fruit...=ばなな&fruit...=りんご&account...=200
-```
-
-#### ・POST送信の場合
-
-![POST送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061918-29abd400-7bb3-11e9-94d0-fd528901ba7c.png)
-
-**【実装例】**
-
-このようなJavaScriptのオブジェクトが送信されてきたとする．
-
-```javascript
-const query = {
-    criteria: {
-    id: 777,
-    name: "hiroki"
-    }
+```json
+{
+  "Example": {
+    "fruit": ["ばなな", "りんご"],
+    "account": 200
+  }
 }
 ```
 
-リクエストメッセージをサーバサイド に送信し，またレスポンスを受信する．
+#### ・YAML：YAML Ain't a Markup Language
 
-**【実装例】**
-
-```javascript
-static find(query) {
-
-    return $.ajax({
-        //--- リクエストメッセージ ---//
-        // メソッドとURL
-        type: 'POST', // メソッドを指定
-        url: '/xxx/xxx', // ルートとパスパラメータを指定
-        // ヘッダー
-        contentType: 'application/json',　// 送信するデータの形式を指定
-        // ボディ
-        data: query, // クエリパラメータとして送信するデータを指定
-            
-        //--- レスポンスメッセージ ---//
-        dataType: 'json', // 受信するデータの形式を指定
-    })
-
-    // ajax()の処理が成功した場合に起こる処理．
-    .done((data) => {
- 
-    })
-
-    // ajax()の処理が失敗した場合に起こる処理．
-    .fail(() => {
-        toastr.error('', 'エラーが発生しました．');
-    })
-
-    // ajax()の成功失敗に関わらず，必ず起こる処理．
-    .always(() => {
-        this.isLoaded = false;
-    });
-} 
+```yaml
+{
+  Example:
+    fruit:
+      - "ばなな"
+      - "りんご"
+    account: 200
+}  
 ```
 
+#### ・マークアップ言語
+
+マークアップ言語の章を参照せよ．
+
+#### ・CSV：Comma Separated Vector
+
+データ解析の入力ファイルとしてよく使うやつ．
 
 
-## 04-01. JSON型データの解析（パース）
 
 ### :pushpin: シリアライズ，デシリアライズ
 
@@ -879,7 +897,7 @@ class Example
 
 
 
-### :pushpin: Jsonのクエリ言語
+### :pushpin: JSONのクエリ言語
 
 #### ・JMESPath
 
@@ -891,89 +909,84 @@ class Example
 
 
 
-### :pushpin: データ記述言語の種類
+## 05-01. Ajaxによる非同期的なデータ送受信
 
-#### ・JSON：JavaScript Object Notation
+### :pushpin: JQueryの```ajax()```を用いたAjaxの実装
 
-一番外側を波括弧で囲う．
+コンポーネントごとにリクエストメッセージを送る必要があるので，```ajax()```には，メソッド，URL，ヘッダー，ボディを設定する項目がある．リクエストメッセージの構造については，ネットワークのノートを参照せよ．
 
-```json
-{
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200
-  }
+#### ・GET送信の場合
+
+![GET送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061886-0ed95f80-7bb3-11e9-8998-f105a5e0ed40.png)
+
+**【実装例】**
+
+```ajax()```で，GET送信でリクエストするデータから，クエリパラメータを生成する．
+
+```javascript
+// ここに実装例
+```
+
+```{キー名}={値}```が，```&```で結合され，クエリパラメータとなる．
+
+```
+# ...の部分には，データ型を表す記号などが含まれる．
+http://127.0.0.1/.../?fruit...=ばなな&fruit...=りんご&account...=200
+```
+
+#### ・POST送信の場合
+
+![POST送信時のHTTPリクエスト](https://user-images.githubusercontent.com/42175286/58061918-29abd400-7bb3-11e9-94d0-fd528901ba7c.png)
+
+**【実装例】**
+
+このようなJavaScriptのオブジェクトが送信されてきたとする．
+
+```javascript
+const query = {
+    criteria: {
+    id: 777,
+    name: "hiroki"
+    }
 }
 ```
 
-#### ・YAML：YAML Ain't a Markup Language
+リクエストメッセージをサーバサイド に送信し，またレスポンスを受信する．
 
-```yaml
-{
-  Example:
-    fruit:
-      - "ばなな"
-      - "りんご"
-    account: 200
-}  
+**【実装例】**
+
+```javascript
+static find(query) {
+
+    return $.ajax({
+        //--- リクエストメッセージ ---//
+        // メソッドとURL
+        type: 'POST', // メソッドを指定
+        url: '/xxx/xxx', // ルートとパスパラメータを指定
+        // ヘッダー
+        contentType: 'application/json',　// 送信するデータの形式を指定
+        // ボディ
+        data: query, // クエリパラメータとして送信するデータを指定
+            
+        //--- レスポンスメッセージ ---//
+        dataType: 'json', // 受信するデータの形式を指定
+    })
+
+    // ajax()の処理が成功した場合に起こる処理．
+    .done((data) => {
+ 
+    })
+
+    // ajax()の処理が失敗した場合に起こる処理．
+    .fail(() => {
+        toastr.error('', 'エラーが発生しました．');
+    })
+
+    // ajax()の成功失敗に関わらず，必ず起こる処理．
+    .always(() => {
+        this.isLoaded = false;
+    });
+} 
 ```
 
-#### ・マークアップ言語
-
-マークアップ言語の章を参照せよ．
-
-#### ・CSV：Comma Separated Vector
-
-データ解析の入力ファイルとしてよく使うやつ．
-
-
-
-## 05-01. マークアップ言語によるWebページの構成
-
-### :pushpin: マークアップ言語の歴史
-
-Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．
-
-![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マークアップ言語の歴史.png)
-
-
-
-### :pushpin: XMLのツリー構造化と構造解析
-
-XML形式テキストファイルはタグを用いて記述されている．最初に出現するルート要素は根（ルート），またすべての要素や属性は，そこから延びる枝葉として意味づけられる．
-
-**【XMLのツリー構造化の例】**
-
-![DOMの構造](https://user-images.githubusercontent.com/42175286/59778015-a59f5600-92f0-11e9-9158-36cc937876fb.png)
-
-引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB
-
-#### ・スキーマ言語
-
-  XML形式テキストファイルにおいて，タグの付け方は自由である．しかし，利用者間で共通のルールを設けた方が良い．ルールを定義するための言語をスキーマ言語という．スキーマ言語に，DTD：Document Type Definition（文書型定義）がある．
-
-**【DTDの実装例】**
-
-```dtd
-<!DOCTYPE Enployee[
-    <!ELEMENT Name (First, Last)>
-    <!ELEMENT First (#PCDATA)>
-    <!ELEMENT Last (#PCDATA)>
-    <!ELEMENT Email (#PCDATA)>
-    <!ELEMENT Organization (Name, Address, Country)>
-    <!ELEMENT Name (#PCDATA)>
-    <!ELEMENT Address (#PCDATA)>
-    <!ELEMENT Country (#PCDATA)>
-]>
-```
-
-#### ・ツリー構造の解析
-
-DOMによる解析の場合，プロセッサはXMLを構文解析し，メモリ上にDOMツリーを展開する．一方で，SAXによる解析の場合，DOMのようにメモリ上にツリーを構築することなく，先頭から順にXMLを読み込み，要素の開始や要素の終わりといったイベントを生成し，その都度アプリケーションに通知する．
-
-![DTDとDOM](https://user-images.githubusercontent.com/42175286/59777367-83f19f00-92ef-11e9-82e5-6ebcd59f4cba.gif)
-
-
-
-### :pushpin: HTMLのツリー構造化と構造解析
 
