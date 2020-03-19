@@ -116,17 +116,23 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 ### :pushpin: Route 53（＝DNSサーバ）
 
+#### ・Route53とは
+
 クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とインスタンスのグローバルIPアドレスをマッピングしている．
 
 
 
 ### :pushpin: CloudFront（＝プロキシサーバ）
 
+#### ・CloudFrontとは
+
 クラウドプロキシサーバとして働く．Amazon S3へのアクセスをキャッシングする．
 
 
 
 ### :pushpin: CloudTrail
+
+#### ・CloudTrailとは
 
 IAMユーザによる操作や，ロールのアタッチの履歴を記録し，ログファイルとしてS3に転送する．CloudWatchと連携することもできる．
 
@@ -136,28 +142,51 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 ### :pushpin: S3：Simple Storage Service（＝外付けストレージ）
 
+#### ・S3とは
+
 クラウド外付けストレージとして働く．Amazon S3に保存するCSSファイルや画像ファイルを管理できる．
 
 
 
 ### :pushpin: API Gateway
 
+#### ・API Gatewayとは
+
 API Gatewayは，メソッドリクエスト，統合リクエスト，統合レスポンス，メソッドレスポンス，から構成される．
 
 ![APIGatewayの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/APIGatewayの仕組み.png)
 
-1. メソッドリクエストで，クライアントからリクエストメッセージを受信．また，これからデータを抽出．（※メッセージについては，アプリケーション層の説明を参照せよke）
-2. 統合リクエストで，データを編集し，指定のAWSサービスにこれを送信．
-3. 統合レスポンスで，指定のAWSサービスからデータを受信し，これを編集．
-4. メソッドレスポンスで，HTTPステータスを追加．また，データをレスポンスメッセージとして，クライアントに送信．
+#### 1. メソッドリクエスト
+
+クライアントからリクエストメッセージを受信．また，リクエストメッセージからデータを抽出．（※メッセージについては，アプリケーション層の説明を参照せよ）
+
+#### 2. 統合リクエスト
+
+データを編集し，指定のAWSサービスにこれを送信．
+
+#### 3. 統合レスポンス
+
+指定のAWSサービスからデータを受信し，これを編集．
+
+#### 4. メソッドレスポンス
+
+HTTPステータスを追加．また，データをレスポンスメッセージとして，クライアントに送信．
 
 
 
 ### :pushpin: SQS：Amazon Simple Queue Service
 
-クラウドメッセージキューとして働く．異なるVPC間でも，メッセージキューを同期できる．クラウドサーバで生成されたメッセージは，一旦SQSに追加される．コマンドによってバッチが実行され，メッセージが取り出される．その後，例えば，バッチ処理によってメッセージからデータが取り出されてファイルが生成され，S3に保存されるような処理が続く．スタンダード方式キューとFIFO方式：First In First Outキューがある．
+#### ・SQSとは
+
+クラウドメッセージキューとして働く．異なるVPC間でも，メッセージキューを同期できる．クラウドサーバで生成されたメッセージは，一旦SQSに追加される．コマンドによってバッチが実行され，メッセージが取り出される．その後，例えば，バッチ処理によってメッセージからデータが取り出されてファイルが生成され，S3に保存されるような処理が続く．
 
 ![AmazonSQSとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AmazonSQSとは.jpeg)
+
+#### ・SQSの種類
+
+スタンダード方式キューとFIFO方式：First In First Outキューがある．
+
+
 
 ### :pushpin: Lambdaと他FaaSの連携によるサーバレスアーキテクチャ
 
@@ -196,6 +225,8 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 ### :pushpin: セキュリティグループ（＝パケットフィルタリング型ファイアウォール）
 
+#### ・セキュリティグループとは
+
 クラウドパケットフィルタリング型ファイアウォールとして働く．インバウンド（受信ルール）では，プロトコルや受信元IPアドレスを設定でき，アウトバウンド（送信ルール）では，プロトコルや送信先プロトコルを設定できる．
 
 #### ・パケットフィルタリング型ファイアウォールとは（セキュリティのノートを参照せよ）
@@ -208,6 +239,8 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 ### :pushpin: VPC：Virtual Private Cloud（＝プライベートネットワーク）
 
+#### ・VPCとは
+
 クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってkクラウドWebサーバを立ち上げることによって，クラウドサーバをデュアル化することできる．
 
 ![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCが提供できるネットワークの範囲.png)
@@ -215,6 +248,8 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 ### :pushpin: VPCエンドポイント
+
+#### ・VPCエンドポイントとは
 
 NATとインターネットゲートウェイを経由せずにVPCの外側と通信できるため，NATの負荷を抑え，またより安全に通信できる．
 
@@ -224,15 +259,27 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 ### :pushpin: ELB：Elastic Load Balancing
 
-デュアル化させたインスタンスへのアクセスを自動的に分配し，サーバへの負荷を緩和するサービス．機能別に，NLB：Network Load Balancer，ALB：Application Load Balancer，CLB：Classic Load Balancer，の3種類に分類できる．
+#### ・ELBとは
+
+デュアル化させたインスタンスへのアクセスを自動的に分配し，サーバへの負荷を緩和するサービス．
+
+#### ・ELBの種類
+
+機能別に，NLB：Network Load Balancer，ALB：Application Load Balancer，CLB：Classic Load Balancer，の3種類に分類できる．
 
 
 
 ### :pushpin: RegionとAvailability Zone
 
-2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにクラウドWebサーバを構築できる．
+#### ・Regionとは
+
+2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．
 
 ![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSリージョンマップ.PNG)
+
+#### ・Availability Zone
+
+Regionは，さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにクラウドWebサーバを構築できる．
 
 
 
@@ -298,6 +345,8 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 ### :pushpin: データベース
+
+#### ・AWSが提供するデータベースの種類
 
 データベースの種類については，別のノートを参照せよ．
 

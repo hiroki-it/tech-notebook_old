@@ -1,6 +1,6 @@
 # RESTful APIの概念と実装
 
-## 01-01. RESTful設計とWeb API
+## 01-01. RESTとRESTfulとは
 
 ### :pushpin: REST
 
@@ -15,13 +15,38 @@
 
 
 
-### :pushpin: RESTful API へのリクエスト
+### :pushpin: RESTful
 
-#### ・RESTful APIとは
+#### ・RESTfulとRESTful APIとは
 
 RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
 
-#### ・URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）
+![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/RESTfulAPIを用いたリクエスト.png)
+
+
+
+## 02-01. RESTful APIへのリクエスト
+
+
+
+### :pushpin: RESTfulにおけるデータの送信方法
+
+#### ・エンドポイントとは
+
+APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
+
+#### ・各送信方法の特徴
+
+| **送信方法** | サーバ側の処理 | 使い分け                    | 特徴 | エンドポイント例                        | パスパラメータ |
+| :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- | ---------------- |
+|     **GET**      |   読み  | DBデータのRead |  | ```http://www.example.co.jp/userInfo/{id}```  | id |
+|     **POST**     |     書き     | ・DBのCreate操作<br>・DBのUpdate操作<br>・PDFの作成<br>・画像やPDFの送信<br>・ログイン | 冪等的でない | ```http://www.example.co.jp/userInfo/```     | なし |
+|     **PUT**      |   書き    | ・DBのCreate操作<br/>・DBのUpdate操作 | 冪等的である | ```http://www.example.co.jp/userInfo/{id}``` | id |
+|    **DELETE**    |    書き    | DBのDelete操作 |  | ```http://www.example.co.jp/userInfo/{id}``` | Id |
+
+
+
+### :pushpin: URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）
 
 パスパラメータはデータをリクエストするために用いる．また，クエリパラメータは，GET送信の時に，データの検索処理／フィルタ処理／ソート処理をリクエストするために用いる．GET送信については，リクエストメッセージの説明を参照せよ．
 
@@ -35,24 +60,13 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 ```
 
-#### ・エンドポイント
-
-APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
-
-![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/RESTfulAPIを用いたリクエスト.png)
-
-| **送信方法** | サーバ側の処理 | 使い分け                    | エンドポイント例                        | パスパラメータ | 注意点 |
-| :--------------: | --------------------------------------- | ---------------- | ---------------- | ---------------- | ---------------- |
-|     **GET**      |   読み  | DBデータのRead | ```http://www.example.co.jp/userInfo/{id}```  | id |  |
-|     **POST**     |     書き     | ・DBのCreate操作<br>・DBのUpdate操作<br>・PDFの作成<br>・画像やPDFの送信<br>・ログイン | ```http://www.example.co.jp/userInfo/```     | なし |  |
-|     **PUT**      |   書き    | ・DBのCreate操作<br/>・DBのUpdate操作 | ```http://www.example.co.jp/userInfo/{id}``` | id | これよりもPOSTを使う |
-|    **DELETE**    |    書き    | DBのDelete操作 | ```http://www.example.co.jp/userInfo/{id}``` | Id |  |
 
 
+## 02-02. RESTful APIからのレスポンス
 
-### :pushpin: RESTful APIからのレスポンス
+### :pushpin: スキーマ
 
-#### ・スキーマ
+#### ・スキーマとは
 
 例えば，APIが，以下のようなJSON型データをレスポンスするとする．
 
@@ -90,39 +104,12 @@ APIにリソースをリクエストするためのURLのこと．エンドポ�
 
 
 
+### :pushpin: ステータスコード
 
-## 02-01. フロントエンドとサーバサイドの間のRESTful API
+#### ・```415``` Unsupported Media Type
 
-### :pushpin: SilexフレームワークによるRESTful API
+※使いどころを要勉強
 
-Silexフレームワークの```Application```クラスや```Route```クラスには，RESTful APIを実装するためのメソッドが用意されている．
+#### ・```422``` Unprocessable Entity
 
-```PHP
-namespace Silex;
-
-class Application extends Container implements HttpKernelInterface, TerminableInterface
-{
-  public function match($pattern, $to = null)
-  {
-    return $this['controllers']->match($pattern, $to);
-  }
-}
-```
-
-```PHP
-namespace Silex;
-
-class Route extends BaseRoute
-{
-  public function method($method)
-  {
-    $this->setMethods(explode('|', $method));
-    return $this;
-  }
-}
-```
-
-
-
-## 03-01. 異なるアプリケーション間のRESTful API
-
+※使いどころを要勉強
