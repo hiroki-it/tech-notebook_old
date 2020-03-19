@@ -6,6 +6,8 @@
 
 オブジェクトをリテラル表記で生成する方法．キャメルケース（小文字から始める記法）を用いる．
 
+**【実装例】**
+
 ```javascript
 // リテラル表記
 const example = {
@@ -31,6 +33,8 @@ const example = {
 
 キャメルケース（小文字から始める記法）を用いる．プロパティを生成するためには，値を格納する必要がある．関数宣言あるいは関数式で記述する．パスカルケース（大文字から始める記法）を用いる．ちなみに，オブジェクトのプロパティ値として生成された関数を，メソッドと呼ぶ．
 
+**【実装例】**
+
 ```javascript
 const example = new Object({
 
@@ -49,11 +53,15 @@ const example = new Object({
 
 #### ・```Function```コンストラクタ関数
 
+**【実装例】**
+
 ```javascript
 const Example = new Function();
 ```
 
 ただし，公式からこのような記法は，非推奨とされている．以下の関数宣言，関数式，アロー関数による関数式省略，の記法が推奨される．
+
+**【実装例】**
 
 ```javascript
 // 関数宣言
@@ -107,6 +115,8 @@ const Example = (value) => {
 
 リテラル表記と```Object```コンストラクタ関数による生成とは異なり，コンストラクタ関数によって定義されたオブジェクトは，暗示的に```prototype```プロパティをもつ．
 
+**【実装例】**
+
 ```javascript
 // リテラル表記による生成
 const object1 = {};
@@ -130,6 +140,8 @@ console.log(
 ### :pushpin: 糖衣構文の```class```の使用
 
 ES6から，糖衣構文の```class```によって，オブジェクトを定義できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
+
+**【実装例】**
 
 ```javascript
 // クラス宣言
@@ -180,6 +192,8 @@ const example = new Example(1)
 
 #### ・```new Obejct()```を用いた継承
 
+**【実装例】**
+
 ```javascript
 // 大元となるオブジェクトは個別ファイルで管理しておくのがベター．
 // コンストラクタ関数の関数式による定義．
@@ -199,6 +213,8 @@ const Example = function(value) {
 ```
 
 別クラスで，以下のように継承する．
+
+**【実装例】**
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
@@ -228,6 +244,8 @@ console.log(result);
 
 #### ・```Object.create()```を用いた継承とメンバ追加
 
+**【実装例】**
+
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
 // prototypeプロパティの継承先のオブジェクトを定義．
@@ -256,6 +274,8 @@ console.log(result);
 
 また，```Object.create()```を用いる場合，継承だけでなく，メンバを新しく追加することもできる．
 
+**【実装例】**
+
 ```javascript
 // Object.create()による継承．
 SubExample.prototype = Object.create(Example.prototype, {
@@ -279,6 +299,8 @@ console.log(result);
 ### :pushpin: メソッドとしてコールする場合
 
 メソッド内の```this```は，exampleオブジェクトを指す．
+
+**【実装例】**
 
 ```javascript
 const example = {
@@ -310,7 +332,10 @@ example.getValue(); // 1
 
 コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．
 
+**【実装例】**
+
 ```javascript
+// 一番外側はWindowオブジェクト
 param = 'global param';
 
 // 関数宣言
@@ -318,11 +343,13 @@ function printParam(){
   console.log(this.param);
 }
 
-let object = {
-  param: 'object param',
+// オブジェクト1
+let object1 = {
+  param: 'object1 param',
   func: printParam
 }
 
+// オブジェクト2
 let object2 = {
   param: 'object2 param',
   func: printParam
@@ -330,19 +357,23 @@ let object2 = {
 ```
 
 ```javascript
-// コンストラクタ関数内のthisの場合
-object.printParam; // param
+/* コンストラクタ関数内のthisの場合
+コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．
+ここでは，objectとobject2
+*/
 
-object2.printParam; // param
-
-// コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．ここでは，objectとobject2．
+object1.printParam; // object1 param
+object2.printParam; // object2 param
 ```
 
 #### ・アロー関数によるコンストラクタ関数内の```this```の場合
 
 アロー関数内の```this```の参照先には，十分な注意が必要である．今まで，JavaScriptでは，```this```の参照先が文脈によって変わることに批判が集まっていた．そこで，参照先が文脈によって変わらない機能が追加された．```this```は，自身が定義されたオブジェクトを指す．
 
+**【実装例】**
+
 ```javascript
+// 一番外側はWindowオブジェクト
 param = 'global param';
 
 // アロー関数による省略記法
@@ -350,11 +381,13 @@ let printParam = () => {
   console.log(this.param);
 };
 
-let object = {
-  param: 'object param',
+// オブジェクト1
+let object1 = {
+  param: 'object1 param',
   func: printParam
 };
 
+// オブジェクト2
 let object2 = {
   param: 'object2 param',
   func: printParam
@@ -362,13 +395,14 @@ let object2 = {
 ```
 
 ```javascript
-// アロー関数内のthisの場合
-object.printParam; // global param
+/* アロー関数内のthisの場合
+thisは，自身が定義されたオブジェクトを指す．
+ここでは，一番外側のWindowオブジェクト．
+参照先は文脈によって変わらない．
+*/
 
+object1.printParam; // global param
 object2.printParam; // global param
-
-// thisは，自身が定義されたオブジェクトを指す．ここでは，一番外側のWindowオブジェクト．
-// 参照先は文脈によって変わらない．
 ```
 
 また，アロー関数がコールバック関数の引数となっている場合…（要勉強）
