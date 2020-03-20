@@ -126,34 +126,66 @@ Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクト
 **【実装例】**
 
 ```PHP
-// ここに実装例
-```
-
-
-
-### :pushpin: Formパターン（データ検証パターン）
-
-#### ・責務
-
-デザインパターンの一つ．UnserInterface層からUserInterface層へのデータのリクエスト時に，受信したJSONデータを検証する．
-
-```PHP
-// ここに実装例
-```
-
-
-
-### :pushpin: Casterパターン（データ型変換パターン）
-
-#### ・責務
-
-デザインパターンの一つ．Application層からUser Interface層へのデータのレスポンス時に，送信するオブジェクトデータ（Route Entity）を連想配列に変換する．
-
-```PHP
-// Entityを連想配列に変換するメソッド
-private function castAcceptOrders(Array $toyOrderEntity)
+class SlackNotificationService
 {
-  
+    public function notify(SlackMessage $message)
+    {
+       // SlackのAPIにメッセージを送信する処理
+    }
+}
+```
+
+
+
+### :pushpin: 入力データに対するフォーマットのValidationパターン
+
+#### ・責務
+
+デザインパターンの一つ．フロントエンドからサーバサイドに送信されてきたデータのフォーマットを検証する責務を持つ．例えば，UserInterface層からApplication層に送信されてきたJSON形式データのフォーマットを検証する．
+
+**【実装例】**
+
+```PHP
+use Respect\Validation\Validator; // Validationのライブラリ
+
+class FormatValidator
+{
+    // 日時データのフォーマットを検証する．
+    public function validateFormat($dateTime)
+    {
+        if(empty($dateTime)) {
+            return false;
+        }  
+      
+        if(!Validator::date(\DateTime::ATOM)->validate($dateTime)) {
+            return false;
+        }
+      
+        return true;
+    }
+}  
+```
+
+
+
+### :pushpin: Converterパターン
+
+#### ・責務
+
+デザインパターンの一つ．データ構造を変換する責務を持つ．例えば，Application層からUserInterface層へのデータのレスポンス時に，送信するオブジェクトデータ（Route Entity）を連想配列に変換する．
+
+**【実装例】**
+
+```PHP
+class Converter
+{
+    public function convertToArray(XxxEntity $xxxEntity)
+    {
+        // オブジェクトを連想配列に詰め替える処理．
+        $xxxArray['id'] = $xxxEntity->id;
+        $xxxArray['name'] = $xxxEntity->name;
+        $xxxArray['email'] = $xxxEntity->email;
+    }
 }  
 ```
 
@@ -192,72 +224,112 @@ abstract class getDogToyEntityRepository
 
 ### :pushpin: Entity
 
+#### ・責務
+
 以降の説明を参照．
 
 
 
-### :pushpin: Specificationパターン（仕様パターン）
+### :pushpin: Specificationパターン
 
 #### ・責務
 
-デザインパターンの一つ．ビジネスルールの検証，検索条件の生成，生成条件などのビジネスルールは、EntitiyやValue Objectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
+デザインパターンの一つ．ビジネスルールの検証，検索条件オブジェクトの生成は、EntitiyやValue Objectに持たせた場合，肥大化の原因となり，可読性と保守性が悪い．そこで，こういったビジネスルールをSpecificationオブジェクトにまとめておく．
 
-#### ・ビジネスルールの検証
+#### ・入力データに対するビジネスルールのValidation
 
-```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理．
-
-**【実装例】**
-
-```PHP
-// ここに実装例
-```
-
-#### ・検索条件の生成
-
-Criteriaオブジェクトとしても用いられる．
+```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理する．
 
 **【実装例】**
 
 ```PHP
-// ここに実装例
+class XxxSpecification
+{
+    public function isSatisfiedBy($XxxEntity)
+    {
+       // ビジネスルールのバリデーション処理．
+    }
+} 
 ```
 
-#### ・オブジェクトの生成 
+#### ・検索条件オブジェクトの生成
+
+検索条件のデータを保持するオブジェクト．ビジネスルールのValidationを行うSpecificationクラスと区別するために，Criteriaオブジェクトという名前としても用いられる．
+
+**【実装例】**
 
 ```PHP
-// ここに実装例
+class XxxCriteria
+{
+    private $id;
+  
+    private $name;
+  
+    private $email;
+  
+    // 検索条件のオブジェクトを生成．
+    public function build(array $array)
+    {
+        // 自身をインスタンス化．
+        $criteria = new static();
+        
+        if(isset($array['id'])) {
+            $criteria->id = $array['id'];
+        }
+      
+        if(isset($array['name'])) {
+            $criteria->id = $array['name'];
+        }
+      
+        if(isset($array['email'])) {
+            $criteria->id = $array['email'];
+        }
+      
+        return $criteria;
+    }  
+
+}
 ```
 
 
 
 ### :pushpin: Value Object
 
-以降の説明を参照．
+#### ・責務
 
+以降の説明を参照．
 
 
 
 ### :pushpin: Type Code（標準型）
 
-以降の説明を参照．
+#### ・責務
 
+以降の説明を参照．
 
 
 
 ### :pushpin: Domain Service
 
+#### ・責務
+
 以降の説明を参照．
 
 
 
-
-## 04-02. Domain \ Entity
-
-###  :pushpin: Value Objectとの違い
-
-#### ・責務
+## 04-02. Domain \ Entity の責務
 
 オブジェクトをEntityとしてモデリング／実装したいのならば，以下に条件を満たす必要がある．
+
+### :pushpin: 保持するデータの値が一定でない
+
+状態を変化させる必要があるデータをもつ
+
+
+
+### :pushpin: データの値が同じでも区別できる
+
+オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される．
 
 （ユビキタス言語の例）顧客，注文など
 
@@ -296,8 +368,7 @@ class ToyOrderEntity
 
 
 
-
-#### ・Route Entityとは
+### :pushpin: Route Entityとは
 
 ![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
 
@@ -358,16 +429,7 @@ class DogToyEntity
 
 
 
-### :pushpin: 状態を変化させる必要があるデータをもつ．
-### :pushpin: オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される． 
-
-
-
-## 04-03. Domain \ Value Object
-
-### :pushpin: Entityとの違い
-
-#### ・責務
+## 04-03. Domain \ Value Object の責務
 
 金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，Value Objectという．
 
@@ -558,13 +620,13 @@ class Money
 
 
 
-## 04-04. Domain \ Type Code（標準型）
+## 04-04. Domain \ Type Code（標準型）の責務
 
-### :pushpin: Value Objectとの違い
-
-#### ・責務
+### :pushpin: 区分や種類のデータを保持する
 
 Type Codeは概念的な呼び名で，実際は，標準的なライブラリとして利用できるEnumクラスに相当する．一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，Value Objectとしてではなく，Enumクラスとしてモデリング／実装する．
+
+
 
 ### :pushpin: Enumクラスを用いたType Codeの実装
 
