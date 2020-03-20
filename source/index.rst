@@ -17,7 +17,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: PHP
 
    ObjectOrientedAnalysisAndDesign.md
-   ObjectOrientedProgramming.md
+   ObjectOrientedDesignAndProgramming.md
    ConceptAndImplementationOfRESTfulAPI.md
    TestingFrameworkAndTestSpecification.md
    SymfonyFramework.md
@@ -88,7 +88,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: JavaScript
       
    PrototypeBasedObjectOriented.md
-   FiringEventAndRenderingPages.md
+   RenderingPageAndFiringEvent.md
 
 .. toctree::
    :maxdepth: 1
