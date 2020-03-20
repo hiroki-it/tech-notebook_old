@@ -264,37 +264,6 @@ class Car
 $car = new Car();
 ```
 
-#### ・```new static()``` vs. ```new self()```
-
-どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
-
-```PHP
-class A
-{
-    public static function get_self()
-    {
-        return new self();
-    }
-
-    public static function get_static()
-    {
-        return new static();
-    }
-}
-```
-
-```PHP
-class B extends A {}
-```
-
-```PHP
-echo get_class(B::get_self());   // 継承元のクラスA
-
-echo get_class(B::get_static()); // 継承先のクラスB
-
-echo get_class(A::get_static()); // 継承元のクラスA
-```
-
 
 
 ## 02-02. クラス間の関係性
@@ -1222,15 +1191,9 @@ public static function computeExampleFee(Entity $order): Money
 
 ## 04-01. メソッド
 
-### :pushpin: メソッドの実装手順
-
-1. その会社のシステムで使われているライブラリ
-2. PHPのデフォルト関数（引用：PHP関数リファレンス，https://www.PHP.net/manual/ja/funcref.PHP）
-3. 新しいライブラリ
-
-
-
 ### :pushpin: 値を取得するアクセサメソッドの実装
+
+#### ・Getter
 
 Getterでは，データを取得するだけではなく，何かしらの処理を加えたうえで取得すること．
 
@@ -1318,74 +1281,6 @@ $test02 = new Test02("新しいデータ02の値");
 ```
 
 Entityは，Mutableであるため，Setterと```__construct()```の両方を持つことができる．ValueObjectは，Immutableのため，```__construct()```しか持つことができない．
-
-
-
-### :pushpin: メソッドチェーン
-
-以下のような，オブジェクトAを最外層とした関係が存在しているとする．
-
-【オブジェクトA（オブジェクトBをデータに持つ）】
-
-```PHP
-class Obj_A{
-    private $objB;
-    
-    // 返却値のデータ型を指定
-    public function getObjB(): ObjB
-    {
-        return $this->objB;
-    }
-}
-```
-
-【オブジェクトB（オブジェクトCをデータに持つ）】
-
-```PHP
-class Obj_B{
-    private $objC;
- 
-    // 返却値のデータ型を指定
-    public function getObjC(): ObjC
-    {
-        return $this->objC;
-    }
-}
-```
-
-【オブジェクトC（オブジェクトDをデータに持つ）】
-
-```PHP
-class Obj_C{
-    private $objD;
- 
-    // 返却値のデータ型を指定
-    public function getObjD(): ObjD
-    {
-        return $this->objD;
-    }
-}
-```
-
-以下のように，返却値のオブジェクトを用いて，より深い層に連続してアクセスしていく場合…
-
-```PHP
-$ObjA = new Obj_A;
-
-$ObjB = $ObjA->getObjB();
-
-$ObjC = $B->getObjB();
-
-$ObjD = $C->getObjD();
-```
-
-以下のように，メソッドチェーンという書き方が可能．
-
-```PHP
-$D = getObjB()->getObjC()->getObjC();
-
-// $D には ObjD が格納されている．
-```
 
 
 
@@ -1485,7 +1380,7 @@ class Test02 {
 }
 ```
 
-#### ・【『Mutable』と『Immutable』を実現できる理由】
+#### ・『Mutable』と『Immutable』を実現できる理由】
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
@@ -1511,13 +1406,116 @@ $test02 = new Test02("新しいデータ02の値");
 
 #### ・```__invoke()```
 
-
-
 #### ・```__clone()```
 
 
 
-### :pushpin: Recursive call：再帰的プログラム
+### :pushpin: インスタンスの生成メソッド
+
+#### ・```new static()``` と ```new self()```の違い
+
+どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
+
+```PHP
+class A
+{
+    public static function get_self()
+    {
+        return new self();
+    }
+
+    public static function get_static()
+    {
+        return new static();
+    }
+}
+```
+
+```PHP
+class B extends A {}
+```
+
+以下の通り，```new self()```は定義されたクラスをインスタンス化する．一方で，```new static()```はコールされたクラスをインスタンス化する．自身のインスタンス化処理が継承される場合は，```new static```を用いた方が良い．
+
+```PHP
+echo get_class(B::get_self());   // 継承元のクラスA
+
+echo get_class(B::get_static()); // 継承先のクラスB
+
+echo get_class(A::get_static()); // 継承元のクラスA
+```
+
+
+
+### :pushpin: メソッドのコール
+
+#### ・メソッドチェーン
+
+以下のような，オブジェクトAを最外層とした関係が存在しているとする．
+
+【オブジェクトA（オブジェクトBをデータに持つ）】
+
+```PHP
+class Obj_A{
+    private $objB;
+    
+    // 返却値のデータ型を指定
+    public function getObjB(): ObjB
+    {
+        return $this->objB;
+    }
+}
+```
+
+【オブジェクトB（オブジェクトCをデータに持つ）】
+
+```PHP
+class Obj_B{
+    private $objC;
+ 
+    // 返却値のデータ型を指定
+    public function getObjC(): ObjC
+    {
+        return $this->objC;
+    }
+}
+```
+
+【オブジェクトC（オブジェクトDをデータに持つ）】
+
+```PHP
+class Obj_C{
+    private $objD;
+ 
+    // 返却値のデータ型を指定
+    public function getObjD(): ObjD
+    {
+        return $this->objD;
+    }
+}
+```
+
+以下のように，返却値のオブジェクトを用いて，より深い層に連続してアクセスしていく場合…
+
+```PHP
+$ObjA = new Obj_A;
+
+$ObjB = $ObjA->getObjB();
+
+$ObjC = $B->getObjB();
+
+$ObjD = $C->getObjD();
+```
+
+以下のように，メソッドチェーンという書き方が可能．
+
+```PHP
+$D = getObjB()->getObjC()->getObjC();
+
+// $D には ObjD が格納されている．
+```
+
+#### ・Recursive call：再帰的プログラム
 
 自プログラムから自身自身をコールし，実行できるプログラムのこと．
 
@@ -1596,7 +1594,89 @@ var_dump($result);
 
 
 
-### :pushpin: データを用いた処理結果の保持
+### :pushpin: 引数
+
+#### ・オプション引数
+
+引数が与えられなければ，指定の値を渡す方法
+
+
+
+### :pushpin: 値を返却する前の途中終了
+
+#### ・```return;```
+
+
+```PHP
+function returnMethod()
+{
+    print "returnMethod()です。\n";
+    return; // 何も返さない．
+}
+```
+
+```PHP
+returnMethod(); // returnMethod()です。
+... // 処理は続く．
+```
+
+
+#### ・```exit;```
+
+```PHP
+function exitMethod()
+{
+    print "exitMethod()です。\n";
+    exit;
+}
+```
+
+```PHP
+exitMethod(); // exitMethod()です。
+// ここで，システム全体の処理が終了する．
+```
+
+
+
+### :pushpin: 値の返却
+
+#### ・```return```
+
+メソッドがコールされた場所に値を返却した後，その処理が終わる．
+
+#### ・```yield```
+
+メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．返却値は，array型である．
+
+**【実装例】**
+
+```PHP
+function getOneToThree(): array
+{
+    for ($i = 1; $i <= 3; $i++) {
+        // yield を返却した後、$i の値が維持される．
+        yield $i;
+    }
+}
+```
+
+```PHP
+$oneToThree = getOneToThree();
+
+foreach ($oneToThree as $value) {
+    echo "$value\n";
+}
+
+// 1
+// 2
+// 3
+```
+
+
+
+### :pushpin: オブジェクトを用いたデータのキャッシング
+
+#### ・計算処理の結果のキャッシング
 
 大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
 
@@ -1639,84 +1719,6 @@ public function cachedResult($funcName)
   }
   return $this->cachedResult[$funcName];
 }
-```
-
-
-
-### :pushpin: オプション引数
-
-引数が与えられなければ，指定の値を渡す方法
-
-
-
-### :pushpin: 値の返却
-
-#### ・```return```
-
-メソッドがコールされた場所に値を返却した後，その処理が終わる．
-
-#### ・```yield```
-
-メソッドがコールされた場所に値を返却した後，そこで終わらず，```yield```の次の処理が続く．返却値は，array型である．
-
-**【実装例】**
-
-```PHP
-function getOneToThree(): array
-{
-    for ($i = 1; $i <= 3; $i++) {
-        // yield を返却した後、$i の値が維持される．
-        yield $i;
-    }
-}
-```
-
-```PHP
-$oneToThree = getOneToThree();
-
-foreach ($oneToThree as $value) {
-    echo "$value\n";
-}
-
-// 1
-// 2
-// 3
-```
-
-
-
-### :pushpin: 処理の途中終了
-
-#### ・```return;```
-
-
-```PHP
-function returnMethod()
-{
-    print "returnMethod()です。\n";
-    return; // 何も返さない．
-}
-```
-
-```PHP
-returnMethod(); // returnMethod()です。
-... // 処理は続く．
-```
-
-
-#### ・```exit;```
-
-```PHP
-function exitMethod()
-{
-    print "exitMethod()です。\n";
-    exit;
-}
-```
-
-```PHP
-exitMethod(); // exitMethod()です。
-// ここで，システム全体の処理が終了する．
 ```
 
 
