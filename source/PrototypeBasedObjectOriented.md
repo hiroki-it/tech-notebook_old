@@ -359,7 +359,7 @@ let object2 = {
 ```javascript
 /* コンストラクタ関数内のthisの場合
 コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．
-ここでは，objectとobject2
+ここでは，object1とobject2
 */
 
 object1.printParam; // object1 param

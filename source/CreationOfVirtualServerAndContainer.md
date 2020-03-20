@@ -271,6 +271,8 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 ### :pushpin: ホストOSのマウント元のディレクトリの設定画面
 
+以下の通り，ホストOSのマウント元のディレクトリにはいくつか選択肢がある．
+
 ![マウントされるホスト側のディレクトリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マウントされるホスト側のディレクトリ.png)
 
 
@@ -285,9 +287,9 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 ### :pushpin: Volumeマウント
 
-#### ・```/Volume```とは
+#### ・```/Volumes```とは
 
-ホストOSの```/Volume```には，開発途中にコンテナ側で作成されたデータのうち，ホストOSに永続化したいデータが保存される．Data Volumeともいう．
+ホストOSの```/Volumes```には，開発途中にコンテナ側で作成されたデータのうち，ホストOSに永続化したいデータが保存される．Data Volumeともいう．
 
 #### ・Volumeマウントとは
 

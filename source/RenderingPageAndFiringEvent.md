@@ -99,17 +99,31 @@ View層とModel層の間にViewModel層を置き，View層とViewModel層の間�
 
 #### ・Vueを用いたMVVMアーキテクチャとは
 
-Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```）を，ViewModel層には子コンポーネント（```xxx-component.vue```）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
+Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```）を，ViewModel層には```index.js```と子コンポーネント（```xxx-component.vue```）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
 
+#### :pushpin: MVVMアーキテクチャにおける各層の責務
+
+#### ・View層（```xxx.html```，```/xxx.twig```）
+
+ViewModel層から渡されたデータを出力するだけ．
+
+#### ・ViewModel層（```index.js```＋```xxx-component.vue```）
+
+プレゼンテーションロジック（フォーマット整形，バリデーション，ページのローディング，エラーハンドリング，イベント発火など）や，ビジネスロジック（※控えめに）を記述する．
+
+#### ・Model層（```store.js```または```xxx.js```)
+
+ビジネスロジックや，Ajaxによるデータ送受信，を記述する．
 
 
-### :pushpin: データバインディングとは
+
+### :pushpin: View層とViewModel層の間のデータバインディング
 
 #### ・親子コンポーネント間の双方向データバインディングとは
 
-View層の親コンポーネント（```xxx.html```，```xxx.twig```）と，ViewModel層の子コンポーネント（```xxx-component.vue```）の間では，一方のデータが更新されると，もう一方のデータが渡されて自動的にデータが更新される．これを双方向データバインディングといい，```props```と```$emit()```を用いることで実現することができる．
+View層の親コンポーネント（```xxx.html```，```xxx.twig```）と，ViewModel層の```index.js```と子コンポーネント（```xxx-component.vue```）の間では，一方のデータが更新されると，もう一方のデータが渡されて自動的にデータが更新される．これを双方向データバインディングといい，```props```と```$emit()```を用いることで実現することができる．
 
 ![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
 
@@ -220,7 +234,7 @@ new Vue({
     src="{{ asset('.../index.js') }}">
 </script>
 ```
-#### ・1-2. View層の親コンポーネントにおけるデータの初期化（```index.js```）
+#### ・1-2. ViewModel層の親コンポーネントにおけるデータの初期化（```index.js```）
 
 Vueインスタンスを生成し，データの初期化や，親子コンポーネント間のバインディングを行う．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
 
