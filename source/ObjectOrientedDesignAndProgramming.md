@@ -159,20 +159,20 @@ class Tire {}
 
 ```PHP
 //CarXクラス定義
-class CarX  
+class CarX
 {
-        private $tire1;
-        
-        private $tire2;
-        
-        private $tire3;
-        
-        private $tire4;
+    private $tire1;
+    
+    private $tire2;
+    
+    private $tire3;
+    
+    private $tire4;
 
-    //CarXクラスがタイヤクラスを引数として扱えるように設定
+//CarXクラスがタイヤクラスを引数として扱えるように設定
     public function __construct(Tire $t1, Tire $t2, Tire $t3, Tire $t4)
     {
-        // Tireクラスのインスタンスをデータとして保持
+// Tireクラスのインスタンスをデータとして保持
         $this->tire1 = $t1;
         $this->tire2 = $t2;
         $this->tire3 = $t3;
@@ -185,25 +185,25 @@ class CarX
 
 ```PHP
 //CarYクラス定義
-class CarY  
+class CarY
 {
-        private $tire1;
-        
-        private $tire2;
-        
-        private $tire3;
-        
-        private $tire4;
-  
-        //CarYクラスがタイヤクラスを引数として扱えるように設定
-        public function __construct(Tire $t1, Tire $2, Tire $t3, Tire $t4)
-        {
-                // Tireクラスのインスタンスをデータとして保持．
-                $this->tire1 = $t1;
-                $this->tire2 = $t2;
-                $this->tire3 = $t3;
-                $this->tire4 = $t4;
-        }
+    private $tire1;
+    
+    private $tire2;
+    
+    private $tire3;
+    
+    private $tire4;
+    
+    //CarYクラスがタイヤクラスを引数として扱えるように設定
+    public function __construct(Tire $t1, Tire $t2, Tire $t3, Tire $t4)
+    {
+        // Tireクラスのインスタンスをデータとして保持．
+        $this->tire1 = $t1;
+        $this->tire2 = $t2;
+        $this->tire3 = $t3;
+        $this->tire4 = $t4;
+    }
 }
 ```
 
@@ -244,16 +244,16 @@ class Lock {}
 
 ```PHP
 //Carクラスを定義
-class Car  
+class Car
 {
-        private $lock;
+    private $lock;
     
-        public function __construct()
-        {
-                // 引数Lockクラスをインスタンス化
-                // Tireクラスのインスタンスをデータとして保持．
-                $this->lock = new Lock();
-        }
+    public function __construct()
+    {
+        // 引数Lockクラスをインスタンス化
+        // Tireクラスのインスタンスをデータとして保持．
+        $this->lock = new Lock();
+    }
 }
 ```
 
@@ -551,84 +551,6 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 
 
-### :pushpin: Dependency Injection（サプライヤーの注入）
-
-サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．
-
-#### ・Setter Injectionとは
-
-
-メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
-
-#### ・Constructor Injectionとは
-
-メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
-
-#### ・Method Injectionとは
-
-上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持せず，読み込んでメソッドを使用する．
-
-
-
-### :pushpin: DI Container（依存性注入コンテナ）
-
-サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，```__construct()```でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．コンテナへの登録ファイル，インスタンスへのコンテナ渡しのファイルを実装する．
-
-**【実装例】**
-
-```PHP
-
-```
-
-#### ・アンチパターンのService Locater Pattern
-
-インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう誤った実装方法．
-
-**【実装例】**
-
-```PHP
-
-```
-
-
-
-## 02-04. Dependency Inversion Principle（依存性逆転の原則）
-
-### :pushpin: DIPとは
-
-- 上位レイヤーは，下位レイヤーに依存してはならない．どちらのレイヤーも『抽象』に依存すべきである．
-
-- 『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．
-
-
-
-### :pushpin: DIPに基づかない設計 vs. 基づく設計
-
-#### ・DIPに基づかない設計の場合（従来）
-
-より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
-
-![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づかない設計の場合.png)
-
-#### ・DIPに基づく設計の場合
-
-抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
-
-![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づく設計の場合.png)
-
-
-
-### :pushpin: DIPに基づくドメイン駆動設計
-
-1. Repositoryの抽象クラスを，より上位のドメイン層に配置する．
-2. Repositoryの実装クラスを，より下位のInfrastructure層に配置する．
-3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
-4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
-
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
-
-
-
 ### :pushpin: 結合度
 
 #### ・結合度とは
@@ -680,17 +602,17 @@ class TransportationMethodsFactory
     {
         $walking = new Walking($distance);
         $car = new Car($distance);
-
+        
         if($walking->needsWalking()) {
             return $walking;
         }
-
+        
         return $car;
     }
 }
 ```
 
-#### ・​スタンプ結合とは
+#### ・スタンプ結合とは
 
 object型のデータをサプライヤー側として，クライアント側のインスタンスの引数として渡す関係．
 
@@ -703,10 +625,9 @@ class Common
 {
     private $value;
   
-  
     public function __construct(int $value) 
     {
-            $this->value = $value;
+        $this->value = $value;
     }
   
   
@@ -720,24 +641,24 @@ class Common
 ```PHP
 class ModuleA
 {
-        public function methodA()
-        {
+    public function methodA()
+    {
         $common = new Common(1);
-      
+        
         $moduleB = new ModuleB;
-      
-                return $moduleB->methodB($common); // 1
-        }
+        
+        return $moduleB->methodB($common); // 1
+    }
 }
 ```
 
 ```PHP
 class ModuleB
 {
-        public function methodB(Common $common)
-        {
-                return $common->getValue(); // 1
-        }
+    public function methodB(Common $common)
+    {
+        return $common->getValue(); // 1
+    }
 }
 ```
 
@@ -752,6 +673,86 @@ class ModuleB
 #### ・機能的強度とは
 
 最も理想的な凝集．クラスのまとまりが機能単位になるように，処理を振り分ける．
+
+
+
+### :pushpin: Dependency Injection（サプライヤーの注入）
+
+サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．
+
+#### ・Setter Injectionとは
+
+
+メソッドの特に，セッターの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
+
+#### ・Constructor Injectionとは
+
+メソッドの特に，```__construct()``` の引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持させ，Aggregationの関係性を作ることができる．
+
+#### ・Method Injectionとは
+
+上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持せず，読み込んでメソッドを使用する．
+
+
+
+### :pushpin: DI Container（依存性注入コンテナ）
+
+サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，```__construct()```でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．コンテナへの登録ファイル，インスタンスへのコンテナ渡しのファイルを実装する．
+
+**【実装例】**
+
+```PHP
+
+```
+
+#### ・アンチパターンのService Locater Pattern
+
+インスタンスへのコンテナ渡しのファイルを実装せず，コンテナ自体を注入していまう誤った実装方法．
+
+**【実装例】**
+
+```PHP
+
+```
+
+
+
+## 02-04. Dependency Inversion Principle（依存性逆転の原則）
+
+### :pushpin: DIPとは
+
+#### ・原則1
+
+上位レイヤーは，下位レイヤーに依存してはならない．どちらのレイヤーも『抽象』に依存すべきである．
+
+#### ・原則2
+
+『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．
+
+
+
+### :pushpin: DIPに基づかない設計 vs. 基づく設計
+
+#### ・DIPに基づかない設計の場合（従来）
+
+より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
+
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づかない設計の場合.png)
+
+#### ・DIPに基づく設計の場合
+
+抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
+
+![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DIPに基づく設計の場合.png)
+
+#### ・DIPに基づくドメイン駆動設計の場合
+
+1. Repositoryの抽象クラスを，より上位のドメイン層に配置する．
+2. Repositoryの実装クラスを，より下位のInfrastructure層に配置する．
+3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
+4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
+
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
 
 
@@ -1664,7 +1665,7 @@ function getOneToThree(): array
 $oneToThree = getOneToThree();
 
 foreach ($oneToThree as $value) {
-    echo "$value\n";
+    echo "{$value}\n";
 }
 
 // 1
@@ -1674,50 +1675,94 @@ foreach ($oneToThree as $value) {
 
 
 
-### :pushpin: オブジェクトを用いたデータのキャッシング
+### :pushpin: Dispatcher
 
-#### ・計算処理の結果のキャッシング
+#### ・Dispatcherとは
 
-大量のデータを集計するメソッドは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
+特定の文字列によって，動的にメソッドをコールするオブジェクトをDispatcherという．
+
+```PHP
+$dispatcher = new Dispatcher
+
+// 文字列とメソッドの登録.
+$dispatcher->addListener(string $name, callable $listener)
+
+// 文字列からメソッドをコール.
+$dispatcher->dispatch(string $name, $param)
+```
+
+#### ・イベント名に紐づくメソッドをコールするオブジェクト
+
+イベント名を文字列で定義し，特定のイベント名が渡された時に，それに対応づけられた関数をコールする．フレームワークの```EventDispatcher```を使用するのがよい
 
 **【実装例】**
 
 ```PHP
-private $cachedResult;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-private $funcCollection;
-
-public function callFunc__construct()
+class ExampleEventDispatcher
 {
-    $this->funcCollection = $this->funcCollection();
+   // 詳しくは，フレームワークのノートを参照． 
 }
+```
 
+#### ・計算処理の返却値を保持するオブジェクト
 
-// 返却値をキャッシュしたいメソッドをあらかじめ登録しておく．
-public function funcCollection()
+大量のデータを集計するは，その処理に時間がかかる．そこで，そのようなメソッドでは，一度コールされて集計を行った後，データに返却値を保持しておく．そして，再びコールされた時には，返却値をデータから取り出す．
+
+**【実装例】**
+
+```PHP
+class ResultCacher
 {
-  return  [
-    'computeProfit' => [$this, 'computeProfit']
-  ];
-}
-
-
-// 集計メソッド
-public function computeProfit()
-{
-    // 時間のかかる集計処理;
-}
-
-
-// cacheデータに配列が設定されていた場合に値を設定し，設定されていた場合はそのまま使う．
-public function cachedResult($funcName)
-{
-  if(!isset($this->cachedResult[$funcName])){
+    private $resultCollection;
     
-    // Collectionに登録されているメソッド名を出力し，call_user_funcでメソッドをコールする．
-    $this->cachedResult[$funcName] = call_user_func($this->funcCollection[$funcName])
-  }
-  return $this->cachedResult[$funcName];
+    private $funcCollection;
+    
+    public function __construct()
+    {
+        $this->funcCollection = $this->addListener();
+    }
+  
+  
+    // 集計メソッド
+    public function computeRevenue()
+    {
+        // 時間のかかる集計処理;
+    }
+
+  
+    public function funcNameListener(string $funcName)
+    {
+        // 返却値が設定されていなかった場合，値を設定.
+        if (!isset($this->resultCollection[$funcName])) {
+            
+            // メソッドの返却値をCollectionに設定．
+            $this->resultCollection[$funcName] = $this->dispatch($funcName);
+        }
+        
+        // 返却値が設定されていた場合,そのまま使う．
+        return $this->resultCollection[$funcName];
+    }
+  
+  
+    // 返却値をキャッシュしたいメソッド名を登録しておく．
+    private function addListener()
+    {
+        return [
+          "computeRevenue" => [$this, "computeRevenue"]
+        ];
+    }
+  
+  　
+    private function dispatch(string $funcName)
+    {
+        // call_user_funcでメソッドを実行
+        return call_user_func(
+          // 登録されているメソッド名から，メソッドをDispatch.
+          $this->funcCollection[$funcName]
+        );
+    }
 }
 ```
 
@@ -1738,13 +1783,13 @@ $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // use()に，親メソッド（$optionName）のスコープの$itemを渡す．
-$optionName = function() use($item){
-                                $item->getOptionName();
-                            };
-    
+$optionName = function () use ($item) {
+    $item->getOptionName();
+};
+
 // function()には引数が設定されていないので，コール時に引数は不要．
 echo $optionName;
-  
+
 // 出力結果
 // オプションA
 ```
@@ -1758,18 +1803,18 @@ $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // 親メソッド（$optionName）のスコープの$itemを，use()に渡す．
-$optionName = function($para) use($item){
-                                $item->getOptionName().$para;
-                            };
-    
+$optionName = function ($para) use ($item) {
+    $item->getOptionName() . $para;
+};
+
 // コール時に，$paramをfunction()に渡す．
 echo $optionName("BC");
-  
+
 // 出力結果
 // オプションABC
 ```
 
-#### ・データの値に無名関数を格納しておく裏技
+#### ・データの値として，無名関数を格納しておく裏技
 
 **【実装例】**
 
@@ -1782,10 +1827,10 @@ $item = new Item;
 $option = new Option;
 
 // データの値に無名関数を格納する．
-$option->name = function($para) use($item){
-                                    $item->getOptionName().$para;
-                                };
-    
+$option->name = function ($para) use ($item) {
+    $item->getOptionName() . $para;
+};
+
 // コール時に，$paramをfunction()に渡す．
 echo $option->name("BC");
 
@@ -1803,13 +1848,15 @@ echo $option->name("BC");
 
 ```PHP
 $item = new Item;
+$param = "BC";
 
 // use()に，親メソッドのスコープの$itemを渡す．
-// 無名関数を定義し，同時にcall_user_func()で即コールする．さらに，$paramをfunction()に渡す．
-$optionName = call_user_func(function("BC") use($item){
-                                  $item->getOptionName().$para;
-                               });
-    
+// 無名関数を定義し，同時にcall_user_func()で即コールする．
+// $paramをfunction()に渡す．
+$optionName = call_user_func(function ($param) use ($item) {
+    $item->getOptionName() . $param;
+});
+
 // $paramはすでに即コール時に渡されている．
 // これはコールではなく，即コール時に格納された返却値の出力．
 echo $optionName;
@@ -1855,13 +1902,13 @@ test("callbackMethod");
 // 第一引数と第二引数の場合
 
 // 高階関数を定義
-public function higherOrder($param, $callback)
+function higherOrder($param, $callback)
 {
     return $callback($param);
 }
 
 // コールバック関数を定義
-public function callbackMethod($param)
+function callbackMethod($param)
 {
     return $param."の出力に成功しました．";
 }
@@ -1879,7 +1926,7 @@ higherOrder("第一引数", "callbackMethod");
 
 ```PHP
 // 高階関数のように，関数を引数として渡す．
-public function higherOrder($parentVar, $callback)
+function higherOrder($parentVar, $callback)
 {
     $parentVar = "&親メソッドのスコープの変数";
     return $callback($parentVar);
@@ -1888,14 +1935,13 @@ public function higherOrder($parentVar, $callback)
 // 第二引数の無名関数．関数の中でコールされるため，「後でコールされる」という意味合いから，コールバック関数といえる．
 // コールバック関数は再利用されないため，名前をつけずに無名関数とすることが多い．
 // 親メソッドのスコープで定義されている変数を引数として渡す．（普段よくやっている値渡しと同じ）
-higherOrder($parentVar, function() use($parentVar)
-        {
-            return $parentVar."の出力に成功しました．";
-        }
-    );
-    
+higherOrder($parentVar, function () use ($parentVar) {
+    return $parentVar . "の出力に成功しました．";
+}
+);
+
 // 出力結果
-// 親メソッドのスコープの変数の出力に成功しました．	
+// 親メソッドのスコープの変数の出力に成功しました．
 ```
 
 
@@ -1903,34 +1949,38 @@ higherOrder($parentVar, function() use($parentVar)
 ### :pushpin: 高階関数を使いこなす！
 
 ```PHP
-/**
- * @var array
- */
-protected $properties;
-
-// 非無名メソッドあるいは無名メソッドを引数で渡す．
-public function Shiborikomi($callback)
+class Example
 {
-    if (!is_callable($callback)) {
-    throw new \LogicException;
-    }
+    
+    /**
+     * @var array
+     */
+    protected $properties;
 
-    // 自身が持つ配列型のデータを加工し，再格納する．
-    $properties = [];
-    foreach ($this->properties as $property) {
-        
-        // 引数の無名関数によって，データに対する加工方法が異なる．
-        // 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
-        $returned = call_user_func($property, $callback);
-        if ($returned) {
-        
-            // 再格納．
-            $properties[] = $returned;
+    // 非無名メソッドあるいは無名メソッドを引数で渡す．
+    public function Shiborikomi($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new \LogicException;
         }
-    }
 
-    // 他のデータは静的に扱ったうえで，自身を返す．
-    return new static($properties);
+        // 自身が持つ配列型のデータを加工し，再格納する．
+        $properties = [];
+        foreach ($this->properties as $property) {
+
+            // 引数の無名関数によって，データに対する加工方法が異なる．
+            // 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
+            $returned = call_user_func($property, $callback);
+            if ($returned) {
+
+                // 再格納．
+                $properties[] = $returned;
+            }
+        }
+
+        // 他のデータは静的に扱ったうえで，自身を返す．
+        return new static($properties);
+    }
 }
 ```
 
@@ -2278,43 +2328,43 @@ Fruit Object
 ```PHP
 class requiedTime
 {
-  // 判定値，歩行速度の目安，車速度の目安，を定数で定義する．
-  const JUDGMENT_MINUTE = 21;
-  const WALKING_SPEED_PER_MINUTE = 80;
-  const CAR_SPEED_PER_MINUTE = 400;
-
-  
-  private $distance;
-
-  
-  public function __construct(int $distance)
-  {
-    $this->distance = $distance;
-  }
-
-  
-  public function isMinuteByWalking()
-  {
-    if ($this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE < self::JUDGMENT_MINUTE){
-      return true; 
+    // 判定値，歩行速度の目安，車速度の目安，を定数で定義する．
+    const JUDGMENT_MINUTE = 21;
+    const WALKING_SPEED_PER_MINUTE = 80;
+    const CAR_SPEED_PER_MINUTE = 400;
+    
+    
+    private $distance;
+    
+    
+    public function __construct(int $distance)
+    {
+        $this->distance = $distance;
     }
-
-    return false;
-  }  
-
-  
-  public function minuteByWalking()
-  {
-    $minute = $this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE;
-    return ceil($minute);
-  }
-
-  
-  public function minuteByCar()
-  {
-    $minute = $this->distance * 1000 / self::CAR_SPEED_PER_MINUTE;
-    return ceil($minute);
-  }
+    
+    
+    public function isMinuteByWalking()
+    {
+        if ($this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE < self::JUDGMENT_MINUTE) {
+            return TRUE;
+        }
+        
+        return FALSE;
+    }
+    
+    
+    public function minuteByWalking()
+    {
+        $minute = $this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE;
+        return ceil($minute);
+    }
+    
+    
+    public function minuteByCar()
+    {
+        $minute = $this->distance * 1000 / self::CAR_SPEED_PER_MINUTE;
+        return ceil($minute);
+    }
 }
 ```
 
@@ -3043,26 +3093,30 @@ class HttpRequestException extends Exception
 単に配列を作るだけでなく，要素にアクセスするためにも使われる．
 
 ```PHP
-// $options配列には，OptionA,B,Cエンティティのいずれかが格納されているものとします．
-public function checkOption(Array $options)
+class Example
 {
-    foreach($options as $option){
-        
-        if($option->name() === 'オプションA'){
-            $result = 'オプションAが設定されています．'
-        }			
-        
-        if($option->name() === 'オプションB'){
-            $result = 'オプションBが設定されています．'			
-        }
-        
-        if($option->name() === 'オプションC'){
-            $result = 'オプションCが設定されています．'
-        }
-        
-    }
     
-    return $result;
+    // $options配列には，OptionA,B,Cエンティティのいずれかが格納されているものとします．
+    public function checkOption(Array $options)
+    {
+        foreach ($options as $option) {
+            
+            if ($option->name() === 'オプションA') {
+                $result = 'オプションAが設定されています．';
+            }
+            
+            if ($option->name() === 'オプションB') {
+                $result = 'オプションBが設定されています．';
+            }
+            
+            if ($option->name() === 'オプションC') {
+                $result = 'オプションCが設定されています．';
+            }
+            
+        }
+        
+        return $result;
+    }
 }
 ```
 
@@ -3077,7 +3131,7 @@ public function checkOption(Array $options)
 #### ・要素の位置を繰り返しズラす場合
 
 ```PHP
-moveFile($fromPos < $toPos)
+function moveFile($fromPos < $toPos)
 {
     if($fromPos < $toPos){
         for($i = fromPos ; $i ≦ $toPos - 1; ++ 1){
@@ -3120,15 +3174,12 @@ while($i < 4){
 ![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_for文.png)
 
 ```PHP
-$a = array(1, -1, 2, ... ,N);
-```
-
-```PHP
+$a = [1, -1, 2, ..., N];
 $sum = 0;
 
-for($i = 0; $i < N; $i++){
+for ($i = 0; $i < N; $i++) {
     $x = $a[$i];
-    if($x > 0){
+    if ($x > 0) {
         $sum += $x;
     }
 }
@@ -3139,18 +3190,15 @@ for($i = 0; $i < N; $i++){
 ![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_while文.png)
 
 ```PHP
-$a = array(1, -1, 2, ... ,N);
-```
-
-```PHP
+$a = [1, -1, 2, ..., N];
 $sum = 0;
 
 // 反復数の初期値
 $i = 0;
 
-while($i < N){
+while ($i < N) {
     $x = $a[$i];
-    if($x > 0){
+    if ($x > 0) {
         $sum += $x;
     }
     $i += 1;
@@ -3162,14 +3210,11 @@ while($i < N){
 ![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_foreach文.png)
 
 ```PHP
-$a = array(1, -1, 2, ... ,N);
-```
-
-```PHP
+$a = [1, -1, 2, ..., N];
 $sum = 0;
 
-foreach($a as $x){
-    if($x > 0){
+foreach ($a as $x) {
+    if ($x > 0) {
         $sum += $x;
     }
 }
