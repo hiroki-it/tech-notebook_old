@@ -319,7 +319,11 @@ class XxxCriteria
 
 ## 04-02. Domain \ Entity の責務
 
-オブジェクトをEntityとしてモデリング／実装したいのならば，以下に条件を満たす必要がある．
+### :pushpin: Entityの具体例
+
+![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
+
+
 
 ### :pushpin: 保持するデータの値が一定でない
 
@@ -330,10 +334,6 @@ class XxxCriteria
 ### :pushpin: データの値が同じでも区別できる
 
 オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される．
-
-（ユビキタス言語の例）顧客，注文など
-
-![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
 
 **【実装例】**
 
@@ -430,6 +430,8 @@ class DogToyEntity
 
 
 ## 04-03. Domain \ Value Object の責務
+
+### :pushpin: Value Objectの具体例
 
 金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，Value Objectという．
 
@@ -715,7 +717,8 @@ DBに対する書き込み操作を行う．
 // 集約の構成とデータ追加を行う．
 class setDogToyEntityRepository
 {
-  // 接続先したいデータベースが設定されたデータ
+    
+    // 接続先したいデータベースが設定されたデータ
     private $dbs;
   
     public function setDataSet(Request $request)
