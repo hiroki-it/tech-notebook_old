@@ -156,7 +156,7 @@ Debian，Ubuntu，
 
 Slackware
 
-![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Linux distribution.png)
+![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/LinuxDistribution.png)
 
 
 
