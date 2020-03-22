@@ -1,166 +1,28 @@
 # ソフトウェア
 
-## 01-01. ソフトウェアの具体例
+## 01-01. ソフトウェアとは
 
-### :pushpin: OSS：Open Source Softwareとは
+### :pushpin: ソフトウェアの種類
 
-以下の条件を満たすソフトウェアをOSSと呼ぶ．
-
-1. 利用者は，無償あるいは有償で自由に再配布できる．
-
-2. 利用者は，ソースコードを入手できる．
-
-3. 利用者は，コードを自由に変更できる．また，変更後に提供する場合，異なるライセンスを追加できる．
-
-4. 差分情報の配布を認める場合には，同一性の保持を要求してもかまわない． ⇒ よくわからない
-
-5. 提供者は，特定の個人やグループを差別できない．
-
-6. 提供者は，特定の分野を差別できない．
-
-7. 提供者は，全く同じOSSの再配布において，ライセンスを追加できない．
-
-8. 提供者は，特定の製品でのみ有効なライセンスを追加できない．
-
-9. 提供者は，他のソフトウェアを制限するライセンスを追加できない．
-
-10. 提供者は，技術的に偏りのあるライセンスを追加できない．
-
-    
-
-### :pushpin: OSSの具体例
-
-![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSS一覧.png)
-
-引用：https://openstandia.jp/oss_info/
-
-#### ・OS
-
-  CentOS，Linux，Unix，Ubuntu
-
-#### ・データベース
-
-  MySQL，MariaDB
-
-#### ・プログラミング言語
-
-  言うまでもない．
-
-#### ・フレームワーク
-
-  言うまでもない．
-
-#### ・OR Mapper
-
-  言うまでもない．
-
-#### ・バージョン管理
-
-  Git，Subversion
-
-#### ・Webサーバ
-
-  Apache
-
-#### ・業務システム
-
-  Redmine
-
-#### ・インフラ構築
-
-  Chef，Puppet
-
-#### ・クラウド構築
-
-  Docker
-
-
-
-### :pushpin: Linux Distribution（Linuxの種類）
-
-現在，Linuxは3つを源流として，いくつもの派生系へ分岐している．
-
-#### ・RedHat系
-
-RedHat，CentOS，Fedora
-
-#### ・Debian系
-
-Debian，Ubuntu，
-
-#### ・Slackware系
-
-Slackware
-
-![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Linux distribution.png)
-
-
-
-## 01-02. ソフトウェアについて
-
-### :pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで
-
-ソフトウェアには，応用ソフトウェアとシステムソフトウェアがある．
+#### ・ユーザの操作が，ソフトウェアを介して，ハードウェアに伝わるまで
 
 ![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ソフトウェアとハードウェア.png)
 
+#### 1. 応用ソフトウェア
 
+#### 2. ミドルウェア
 
-### :pushpin: 応用ソフトウェア
-
-**【具体例】**
-
-その辺のアプリ
-
-
-
-### :pushpin: Middleware
-
-**【具体例】**
-
-・Webサーバソフトウェア（Apache，Nginx，など）をもつWebサーバ
-
-・APサーバソフトウェア（Apache内蔵，NGINX Unit，など）をもつAPサーバ
-
-・DBサーバをもつデータベース管理システム
-
-※詳しくは，ネットワークのノートを参照せよ．
-
-
-
-### :pushpin: 基本ソフトウェア（広義のOS）
+#### 3. 基本ソフトウェア（広義のOS）
 
 ![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/基本ソフトウェアの構成.png)
 
-#### ・制御プログラム（：別名カーネル）
+#### 4. Firmware
 
-  **【具体例】**
-
-  カーネル，マイクロカーネル，モノリシックカーネル
-
-#### ・言語プロセッサ
-
-  **【具体例】**
-
-  アセンブラ，コンパイラ，インタプリタというプログラム
-
-#### ・サービスプログラム
-
-  **【具体例】**
-
-  ファイル圧縮プログラム
+#### 5. デバイスドライバ
 
 
 
-### :pushpin: Firmware
-
-
-
-### :pushpin: デバイスドライバ
-
-
-
-## 01-03. 応用ソフトウェアの種類
+## 02-01. 応用ソフトウェア
 
 ### :pushpin: 応用ソフトウェア（アプリケーション）の一覧
 
@@ -222,17 +84,144 @@ Google Drive，Dropbox
 
 
 
-## 01-04. 基本ソフトウェアの汎用言語プログラム
+## 03-01. ミドルウェア
 
-### :pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）
+### :pushpin: Webサーバソフトウェア
 
-![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ソフトウェアとハードウェア.png)
+#### ・Apache
+
+#### ・Nginx
+
+```nginx.conf```に以下のように記述する．
+
+```nginx
+# ここに記述例
+```
+
+#### ・Node.js
 
 
 
-### :pushpin: 基本ソフトウェア（再掲）
+### :pushpin: APサーバソフトウェア
 
-![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/基本ソフトウェアの構成.png)
+#### ・Apache内蔵
+
+#### ・NGINX Unit
+
+
+
+### :pushpin: DBMS
+
+#### ・MySQL
+
+#### ・MariaDB
+
+※詳しくは，データベースのノートを参照せよ．
+
+
+
+## 04-01. 基本ソフトウェア（広義のOS）
+
+### :pushpin: 基本ソフトウェアの種類
+
+#### ・Unix系OS
+
+Unixを源流として派生したOS．現在では主に，Linux系統（緑色），BSD系統（黄色），SystemV系統（青色）の三つに分けられる．
+
+※ちなみに，MacOSはBSD系統
+
+![Unix系OSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Unix系OSの歴史.png)
+
+#### ・WindowsOS
+
+MS-DOSを源流として派生したOS．今では，全ての派生がWindows 10に集約された．
+
+![WindowsOSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/WindowsOSの歴史.png)
+
+
+
+### :pushpin: Unix \ Linux系統
+
+現在，Linux系統のOSは，さらに3つの系統に分けられる．
+
+#### ・RedHat系統
+
+RedHat，CentOS，Fedora
+
+#### ・Debian系統
+
+Debian，Ubuntu，
+
+#### ・Slackware系統
+
+Slackware
+
+![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Linux distribution.png)
+
+
+
+## 04-02. 基本ソフトウェア \ サービスプログラム（ユーティリティ）
+
+### :pushpin: サービスプログラム（ユーティリティ）の例
+
+
+
+#### ・ライブラリマネージャ
+
+| ライブラリマネージャ名            | 対象プログラミング言語 |
+| --------------------------------- | ---------------------- |
+| composer.phar：Composer           | PHP                    |
+| npm：Node Package Manager         | Node.js                |
+| pip：Package Installer for Python | Python                 |
+| maven：Apache Maven               | Java                   |
+| gem：Ruby Gems                    | Ruby                   |
+
+```bash
+// phpのメモリ上限を無しにしてcomposer updateを行う方法
+php -d memory_limit=-1 /usr/local/bin/composer update
+```
+
+#### ・パッケージマネージャ
+
+| パッケージマネージャ名               | 対象OS       | 依存関係のインストール可否 |
+| ------------------------------------ | ------------ | -------------------------- |
+| Rpm：Red Hat Package Manager         | RedHat系     | ✕                          |
+| Yum：Yellow dog Updater Modified     | RedHat系     | 〇                         |
+| Apt：Advanced Packaging Tool         | Debian系     | 〇                         |
+| Apk：Alpine Linux package management | Alpine Linux | 〇                         |
+
+#### ・ライブラリとパッケージの大まかな違い
+
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
+#### ・言語バージョンマネージャ
+
+| 言語バージョンマネージャ名 | 対象プログラミング言語 |
+| -------------------------- | ---------------------- |
+| phpenv                     | PHP                    |
+| pyenv                      | Python                 |
+| rbenv                      | Ruby                   |
+
+#### ・その他の例
+
+クリップボード，ファイル圧縮プログラム，スクリーンセーバー，レジストリクリーナ
+
+
+
+## 04-03. 基本ソフトウェア \ 言語プロセッサ
+
+### :pushpin: 言語プロセッサの例
+
+#### ・アセンブラ
+
+以降の説明を参照．
+
+#### ・コンパイラ
+
+以降の説明を参照．
+
+#### ・インタプリタ
+
+以降の説明を参照．
 
 
 
@@ -372,11 +361,9 @@ Scala，Groovy，Kotlin
 
 ソースコード
 
+### :pushpin: プログラムの実行開始のエントリポイント
 
-
-## 01-05. プログラムの実行開始のエントリポイント
-
-### :pushpin: PHPの場合
+#### ・PHPの場合
 
 動的型付け言語では，エントリポイントが指定プログラムの先頭行と決まっており，そこから枝分かれ状に処理が実行されていく．PHPでは，```index.php```がエントリポイントと決められている．その他のファイルにはエントリポイントは存在しない．
 
@@ -409,9 +396,7 @@ $response->send();
 $kernel->terminate($request, $response);
 ```
 
-
-
-### :pushpin: Javaの場合
+#### ・Javaの場合
 
 静的型付け言語では，エントリポイントが決まっておらず，自身で定義する必要がある．Javaでは，```public static void main(String args[])```と定義した場所がエントリポイントになる．
 
@@ -433,17 +418,11 @@ public class Age
 
 
 
-## 01-06. 基本ソフトウェアの制御プログラム（カーネル）
+## 04-04. 基本ソフトウェア \ 制御プログラム（カーネル）
 
-### :pushpin: ユーザの操作が，命令としてハードウェアに伝わるまで（再掲）
+### :pushpin: 制御プログラム（カーネル）の例
 
-![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ソフトウェアとハードウェア.png)
-
-
-
-### :pushpin: 基本ソフトウェア（再掲）
-
-![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/基本ソフトウェアの構成.png)
+  カーネル，マイクロカーネル，モノリシックカーネル
 
 
 
@@ -540,11 +519,11 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 
 
-## 01-07. デバイスドライバ
+## 05-01. デバイスドライバ
 
 
 
-## 01-08. Firmware
+## 06-01. Firmware
 
 システムソフトウェア（ミドルウェア ＋ 基本ソフトウェア）とハードウェアの間の段階にあるソフトウェア．ROMに組み込まれている．
 
@@ -561,3 +540,77 @@ Windows 8以降で採用されている新しいFirmware
 ![UEFIとセキュアブート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UEFIとセキュアブート.jpg)
 
 
+
+## 07-01. OSS：Open Source Software
+
+### :pushpin: OSSとは
+
+以下の条件を満たすソフトウェアをOSSと呼ぶ．応用ソフトウェアから基本ソフトウェアまで，様々なものがある．
+
+1. 利用者は，無償あるいは有償で自由に再配布できる．
+
+2. 利用者は，ソースコードを入手できる．
+
+3. 利用者は，コードを自由に変更できる．また，変更後に提供する場合，異なるライセンスを追加できる．
+
+4. 差分情報の配布を認める場合には，同一性の保持を要求してもかまわない． ⇒ よくわからない
+
+5. 提供者は，特定の個人やグループを差別できない．
+
+6. 提供者は，特定の分野を差別できない．
+
+7. 提供者は，全く同じOSSの再配布において，ライセンスを追加できない．
+
+8. 提供者は，特定の製品でのみ有効なライセンスを追加できない．
+
+9. 提供者は，他のソフトウェアを制限するライセンスを追加できない．
+
+10. 提供者は，技術的に偏りのあるライセンスを追加できない．
+
+    
+
+### :pushpin: OSSの具体例
+
+![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSS一覧.png)
+
+引用：https://openstandia.jp/oss_info/
+
+#### ・OS
+
+  CentOS，Linux，Unix，Ubuntu
+
+#### ・データベース
+
+  MySQL，MariaDB
+
+#### ・プログラミング言語
+
+  言うまでもない．
+
+#### ・フレームワーク
+
+  言うまでもない．
+
+#### ・OR Mapper
+
+  言うまでもない．
+
+#### ・バージョン管理
+
+  Git，Subversion
+
+#### ・Webサーバ
+
+  Apache
+
+#### ・業務システム
+
+  Redmine
+
+#### ・インフラ構築
+
+  Chef，Puppet
+
+#### ・クラウド構築
+
+  Docker
