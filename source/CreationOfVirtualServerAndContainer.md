@@ -1,6 +1,6 @@
 # 仮想サーバ(仮想マシン)とコンテナの構築
 
-## 02-01. Providerによる仮想サーバ（仮想マシン）の構築
+## 01-01. Providerによる仮想サーバ（仮想マシン）の構築
 
 ![Vagrantの仕組み_オリジナル](https://user-images.githubusercontent.com/42175286/60393574-b18de200-9b52-11e9-803d-ef44d6e50b08.png)
 
@@ -56,7 +56,7 @@ DB_USER="hiroki"
 DB_PASSWORD="12345"
 ```
 
-#### ・主な```vagrant```コマンド**
+#### ・主な```vagrant```コマンド
 
 | コマンド                        | 処理                       |
 | ------------------------------- | :------------------------- |
@@ -67,11 +67,11 @@ DB_PASSWORD="12345"
 
 
 
-## 03-01. Symfonyによるビルトインサーバの構築
+## 02-01. Symfonyによるビルトインサーバの構築
 
 
 
-## 04-01. Dockerによるコンテナの構築
+## 03-01. Dockerによるコンテナの構築
 
 ### :pushpin: Dockerの操作
 
@@ -87,7 +87,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 
 
-## 04-02. コンテナにssh接続するまでの手順
+## 03-02. コンテナにssh接続するまでの手順
 
 ### :pushpin: 手順の流れ
 
@@ -267,7 +267,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 
 
-## 04-03. コンテナ側に対するファイルのマウント方法
+## 03-03. コンテナ側に対するファイルのマウント方法
 
 ### :pushpin: ホストOSのマウント元のディレクトリの設定画面
 
@@ -309,7 +309,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 
 
-## 04-04. コンテナ間の仮想ネットワーク
+## 03-04. コンテナ間の仮想ネットワーク
 
 ### :pushpin: bridgeネットワーク
 
@@ -337,7 +337,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 
 
-## 04-05. Docker Composeによるオーケストレーション
+## 03-05. Docker Composeによるオーケストレーション
 
 ### :pushpin: docker-compose.yml
 
@@ -416,52 +416,3 @@ services:
 | ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **```docker-compose up -d```**                   | ・Dockerfileを基にイメージのビルド<br>・全てのコンテナレイヤーを生成し，コンテナを構築<br>・コンテナを起動 | すでにコンテナがある場合，それを再起動                       |
 | **```docker-compose run -d -it {イメージ名}```** | ・Dockerfileを基にイメージをビルド<br>・指定のコンテナレイヤーを生成し，コンテナを構築（※依存含む）<br>・コンテナを起動 | すでにコンテナがあっても，それを残して構築／起動．以前のコンテナが削除されずに残ってしまう． |
-
-
-
-## 05-01. ライブラリとパッケージ
-
-### :pushpin: ライブラリとパッケージの大まかな違い
-
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
-
-
-
-### :pushpin: ライブラリマネージャ
-
-| ライブラリマネージャ名            | 対象プログラミング言語 |
-| --------------------------------- | ---------------------- |
-| composer.phar：Composer           | PHP                    |
-| npm：Node Package Manager         | Node.js                |
-| pip：Package Installer for Python | Python                 |
-| maven：Apache Maven               | Java                   |
-| gem：Ruby Gems                    | Ruby                   |
-
-#### ・composer
-
-```bash
-// phpのメモリ上限を無しにしてcomposer updateを行う方法
-php -d memory_limit=-1 /usr/local/bin/composer update
-```
-
-
-
-### :pushpin: パッケージマネージャ
-
-| パッケージマネージャ名               | 対象OS       | 依存関係のインストール可否 |
-| ------------------------------------ | ------------ | -------------------------- |
-| Rpm：Red Hat Package Manager         | RedHat系     | ✕                          |
-| Yum：Yellow dog Updater Modified     | RedHat系     | 〇                         |
-| Apt：Advanced Packaging Tool         | Debian系     | 〇                         |
-| Apk：Alpine Linux package management | Alpine Linux | 〇                         |
-
-
-
-### :pushpin: 言語バージョンマネージャ
-
-| 言語バージョンマネージャ名 | 対象プログラミング言語 |
-| -------------------------- | ---------------------- |
-| phpenv                     | PHP                    |
-| pyenv                      | Python                 |
-| rbenv                      | Ruby                   |
-
