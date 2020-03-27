@@ -155,7 +155,32 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 ## 03-01. Pinqライブラリ
 
-SQLのSELECTやWHEREといった単語を用いて，```foreach()```のように，コレクションデータを走査できるライブラリ．
+### :pushpin: ```Traversable::from()```
+
+SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータを走査できる．
+
+```PHP
+use Pinq\Traversable;
+
+class Example
+{
+    
+    public function getData(array $entities)
+    {
+        
+        return [
+          'data' => Traversable::from($entities)
+            // 一つずつ要素を取り出し，関数に渡す．
+            ->select(
+              function ($entity) {
+                  return $this->convertToArray($entity);
+              })
+            // indexからなる配列として返却．
+            ->asArray(),
+        ];
+  }
+}
+```
 
 
 
