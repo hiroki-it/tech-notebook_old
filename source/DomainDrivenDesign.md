@@ -703,9 +703,9 @@ DBに対する書き込み操作を行う．
 
 4. Repositoryによって，集約を連想配列に分解する．
 
-5. ```add()```によって，Repositoryに集約を登録する．
+5. ```add()```によって，Repositoryクラスのデータに，集約を格納する．
 
-6. ```store()```によって，Transaction処理にRepositoryを登録する．
+6. ```store()```によって，Transactionクラスのデータに，Repositoryを格納する．
 
 7. DBに対して，書き込みを行う．
 
