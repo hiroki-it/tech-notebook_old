@@ -63,7 +63,7 @@ XML形式テキストファイルはタグを用いて記述されている．�
 **【DTDの実装例】**
 
 ```dtd
-<!DOCTYPE Enployee[
+<!DOCTYPE Employee[
     <!ELEMENT Name (First, Last)>
     <!ELEMENT First (#PCDATA)>
     <!ELEMENT Last (#PCDATA)>
