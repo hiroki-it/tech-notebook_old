@@ -18,11 +18,14 @@ Hiroki tech-notebook ドキュメントサイト
 
    ObjectOrientedAnalysisAndDesign.md
    ObjectOrientedDesignAndProgramming.md
+   ValidationLogicAndException.md
+   IterationLogic.md
    ConceptAndImplementationOfRESTfulAPI.md
    TestingFrameworkAndTestSpecification.md
    SymfonyFramework.md
    Library.md
    MainAlgorithm.md
+   TipsOfDebug.md
 
 .. toctree::
    :maxdepth: 1
