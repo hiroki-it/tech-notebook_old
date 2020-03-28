@@ -67,7 +67,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 ### :pushpin: DIPに基づくドメイン駆動設計
 
-**※詳しくは，オブジェクト指向プログラミングのノートを参照**
+#### ・依存性を逆転させる方法
 
 1. Repositoryの抽象クラスを，より上位のドメイン層に配置する．
 2. Repositoryの実装クラスを，より下位のInfrastructure層に配置する．
@@ -75,6 +75,12 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
 ![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
+
+#### ・Domain層とInfrastructure層のバインディング
+
+```PHP
+// ここに実装例
+```
 
 
 
@@ -212,13 +218,7 @@ abstract class getDogToyEntityRepository
 }
 ```
 
-#### ・抽象Repositoryと具象Repositoryのバインディング
-
-**【実装例】**
-
-```PHP
-// ここに実装例
-```
+#### 
 
 
 
