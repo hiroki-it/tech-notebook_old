@@ -2,7 +2,7 @@
 
 # ライブラリ
 
-## 01-01. ライブラリの読み込み
+## 01. ライブラリの読み込み
 
 ### :pushpin: エントリポイントでの```autoload.php```の読み込み
 
@@ -16,13 +16,19 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 
 
-## 02-01. Doctrineライブラリ
+## 02. Doctrineライブラリ
+
+### :pushpin: Doctrineとは
+
+RDBの操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
+
+
 
 ### :pushpin: DoctrineによるRDBの操作
 
 https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
 
-```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．PDOによるRDBの操作については，DBの操作のノートを参照せよ．
+```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．
 
 **【実装例】**
 
@@ -50,7 +56,7 @@ try{
 
 https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-builder.html
 
-```QueryBuilder```は，CRUD操作に必要なSQLを保持し，トランザクションによってSQLを実行される．
+```QueryBuilder```は，CRUD処理に必要なSQLを保持し，トランザクションによってSQLを実行する．
 
 **【実装例】**
 
@@ -59,7 +65,7 @@ https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-
 $queryBuilder = $this->createQueryBuilder();
 ```
 
-#### 2. CREATE
+#### 2. CREATE処理
 
 ```QueryBuilder```インスタンスにおける```insert()```に，値を設定する．
 
@@ -70,7 +76,7 @@ $queryBuilder
     ->insert('mst_users')
 ```
 
-#### 3. READ
+#### 3. READ処理
 
 ```QueryBuilder```インスタンスにおける```select()```に，値を設定する．
 
@@ -82,7 +88,7 @@ $queryBuilder
     ->from('mst_users');
 ```
 
-#### 4. UPDATE
+#### 4. UPDATE処理
 
 ```QueryBuilder```インスタンスにおける```update()```に，値を設定する．
 
@@ -93,7 +99,7 @@ $queryBuilder
     ->update('mst_users');
 ```
 
-#### 5. DELETE
+#### 5. DELETE処理
 
 ```QueryBuilder```インスタンスにおける```delete()```に，値を設定する．
 
@@ -169,7 +175,7 @@ class DogToyQuery
 
 
 
-## 03-01. Carbonライブラリ
+## 03. Carbonライブラリ
 
 ### :pushpin: Date型
 
@@ -276,11 +282,17 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-## 05-01. Pinqライブラリ
+## 04. Pinqライブラリ
+
+### :pushpin: Pinqとは：Php Integrated Query
+
+配列データやオブジェクトデータに対して，クエリを実行できるようになる．他の同様ライブラリとして，Linqがある．
+
+
 
 ### :pushpin: ```Traversable::from()```
 
-SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータを走査できる．
+SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータの各要素に対して，処理を行える．
 
 **【実装例】**
 
@@ -309,11 +321,17 @@ class Example
 
 
 
-## 04-01. Guzzleライブラリ
+## 06. Guzzleライブラリ
 
-通常、リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う。しかし、Guzzleライブラリを使えば、サーバから他サーバに対して，リクエストメッセージの送受信ができる。
+### :pushpin: Guzzleライブラリとは
 
-### :pushpin: リクエストメッセージをGET送信
+通常，リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う．しかし，GuzzleライブラリのClientを使えば，サーバから他サーバ（外部のAPIなど）に対して，リクエストメッセージの送受信ができる．
+
+
+
+### :pushpin: Clientインスタンス
+
+#### ・リクエストメッセージをGET送信
 
 **【実装例】**
 
@@ -324,7 +342,7 @@ $client = new Client();
 $response = $client->request("GET", {アクセスしたいURL});
 ```
 
-### :pushpin: レスポンスメッセージからボディを取得
+#### ・レスポンスメッセージからボディを取得
 
 **【実装例】**
 
@@ -340,7 +358,35 @@ $body = json_decode($response->getBody(), true);
 
 
 
-## 06-01. Respect/Validationライブラリ
+## 07. Knp/Snappyライブラリ
+
+###  :pushpin: Knp/Snappyとは
+
+ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するライブラリ．
+
+### :pushpin: ```generateFromHtml()```
+
+htmlファイルを元にして，ローカルディレクトリにPDFファイルを作成する．
+
+**【実装例】**
+
+```PHP
+$snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+
+$snappy->generateFromHtml('example.html', '.../example.pdf')
+```
+
+
+
+## 08. Respect/Validationライブラリ
+
+### :pushpin: Respect/Validationとは
 
 リクエストされたデータが正しいかを，サーバサイド側で検証する．フロントエンドからリクエストされるデータに関しては，JavaScriptとPHPの両方によるバリデーションが必要である．
+
+```PHP
+// ここに実装例
+```
+
+
 

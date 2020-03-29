@@ -1,6 +1,6 @@
-# Silexフレームワーク
+# Symfonyフレームワーク
 
-## 01-01. Symfonyから採用している主なコンポーネント
+## 01-01. 特に汎用的なコンポーネント
 
 ### :pushpin: Consoleコンポーネント
 
@@ -160,9 +160,17 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 
 #### ・カーネルに必要なオブジェクト
 
-1. Requestオブジェクト：グローバル変数から収集した情報やHTTPリクエストのヘッダ情報やコンテンツ情報を保持
-1. カーネルオブジェクトの```handle()```：送られてきたURLを基にしたコントローラ／アクションへのルートの特定，特定されたコントローラ／アクションの実行，テンプレートのレンダリング
-1. Responseオブジェクト：HTTPレスポンスのヘッダ情報やコンテンツ情報などの情報を保持
+1. Requestオブジェクト
+
+   グローバル変数から収集した情報やHTTPリクエストのヘッダ情報やコンテンツ情報を保持
+
+1. カーネルオブジェクトの```handle()```
+
+   送られてきたURLを基にしたコントローラ／アクションへのルートの特定，特定されたコントローラ／アクションの実行，テンプレートのレンダリング
+
+1. Responseオブジェクト
+
+   HTTPレスポンスのヘッダ情報やコンテンツ情報などの情報を保持
 
 #### ・オブジェクトから取り出されたメソッドの役割
 
@@ -219,6 +227,44 @@ public function handle
 ```
 
 
+
+### :pushpin: Request，Response
+
+#### ・リクエストメッセージからのデータ取得，JSON型データのレスポンス
+
+1. Ajaxによるリクエストの場合，JSON型データをレスポンスし，かつページレンダリング．
+2. Ajaxによるリクエストでない場合，ページレンダリングのみ
+
+```PHP
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\XxxReposiroy;
+
+class ExampleController extends AbstractController 
+{
+    public function get(Request $req)
+    {
+        // Ajaxによるリクエストの場合．
+        if ($req->headers->get('content-type') === 'application/json') {
+            
+            $xxxRepository = new XxxRepository;
+            $entityObject = $xxxRepository->getEntity();
+            
+            //-- entityをObject型からArray型に変換する何らかの処理．--//
+            
+            // Ajaxにレンスポンス．
+            return new JsonResponse([ 
+                'value' => $entityArray
+              ]);
+        }
+    
+        return $this->render('.../xxx.twig')->setStatusCode(200);
+    }
+}
+```
+
+#### 
 
 ## 02-03. Pimpleコンポーネント
 
