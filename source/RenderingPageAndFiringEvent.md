@@ -89,41 +89,48 @@ DOMによる解析の場合，プロセッサはXMLを構文解析し，メモ�
 
 ## 03-01. Vueを用いたMVVMアーキテクチャ
 
-### :pushpin: MVVMアーキテクチャ
+### :pushpin: MVVMアーキテクチャ，双方向データバインディング
 
 #### ・一般的なMVVMアーキテクチャとは
 
-View層とModel層の間にViewModel層を置き，View層とViewModel層の間で双方向にデータをやり取りすることによって，View層とModel層の間を疎結合にするための設計手法の一つ．
+View層とModel層の間にViewModel層を置き，View層とViewModel層の間で双方向にデータをやり取り（双方向データバインディング）することによって，View層とModel層の間を疎結合にするための設計手法の一つ．
 
 ![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/一般的なMVVMアーキテクチャ.png)
 
-#### ・Vueを用いたMVVMアーキテクチャとは
+#### ・ MVVMアーキテクチャにおける各層の責務
 
-Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）を，ViewModel層には```index.js```と子コンポーネント（```xxx-component.vue```の```script```タグ部分）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
-
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
-
-#### :pushpin: MVVMアーキテクチャにおける各層の責務
-
-#### ・View層（```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）
+1. View層（```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）
 
 ViewModel層から渡されたデータを出力するだけ．
 
-#### ・ViewModel層（```index.js```，```xxx-component.vue```の```script```タグ部分）
+2. ViewModel層（```index.js```，```xxx-component.vue```の```script```タグ部分）
 
 プレゼンテーションロジック（フォーマット整形，バリデーション，ページのローディング，エラーハンドリング，イベント発火など）や，ビジネスロジック（※控えめに）を記述する．
 
-#### ・Model層（```store.js```または```xxx.js```)
+3. Model層（```store.js```または```xxx.js```)
 
 ビジネスロジックや，Ajaxによるデータ送受信，を記述する．
 
+#### ・Vueを用いたMVVMアーキテクチャ，双方向データバインディング
+
+Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャと双方向データバインディングを実現できるような機能を提供する．
+
+1. View層では，```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）
+
+2. ViewModel層では，```index.js```と```xxx-component.vue```の```script```タグ部分
+
+3. Model層では，Vuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
+
+4. これの元，双方向データバインディングが実現される仕組みとして，View層でイベントが起こると，ViewModel層でこれにバインディングされたイベントハンドラ関数がコールされる．
+
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
 
 
 ### :pushpin: 親子コンポーネント間のデータ渡し
 
 #### ・親子コンポーネント間のデータ渡しの仕組み（Props Down, Events Up）
 
-View + ViewModel層のコンポーネント（```xxx-component.vue```）の間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
+まず，双方向データバインディングとは異なる概念なので，混乱しないように注意する．View + ViewModel層のコンポーネント（```xxx-component.vue```）の間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
 
 ![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
 
