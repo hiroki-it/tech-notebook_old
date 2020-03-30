@@ -93,23 +93,23 @@ DOMによる解析の場合，プロセッサはXMLを構文解析し，メモ�
 
 #### ・一般的なMVVMアーキテクチャとは
 
-View層とModel層の間にViewModel層を置き，View層とViewModel層の間でデータをやり取りすることによって，View層とModel層の間を疎結合にするための設計手法の一つ．
+View層とModel層の間にViewModel層を置き，View層とViewModel層の間で双方向にデータをやり取りすることによって，View層とModel層の間を疎結合にするための設計手法の一つ．
 
 ![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/一般的なMVVMアーキテクチャ.png)
 
 #### ・Vueを用いたMVVMアーキテクチャとは
 
-Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```）を，ViewModel層には```index.js```と子コンポーネント（```xxx-component.vue```）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
+Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャを実現できるような機能を提供する．View層には親コンポーネント（```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）を，ViewModel層には```index.js```と子コンポーネント（```xxx-component.vue```の```script```タグ部分）を，Model層にはVuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
 
 #### :pushpin: MVVMアーキテクチャにおける各層の責務
 
-#### ・View層（```xxx.html```，```/xxx.twig```）
+#### ・View層（```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）
 
 ViewModel層から渡されたデータを出力するだけ．
 
-#### ・ViewModel層（```index.js```＋```xxx-component.vue```）
+#### ・ViewModel層（```index.js```，```xxx-component.vue```の```script```タグ部分）
 
 プレゼンテーションロジック（フォーマット整形，バリデーション，ページのローディング，エラーハンドリング，イベント発火など）や，ビジネスロジック（※控えめに）を記述する．
 
@@ -119,26 +119,19 @@ ViewModel層から渡されたデータを出力するだけ．
 
 
 
-### :pushpin: View層とViewModel層の間のデータバインディング
+### :pushpin: 親子コンポーネント間のデータ渡し
 
-#### ・親子コンポーネント間の双方向データバインディングとは
+#### ・親子コンポーネント間のデータ渡しの仕組み（Props Down, Events Up）
 
-View層の親コンポーネント（```xxx.html```，```xxx.twig```）と，ViewModel層の```index.js```と子コンポーネント（```xxx-component.vue```）の間では，一方のデータが更新されると，もう一方のデータが渡されて自動的にデータが更新される．これを双方向データバインディングといい，```props```と```$emit()```を用いることで実現することができる．
+View + ViewModel層のコンポーネント（```xxx-component.vue```）の間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
 
 ![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
-
-#### ・Props Down, Events Upとは
-
-View層とViewModel層の間の双方向データバインディングは，『Props Down, Events Up』の処理によって実現される．
-
-1. View層の親コンポーネントのデータが更新されると，ViewModel層の子コンポーネントの```props```を自動的に更新する．（Props Down）
-2. 反対に，ViewModel層の子コンポーネントのデータが更新されると，```$emit()```をコールし，親コンポーネントのデータを自動的に更新する．（Events Up）
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
 
 
-### :pushpin: ViewModel層におけるコンポーネントの登録方法
+### :pushpin: ViewModel層におけるルートVueインスタンスの実装方法
 
 #### ・グローバル登録
 
@@ -160,7 +153,7 @@ new Vue({
 
 ```javascript
 var vExampleComponent = {
-    // 親コンポーネントと子コンポーネントの対応関係
+    // テンプレートと親コンポーネントの対応関係
     template: require('./xxx/xxx/xxx'),
 };
 
@@ -186,7 +179,7 @@ new Vue({
     el: '#app',
   
     components: {
-        // 親コンポーネントと子コンポーネントの対応になるようにする．
+        // テンプレートと親コンポーネントの対応関係
         'v-example-component': require('./xxx/xxx/xxx'),
     }
   
@@ -197,9 +190,9 @@ new Vue({
 
 ### :pushpin: MVVMアーキテクチャの実装例
 
-#### ・1. 【View層】子コンポーネントタグをもつ親コンポーネント（```xxx.html```，```xxx.twig```）
+#### 1-1. 【View層】テンプレート（```xxx.html```，```xxx.twig```）
 
-親コンポーネントのタグ内で設定された『```:example = "値"```』が，子コンポーネントの『```props: { "値" }```』に渡される．この値は読み込み専用で，変更できない．
+例えば，テンプレートの親コンポーネントタグでクリックイベントが発火した時，親コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
 
 **【実装例】**
 
@@ -208,7 +201,7 @@ new Vue({
 <div id="app">
   
     <!-- 
-    ・子コンポーネントタグを記述．
+    ・親コンポーネントタグを記述．
     ・index.jsdataオプションの値をpropsに渡すように設定．
     ・イベントとイベントハンドラ関数を対応づける．
     -->
@@ -217,31 +210,31 @@ new Vue({
         v-on change="changeQuery"
     ></v-example-component-1>
 
-    <!-- 子コンポーネントタグを記述 -->
+    <!-- 親コンポーネントタグを記述 -->
     <v-example-component-2
                          
     ></v-example-component-2>
 
-    <!-- 子コンポーネントタグを記述 -->
+    <!-- 親コンポーネントタグを記述 -->
     <v-example-component-3
                          
     ></v-example-component-3>
   
 </div>
 
-<!-- Vueインスタンスの生成は部品化する． -->
+<!-- ルートVueインスタンスの生成は部品化する． -->
 <script 
     src="{{ asset('.../index.js') }}">
 </script>
 ```
-#### ・2-1. 【ViewModel層】データの初期化を行うVueコンストラクタ（```index.js```）
+#### 1-2. 【ViewModel層】データの初期化を行うルートVueインスタンス（```index.js```）
 
-Vueコンストラクタは，ViewModel層に存在し，データの初期化や，親子コンポーネント間のバインディングを行う．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
+ルートVueインスタンスは，ViewModel層に存在し，全てのコンポーネントのデータの初期化を行う．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
 
 **【実装例】**
 
 ```javascript
-// Vueコンストラクタ
+// ルートVueインスタンス
 new Vue({
     
     //　Vueインスタンスを使用するdivタグを設定.
@@ -317,7 +310,7 @@ new Vue({
     },
     
        
-    // 親コンポーネントと子コンポーネントの対応になるようにする．
+    // テンプレートと親コンポーネントの対応になるようにする．
     component: {
       
         //『HTMLでのコンポーネントのタグ名：子コンポーネント』
@@ -327,21 +320,21 @@ new Vue({
     },
 })
 ```
-#### ・2-2. 【ViewModel層】単一ファイルコンポーネントとしての子コンポーネント（```xxx-component.vue```）
+#### 2. 【View + ViewModel層】単一ファイルコンポーネントとしてのコンポーネント（```xxx-component.vue```）
 
-子コンポーネントは```template```タグ，```script```タグ，```style```タグを用いて，単一ファイルコンポーネントとし，Vueインスタンスを生成しないようにする，ボタンをクリックした時，子コンポーネントの『```$emit("イベント名", "値")```』によって，親コンポーネントの『```v-on: イベント名　=　"値" ```』が発火し，値が渡される．値に応じたコンポーネント部分の変化が起こる．また同時に，子コンポーネントのタグ内で設定された『```:example = "値"```』が，孫コンポーネントの『```props: { "値" }```』に渡される．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
+コンポーネントはView層としての```template```タグ，ViewModel層としての```script```タグと```style```タグを用いて，単一ファイルコンポーネントとする．例えば，親コンポーネントの子コンポーネントタグでクリックイベントが発火した時，子コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
 
 **【実装例】**
 
 ```vue
 <!-- 
-・子コンポーネント
+・親コンポーネント
 ・ここに，出力したいHTMLやTWIGを記述する． 
 -->
 <template>
 
   <!-- 
-  ・孫コンポーネントタグを記述 
+  ・子コンポーネントタグを記述 
   ・下方のdataオプションの値をpropsに渡すように設定．
   -->
   <v-example-component-4
@@ -361,7 +354,7 @@ new Vue({
 </template>
 
 <script>
-// 子コンポーネント以降では，Vueインスタンスを生成しないようにする．
+// 親コンポーネント以降では，Vueインスタンスを生成しないようにする．
 module.exports = {
 
   // 親コンポーネントまたはAjaxからpropsオブジェクトのプロパティに値が格納される．
@@ -396,7 +389,7 @@ module.exports = {
       updateCriteria (key, value) {
               
           /*
-          ・親コンポーネント（v-example-component-1）と紐づく処理
+          ・コンポーネント（v-example-component-1）と紐づく処理
           ・changeイベントの発火と，これのイベントハンドラ関数に引数を渡す．
           */
           this.$emit(
@@ -422,11 +415,11 @@ module.exports = {
 </script>
 ```
 
-#### ・3-1. 【Model層】オブジェクトとしてのVuex（```store.js```）
+#### 3-1. 【Model層】オブジェクトとしてのVuex（```store.js```）
 
 Vuexについては，以降の説明を参照せよ．
 
-#### ・3-2. 【Model層】オブジェクトとしてのJavaScript（```xxx.js```）
+#### 3-2. 【Model層】オブジェクトとしてのJavaScript（```xxx.js```）
 
 クラス宣言で実装する．モデルとサーバサイド間のデータ送受信については，Ajaxの説明を参照せよ．
 
@@ -454,7 +447,7 @@ class Example {
 
 
 
-## 03-02. Vueにおける個人的な頻出ディレクティブ
+## 03-02. View層と ViewModel層のバインディングを抽象化する仕組み
 
 ### :pushpin: イベントハンドリング
 
@@ -462,7 +455,7 @@ class Example {
 
 ![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueにおけるemitとv-onの連携.png)
 
-親コンポーネントにおけるイベントハンドラ関数（```methods:```内にあるメソッド）や，インラインJSステートメントを，子コンポーネントのイベントにバインディングする方法．
+View層（```template```タグ部分）のイベントを，ViewModel層（```script```タグ部分）のイベントハンドラ関数（```methods:```内にあるメソッド）やインラインJSステートメントにバインディングし，イベントが発火した時点でイベントハンドラ関数をコールする．
 
 ```vue
 v-on:{イベント名}="{イベントハンドラ関数（methods: 内にあるメソッド）}"
@@ -476,9 +469,9 @@ v-on:{イベント名}="{イベントハンドラ関数（methods: 内にある�
 
 で記述する．
 
-#### ・```v-on:submit```と```<button></button>```
+#### ・```v-on:submit="{イベントハンドラ関数}"```，```button```タグ
 
-親コンポーネントでは，子コンポーネントによって発火させられる```search```イベントに対して，```result()```というイベントハンドラ関数を紐づけておく．
+View層のフォーム送信イベントが起きた時点で，ViewModel層にバインディングされたイベントハンドラ関数をコールする．例えば，親コンポーネントでは，子コンポーネントによって発火させられる```search```イベントに対して，```result()```というイベントハンドラ関数を紐づけておく．
 
 **【実装例】**
 
@@ -544,11 +537,29 @@ new Vue({
 
 #### ・```v-on:click="{イベントハンドラ関数}"```
 
-クリックイベントとイベントハンドラ関数をバインディングする．
+View層でクリックイベントが起きた時点で発火し，ViewModel層でバインディングされたイベントハンドラ関数をコールする．
+
+```
+
+```
 
 #### ・ ```v-on:change="{イベントハンドラ関数}"```
 
-```input```タグや，```select```タグ内の値の変更イベントとイベントハンドラ関数をバインディングする．
+View層で```input```タグや```select```タグで，値の入力後にマウスフォーカスがタグから外れた時点で発火し，ViewModel層でバインディングされたイベントハンドラ関数をコールする
+
+```
+
+```
+
+#### ・```v-on:input="{イベントハンドラ関数}"```
+
+View層で```input```タグで，一文字でも値が入力された時点で発火し，ViewModel層バインディングされたイベントハンドラ関数をコールする．```v-on:change```とは，イベントが発火するタイミングが異なるため，共存することが可能である．
+
+```
+
+```
+
+
 
 
 
