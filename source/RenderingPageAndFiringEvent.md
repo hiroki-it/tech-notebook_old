@@ -454,7 +454,7 @@ class Example {
 
 
 
-## 03-02. View層と ViewModel層のバインディングを抽象化する仕組み
+## 03-02. View層とViewModel層の間での双方向データバインディングの方法
 
 ### :pushpin: イベントハンドリング
 
@@ -590,7 +590,22 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 #### ・```v-model```とは
 
-※要勉強
+```v-on:input="{イベントハンドラ関数}"```と同じ．例えば，以下の二つは同じである．
+
+```vue
+<input
+    type="text"
+    v-model="example">
+</input>
+```
+
+```vue
+<input 
+    type="text"
+    :value="example"
+    @input="eventHandler">
+</input>
+```
 
 
 
