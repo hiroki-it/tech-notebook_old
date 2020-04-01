@@ -6,7 +6,7 @@
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
-![MVCモデル](https://user-images.githubusercontent.com/42175286/57635646-8838e700-75e2-11e9-837d-253c006b7725.png)
+![MVCモデル](C:\Users\h.hasegawa\Documents\Drive 1st\Programming\tech-notebook\Drive-source\images\MVCモデル.png)
 
 
 
@@ -97,12 +97,12 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 #### ・責務
 
-CRUDのReadの場合，以下のような処理手順を組み合わせて，Use case（使用事例）を実装する．
+ビジネスの仕組みを表しているわけではなく，以外のロジックである．CRUDのReadの場合，以下のような処理手順を組み合わせて，Use case（使用事例）を実装する．
 
 1. 最初に，リクエストによるJSON型データ送信を受け取る．
 2. JSON型データを連想配列にパースする．
-3. Repositoryのメソッドに連想配列を渡し，DBからオブジェクトデータをReadする．
-4. Casterに，Readしたオブジェクトデータを渡し，連想配列に変換する．以下のCasterの説明を参照せよ．
+3. Repositoryからメソッドをコールし，連想配列を渡してDBからオブジェクトデータをReadする．
+4. Readしたオブジェクトデータを連想配列に変換する．
 5. 最後に，連想配列をJSON型データにパースし，JavaScriptに送信する．
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シリアライズとデシリアライズ.png)
