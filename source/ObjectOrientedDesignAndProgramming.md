@@ -1803,6 +1803,7 @@ $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // 親メソッド（$optionName）のスコープの$itemを，use()に渡す．
+// $paramは，コール時に使う変数．
 $optionName = function ($para) use ($item) {
     $item->getOptionName() . $para;
 };
@@ -1823,7 +1824,7 @@ $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // use()に，親メソッドのスコープの$itemを渡す．
-// function()に，コール時に新しく$paramを渡す．
+// $paramは，コール時に使う変数．
 $option = new Option;
 
 // データの値に無名関数を格納する．
@@ -1852,7 +1853,7 @@ $param = "BC";
 
 // use()に，親メソッドのスコープの$itemを渡す．
 // 無名関数を定義し，同時にcall_user_func()で即コールする．
-// $paramをfunction()に渡す．
+// $paramは，コール時に使う変数．
 $optionName = call_user_func(function ($param) use ($item) {
     $item->getOptionName() . $param;
 });

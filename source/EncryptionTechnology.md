@@ -1,18 +1,18 @@
-# 暗号化技術
+# 通信データの暗号化技術
 
-## 01-01. データを暗号化する目的
+## 01-01. 通信データを暗号化する目的
 
-### :pushpin: 盗聴（データの盗み取り）を防ぐため
+### :pushpin: 盗聴（通信データの盗み取り）を防ぐため
 
-『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．暗号アルゴリズムに基づく暗号方式を用いてデータを暗号化することによって，盗聴を防ぐ．
+『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．暗号アルゴリズムに基づく暗号方式を用いてデータを暗号化することによって，通信データの盗聴を防ぐ．
 
 ![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/盗聴_改竄_成りすまし_1.png)
 
 
 
-### :pushpin: 改竄（データの書き換え）を防ぐため
+### :pushpin: 改竄（通信データの書き換え）を防ぐため
 
-『デジタル署名』や『ハッシュ関数』によって実現される．相手に送ったデータと相手が受け取ったデータが同じかどうかを確認することによって，改竄を防ぐ．
+『デジタル署名』や『ハッシュ関数』によって実現される．相手に送ったデータと相手が受け取ったデータが同じかどうかを確認することによって，通信データの改竄を防ぐ．
 
 ![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/盗聴_改竄_成りすまし_2.png)
 
@@ -28,7 +28,7 @@
 
 ## 01-02. 暗号アルゴリズム
 
-データの暗号化のほとんどは，『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．それらの方式は，以下のアルゴリズムによって実装される．
+通信データの暗号化のほとんどは，『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．それらの方式は，以下のアルゴリズムによって実装される．
 
 
 
@@ -124,9 +124,7 @@
 
  ![ハイブリッド暗号](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ハイブリッド暗号.png)
 
-
-
-## 02-01. 暗号化方式を応用した暗号化技術
+## 02-01. 暗号化方式に基づくセキュアプロトコル
 
 ### :pushpin: セキュアプロトコルの種類と扱われる階層
 
@@ -136,7 +134,13 @@
 
 
 
-### :pushpin: データの作成，ヘッダ情報追加，カプセル化
+### :pushpin: セキュアプロトコルで扱われる通信データ
+
+#### ・通信データの種類
+
+Webコンテンツデータ，メールデータ，その他
+
+#### ・通信データの作成，ヘッダ情報追加，カプセル化
 
 パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
 
@@ -148,13 +152,77 @@
 
 ### :pushpin: S/MIME：Secure MIME
 
-デジタル署名を含むデジタル証明書をメールに添付することによって，公開鍵の成りすましを防ぐセキュリティ技術．（デジタル証明書をS/MIMEに用いる場合，特にS/MIME証明書という．）
+#### ・S/MINEとは
+
+暗号化ダイジェスト（デジタル署名）を含むデジタル証明書をメールに添付することによって，公開鍵の成りすましを防ぐセキュリティ技術．
 
  ![S_MIME](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/S_MIME.png)
 
+#### ・S/MIMEにおけるデジタル証明書
+
+デジタル証明書をS/MIMEに用いる場合，特にS/MIME証明書という．詳しくは，暗号ダイジェスト（デジタル署名）を参照．
 
 
-### :pushpin: 暗号ダイジェスト（デジタル署名）を用いたメールデータの暗号化
+
+## 02-03. アプリケーション層におけるリモートログインやファイル転送の暗号化技術
+
+### :pushpin: SSH：Secure Shell
+
+#### ・SSHとは
+
+公開鍵暗号方式に基づくセキュアプロトコル．アプリケーション層で，公開鍵暗号方式と，公開鍵認証方式やパスワード認証方式の技術を用いて，サーバにリモートログインを行う．例えば，クライアント側SSHソフトには，『OpenSSH』，『Apache MINA/SSHD』があり，またサーバ側SSHソフトには，『OpenSSH』，『TeraTerm』，『Putty』がある．
+
+#### ・仮想Webサーバへのリモートログイン
+
+物理Webサーバであっても，仮想Webサーバであっても，SSHによるリモートログインの仕組みは同じである．
+
+![ssh接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ssh接続.png)
+
+
+
+## 02-04. トランスポート層におけるヘッダ情報の暗号化技術
+
+### :pushpin: SSL/TLS：Secure Sockets Layer / Transport Layer Security
+
+#### ・SSL/TLSとは
+
+ハイブリッド暗号方式に基づくセキュアプロトコル．トランスポート層で，パケットのヘッダ情報の暗号化を担う．具体的には，HTTPプロトコルで，GET送信のヘッダ部分，またPOST送信のヘッダ部分とボディ部分を暗号化する．
+
+![SSL_TLSプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSL_TLSプロトコル.png)
+
+**【具体例】**
+
+Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例えば，オレオレ証明書を用いている）と，以下のような警告が表示される．SSLサーバ証明書については，公開鍵基盤の説明を参照せよ．
+
+![SSL接続に不備がある場合の警告](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSL接続に不備がある場合の警告.jpg)
+
+#### ・SSL/TLSにおけるデジタル証明書
+
+デジタル証明書をSSLに用いる場合，特にSSLサーバ証明書という．詳しくは，暗号ダイジェスト（デジタル署名）を参照．
+
+
+
+### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）
+
+#### ・VPNとは
+
+異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
+
+![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPN（ネットワーク間）.png)
+
+#### ・インターネットVPNでのSSL/TLS通信の利用
+
+VPNゲートウェイとのSSL/TLS通信によって，インターネットVPNを実現できる．
+
+![SSLによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSLによるインターネットVPN.jpg)
+
+
+
+## 02-05. 暗号ダイジェスト（デジタル署名）について
+
+### :pushpin: 暗号ダイジェスト（デジタル署名）を用いた暗号化技術
+
+#### ・暗号ダイジェスト（デジタル署名）とは
 
 『公開鍵暗号方式とは逆の仕組み（※つまり，公開鍵暗号方式ではない）』と『ハッシュ関数』を利用した暗号化．『成りすまし』と『改竄』を防ぐことができる．
 
@@ -173,13 +241,17 @@
 2. 平文をハッシュ化し，ダイジェストにする．
 3. 上記２つのダイジェストが同一なら，『成りすまし』と『改竄』が行われていないと判断
 
-#### ・改竄を防ぐことができる
+#### ・暗号ダイジェスト（デジタル署名）のメリット
+
+1．改竄を防ぐことができる
 
   サーバから送られた『平文』と『暗号ダイジェスト』のどちらかが，通信の途中で改竄された場合，これらのダイジェストが同じになることは確率的にありえない．したがって，確かに改竄されていないと判断可能．
 
-#### ・成りすましを防ぐことができる
+2．成りすましを防ぐことができる
 
   特定の秘密鍵を持つのは，特定のサーバだけ．したがって，確かにサーバによって暗号化されたものだと判断可能．
+
+#### ・暗号ダイジェスト（デジタル署名）のデメリット
 
 **★★公開鍵の成りすましを防ぐことができない★★**
 
@@ -187,15 +259,9 @@
 
 
 
-### :pushpin: 暗号ダイジェスト（デジタル署名）を用いたWebデータの暗号化
+### :pushpin: 暗号ダイジェスト（デジタル署名）と公開鍵暗号方式を用いた暗号化技術
 
-![Webデータの暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webデータの暗号化.png)
-
-
-
-### :pushpin: 暗号ダイジェスト（デジタル署名）と公開鍵暗号方式を用いたメールデータの暗号化
-
-『成りすまし』と『改竄』を防げるデジタル署名に，『盗聴』を防げる公開鍵暗号方式を組み込んだ暗号化．
+『成りすまし』と『改竄』を防げるデジタル署名に，『盗聴』を防げる公開鍵暗号方式を組み込んだ暗号化技術．
 
 ![デジタル署名と暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デジタル署名と暗号化.png)
 
@@ -234,55 +300,7 @@
 
 
 
-## 02-03. アプリケーション層におけるリモートログインやファイル転送の暗号化技術
-
-### :pushpin: SSH：Secure Shell
-
-公開鍵暗号方式に基づくセキュアプロトコル．アプリケーション層で，公開鍵暗号方式と，公開鍵認証方式やパスワード認証方式の技術を用いて，サーバにリモートログインを行う．例えば，クライアント側SSHソフトには，『OpenSSH』，『Apache MINA/SSHD』があり，またサーバ側SSHソフトには，『OpenSSH』，『TeraTerm』，『Putty』がある．
-
-#### ・仮想Webサーバへのリモートログイン
-
-物理Webサーバであっても，仮想Webサーバであっても，SSHによるリモートログインの仕組みは同じである．
-
-![ssh接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ssh接続.png)
-
-
-
-## 02-04. トランスポート層におけるヘッダ情報の暗号化技術
-
-プロトコルとしての暗号化技術を『セキュアプロトコル』という．
-
-### :pushpin: SSL/TLS：Secure Sockets Layer / Transport Layer Security
-
-ハイブリッド暗号方式に基づくセキュアプロトコル．トランスポート層で，パケットのヘッダ情報の暗号化を担う．具体的には，HTTPプロトコルで，GET送信のヘッダ部分，またPOST送信のヘッダ部分とボディ部分を暗号化する．デジタル証明書をSSLに用いる場合，特にSSLサーバ証明書という．
-
-![SSL_TLSプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSL_TLSプロトコル.png)
-
-**【具体例】**
-
-Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例えば，オレオレ証明書を用いている）と，以下のような警告が表示される．SSLサーバ証明書については，公開鍵基盤の説明を参照せよ．
-
-![SSL接続に不備がある場合の警告](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSL接続に不備がある場合の警告.jpg)
-
-
-
-### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）
-
-異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
-
-![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPN（ネットワーク間）.png)
-
-#### ・インターネットVPNでのSSL/TLS通信の利用
-
-VPNゲートウェイとのSSL/TLS通信によって，インターネットVPNを実現できる．
-
-![SSLによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SSLによるインターネットVPN.jpg)
-
-
-
 ## 04-05. ネットワーク層におけるヘッダ情報の暗号化技術
-
-プロトコルとしての暗号化技術を『セキュアプロトコル』という．
 
 ### :pushpin: IPsec：Internet Protocol Security
 

@@ -264,9 +264,17 @@ class ExampleController extends AbstractController
 }
 ```
 
-#### 
+### HttpKernelコンポーネント
 
-## 02-03. Pimpleコンポーネント
+### :pushpin: HttpKernelの仕組み
+
+![SymfonyのHttpKernelの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SymfonyのHttpKernelの仕組み.png)
+
+
+
+
+
+## 02-04. Pimpleコンポーネント
 
 ### :pushpin: Service Container
 
@@ -274,7 +282,7 @@ Symfonyから提供されるDIコンテナのこと．
 
 
 
-## 02-04. Routingコンポーネント
+## 02-05. Routingコンポーネント
 
 ### :pushpin: RoutingConfigurator
 
