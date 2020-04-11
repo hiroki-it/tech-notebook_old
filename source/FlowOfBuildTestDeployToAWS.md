@@ -82,17 +82,11 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 #### ・クラウドデプロイサーバにおけるCapisoranoによるデプロイ
 
-1. クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
+1. 自身のパソコンからクラウドデプロイサーバにリモート接続する．
+2. クラウドデプロイサーバの自動デプロイツール（例：Capistrano）が，クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
+3. 自動デプロイツールが，クラウドWebサーバのGitを操作し，```pull```あるいは```clone```を実行する．その結果，GitHubからクラウドデプロイサーバに指定のブランチの状態が取り込まれる．
 
-![デプロイサーバからインスタンスへのデプロイ.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デプロイサーバからインスタンスへのデプロイ.png)
-
-2. 本番環境（ここではクラウドWebサーバ）にインストールしておいたGitで，```pull```あるいは```clone```を実行し，GitHubからクラウドデプロイサーバにmasterブランチの状態を取り込む．
-
-![GitHub上のコードが本番環境にデプロイされるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GitHub上のコードが本番環境にデプロイされるまで.png)
-
-3. これらの手順を自動デプロイツール（例：Capistrano）が行う．クラウドデプロイサーバに自動デプロイツールを配置する．自動デプロイツールがクラウドWebサーバやDBサーバにリモート接続し，```pull```や```clone```を実行する．
-
-![Capistranoを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Capistranoを用いた自動デプロイ.png)
+![デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デプロイ.png)
 
 
 
