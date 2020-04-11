@@ -6,7 +6,7 @@
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
-![MVCモデル](C:\Users\h.hasegawa\Documents\Drive 1st\Programming\tech-notebook\Drive-source\images\MVCモデル.png)
+![MVCモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/MVCモデル.png)
 
 
 
