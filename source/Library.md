@@ -2,7 +2,7 @@
 
 # ライブラリ
 
-## 01. ライブラリの読み込み
+## 01-01. ライブラリの読み込み
 
 ### :pushpin: エントリポイントでの```autoload.php```の読み込み
 
@@ -16,41 +16,15 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 
 
-## 02. Doctrineライブラリ
+## 02-01. Doctrineライブラリ
 
 ### :pushpin: Doctrineとは
 
-RDBの操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
+RDBの読み込み系／書き込み系の操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
 
 
 
-### :pushpin: DoctrineによるRDBの操作
-
-https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
-
-```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．
-
-**【実装例】**
-
-```PHP
-$conn = new Doctrine\DBAL\Connection
-
-// トランザクションの開始 
-$conn->beginTransaction();
-try{
-    // コミット
-    $conn->commit();
-} catch (\Exception $e) {
-  
-    // ロールバック
-    $conn->rollBack();
-    throw $e;
-}
-```
-
-
-
-### :pushpin: トランザクション時のSQLの定義
+### :pushpin: SQLの定義
 
 #### 1. ```createQueryBuilder()```
 
@@ -127,7 +101,9 @@ $queryBuilder->getConnection()
 
 
 
-#### :pushpin: プレースホルダー（プリペアードステートメント）
+### :pushpin: 読み出し系の操作
+
+#### ・プレースホルダー（プリペアードステートメント）
 
 プリペアードステートメントともいう．SQL中にパラメータを設定し，値をパラメータに渡した上で，SQLとして発行する方法．処理速度が速い．また，パラメータに誤ってSQLが渡されても，これを実行できなくなるため，SQLインジェクションの対策にもなる
 
@@ -173,9 +149,72 @@ class DogToyQuery
 }
 ```
 
+#### ・データのキャッシュ
+
+読み出し系で取得したデータをキャッシュすることができる．
+
+```PHP
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\DBAL\Cache\QueryCacheProfile;
+
+class Example
+{
+    public function find()
+    {
+        
+        // QueryBuilderインスタンスを作成．
+        $queryBuilder = $this->createQueryBuilder();
+        
+        // 何らかのSQLを定義
+        $query = $queryBuilder->select()->from()
+        
+        // キャッシュがある場合，ArrayStatementオブジェクトを格納
+        // キャッシュがない場合，ResultCacheStatementを格納
+        $statement = $this->connection->executeQuery(
+          $query->getSQL(),
+          $query->getParameters(),
+          $queryParameterTypes(),
+          new QueryCacheProfile()
+        );
+        
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return $result;
+    }
+}
+```
 
 
-## 03. Carbonライブラリ
+
+
+### :pushpin: 書き込み系の操作
+
+#### ・トランザクション，コミット，ロールバック
+
+https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
+
+```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．
+
+**【実装例】**
+
+```PHP
+$conn = new Doctrine\DBAL\Connection
+
+// トランザクションの開始 
+$conn->beginTransaction();
+try{
+    // コミット
+    $conn->commit();
+} catch (\Exception $e) {
+  
+    // ロールバック
+    $conn->rollBack();
+    throw $e;
+}
+```
+
+
+## 03-01. Carbonライブラリ
 
 ### :pushpin: Date型
 
@@ -282,7 +321,7 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-## 04. Pinqライブラリ
+## 04-01. Pinqライブラリ
 
 ### :pushpin: Pinqとは：Php Integrated Query
 
@@ -321,7 +360,7 @@ class Example
 
 
 
-## 06. Guzzleライブラリ
+## 05-01. Guzzleライブラリ
 
 ### :pushpin: Guzzleライブラリとは
 
@@ -358,7 +397,7 @@ $body = json_decode($response->getBody(), true);
 
 
 
-## 07. Knp/Snappyライブラリ
+## 06-01. Knp/Snappyライブラリ
 
 ###  :pushpin: Knp/Snappyとは
 
@@ -378,7 +417,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf')
 
 
 
-## 08. Respect/Validationライブラリ
+## 07-01. Respect/Validationライブラリ
 
 ### :pushpin: Respect/Validationとは
 
