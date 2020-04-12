@@ -162,9 +162,21 @@ Slackware
 
 ## 04-02. 基本ソフトウェア \ サービスプログラム（ユーティリティ）
 
-### :pushpin: サービスプログラム（ユーティリティ）の例
+### :pushpin: サービスプログラム（ユーティリティ）の種類
+
+| システム系         | ストレージデバイス管理系 | ファイル管理系         | その他             |
+| ------------------ | ------------------------ | ---------------------- | ------------------ |
+| マネージャ         | デフラグメントツール     | ファイル圧縮プログラム | スクリーンセーバー |
+| クリップボード     |                          |                        |                    |
+| レジストリクリーナ |                          |                        |                    |
 
 
+
+### :pushpin: マネージャについて
+
+#### ・ライブラリとパッケージの大まかな違い
+
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
 
 #### ・ライブラリマネージャ
 
@@ -190,9 +202,6 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 | Apt：Advanced Packaging Tool         | Debian系     | 〇                         |
 | Apk：Alpine Linux package management | Alpine Linux | 〇                         |
 
-#### ・ライブラリとパッケージの大まかな違い
-
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
 #### ・言語バージョンマネージャ
 
 | 言語バージョンマネージャ名 | 対象プログラミング言語 |
@@ -200,10 +209,6 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 | phpenv                     | PHP                    |
 | pyenv                      | Python                 |
 | rbenv                      | Ruby                   |
-
-#### ・その他の例
-
-クリップボード，ファイル圧縮プログラム，スクリーンセーバー，レジストリクリーナ
 
 
 

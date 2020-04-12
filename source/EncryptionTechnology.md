@@ -207,11 +207,11 @@ SSHを介して，ファイル転送を行う．SSHの機能をより拡張し�
 
 SSHを介して，ファイル転送を行う．SSHとFTPを組み合わせたプロトコルではなく，SSHの機能をより拡張したものである．
 
-#### ・ファイルを要求する側に必要なソフトウェア
+#### ・ファイル要求側のクライアントソフトウェア
 
 『WinSCP』，『Filezilla』
 
-#### ・ファイルを送信する側に必要なソフトウェア
+#### ・ファイル送信側のクライアントソフトウェア
 
 
 
@@ -339,6 +339,8 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ### :pushpin: IPsec：Internet Protocol Security
 
+#### ・IPSecとは
+
 共通鍵暗号方式に基づくセキュアプロトコル．ネットワーク層で，パケットのヘッダ情報の暗号化を担う．インターネットVPNの実現のために用いられる．盗聴を防ぐことができる．
 
 ![IPsecによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPsecによるインターネットVPN.jpg)
@@ -349,11 +351,25 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 
 
-### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）（再掲）
+### :pushpin: VPN：Virtual Private Network（仮想プライベートネットワーク）
 
-異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
+#### ・VPNとは
 
-![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPN（ネットワーク間）.png)
+異なるネットワーク間で安全な通信を行うための仕組み．使用されているセキュアプロトコルに基づいて，『PPTP-VPN』，『SSL/TLS-VPN』，『IPsec-VPN』がある．
+
+![i](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPN（ネットワーク間）.png)
+
+#### ・PPTP-VPNの例
+
+『PPTP』
+
+#### ・SSL/TLS-VPNの例
+
+『OpenVPN』
+
+#### ・IPsec-VPNの例
+
+『L2TP/IPSec』
 
 
 
