@@ -77,12 +77,22 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 
 
+### :pushpin: Cacheコンポーネント
+
+```PHP
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+```
+
+
+
 
 ## 02-01. Consoleコンポーネント
 
 ### :pushpin: CLI：Command Line Interface
 
-Commandクラスによって定義されたコマンドは，バッチファイル（```.bat```）に一連の処理として組み合わせられる．
+#### ・CLIとは
+
+シェルスクリプト（```.sh```），またはバッチファイル（```.bat```）におけるコマンドの処理内容を定義できる．
 
 **【実装例】**
 
@@ -124,6 +134,8 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
   
 }
 ```
+
+
 
 ### :pushpin: CLIをコールするバッチファイル
 
@@ -264,9 +276,11 @@ class ExampleController extends AbstractController
 }
 ```
 
-### HttpKernelコンポーネント
 
-### :pushpin: HttpKernelの仕組み
+
+## 02-03. HttpKernelコンポーネント
+
+### :pushpin: HttpKernelによるリクエストとレスポンス
 
 ![SymfonyのHttpKernelの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SymfonyのHttpKernelの仕組み.png)
 
@@ -286,6 +300,8 @@ Symfonyから提供されるDIコンテナのこと．
 
 ### :pushpin: RoutingConfigurator
 
+#### ・RoutingConfiguratorとは
+
 コントローラへのルーティングを設定する．
 
 ```PHP
@@ -302,5 +318,36 @@ return function (RoutingConfigurator $routes) {
         ->methods(['PUT'])
     ;
 };
+```
+
+
+
+## 02-06. Cacheコンポーネント
+
+### :pushpin: FilesystemAdapter
+
+#### ・FilesystemAdapterとは
+
+データをキャッシングできるコンポーネント．オプションで，名前空間，キャッシュ存続時間，キャッシュルートパスを指定できる．
+
+```PHP
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
+$cache = new FilesystemAdapter('', 0, 'example/cache/');
+
+// キャッシュIDに紐づくキャッシュアイテムオブジェクトを取得
+$cacheItemObj = $cache->getItem('stats.products_count');
+
+// キャッシュIDに紐づくキャッシュアイテムオブジェクトに，データが設定されていない場合
+if (!$cacheItemObj->isHit()) {
+  // キャッシュアイテムオブジェクトに，データを設定
+  $cacheItemObj->set(777);
+  // キャッシュアイテムオブジェクトを紐づける．
+  $cache->save($cacheItemObj)
+}
+
+// キャッシュIDに紐づくデータがあった場合，キャッシュアイテムオブジェクトを取得．
+$cacheItemObj = $cache->get();
+
 ```
 
