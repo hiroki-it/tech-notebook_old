@@ -150,7 +150,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 #### ・Consistency
 
-  トランザクションの前後でデータ排他制御によって実装される．
+  トランザクションの前後で排他制御によって実装される．
 
 #### ・Isolation
 
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS `mst_staff` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-# データを作成
+# レコードを作成
 -- Dumping data for table kizukeba_pronami_php.mst_staff: ~8 rows (approximately)
 /*!40000 ALTER TABLE `mst_staff` DISABLE KEYS */;
 INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
@@ -337,196 +337,40 @@ INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
 
   
 
-### :pushpin: 排他制御におけるロックの種類
+### :pushpin: 排他制御のためのロック操作
 
 ![排他制御-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/排他制御-3.gif)
 
--  **共有ロック**
+#### ・共有ロック
 
-CRUDのRead以外の処理を実行不可能にする．データのRead時に，他者によってUpdateされたくない場合に用いる．「共有」の名の通り，共有ロックされているデータに対して，他の人も共有ロックを行うことができる．
+CRUDのRead以外の処理を実行不可能にする．レコードをReadする時に，他者によってUpdateされたくない場合に用いる．「共有」の名の通り，共有ロックされているレコードに対して，他の人も共有ロックを行うことができる．
 
-#### ・専有ロック
+#### ・占有ロック
 
-CRUDの全ての処理を実行不可能にする．データのUpdate時に，他者によってUpdateもReadもされたくない場合に用いる．
+CRUDの全ての処理を実行不可能にする．レコードをUpdateする時に，他者によってUpdateもReadもされたくない場合に用いる．
 
+#### ・デッドロック現象
 
+複数のトランザクションが，互いに他者が使いたいレコードをロックしてしまい，お互いのロック解除を待ち続ける状態のこと．もう一方のレコードのロックが解除されないと，自身のレコードのロックを解除できない時，トランザクションが停止する．
 
-### :pushpin: ロックの粒度
+|                            | 共有ロックの実行 | 占有ロックの実行 |
+| :------------------------: | :--------------: | :--------------: |
+| **共有ロックされたレコード** |        〇        |        ✕         |
+| **占有ロックされたレコード** |        ✕         |        ✕         |
+
+![Null](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デッドロック.gif)
+
+#### ・ロックの粒度
 
 ![ロックの粒度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロックの粒度-1.png)
 
-DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大きい．ロックの粒度が細かければ，トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）．しかし，ロックの粒度を細かくすればするほど，それだけデータベース管理システムのCPU負荷は大きくなる．
+DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大きい．ロックの粒度が細かければ，トランザクションの同時実行性が高くなって効率は向上する（複数の人がDBに対して作業できる）．しかし，ロックの粒度を細かくすればするほど，それだけベース管理システムのCPU負荷は大きくなる．
 
 ![ロックの粒度-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロックの粒度-2.jpg)
 
 
 
-### :pushpin: デッドロック現象
-
-複数のトランザクションが，互いに他者が使いたいデータをロックしてしまい，お互いのロック解除を待ち続ける状態のこと．もう一方のレコードのロックが解除されないと，自身のレコードのロックを解除できない時，トランザクションが停止する．
-
-#### ・共有ロックしたデータを共有ロック
-
-#### ・共有ロックしたデータを専有ロック
-
-#### ・専有ロックしたデータを共有ロック
-
-#### ・専有ロックしたデータを専有ロック
-
-![Null](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デッドロック.gif)
-
-
-
-## 03-01. ```create```によるテーブルの作成
-
-```PHP
-// 注文テーブル作成
-CREATE TABLE order_data (
-
-    // Primary Key制約
-    order_id INT(10) PRIMARY KEY COMMENT '注文ID',
-
-    // Not Null制約
-    order_kbn INT(3) NOT NULL COMMENT '注文区分',
-    system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
-    system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
-    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
-  
-    // 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
-    PRIMARY KEY(order_id, order_kbn)
-  
-    // 参照制約キー
-    FOREIGN KEY order_kbn REFERENCES order_kbn_data
-)
-```
-
-
-
-### :pushpin: Primary key（主キー）制約と複合主キー制約
-
-テーブルの中で，Rowデータを一意に特定できる値を『主キー』の値と呼ぶ．
-
-![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/主キー.jpg)
-
-主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
-
-| *user_id* | *period_start_date* | period_end_date | fee_yen |
-| --------- | ------------------- | --------------- | ------- |
-| *1*       | *2019-04-03*        | 2019-05-03      | 200     |
-| *1*       | *2019-10-07*        | 2019-11-07      | 400     |
-| *2*       | *2019-10-11*        | 2019-11-11      | 200     |
-
-
-
-### :pushpin: Not Null制約
-
-レコードに挿入される値のデータ型を指定しておくことによって，データ型不一致やNullのための例外処理を実装しなくてもよくなる．
-
-
-
-### :pushpin: Foreign key（外部キー）と参照制約
-
-複数のテーブルを関連付けるために用いられるカラムのことをForeign key（外部キー）という．外部キーの参照先のテーブルには，外部キーの値と同じ値のカラムが存在していなければならない（参照制約）．参照制約を行うと，以下の2つが起こる．
-
-#### ・親テーブルに存在しない値は，子テーブルに登録できない．
-
-#### ・親テーブルで参照される値は，子テーブルからは削除できない．
-
-![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/外部キー.png)
-
-
-
-### :pushpin: stored procedure
-
-あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
-
-![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p325.gif)
-
-**【実装例】**
-
-```PHP
-// PROCEDUREを作成し，データベースへ格納しておく．
-CREATE PROCEDURE SelectContact AS　
-  SELECT CustomerID, CompanyName, ContactName, Phone
-  FROM Customers
-```
-
-```PHP
-// PROCEDUREを実行
-EXEC SelectContact
-```
-
-
-
-## 03-02. ```INSERT```によるデータ行の入力
-
-**【スクラッチ開発による実装例】**
-
-```PHP
-// $_POSTを用いて，送信されたpostメソッドのリクエストを受け取り，属性から各値を取得
-$staff_name = $_POST['name'];
-$staff_pass = $_POST['pass'];
-
-
-// HTMLとして変数の内容を出力する際，「<」「>」などの特殊文字をエスケープ（無害化）
-$staff_name = htmlspecialchars($staff_name, ENT_QUOTES, 'UTF-8');
-$staff_pass = htmlspecialchars($staff_pass, ENT_QUOTES, 'UTF-8');
-
-
-// データベースと接続（イコールの間にスペースを入れるとエラーになる）
-$dsn = 'mysql:dbname=kizukeba_pronami_php;
-host=kizukebapronamiphp
-charaset=UTF-8';
-$user = 'root';
-$password = '';
-$dbh = new PDO($dsn, $user, $password);
-$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
-
-// 列名と値を指定してINSERT
-$sql='INSERT INTO mst_staff (name,password) VALUES (?,?)';
-$stmt = $dbh->prepare($sql);
-
-
-// 配列に値を格納（格納する値の順番と，SQLでの引数の順番は，合わせる必要がある）
-$data[] = $staff_name;
-$data[] = $staff_pass;
-
-
-// SQLを実行
-$stmt->execute($data);
-
-
-// データベースとの接続を切断
-$dbh = null;
-```
-
-
-
-## 03-03. ```migration```によるデータベースの更新
-
-マイグレーションファイルと呼ばれるスクリプトファイルを作成し，テーブルの新規作成やカラムの追加はこのスクリプトファイルに記述していく．
-
-1. 誰かが以下のMigrationファイルをmaster別名にPush
-2. Migrationファイルをローカル環境にPull
-3. データベース更新バッチを実行し，ローカル環境のDBスキーマとデータを更新
-
-```PHP
-namespace Migration
-
-class ItemQuery
-{
-    // 列名と値を指定してINSERT
-    public static function insert()
-    {
-        return "INSERT INTO item_table VALUES(1, '商品A', 1000, '2019-07-24 07:07:07');"
-    }
-}
-```
-
-
-
-## 04-01. ```select```による読み出し系の操作
+## 03-01. レコードの読み出し操作（```SELECT```）
 
 ### :pushpin: 実装例で用いた略号
 
@@ -548,11 +392,13 @@ from => join => where => group by => having => select => order by
 
 ### :pushpin: ```join```（結合）
 
+#### ・```join```の種類
+
 ![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部結合のベン図.jpg)
 
 
 
-### :pushpin: ```left join```（左外部結合）
+#### ・```left join```（左外部結合）
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
@@ -560,7 +406,7 @@ from => join => where => group by => having => select => order by
 
 
 
-### :pushpin: ```inner join```（内部結合）
+#### ・```inner join```（内部結合）
 
 基本情報技術者試験では，内部結合（A∩B）しか出題されない．
 
@@ -579,7 +425,7 @@ select T1.C1,
     R2 = R3  
 ```
 
-#### ・内部結合に```inner join on```を用いる場合（本試験では出題されない）
+#### ・内部結合に```inner join on```を用いる場合
 
 ```PHP
 // 『カラム』だけでなく，どの『表』なの物なのかも指定
@@ -596,7 +442,7 @@ select T1.C1,
 
 
 
-### :pushpin: 集合関数まとめ
+### :pushpin: 集合関数
 
 #### ・```sum()```
 
@@ -831,19 +677,29 @@ UPDATE `mst_staff`
 
 
 
-### :pushpin: プレースホルダー
+## 03-02. 読み出されたレコードの取得（```fetch```）
 
-プリペアードステートメントともいう．
+### :pushpin:  ```fetch```
+
+#### ・```fetch```とは
+
+読み出したレコードをに一度に全て取得してしまうと，サーバ側のメモリを圧迫してしまう．そこで，少しずつ取得する．
+
+#### ・```fetch```のメソッド名に関する注意点
+
+```fetch()```系のメソッドは，ベンダーによって名前が異なっていることがあるため，同じ名前でも同じ分だけレコードを取得するとは限らない．
 
 
 
+### :pushpin: PDOにおける```fetch```
 
+#### ・```fetch():array```
 
-## 04-02. ```fetch```によるデータ行の取得
+読み出された全てのレコードのうち，最初のレコードの全てのカラムを取得し，一次元の連想配列で返却する．
 
-### :pushpin: PHPの場合
+#### ・```fetchAll():array```
 
-DBで取得したデータをプログラムに一度に全て送信してしまうと，プログラム側のメモリを圧迫してしまう．そこで，fetchで少しずつ取得する．
+読み出された全てのレコードの，全てのカラムを取得し，二次元の連想配列で返却する．
 
 **【実装例】**
 
@@ -854,31 +710,49 @@ $stmt = $dbh->prepare($sql);
 $stmt->execute()
 
 
-// 全てのデータ行を取得
+// 全てのレコードを取得
 $data = $stmt->fetchAll();
 
 // 出力
 print_r($data);
 
-
 // カラム名と値の連想配列として取得できる．
-Array
-(
-    [0] => Array
-    (
-        [id] => 1
-        [name] => のび太
-        [gender] => man
-        [type] => human
-    )
-    [1] => Array
-    (
-        [id] => 2
-        [name] => ドラえもん
-        [gender] => man
-        [type] => robot
-    )
-)
+// Array
+// (
+//     [0] => Array
+//     (
+//         [id] => 1
+//         [name] => のび太
+//         [gender] => man
+//         [type] => human
+//     )
+//     [1] => Array
+//     (
+//         [id] => 2
+//         [name] => ドラえもん
+//         [gender] => man
+//         [type] => robot
+//     )
+// )
+```
+
+#### ・```fetchColumn():mixed```
+
+読み出された全てのレコードのうち，最初のレコードの一番左のカラムのみを取得し，混合型で返却する．主に，```COUNT()```の場合に用いる
+
+```PHP
+// select文を定義して実行．
+$sql = "SELECT COUNT(*) FROM doraemon_characters";
+$stmt = $dbh->prepare($sql);
+$stmt->execute()
+
+// レコードを取得
+$data = $stmt->fetchColumn();
+
+// 出力
+print_r($data); 
+
+// 10 (件)
 ```
 
 
@@ -895,7 +769,7 @@ String sql = "SELECT * FROM doraemon_characters";
 ResultSet result statement.executeQuery();
 
 
-// 全てのデータ行を取得
+// 全てのレコードを取得
 while(result.next()){
     System.out.println(result.getInt("id"));
     System.out.println(result.getString("name"));
@@ -911,7 +785,7 @@ while(result.next()){
 
 
 
-## 05-01. レコードの突き合わせ
+## 03-03. レコードの突き合わせ
 
 ### :pushpin: 突き合わせ処理とは
 
@@ -940,4 +814,157 @@ while(result.next()){
 5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
 ![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_3.png)
+
+
+
+
+
+## 04-01. レコードの書き込み操作 （```CREATE```，```UPDATE```，```DELETE```）
+
+### :pushpin: ```INSERT```
+
+#### ・PDOを用いた```INSERT```処理
+
+```PHP
+// $_POSTを用いて，送信されたpostメソッドのリクエストを受け取り，属性から各値を取得
+$staff_name = $_POST['name'];
+$staff_pass = $_POST['pass'];
+
+
+// HTMLとして変数の内容を出力する際，「<」「>」などの特殊文字をエスケープ（無害化）
+$staff_name = htmlspecialchars($staff_name, ENT_QUOTES, 'UTF-8');
+$staff_pass = htmlspecialchars($staff_pass, ENT_QUOTES, 'UTF-8');
+
+
+// データベースと接続（イコールの間にスペースを入れるとエラーになる）
+$dsn = 'mysql:dbname=kizukeba_pronami_php;
+host=kizukebapronamiphp
+charaset=UTF-8';
+$user = 'root';
+$password = '';
+$dbh = new PDO($dsn, $user, $password);
+$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
+
+// 列名と値を指定してINSERT
+$sql='INSERT INTO mst_staff (name,password) VALUES (?,?)';
+$stmt = $dbh->prepare($sql);
+
+
+// 配列に値を格納（格納する値の順番と，SQLでの引数の順番は，合わせる必要がある）
+$data[] = $staff_name;
+$data[] = $staff_pass;
+
+
+// SQLを実行
+$stmt->execute($data);
+
+
+// データベースとの接続を切断
+$dbh = null;
+```
+
+#### ・```migration```における```INSERT```
+
+マイグレーションファイルと呼ばれるスクリプトファイルを作成し，テーブルの新規作成やカラムの追加はこのスクリプトファイルに記述していく．
+
+1. 誰かが以下のMigrationファイルをmaster別名にPush
+2. Migrationファイルをローカル環境にPull
+3. データベース更新バッチを実行し，ローカル環境のDBスキーマとレコードを更新
+
+```PHP
+namespace Migration
+
+class ItemQuery
+{
+    // 列名と値を指定してINSERT
+    public static function insert()
+    {
+        return "INSERT INTO item_table VALUES(1, '商品A', 1000, '2019-07-24 07:07:07');"
+    }
+}
+```
+
+
+
+
+
+## 04-02. テーブルの生成処理（```create```）
+
+```PHP
+// 注文テーブル作成
+CREATE TABLE order_data (
+
+    // Primary Key制約
+    order_id INT(10) PRIMARY KEY COMMENT '注文ID',
+
+    // Not Null制約
+    order_kbn INT(3) NOT NULL COMMENT '注文区分',
+    system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
+    system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
+    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
+  
+    // 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
+    PRIMARY KEY(order_id, order_kbn)
+  
+    // 参照制約キー
+    FOREIGN KEY order_kbn REFERENCES order_kbn_data
+)
+```
+
+
+
+### :pushpin: Primary key（主キー）制約と複合主キー制約
+
+テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
+
+![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/主キー.jpg)
+
+主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
+
+| *user_id* | *period_start_date* | period_end_date | fee_yen |
+| --------- | ------------------- | --------------- | ------- |
+| *1*       | *2019-04-03*        | 2019-05-03      | 200     |
+| *1*       | *2019-10-07*        | 2019-11-07      | 400     |
+| *2*       | *2019-10-11*        | 2019-11-11      | 200     |
+
+
+
+### :pushpin: Not Null制約
+
+レコードに挿入される値のデータ型を指定しておくことによって，データ型不一致やNullのための例外処理を実装しなくてもよくなる．
+
+
+
+### :pushpin: Foreign key（外部キー）と参照制約
+
+複数のテーブルを関連付けるために用いられるカラムのことをForeign key（外部キー）という．外部キーの参照先のテーブルには，外部キーの値と同じ値のカラムが存在していなければならない（参照制約）．参照制約を行うと，以下の2つが起こる．
+
+#### ・親テーブルに存在しない値は，子テーブルに登録できない．
+
+#### ・親テーブルで参照される値は，子テーブルからは削除できない．
+
+![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/外部キー.png)
+
+
+
+### :pushpin: stored procedure
+
+あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
+
+![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p325.gif)
+
+**【実装例】**
+
+```PHP
+// PROCEDUREを作成し，データベースへ格納しておく．
+CREATE PROCEDURE SelectContact AS　
+  SELECT CustomerID, CompanyName, ContactName, Phone
+  FROM Customers
+```
+
+```PHP
+// PROCEDUREを実行
+EXEC SelectContact
+```
 
