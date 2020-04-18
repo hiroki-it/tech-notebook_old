@@ -328,7 +328,7 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
 
 作業中のローカルブランチにおいて，ブランチの派生元を変更．
 
-#### ・```rebase --interactive [コミットID]```**
+#### ・```rebase --interactive [コミットID]```
 
 派生元を変更する機能を応用して，過去のコミットのメッセージ変更，削除，統合などを行う．
 

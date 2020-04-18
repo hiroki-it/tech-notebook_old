@@ -54,7 +54,7 @@
 
 #### ・文字コードが異なる
 
-以下を，phpタグの次の行に一時的に追加する．
+以下を，```var_dump()```よりも上流に追加する．
 
 ```PHP
 header('Content-Type: text/html; charset=UTF-8');
