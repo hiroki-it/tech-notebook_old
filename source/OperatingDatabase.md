@@ -281,7 +281,7 @@ try{
 
 バックアップファイルの実際のコード
 
-```PHP
+```SQL
 -- --------------------------------------------------------
 -- Host:                         xxxxx
 -- Server version:               10.1.38-MariaDB - mariadb.org binary distribution
@@ -370,9 +370,18 @@ DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大き�
 
 
 
-## 03-01. レコードの読み出し操作（```SELECT```）
+## 03-01. レコードの読み出し操作（```READ```）
 
-### :pushpin: 実装例で用いた略号
+
+### :pushpin: はじめに
+
+#### ・句の処理の順番
+
+```
+from => join => where => group by => having => select => order by
+```
+
+#### ・使い方で用いた略号
 
 **C**：column（列）
 
@@ -382,17 +391,82 @@ DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大き�
 
 
 
-### :pushpin: SQLの処理の順番
+### :pushpin: ```select```句
 
-```php
-from => join => where => group by => having => select => order by
+#### ・```sum()```
+
+```SQL
+// 指定したカラムで，『フィールド』の合計を取得
+select sum(C)  
+    from T;
+```
+
+#### ・```avg()```
+
+```SQL
+// 指定したカラムで，『フィールド』の平均値を取得
+select avg(C)  
+    from T;
+```
+
+#### ・```min()```
+
+```SQL
+// 指定したカラムで，『フィールド』の最小値を取得
+select min(C)
+    from T;
+```
+
+#### ・```max()```
+
+```SQL
+// 指定したカラムで，『フィールド』の最大値を取得
+select max(C)
+    from T;
+```
+
+#### ・```count()```
+
+```SQL
+// 指定したカラムで，『フィールド』の個数を取得
+select count(C)
+    from T;
+```
+
+**※消去法の小技：集合関数を入れ子状にはできない**
+
+**【実装例】**
+
+```SQL
+// 集合関数を集合関数の中に入れ子状にすることはできない．
+select avg(sum(C))
+    from T;
+```
+
+```SQL
+// 指定したカラムで，値無しも含む『フィールド』を取得
+select count(*)
+    from T;
+```
+
+```SQL
+// 指定したカラムで，値無しを除いた『フィールド』を取得
+select count(C);
+
+// 上に同じ
+select count(all C);
+```
+
+```SQL
+// 指定したカラムで，重複した『フィールド』を除く全ての『フィールド』を取得 
+select count(distinct C);
 ```
 
 
 
-### :pushpin: ```join```（結合）
+### :pushpin: ```from```句
 
-#### ・```join```の種類
+#### ・```join```句の種類
 
 ![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部結合のベン図.jpg)
 
@@ -414,7 +488,9 @@ from => join => where => group by => having => select => order by
 
 2つの```where```文が，```AND```で結びつけられている時，まず一つ目の```where```を満たすレコードを取得した後，取得したレコードの中から，二つ目の```where```を満たすレコードを取得する．
 
-```PHP
+**【実装例】**
+
+```SQL
 // 『カラム』だけでなく，どの『表』なの物なのかも指定
 select T1.C1,
     // 複数の表を指定
@@ -427,7 +503,9 @@ select T1.C1,
 
 #### ・内部結合に```inner join on```を用いる場合
 
-```PHP
+**【実装例】**
+
+```SQL
 // 『カラム』だけでなく，どの『表』なの物なのかも指定
 select T1.C1,
     // 複数の表を指定
@@ -442,100 +520,104 @@ select T1.C1,
 
 
 
-### :pushpin: 集合関数
+### :pushpin: ```order by```句
 
-#### ・```sum()```
+#### ・使い方
 
-```PHP
-// 指定したカラムで，『フィールド』の合計を取得
-select sum(C)  
-    from T;
-```
+**【実装例】**
 
-#### ・```avg()```
 
 ```PHP
-// 指定したカラムで，『フィールド』の平均値を取得
-select avg(C)  
-    from T;
-```
+$joinedIdList = implode(',', $idList);
 
-#### ・```min()```
+// 並び替え条件を設定
+$expression = call_user_func(function () use ($orders, $joinedIdList) {
+    if ($orders) {
+        foreach ($orders as $key => $order) {
+            switch ($key) {
+                case 'id':
+                    return sprintf('ss.id %s', $order);
+            }
+        }
+    }
+    
+    // IN句順の場合
+    return sprintf('FIELD(ss.id, %s)', $idList);
+});
 
-```PHP
-// 指定したカラムで，『フィールド』の最小値を取得
-select min(C)
-    from T;
-```
-
-#### ・```max()```
-
-```PHP
-// 指定したカラムで，『フィールド』の最大値を取得
-select max(C)
-    from T;
-```
-
-#### ・```count()```
-
-```PHP
-// 指定したカラムで，『フィールド』の個数を取得
-select count(C)
-    from T;
-```
-
-**※消去法の小技：集合関数を入れ子状にはできない**
-
-```PHP
-// 集合関数を集合関数の中に入れ子状にすることはできない．
-select avg(sum(C))
-    from T;
-```
-
-```PHP
-// 指定したカラムで，値無しも含む『フィールド』を取得
-select count(*)
-    from T;
-```
-
-```PHP
-// 指定したカラムで，値無しを除いた『フィールド』を取得
-select count(C);
-
-// 上に同じ
-select count(all C);
-```
-
-```PHP
-// 指定したカラムで，重複した『フィールド』を除く全ての『フィールド』を取得 
-select count(distinct C);
+$sql = <<<SQL
+            SELECT 
+                name
+            FROM
+                table
+            ORDER BY {$expression}
+        SQL;
 ```
 
 
 
-### :pushpin: ```in```
+
+
+### :pushpin: ```in```句，```any```句の違い
+
+#### ・```in```句の使い方
+
+  指定した値と同じ『フィールド』を取得
+
+**【実装例】**
+
+```SQL
+select * from T
+    // 指定したカラムで，指定した値の『フィールド』を取得
+    where C in (xxx, xxx, ...);
+```
+
+```SQL
+select * from T
+    // 指定したカラムで，指定した値以外の『フィールド』を取得
+    where C not in (R1, R2, ...);
+```
+
+```SQL
+select * from T
+    // フィールドを指定の値として用いる
+    where C not in (
+        // 指定したカラムで，『フィールド』を取得
+        select C from T where R >= 160);
+```
 
 **【IN句を使用しなかった場合】**
 
-```PHP
+```SQL
 SELECT * FROM fruit WHERE name = "みかん" OR name = "りんご";
 ```
 
 **【IN句を使用した場合】**
 
-```PHP
+```SQL
 SELECT * FROM fruit WHERE name IN("みかん","りんご");
+```
+
+#### ・```any```句の使い方
+
+  書き方が異なるだけで，```in```と同じ出力
+
+```SQL
+select * from T
+    where C = any(xxx, xxx, xxx);
 ```
 
 
 
-### :pushpin: ```group by```
+### :pushpin: ```group by```句
 
-#### ・集合関数との組み合わせ
+#### ・使い方
 
-カラムをグループ化し，フィールドの値を計算する．
+カラムをグループ化し，集合関数を使用して，フィールドの値を計算する．
 
-```PHP
+**【実装例】**
+
+```SQL
 select C1, avg(C2)
     from T
     // 指定したカラムをグループ化し，フィールドの値を合計する．
@@ -544,11 +626,15 @@ select C1, avg(C2)
 
 
 
-### :pushpin: ```having```
+### :pushpin: ```having```句
+
+#### ・使い方
 
 各句の処理の順番から考慮して，```group by```でグループ化した結果から，```having```で『フィールド』を取得．```select```における集計関数が，```having```における集計関数の結果を指定していることに注意せよ．
 
-```PHP
+**【実装例】**
+
+```SQL
 // havingによる集計結果を指定して出力．
 select C1, count(C2) 
     from T
@@ -559,14 +645,14 @@ select C1, count(C2)
 
 ※以下の場合，```group by + having```を使っても，```where```を使っても，同じ出力結果になる．
 
-```PHP
+```SQL
 select C
     from T
     group by C
     having R;
 ```
 
-```PHP
+```SQL
 select C
     from T
     where R
@@ -575,77 +661,19 @@ select C
 
 
 
-### :pushpin: sub-query
+### :pushpin: ```wildcard```句
 
-掛け算と同様に，括弧内から先に処理を行う．
+#### ・使い方
 
-```PHP
-// Main-query
-select * from T
-    // Sub-query
-    where C != (select max(C) from T);
-```
+**【実装例】**
 
-
-
-### :pushpin: ```in```と```any```
-
-#### ・```in```
-
-  指定した値と同じ『フィールド』を取得
-
-```PHP
-select * from T
-    // 指定したカラムで，指定した値の『フィールド』を取得
-    where C in (xxx, xxx, ...);
-```
-
-```PHP
-select * from T
-    // 指定したカラムで，指定した値以外の『フィールド』を取得
-    where C not in (R1, R2, ...);
-```
-
-```PHP
-select * from T
-    // フィールドを指定の値として用いる
-    where C not in (
-        // 指定したカラムで，『フィールド』を取得
-        select C from T where R >= 160);
-```
-
-#### ・```any```
-
-  書き方が異なるだけで，```in```と同じ出力
-
-```PHP
-select * from T
-    where C = any(xxx, xxx, xxx);
-```
-
-
-
-### :pushpin: ```view```
-
-ビューとはある表の特定のカラムや指定した条件に合致するレコードなどを取り出した仮想の表．また，複数の表を結合したビューを作成できる．ビューを作成することによりユーザに必要最小限のカラムやレコードのみにアクセスさせる事ができ，また結合条件を指定しなくても既に結合された表にアクセスできる．
-⇒よくわからん…
-
-```PHP
-create view T as
-    select * from ...;
-```
-
-
-
-### :pushpin: ```wildcard```
-
-```PHP
+```SQL
 select * from T
     // 任意の文字（文字無しも含まれる）
     where C like '%営業';
 ```
 
-```PHP
+```SQL
 select * from T
     // 任意の一文字
     where C like '_営業';
@@ -653,9 +681,13 @@ select * from T
 
 
 
-### :pushpin: ```between```
+### :pushpin: ```between```句
 
-```PHP
+#### ・使い方
+
+**【実装例】**
+
+```SQL
 select * from T
     // 指定したカラムで，1以上10以下の『フィールド』を取得
     between 1 and 10;
@@ -663,7 +695,11 @@ select * from T
 
 
 
-### :pushpin: 変数
+### :pushpin: ```set```句
+
+#### ・使い方
+
+**【実装例】**
 
 ```SQL
 /* 括弧内に値を設定してください */
@@ -677,7 +713,24 @@ UPDATE `mst_staff`
 
 
 
-## 03-02. 読み出されたレコードの取得（```fetch```）
+### :pushpin: サブクエリ
+
+#### ・使い方
+
+掛け算と同様に，括弧内から先に処理を行う．
+
+**【実装例】**
+
+```SQL
+// Main-query
+select * from T
+    // Sub-query
+    where C != (select max(C) from T);
+```
+
+
+
+## 03-02. 読み出されたレコードの取得処理（```fetch```）
 
 ### :pushpin:  ```fetch```
 
@@ -821,9 +874,9 @@ while(result.next()){
 
 ## 04-01. レコードの書き込み操作 （```CREATE```，```UPDATE```，```DELETE```）
 
-### :pushpin: ```INSERT```
+### :pushpin: ```insert```
 
-#### ・PDOを用いた```INSERT```処理
+#### ・PDOを用いた```insert```処理
 
 ```PHP
 // $_POSTを用いて，送信されたpostメソッドのリクエストを受け取り，属性から各値を取得
@@ -864,15 +917,19 @@ $stmt->execute($data);
 $dbh = null;
 ```
 
-#### ・```migration```における```INSERT```
+#### ・マイグレーションにおける```insert```
 
 マイグレーションファイルと呼ばれるスクリプトファイルを作成し，テーブルの新規作成やカラムの追加はこのスクリプトファイルに記述していく．
 
 1. 誰かが以下のMigrationファイルをmaster別名にPush
+
 2. Migrationファイルをローカル環境にPull
+
 3. データベース更新バッチを実行し，ローカル環境のDBスキーマとレコードを更新
 
-```PHP
+**【実装例】**
+
+```SQL
 namespace Migration
 
 class ItemQuery
@@ -891,7 +948,13 @@ class ItemQuery
 
 ## 04-02. テーブルの生成処理（```create```）
 
-```PHP
+### :pushpin: ```create table```句
+
+#### ・使い方
+
+**【実装例】**
+
+```SQL
 // 注文テーブル作成
 CREATE TABLE order_data (
 
@@ -914,7 +977,25 @@ CREATE TABLE order_data (
 
 
 
-### :pushpin: Primary key（主キー）制約と複合主キー制約
+### :pushpin: ```create view```句
+
+#### ・使い方
+
+ビューとはある表の特定のカラムや指定した条件に合致するレコードなどを取り出した仮想の表．また，複数の表を結合したビューを作成できる．ビューを作成することによりユーザに必要最小限のカラムやレコードのみにアクセスさせる事ができ，また結合条件を指定しなくても既に結合された表にアクセスできる．
+⇒よくわからん…
+
+**【実装例】**
+
+```SQL
+create view T as
+    select * from ...;
+```
+
+
+
+### :pushpin: 制約
+
+#### ・Primary key（主キー）制約と複合主キー制約
 
 テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
 
@@ -928,21 +1009,17 @@ CREATE TABLE order_data (
 | *1*       | *2019-10-07*        | 2019-11-07      | 400     |
 | *2*       | *2019-10-11*        | 2019-11-11      | 200     |
 
-
-
-### :pushpin: Not Null制約
+#### ・Not Null制約
 
 レコードに挿入される値のデータ型を指定しておくことによって，データ型不一致やNullのための例外処理を実装しなくてもよくなる．
 
-
-
-### :pushpin: Foreign key（外部キー）と参照制約
+#### ・Foreign key（外部キー）と参照制約
 
 複数のテーブルを関連付けるために用いられるカラムのことをForeign key（外部キー）という．外部キーの参照先のテーブルには，外部キーの値と同じ値のカラムが存在していなければならない（参照制約）．参照制約を行うと，以下の2つが起こる．
 
-#### ・親テーブルに存在しない値は，子テーブルに登録できない．
+親テーブルに存在しない値は，子テーブルに登録できない．
 
-#### ・親テーブルで参照される値は，子テーブルからは削除できない．
+親テーブルで参照される値は，子テーブルからは削除できない．
 
 ![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/外部キー.png)
 
@@ -950,21 +1027,26 @@ CREATE TABLE order_data (
 
 ### :pushpin: stored procedure
 
+#### ・stored procedureとは
+
 あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
 
 ![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p325.gif)
 
+#### ・使い方
+
 **【実装例】**
 
-```PHP
+```SQL
 // PROCEDUREを作成し，データベースへ格納しておく．
 CREATE PROCEDURE SelectContact AS　
   SELECT CustomerID, CompanyName, ContactName, Phone
   FROM Customers
 ```
 
-```PHP
+```SQL
 // PROCEDUREを実行
 EXEC SelectContact
 ```
+
 
