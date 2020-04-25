@@ -76,6 +76,25 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 #### ・PHPStanの自動実行
 
+#### ・CircleCIのTips
+
+ホストOS側で，以下のコマンドを実行する．
+
+1. 設定ファイル（```config.yml```）の文法を検証
+
+```bash
+circleci config validate
+
+# 以下の文章が表示されれば問題ない．
+# Config file at .circleci/config.yml is valid.
+```
+
+2. ローカルでのビルド
+
+```bash
+circleci build .circleci/config.yml
+```
+
 
 
 ### :pushpin: CDツールによるデプロイフェイズの自動実行
@@ -352,7 +371,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
-## 02-05. GCPによるWebサービスのリリース
+## 04-01. GCPによるWebサービスのリリース
 
 GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
 
