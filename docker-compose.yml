@@ -5,7 +5,7 @@ services:
     container_name: sphinx
     build:
       context: .
-      dockerfile: infra/web/Dockerfile
+      dockerfile: infra/docker/web/Dockerfile
     tty: true
     volumes:
       - ./:/var/www/sphinx
