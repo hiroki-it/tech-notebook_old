@@ -191,7 +191,7 @@ Saved working directory and index state WIP on 2019/Symfony2_Nyumon/feature/6: 6
 
 これらのファイルの変更点を一時的に退避できる．
 
-#### ・```stash -k ```（```save --keep-index```）
+#### ・```stash -k ```（```save --keep-index```）→全てstashされてしまう
 
 ```add```していないファイルのみを```stash```することができる．
 
@@ -472,7 +472,13 @@ $
 
 
 
-### :pushpin: ```push origin [コミットID]:master```：
+### :pushpin: ```push ```
+
+#### ・```push -u origin [作成したブランチ名]```
+
+ローカルで作成したブランチを，リモートにpushする．コミットは無くても良い．
+
+#### ・```push origin [コミットID]:master```：
 
 トラウマコマンド
 
