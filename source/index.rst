@@ -56,8 +56,9 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: 仮想化技術
+   :caption: Infrastructure as Code
 
+   InfrastructureAsCode.md
    ComparisonOfVirtualizationTechnology.md
    CreationOfVirtualServerAndContainer.md
 
