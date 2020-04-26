@@ -101,7 +101,7 @@ switch ($weeks) {
 
 
 
-### :pushpin: ```if```-```else```はできるだけ用いずに初期値と上書き
+### :pushpin: ```if```-```else```の回避方法
 
 #### ・```if```-```else```を用いた場合
 
@@ -111,33 +111,71 @@ switch ($weeks) {
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
+function ()
+{
 // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options)) {
-    foreach ($routeEntity->options as $option) {
-    
-        // if文を通過した場合，メソッドの返却値が格納される．
-        // 通過しない場合，定数が格納される．
-        if ($option->isOptionItemA()) {
-            $result['optionItemA'] = $option->optionItemA();
-        } else {
-            $result['optionItemA'] = noOptionItem;
-            }
-        
-        if ($option->isOptionItemB()) {
-            $result['optionItemB'] = $option->optionItemB();
-        } else {
-            $result['optionItemB'] = noOptionItem;
+    if (!empty($routeEntity->options)) {
+        foreach ($routeEntity->options as $option) {
+            
+            // if文を通過した場合，メソッドの返却値が格納される．
+            // 通過しない場合，定数が格納される．
+            if ($option->isOptionItemA()) {
+                $result['optionItemA'] = $option->optionItemA();
+            } else {
+                $result['optionItemA'] = noOptionItem;
             }
             
-        if ($option->isOptionItemC()) {
-            $result['optionItemC'] = $option->optionItemC();
-        } else {
-            $result['optionItemC'] = noOptionItem;
-            }		
-    };
+            if ($option->isOptionItemB()) {
+                $result['optionItemB'] = $option->optionItemB();
+            } else {
+                $result['optionItemB'] = noOptionItem;
+            }
+            
+            if ($option->isOptionItemC()) {
+                $result['optionItemC'] = $option->optionItemC();
+            } else {
+                $result['optionItemC'] = noOptionItem;
+            }
+        };
+    }
+    
+    return $result;
 }
 
-return $result;
+```
+
+#### ・三項演算子を用いた場合
+
+よりすっきりした書き方になる．
+
+```PHP
+// マジックナンバーを使わずに，定数として定義
+const noOptionItem = 0;
+
+function ($result)
+{
+// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+    if (!empty($routeEntity->options)) {
+        foreach ($routeEntity->options as $option) {
+    
+            // if文を通過した場合，メソッドの返却値が格納される．
+            // 通過しない場合，定数が格納される．
+            $result['optionItemA'] = ($option->isOptionItemA()) 
+              ? $option->optionItemA() 
+              : noOptionItem;
+    
+            $result['optionItemB'] = ($option->isOptionItemB()) 
+              ? $option->optionItemB() 
+              : noOptionItem;
+    
+            $result['optionItemC'] = ($option->isOptionItemC()) 
+              ? $option->optionItemC() 
+              : noOptionItem;
+        };
+    }
+    
+    return $result;
+}
 ```
 
 #### ・初期値と上書きのロジックを用いた場合
@@ -148,37 +186,44 @@ return $result;
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
-// 初期値0を設定
-$result['optionItemA'] = noOptionItem;
-$result['optionItemB'] = noOptionItem;
-$result['optionItemC'] = noOptionItem;
+function ($result)
+{
+    // マジックナンバーを使わずに，定数として定義
+    const noOptionItem = 0;
 
-// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-if(!empty($routeEntity->options)) {
-    foreach ($routeEntity->options as $option) {
+    // 初期値0を設定
+    $result['optionItemA'] = noOptionItem;
+    $result['optionItemB'] = noOptionItem;
+    $result['optionItemC'] = noOptionItem;
+
+    // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+    if(!empty($routeEntity->options)) {
+        foreach ($routeEntity->options as $option) {
+            
+            // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
+            // 通過しない場合，初期値0が用いられる．
+            if ($option->isOptionItemA()) {
+                $result['optionItemA'] = $option->optionItemA();
+            }
+            
+            if ($option->isOptionItemB()) {
+                $result['optionItemB'] = $option->optionItemB();
+            }
+            
+            if ($option->isOptionItemC()) {
+                $result['optionItemC'] = $option->optionItemC();
+            }
+        };
+    }
     
-        // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
-        // 通過しない場合，初期値0が用いられる．
-        if ($option->isOptionItemA()) {
-            $result['optionItemA'] = $option->optionItemA();
-        }
-        
-        if ($option->isOptionItemB()) {
-            $result['optionItemB'] = $option->optionItemB();
-        }		
-
-        if ($option->isOptionItemC()) {
-            $result['optionItemC'] = $option->optionItemC();
-        }
-    };
+    return $result;
 }
 
-return $result;
 ```
 
 
 
-### :pushpin: ```if```-```elseif```-```else```は用いずに早期リターン
+### :pushpin: ```if```-```elseif```-```else```の回避方法
 
 #### ・決定表を用いた条件分岐の整理
 
