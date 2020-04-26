@@ -1,77 +1,70 @@
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "instance_app_name" {}
+variable "instance_type" {}
+variable "sg_outbound_cidr_block" {}
+variable "r53_alb_dns_name" {}
+variable "r53_alb_zone_id" {}
+variable "r53_domain_name" {}
+variable "r53_record_set_name" {}
+variable "r53_record_type" {}
+variable "region" {}
+variable "subnet_public_1a_cidr_block" {}
+variable "subnet_public_1c_cidr_block" {}
+variable "vpc_cidr_block" {}
+
 # providerセクション：プロバイダの認証情報
 # resourceセクション：Terraform内で管理するデータを以下の形式で記述．
 #                  （"リソースタイプ" "リソース名"）
 
-#=============
-# AWS
-#=============
+#============
+# AWS認証情報
+#============
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.region
 }
 
-#=============
-# EC2
-#=============
-resource "aws_instance" "sphinx-www-1a" {
-  ami = ""
-  instance_type = var.instance_type
-}
-
 #================
-# Securirty Group
+# Security Gruop
 #================
-resource "aws_security_group" "sphinx-security-group" {
-
+module "module_security_group" {
+  source = "modules/security_group"
+  instance_app_name = var.instance_app_name
+  sg_inbound_cidr_block = var.sg_outbound_cidr_block
+  sg_outbound_cidr_block = var.sg_outbound_cidr_block
 }
 
 #=============
-# Route 53
+# Route53
 #=============
-resource "aws_route53" "sphinx-route53" {
-  
+module "module_route53" {
+  source = "modules/route53"
+  r53_alb_dns_name = var.r53_alb_dns_name
+  r53_alb_zone_id = var.r53_alb_zone_id
+  r53_domain_name = var.r53_domain_name
+  r53_record_set_name = var.r53_record_set_name
+  r53_record_type = var.r53_record_type
 }
 
 #=============
 # VPC
 #=============
-resource "aws_vpc" "sphinx-vpc" {
-  cidr_block = var.cidr_block
+module "module_vpc" {
+  source = "modules/vpc"
+  instance_app_name = var.instance_app_name
+  region = var.region
+  subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
+  subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
+  vpc_cidr_block = var.vpc_cidr_block
 }
 
 #=============
-# Subnet
+# EC2
 #=============
-resource "aws_subnet" "sphinx-public-subnet-1a" {
-  vpc_id = aws_vpc.sphinx-vpc.id
-  cidr_block = var.public_1a_cidr_block
-  availability_zone = var.region
-}
-
-resource "aws_subnet" "sphinx-public-subnet-1c" {
-  vpc_id = aws_vpc.sphinx-vpc.id
-  cidr_block = var.public_1c_cidr_block
-  availability_zone = var.region
-}
-
-#=============
-# Route Table
-#=============
-resource "aws_route_table" "sphinx-public-route-table" {
-  vpc_id = aws_vpc.sphinx-vpc.id
-  route {}
-}
-
-#==============================
-# Subnet と Route Table の紐付け
-#==============================
-resource "aws_route_table_association" "sphinx-publicroute-table-association" {
-  subnet_id = aws_subnet.sphinx-public-subnet-1a
-  route_table_id = aws_route_table.sphinx-public-route-table.id
-}
-
-resource "aws_route_table_association" "sphinx-publicroute-table-association" {
-  subnet_id = aws_subnet.sphinx-public-subnet-1c
-  route_table_id = aws_route_table.sphinx-public-route-table.id
+module "module_ec2" {
+  source = "modules/ec2"
+  instance_app_name = var.instance_app_name
+  instance_type = var.instance_type
 }
