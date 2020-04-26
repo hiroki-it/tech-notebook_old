@@ -339,7 +339,7 @@ http://localhost:8080/
 
 例えば，プライベートIPアドレスの４つのオクテット（第一オクテットから第四オクテットまで）が１Byteの容量をもち，IPアドレス全体で４Byteの容量をもつ．ちなみに，```172```から始まるIPアドレスは，クラスBである．　
 
-![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスとbitの関係.png)
+![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスとbitの関係.png)
 
 
 
@@ -702,10 +702,19 @@ PHPにおいては，APサーバソフトウェア（PHPならPHP-FPM，Javaな�
 #### ・（1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
 
 1. クライアントPCは，完全修飾ドメイン名を，フォワードProxyサーバにリクエスト．
+
 2. フォワードProxyサーバは，完全修飾ドメイン名を，リバースProxyサーバに代理リクエスト．
+
 3. リバースProxyサーバは，完全修飾ドメイン名を，DNSサーバに代理リクエスト．
+
 4. DNSサーバは，完全修飾ドメインにマッピングされるIPv4アドレスを取得し，リバースProxyサーバにレスポンス．
+
+   |     完全修飾ドメイン名      |  ⇄   |     IPv4アドレス      |
+   | :-------------------------: | :--: | :-------------------: |
+   | ```http://www.kagoya.com``` |      | ```203.142.205.139``` |
+
 5. リバースProxyサーバは，IPv4アドレスを，フォワードProxyサーバに代理レスポンス．（※NATによるIPv4アドレスのネットワーク間変換が起こる）
+
 6. フォワードProxyサーバは，IPv4アドレスを，クライアントPCに代理レスポンス．
 
 #### ・（2）IPアドレスに対応するWebページのレスポンス
