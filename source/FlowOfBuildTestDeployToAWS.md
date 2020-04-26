@@ -18,7 +18,12 @@
 
 **【Iaasアプリ例】**
 
-Amazon Web Service，Google Cloud Platform，Microsoft Azure，IBM Cloud
+| アプリケーション名    | 提供      |
+| --------------------- | --------- |
+| Amazon Web Service    | Amazon    |
+| Google Cloud Platform | Google    |
+| Microsoft Azure       | Microsoft |
+| IBM Cloud             | IBM       |
 
 
 
@@ -26,7 +31,11 @@ Amazon Web Service，Google Cloud Platform，Microsoft Azure，IBM Cloud
 
 **【Paasアプリ例】**
 
-Google App Engine，Windows Azure
+| アプリケーション名 | 提供      |
+| ------------------ | --------- |
+| Google App Engine  | Google    |
+| Windows Azure      | Microsoft |
+| GitHub Pages       | GitHub    |
 
 
 
@@ -127,11 +136,38 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 
 
-### :pushpin: Route 53（＝DNSサーバ）
+### :pushpin: Route53（＝DNSサーバ）
 
 #### ・Route53とは
 
-クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とインスタンスのグローバルIPアドレスをマッピングしている．
+クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とクラウドWebサーバのグローバルIPアドレスをマッピングしている．
+
+![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Route53の仕組み.png)
+
+#### ・（1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
+
+1. クライアントPCは，完全修飾ドメイン名を，フォワードProxyサーバにリクエスト．
+
+2. フォワードProxyサーバは，完全修飾ドメイン名を，リバースProxyサーバに代理リクエスト．
+
+3. リバースProxyサーバは，完全修飾ドメイン名を，DNSサーバに代理リクエスト．
+
+4. Route53は，DNSサーバとして機能する．完全修飾ドメインにマッピングされるIPv4アドレスを取得し，リバースProxyサーバにレスポンス．
+
+   |     完全修飾ドメイン名      |  ⇄   |     IPv4アドレス      |
+   | :-------------------------: | :--: | :-------------------: |
+   | ```http://www.kagoya.com``` |      | ```203.142.205.139``` |
+
+5. リバースProxyサーバは，IPv4アドレスを，フォワードProxyサーバに代理レスポンス．（※NATによるIPv4アドレスのネットワーク間変換が起こる）
+
+6. フォワードProxyサーバは，IPv4アドレスを，クライアントPCに代理レスポンス．
+
+#### ・（2）IPアドレスに対応するWebページのレスポンス
+
+1. クライアントPCは，レスポンスされたIPv4アドレスを基に，Webページを，リバースProxyサーバにリクエスト．
+2. リバースProxyサーバは，Webページを，Webサーバに代理リクエスト．
+3. クラウドWebサーバは，Webページを，リバースProxyサーバにレスポンス．
+4. リバースProxyサーバは，Webページを，クライアントPCに代理レスポンス．
 
 
 
@@ -274,11 +310,23 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 #### ・ELBとは
 
-デュアル化させたインスタンスへのアクセスを自動的に分配し，サーバへの負荷を緩和するサービス．
+デュアル化させたインスタンスへのアクセスを自動的に分配し，サーバへの負荷を緩和するサービス．機能別に，3種類に分類できる．
 
-#### ・ELBの種類
+| ロードバランサー名             | 機能 |
+| ------------------------------ | ---- |
+| NLB：Network Load Balancer     |      |
+| ALB：Application Load Balancer |      |
+| CLB：Classic Load Balancer     |      |
 
-機能別に，NLB：Network Load Balancer，ALB：Application Load Balancer，CLB：Classic Load Balancer，の3種類に分類できる．
+#### ・設定項目
+
+| 設定項目   | 内容                                               |
+| ---------- | -------------------------------------------------- |
+| リスナー   | 受け取るプロトコルと開放するポート番号を設定       |
+| ルール     | トラフィックの転送時の条件と，そのアクションを設定 |
+| ターゲット | トラフィックの転送先のリソースとエンドポイント     |
+
+![ターゲットグループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ターゲットグループ.jpg)
 
 
 
@@ -299,10 +347,10 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 ### :pushpin: Internet Gateway，NAT Gateway
 
 
-|              |                       Internet Gateway                       |   NAT Gateway   |
-| :----------: | :----------------------------------------------------------: | :-------------: |
-|   **機能**   | グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT） | NAPT（動的NAT） |
-| **設置場所** |                            VPC上                             | Public subnet内 |
+|              | Internet Gateway                                             | NAT Gateway     |
+| :----------- | :----------------------------------------------------------- | :-------------- |
+| **機能**     | グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT） | NAPT（動的NAT） |
+| **設置場所** | VPC上                                                        | Public subnet内 |
 
 #### ・Internet Gatewayとは
 
@@ -335,19 +383,31 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 ### :pushpin: Route Table = マッピングテーブルに相当
 
+#### ・Route Tableとは
+
 クラウドルータのマッピングテーブルとして働く．ルータについては，NATとNAPTを参照せよ．
 
 | Destination（Private IPの範囲） |                Target                 |
 | :-----------------------------: | :-----------------------------------: |
 |        ```xx.x.x.x/xx```        | Destinationの範囲内だった場合の送信先 |
 
-**【具体例1】**
+#### ・具体例1
 
-図中で，サブネット2にはルートテーブル1が関連づけられており，サブネット2内のインスタンスの送信先のPrivate IPが，```10.0.0.0/16```の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，範囲外にあれば通信を破棄する．
+以下の図中で，サブネット2にはルートテーブル1が関連づけられており，サブネット2内のインスタンスの送信先のPrivate IPが，```10.0.0.0/16```の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，範囲外にあれば通信を破棄する．
 
-**【具体例2】**
+| Destination（Private IPの範囲） |  Target  |
+| :-----------------------------: | :------: |
+|        ```10.0.0.0/16```        |  local   |
+|       指定範囲以外の場合        | 通信破棄 |
 
-図中で，サブネット3にはルートテーブル2が関連づけられており，サブネット3内のインスタンスの送信先のPrivate IPが，```10.0.0.0/16```の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，```0.0.0.0/0```（全てのIPアドレス）の範囲内にあれば，インターネットゲートウェイを送信先に選ぶ．
+#### ・具体例2
+
+以下の図中で，サブネット3にはルートテーブル2が関連づけられており，サブネット3内のインスタンスの送信先のPrivate IPが，```10.0.0.0/16```の範囲内にあれば，local（VPC内の他サブネット）を送信先に選び，```0.0.0.0/0```（全てのIPアドレス）の範囲内にあれば，インターネットゲートウェイを送信先に選ぶ．
+
+| Destination（Private IPの範囲） |      Target      |
+| :-----------------------------: | :--------------: |
+|        ```10.0.0.0/16```        |      local       |
+|         ```0.0.0.0/0```         | Internet Gateway |
 
 ![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルートテーブル.png)
 
