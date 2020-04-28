@@ -10,11 +10,16 @@
 
 ### :pushpin: ホスト型仮想化
 
+#### ・ホスト型仮想化とは
+
 ホストOS上で，各サーバを仮想的に構築する．
 
-**【Provider例】**
+#### ・Provider例
 
-VMware Workstation，Oracle VM VirtualBox
+| 名前                 |
+| -------------------- |
+| VMware Workstation   |
+| Oracle VM VirtualBox |
 
 ![ホスト型仮想化](https://user-images.githubusercontent.com/42175286/60386396-3afbd080-9acf-11e9-9094-f61aa839dc04.png)
 
@@ -22,11 +27,17 @@ VMware Workstation，Oracle VM VirtualBox
 
 ### :pushpin: ハイパーバイザー型仮想化
 
+#### ・ハイパーバイザー型仮想化とは
+
 BIOSから起動したハイパーバイザー上で，各サーバを仮想的に構築する（※ホストOSは用いない）．
 
-**【Provider例】**
+#### ・Provider例
 
-VMware vSphere Hypervisor，Xen，KVM
+| 名前                      |
+| ------------------------- |
+| VMware vSphere Hypervisor |
+| Xen                       |
+| KVM                       |
 
 ![ハイパーバイザー型仮想化](https://user-images.githubusercontent.com/42175286/60386395-3afbd080-9acf-11e9-9fbe-6287753cb43a.png)
 
@@ -34,13 +45,19 @@ VMware vSphere Hypervisor，Xen，KVM
 
 ### :pushpin: コンテナ型仮想化
 
+#### ・コンテナ型仮想化とは
+
 ホストOS上で，サーバではなく，サーバとしての機能を持つコンテナを仮想的に構築する．カーネルのリソースを分割できるNamespace（PID namespace，Network namespace，UID namespace）とControl Groupsを用いて，単一のOS上に独立したコンテナを構築する．
 
 → DockerToolboxがちょい違う
 
-**【Provider例】**
+#### ・Provider例
 
-Docker，LXC，OpenVZ
+| 名前   |
+| ------ |
+| Docker |
+| LXC    |
+| OpenVZ |
 
 ![コンテナ型仮想化](https://user-images.githubusercontent.com/42175286/60386394-3afbd080-9acf-11e9-96fd-321a88dbadc5.png)
 
@@ -57,6 +74,8 @@ Docker，LXC，OpenVZ
 
 
 ### :pushpin: 処理速度の違い
+
+#### ・Overheadの小ささ
 
 ゲストOS上のアプリを操作する場合，ホスト型とハイパーバイザ型では，ハードウェアやハイパーバイザーを経由する必要がある．この分だけ，時間（Overhead）を要する．一方で，コンテナ型では，各コンテナがホストOSとカーネルを共有するため，Overheadが小さい．
 
