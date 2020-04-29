@@ -328,15 +328,35 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 
 
 
-## 03-05. Docker Composeによるオーケストレーション
+## 04-01. コンテナオーケストレーション
 
-### :pushpin: docker-compose.yml
+### :pushpin: コンテナオーケストレーションの種類
 
-#### ・docker-compose.ymlとは 
+#### ・単一ホストOS上のコンテナオーケストレーション
 
-異なるDockerfileを基にしたDockerイメージのビルド，コンテナレイヤーの生成，コンテナの構築，コンテナの起動，について，一連の手順を自動的に実行するための設定ファイル．
+単一ホストOS上のコンテナが対象である．異なるDockerfileに基づいて，Dockerイメージのビルド，コンテナレイヤーの生成，コンテナの構築，コンテナの起動，を実行できる．
 
-#### ・設定項目と記述例
+| 名前           |      |
+| -------------- | ---- |
+| Docker Compose |      |
+|                |      |
+|                |      |
+
+#### ・複数ホストOSに渡るコンテナオーケストレーション
+
+複数ホストOS上のコンテナが対象である．どのホストOSのDockerデーモンに対して，どのコンテナに関する操作を行うのかを選択的に命令できる．
+
+| 名前                          |      |
+| ----------------------------- | ---- |
+| Docker Swarm                  |      |
+| Google Kubernetes             |      |
+| AWS Elastic Container Service |      |
+
+
+
+### :pushpin: Docker Compose
+
+#### ・設定項目
 
 | 記述項目                  | 意味                                                         |
 | :------------------------ | :----------------------------------------------------------- |
@@ -350,7 +370,7 @@ Dockerイメージの上にコンテナレイヤーを生成し，コンテナ�
 | **```depends_on:```**      | コンテナが起動する順番．                                     |
 | **```networks:```**        | コンテナ間のネットワークを設定．要勉強．  |
 
-**【記述例】**
+#### ・実装例
 
 ```yml
 version: '3.7'
@@ -401,9 +421,41 @@ services:
       - ./symfony:/var/www/symfony:cached
 ```
 
-#### ・docker-compose.ymlを実行するコマンド
+#### ・```docker-compose```：
 
 | コマンド                                         | 処理                                                         | 注意点                                                       |
 | ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **```docker-compose up -d```**                   | ・Dockerfileを基にイメージのビルド<br>・全てのコンテナレイヤーを生成し，コンテナを構築<br>・コンテナを起動 | すでにコンテナがある場合，それを再起動                       |
 | **```docker-compose run -d -it {イメージ名}```** | ・Dockerfileを基にイメージをビルド<br>・指定のコンテナレイヤーを生成し，コンテナを構築（※依存含む）<br>・コンテナを起動 | すでにコンテナがあっても，それを残して構築／起動．以前のコンテナが削除されずに残ってしまう． |
+
+
+
+### :pushpin: Docker Swarm
+
+![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DockerSwarmの仕組み.png)
+
+
+
+### :pushpin: Google Kubernetes
+
+![Kubernetesの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Kubernetesの仕組み.png)
+
+#### ・Master Node
+
+Kubernetesが実行される物理サーバを指す．
+
+#### ・Worker Node
+
+Dockerが実行される仮想サーバを指す．
+
+#### ・Pod
+
+仮想サーバのホストOS上のコンテナをグループ化したもの．
+
+#### ・Secret
+
+セキュリティに関するデータを管理し，コンテナに選択的に提供するもの．
+
+#### ・Replica Set（Replication Controller）
+
+#### ・Kubectl
