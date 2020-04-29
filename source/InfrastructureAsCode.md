@@ -71,9 +71,18 @@ Ansibleでは，ymlの文法を用いて関数処理を実行できる．
 
 #### ・コード化ツールの種類
 
-| ツール名               | 対象のクラウド |      |
-| ---------------------- | -------------- | ---- |
-| Terraform              | いろいろ       |      |
-| AWS CloudFormation     | AWS            |      |
-| Azure Resource Manager | Azure          |      |
+| 名前                   | 対象のクラウド |
+| ---------------------- | -------------- |
+| Terraform              | いろいろ       |
+| AWS CloudFormation     | AWS            |
+| Azure Resource Manager | Azure          |
 
+### :pushpin: Terraform
+
+#### ・```plan```：
+
+スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
+
+```bash
+terraform plan -var-file="XXX.tfvars"
+```
