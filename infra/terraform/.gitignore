@@ -1,13 +1,13 @@
 #============
 # Folder
 #============
-.terraform/
-modules/security_group/
+production/.terraform/*
+modules/security_group/*
 
 #============
 # File
 #============
-config.tfvars
-terraform.tfstate
-terraform.tfstate.backup
-.terraform.tfstate.lock.info
+production/config.tfvars
+production/terraform.tfstate
+production/terraform.tfstate.backup
+production/.terraform.tfstate.lock.info

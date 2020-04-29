@@ -7,7 +7,6 @@ variable "aws_secret_key" {}
 variable "region" {}
 
 // VPC
-variable "vpc_id" {}
 variable "vpc_cidr_block" {}
 
 // Security Group
@@ -19,8 +18,6 @@ variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
 
 // Route53
-variable "r53_alb_dns_name" {}
-variable "r53_alb_zone_id" {}
 variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
 variable "r53_record_type" {}
@@ -78,8 +75,8 @@ module "alb_module" {
   region = var.region
   vpc_id = module.vpc_module.vpc_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
-  public_subnet_1a_id = module.vpc_module.subnet_public_1a_id
-  public_subnet_1c_id = module.vpc_module.subnet_public_1c_id
+  subnet_public_1a_id = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id = module.vpc_module.subnet_public_1c_id
   instance_app_name = var.instance_app_name
 }
 
