@@ -1,6 +1,6 @@
-#=================
-# Input To Module
-#=================
+#=============
+# Input Value
+#=============
 variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
 variable "r53_record_type" {}
