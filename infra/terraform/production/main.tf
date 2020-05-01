@@ -9,13 +9,13 @@ variable "region" {}
 // VPC
 variable "vpc_cidr_block" {}
 
-// Security Group
-variable "sg_inbound_cidr_block" {}
-variable "sg_outbound_cidr_block" {}
-
 // Subnet
 variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
+
+// Security Group
+variable "sg_inbound_cidr_block" {}
+variable "sg_outbound_cidr_block" {}
 
 // Internet Gateway
 variable "igw_cidr_block" {}
@@ -26,7 +26,6 @@ variable "r53_record_set_name" {}
 variable "r53_record_type" {}
 
 // EC2 Instance
-variable "instance_number" {}
 variable "instance_app_name" {}
 
 // Key Pair
@@ -108,16 +107,45 @@ module "route53_module" {
 }
 
 #==============
+# AMI
+#==============
+module "ami_module" {
+  source = "../modules/ami"
+}
+
+#==============
 # EC2 Instance
 #==============
-module "ec2_instance_module" {
+resource "aws_instance" "www-1a" {
+  ami = module.ami_module.ami_amazon_linux_2_id
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [module.security_group_module.security_group_instance_id]
+  subnet_id = module.vpc_module.subnet_public_1a_id
+  disable_api_termination = true
+  monitoring = true
+  tags = {
+    Name = "${var.instance_app_name}-www-1a"
+    Subnet-status = "public"
+  }
+}
 
-  // モジュールのResourceを参照.
-  source = "../modules/ec2_instance"
+resource "aws_instance" "www-1c" {
+  ami = module.ami_module.ami_amazon_linux_2_id
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [module.security_group_module.security_group_instance_id]
+  subnet_id = module.vpc_module.subnet_public_1c_id
+  disable_api_termination = true
+  monitoring = true
+  tags = {
+    Name = "${var.instance_app_name}-www-1c"
+    Subnet-status = "public"
+  }
+}
 
-  // モジュールに値を注入.
-  instance_number   = var.instance_number
-  instance_app_name = var.instance_app_name
-  key_name          = var.key_name
-  public_key_path   = var.public_key_path
+#==============
+# Key Pair
+#==============
+resource "aws_key_pair" "key_pair" {
+  key_name = var.key_name
+  public_key = file(var.public_key_path)
 }

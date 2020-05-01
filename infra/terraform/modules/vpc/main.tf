@@ -24,14 +24,13 @@ resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr_block
   tags = {
     Name = "${var.instance_app_name}-vpc"
-
   }
 }
 
 #=============
 # Subnet
 #=============
-resource "aws_subnet" "public_1a" {
+resource "aws_subnet" "subnet_public_1a" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   cidr_block = var.subnet_public_1a_cidr_block
   availability_zone = "${var.region}-1a"
@@ -40,7 +39,7 @@ resource "aws_subnet" "public_1a" {
   }
 }
 
-resource "aws_subnet" "public_1c" {
+resource "aws_subnet" "subnet_public_1c" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   cidr_block = var.subnet_public_1c_cidr_block
   availability_zone = "${var.region}-1c"
@@ -52,7 +51,7 @@ resource "aws_subnet" "public_1c" {
 #=================
 # Internet Gateway
 #=================
-resource "aws_internet_gateway" "igw" {
+resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   tags = {
     Name = "${var.instance_app_name}-internet-gateway"
@@ -62,11 +61,11 @@ resource "aws_internet_gateway" "igw" {
 #=============
 # Route Table
 #=============
-resource "aws_route_table" "public_rt" {
+resource "aws_route_table" "route_table_public" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   route {
     cidr_block = var.igw_cidr_block
-    gateway_id = aws_internet_gateway.igw.id
+    gateway_id = aws_internet_gateway.internet_gateway.id
   }
   tags = {
     Name = "${var.instance_app_name}-public-route-table"
@@ -76,12 +75,12 @@ resource "aws_route_table" "public_rt" {
 #==============================
 # Subnet と Route Table の紐付け
 #==============================
-resource "aws_route_table_association" "public_1a" {
-  subnet_id = aws_subnet.public_1a.id // アタッチするSubnetのID
-  route_table_id = aws_route_table.public_rt.id // アタッチするRoute TableのID
+resource "aws_route_table_association" "route_table_association_public_1a" {
+  subnet_id = aws_subnet.subnet_public_1a.id // アタッチするSubnetのID
+  route_table_id = aws_route_table.route_table_public.id // アタッチするRoute TableのID
 }
 
-resource "aws_route_table_association" "public_1c" {
-  subnet_id = aws_subnet.public_1c.id
-  route_table_id = aws_route_table.public_rt.id
+resource "aws_route_table_association" "route_table_association_public_1c" {
+  subnet_id = aws_subnet.subnet_public_1c.id
+  route_table_id = aws_route_table.route_table_public.id
 }
