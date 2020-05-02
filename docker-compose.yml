@@ -11,4 +11,7 @@ services:
       - ./:/var/www/sphinx
       - ./logs/web:/tmp
     ports:
-      - "8000:80"
+      - "8080:80"
+    environment:
+      TZ: "Asia/Tokyo"
+      LANG: "ja_JP.UTF-8"
