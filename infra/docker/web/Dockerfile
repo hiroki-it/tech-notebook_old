@@ -25,11 +25,8 @@ RUN pip install \
     sphinxcontrib-sqltable
 
 # ディレクトリの設定
-ENV CURRENT_DIR="var/www/sphinx"
+ENV CURRENT_DIR="/var/www/sphinx"
 
 # ssh接続後のディレクトリ
 WORKDIR ${CURRENT_DIR}
-
-# ポート番号
-EXPOSE 8000
 
