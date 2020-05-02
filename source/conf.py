@@ -25,13 +25,18 @@ release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 
+# テーマの読み込み
+import sphinx_rtd_theme
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 # 拡張機能を追加
 extensions = [
+    'sphinx_rtd_theme',
     'recommonmark',
     'sphinx_markdown_tables',
+    'sphinxcontrib.sqltable'
 ]
 
 # 拡張子を設定
