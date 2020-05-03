@@ -1,31 +1,13 @@
-# ベースイメージのバージョン．
-ARG version="6.0"
+# ベースイメージのインストール
+ARG OS_VERSION="8"
+FROM centos:${OS_VERSION}
+LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-# ベースとなるDockerイメージ．
-FROM readthedocs/build:${version}
+# nginxのインストール
+RUN dnf update -y \
+  && dnf install -y nginx
 
-# Dockrfileの作成者情報
-LABEL maintainer="Hiroki <hasegawafeedshop@gmail.com>"
+COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
 
-# ベースイメージ内のPythonのバージョンを，
-# pyenvで切り替える
-RUN pyenv global 3.8.0
-
-# Dockerfileではデフォルトでroot権限になるので，sudoは不要
-RUN pip install \
-    sphinx \
-    # pipのアップグレード
-    --upgrade pip \
-    # テーマをインストール
-    sphinx_rtd_theme \
-    # 拡張機能をインストール
-    recommonmark \
-    sphinx_markdown_tables \
-    sphinxcontrib-sqltable
-
-# ディレクトリの設定
-ENV current_dir="/var/www/sphinx"
-
-# ssh接続後のディレクトリ
-WORKDIR ${current_dir}
-
+# nginxをデーモン起動
+CMD ["nginx -g daemon off"]
