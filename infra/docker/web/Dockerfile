@@ -7,8 +7,7 @@ FROM readthedocs/build:${version}
 # Dockrfileの作成者情報
 LABEL maintainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-# ベースイメージ内で，
-# Pythonのバージョンは一通りインストールされているので，
+# ベースイメージ内のPythonのバージョンを，
 # pyenvで切り替える
 RUN pyenv global 3.8.0
 
@@ -25,8 +24,8 @@ RUN pip install \
     sphinxcontrib-sqltable
 
 # ディレクトリの設定
-ENV CURRENT_DIR="/var/www/sphinx"
+ENV current_dir="/var/www/sphinx"
 
 # ssh接続後のディレクトリ
-WORKDIR ${CURRENT_DIR}
+WORKDIR ${current_dir}
 
