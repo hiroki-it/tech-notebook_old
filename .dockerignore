@@ -1,8 +1,9 @@
 #============
 # Folder
 #============
-.idea/
 build/
+source/.idea/
+source/images/
 
 #============
 # File
