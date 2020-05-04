@@ -117,7 +117,7 @@ DockerHubには，カスタマイズする上でのベースとなるDockerイ�
 | **```docker push {DockerHubユーザ名}/{イメージ名}:{バージョンタグ}```** | ホストOSで作成したDockerイメージをレジストリ側にアップロード． |
 | **```docker images```**                                      | ホストOSにインストールされたDockerイメージを確認．           |
 | **```docker image prune```**                                 | 未使用のDockerイメージを一括で削除．                         |
-| **```docker rmi $(sudo docker images  --filter "dangling=true" -aq)```** | タグ名のないイメージを全て削除．                             |
+| **```docker rmi --force $(sudo docker images --filter "dangling=true" -aq)```** | タグ名のないイメージを全て削除．                             |
 
 
 
@@ -170,7 +170,20 @@ CMD ["nginx -g daemon off"]
 EXPOSE 80
 ```
 
-#### ・Dockerfileの記述方法の工夫
+#### ・Dockerイメージのビルドを行うコマンド
+
+| コマンド                                                     | 処理                                                         | 注意点                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ |
+| **```docker build --file Dockerfile --tag tech-notebook:latest --no-cache .```** | キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド | コマンド最後のドットを忘れない |
+
+#### ・Dockerfileを使用するメリット
+
+Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
+
+
+### :pushpin: Dockerイメージの軽量化
+
+#### ・```RUN```コマンドをまとめる．
 
 Dockerfileの各命令によって，イメージ レイヤーが一つ増えてしまうため，同じ命令に異なるパラメータを与える時は，これを一つにまとめてしまう方が良い．例えば，以下のような時，
 
@@ -182,7 +195,7 @@ RUN yum -y install php-mbstring
 RUN yum -y install php-pear
 ```
 
-これは，以下のように一行でまとめられ...
+これは，以下のように一行でまとめられる．イメージレイヤーが少なくなり，Dockerイメージを軽量化することができる．
 
 ```dockerfile
 # ベースイメージ上に，複数のソフトウェアをインストール
@@ -200,15 +213,11 @@ RUN yum -y install\
      php-pear
 ```
 
-#### ・Dockerイメージのビルドを行うコマンド
+#### ・マルチステージビルド
 
-| コマンド                                                     | 処理                                                         | 注意点                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ |
-| **```docker build --file Dockerfile --tag tech-notebook:latest --no-cache .```** | キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド | コマンド最後のドットを忘れない |
-
-#### ・Dockerfileを使用するメリット
-
-Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
+```dockerfile
+# ここに記述例
+```
 
 
 
