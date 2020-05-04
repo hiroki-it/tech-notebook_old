@@ -86,6 +86,10 @@ Google Drive，Dropbox
 
 ## 03-01. ミドルウェア
 
+### :pushpin: Webシステムを構成するサーバのミドルウェア
+
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
+
 ### :pushpin: Webサーバソフトウェア
 
 #### ・Apache
@@ -105,6 +109,10 @@ Google Drive，Dropbox
 ### :pushpin: APサーバソフトウェア
 
 #### ・Apache内蔵
+
+#### ・CGIプログラム：Common Gateway Interface
+
+![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CGIの仕組み.png)
 
 #### ・NGINX Unit
 
