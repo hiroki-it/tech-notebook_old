@@ -3,14 +3,13 @@ ARG OS_VERSION="8"
 FROM centos:${OS_VERSION}
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-COPY /infra/docker/www/package*.json /
-
 RUN dnf update -y \
+  # nginxインストール
   && dnf install -y \
-      # Sphinx-js要件
+      nginx \
       epel-release \
-      nodejs \
-      npm \
-  && npm install
+  && rm -r /var/cache/dnf
 
-CMD [ "node", "server.js" ]
+COPY infra/docker/www/nginx.conf /etc/nginx/nginx.conf
+
+CMD ["nginx", "-g", "daemon off;"]
