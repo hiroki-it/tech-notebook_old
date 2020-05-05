@@ -1,17 +1,36 @@
 version: "3.7"
 
 services:
-  web:
-    container_name: sphinx
+
+  www:
+    container_name: sphinx-www
     build:
       context: .
-      dockerfile: infra/docker/web/Dockerfile
+      image: tech-notebook/www:latest
+      dockerfile: infra/docker/www/Dockerfile
     tty: true
-    volumes:
-      - ./:/var/www/sphinx
-      - ./logs/web:/tmp
     ports:
       - "8080:80"
+    volumes:
+      - ./source:/var/www/sphinx
+      - ./logs/www:/tmp
+    environment:
+      TZ: "Asia/Tokyo"
+      LANG: "ja_JP.UTF-8"
+    working_dir: /var/www/sphinx
+    depends_on:
+      - app
+
+  app:
+    container_name: sphinx-app
+    build:
+      context: .
+      image: tech-notebook/app:latest
+      dockerfile: infra/docker/app/Dockerfile
+    tty: true
+    volumes:
+      - ./source:/var/www/sphinx
+      - ./logs/www:/tmp
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
