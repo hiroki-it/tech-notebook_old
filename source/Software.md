@@ -90,23 +90,21 @@ Google Drive，Dropbox
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
 
-### :pushpin: Webサーバソフトウェア
+### :pushpin: Webサーバとしてのミドルウェア
+
+詳しくは，Webシステムにおけるサーバを参照．
 
 #### ・Apache
 
 #### ・Nginx
 
-```nginx.conf```に以下のように記述する．
-
-```nginx
-# ここに記述例
-```
+![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
 
 #### ・Node.js
 
 
 
-### :pushpin: APサーバソフトウェア
+### :pushpin: APサーバとしてのミドルウェア
 
 #### ・Apache内蔵
 
