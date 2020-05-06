@@ -6,8 +6,8 @@ services:
     container_name: sphinx-www
     build:
       context: .
-      image: tech-notebook/www:latest
       dockerfile: infra/docker/www/Dockerfile
+    image: tech-notebook/www:latest
     tty: true
     ports:
       - "8080:80"
@@ -25,8 +25,8 @@ services:
     container_name: sphinx-app
     build:
       context: .
-      image: tech-notebook/app:latest
       dockerfile: infra/docker/app/Dockerfile
+    image: tech-notebook/app:latest
     tty: true
     volumes:
       - ./build/html:/var/app/sphinx
