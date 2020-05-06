@@ -12,12 +12,11 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./build/html:/var/www/sphinx
+      - ./:/var/www/tech-notebook
       - ./logs/www:/tmp
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
-    working_dir: /var/www/sphinx
     depends_on:
       - app
 
@@ -29,8 +28,9 @@ services:
     image: tech-notebook/app:latest
     tty: true
     volumes:
-      - ./build/html:/var/app/sphinx
+      - ./:/var/www/tech-notebook
       - ./logs/app:/tmp
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
+    working_dir: /var/www/tech-notebook
