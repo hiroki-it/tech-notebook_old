@@ -50,7 +50,7 @@ class Example
 $oneD = call_user_func_array(
             'array_merge',
             $twoD
-            ),
+            );
 ```
 
 #### ・多次元配列でキー名から値を取得
@@ -79,7 +79,7 @@ $array = [
 この配列の```score```キーから値を取り出し，一次元配列を生成する．
 
 ```PHP
-array_column(array, "score")
+array_column($array, "score");
 
 // Array
 // (

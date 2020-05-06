@@ -32,7 +32,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: JavaScript
       
    PrototypeBasedObjectOriented.md
-   RenderingPageAndFiringEvent.md
+   PageRenderingAndFiringEvent.md
 
 .. toctree::
    :maxdepth: 1
