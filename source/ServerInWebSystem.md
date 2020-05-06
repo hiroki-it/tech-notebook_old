@@ -6,7 +6,7 @@
 
 #### ・WebサーバとしてのNginxとは
 
-
+![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
 
 Webサーバのミドルウェアとして機能する．
 
@@ -30,7 +30,7 @@ http {
     # リクエストのタウムアウト秒数
     keepalive_timeout 65;
     
-    # リクエストメッセージを送信するサーバ
+    # リクエストメッセージを受信するサーバ
     server {
         # リクエスト受信ために開放するポート番号
         listen       80;
@@ -40,8 +40,8 @@ http {
         root         /var/www/source;
         # エントリーポイント
         index        index.html index.htm;
-        # リクエストの処理方法
-        location ~ \.py${
+        # リクエストメッセージの処理条件
+        location / {
         
         }
     }
@@ -56,7 +56,7 @@ http {
 
 ```nginx
 # 1. ルートが『/』のみの場合．
-location  = / {
+location = / {
 
 }
 
@@ -70,14 +70,16 @@ location ~* \.(gif|jpg|jpeg)$ {
 
 }
 
-# 5. ルートが『/docs/』で始まる全ての場合．
+# 5-1. ルートが『/docs/』で始まる全ての場合．
 location /docs/ {
 
 }
 
-# 6. ルートが『/』で始まる全ての場合
-location  / {
-
+# 5-2. ルートが『/』で始まる全ての場合
+location / {
+    # 『/.aaa.html』を探し，『/.aaa.html/』もなければ，『/index.html』で200レスポンス
+    # 全てがない場合，404レスポンス．
+    try_files $uri $uri/ /index.html =404;
 }
 ```
 
