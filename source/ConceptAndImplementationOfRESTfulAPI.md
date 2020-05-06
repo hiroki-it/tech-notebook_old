@@ -27,8 +27,6 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 
 ## 02-01. RESTful APIへのリクエスト
 
-
-
 ### :pushpin: RESTfulにおけるデータの送信方法
 
 #### ・エンドポイントとは
