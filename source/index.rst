@@ -29,6 +29,13 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
+   :caption: JavaScript
+      
+   PrototypeBasedObjectOriented.md
+   RenderingPageAndFiringEvent.md
+
+.. toctree::
+   :maxdepth: 1
    :caption: アーキテクチャ
 
    DomainDrivenDesign.md
@@ -38,7 +45,7 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: データベース
 
-   OperatingDatabase.md
+   OperationOfDatabase.md
 
 .. toctree::
    :maxdepth: 1
@@ -52,6 +59,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: ネットワーク
 
    HowTheInternetWorks.md
+   ServerInWebSystem.md
    FlowOfBuildTestDeployToAWS.md
 
 .. toctree::
@@ -60,19 +68,14 @@ Hiroki tech-notebook ドキュメントサイト
 
    InfrastructureAsCode.md
    ComparisonOfVirtualizationTechnology.md
-   CreationOfVirtualServerAndContainer.md
+   VirtualServerVsContainer.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: ソフトウェアとハードウェアの連携
+   :caption: ソフトウェアからハードウェアへの命令伝達
 
    Software.md
    Hardware.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: ハードウェアに対する命令
-
    MachineLanguageAndRadix.md
 
 .. toctree::
@@ -83,25 +86,18 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: システム開発
+   :caption: システム開発の流れ
 
    SystemDevelopmentFlow.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: JavaScript
-      
-   PrototypeBasedObjectOriented.md
-   RenderingPageAndFiringEvent.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: R言語
-
-   StatisticalAnalysis.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Git
 
    TipsOfGit.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: R言語
+
+   StatisticalAnalysis.md
