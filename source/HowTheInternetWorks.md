@@ -140,8 +140,6 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 ```
 
-
-
 #### ・各部品の様々な組み合わせ
 
 ![ホスト名とドメイン名の組み合わせの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ホスト名とドメイン名の組み合わせの種類.gif)
@@ -494,11 +492,13 @@ Webサーバ，APサーバ，DBサーバによるネットワークの仕組み�
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
 
-### :pushpin: WebサーバソフトウェアをもつWebサーバ
+### :pushpin: Webサーバ
 
 #### ・Webサーバの役割
 
-Webサーバソフトウェア（Apache，Nginxなど）がインストールされている．また，Web兼APサーバソフトウェア（NGINX Unit）がインストールされていることもある．
+ミドルウェア（Apache，Nginxなど）がインストールされている．また，Web兼APサーバのミドルウェアとして機能する（NGINX Unit）がインストールされていることもある．
+
+![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
 
 |                                | Webサーバ |  →   | APサーバ |  →   |  DBサーバ  |
 | ------------------------------ | :-------: | :--: | :------: | :--: | :--------: |
@@ -588,11 +588,11 @@ $request->get('hoge');
 
 
 
-### :pushpin: APサーバソフトウェアをもつAPサーバ
+### :pushpin: ​APサーバ
 
 #### ・APサーバの役割
 
-PHPにおいては，APサーバソフトウェア（PHPならPHP-FPM，JavaならTomcat）がインストールされている．
+ミドルウェア（PHPならPHP-FPM，JavaならTomcat）がインストールされている．
 
 |                                | Webサーバ |  →   | APサーバ |  →   |  DBサーバ  |
 | ------------------------------ | :-------: | :--: | :------: | :--: | :--------: |
@@ -618,13 +618,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
   サーバ自体のスペックをより高くすることで，サーバ当たりの処理能力を向上させる．その逆は，スケールダウン．設定で，仮想サーバのスペックを上げることも，これに該当する．
 
-  ![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアップ.png)
+![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアップ.png)
 
 #### ・スケールアウト ⇔ スケールイン
 
   サーバの台数を増やすことで，サーバ全体の処理能力を向上させる．その逆は，スケールイン．
 
-  ![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアウト.png)
+![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアウト.png)
 
 
 
@@ -716,9 +716,19 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 
 
+### :pushpin: リバースProxyサーバの実現方法
+
+#### ・Nginx
+
+Webサーバとしてではなく，リバースProxyサーバとして使用し，代理リクエストやキャッシュを行わせることが可能．
+
+![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/リバースプロキシサーバとしてのNginx.png)
+
+
+
 ### :pushpin: フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
 
-![IPアドレスと完全修飾ドメイン名のマッピング3.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
+![IPアドレスと完全修飾ドメイン名のマッピング3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
 
 #### ・（1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
 
