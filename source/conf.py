@@ -96,6 +96,8 @@ html_theme_options = {
 # カスタムcssファイルのディレクトリを指定
 html_static_path = ["_static"]
 
+# ViewPageSourceの表示／非表示を設定
+html_show_sourcelink = False
 
 # カスタムcssファイルを読み込み
 def setup(app):
