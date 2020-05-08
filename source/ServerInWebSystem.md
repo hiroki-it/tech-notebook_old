@@ -2,7 +2,7 @@
 
 ## 01-01. Webサーバ
 
-### :pushpin: Nginx
+### Nginx
 
 #### ・WebサーバとしてのNginxとは
 

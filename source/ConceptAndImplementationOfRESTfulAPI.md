@@ -2,7 +2,7 @@
 
 ## 01-01. RESTとRESTfulとは
 
-### :pushpin: REST
+### REST
 
 #### ・RESTとは
 
@@ -15,7 +15,7 @@
 
 
 
-### :pushpin: RESTful
+### RESTful
 
 #### ・RESTfulとRESTful APIとは
 
@@ -27,7 +27,7 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 
 ## 02-01. RESTful APIへのリクエスト
 
-### :pushpin: RESTfulにおけるデータの送信方法
+### RESTfulにおけるデータの送信方法
 
 #### ・エンドポイントとは
 
@@ -44,7 +44,7 @@ APIにリソースをリクエストするためのURLのこと．エンドポ�
 
 
 
-### :pushpin: URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）
+### URLにおけるパスパラメータとクエリパラメータの使い分け（再掲）
 
 パスパラメータはデータをリクエストするために用いる．また，クエリパラメータは，GET送信の時に，データの検索処理／フィルタ処理／ソート処理をリクエストするために用いる．GET送信については，リクエストメッセージの説明を参照せよ．
 
@@ -62,7 +62,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ## 02-02. RESTful APIからのレスポンス
 
-### :pushpin: スキーマ
+### スキーマ
 
 #### ・スキーマとは
 
@@ -102,7 +102,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 
 
-### :pushpin: ステータスコード
+### ステータスコード
 
 #### ・```415``` Unsupported Media Type
 

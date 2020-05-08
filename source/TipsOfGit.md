@@ -1,19 +1,15 @@
 # Gitの豆知識
 
-## 
-
-Gitの個人的豆知識を以下に記す．
-
 ## 01-01. トラブルシューティング
 
-### :pushpin: 基点ブランチから二回派生するブランチマージする時の注意点
+### 基点ブランチから二回派生するブランチマージする時の注意点
 
 1. 基点ブランチから，一つ目のブランチにマージし，これをpushする．ここでpushしないと，2番目のブランチが一つ目のブランチとの差分を検出してしまい，大量の差分コミットがgithubに表示されてしまう．
 2. 一つ目のブランチから二つ目のブランチにマージし．これをpushする．
 
 
 
-### :pushpin: Conflictの解決方法とマージコミットの作成
+### Conflictの解決方法とマージコミットの作成
 
 1. ```git status```を行い，特定のファイルでのコンフリクトが表示される．
 
@@ -67,7 +63,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 
 
-### :pushpin: Commitの粒度
+### Commitの粒度
 
 データベースからフロント出力までに至る実装をCommitする場合，以下の3つを意識する．
 
@@ -77,7 +73,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 
 
-### :pushpin: 誤って作成したプルリクの削除
+### 誤って作成したプルリクの削除
 
 不可能．
 犯した罪は背負って生きていかなければならない．
@@ -87,7 +83,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 ## 01-02. Gitのコマンドメモ
 
-### :pushpin: ```add```：
+### ```add```：
 
 #### ・```add --all```
 
@@ -95,7 +91,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 
 
-### :pushpin: ```branch```：
+### ```branch```：
 
 #### ・```branch --all```
 作業中のローカルブランチとリモート追跡ブランチを表示．
@@ -142,7 +138,7 @@ git checkout -b feature/3 d7e49b04
 
 
 
-### :pushpin: ```stash```：
+### ```stash```：
 
 ファイルが，『インデックス』（=```add```）あるいは『HEAD』（=```commit```）に存在している状態で，異なるローカルブランチを```checkout```しようとすると，以下のエラーが出る．
 
@@ -250,7 +246,7 @@ $ git stash clear
 
 
 
-### :pushpin: ```reset```：
+### ```reset```：
 
 作業中のローカルブランチにおいて，指定の履歴まで戻し，それ以降を削除．
 
@@ -324,7 +320,7 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
  + f0d8b1a...f81c813 master -> master (forced update)
 ```
 
-### :pushpin: ```rebase```：
+### ```rebase```：
 
 作業中のローカルブランチにおいて，ブランチの派生元を変更．
 
@@ -464,7 +460,7 @@ $
 
 
 
-### :pushpin: ```revert```：
+### ```revert```：
 
 作業中のローカルブランチにおいて，指定の履歴を削除．
 
@@ -472,7 +468,7 @@ $
 
 
 
-### :pushpin: ```push ```
+### ```push ```
 
 #### ・```push -u origin [作成したブランチ名]```
 
@@ -484,7 +480,7 @@ $
 
 
 
-### :pushpin: ```show-branch```：
+### ```show-branch```：
 
 作業ブランチの派生元になっているブランチを確認．
 
@@ -498,7 +494,7 @@ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head
 
 GitHubの個人的豆知識を以下に記す．
 
-### :pushpin: Issueの作り方
+### Issueの作り方
 
 一つのIssueとブランチにたくさんの実装をCommitすることは望ましくない．そこで，大きな対応を個々の対応に分割する．そして，大きな対応に関する基点Issueと基点ブランチを作成し，個々の対応に関連する子Issueと子ブランチを作成していく．個別の対応が終わったら，親ブランチへマージしていく．
 
@@ -517,7 +513,7 @@ GitHubの個人的豆知識を以下に記す．
 
 
 
-### :pushpin: PullReqの作り方
+### PullReqの作り方
 
 実装途中のPullReqであり，実装方法などを質問したい場合に，タイトルに『WIP』とつけておく．レビューしてもらいたくなったら，これをはずす．レビュー修正時に，実装に時間がかかりそうであったら，再び付けても良い．
 
@@ -541,7 +537,7 @@ GitHubの個人的豆知識を以下に記す．
 
 
 
-### :pushpin: レビューの方法
+### レビューの方法
 
 #### ・実装の条件文や，コメントから，ビジネスルールや仕様を理解．
 
