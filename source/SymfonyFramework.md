@@ -2,7 +2,7 @@
 
 ## 01-01. 特に汎用的なコンポーネント
 
-### :pushpin: Consoleコンポーネント
+### Consoleコンポーネント
 
 ```PHP
 use Symfony\Component\Console\Application;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 
-### :pushpin: HttpFoundationコンポーネント
+### HttpFoundationコンポーネント
 
 ```PHP
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 
-### :pushpin: HttpKernelコンポーネント
+### HttpKernelコンポーネント
 
 ```PHP
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -38,7 +38,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 
-### :pushpin: Pimpleコンポーネント
+### Pimpleコンポーネント
 
 ```PHP
 use Pimple\ConfigSupport;
@@ -49,7 +49,7 @@ use Pimple\ServiceProviderInterface;
 
 
 
-### :pushpin: Securityコンポーネント
+### Securityコンポーネント
 
 ```PHP
 use Symfony\Component\Security\Core\AuthenticationEvents;
@@ -59,7 +59,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 
 
-### :pushpin: EventDispatcherコンポーネント
+### EventDispatcherコンポーネント
 
 ```PHP
 use Symfony\Component\EventDispatcher\Event;
@@ -69,7 +69,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
 
-### :pushpin: Routingコンポーネント
+### Routingコンポーネント
 
 ```PHP
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -77,7 +77,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 
 
-### :pushpin: Cacheコンポーネント
+### Cacheコンポーネント
 
 ```PHP
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -88,7 +88,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 ## 02-01. Consoleコンポーネント
 
-### :pushpin: CLI：Command Line Interface
+### CLI：Command Line Interface
 
 #### ・CLIとは
 
@@ -137,7 +137,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 
 
-### :pushpin: CLIをコールするバッチファイル
+### CLIをコールするバッチファイル
 
 #### ・```for```
 
@@ -166,7 +166,7 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 
 ## 02-02. HttpFoundationコンポーネント
 
-### :pushpin: AppKernel
+### AppKernel
 
 ![図2-9-ver2](https://user-images.githubusercontent.com/42175286/57711074-08c21b00-76a9-11e9-959e-b3777f70d2c6.png)
 
@@ -240,7 +240,7 @@ public function handle
 
 
 
-### :pushpin: Request，Response
+### Request，Response
 
 #### ・リクエストメッセージからのデータ取得，JSON型データのレスポンス
 
@@ -280,7 +280,7 @@ class ExampleController extends AbstractController
 
 ## 02-03. HttpKernelコンポーネント
 
-### :pushpin: HttpKernelによるリクエストとレスポンス
+### HttpKernelによるリクエストとレスポンス
 
 ![SymfonyのHttpKernelの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SymfonyのHttpKernelの仕組み.png)
 
@@ -290,7 +290,7 @@ class ExampleController extends AbstractController
 
 ## 02-04. Pimpleコンポーネント
 
-### :pushpin: Service Container
+### Service Container
 
 Symfonyから提供されるDIコンテナのこと．
 
@@ -298,7 +298,7 @@ Symfonyから提供されるDIコンテナのこと．
 
 ## 02-05. Routingコンポーネント
 
-### :pushpin: RoutingConfigurator
+### RoutingConfigurator
 
 #### ・RoutingConfiguratorとは
 
@@ -324,7 +324,7 @@ return function (RoutingConfigurator $routes) {
 
 ## 02-06. Cacheコンポーネント
 
-### :pushpin: FilesystemAdapter
+### FilesystemAdapter
 
 #### ・FilesystemAdapterとは
 

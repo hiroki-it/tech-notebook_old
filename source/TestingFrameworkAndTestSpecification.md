@@ -2,12 +2,12 @@
 
 ## 01-01. テスト全体の手順
 
-### :pushpin: テスティングフレームワークによるテスト
+### テスティングフレームワークによるテスト
 
 1. テスティングフレームワークによる，静的解析を行う．
 2. テスティングフレームワークによる，UnitテストとFunctionalテストを行う．
 
-### :pushpin: テスト仕様書に基づくテスト
+### テスト仕様書に基づくテスト
 
 1. テスト仕様書に基づく，Unitテスト，Integrationテスト，User Acceptanceテストを行う．
 
@@ -17,7 +17,7 @@
 
 ## 03-01.  PHPUnitによるUnit／Functionalテストの要素
 
-### :pushpin: Phakeによるモックオブジェクトとスタブの定義
+### Phakeによるモックオブジェクトとスタブの定義
 
 テストコードにおいては，クラスの一部または全体を，処理を持たないもの（モックオブジェクト）に置き換える．
 
@@ -117,7 +117,7 @@ Phake::verify($mock, Phake::times(1))->exaMethod("AB");
 
 
 
-### :pushpin: テストの事前準備と後片付け
+### テストの事前準備と後片付け
 
 #### ・```setUp()```
 
@@ -163,7 +163,7 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 }
 ```
 
-### :pushpin: テストデータの準備
+### テストデータの準備
 
 #### ・Data Provider
 
@@ -191,7 +191,7 @@ public function provideData(): array
 
 
 
-### :pushpin: 実際値と期待値の比較
+### 実際値と期待値の比較
 
 https://phpunit.readthedocs.io/ja/latest/assertions.html
 
@@ -199,7 +199,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 ## 03-02. PHPUnitによるUnit／Functionalテストの実装まとめ
 
-### :pushpin: Unitテスト
+### Unitテスト
 
 #### ・Unitテストとは
 
@@ -211,7 +211,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 
 
 
-### :pushpin: Functionalテスト
+### Functionalテスト
 
 #### ・Functionalテストとは
 
@@ -239,11 +239,11 @@ Controllerに対してリクエストを行い，正しくレスポンスが行�
 
 
 
-## :pushpin: 03-03. テスト仕様書に基づくUnit テスト
+## 03-03. テスト仕様書に基づくUnit テスト
 
 PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
-### :pushpin: ブラックボックステスト
+### ブラックボックステスト
 
 実装内容は気にせず，入力に対して，適切な出力が行われているかをテストする．
 
@@ -251,7 +251,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 
 
-### :pushpin: ホワイトボックステスト
+### ホワイトボックステスト
 
 実装内容が適切かを確認しながら，入力に対して，適切な出力が行われているかをテストする．ホワイトボックステストには，以下の方法がある．何をテストするかに着目すれば，思い出しやすい．
 
@@ -325,7 +325,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ![結合テスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-1.jpg)
 
-### :pushpin: Top-down テスト
+### Top-down テスト
 
 上位のモジュールから下位のモジュールに向かって，結合テストを行う場合，下位には Stub と呼ばれるダミーモジュールを作成する．
 
@@ -333,7 +333,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### :pushpin: Bottom-up テスト
+### Bottom-up テスト
 
 下位のモジュールから上位のモジュールに向かって，結合テストを行う場合，上位には Driver と呼ばれるダミーモジュールを作成する．
 
@@ -341,7 +341,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### :pushpin: Scenario テスト
+### Scenario テスト
 
 実際の業務フローを参考にし，ユーザが操作する順にテストを行う．
 
@@ -356,13 +356,13 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### :pushpin: Functional テスト
+### Functional テスト
 
 機能要件を満たせているかをテストする．PHPUnitでのFunctionalテストとは意味合いが異なるので注意．
 
 
 
-### :pushpin: Perfomance テスト
+### Perfomance テスト
 
 ![スループットとレスポンスタイム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スループットとレスポンスタイム.png)
 
@@ -378,7 +378,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-### :pushpin: Stress テスト
+### Stress テスト
 
 
 
@@ -392,7 +392,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ## 05-01. グラフによるテストの可視化
 
-### :pushpin: バグ管理図
+### バグ管理図
 
 プロジェクトの時，残存テスト数と不良摘出数（バグ発見数）を縦軸にとり，時間を横軸にとることで，バグ管理図を作成する．それぞれの曲線の状態から，プロジェクトの進捗状況を読み取ることができる．
 

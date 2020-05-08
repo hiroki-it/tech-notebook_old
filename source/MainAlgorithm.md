@@ -8,7 +8,7 @@
 
 
 
-### :pushpin: 基本選択法（選択ソート）
+### 基本選択法（選択ソート）
 
 #### ・最小選択法
 #### ・最大選択法
@@ -87,7 +87,7 @@ var_dump($result);
 
 
 
-### :pushpin: クイックソート
+### クイックソート
 
 **【実装例】**
 
@@ -204,7 +204,7 @@ var_dump($result);
 
 
 
-### :pushpin: 基本交換法（バブルソート）
+### 基本交換法（バブルソート）
 
 隣り合ったデータの比較と入替えを繰り返すことによって，小さな値のデータを次第に端のほうに移していく方法．
 
@@ -240,17 +240,17 @@ var_dump($result);
 
 
 
-### :pushpin: 基本挿入法（挿入ソート）
+### 基本挿入法（挿入ソート）
 
 既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法．
 
 
 
-### :pushpin: ヒープソート
+### ヒープソート
 
 
 
-### :pushpin: シェルソート
+### シェルソート
 
 
 
@@ -258,7 +258,7 @@ var_dump($result);
 
 ## 02. 配列内探索のアルゴリズム
 
-### :pushpin: 線形探索法
+### 線形探索法
 
   今回は，配列内で「６」を探す．
 
@@ -272,7 +272,7 @@ var_dump($result);
 
 ![線形探索法3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/線形探索法3.gif)
 
-### :pushpin: 二分探索法
+### 二分探索法
 
   前提として，ソートによって，すでにデータが整列させられているとする．今回は，配列内で「６」を探す．
 
@@ -302,7 +302,7 @@ var_dump($result);
 
 ## 03. グラフ探索のアルゴリズム（難し過ぎで記入途中）
 
-### :pushpin: ダイクストラ法による最良優先探索
+### ダイクストラ法による最良優先探索
 
 **【実装例】**
 
@@ -487,7 +487,7 @@ $goalPoint = 6
 
 ## 04. 誤り検出と訂正のアルゴリズム
 
-### :pushpin: Check Digit Check
+### Check Digit Check
 
 バーコードやクレジットカードなどの読み取りチェックで使われている誤り検出方法．
 
@@ -498,11 +498,11 @@ $goalPoint = 6
 
 
 
-### :pushpin: Parity Check
+### Parity Check
 
 
 
-### :pushpin: CRC：Cyclic Redundancy Check（巡回冗長検査）
+### CRC：Cyclic Redundancy Check（巡回冗長検査）
 
 
 

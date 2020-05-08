@@ -6,7 +6,7 @@
 
 
 
-### :pushpin: Providerの操作
+### Providerの操作
 
 #### ・Providerとは
 
@@ -14,7 +14,7 @@
 
 
 
-### :pushpin: Provisionerの操作
+### Provisionerの操作
 
 #### ・Provisionerとは
 
@@ -22,7 +22,7 @@ Providerによって構築された仮想サーバに，Web開発のためのソ
 
 
 
-### :pushpin: VagrantによるProviderとProvisionerの操作
+### VagrantによるProviderとProvisionerの操作
 
 #### ・Vagrantとは
 
@@ -64,7 +64,7 @@ DB_PASSWORD="12345"
 
 ## 03-01. Dockerによるコンテナの構築
 
-### :pushpin: Dockerの操作
+### Dockerの操作
 
 #### ・Dockerクライアント
 
@@ -80,7 +80,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ## 03-02. コンテナにssh接続するまでの手順
 
-### :pushpin: 手順の流れ
+### 手順の流れ
 
 ![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileの作成からコンテナ構築までの手順.png)
 
@@ -92,7 +92,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 
 
-### :pushpin: ベースとなるDockerイメージのインストール
+### ベースとなるDockerイメージのインストール
 
 #### ・DockerHubとは
 
@@ -124,7 +124,7 @@ DockerHubには，カスタマイズする上でのベースとなるDockerイ�
 
 
 
-### :pushpin: ベースとなるDockerイメージのカスタマイズとビルド
+### ベースとなるDockerイメージのカスタマイズとビルド
 
 #### ・DockerイメージのカスタマイズとDockerfile
 
@@ -192,7 +192,7 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 
 
 
-### :pushpin: Dockerイメージの軽量化
+### Dockerイメージの軽量化
 
 #### ・```RUN```コマンドをまとめる．
 
@@ -232,7 +232,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: Dockerイメージ上でのコンテナレイヤーの生成，コンテナの構築
+### Dockerイメージ上でのコンテナレイヤーの生成，コンテナの構築
 
 #### ・コンテナレイヤー生成，コンテナ構築，を行うコマンド
 
@@ -261,7 +261,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: 構築されたコンテナの操作
+### 構築されたコンテナの操作
 
 #### ・コンテナ起動／停止／削除を行うコマンド
 
@@ -282,7 +282,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: 起動中のコンテナにssh接続
+### 起動中のコンテナにssh接続
 
 #### ・ssh接続を行うコマンド
 
@@ -294,7 +294,7 @@ RUN yum -y install\
 
 ## 03-03. コンテナ側に対するファイルのマウント方法
 
-### :pushpin: ホストOSのマウント元のディレクトリの設定画面
+### ホストOSのマウント元のディレクトリの設定画面
 
 以下の通り，ホストOSのマウント元のディレクトリにはいくつか選択肢がある．
 
@@ -302,7 +302,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: Bindマウント
+### Bindマウント
 
 #### ・Bindマウントとは
 
@@ -310,7 +310,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: Volumeマウント
+### Volumeマウント
 
 #### ・```/Volumes```とは
 
@@ -327,7 +327,7 @@ RUN yum -y install\
 
 
 
-### :pushpin: 一時ファイルシステムマウント
+### 一時ファイルシステムマウント
 
 
 
@@ -336,7 +336,7 @@ RUN yum -y install\
 
 ## 03-04. ホストとコンテナの間のネットワーク接続
 
-### :pushpin: bridgeネットワーク
+### bridgeネットワーク
 
 #### ・bridgeネットワークとは
 
@@ -358,7 +358,7 @@ RUN yum -y install\
 
 #### ・bridge接続可否の確認方法
 
-コンテナにSSH接続し，コンテナ側からホストOS側にリクエストメッセージを送信することで，接続の確認を行うことができる．
+DHCPによって，自身のパソコンに動的にプライベートIPアドレスが割り当てられる．ネットワーク設定でプライベートIPアドレスを確認する．その後，コンテナにSSH接続し，コンテナ側からホストOS側にリクエストメッセージを送信することで，接続の確認を行うことができる．
 
 ```bash
 user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
@@ -368,7 +368,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-### :pushpin: noneネットワーク
+### noneネットワーク
 
 #### ・noneネットワークとは
 
@@ -376,7 +376,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-### :pushpin: hostネットワーク
+### hostネットワーク
 
 #### ・hostネットワークとは
 
@@ -386,7 +386,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 ## 04-01. コンテナオーケストレーション
 
-### :pushpin: コンテナオーケストレーションの種類
+### コンテナオーケストレーションの種類
 
 #### ・単一ホストOS上のコンテナオーケストレーション
 
@@ -410,7 +410,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-### :pushpin: Docker Compose
+### Docker Compose
 
 #### ・設定項目
 
@@ -486,13 +486,13 @@ services:
 
 
 
-### :pushpin: Docker Swarm
+### Docker Swarm
 
 ![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DockerSwarmの仕組み.png)
 
 
 
-### :pushpin: Google Kubernetes
+### Google Kubernetes
 
 ![Kubernetesの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Kubernetesの仕組み.png)
 

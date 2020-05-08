@@ -2,7 +2,7 @@
 
 ## 01-01. アーキテクチャスタイル
 
-### :pushpin: アーキテクチャスタイルと分析・設計手法
+### アーキテクチャスタイルと分析・設計手法
 
 ![アーキテクチャスタイルの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/アーキテクチャスタイルの種類.png)
 
@@ -19,7 +19,7 @@
 
 ## 01-02. オブジェクト指向分析・設計
 
-### :pushpin: オブジェクト指向分析・設計を取り巻く歴史
+### オブジェクト指向分析・設計を取り巻く歴史
 
 ![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プログラミング言語と設計手法の歴史.png)
 
@@ -27,7 +27,7 @@
 
 ## 01-03. オブジェクト指向分析
 
-### :pushpin:  オブジェクト指向分析で用いるダイアグラム図の種類
+###  オブジェクト指向分析で用いるダイアグラム図の種類
 
 オブジェクト指向分析においては，ダイアグラム図を用いて，オブジェクトを表現することが必要になる．
 
@@ -49,7 +49,7 @@
 
 
 
-### :pushpin: UML：Unified Modeling Language（統一モデリング言語）
+### UML：Unified Modeling Language（統一モデリング言語）
 
 #### ・UMLとは
 
@@ -65,7 +65,7 @@
 
 ## 02-01. オブジェクト指向分析
 
-### :pushpin: オブジェクト指向分析
+### オブジェクト指向分析
 
 #### ・そもそもオブジェクトとは
 
@@ -83,13 +83,13 @@
 
 ## 02-02. 機能の視点
 
-### :pushpin: DFD：Data Flow Diagram（データフロー図）
+### DFD：Data Flow Diagram（データフロー図）
 
 ![データフロー図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/データフロー図.jpg)
 
 
 
-### :pushpin: Use case 図（使用事例図）
+### Use case 図（使用事例図）
 
 ユーザーの視点で，システムの利用例を表記する方法．
 
@@ -101,7 +101,7 @@
 
 
 
-### :pushpin:  アクティビティ図
+###  アクティビティ図
 
 ビジネスロジックや業務フローを手続き的に表記する方法．
 
@@ -121,7 +121,7 @@
 
 ## 02-03. 振舞の視点
 
-### :pushpin:  システムシーケンス図
+###  システムシーケンス図
 
 #### ・システムシーケンス図とは
 
@@ -129,7 +129,7 @@
 
 
 
-### :pushpin: 状態遷移図
+### 状態遷移図
 
 #### ・状態遷移図とは
 
@@ -156,7 +156,7 @@
 
 ## 02-04. 構造の視点
 
-### :pushpin: ER図：Entity Relation Diagram
+### ER図：Entity Relation Diagram
 
 #### ・ER図：Entity Relation Diagramとは
 
@@ -192,4 +192,4 @@
 
 ## 03-01. オブジェクト指向設計
 
-### :pushpin: これについては別のノートで説明する
+### これについては別のノートで説明する
