@@ -36,7 +36,8 @@ extensions = [
     'sphinx_rtd_theme',
     'recommonmark',
     'sphinx_markdown_tables',
-    'sphinxcontrib.sqltable'
+    'sphinxcontrib.sqltable',
+    'sphinx_fontawesome'
 ]
 
 # 拡張子を設定
@@ -64,6 +65,8 @@ language = 'ja'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+html_search_language = 'ja'
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -81,7 +84,7 @@ html_theme_options = {
     'style_nav_header_background': '#2980B9',
     # Toc options
     'collapse_navigation': True,
-    'sticky_navigation': True,
+    'sticky_navigation': False,
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
