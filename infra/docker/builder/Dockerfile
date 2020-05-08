@@ -51,6 +51,7 @@ RUN pyenv install ${PYTHON_VERSION_27} \
       sphinx-autobuild \
       recommonmark \
       sphinx_markdown_tables \
-      sphinxcontrib-sqltable
+      sphinxcontrib-sqltable \
+      sphinx_fontawesome
 
 CMD ["/bin/bash"]
