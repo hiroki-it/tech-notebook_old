@@ -8,7 +8,7 @@ RUN dnf update -y \
   && dnf install -y \
       nginx \
       epel-release \
-  && rm -r /var/cache/dnf
+      vim
 
 COPY infra/docker/www/nginx.conf /etc/nginx/nginx.conf
 
