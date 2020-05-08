@@ -91,23 +91,6 @@ array_column($array, "score");
 
 
 
-### ```for()```
-
-#### ・要素の位置を繰り返しズラす場合
-
-```PHP
-function moveFile($fromPos < $toPos)
-{
-    if($fromPos < $toPos){
-        for($i = fromPos ; $i ≦ $toPos - 1; ++ 1){
-            File[$i] = File[$i + 1];
-        }
-    }
-}
-```
-
-
-
 ### 無限ループ
 
 反復処理では，何らかの状態になった時に反復処理を終えなければならない．しかし，終えることができないと，無限ループが発生してしまう．
