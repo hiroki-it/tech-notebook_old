@@ -1,71 +1,25 @@
 /***********************
- 本文のCSS
+ Index
  ***********************/
-
- body {
-    font-family: Arial;
-}
-
-h1 {
-    /* 背景：色 */
-    background: black;
-
-    /* テキスト：大きさ */
-    font-size: 27px;
-
-    /* テキスト：色 */
-    color: white;
-
-    /* 内部余白：文字周り */
-    padding: 0.3em;
-
-    /* 位置：中央 */
-    text-align: center;
-}
-
-h2 {
+.toctree-wrapper.compound .caption {
     /* 背景：色 */
     background: #d7d7d7;
-
     /* 左線：太さ，色 */
     border-left: 15px solid #2980B9;
-
     /* 文字：色 */
     color: #010101;
-
     /* 内部余白：文字周り */
     padding: 0.6em;
-
-    /* 上外部余白：大きさ */
-    margin-top: 2em;
-}
-
-h3 {
-    /* 下線：太さ，色 */
-    border-bottom: 2px solid #606060;
-
     /* 上外部余白：大きさ */
     margin-top: 1.5em;
-
-    /* 下外部余白：大きさ */
-    margin-bottom: 1em;
 }
 
-img{
-
-    display: block;
-
-    margin: 0 auto;
-
-    /* 位置：中央 */
-    text-align: center;
-}
 
 /***********************
- サイドナビのCSS
+ サイドナビ
  ***********************/
 
- .wy-menu-vertical {
+.wy-menu-vertical {
     font-size: 13.5px;
 }
 
@@ -94,13 +48,78 @@ img{
     font-size: 20px;
 }
 
+
 /***********************
- コードのCSS
+ 各ページ
  ***********************/
 
- pre code {
+h1 {
+    background: black;
+    border-radius: 7px;
+    color: white;
+    font-size: 28px;
+    position: relative;
+    padding: 0.6em;
+}
+
+h1:after {
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 30px;
+    border: 15px solid transparent;
+    border-top: 15px solid black;
+    width: 0;
+    height: 0;
+}
+
+h2 {
+    /* 背景：色 */
+    background: #d7d7d7;
+    /* 左線：太さ，色 */
+    border-left: 15px solid #2980B9;
+    /* 文字：色 */
+    color: #010101;
+    /* 内部余白：文字周り */
+    padding: 0.6em;
+    /* 上外部余白：大きさ */
+    margin-top: 1.5em;
+}
+
+h3 {
+    position: relative; /*相対位置*/
+    padding: 0.5em 0.5em 0.5em 1.5em; /*アイコン分のスペース*/
+    line-height: 1.4; /*行高*/
+    color: black; /*文字色*/
+    border-top: dotted 1px gray;
+    border-bottom: dotted 1px gray;
+    background: #ffffd5;
+}
+
+h3:before {
+    font-family: "FontAwesome", serif;
+    content: "\f138"; /*アイコンのユニコード*/
+    position: absolute; /*絶対位置*/
+    font-size: 1em; /*サイズ*/
+    left: 0.25em; /*アイコンの位置*/
+    top: 0.5em; /*アイコンの位置*/
+    color: #2980B9; /*アイコン色*/
+}
+
+img{
+    display: block;
+    margin: 0 auto;
+    /* 位置：中央 */
+    text-align: center;
+}
+
+
+/***********************
+ コードブロック
+ ***********************/
+
+pre code {
     font-size: 14px;
-    font-family: Arial;   
 }
 
 .wy-nav-content {
