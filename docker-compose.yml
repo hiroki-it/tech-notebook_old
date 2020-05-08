@@ -13,7 +13,7 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www/tech-notebook
-      - ./logs/www:/tmp
+      - ./logs/www:/var/log/nginx
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
