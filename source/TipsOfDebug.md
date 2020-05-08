@@ -4,13 +4,13 @@
 
 ## 01-01. ログでエラーが出力されない時の対処方法
 
-### :pushpin: ローカル環境 vs テスト環境
+### ローカル環境 vs テスト環境
 
 ローカル環境とテスト環境で，ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブを比較し，キーや配列に格納されている値がどう異なっているかを調べる．　
 
 　　
 
-### :pushpin: ```var_dump($var)```
+### ```var_dump($var)```
 
 #### ・変数の中身の確認方法
 
@@ -22,7 +22,7 @@
 
 
 
-### :pushpin: ```var_dump($var)``` & ```throw new \Exception("")```
+### ```var_dump($var)``` & ```throw new \Exception("")```
 
 #### ・変数の中身の確認方法
 
@@ -34,7 +34,7 @@
 
 
 
-### :pushpin: ```throw new \Exception(var_dump($var))```
+### ```throw new \Exception(var_dump($var))```
 
 #### ・変数の中身の確認方法
 
@@ -46,7 +46,7 @@
 
 
 
-### :pushpin: ```var_dump()```の結果がうまく表示されない時の対処方法
+### ```var_dump()```の結果がうまく表示されない時の対処方法
 
 #### ・ロジックが別のところを通過している
 

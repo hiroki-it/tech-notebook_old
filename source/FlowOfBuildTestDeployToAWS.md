@@ -8,13 +8,13 @@
 
 
 
-### :pushpin: On premise
+### On premise
 
 ベンダーは関わらず，ユーザの設備によって，システムを運用すること．
 
 
 
-### :pushpin: IaaS：Infrastructure as a Service
+### IaaS：Infrastructure as a Service
 
 **【Iaasアプリ例】**
 
@@ -27,7 +27,7 @@
 
 
 
-### :pushpin: PaaS：Platform as a Service
+### PaaS：Platform as a Service
 
 **【Paasアプリ例】**
 
@@ -39,7 +39,7 @@
 
 
 
-### :pushpin: FaaS：Platform as a Service
+### FaaS：Platform as a Service
 
 ユーザ側は関数プログラムの実装のみを行い，それ以外はベンダー側に管理してもらうサービスのこと．
 
@@ -49,7 +49,7 @@ Lambda
 
 
 
-### :pushpin: SaaS：Software as a Service
+### SaaS：Software as a Service
 
 従来はパッケージとして提供していたアプリケーションを，Webアプリケーションとして提供するサービスのこと．
 
@@ -61,7 +61,7 @@ Google Apps（Google Map，Google Cloud，Google Calender など）
 
 ## 02-01. CI/CDの流れ
 
-### :pushpin: CI：Continuous Integration，CD：Continuous Deliveryとは
+### CI：Continuous Integration，CD：Continuous Deliveryとは
 
 Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に回して，システムの品質を継続的に担保することを，『Continuous Integration』という．また，変更内容をステージング環境などに自動的に反映し，継続的にリリースすることを，『Continuous Delivery』という．
 
@@ -69,7 +69,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 
 
-### :pushpin: CIツールによるビルドフェイズとテストフェイズの自動実行
+### CIツールによるビルドフェイズとテストフェイズの自動実行
 
 #### ・PHPUnitの自動実行
 
@@ -106,7 +106,7 @@ circleci build .circleci/config.yml
 
 
 
-### :pushpin: CDツールによるデプロイフェイズの自動実行
+### CDツールによるデプロイフェイズの自動実行
 
 #### ・クラウドデプロイサーバにおけるCapisoranoによるデプロイ
 
@@ -128,7 +128,7 @@ circleci build .circleci/config.yml
 
 AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
 
-### :pushpin: クラウドデザイン例
+### クラウドデザイン例
 
 以下のデザイン例では，Dualシステムが採用されている．
 
@@ -136,7 +136,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 
 
-### :pushpin: Route53（＝DNSサーバ）
+### Route53（＝DNSサーバ）
 
 #### ・Route53とは
 
@@ -171,7 +171,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 
 
-### :pushpin: CloudFront（＝プロキシサーバ）
+### CloudFront（＝プロキシサーバ）
 
 #### ・CloudFrontとは
 
@@ -179,7 +179,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 
 
-### :pushpin: CloudTrail
+### CloudTrail
 
 #### ・CloudTrailとは
 
@@ -189,7 +189,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 
 
-### :pushpin: S3：Simple Storage Service（＝外付けストレージ）
+### S3：Simple Storage Service（＝外付けストレージ）
 
 #### ・S3とは
 
@@ -197,7 +197,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 
 
-### :pushpin: API Gateway
+### API Gateway
 
 #### ・API Gatewayとは
 
@@ -223,7 +223,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 
 
-### :pushpin: SQS：Amazon Simple Queue Service
+### SQS：Amazon Simple Queue Service
 
 #### ・SQSとは
 
@@ -237,7 +237,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 
 
-### :pushpin: Lambdaと他FaaSの連携によるサーバレスアーキテクチャ
+### Lambdaと他FaaSの連携によるサーバレスアーキテクチャ
 
 Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
 
@@ -245,7 +245,7 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 
 
-### :pushpin: CloudWatch系
+### CloudWatch系
 
 #### ・Cloud Watch Logs（＝ログ収集サーバに相当）
 
@@ -266,13 +266,13 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 ## 03-02. AWSにおけるプライベートネットワーク構成
 
-### :pushpin: クラウドデザイン例（再掲）
+### クラウドデザイン例（再掲）
 
 ![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSのクラウドデザイン一例.png)
 
 
 
-### :pushpin: セキュリティグループ（＝パケットフィルタリング型ファイアウォール）
+### セキュリティグループ（＝パケットフィルタリング型ファイアウォール）
 
 #### ・セキュリティグループとは
 
@@ -286,7 +286,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 
-### :pushpin: VPC：Virtual Private Cloud（＝プライベートネットワーク）
+### VPC：Virtual Private Cloud（＝プライベートネットワーク）
 
 #### ・VPCとは
 
@@ -296,7 +296,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 
-### :pushpin: VPCエンドポイント
+### VPCエンドポイント
 
 #### ・VPCエンドポイントとは
 
@@ -306,7 +306,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 
 
-### :pushpin: ELB：Elastic Load Balancing
+### ELB：Elastic Load Balancing
 
 #### ・ELBとは
 
@@ -330,7 +330,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 
 
-### :pushpin: RegionとAvailability Zone
+### RegionとAvailability Zone
 
 #### ・Regionとは
 
@@ -344,7 +344,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 
 
-### :pushpin: Internet Gateway，NAT Gateway
+### Internet Gateway，NAT Gateway
 
 
 |              | Internet Gateway                                             | NAT Gateway     |
@@ -365,7 +365,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
-### :pushpin: VPC subnet
+### VPC subnet
 
 クラウドプライベートネットワークにおけるセグメントとして働く．
 
@@ -381,7 +381,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
-### :pushpin: Route Table = マッピングテーブルに相当
+### Route Table = マッピングテーブルに相当
 
 #### ・Route Tableとは
 
@@ -413,11 +413,11 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
-### :pushpin: ネットワークACL
+### ネットワークACL
 
 
 
-### :pushpin: データベース
+### データベース
 
 #### ・AWSが提供するデータベースの種類
 
@@ -435,18 +435,18 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
 
-### :pushpin: クラウドデザイン例
+### クラウドデザイン例
 
 以下のデザイン例では，Dualシステムが採用されている．
 
 ![GCPのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GCPのクラウドデザイン一例.png)
 
-### :pushpin: GAE：Google App Engine：GAE
+### GAE：Google App Engine：GAE
 
 クラウドデプロイサーバとして働く．AWSにおけるElastic Beanstalkに相当する．
 
 
 
-### :pushpin: GCE：Google Compute Engine
+### GCE：Google Compute Engine
 
 クラウドWebサーバとして働く．AWSにおけるEC2に相当する．

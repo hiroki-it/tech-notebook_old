@@ -4,7 +4,7 @@
 
 ## 01-01. ライブラリの読み込み
 
-### :pushpin: エントリポイントでの```autoload.php```の読み込み
+### エントリポイントでの```autoload.php```の読み込み
 
 ライブラリが，```vendor```ディレクトリ下に保存されていると仮定する．ライブラリを使用するたびに，各クラスでディレクトリを読み込むことは手間なので，エントリーポイント（```index.php```）あるいは```bootstrap.php```で，最初に読み込んでおき，クラスでは読み込まなくて良いようにする．
 
@@ -18,13 +18,13 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 ## 02-01. Doctrineライブラリ
 
-### :pushpin: Doctrineとは
+### Doctrineとは
 
 RDBの読み込み系／書き込み系の操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
 
 
 
-### :pushpin: SQLの定義
+### SQLの定義
 
 #### 1. ```createQueryBuilder()```
 
@@ -101,7 +101,7 @@ $queryBuilder->getConnection()
 
 
 
-### :pushpin: 読み出し系の操作
+### 読み出し系の操作
 
 #### ・プレースホルダー（プリペアードステートメント）
 
@@ -187,7 +187,7 @@ class Example
 
 
 
-### :pushpin: 書き込み系の操作
+### 書き込み系の操作
 
 #### ・トランザクション，コミット，ロールバック
 
@@ -216,7 +216,7 @@ try{
 
 ## 03-01. Carbonライブラリ
 
-### :pushpin: Date型
+### Date型
 
 厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．
 
@@ -229,7 +229,7 @@ try{
 
 
 
-### :pushpin: ```instance()``` 
+### ```instance()``` 
 
 DateTimeインスタンスを引数として，Carbonインスタンスを作成する．
 
@@ -242,7 +242,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 
 
-### :pushpin: ```create()```
+### ```create()```
 
 日時の文字列からCarbonインスタンスを作成する．
 
@@ -256,7 +256,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 
 
-### :pushpin: ```createFromXXX()```
+### ```createFromXXX()```
 
 指定の文字列から，Carbonインスタンスを作成する．
 
@@ -309,7 +309,7 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 
 
 
-### :pushpin: ```parse()```
+### ```parse()```
 
 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．```createFromFormat()```とは異なり，フォーマットを指定する必要がない．
 
@@ -323,13 +323,13 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 ## 04-01. Pinqライブラリ
 
-### :pushpin: Pinqとは：Php Integrated Query
+### Pinqとは：Php Integrated Query
 
 配列データやオブジェクトデータに対して，クエリを実行できるようになる．他の同様ライブラリとして，Linqがある．
 
 
 
-### :pushpin: ```Traversable::from()```
+### ```Traversable::from()```
 
 SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータの各要素に対して，処理を行える．
 
@@ -362,13 +362,13 @@ class Example
 
 ## 05-01. Guzzleライブラリ
 
-### :pushpin: Guzzleライブラリとは
+### Guzzleライブラリとは
 
 通常，リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う．しかし，GuzzleライブラリのClientを使えば，サーバから他サーバ（外部のAPIなど）に対して，リクエストメッセージの送受信ができる．
 
 
 
-### :pushpin: Clientインスタンス
+### Clientインスタンス
 
 #### ・リクエストメッセージをGET送信
 
@@ -399,11 +399,11 @@ $body = json_decode($response->getBody(), true);
 
 ## 06-01. Knp/Snappyライブラリ
 
-###  :pushpin: Knp/Snappyとは
+###  Knp/Snappyとは
 
 ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するライブラリ．
 
-### :pushpin: ```generateFromHtml()```
+### ```generateFromHtml()```
 
 htmlファイルを元にして，ローカルディレクトリにPDFファイルを作成する．
 
@@ -419,7 +419,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf')
 
 ## 07-01. Respect/Validationライブラリ
 
-### :pushpin: Respect/Validationとは
+### Respect/Validationとは
 
 リクエストされたデータが正しいかを，サーバサイド側で検証する．フロントエンドからリクエストされるデータに関しては，JavaScriptとPHPの両方によるバリデーションが必要である．
 

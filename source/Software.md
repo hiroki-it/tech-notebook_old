@@ -2,7 +2,7 @@
 
 ## 01-01. ソフトウェアとは
 
-### :pushpin: ソフトウェアの種類
+### ソフトウェアの種類
 
 #### ・ユーザの操作が，ソフトウェアを介して，ハードウェアに伝わるまで
 
@@ -24,7 +24,7 @@
 
 ## 02-01. 応用ソフトウェア
 
-### :pushpin: 応用ソフトウェア（アプリケーション）の一覧
+### 応用ソフトウェア（アプリケーション）の一覧
 
 |                        | ネイティブアプリ | Webアプリとクラウドアプリ | ハイブリッドアプリ |
 | :--------------------: | :--------------: | :-----------------------: | :----------------: |
@@ -32,7 +32,7 @@
 
 
 
-### :pushpin: ネイティブアプリケーション
+### ネイティブアプリケーション
 
 ![ネイティブアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ネイティブアプリ.png)
 
@@ -44,7 +44,7 @@ Office，BookLiveのアプリ版
 
 
 
-### :pushpin: Webアプリケーションとクラウドアプリケーション
+### Webアプリケーションとクラウドアプリケーション
 
 ![Webアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webアプリ.png)
 
@@ -70,7 +70,7 @@ Google Drive，Dropbox
 
 
 
-### :pushpin: ハイブリッドアプリケーション
+### ハイブリッドアプリケーション
 
 ![Webviewよるアプリパッケージ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webviewよるアプリパッケージ.png)
 
@@ -86,11 +86,11 @@ Google Drive，Dropbox
 
 ## 03-01. ミドルウェア
 
-### :pushpin: Webシステムを構成するサーバのミドルウェア
+### Webシステムを構成するサーバのミドルウェア
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
 
-### :pushpin: Webサーバとしてのミドルウェア
+### Webサーバとしてのミドルウェア
 
 詳しくは，Webシステムにおけるサーバを参照．
 
@@ -104,7 +104,7 @@ Google Drive，Dropbox
 
 
 
-### :pushpin: APサーバとしてのミドルウェア
+### APサーバとしてのミドルウェア
 
 #### ・Apache内蔵
 
@@ -116,7 +116,7 @@ Google Drive，Dropbox
 
 
 
-### :pushpin: DBMS
+### DBMS
 
 #### ・MySQL
 
@@ -128,7 +128,7 @@ Google Drive，Dropbox
 
 ## 04-01. 基本ソフトウェア（広義のOS）
 
-### :pushpin: 基本ソフトウェアの種類
+### 基本ソフトウェアの種類
 
 #### ・Unix系OS
 
@@ -146,7 +146,7 @@ MS-DOSを源流として派生したOS．今では，全ての派生がWindows 1
 
 
 
-### :pushpin: Unix \ Linux系統
+### Unix \ Linux系統
 
 現在，Linux系統のOSは，さらに3つの系統に分けられる．
 
@@ -168,7 +168,7 @@ Slackware
 
 ## 04-02. 基本ソフトウェア \ サービスプログラム（ユーティリティ）
 
-### :pushpin: サービスプログラム（ユーティリティ）の種類
+### サービスプログラム（ユーティリティ）の種類
 
 | システム系         | ストレージデバイス管理系 | ファイル管理系         | その他             |
 | ------------------ | ------------------------ | ---------------------- | ------------------ |
@@ -178,7 +178,7 @@ Slackware
 
 
 
-### :pushpin: マネージャについて
+### マネージャについて
 
 #### ・ライブラリとパッケージの大まかな違い
 
@@ -220,7 +220,7 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 
 ## 04-03. 基本ソフトウェア \ 言語プロセッサ
 
-### :pushpin: 言語プロセッサの例
+### 言語プロセッサの例
 
 #### ・アセンブラ
 
@@ -236,7 +236,7 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 
 
 
-### :pushpin: コンパイラ型言語，インタプリタ型言語，JavaまたはJava仮想マシン型言語
+### コンパイラ型言語，インタプリタ型言語，JavaまたはJava仮想マシン型言語
 
 プログラム言語のソースコードは，言語プロセッサによって機械語に変換された後，CPUによって読み込まれる．そして，ソースコードに書かれた様々な処理が実行される．
 
@@ -256,7 +256,7 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 
 
 
-### :pushpin: コンパイラによるコンパイラ型言語の翻訳（じ，こ，い，さい，せい，リンク，実行）
+### コンパイラによるコンパイラ型言語の翻訳（じ，こ，い，さい，せい，リンク，実行）
 
 コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
 
@@ -306,7 +306,7 @@ C#
 
 
 
-### :pushpin: インタプリタによるインタプリタ型言語の翻訳（じ，こ，い，実行）
+### インタプリタによるインタプリタ型言語の翻訳（じ，こ，い，実行）
 
 コードを，一行ずつ機械語に変換し，順次，命令を実行する言語．
 
@@ -342,7 +342,7 @@ PHP，Ruby，JavaScript，Python
 
 
 
-### :pushpin: Java仮想マシンによるJavaまたはJava仮想マシン型言語の翻訳
+### Java仮想マシンによるJavaまたはJava仮想マシン型言語の翻訳
 
 **【JVM型言語の具体例】**
 
@@ -372,7 +372,7 @@ Scala，Groovy，Kotlin
 
 ソースコード
 
-### :pushpin: プログラムの実行開始のエントリポイント
+### プログラムの実行開始のエントリポイント
 
 #### ・PHPの場合
 
@@ -431,13 +431,13 @@ public class Age
 
 ## 04-04. 基本ソフトウェア \ 制御プログラム（カーネル）
 
-### :pushpin: 制御プログラム（カーネル）の例
+### 制御プログラム（カーネル）の例
 
   カーネル，マイクロカーネル，モノリシックカーネル
 
 
 
-### :pushpin: ジョブ管理
+### ジョブ管理
 
 クライアントは，マスタスケジュールに対して，ジョブを実行するための命令を与える．
 
@@ -445,7 +445,7 @@ public class Age
 
 
 
-### :pushpin: マスタスケジュラ，ジョブスケジュラ
+### マスタスケジュラ，ジョブスケジュラ
 
 ジョブとは，プロセスのセットのこと．マスタスケジュラは，ジョブスケジュラにジョブの実行を命令する．データをコンピュータに入力し，複数の処理が実行され，結果が出力されるまでの一連の処理のこと．『Task』と『Job』の定義は曖昧なので，『process』と『set of processes』を使うべきとのこと．
 
@@ -471,7 +471,7 @@ public class Age
 
 
 
-### :pushpin: Initiatorによるジョブのジョブステップへの分解
+### Initiatorによるジョブのジョブステップへの分解
 
 Initiatorによって，ジョブはジョブステップに分解される．
 
@@ -479,7 +479,7 @@ Initiatorによって，ジョブはジョブステップに分解される．
 
 
 
-### :pushpin: タスク管理
+### タスク管理
 
 ![ジョブステップからタスクの生成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ジョブステップからタスクの生成.png)
 
@@ -522,7 +522,7 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 
 
-### :pushpin: 入出力管理
+### 入出力管理
 
 アプリケーションから低速な周辺機器へデータを出力する時，まず，CPUはスプーラにデータを出力する．Spoolerは，全てのデータをまとめて出力するのではなく，一時的に補助記憶装置（Spool）にためておきながら，少しずつ出力する（Spooling）．
 
@@ -538,13 +538,13 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 システムソフトウェア（ミドルウェア ＋ 基本ソフトウェア）とハードウェアの間の段階にあるソフトウェア．ROMに組み込まれている．
 
-### :pushpin: BIOS：Basic Input/Output System
+### BIOS：Basic Input/Output System
 
 ![BIOS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/BIOS.jpg)
 
 
 
-### :pushpin: UEFI：United Extensible Firmware Interface
+### UEFI：United Extensible Firmware Interface
 
 Windows 8以降で採用されている新しいFirmware
 
@@ -554,7 +554,7 @@ Windows 8以降で採用されている新しいFirmware
 
 ## 07-01. OSS：Open Source Software
 
-### :pushpin: OSSとは
+### OSSとは
 
 以下の条件を満たすソフトウェアをOSSと呼ぶ．応用ソフトウェアから基本ソフトウェアまで，様々なものがある．
 
@@ -580,7 +580,7 @@ Windows 8以降で採用されている新しいFirmware
 
     
 
-### :pushpin: OSSの具体例
+### OSSの具体例
 
 ![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSS一覧.png)
 

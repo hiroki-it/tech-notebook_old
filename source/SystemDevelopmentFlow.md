@@ -2,7 +2,7 @@
 
 ## 01-01. システムの開発手法の種類
 
-### :pushpin: システム開発の要素
+### システム開発の要素
 
 #### ・設計
 
@@ -14,7 +14,7 @@
 
 
 
-### :pushpin: ウォーターフォール型開発
+### ウォーターフォール型開発
 
 ![ウォーターフォール型](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ウォーターフォール型.png)
 
@@ -26,7 +26,7 @@
 
 
 
-### :pushpin: プロトタイプ型開発
+### プロトタイプ型開発
 
 システム設計に入るまでに試作品を作り，要件定義をより正確にする開発方法．
 
@@ -34,7 +34,7 @@
 
 
 
-### :pushpin: レビュー
+### レビュー
 
 各工程が完了した段階で，レビューを行う開発方法．
 
@@ -42,7 +42,7 @@
 
 
 
-### :pushpin: RAD（Rapid Application Development）
+### RAD（Rapid Application Development）
 
 Visual Basicなどの開発支援ツールを用いて，短期間で設計～テストまでを繰り返す開発方法．
 
@@ -52,7 +52,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 
 
-### :pushpin: スパイラル型開発
+### スパイラル型開発
 
 システムをいくつかのサブシステムに分割し，ウォーターフォール型開発で各サブシステムを開発していく方法．
 
@@ -60,7 +60,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 
 
-### :pushpin: アジャイル型開発
+### アジャイル型開発
 
 スパイラルモデルの派生型．スパイラルモデルよりも短い期間で，設計～テストまでを繰り返す開発方法．
 
@@ -68,7 +68,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 
 
-### :pushpin: CASEツール：Computer Aided Software Enginnering
+### CASEツール：Computer Aided Software Enginnering
 
 システム開発をサポートするツール群のこと．
 
@@ -90,13 +90,13 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ## 02-01. システム開発におけるプロジェクト管理
 
-### :pushpin: ウォーターフォール型開発（再掲）
+### ウォーターフォール型開発（再掲）
 
 ![ウォーターフォール型](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ウォーターフォール型.png)
 
 
 
-### :pushpin: システム開発における様々な指標
+### システム開発における様々な指標
 
 『開発規模（か）』，『工数（こ）』，『生産性（せ）』の単位間の関係は，「みはじ」と同じである．
 
@@ -147,7 +147,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 
 
-### :pushpin: Arrow ダイアグラム
+### Arrow ダイアグラム
 
 #### ・プロジェクトに必要な日数
 

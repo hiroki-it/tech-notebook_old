@@ -2,13 +2,13 @@
 
 ## 01-01. オブジェクト指向設計
 
-### :pushpin: オブジェクト指向設計に用いられるUMLダイアグラム
+### オブジェクト指向設計に用いられるUMLダイアグラム
 
 ![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UML-1.png)
 
 
 
-### :pushpin: オブジェクト指向設計での作業例
+### オブジェクト指向設計での作業例
 
 #### 1. クラス図とシーケンス図の作成
 
@@ -26,7 +26,7 @@
 
 ## 01-02. クラス図による設計
 
-### :pushpin: クラス図
+### クラス図
 
 #### ・インスタンス間の関係性を表す図
 
@@ -48,7 +48,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 
 
-### :pushpin: クラスの多重度
+### クラスの多重度
 
 #### ・多重度とは
 
@@ -107,7 +107,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ## 01-03. シーケンス図による設計
 
-### :pushpin: シーケンス図
+### シーケンス図
 
 #### ・設計例1
 
@@ -135,7 +135,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 
 
-### :pushpin: Association（関連）
+### Association（関連）
 
 #### ・Associationとは
 
@@ -143,7 +143,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 
 
-### :pushpin: Aggregation（集約）
+### Aggregation（集約）
 
 #### ・Aggregationとは
 
@@ -227,7 +227,7 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 
 
 
-### :pushpin: Composition（合成）
+### Composition（合成）
 
 #### ・Compositionとは
 
@@ -270,7 +270,7 @@ $car = new Car();
 
 ![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/クラス間の関係性のクラス図.png)
 
-### :pushpin: Generalization（汎化）
+### Generalization（汎化）
 
 #### ・汎化におけるOverride
 
@@ -443,7 +443,7 @@ class EnginnerShainManagement extends ShainManagement
 
 
 
-### :pushpin: Realization（実現）
+### Realization（実現）
 
 #### ・Realizationとは
 
@@ -500,7 +500,7 @@ class Human implements Communication
 
 
 
-### :pushpin: 通常クラス，抽象クラス，インターフェースの違い
+### 通常クラス，抽象クラス，インターフェースの違い
 
 |                              |    通常クラス    |    抽象クラス    |                       インターフェース                       |
 | ---------------------------- | :--------------: | :--------------: | :----------------------------------------------------------: |
@@ -523,7 +523,7 @@ class Human implements Communication
 
 ## 02-03. クラス間，インスタンス間，クラス／インスタンス間の関係性
 
-### :pushpin:  Dependency（依存）
+###  Dependency（依存）
 
 #### ・Dependencyとは
 
@@ -551,7 +551,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 
 
-### :pushpin: 結合度
+### 結合度
 
 #### ・結合度とは
 
@@ -664,7 +664,7 @@ class ModuleB
 
 
 
-### :pushpin: 凝集度
+### 凝集度
 
 #### ・凝集度とは
 
@@ -676,7 +676,7 @@ class ModuleB
 
 
 
-### :pushpin: Dependency Injection（サプライヤーの注入）
+### Dependency Injection（サプライヤーの注入）
 
 サプライヤー側の『インスタンス』を，クライアント側のインスタンスの外部から注入する実装方法．
 
@@ -695,7 +695,7 @@ class ModuleB
 
 
 
-### :pushpin: DI Container（依存性注入コンテナ）
+### DI Container（依存性注入コンテナ）
 
 サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，```__construct()```でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．コンテナへの登録ファイル，インスタンスへのコンテナ渡しのファイルを実装する．
 
@@ -719,7 +719,7 @@ class ModuleB
 
 ## 02-04. Dependency Inversion Principle（依存性逆転の原則）
 
-### :pushpin: DIPとは
+### DIPとは
 
 #### ・原則1
 
@@ -731,7 +731,7 @@ class ModuleB
 
 
 
-### :pushpin: DIPに基づかない設計 vs. 基づく設計
+### DIPに基づかない設計 vs. 基づく設計
 
 #### ・DIPに基づかない設計の場合（従来）
 
@@ -759,7 +759,7 @@ class ModuleB
 
 ## 02-05. クラスの継承
 
-### :pushpin: クラスチェーンによる継承元の参照
+### クラスチェーンによる継承元の参照
 
 クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
 
@@ -801,7 +801,7 @@ echo $subExample->getValue();
 
 
 
-### :pushpin: 継承元の静的メソッドを参照
+### 継承元の静的メソッドを参照
 
 **【実装例】**
 
@@ -830,7 +830,7 @@ class SubExample extends Example
 
 ## 02-06. 外部クラスとメソッドの読み込み
 
-### :pushpin: ```use```によるクラスとメソッドの読み込み
+### ```use```によるクラスとメソッドの読み込み
 
 PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
 
@@ -931,13 +931,13 @@ class Example2
 
 ## 02-07. 入れ子クラス
 
-### :pushpin: PHPの場合
+### PHPの場合
 
 PHPには組み込まれていない．
 
 
 
-### :pushpin: Javaの場合
+### Javaの場合
 
 クラスの中にクラスをカプセル化する機能．データやメソッドと同じ記法で，内部クラスでは，外部クラスのメンバを呼び出すことができる．
 
@@ -1035,13 +1035,13 @@ class OuterClass
 
 ## 02-08. 総称型
 
-### :pushpin: PHPの場合
+### PHPの場合
 
 PHPには組み込まれていない．
 
 
 
-### :pushpin: Javaの場合
+### Javaの場合
 
 オブジェクトにデータ型を引数として渡すことで，データの型宣言を行える機能．型宣言を毎回行わなければならず，煩わしいJavaならではの機能．PHPとは異なり，変数定義に『$』は用いないことに注意．
 
@@ -1101,13 +1101,13 @@ list.add(10.1);    // String型でないのでコンパイルエラー
 
 ## 02-09. Trait
 
-### :pushpin: PHPの場合
+### PHPの場合
 
 再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
 
 ![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トレイト.png)
 
-### :pushpin: Javaの場合
+### Javaの場合
 
 Javaには組み込まれていない．
 
@@ -1117,13 +1117,13 @@ Javaには組み込まれていない．
 
 本資料の以降では，大きく，操作（メソッド）とデータ（プロパティ）に分けて，説明していく．
 
-### :pushpin: 操作（メソッド）
+### 操作（メソッド）
 
 クラスは，データを操作する．この操作はメソッドとも呼ばれる．
 
 
 
-### :pushpin: データ（プロパティ）
+### データ（プロパティ）
 
 クラスは，データをもつ．このデータはプロパティとも呼ばれる．
 
@@ -1132,13 +1132,13 @@ Javaには組み込まれていない．
 
 ## 03-02. メソッドとデータのカプセル化
 
-### :pushpin: ```public```
+### ```public```
 
 どのオブジェクトでも呼び出せる．
 
 
 
-### :pushpin: ```protected```
+### ```protected```
 
 同じクラス内と，その子クラス，その親クラスでのみ呼び出せる．
 
@@ -1146,7 +1146,7 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 
 
-### :pushpin: ```private```
+### ```private```
 
 同じオブジェクト内でのみ呼び出せる．
 
@@ -1156,7 +1156,7 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 ![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
 
-### :pushpin: ```static```
+### ```static```
 
 別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．データ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．
 
@@ -1192,7 +1192,7 @@ public static function computeExampleFee(Entity $order): Money
 
 ## 04-01. メソッド
 
-### :pushpin: 値を取得するアクセサメソッドの実装
+### 値を取得するアクセサメソッドの実装
 
 #### ・Getter
 
@@ -1219,7 +1219,7 @@ class ABC {
 
 
 
-### :pushpin: 値を設定するアクセサメソッドの実装
+### 値を設定するアクセサメソッドの実装
 
 #### ・Setter
 
@@ -1285,7 +1285,7 @@ Entityは，Mutableであるため，Setterと```__construct()```の両方を持
 
 
 
-### :pushpin: マジックメソッド（Getter系）
+### マジックメソッド（Getter系）
 
 オブジェクトに対して特定の操作が行われた時に自動的にコールされる特殊なメソッドのこと．自動的に呼び出される仕組みは謎．共通の処理を行うGetter（例えば，値を取得するだけのGetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされてコールされる．
 
@@ -1327,7 +1327,7 @@ hogeデータは存在しないため，値を呼び出せません．
 
 
 
-### :pushpin: マジックメソッド（Setter系）
+### マジックメソッド（Setter系）
 
 定義されていないstaticメソッドや，アクセス権のないstaticメソッドを取得しようとした時に，代わりに呼び出される．自動的にコールされる仕組みは謎．共通の処理を行うSetter（例えば，値を設定するだけのSetterなど）を無闇に増やしたくない場合に用いることで，コード量の肥大化を防ぐことができる．PHPには最初からマジックメソッドは組み込まれているが，自身で実装した場合，オーバーライドされて呼び出される．
 
@@ -1403,7 +1403,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 
 
-### :pushpin: マジックメソッド（その他）
+### マジックメソッド（その他）
 
 #### ・```__invoke()```
 
@@ -1411,7 +1411,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 
 
-### :pushpin: インスタンスの生成メソッド
+### インスタンスの生成メソッド
 
 #### ・```new static()``` と ```new self()```の違い
 
@@ -1448,7 +1448,7 @@ echo get_class(A::get_static()); // 継承元のクラスA
 
 
 
-### :pushpin: メソッドのコール
+### メソッドのコール
 
 #### ・メソッドチェーン
 
@@ -1595,7 +1595,7 @@ var_dump($result);
 
 
 
-### :pushpin: 引数
+### 引数
 
 #### ・オプション引数
 
@@ -1603,7 +1603,7 @@ var_dump($result);
 
 
 
-### :pushpin: 値を返却する前の途中終了
+### 値を返却する前の途中終了
 
 #### ・```return;```
 
@@ -1639,7 +1639,7 @@ exitMethod(); // exitMethod()です。
 
 
 
-### :pushpin: 値の返却
+### 値の返却
 
 #### ・```return```
 
@@ -1675,7 +1675,7 @@ foreach ($oneToThree as $value) {
 
 
 
-### :pushpin: Dispatcher
+### Dispatcher
 
 #### ・Dispatcherとは
 
@@ -1772,7 +1772,7 @@ class ResultCacher
 
 特定の処理が，```private```メソッドとして切り分けるほどでもないが，他の部分と明示的に区分けたい時は，無名関数を用いるとよい．
 
-### :pushpin: Closure（無名関数）の定義，変数格納後のコール
+### Closure（無名関数）の定義，変数格納後のコール
 
 #### ・```use()```のみに引数を渡す場合
 
@@ -1841,7 +1841,7 @@ echo $option->name("BC");
 
 
 
-### :pushpin: Closure（無名関数）の定義と即コール
+### Closure（無名関数）の定義と即コール
 
 定義したその場でコールされる無名関数を『即時関数』と呼ぶ．無名関数をコールしたい時は，```call_user_func()```を用いる．
 
@@ -1868,7 +1868,7 @@ echo $optionName;
 
 
 
-### :pushpin: 高階関数とClosure（無名関数）の組み合わせ
+### 高階関数とClosure（無名関数）の組み合わせ
 
 関数を引数として受け取ったり，関数自体を返したりする関数を『高階関数』と呼ぶ．
 
@@ -1947,7 +1947,7 @@ higherOrder($parentVar, function () use ($parentVar) {
 
 
 
-### :pushpin: 高階関数を使いこなす！
+### 高階関数を使いこなす！
 
 ```PHP
 class Example
@@ -1991,7 +1991,7 @@ class Example
 
 ハードウェアが処理を行う時に，データの集合を効率的に扱うためのデータ格納形式をデータ構造という．データ構造のPHPによる実装方法を以下に示す．
 
-### :pushpin: Array型
+### Array型
 
 同じデータ型のデータを並べたデータ格納様式のこと．
 
@@ -2084,7 +2084,7 @@ echo reset($array); // あ
 
 
 
-### :pushpin: LinkedList型
+### LinkedList型
 
 PHPで用いることはあまりないデータ格納様式．詳しくは，JavaにおけるLinkedList型を参照せよ．
 
@@ -2111,7 +2111,7 @@ echo $a.$i.$u; // あいう
 
 
 
-### :pushpin: Queue型
+### Queue型
 
 ![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Queue1.gif)
 
@@ -2169,7 +2169,7 @@ echo $theFirst; // Blue
 
 
 
-### :pushpin: Stack型
+### Stack型
 
 PHPでは，```array_push()```と```array_pop()```で実装可能．
 
@@ -2189,7 +2189,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 
 
-### :pushpin: Tree型
+### Tree型
 
 #### ・二分探索木
 
@@ -2223,7 +2223,7 @@ PHPでは，```array_push()```と```array_pop()```で実装可能．
 
 データ構造のJavaによる実装方法を以下に示す．
 
-### :pushpin: Array型
+### Array型
 
 #### ・ArrayList
 
@@ -2235,7 +2235,7 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 
 
-### :pushpin: LinkedList型
+### LinkedList型
 
 値をポインタによって順序通り並べたデータ格納形式のこと．
 
@@ -2253,17 +2253,17 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 
 
-### :pushpin: Queue型
+### Queue型
 
-### :pushpin: Stack型
+### Stack型
 
-### :pushpin: Tree型
+### Tree型
 
 
 
 ## 05-03. データ型
 
-### :pushpin: スカラー型
+### スカラー型
 
 #### ・int
 
@@ -2285,7 +2285,7 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 
 
-### :pushpin: 複合型
+### 複合型
 
 
 #### ・array
@@ -2303,7 +2303,7 @@ Fruit Object
 
 
 
-### :pushpin: その他のデータ型
+### その他のデータ型
 
 #### ・null
 
@@ -2320,7 +2320,7 @@ Fruit Object
 
 
 
-### :pushpin: キャスト演算子
+### キャスト演算子
 
 #### ・```(string)```
 
@@ -2362,7 +2362,7 @@ $var = (object) $var;
 
 ## 05-04. 定数
 
-### :pushpin: 定数が役に立つ場面
+### 定数が役に立つ場面
 
 計算処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．例えば，ValueObjectにおける定数がある．
 
@@ -2411,7 +2411,7 @@ class requiredTime
 
 
 
-### :pushpin: マジカル定数
+### マジカル定数
 
 自動的に値が格納されている定数．
 
@@ -2457,7 +2457,7 @@ $exampleB->b(); // ExampleB::b が返却される．
 
 ## 05-05. 変数
 
-### :pushpin: 変数展開
+### 変数展開
 
 文字列の中で，変数の中身を取り出すことを『変数展開』と呼ぶ．
 
@@ -2509,7 +2509,7 @@ echo "これは{$fruit}です．"; // これは，リンゴです．
 
 
 
-### :pushpin: 参照渡しと値渡し
+### 参照渡しと値渡し
 
 #### ・参照渡し
 
@@ -2552,7 +2552,7 @@ $a = 10;  // 変数aの値を変更
 echo $b; // 2
 ```
 
-### :pushpin: 正規表現とパターン演算子
+### 正規表現とパターン演算子
 
 #### ・正規表現を用いた文字列検索
 
@@ -2571,7 +2571,7 @@ preg_match('/jpeg$/i', $x);
 
 ## 06-01. ファイルパス
 
-### :pushpin: 絶対パス
+### 絶対パス
 
 ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．
 
@@ -2581,7 +2581,7 @@ preg_match('/jpeg$/i', $x);
 
 ![絶対パス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/絶対パス.png)
 
-### :pushpin: 相対パス
+### 相対パス
 
 起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．
 

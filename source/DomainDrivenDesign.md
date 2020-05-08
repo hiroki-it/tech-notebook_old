@@ -2,7 +2,7 @@
 
 ## 01-01. MVC
 
-### :pushpin: MVCとは
+### MVCとは
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
@@ -10,7 +10,7 @@
 
 
 
-### :pushpin: MVCからドメイン駆動設計への発展
+### MVCからドメイン駆動設計への発展
 
 #### ・MVCの問題点
 
@@ -24,7 +24,7 @@
 
 ## 02-01. ドメイン駆動設計とは
 
-### :pushpin: ビジネスルールに対するオブジェクト指向分析と設計
+### ビジネスルールに対するオブジェクト指向分析と設計
 
 #### ・ドメインエキスパート，ユビキタス言語とは
 
@@ -44,7 +44,7 @@
 
 
 
-### :pushpin: ドメイン駆動設計の派生型
+### ドメイン駆動設計の派生型
 
 現在までに，ドメイン駆動設計の派生型がいくつか提唱されている．
 
@@ -58,7 +58,7 @@
 
 ## 02-02. Layeredアーキテクチャ型ドメイン駆動設計
 
-### :pushpin: 責務の分担方法
+### 責務の分担方法
 
 ![ドメイン駆動設計](https://user-images.githubusercontent.com/42175286/58724663-2ec11c80-8418-11e9-96e9-bfc6848e9374.png)
 
@@ -71,7 +71,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 
 
-### :pushpin: DIPに基づくドメイン駆動設計
+### DIPに基づくドメイン駆動設計
 
 #### ・依存性を逆転させる方法
 
@@ -93,7 +93,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 ## 03-01. Application層（UseCase層）
 
-### :pushpin: Controller
+### Controller
 
 #### ・責務
 
@@ -129,7 +129,7 @@ class AcceptOrdersController
 
 
 
-### :pushpin: Application Service
+### Application Service
 
 #### ・責務
 
@@ -149,7 +149,7 @@ class SlackNotificationService
 
 
 
-### :pushpin: 入力データに対するフォーマットのValidationパターン
+### 入力データに対するフォーマットのValidationパターン
 
 #### ・責務
 
@@ -180,7 +180,7 @@ class FormatValidator
 
 
 
-### :pushpin: Converterパターン
+### Converterパターン
 
 #### ・責務
 
@@ -206,7 +206,7 @@ class Converter
 
 ## 04-01. Domain層
 
-### :pushpin: 抽象Repository
+### 抽象Repository
 
 #### ・責務
 
@@ -228,7 +228,7 @@ abstract class getDogToyEntityRepository
 
 
 
-### :pushpin: Entity
+### Entity
 
 #### ・責務
 
@@ -236,7 +236,7 @@ abstract class getDogToyEntityRepository
 
 
 
-### :pushpin: Specificationパターン
+### Specificationパターン
 
 #### ・責務
 
@@ -299,7 +299,7 @@ class XxxCriteria
 
 
 
-### :pushpin: Value Object
+### Value Object
 
 #### ・責務
 
@@ -307,7 +307,7 @@ class XxxCriteria
 
 
 
-### :pushpin: Type Code（標準型）
+### Type Code（標準型）
 
 #### ・責務
 
@@ -315,7 +315,7 @@ class XxxCriteria
 
 
 
-### :pushpin: Domain Service
+### Domain Service
 
 #### ・責務
 
@@ -325,19 +325,19 @@ class XxxCriteria
 
 ## 04-02. Domain \ Entity の責務
 
-### :pushpin: Entityの具体例
+### Entityの具体例
 
 ![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
 
 
 
-### :pushpin: 保持するデータの値が一定でない
+### 保持するデータの値が一定でない
 
 状態を変化させる必要があるデータをもつ
 
 
 
-### :pushpin: データの値が同じでも区別できる
+### データの値が同じでも区別できる
 
 オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される．
 
@@ -374,7 +374,7 @@ class ToyOrderEntity
 
 
 
-### :pushpin: Route Entityとは
+### Route Entityとは
 
 ![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
 
@@ -437,7 +437,7 @@ class DogToyEntity
 
 ## 04-03. Domain \ Value Object の責務
 
-### :pushpin: Value Objectの具体例
+### Value Objectの具体例
 
 金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，Value Objectという．
 
@@ -486,7 +486,7 @@ class PaymentInfoVO
 
 
 
-### :pushpin: 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ
+### 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ
 
 #### ・金額データと計算
 
@@ -502,7 +502,7 @@ class PaymentInfoVO
 
 
 
-### :pushpin: オブジェクトの持つデータの不変性
+### オブジェクトの持つデータの不変性
 
 #### ・不変性に関するベストプラクティス
 
@@ -561,7 +561,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 
 
-### :pushpin: 概念的な統一体
+### 概念的な統一体
 
 ```PHP
 // ここに実装例
@@ -569,19 +569,19 @@ $test02 = new Test02("新しいデータ02の値");
 
 
 
-### :pushpin: オブジェクトの交換可能性
+### オブジェクトの交換可能性
 
 オブジェクトが新しくインスタンス化された場合，以前に同一オブジェクトから生成されたインスタンスから新しく置き換える必要がある．
 
 
 
-### :pushpin: オブジェクト間の等価性
+### オブジェクト間の等価性
 
 全てのデータの値が他のVOと同じ場合，同一のVOと見なされる．
 
  
 
-### :pushpin: メソッドによってオブジェクトの状態が変わらない
+### メソッドによってオブジェクトの状態が変わらない
 
 **【実装例】**
 
@@ -630,13 +630,13 @@ class Money
 
 ## 04-04. Domain \ Type Code（標準型）の責務
 
-### :pushpin: 区分や種類のデータを保持する
+### 区分や種類のデータを保持する
 
 Type Codeは概念的な呼び名で，実際は，標準的なライブラリとして利用できるEnumクラスに相当する．一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，Value Objectとしてではなく，Enumクラスとしてモデリング／実装する．
 
 
 
-### :pushpin: Enumクラスを用いたType Codeの実装
+### Enumクラスを用いたType Codeの実装
 
 **【実装例】**
 
@@ -695,7 +695,7 @@ class ColorVO extends Enum
 
 ## 05-01. Infrastructure層
 
-### :pushpin: 具象Repository
+### 具象Repository
 
 #### ・DBに対する書き込み責務（Create，Update，Delete）
 
@@ -824,7 +824,7 @@ class getDogToyEntityRepository
 
 
 
-### :pushpin: Factory
+### Factory
 
 #### ・責務
 
