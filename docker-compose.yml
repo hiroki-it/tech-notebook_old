@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   www:
-    container_name: sphinx-www
+    container_name: www
     build:
       context: .
       dockerfile: infra/docker/www/Dockerfile
@@ -18,18 +18,18 @@ services:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
     depends_on:
-      - app
+      - builder
 
-  app:
-    container_name: sphinx-app
+  builder:
+    container_name: builder
     build:
       context: .
-      dockerfile: infra/docker/app/Dockerfile
-    image: tech-notebook/app:latest
+      dockerfile: infra/docker/builder/Dockerfile
+    image: tech-notebook/builder:latest
     tty: true
     volumes:
       - ./:/var/www/tech-notebook
-      - ./logs/app:/tmp
+      - ./logs/builder:/tmp
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
