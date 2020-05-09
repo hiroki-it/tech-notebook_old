@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 # ドキュメントサイトの概要を設定
-project = 'Hiroki tech-notebook'
+project = '目次に戻る'
 author = 'Hiroki'
 
 # The full version, including alpha/beta/rc tags
@@ -65,8 +65,6 @@ language = 'ja'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-html_search_language = 'ja'
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -90,15 +88,17 @@ html_theme_options = {
     'titles_only': False,
 }
 
+# ViewPageSourceの表示／非表示を設定
+html_show_sourcelink = False
+
+# 検索言語の設定
+html_search_language = 'ja'
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # カスタムcssファイルのディレクトリを指定
 html_static_path = ["_static"]
-
-# ViewPageSourceの表示／非表示を設定
-html_show_sourcelink = False
-
 # カスタムcssファイルを読み込み
 def setup(app):
-    app.add_stylesheet('custom.css')
+    app.add_css_file('custom.css')
