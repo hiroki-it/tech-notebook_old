@@ -50,7 +50,7 @@ class Example
 $oneD = call_user_func_array(
             'array_merge',
             $twoD
-            ),
+            );
 ```
 
 #### ・多次元配列でキー名から値を取得
