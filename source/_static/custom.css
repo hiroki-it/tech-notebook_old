@@ -1,17 +1,12 @@
 /***********************
- Index
+ 目次
  ***********************/
 .toctree-wrapper.compound .caption {
-    /* 背景：色 */
-    background: #d7d7d7;
-    /* 左線：太さ，色 */
-    border-left: 15px solid #2980B9;
-    /* 文字：色 */
-    color: #010101;
-    /* 内部余白：文字周り */
-    padding: 0.6em;
-    /* 上外部余白：大きさ */
-    margin-top: 1.5em;
+    background: #d7d7d7; /* 背景：色 */
+    border-left: 15px solid #2980B9; /* 左線：太さ，色 */
+    color: #010101; /* 文字：色 */
+    padding: 0.6em; /* 内部余白：文字周り */
+    margin-top: 1em; /* 上外部余白：大きさ */
 }
 
 
@@ -19,38 +14,38 @@
  サイドナビ
  ***********************/
 
-.wy-menu-vertical {
-    font-size: 13.5px;
+/* ナビ全体 */
+.wy-menu.wy-menu-vertical {
+    font-size: 14px;
 }
 
-/* 現在いるページのナビ：色 */
-.wy-menu-vertical * li.current a {
-    color: black;
-}
-
-/* h1のナビ：色 */
-.wy-menu-vertical span {
-    color: white;
-}
-
-/* 現在いないページのナビ：色 */
-.wy-menu-vertical a, .wy-menu-vertical .subnav a {
-    color: white;
-}
-
-/* ページ：色 */
-.wy-menu-vertical span {
+/* ノート名 */
+.wy-menu.wy-menu-vertical .caption-text {
     color: #ff0;
 }
 
-/* アイコンと文字：大きさ */
+/* 現在いるノート名 */
+.wy-menu.wy-menu-vertical .current .toctree-l1.current {
+    color: black;
+}
+
+/* 現在開いている見出し */
+.wy-menu.wy-menu-vertical .current .toctree-l1.current a.reference.internal.current:after {
+    color: #2980B9; /*アイコン色*/
+    content: "\f08d"; /*アイコンのユニコード*/
+    font-family: "FontAwesome", serif;
+    font-size: 1.0em; /*サイズ*/
+    margin-left: 0.5em;
+}
+
+/* アイコンと文字 */
 .wy-side-nav-search {
     font-size: 20px;
 }
 
 
 /***********************
- 各ページ
+ 各ノート
  ***********************/
 
 h1 {
@@ -58,58 +53,65 @@ h1 {
     border-radius: 7px;
     color: white;
     font-size: 28px;
-    position: relative;
     padding: 0.6em;
+    position: relative;
 }
 
 h1:after {
-    position: absolute;
-    content: '';
-    top: 100%;
-    left: 30px;
     border: 15px solid transparent;
     border-top: 15px solid black;
-    width: 0;
+    content: '';
     height: 0;
+    left: 26px;
+    position: absolute;
+    top: 100%;
+    width: 0;
+    
 }
 
 h2 {
-    /* 背景：色 */
-    background: #d7d7d7;
-    /* 左線：太さ，色 */
-    border-left: 15px solid #2980B9;
-    /* 文字：色 */
-    color: #010101;
-    /* 内部余白：文字周り */
-    padding: 0.6em;
-    /* 上外部余白：大きさ */
-    margin-top: 1.5em;
+    background: #d7d7d7; /* 背景：色 */
+    border-left: 15px solid #2980B9; /* 左線：太さ，色 */
+    color: #010101; /* 文字：色 */
+    font-size: 18px;
+    margin-top: 1.5em; /* 上外部余白：大きさ */
+    padding: 0.6em; /* 内部余白：文字周り */
 }
 
 h3 {
-    position: relative; /*相対位置*/
-    padding: 0.5em 0.5em 0.5em 1.5em; /*アイコン分のスペース*/
-    line-height: 1.4; /*行高*/
-    color: black; /*文字色*/
-    border-top: dotted 1px gray;
-    border-bottom: dotted 1px gray;
     background: #ffffd5;
+    border-bottom: dotted 1px gray;
+    border-top: dotted 1px gray;
+    color: black; /*文字色*/
+    font-size: 16px;
+    line-height: 1.4; /*行高*/
+    padding: 0.5em 0.5em 0.5em 1.5em; /*アイコン分のスペース*/
+    position: relative; /*相対位置*/
 }
 
 h3:before {
-    font-family: "FontAwesome", serif;
+    color: #2980B9; /*アイコン色*/
     content: "\f138"; /*アイコンのユニコード*/
     position: absolute; /*絶対位置*/
-    font-size: 1em; /*サイズ*/
+    font-family: "FontAwesome", serif;
+    font-size: 1.25em; /*サイズ*/
     left: 0.25em; /*アイコンの位置*/
     top: 0.5em; /*アイコンの位置*/
-    color: #2980B9; /*アイコン色*/
 }
 
-img{
+h4 {
+    font-size: 16px;
+}
+
+p {
+    font-size: 14px;
+}
+
+img {
+    border: 1px solid #ddd; /* 囲み線 */
+    border-radius: 4px;
     display: block;
     margin: 0 auto;
-    /* 位置：中央 */
     text-align: center;
 }
 
