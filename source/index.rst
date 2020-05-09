@@ -10,7 +10,7 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: はじめに
 
-   aboutthissite.md
+   about_this_site.md
 
 .. toctree::
    :maxdepth: 1
@@ -20,7 +20,7 @@ Hiroki tech-notebook ドキュメントサイト
    object_oriented_designand_programming.md
    validation_logic_and_exception.md
    iteration_logic.md
-   conceptand_implementation_of_restful_api.md
+   concept_and_implementation_of_restful_api.md
    testing_framework_and_test_specification.md
    symfony_framework.md
    library.md
@@ -59,7 +59,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: ネットワーク
 
    how_the_internet_works.md
-   server_in_websystem.md
+   server_in_web_system.md
    flow_of_build_test_deploy_to_aws.md
 
 .. toctree::
@@ -68,7 +68,7 @@ Hiroki tech-notebook ドキュメントサイト
 
    infrastructure_as_code.md
    comparison_of_virtualization_technology.md
-   virtualserver_vs_container.md
+   virtual_server_vs_container.md
 
 .. toctree::
    :maxdepth: 1
