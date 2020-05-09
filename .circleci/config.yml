@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: hirokihasegawa/tech-notebook
+      - image: hirokihasegawa/tech-notebook_builder
 
     # 作業ディレクトリの作成
     working_directory: ~/tech-notebook
