@@ -14,6 +14,12 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
+   :caption: 自己紹介
+
+   self_introduction.md
+
+.. toctree::
+   :maxdepth: 1
    :caption: php
 
    object_oriented_analysis_and_design.md
