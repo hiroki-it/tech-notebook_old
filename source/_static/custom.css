@@ -30,12 +30,13 @@
 }
 
 /* 現在開いている見出し */
-.wy-menu.wy-menu-vertical .current .toctree-l1.current a.reference.internal.current:after {
+.wy-menu.wy-menu-vertical .current .toctree-l1.current a.reference.internal.current:before {
     color: #2980B9; /*アイコン色*/
     content: "\f08d"; /*アイコンのユニコード*/
     font-family: "FontAwesome", serif;
-    font-size: 1.0em; /*サイズ*/
-    margin-left: 0.5em;
+    font-size: 1.2em; /*サイズ*/
+    margin-left: 0.3em;
+    margin-right: 0.3em;
 }
 
 /* アイコンと文字 */
@@ -94,7 +95,7 @@ h3:before {
     content: "\f138"; /*アイコンのユニコード*/
     position: absolute; /*絶対位置*/
     font-family: "FontAwesome", serif;
-    font-size: 1.25em; /*サイズ*/
+    font-size: 1.0em; /*サイズ*/
     left: 0.25em; /*アイコンの位置*/
     top: 0.5em; /*アイコンの位置*/
 }
