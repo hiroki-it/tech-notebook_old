@@ -77,7 +77,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 2. リポジトリへPushすると，CIツールがGituHubからブランチの状態を取得する．
 
-3. CIツールによって，テストサーバの仮想化，インタプリタ，PHPUnitなどが自動実行される．
+3. CIツールによって，DockerHubから取得したDockerfileのビルド，PHPUnitなどが自動実行される．
 
 4. 結果を通知することも可能．
 
