@@ -86,6 +86,7 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
+    'prev_next_buttons_location': None
 }
 
 # ViewPageSourceの表示／非表示を設定
