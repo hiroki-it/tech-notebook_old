@@ -7,11 +7,11 @@ orbs:
 
 # ジョブの設定
 jobs:
-  "push":
+  push:
     docker:
       - image: docker:stable-git
     # 作業ディレクトリの指定
-    working_directory: ~
+    working_directory: ~/
     steps:
       # NOTE: Docker in Docker 問題に対処
       - setup_remote_docker
@@ -43,7 +43,7 @@ jobs:
           command: |
             docker push ${DOCKER_USER}/${APP_NAME}_www:latest
 
-  "build":
+  build:
     docker:
       - image: ${DOCKER_USER}/${APP_NAME}_builder:latest
     # 作業ディレクトリの指定
@@ -68,14 +68,14 @@ jobs:
 
 # 実行の順番を定義
 workflows:
-  version: 2.0
+  version: 2.1
   # Workflow名
-  "build-push-test":
+  build-push-test:
     jobs:
       # Docker Hub
-      - "push":
+      - push
       # AWS ECR builder
-      - "aws-ecr/build-and-push-image":
+      - aws-ecr/build-and-push-image:
           account-url: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
           aws-access-key-id: ${AWS_ACCESS_KEY}
           aws-secret-access-key: ${AWS_SECRET_KEY}
@@ -87,7 +87,7 @@ workflows:
           requires:
             - build
       # AWS ECR www
-      - "aws-ecr/build-and-push-image":
+      - aws-ecr/build-and-push-image:
           account-url: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
           aws-access-key-id: ${AWS_ACCESS_KEY}
           aws-secret-access-key: ${AWS_SECRET_KEY}
@@ -98,6 +98,6 @@ workflows:
           tag: latest
           requires:
             - build
-      - "build":
+      - build:
           requires:
             - push
