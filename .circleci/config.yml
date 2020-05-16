@@ -45,3 +45,15 @@ jobs:
           # 格納ディレクトリの掃除
           name: Clean up html
           command: make clean
+
+# 実行の順番を定義
+workflows:
+  version: 2
+  # Workflow名
+  push_and_build:
+    jobs:
+      - push
+      - build:
+          # pushステップが成功したら実行
+          requires:
+            - push
