@@ -17,14 +17,17 @@ jobs:
           command: git config --global core.quotepath false
       - checkout
       - run:
-          name: Build image
+          name: Build builder
           command: docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/tech-notebook_builder:latest .
+      - run:
+          name: Build www
+          command: docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/tech-notebook_www:latest .    
       - run:
           name: Login to docker hub
           command: echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
       - run:
           name: Push image
-          command: docker push ${DOCKER_USER}/tech-notebook_builder:latest
+          command: docker push ${DOCKER_USER}/tech-notebook_builder:latest ${DOCKER_USER}/tech-notebook_www:latest
 
   build:
     docker:
