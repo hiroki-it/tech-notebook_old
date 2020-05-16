@@ -1,9 +1,13 @@
 # バージョン
-version: 2
+version: 2.1
+
+# AWSへの接続準備
+orbs:
+  aws-ecr: circleci/aws-ecr@6.0.0
 
 # ジョブの設定
-jobs:  
-  push:
+jobs:
+  "push":
     docker:
       - image: docker:stable-git
     # 作業ディレクトリの指定
@@ -14,52 +18,86 @@ jobs:
       - run:
           # NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
-          command: git config --global core.quotepath false
+          command: |
+            git config --global core.quotepath false
       - checkout
       - run:
           name: Build builder
-          command: docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/tech-notebook_builder:latest .
+          command: |
+            docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}./.${APP_NAME}_builder .
       - run:
           name: Build www
-          command: docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/tech-notebook_www:latest .
+          command: |
+            docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/${APP_NAME}_www .
       - run:
           name: Login to docker hub
-          command: echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+          command: |
+            echo "${DOCKER_PASS}" |
+            docker login -u "${DOCKER_USER}" --password-stdin
       - run:
-          name: Push image
-          command: docker push ${DOCKER_USER}/tech-notebook_builder:latest
+          name: Push builder
+          command: |
+            docker push ${DOCKER_USER}/${APP_NAME}_builder:latest
       - run:
-          name: Push image
-          command: docker push ${DOCKER_USER}/tech-notebook_www:latest
+          name: Push www
+          command: |
+            docker push ${DOCKER_USER}/${APP_NAME}_www:latest
 
-  build:
+  "build":
     docker:
-      - image: hirokihasegawa/tech-notebook_builder:latest
+      - image: ${DOCKER_USER}/${APP_NAME}_builder:latest
     # 作業ディレクトリの指定
-    working_directory: ~/tech-notebook
+    working_directory: ~/${APP_NAME}
     steps:
       - run:
           # NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
-          command: git config --global core.quotepath false
+          command: |
+            git config --global core.quotepath false
       - checkout
       - run:
           # Htmlの生成
           name: Build html
-          command: make html
+          command: |
+            make html
       - run:
           # 格納ディレクトリの掃除
           name: Clean up html
-          command: make clean
+          command: |
+            make clean
 
 # 実行の順番を定義
 workflows:
-  version: 2
+  version: 2.0
   # Workflow名
-  push_and_build:
+  "build-push-test":
     jobs:
-      - push
-      - build:
-          # pushステップが成功したら実行
+      # Docker Hub
+      - "push":
+      # AWS ECR builder
+      - "aws-ecr/build-and-push-image":
+          account-url: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          aws-access-key-id: ${AWS_ACCESS_KEY}
+          aws-secret-access-key: ${AWS_SECRET_KEY}
+          dockerfile: Dockerfile
+          path: infra/docker/builder/Dockerfile
+          region: ${AWS_REGION}
+          repo: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${APP_NAME}_builder
+          tag: latest
+          requires:
+            - build
+      # AWS ECR www
+      - "aws-ecr/build-and-push-image":
+          account-url: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          aws-access-key-id: ${AWS_ACCESS_KEY}
+          aws-secret-access-key: ${AWS_SECRET_KEY}
+          dockerfile: Dockerfile
+          path: infra/docker/www/Dockerfile
+          region: ${AWS_REGION}
+          repo: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${APP_NAME}_www
+          tag: latest
+          requires:
+            - build
+      - "build":
           requires:
             - push
