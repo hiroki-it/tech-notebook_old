@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Build image
-          command: docker build -f infra/docker/builder/Dockerfile -t tech-notebook/builder:latest .
+          command: docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/tech-notebook_builder:latest .
       - run:
           name: Login to docker hub
           command: echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
