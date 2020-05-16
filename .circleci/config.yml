@@ -2,18 +2,38 @@
 version: 2
 
 # ジョブの設定
-jobs:
+jobs:  
+  push:
+    docker:
+      - image: docker:stable-git
+    # 作業ディレクトリの指定
+    working_directory: ~
+    steps:
+      # NOTE: Docker in Docker 問題に対処
+      - setup_remote_docker
+      - run:
+          # NOTE: checkoutが日本語を認識できないので対処
+          name: Setup git config
+          command: git config --global core.quotepath false
+      - checkout
+      - run:
+          name: Build image
+          command: docker build -f infra/docker/builder/Dockerfile -t tech-notebook/builder:latest .
+      - run:
+          name: Login to docker hub
+          command: echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+      - run:
+          name: Push image
+          command: docker push ${DOCKER_USER}/tech-notebook_builder:latest
+
   build:
     docker:
-      - image: hirokihasegawa/tech-notebook_builder
-
-    # 作業ディレクトリの作成
+      - image: hirokihasegawa/tech-notebook_builder:latest
+    # 作業ディレクトリの指定
     working_directory: ~/tech-notebook
-
-    # 実行コマンド
     steps:
       - run:
-          # Gitの日本語を有効化
+          # NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: git config --global core.quotepath false
       - checkout
