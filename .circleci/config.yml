@@ -21,12 +21,13 @@ jobs:
       - checkout
       - run:
           name: Build builder
+          # CircleCIのディレクトリは，/root/project(=tech-notebook)/
           command: |
-            docker build -f tech-notebook/infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
+            docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
           name: Build www
           command: |
-            docker build -f tech-notebook/infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
+            docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
       - run:
           name: Login to docker hub
           command: |
@@ -79,7 +80,8 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          path: "tech-notebook/infra/docker/builder/"
+          dockerfile: Dockerfile
+          path: "infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
           tag: ${VERSION}
@@ -90,7 +92,8 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          path: "tech-notebook/infra/docker/www/"
+          dockerfile: Dockerfile
+          path: "infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
           tag: ${VERSION}
