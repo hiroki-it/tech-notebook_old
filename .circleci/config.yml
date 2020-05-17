@@ -10,8 +10,6 @@ jobs:
   push-image:
     docker:
       - image: docker:stable-git
-    # 作業ディレクトリの設定
-    working_directory: ~/tech-notebook
     steps:
       # -- NOTE: Docker in Docker 問題に対処
       - setup_remote_docker
@@ -24,11 +22,11 @@ jobs:
       - run:
           name: Build builder
           command: |
-            docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
+            docker build -f ../infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
           name: Build www
           command: |
-            docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
+            docker build -f ../infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
       - run:
           name: Login to docker hub
           command: |
@@ -47,10 +45,11 @@ jobs:
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
     # 作業ディレクトリの設定
-    working_directory: ~/tech-notebook
     steps:
+      # -- NOTE: Docker in Docker 問題に対処
+      - setup_remote_docker
       - run:
-          # NOTE: checkoutが日本語を認識できないので対処
+          # -- NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: |
             git config --global core.quotepath false
@@ -80,7 +79,7 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          path: infra/docker/builder/
+          path: "../infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
           tag: ${VERSION}
@@ -91,7 +90,7 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          path: infra/docker/www/
+          path: "../infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
           tag: ${VERSION}
