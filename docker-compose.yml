@@ -33,4 +33,3 @@ services:
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
-    working_dir: /var/www/tech-notebook
