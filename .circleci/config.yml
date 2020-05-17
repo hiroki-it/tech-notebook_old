@@ -80,7 +80,7 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
+          dockerfile: .
           path: infra/docker/builder/Dockerfile
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
@@ -92,7 +92,7 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
+          dockerfile: .
           path: infra/docker/www/Dockerfile
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
