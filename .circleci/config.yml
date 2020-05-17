@@ -13,10 +13,10 @@ jobs:
     # 作業ディレクトリの設定
     working_directory: ~/tech-notebook
     steps:
-      # NOTE: Docker in Docker 問題に対処
+      # -- NOTE: Docker in Docker 問題に対処
       - setup_remote_docker
       - run:
-          # NOTE: checkoutが日本語を認識できないので対処
+          # -- NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: |
             git config --global core.quotepath false
@@ -75,7 +75,7 @@ workflows:
       # Docker Hub
       - push-image
       # AWS ECR builder
-      # NOTE: 環境変数を文字列で出力しないよう，変数名をそのまま記述．
+      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
@@ -83,8 +83,8 @@ workflows:
           dockerfile: Dockerfile
           path: infra/docker/builder/Dockerfile
           region: AWS_REGION
-          repo: REPOSITORY_NAME_BUILDER
-          tag: VERSION
+          repo: ${REPOSITORY_NAME_BUILDER}
+          tag: ${VERSION}
           requires:
             - build
       # AWS ECR www
@@ -95,8 +95,8 @@ workflows:
           dockerfile: Dockerfile
           path: infra/docker/www/Dockerfile
           region: AWS_REGION
-          repo: REPOSITORY_NAME_WWW
-          tag: VERSION
+          repo: ${REPOSITORY_NAME_WWW}
+          tag: ${VERSION}
           requires:
             - build
       - build:
