@@ -9,7 +9,7 @@ orbs:
 jobs:
   push-image:
     docker:
-      - image: docker:stable-git
+      - image: docker:19.03-git
     steps:
       # -- NOTE: Docker in Docker 問題に対処
       - setup_remote_docker
@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run:
           name: Build builder
-          # CircleCIのディレクトリは，/root/project(=tech-notebook)/
+          # -- NOTE: CircleCIのディレクトリは，/root/project(=tech-notebook)/
           command: |
             docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
