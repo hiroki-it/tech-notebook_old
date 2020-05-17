@@ -1,7 +1,7 @@
 # バージョン
 version: 2.1
 
-# AWSへの接続準備
+# AWS-ECRパッケージを使用．
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.2
 
@@ -33,7 +33,7 @@ jobs:
           name: Login to docker hub
           command: |
             echo ${DOCKER_PASS} |
-            docker login -u DOCKER_USER --password-stdin
+            docker login -u ${DOCKER_USER} --password-stdin
       - run:
           name: Push builder
           command: |
