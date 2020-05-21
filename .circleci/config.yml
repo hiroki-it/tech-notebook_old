@@ -5,12 +5,16 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.2
 
+executors:
+  docker-git:
+    docker:
+      - image: docker:19.03-git
+
 # ジョブの設定
 jobs:
   push-image:
     # ホスト（CircleCI）環境の設定
-    docker:
-      - image: docker:19.03-git
+    executor: docker-git
     steps:
       # ゲスト環境の使用を宣言
       - setup_remote_docker
@@ -81,6 +85,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: Dockerfile
+          executor: docker-git
           path: "infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
@@ -94,6 +99,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: Dockerfile
+          executor: docker-git
           path: "infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
