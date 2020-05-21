@@ -3,12 +3,12 @@ version: 2.1
 
 # AWS-ECRパッケージを使用．
 orbs:
-  aws-ecr: circleci/aws-ecr@6.8.2
+  aws-ecr: circleci/aws-ecr@6.0.0
 
 executors:
   docker-git:
     docker:
-      - image: docker:19.03-git
+      - image: docker:stable-git
 
 # ジョブの設定
 jobs:
@@ -85,7 +85,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: Dockerfile
-          executor: default
+          executor: docker-git
           path: "infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
@@ -98,7 +98,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: Dockerfile
-          executor: dafault
+          executor: docker-git
           path: "infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
