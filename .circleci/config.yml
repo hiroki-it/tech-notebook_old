@@ -8,10 +8,11 @@ orbs:
 # ジョブの設定
 jobs:
   push-image:
+    # ホスト（CircleCI）環境の設定
     docker:
       - image: docker:19.03-git
     steps:
-      # -- NOTE: Docker in Docker 問題に対処
+      # ゲスト環境の使用を宣言
       - setup_remote_docker
       - run:
           # -- NOTE: checkoutが日本語を認識できないので対処
@@ -43,12 +44,11 @@ jobs:
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
   build:
+    # ホスト（CircleCI）環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
     # 作業ディレクトリの設定
     steps:
-      # -- NOTE: Docker in Docker 問題に対処
-      - setup_remote_docker
       - run:
           # -- NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
@@ -80,11 +80,12 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          setup-remote-docker: true
           dockerfile: Dockerfile
+          executor: docker
           path: "infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
+          setup-remote-docker: true
           tag: ${VERSION}
           requires:
             - build
@@ -93,11 +94,12 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          setup-remote-docker: true
           dockerfile: Dockerfile
+          executor: docker
           path: "infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
+          setup-remote-docker: true
           tag: ${VERSION}
           requires:
             - build
