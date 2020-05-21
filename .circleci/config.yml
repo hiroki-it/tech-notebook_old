@@ -89,7 +89,6 @@ workflows:
           path: "infra/docker/builder/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
-          setup-remote-docker: true
           tag: ${VERSION}
           requires:
             - build
@@ -103,7 +102,6 @@ workflows:
           path: "infra/docker/www/"
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
-          setup-remote-docker: true
           tag: ${VERSION}
           requires:
             - build
