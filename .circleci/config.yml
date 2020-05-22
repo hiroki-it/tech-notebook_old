@@ -101,4 +101,4 @@ workflows:
             - build
       - build:
           requires:
-            - push-image
+            - push-images
