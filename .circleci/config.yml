@@ -5,6 +5,41 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@4.0.4
 
+# 実行の順番を定義
+workflows:
+  version: 2.1
+  # Workflow名
+  build-push:
+    jobs:
+      # Docker Hub
+      - push-images
+      # AWS ECR builder
+      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          path: "infra/docker/builder/"
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_BUILDER}
+          tag: ${VERSION}
+          requires:
+            - build
+      # AWS ECR www
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          path: "infra/docker/www/"
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_WWW}
+          tag: ${VERSION}
+          requires:
+            - build
+      - build:
+          requires:
+            - push-images
+
 # ジョブの設定
 jobs:
   push-images:
@@ -65,40 +100,3 @@ jobs:
           name: Clean up html
           command: |
             make clean
-
-# 実行の順番を定義
-workflows:
-  version: 2.1
-  # Workflow名
-  build-push:
-    jobs:
-      # Docker Hub
-      - push-images
-      # AWS ECR builder
-      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
-          path: "infra/docker/builder/"
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_BUILDER}
-          tag: ${VERSION}
-          requires:
-            - build
-      # AWS ECR www
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
-          path: "infra/docker/www/"
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_WWW}
-          tag: ${VERSION}
-          requires:
-            - build
-      - build:
-          requires:
-            - push-images
