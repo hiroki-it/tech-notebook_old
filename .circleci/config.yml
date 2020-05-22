@@ -6,9 +6,8 @@ orbs:
   aws-ecr: circleci/aws-ecr@4.0.4
 
 executors:
-  docker-git:
-    docker:
-      - image: docker:stable-git
+  machine-type:
+    machine: true
     working_directory: ~/tech-notebook
 
 # 実行の順番を定義
@@ -35,7 +34,8 @@ workflows:
 jobs:
   push-images:
     # ホスト（CircleCI）環境の設定
-    executor: docker-git
+    docker:
+      - image: docker:stable-git
     steps:
       # ゲスト環境の使用を宣言
       - setup_remote_docker
@@ -69,7 +69,7 @@ jobs:
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
   
   push-builder-to-ecr:
-    executor: docker-git
+    executor: machine-type
     steps:
       - checkout
       # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
@@ -84,7 +84,7 @@ jobs:
           tag: ${VERSION}
   
   push-www-to-ecr:
-    executor: docker-git
+    executor: machine-type
     steps:
       - checkout
       - aws-ecr/build-and-push-image:
