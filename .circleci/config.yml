@@ -12,7 +12,7 @@ executors:
 
 # ジョブの設定
 jobs:
-  push-image:
+  push-to-images-docker-hub:
     # ホスト（CircleCI）環境の設定
     executor: docker-git
     steps:
@@ -46,6 +46,38 @@ jobs:
           name: Push www
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
+  
+  push-builder-to-ecr:
+    # ホスト（CircleCI）環境の設定
+    executor: docker-git
+    steps:
+      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          dockerfile: Dockerfile
+          executor: docker-git
+          path: "infra/docker/builder/"
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_BUILDER}
+          tag: ${VERSION}
+  
+  push-www-to-ecr:
+    # ホスト（CircleCI）環境の設定
+    executor: docker-git
+    steps:
+      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          dockerfile: Dockerfile
+          executor: docker-git
+          path: "infra/docker/www/"
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_WWW}
+          tag: ${VERSION}
 
   build:
     # ホスト（CircleCI）環境の設定
@@ -77,34 +109,15 @@ workflows:
   build-push:
     jobs:
       # Docker Hub
-      - push-image
+      - push-to-images-docker-hub
       # AWS ECR builder
-      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
-          executor: docker-git
-          path: "infra/docker/builder/"
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_BUILDER}
-          tag: ${VERSION}
+      - push-builder-to-ecr:
           requires:
             - build
       # AWS ECR www
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: Dockerfile
-          executor: docker-git
-          path: "infra/docker/www/"
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_WWW}
-          tag: ${VERSION}
+      - push-www-to-ecr:
           requires:
             - build
       - build:
           requires:
-            - push-image
+            - push-to-images-docker-hub
