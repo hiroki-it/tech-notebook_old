@@ -77,8 +77,8 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "Dockerfile"
-          path: "infra/docker/builder/"
+          dockerfile: "infra/docker/builder/Dockerfile"
+          path: "."
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
           tag: ${VERSION}
@@ -91,8 +91,8 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "Dockerfile"
-          path: "infra/docker/www/"
+          dockerfile: "infra/docker/www/Dockerfile"
+          path: "."
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
           tag: ${VERSION}
