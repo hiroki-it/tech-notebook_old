@@ -1,6 +1,6 @@
 # Gitの豆知識
 
-## 01-01. トラブルシューティング
+## 01. トラブルシューティング
 
 ### 基点ブランチから二回派生するブランチマージする時の注意点
 
@@ -490,7 +490,7 @@ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head
 
 
 
-## 02-01. GitHubにおけるIssueとPullReqの書き方
+## 02. GitHubにおけるIssueとPullReqの書き方
 
 GitHubの個人的豆知識を以下に記す．
 

@@ -1,6 +1,6 @@
 # テストフレームワークとテスト仕様書
 
-## 01-01. テスト全体の手順
+## 01. テスト全体の手順
 
 ### テスティングフレームワークによるテスト
 
@@ -15,7 +15,7 @@
 
    
 
-## 03-01.  PHPUnitによるUnit／Functionalテストの要素
+## 03.  PHPUnitによるUnit／Functionalテストの要素
 
 ### Phakeによるモックオブジェクトとスタブの定義
 
@@ -348,7 +348,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-## 04-01. テスト仕様書に基づくSystemテスト（User Acceptanceテスト，総合テスト）
+## 04. テスト仕様書に基づくSystemテスト（User Acceptanceテスト，総合テスト）
 
 ![p491-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p491-2.jpg)
 
@@ -390,7 +390,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 
 
-## 05-01. グラフによるテストの可視化
+## 05. グラフによるテストの可視化
 
 ### バグ管理図
 
