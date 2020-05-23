@@ -35,6 +35,7 @@ jobs:
   push-images:
     # ホスト（CircleCI）環境の設定
     executor: machine-type
+    steps:
       - run:
           # -- NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
