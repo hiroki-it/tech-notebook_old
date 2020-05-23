@@ -2,7 +2,7 @@
 
 # ライブラリ
 
-## 01-01. ライブラリの読み込み
+## 01. ライブラリの読み込み
 
 ### エントリポイントでの```autoload.php```の読み込み
 
@@ -16,7 +16,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 
 
-## 02-01. Doctrineライブラリ
+## 02. Doctrineライブラリ
 
 ### Doctrineとは
 
@@ -214,7 +214,7 @@ try{
 ```
 
 
-## 03-01. Carbonライブラリ
+## 03. Carbonライブラリ
 
 ### Date型
 
@@ -321,7 +321,7 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-## 04-01. Pinqライブラリ
+## 04. Pinqライブラリ
 
 ### Pinqとは：Php Integrated Query
 
@@ -360,7 +360,7 @@ class Example
 
 
 
-## 05-01. Guzzleライブラリ
+## 05. Guzzleライブラリ
 
 ### Guzzleライブラリとは
 
@@ -397,7 +397,7 @@ $body = json_decode($response->getBody(), true);
 
 
 
-## 06-01. Knp/Snappyライブラリ
+## 06. Knp/Snappyライブラリ
 
 ###  Knp/Snappyとは
 
@@ -417,7 +417,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf')
 
 
 
-## 07-01. Respect/Validationライブラリ
+## 07. Respect/Validationライブラリ
 
 ### Respect/Validationとは
 

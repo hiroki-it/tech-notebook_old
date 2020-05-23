@@ -1,6 +1,6 @@
 # ドメイン駆動設計
 
-## 01-01. MVC
+## 01. MVC
 
 ### MVCとは
 
@@ -22,7 +22,7 @@
 
 
 
-## 02-01. ドメイン駆動設計とは
+## 02. ドメイン駆動設計とは
 
 ### ビジネスルールに対するオブジェクト指向分析と設計
 
@@ -91,7 +91,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 
 
-## 03-01. Application層（UseCase層）
+## 03. Application層（UseCase層）
 
 ### Controller
 
@@ -204,7 +204,7 @@ class Converter
 
 
 
-## 04-01. Domain層
+## 04. Domain層
 
 ### 抽象Repository
 
@@ -693,7 +693,7 @@ class ColorVO extends Enum
 
 
 
-## 05-01. Infrastructure層
+## 05. Infrastructure層
 
 ### 具象Repository
 
