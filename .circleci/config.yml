@@ -35,9 +35,6 @@ jobs:
   push-images:
     # ホスト（CircleCI）環境の設定
     executor: machine-type
-    steps:
-      # ゲスト環境の使用を宣言
-      - setup_remote_docker
       - run:
           # -- NOTE: checkoutが日本語を認識できないので対処
           name: Setup git config
