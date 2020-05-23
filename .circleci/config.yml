@@ -5,46 +5,27 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@4.0.4
 
+# ホスト（CircleCI）側の環境の設定
 executors:
   machine-type:
+    # 環境タイプの設定
     machine: true
+    # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
     working_directory: ~/tech-notebook
-
-# 実行の順番を定義
-workflows:
-  version: 2.1
-  # Workflow名
-  build-push:
-    jobs:
-      # Docker Hub
-      - push-images
-      # AWS ECR builder
-      - push-builder-to-ecr:
-          requires:
-            - build
-      # AWS ECR www
-      - push-www-to-ecr:
-          requires:
-            - build
-      - build:
-          requires:
-            - push-images
 
 # ジョブの設定
 jobs:
   push-images:
-    # ホスト（CircleCI）環境の設定
     executor: machine-type
     steps:
       - run:
-          # -- NOTE: checkoutが日本語を認識できないので対処
+          # -- Fix: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: |
             git config --global core.quotepath false
       - checkout
       - run:
           name: Build builder
-          # -- NOTE: CircleCIのディレクトリは，/root/project(=tech-notebook)/
           command: |
             docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
@@ -69,7 +50,7 @@ jobs:
     executor: machine-type
     steps:
       - checkout
-      # -- NOTE: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
@@ -84,6 +65,7 @@ jobs:
     executor: machine-type
     steps:
       - checkout
+      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
@@ -95,13 +77,11 @@ jobs:
           tag: ${VERSION}
     
   build:
-    # ホスト（CircleCI）環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
-    # 作業ディレクトリの設定
     steps:
       - run:
-          # -- NOTE: checkoutが日本語を認識できないので対処
+          # -- Fix: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: |
             git config --global core.quotepath false
@@ -116,3 +96,22 @@ jobs:
           name: Clean up html
           command: |
             make clean
+            
+# 実行の順番を定義
+workflows:
+  version: 2.1
+  build-push:
+    jobs:
+      # Docker Hub
+      - push-images
+      # AWS ECR builder
+      - push-builder-to-ecr:
+          requires:
+            - build
+      # AWS ECR www
+      - push-www-to-ecr:
+          requires:
+            - build
+      - build:
+          requires:
+            - push-images
