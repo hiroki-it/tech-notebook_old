@@ -7,7 +7,7 @@ orbs:
 
 # ホスト（CircleCI）側の環境の設定
 executors:
-  machine-type:
+  setup-executor:
     # 環境タイプの設定
     machine: true
     # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
@@ -16,7 +16,7 @@ executors:
 # ジョブの設定
 jobs:
   push-images:
-    executor: machine-type
+    executor: setup-executor
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -47,7 +47,7 @@ jobs:
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
   
   push-builder-to-ecr:
-    executor: machine-type
+    executor: setup-executor
     steps:
       - checkout
       # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
@@ -62,7 +62,7 @@ jobs:
           tag: ${VERSION}
   
   push-www-to-ecr:
-    executor: machine-type
+    executor: setup-executor
     steps:
       - checkout
       # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
