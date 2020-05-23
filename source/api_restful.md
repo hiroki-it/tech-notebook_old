@@ -1,6 +1,6 @@
 # RESTful APIの概念と実装
 
-## 01-01. RESTとRESTfulとは
+## 01. RESTとRESTfulとは
 
 ### REST
 
@@ -25,7 +25,7 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 
 
 
-## 02-01. RESTful APIへのリクエスト
+## 02. RESTful APIへのリクエスト
 
 ### RESTfulにおけるデータの送信方法
 

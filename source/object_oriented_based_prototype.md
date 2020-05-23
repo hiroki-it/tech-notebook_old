@@ -1,10 +1,12 @@
 # プロトタイプベースのオブジェクト指向
 
-## 01-01. オブジェクトの生成，初期化
+## 01. オブジェクトの生成，初期化
 
 ### リテラル表記の使用
 
 オブジェクトをリテラル表記で生成する方法．キャメルケース（小文字から始める記法）を用いる．
+
+#### ・非省略形
 
 **【実装例】**
 
@@ -15,16 +17,37 @@ const example = {
   // 慣習的にアンダーバーでprivateを表す．
   _property: 0,
   
-    set setValue(value) {
-        this._property = value;
-    },  
-    
-    get getValue() {
-        return this._property;
-    }
+  alertValue(value): function() {
+      alert(value);
+  }, 
+  
+  set setValue(value) {
+      this._property = value;
+  },  
+  
+  get getValue() {
+      return this._property;
+  }
 }
 ```
 
+#### ・省略形
+
+```methodA(): fucntion{}``` とするところを，```methodA() {}```と記述できる．
+
+```javascript
+// リテラル表記
+const example = {
+  
+ // ~~ 省略 ~~
+  
+  alertValue(value) {
+      alert(value);
+  }, 
+  
+  // ~~ 省略 ~~
+}
+```
 
 
 ### コンストラクタ関数の使用
@@ -186,7 +209,9 @@ const example = new Example(1)
 
 ## 01-02. オブジェクトの操作
 
-### 継承とプロトタイプチェーン
+### プロトタイプチェーンによる継承
+
+#### ・プロトタイプチェーンとは
 
 オブジェクトが暗示的に持つ```prototype```プロパティに，別のオブジェクトのメンバを追加することによって，そのオブジェクトのプロトタイプを継承することができる．オブジェクトからプロパティやメソッドをコールした時，そのオブジェクトにこれらが存在しなければ，継承元まで辿る仕組みを『プロトタイプチェーン』という．クラスベースのオブジェクト指向で用いられるクラスチェーンについては，別ノートを参照せよ．
 
@@ -233,8 +258,8 @@ const SubExample = function(subValue) {
     };
 }
 
-// new Object()を用いた継承．
-SubExample.prototype = new Object();
+// new Example()を用いた継承．
+SubExample.prototype = new Example();
 
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）．
@@ -406,3 +431,66 @@ object2.printParam; // global param
 ```
 
 また，アロー関数がコールバック関数の引数となっている場合…（要勉強）
+
+
+
+## 02. 関数がコールされるタイミング
+
+### イベント駆動
+
+#### ・イベント駆動とは
+
+JavaScriptでは，画面上で何らかのイベントが発火し，これに紐づく大元の関数がコールされることで，他の関数に処理が広がっていく．これをイベント駆動という．
+
+#### ・イベントの種類
+
+
+### ```addEventListener("event", methodA(){})```
+
+第一引数で，```click```などのイベントを設定し，第二引数でメソッド（無名関数でも可）を渡す．
+
+```html
+<button id="btn">表示</button>
+
+<script>
+var btn = document.getElementById('btn');
+btn.addEventListener('click', function() {
+    console.log('クリックされました！');
+    },
+    false
+    );
+</script>
+```
+
+
+
+## 03. データ型
+
+### ```null```／```undefined```
+
+```javascript
+// 変数a: 意図をもってnullを入れている
+var a = null;
+console.log(a);  // null
+
+// 変数b: 初期化されていない（値が代入されていない）
+var b;
+
+// 変数bの出力
+console.log(b);  // undefied
+```
+
+#### ・```return undefined```
+
+```undifined```を返却する場合，```return```のみを記述する．
+
+```JavaScript
+function hoge(){
+    return; // 空の『return文』です。空なので『undefined』を返します。
+}
+
+var x = hoge(); // 変数『x』には関数『hoge』から返ってきた『undefined』が代入されます。
+ 
+console.log(x); // 『undefined』が出力されます。
+```
+

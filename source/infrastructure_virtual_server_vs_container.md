@@ -1,6 +1,6 @@
-# 仮想サーバ(仮想マシン)とコンテナ
+# 仮想サーバ(仮想マシン)／コンテナ
 
-## 01-01. Providerによる仮想サーバ（仮想マシン）の構築
+## 01. Providerによる仮想サーバ（仮想マシン）の構築
 
 ![Vagrantの仕組み_オリジナル](https://user-images.githubusercontent.com/42175286/60393574-b18de200-9b52-11e9-803d-ef44d6e50b08.png)
 
@@ -58,11 +58,11 @@ DB_PASSWORD="12345"
 
 
 
-## 02-01. Symfonyによるビルトインサーバの構築
+## 02. Symfonyによるビルトインサーバの構築
 
 
 
-## 03-01. Dockerによるコンテナの構築
+## 03. Dockerによるコンテナの構築
 
 ### Dockerの操作
 
@@ -84,7 +84,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileの作成からコンテナ構築までの手順.png)
 
-1. DockerHubから，ベースとなるDockerイメージをインストールする．
+1. Docker Hubから，ベースとなるDockerイメージをインストールする．
 2. DockerfileがイメージレイヤーからなるDockerイメージをビルド．
 3. コマンドによって，Dockerイメージ上にコンテナレイヤーを生成し，コンテナを構築．
 4. コマンドによって，構築されたコンテナを起動．
@@ -94,9 +94,9 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ### ベースとなるDockerイメージのインストール
 
-#### ・DockerHubとは
+#### ・Docker Hubとは
 
-DockerHubには，カスタマイズする上でのベースとなるDockerイメージが提供されている．
+Docker Hubには，カスタマイズする上でのベースとなるDockerイメージが提供されている．
 
 #### ・ベースとなるDockerイメージの種類
 
@@ -179,16 +179,26 @@ EXPOSE 80
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ |
 | **```docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .```** | キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド．失敗したときは削除する． | コマンド最後のドットを忘れない |
 
-#### ・ビルドしたDockerイメージをDockerHubに登録するコマンド
+#### ・ビルドしたDockerイメージをDocker Hubに登録するコマンド
 
 | コマンド                                                     | 処理                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **```docker commit -a {作成者名} {コンテナ名} {DockerHubユーザ名}/{イメージ名}:{バージョンタグ}```** | コンテナからDockerイメージを作成．                           |
-| **```docker push {DockerHubユーザ名}/{イメージ名}:{バージョンタグ}```** | ホストOSで作成したDockerイメージをレジストリ側にアップロード． |
+| **```docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | コンテナからDockerイメージを作成．                           |
+| **```docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | ホストOSで作成したDockerイメージをレジストリ側にアップロード． |
+
+#### ・Docker Hub上での継続的インテグレーション
+
+| 方法                  | 仕組み                                            |
+| --------------------- | ------------------------------------------------- |
+| GitHub Actions        | GitHubが，Docker Hubに対して，pushを行う．        |
+| Circle CI             | GitHubが，Circle CIに対して，送信WebHookを行う．  |
+| Docker Hub Auto Build | GitHubが，Docker Hubに対して，送信WebHookを行う． |
 
 #### ・Dockerfileを使用するメリット
 
-Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
+Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．
+
+![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
 
 
 
@@ -384,7 +394,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-## 04-01. コンテナオーケストレーション
+## 04. コンテナオーケストレーション
 
 ### コンテナオーケストレーションの種類
 

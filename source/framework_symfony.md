@@ -1,6 +1,6 @@
 # Symfonyフレームワーク
 
-## 01-01. 特に汎用的なコンポーネント
+## 01. 特に汎用的なコンポーネント
 
 ### Consoleコンポーネント
 
@@ -86,7 +86,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 
 
-## 02-01. Consoleコンポーネント
+## 02. Consoleコンポーネント
 
 ### CLI：Command Line Interface
 
