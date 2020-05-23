@@ -256,7 +256,7 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 
 
 
-### コンパイラによるコンパイラ型言語の翻訳（じ，こ，い，さい，せい，リンク，実行）
+### コンパイラによるコンパイラ型言語の機械語翻訳（じ，こ，い，さい，せい，リンク，実行）
 
 コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
 
@@ -272,13 +272,15 @@ C#
 
 ![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ビルドとコンパイル.jpg)
 
-#### ・コンパイラ方式の翻訳の流れ
+#### ・コンパイラ方式の機械語翻訳の流れ
 
 ![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
-   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
+   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
+
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -306,7 +308,7 @@ C#
 
 
 
-### インタプリタによるインタプリタ型言語の翻訳（じ，こ，い，実行）
+### インタプリタによるインタプリタ型言語の機械語翻訳（じ，こ，い，実行）
 
 コードを，一行ずつ機械語に変換し，順次，命令を実行する言語．
 
@@ -318,13 +320,15 @@ PHP，Ruby，JavaScript，Python
 
 ![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インタプリタ言語.png)
 
-#### ・インタプリタ方式の翻訳の流れ
+#### ・インタプリタ方式の機械語翻訳の流れ
 
 ![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
-   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
+   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
+
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -342,13 +346,13 @@ PHP，Ruby，JavaScript，Python
 
 
 
-### Java仮想マシンによるJavaまたはJava仮想マシン型言語の翻訳
+### Java仮想マシンによるJavaまたはJava仮想マシン型言語の機械語翻訳
 
 **【JVM型言語の具体例】**
 
 Scala，Groovy，Kotlin
 
-#### ・中間言語方式の翻訳の流れ
+#### ・中間言語方式の機械語翻訳の流れ
 
 1. JavaまたはJVM型言語のソースコードを，Javaバイトコードを含むクラスファイルに変換する．
 2. JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．
