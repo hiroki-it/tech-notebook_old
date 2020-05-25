@@ -63,7 +63,9 @@ Webページをテキストによって構成するための言語をマーク�
 
 ### マークアップ言語へのJavaScriptの組み込み
 
-#### ・直接組み込む場合
+#### ・インラインスクリプト
+
+JavaScriptファイルを直接組み込む方法．
 
 ```html
 <script>
@@ -71,15 +73,94 @@ document.write("JavaScriptを直接組み込んでいます。")
 </script>
 ```
 
-#### ・外部ファイルを組み込む場合
+#### ・外部スクリプト
+
+外部JavaScriptファイルを組み込む方法．
 
 ```html
-<script src="sample.js" charset="utf-8"></script>
+<script src="sample.js"></script>
 ```
 
+#### ・scriptタグが複数ある場合
 
+一つのページのHtml内で，scriptタグが複数に分散していても，Scriptingプロセスでは，一つにまとめて実行される．そのため，より上部のscriptタグの処理は，より下部のscriptに引き継がれる．
 
-## 
+```html
+localNum<p>見出し１</p>
+
+<script>
+var globalNum = 10;
+</script>
+
+<p>見出し２</p>
+
+<script>
+globalNum = globalNum * 10;
+</script>
+
+<p>見出し３</p>
+
+<script>
+document.write("<p>結果は" + globalNum + "です</p>");
+var hoge = true；
+</script>
+
+<script src="sample.js"></script>
+```
+
+```javascript
+// sample.js
+// 無名関数の即時実行．定義と呼び出しを同時に行う．
+(function () {
+    
+    // 外側の変数（hoge）を参照できる．
+    if(hoge) {
+      console.log('外部ファイルを読み込みました');
+    }
+    
+    var localNum = 20;
+    function localMethod() {
+        // 外側の変数（localNum）を参照できる．
+        console.log('localNum');
+    }
+    
+    // 定義したメソッドを実行
+    localMethod();
+}());
+```
+
+しかし，実行時には以下の様に，まとめて実行される．ここでは，htmlファイルで定義した関数の外にある変数は，グローバル変数になっている．
+
+```html
+<script>
+var globalNum = 10;
+    
+localNum = localNum * 10;
+    
+document.write("<p>結果は" + num + "です</p>");
+var hoge = true;
+
+// 無名関数の即時実行．定義と呼び出しを同時に行う．
+(function () {
+    
+    // 外側の変数（hoge）を参照できる．
+    if(hoge) {
+      console.log('外部ファイルを読み込みました');
+    }
+    
+    var localNum = 20;
+    function localMethod() {
+        // 外側の変数（localNum）を参照できる．
+        console.log('localNum');
+    }
+    
+    // 定義したメソッドを実行
+    localMethod();
+}());
+</script>
+```
+
+これは，一つのページを構成するHtmlを別ファイルとして分割していても，同じである．
 
 
 
@@ -88,6 +169,8 @@ document.write("JavaScriptを直接組み込んでいます。")
 ### Loadingプロセスとは
 
 #### ・役割
+
+サーバサイドからHtml，CSS，画像ファイルがレスポンスされ，これを読み込む．
 
 
 
@@ -102,18 +185,14 @@ document.write("JavaScriptを直接組み込んでいます。")
 ```html
 <head>
   <meta charset="utf-8">
-  <title>JS and CSS preload example</title>
-
+  <title>Title</title>
   <link rel="preload" href="style.css" as="style">
   <link rel="preload" href="main.js" as="script">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>bouncing balls</h1>
-  <canvas></canvas>
-
+  <h1>Hello World</h1>
   <script src="main.js" defer></script>
 </body>
 ```
@@ -124,7 +203,7 @@ document.write("JavaScriptを直接組み込んでいます。")
 
 #### ・Lazy Loadingとは
 
-#### ・Intersection Observerとは
+#### ・Intersection Observer
 
 交差率の閾値を「```0.5```」と設定すると，ターゲットエレメントの交差率が「```0.5```」を超えた時点で，テンプレートの要素の読み込みが行われる．
 
@@ -147,7 +226,7 @@ document.write("JavaScriptを直接組み込んでいます。")
 ## 02-03. Parse処理
 
 
-### HTMLパーサーによるHTML形式テキストファイルの構造解析
+### HTML形式テキストファイルの構造解析
 
 #### ・構造解析の流れ
 
@@ -176,6 +255,10 @@ document.write("JavaScriptを直接組み込んでいます。")
 ![レンダリングツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/レンダリングツリー.png)
 
 #### ・DOMツリーのインターフェースとタグの対応関係
+
+全てのDOMツリーのインターフェースについては，以下のリンクを参照せよ．
+
+https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
 
 | 上位インターフェース |      | 下位インターフェース |      | レンダリングツリーのノード |
 | :------------------: | :--: | :------------------: | :--: | :------------------------: |
