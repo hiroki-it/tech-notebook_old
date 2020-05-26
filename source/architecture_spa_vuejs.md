@@ -62,14 +62,12 @@ ViewModel層から渡されたデータを出力するだけ．
 
 #### ・Vueを用いたMVVMアーキテクチャ，双方向データバインディング
 
-Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，MVVMアーキテクチャと双方向データバインディングを実現できるような機能を提供する．
+Vueは，アプリケーションの設計にMVVMアーキテクチャを用いることを前提として，双方向データバインディングを実現できるような機能を提供する．
 
 1. View層では，```xxx.html```，```/xxx.twig```，```xxx-component.vue```の```template```タグ部分）
-
-2. ViewModel層では，```index.js```と```xxx-component.vue```の```script```タグ部分
+2. ViewModel層では，```index.js```，```xxx-component.vue```の```script```タグ部分
 
 3. Model層では，Vuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
-
 4. これの元，双方向データバインディングが実現される仕組みとして，View層でイベントが起こると，ViewModel層でこれにバインディングされたイベントハンドラ関数がコールされる．
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
@@ -79,7 +77,7 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 
 #### ・親子コンポーネント間のデータ渡しの仕組み（Props Down, Events Up）
 
-まず，双方向データバインディングとは異なる概念なので，混乱しないように注意する．View + ViewModel層のコンポーネント（```xxx-component.vue```）の間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
+まず，双方向データバインディングとは異なる概念なので，混乱しないように注意する．コンポーネント（```xxx-component.vue```）の```script```タグ部分（ViewModel層）の親子間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
 
 ![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
 
@@ -98,7 +96,8 @@ Vue.component('v-example-component',{
     template: require('./xxx/xxx/xxx')
 });
 
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
     el: '#app
 })
 ```
@@ -113,7 +112,8 @@ var vExampleComponent = {
     template: require('./xxx/xxx/xxx'),
 };
 
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
 
     el: '#app',
   
@@ -130,7 +130,8 @@ new Vue({
 **【実装例】**
 
 ```javascript
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
 
     el: '#app',
   
@@ -148,7 +149,7 @@ new Vue({
 
 #### (1) 【View層】テンプレート（```xxx.html```，```xxx.twig```）
 
-例えば，テンプレートの親コンポーネントタグでクリックイベントが発火した時，親コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
+データが，テンプレートからJavaScriptファイルに渡される仕組みは，フレークワークを使わない場合と同じである．データがJavaScriptファイルに渡される状況としては，例えば，テンプレートの親コンポーネントタグでクリックイベントが発火した時，親コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
 
 **【実装例】**
 
@@ -178,20 +179,21 @@ new Vue({
   
 </div>
 
-<!-- ルートVueインスタンスの生成は部品化する． -->
+<!-- ルートVueインスタンスの生成は外部スクリプトで行う． -->
 <script 
     src="{{ asset('.../index.js') }}">
 </script>
 ```
-#### (1-2) 【ViewModel層】データの初期化を行うルートVueインスタンス（```index.js```）
+#### (1-2) 【ViewModel層】データの初期化を行うVueコンストラクタ（```index.js```）
 
-ルートVueインスタンスは，ViewModel層に存在し，全てのコンポーネントのデータの初期化を行う．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
+Vueコンストラクタをインスタンス化することによって，ルートVueインスタンスが生成される．インスタンスの変数名```vm```はVIewModelの意味である．インスタンス化時，全てのコンポーネントのデータが初期化される．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
 
 **【実装例】**
 
 ```javascript
 // ルートVueインスタンス
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
     
     //　Vueインスタンスを使用するdivタグを設定.
     el: '#app',
@@ -411,7 +413,7 @@ class Example {
 
 ![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueにおけるemitとv-onの連携.png)
 
-View層（```template```タグ部分）のイベントを，ViewModel層（```script```タグ部分）のイベントハンドラ関数（```methods:```内にあるメソッド）やインラインJSステートメントにバインディングし，イベントが発火した時点でイベントハンドラ関数をコールする．
+View層（```template```タグ部分）のイベントを，ViewModel層（```script```タグ部分）のイベントハンドラ関数（```methods:```内にあるメソッド）やインラインJSステートメントにバインディングし，イベントが発火した時点でイベントハンドラ関数をコールする．コンポーネントの```script```タグ部分（ViewModel層）の親子間データ渡しである「Props Down, Events Up」とは異なる概念なので注意する．
 
 ```vue
 v-on:{イベント名}="{イベントハンドラ関数（methods: 内にあるメソッド）}"
@@ -438,7 +440,7 @@ View層のフォーム送信イベントが起きた時点で，ViewModel層に�
   ></v-example-component>                                        
 </div>
 
-<!-- Vueインスタンスの生成は部品化する． -->
+<!-- Vueインスタンスの生成は外部スクリプトで行う． -->
 <script
     src="{{ asset('.../index.js') }}">
 </script>
@@ -449,7 +451,8 @@ index.jsの```methods:```内には，イベントハンドラ関数として```r
 **【実装例】**
 
 ```javascript
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
     
     //　Vueインスタンスを使用するdivタグを設定.
     el: '#app',
@@ -478,7 +481,8 @@ new Vue({
 </template>
 
 <script>
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
   
   // イベントハンドラ関数を定義
   methods: {
@@ -514,8 +518,6 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 ```
 
 ```
-
-
 
 
 
@@ -602,7 +604,8 @@ module.exports = router;
 そして，Vue-Routerの機能を利用するために，```router```オプションとして．ルートコンポーネントに注入する必要がある．
 
 ```javascript
-new Vue({
+// 変数への格納を省略してもよい
+var vm = new Vue({
 
     router,
   
