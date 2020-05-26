@@ -356,7 +356,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 上記で読み込まれたHTML形式テキストファイルには，ネストされた 2 つの div がある．1 つ目（親）の```div```より，ノードの表示サイズをビューポートの幅の 50% に設定し、この親に含まれている 2 つ目（子）の```div```より，その幅を親の50%、つまりビューポートの幅の25%になるようにレイアウトされる．
 
-![Layout処理](C:\Users\h.hasegawa\Documents\Drive 1st\プログラミング\tech-notebook\Drive-source\images\Layout処理.png)
+![Layout処理](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Layout処理.png)
 
 
 
