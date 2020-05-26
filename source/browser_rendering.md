@@ -192,9 +192,7 @@ document.addEventListener('DOMContentLoaded', methodA);
 
 ### Loadingプロセスとは
 
-#### ・役割
-
-サーバサイドからHtml，CSS，画像ファイルがレスポンスされ，これを読み込む．
+サーバサイドからHtml，CSS，画像ファイルが，バイト形式でレスポンスされ，これを読み込む．Downloading処理とParse処理の二つの段階に分けられる．
 
 
 
@@ -254,46 +252,50 @@ document.addEventListener('DOMContentLoaded', methodA);
 
 #### ・構造解析の流れ
 
-1. 例えば，以下のようなHtml形式のテキストファイルが，Downloading処理によってダウンロードされているとする．
+1. Downloading処理で読みこまれたバイト形式ファイルは，文字コードに基づいて，一連の文字列に変換される．
 
 ```html
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>タイトル</title>
-</head>
-<body>
-<p>Hello World</p>
-<script src=".example.js"></script>
-</body>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="style.css" rel="stylesheet">
+    <title>Critical Path</title>
+  </head>
+  <body>
+    <p>Hello <span>web performance</span> students!</p>
+    <div><img src="awesome-photo.jpg"></div>
+    <div style="width: 50%">
+      <div style="width: 50%">Hello world!</div>
+    </div>
+  </body>
 </html>
 ```
 
-2. HTMLパーサーは，Html形式テキストファイルの構造解析を行い，DOMのインターフェースに基づくDOMツリーを生成する．
+```css
+body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }
+```
 
-![HtmlDOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/HtmlDOMツリー.png)
 
-3. レンダリングエンジンは，DOMツリーを基に，レンダリングツリーを生成する．対応関係については，以降の記述を参照せよ．
+2. 一連の文字列からHTMLタグが認識され，トークンに変換される．
+3. 各トークンは，一つのオブジェクトに変換される．
 
-![レンダリングツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/レンダリングツリー.png)
+![DOMツリーが生成されるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DOMツリーが生成されるまで.png)
 
-#### ・DOMツリーのインターフェースとタグの対応関係
+4. HTMLパーサーは，オブジェクトをノードとして，DOMツリーを生成する．DOMのインターフェースについては，こちら．
 
-全てのDOMツリーのインターフェースについては，以下のリンクを参照せよ．
+   https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
 
-https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
+![DOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DOMツリー.png)
 
-| 上位インターフェース |      | 下位インターフェース |      | レンダリングツリーのノード |
-| :------------------: | :--: | :------------------: | :--: | :------------------------: |
-|       Document       |  →   |     HTMLDocument     |  →   |          document          |
-|     HTMLElement      |  →   |   HTMLHtmlElement    |  →   |            html            |
-|     HTMLElement      |  →   |   HTMLHeadElement    |  →   |            head            |
-|     HTMLElement      |  →   |   HTMLMetaElement    |  →   |            meta            |
-|     HTMLElement      |  →   |   HTMLTitleElement   |  →   |           title            |
-|     HTMLElement      |  →   |   HTMLBodyElement    |  →   |            body            |
-|     HTMLElement      |  →   | HTMLParagraphElement |  →   |             p              |
-|     HTMLElement      |  →   |  HTMLScriptElement   |  →   |           script           |
+5. CSSパーサーは，オブジェクトをノードとして，CSSOMツリーを生成する．
+
+![CSSOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CSSOMツリー.png)
+
 
 
 
@@ -315,9 +317,7 @@ https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
 
 ### Scriptingプロセスとは
 
-#### ・役割
-
-JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳される．このプロセスは，初回アクセス時だけでなく，イベントが発火した時にも実行される．
+JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳されるプロセス．このプロセスは，初回アクセス時だけでなく，イベントが発火した時にも実行される．
 
 ### JavaScriptエンジン
 
@@ -340,12 +340,23 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ### Renderingプロセスとは
 
-#### ・役割
+レンダリングツリーが生成され，ブラウザ上のどこに何を描画するのかを計算するプロセス．CalculateStyle処理とLayout処理に分けられる．
+
+
 
 ## 04-02. CalculateStyle処理
 
+レンダリングエンジンは，DOMツリーのルートのノードから順にCSSOSツリーを適用し，Renderツリーを生成する．
+
+![Renderツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Renderツリー.png)
+
+
+
 ## 04-03. Layout処理
 
+上記で読み込まれたHTML形式テキストファイルには，ネストされた 2 つの div がある．1 つ目（親）の```div```より，ノードの表示サイズをビューポートの幅の 50% に設定し、この親に含まれている 2 つ目（子）の```div```より，その幅を親の50%、つまりビューポートの幅の25%になるようにレイアウトされる．
+
+![Layout処理](C:\Users\h.hasegawa\Documents\Drive 1st\プログラミング\tech-notebook\Drive-source\images\Layout処理.png)
 
 
 
@@ -353,7 +364,9 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ### Paintingプロセスとは
 
-#### ・役割
+DOMツリーの各ノードを，ブラウザ上に描画する．
+
+
 
 ## 05-02. Paint処理
 
