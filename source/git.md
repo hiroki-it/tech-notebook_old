@@ -106,7 +106,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 リモート追跡ブランチを削除．
 （１）まず，```branch --all```で作業中のローカルブランチとリモート追跡ブランチを表示．
 
-```
+```bash
 $ git branch --all
 * master
   remotes/origin/2019/Symfony_Nyumon/master
@@ -115,14 +115,14 @@ $ git branch --all
 
 （２）```remotes/origin/2019/Symfony_Nyumon/master```を削除．
 
-```
+```bash
 $ git branch -d -r origin/2019/Symfony_Nyumon/master
 Deleted remote-tracking branch origin/2019/Symfony_Nyumon/master (was 18a31b5).
 ```
 
 （３）再び，```branch --all```で削除されたことを確認．
 
-```
+```bash
 $ git branch --all
 * master
   remotes/origin/master
@@ -130,7 +130,7 @@ $ git branch --all
 
 #### ・```branch checkout -b [新しいローカルブランチ名] [コミット番号]```
 
-```
+```bash
 git checkout -b feature/3 d7e49b04
 ```
 
@@ -142,7 +142,7 @@ git checkout -b feature/3 d7e49b04
 
 ファイルが，『インデックス』（=```add```）あるいは『HEAD』（=```commit```）に存在している状態で，異なるローカルブランチを```checkout```しようとすると，以下のエラーが出る．
 
-```
+```bash
 $ git checkout 2019/Symfony2_Nyumon/master
 error: Your local changes to the following files would be overwritten by checkout:
         app/config/config.yml
@@ -157,7 +157,7 @@ Aborting
 トラッキングされていないファイルも含めて，全てのファイルを退避．
 ```git status```をしたところ，修正ファイルが３つ，トラックされていないファイルが１つある．
 
-```
+```bash
 $ git status
 On branch 2019/Symfony2_Nyumon/feature/6
 Your branch is up to date with 'origin/2019/Symfony2_Nyumon/feature/6'.
@@ -180,29 +180,25 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 これを，```stash -u```する
 
-```
+```bash
 $ git stash -u
 Saved working directory and index state WIP on 2019/Symfony2_Nyumon/feature/6: 649995e update #6 xxx
 ```
 
 これらのファイルの変更点を一時的に退避できる．
 
-#### ・```stash -k ```（```save --keep-index```）→全てstashされてしまう
+#### ・```stash -- [パス] ```
 
-```add```していないファイルのみを```stash```することができる．
+特定のディレクトリやファイルのみ```stash```することができる．
 
 ```bash
-# stashしたくないファイルをaddする
-git add example.php
-
-# addされていない方のファイルをstashする．
-git stash -k
+git stash -- src/...
 ```
 
 #### ・```stash list```
 退避している『ファイル番号：ブランチ：親コミットとコミットメッセージ』を一覧で表示．
 
-```
+```bash
 $ git stash list
 stash@{0}: WIP on 2019/Symfony2_Nyumon/feature/6: 649995e update #6 xxx
 ```
@@ -210,7 +206,7 @@ stash@{0}: WIP on 2019/Symfony2_Nyumon/feature/6: 649995e update #6 xxx
 #### ・```stash pop stash@{番号}```
 退避している指定のファイルを復元．
 
-```
+```bash
 $ git stash pop stash@{0}
 On branch 2019/Symfony2_Nyumon/feature/8
 Changes not staged for commit:
@@ -232,7 +228,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 #### ・```stash drop stash@{番号}```
 退避している指定のファイルを復元せずに削除．
 
-```
+```bash
 $ git stash drop stash@{0}
 Dropped refs/stash@{0} (1d0ddeb9e52a737dcdbff7296272080e9ff71815)
 ```
@@ -240,7 +236,7 @@ Dropped refs/stash@{0} (1d0ddeb9e52a737dcdbff7296272080e9ff71815)
 #### ・```stash clear```
 退避している全てのファイルを復元せずに削除．
 
-```
+```bash
 $ git stash clear
 ```
 
@@ -271,7 +267,7 @@ $ git stash clear
 
 （１）まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
 
-```
+```bash
 $ git log
 commit f17f68e287b7d84318b4c49e133b2d1819f6c3db (HEAD -> master, 2019/Symfony2_Nyumon/master)
 Merge: 41cc21b f81c813
@@ -295,13 +291,13 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 
 （２）指定のコミットまで履歴を戻す．
 
-```
+```bash
 $ git reset --soft f81c813a1ead9a968c109671e6d83934debcab2e
 ```
 
 （３）```log ```で，正しく変更されているか確認．
 
-```
+```bash
 $ git log
 commit f81c813a1ead9a968c109671e6d83934debcab2e (HEAD -> master)
 Author: Hiroki Hasegawa <xxx@gmail.com>
@@ -313,7 +309,7 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 （４）```push --force```でローカルリポジトリの変更をリモートリポジトリに強制的に反映．
 <font color="red">**『強制的にpushした』というログも，リモート側には残らない．**</font>
 
-```
+```bash
 $ git push --force
 Total 0 (delta 0), reused 0 (delta 0)
 To github.com:Hiroki-IT/Symfony2_Nyumon.git
@@ -332,7 +328,7 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
 
 （１）まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
 
-```
+```bash
 $ git log
 commit f17f68e287b7d84318b4c49e133b2d1819f6c3db (HEAD -> master, 2019/Symfony2_Nyumon/master)
 Merge: 41cc21b f81c813
@@ -356,24 +352,24 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 
 （２）指定した履歴の削除
 
-```
+```bash
 $git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
 ```
 とすると，タブが表示され，
 
-```
+```bash
 pick b1b5c0f add #0 xxxxxxxxxx
 ```
 
 指定のコミットIDの履歴が表示されるので，『挿入モード』に変更し，この一行の```pick```を```edit```に変更．その後，
 
-```
+```bash
 :w
 ```
 
 として保存．その後，エディタ上で『Ctrl+C』を押し，
 
-```
+```bash
 :qa!
 ```
 
@@ -381,20 +377,20 @@ pick b1b5c0f add #0 xxxxxxxxxx
 
 （3）```commit --amend```でエディタを開き，メッセージを変更．
 
-```
+```bash
 $ git commit --amend
 ```
 
 （4）```rebase --continue```を実行．
 
-```
+```bash
 $ git rebase --continue
 Successfully rebased and updated refs/heads/develop.
 ```
 
 （5）```push```しようとすると，```![rejected] develop -> develop (non-fast-forward)```とエラーが出るので，
 
-```
+```bash
 git merge --allow-unrelated-histories
 ```
 で解決し，```push```する．
@@ -403,7 +399,7 @@ git merge --allow-unrelated-histories
 
 作業中のローカルブランチの派生元を変更．
 
-```
+```bash
 $ git rebase --onto [派生元にしたいローカルブランチ名] [誤って派生元にしたローカルブランチ名] [派生元を変更したいローカルブランチ名]
 ```
 
@@ -412,24 +408,24 @@ $ git rebase --onto [派生元にしたいローカルブランチ名] [誤っ�
 
 （１）変更タブの表示
 
-```
+```bash
 $ git rebase --interactive --root
 ```
 とすると，最初の履歴が記述されたタブが表示される
 
-```
+```bash
 pick b1b5c0f add #0 xxxxxxxxxx
 ```
 
 （２）```pick b1b5c0f add #0 xxxxxxxxxx```の行を削除して保存し，タブを閉じ，エディタ上で『Ctrl+C』を押す．
 
-```
+```bash
 :qa!
 ```
 
 ここで未知のエラー
 
-```
+```bash
 CONFLICT (modify/delete): README.md deleted in HEAD and modified in 37bee65... update #0 README.mdに本レポジトリのタイトルと引用を記載
 した. Version 37bee65... update #0 README.mdに本レポジトリのタイトルと引用を記載した of README.md left in tree.
 error: could not apply 37bee65... update #0 README.mdに本レポジトリのタイトルと引用を記載した
@@ -447,7 +443,7 @@ Could not apply 37bee65... update #0 README.mdに本レポジトリのタイト�
 やりかけの```rebase```を取り消し．
 作業中のローカルブランチにおける```(master|REBASE-i)```が，``` (master)```に変更されていることからも確認可能．
 
-```
+```bash
 hasegawahiroki@Hiroki-Fujitsu MINGW64 /c/Projects/Symfony2_Nyumon
 $ git rebase --interactive
 
@@ -484,7 +480,7 @@ $
 
 作業ブランチの派生元になっているブランチを確認．
 
-```
+```bash
 git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'
 ```
 
