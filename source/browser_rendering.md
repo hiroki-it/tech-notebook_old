@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', methodA);
 
 #### ・構造解析の流れ
 
-1. Downloading処理で読みこまれたバイト形式ファイルは，文字コードに基づいて，一連の文字列に変換される．
+1. Downloading処理で読みこまれたバイト形式ファイルは，文字コードに基づいて，一連の文字列に変換される．ここでは，以下のHTML形式ファイルとCSS形式ファイル（```style.css```）に変換されたとする．
 
 ```html
 <!DOCTYPE html>
@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', methodA);
 ```
 
 ```css
+/* style.css */
 body { font-size: 16px }
 p { font-weight: bold }
 span { color: red }
