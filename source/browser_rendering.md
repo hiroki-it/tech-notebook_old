@@ -1,4 +1,4 @@
-# ブラウザレンダリング
+# ブラウザレンダリングの仕組み
 
 ## 01. ブラウザレンダリングの仕組み
 
@@ -164,19 +164,15 @@ var hoge = true;
 
 
 
-### イベント発火とイベントハンドラ
+## 01-04. イベント発火とイベントハンドラ関数
 
-### ```document.addEventListener()```
+### イベント発火，イベントハンドラ関数とは
 
-第一引数に任意のイベント，第二引数に任意の関数を紐づける．
-
-```javascript
-document.addEventListener('DOMContentLoaded', methodA);
-```
+画面上で何かの処理が起こると，Scriptingプロセスによって，特定の関数がコールされる．
 
 
 
-### ```onXXX```
+### HTML形式ファイル上でイベントハンドラ関数をコールする記述方法
 
 #### ・```onload```
 
@@ -185,6 +181,56 @@ document.addEventListener('DOMContentLoaded', methodA);
 #### ・```onclick```
 
 「要素のクリック」というイベントが発火すると，イベントハンドラ関数をコールする．
+
+```html
+<input type="button" value="ボタン1" onclick="methodA()">
+
+<script>
+function methodA(){
+	console.log("イベントが発火しました");
+}
+</script>
+```
+
+
+
+### JSファイル上でイベントハンドラ関数をコールする記述方法
+
+
+#### ・```document.getElementById()```
+
+指定したIDに対して，一つのイベントと一つのイベントハンドラ関数を紐づける．
+
+```javascript
+// 指定したIDで，クリックイベントが発火した時に，処理を行う．
+document.getElementById('btn').onclick = function(){
+	console.log("イベントが発火しました");
+}
+```
+
+
+#### ・```document.addEventListener()```
+
+一つのイベントに対して，一つ以上のイベントハンドラ関数を紐づける．```false```を設定することで，イベントバブリングを行わせない．
+
+```javascript
+// DOMContentLoadedイベントが発火した時に，処理を行う．
+document.addEventListener('DOMContentLoaded', function(){
+	console.log("イベントが発火しました");
+});
+```
+
+```javascript
+// 一つ目
+document.getElementById('btn').addEventListener('click', function(){
+	console.log("イベントが発火しました（１）");
+}, false);
+
+// 二つ目
+document.getElementById('btn').addEventListener('click', function(){
+	console.log("イベントが発火しました（２）");
+}, false);
+```
 
 
 
