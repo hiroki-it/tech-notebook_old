@@ -81,6 +81,12 @@ document.write("JavaScriptを直接組み込んでいます。")
 <script src="sample.js"></script>
 ```
 
+CDNの仕組みを用いて，Web上からリソースを取得することもできる．
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" integrity="sha256-WzuqEKxV9O7ODH5mbq3dUYcrjOknNnFia8zOyPhurXg=" crossorigin="anonymous"></script>
+```
+
 #### ・scriptタグが複数ある場合
 
 一つのページのHtml内で，scriptタグが複数に分散していても，Scriptingプロセスでは，一つにまとめて実行される．そのため，より上部のscriptタグの処理は，より下部のscriptに引き継がれる．
@@ -234,11 +240,21 @@ document.getElementById('btn').addEventListener('click', function(){
 
 
 
+## 01-05. ブラウザのバージョン
+
+### Polyfill
+
+#### ・Polyfillとは
+
+JavaScriptやHTMLの更新にブラウザが追いついていない場合に，それを補完するように実装されたライブラリのこと．「Polyfilla」に由来している．
+
+
+
 ## 02. Loadingプロセス
 
 ### Loadingプロセスとは
 
-サーバサイドからHtml，CSS，画像ファイルが，バイト形式でレスポンスされ，これを読み込む．Downloading処理とParse処理の二つの段階に分けられる．
+サーバサイドからリソース（Html，CSS，画像ファイル）が，バイト形式でレスポンスされる．これを，優先度に基づいて読み込む．Downloading処理とParse処理の二つの段階に分けられる．
 
 
 
@@ -248,7 +264,7 @@ document.getElementById('btn').addEventListener('click', function(){
 
 #### ・Pre-Loadingとは
 
-指定したテキストファイルを，
+指定したファイルのDownloading処理の優先順位を上げる方法．
 
 ```html
 <head>
@@ -271,19 +287,19 @@ document.getElementById('btn').addEventListener('click', function(){
 
 #### ・Lazy Loadingとは
 
-#### ・Intersection Observer
+条件に合致した要素を随時読み込む方法．条件の指定方法には，```scroll```/```resize```イベントに基づく方法と，Intersection Observerによる要素の交差率に基づく方法がある．画像ファイルの遅延読み込みでは，読み込み前にダミー画像を表示させておき，遅延読み込み時にダミー画像パスを本来の画像パスに上書きする．
 
-交差率の閾値を「```0.5```」と設定すると，ターゲットエレメントの交差率が「```0.5```」を超えた時点で，テンプレートの要素の読み込みが行われる．
+#### ・```scroll```/```resize```イベントに基づく読み込み
+
+```scroll```/```resize```イベントを監視し、```scroll```/```resize```イベント後に画面内に新しく追加された要素を随時読み込む方法．
+
+#### ・Intersection Observerによる要素の交差率に基づく読み込み
+
+Intersection Observerによる要素の交差率を監視し，指定の交差率を超えた要素を随時読み込む方法．例えば，交差率の閾値を「```0.5```」と設定すると，ターゲットエレメントの交差率が「```0.5```」を超えた要素を随時読み込む．
 
 ![IntersectionObserverとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IntersectionObserverとは.png)
 
-#### ・メリット
 
-ページの読み込みに無駄がなくなるため，読み込みが早く感じる．
-
-#### ・ダミー画像
-
-最初，dummy画像へのパスが出力されているが，遅延読み込みが実行されると，このパスがsrcで上書きされる．
 
 ### Eager Loading
 
@@ -364,7 +380,7 @@ img { float: right }
 
 ### Scriptingプロセスとは
 
-JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳されるプロセス．このプロセスは，初回アクセス時だけでなく，イベントが発火した時にも実行される．
+JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳され，実行されるプロセス．このプロセスは，初回アクセス時だけでなく，イベントが発火した時にも実行される．
 
 ### JavaScriptエンジン
 
