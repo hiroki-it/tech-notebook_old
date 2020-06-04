@@ -33,7 +33,7 @@ resource "aws_vpc" "vpc" {
 resource "aws_subnet" "subnet_public_1a" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   cidr_block = var.subnet_public_1a_cidr_block
-  availability_zone = "${var.region}-1a"
+  availability_zone = "${var.region}a"
   tags = {
     Name = "${var.instance_app_name}-public-subnet-1a"
   }
@@ -42,7 +42,7 @@ resource "aws_subnet" "subnet_public_1a" {
 resource "aws_subnet" "subnet_public_1c" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   cidr_block = var.subnet_public_1c_cidr_block
-  availability_zone = "${var.region}-1c"
+  availability_zone = "${var.region}c"
   tags = {
     Name = "${var.instance_app_name}-public-subnet-1c"
   }
