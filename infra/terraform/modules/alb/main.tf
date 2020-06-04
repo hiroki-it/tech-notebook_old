@@ -24,9 +24,4 @@ resource "aws_alb" "alb" {
   name = "${var.instance_app_name}-alb"
   security_groups = [var.security_group_alb_id]
   subnets = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-  
-}
-
-data "aws_lb_target_group" "test" {
-  name = "${var.instance_app_name}-alb-target"
 }
