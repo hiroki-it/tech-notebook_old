@@ -92,8 +92,10 @@ Hiroki tech-notebook ドキュメントサイト
    infrastructure_as_code.md
    infrastructure_server.md
    infrastructure_virtualization_technology_comparison.md
+   infrastructure_virtual_server.md
+   infrastructure_container.md
    infrastructure_cloud_computing.md
-   infrastructure_virtual_server_vs_container.md
+   infrastructure_terraform.md
 
 .. toctree::
    :maxdepth: 1
