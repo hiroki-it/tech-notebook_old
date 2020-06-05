@@ -143,7 +143,7 @@ resource "aws_instance" "www-1c" {
 }
 
 #==============
-# Key Pair
+# Public Key
 #==============
 resource "aws_key_pair" "key_pair" {
   key_name = var.key_name
