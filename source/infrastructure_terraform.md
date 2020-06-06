@@ -1,13 +1,69 @@
 # Terraform
 
-## 01. コマンド
+## 01. よく使うコマンド集
+
+#### ・```validate```：
+
+設定ファイルの検証を行う．
+
+```bash
+$ terraform validate
+
+Success! The configuration is valid.
+```
+
+#### ・```fmt```：
+
+設定ファイルのインデントを揃える．処理を行ったファイルが表示される．
+
+```bash
+$ terraform fmt
+
+main.tf
+```
+
+#### ・```import```
+
+terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．
+
+```bash
+$ terraform import -var-file=config.tfvars {リソース}.{リソース名}
+```
+
+モジュール化されている場合，指定の方法が異なる．
+
+```bash
+$ terraform import -var-file=config.tfvars module.{モジュール名}.{リソース}.{リソース名}
+```
+
+例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
+
+```bash
+$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebook_www
+```
+
+もし```import```を行わないと，すでにクラウド上にリソースが存在しているためにリソースを構築できない，というエラーになる．
+
+```bash
+Error: error creating ECR repository: RepositoryAlreadyExistsException: The repository with name 'tech-notebook_www' already exists in the registry with id 'XXXXXXXXXXXX'
+```
 
 #### ・```plan```：
 
-スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
+```apply```コマンドで構築されるリソースと実際のクラウドインフラの間で，差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
 
 ```bash
-terraform plan -var-file="XXX.tfvars"
+$ terraform plan -var-file XXX.tfvars
+```
+
+差分がなければ，以下の通りになる．
+
+```bash
+No changes. Infrastructure is up-to-date.
+
+This means that Terraform did not detect any differences between your
+configuration and real physical resources that exist. As a result, no
+actions need to be performed.
 ```
 
 #### ・```apply```：
@@ -15,7 +71,7 @@ terraform plan -var-file="XXX.tfvars"
 AWS上にクラウドインフラストラクチャを構築する．
 
 ```bash
-terraform apply -var-file="XXX.tfvars"
+$ terraform apply -var-file XXX.tfvars
 ```
 
 成功すると，以下のメッセージが表示される．
@@ -24,21 +80,53 @@ terraform apply -var-file="XXX.tfvars"
 Apply complete! Resources: X added, 0 changed, 0 destroyed.
 ```
 
+#### ・```state list```：
+
+ファイル内で定義しているリソースの一覧を表示する．
+
+```bash
+$ terraform state list
+```
+
+以下の通り，モジュールも含めて，リソースが表示される．
+
+```bash
+aws_instance.www-1a
+aws_instance.www-1c
+aws_key_pair.key_pair
+module.alb_module.aws_alb.alb
+module.ami_module.data.aws_ami.amazon_linux_2
+module.route53_module.aws_route53_record.r53_record
+module.route53_module.aws_route53_zone.r53_zone
+module.security_group_module.aws_security_group.security_group_alb
+module.security_group_module.aws_security_group.security_group_ecs
+module.security_group_module.aws_security_group.security_group_instance
+module.vpc_module.aws_internet_gateway.internet_gateway
+module.vpc_module.aws_route_table.route_table_public
+module.vpc_module.aws_route_table_association.route_table_association_public_1a
+module.vpc_module.aws_route_table_association.route_table_association_public_1c
+module.vpc_module.aws_subnet.subnet_public_1a
+module.vpc_module.aws_subnet.subnet_public_1c
+module.vpc_module.aws_vpc.vpc
+```
 
 
-## 02. インフラ構築に必要なファイル
+
+## 02. リソースの構築に必要なファイル
 
 ### 変数定義ファイル
 
 実行ファイルに入力したい値を定義する．
 
-```yml
+**【実装例】**
+
+```tf
 #============
 # AWS認証情報
 #============
 aws_access_key = "XXX"
 aws_secret_key = "XXX"
-region = "XXX"
+region         = "XXX"
 
 #=============
 # VPC
@@ -54,7 +142,7 @@ subnet_public_1c_cidr_block = "n.n.n.n/n" // IPv4アドレスの範囲
 #================
 # Security Group
 #================
-sg_inbound_cidr_block = ["n.n.n.n/n"]  // IPv4アドレスの全ての範囲
+sg_inbound_cidr_block  = ["n.n.n.n/n"]  // IPv4アドレスの全ての範囲
 sg_outbound_cidr_block = ["n.n.n.n/n"] // IPv4アドレスの全ての範囲
 
 #=================
@@ -65,9 +153,9 @@ igw_cidr_block = "n.n.n.n/n" // IPv4アドレスの全ての範囲
 #============
 # Route53
 #============
-r53_domain_name = "example.jp"     // ドメイン名
+r53_domain_name     = "example.jp"     // ドメイン名
 r53_record_set_name = "example.jp" // レコードセット名
-r53_record_type = "A"                  // レコードタイプ
+r53_record_type     = "A"                  // レコードタイプ
 
 #==============
 # EC2 Instance
@@ -77,7 +165,7 @@ instance_app_name = "example-app"  // アプリケーション名
 #==============
 # Key Pair
 #==============
-key_name = "aws_key.pub"
+key_name        = "aws_key.pub"
 public_key_path = "~/.ssh/aws/aws_key.pub"
 ```
 
@@ -89,7 +177,9 @@ public_key_path = "~/.ssh/aws/aws_key.pub"
 
 変数定義ファイルから，ファイル内の変数に値を格納する．
 
-```yml
+**【実装例】**
+
+```tf
 // AWS認証情報
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
@@ -124,7 +214,9 @@ variable "public_key_path" {}
 
 #### ・AWSの認証
 
-```yml
+**【実装例】**
+
+```tf
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
@@ -136,21 +228,23 @@ provider "aws" {
 
 モジュールに変数を入力する．
 
-```yml
+**【実装例】**
+
+```tf
 #=============
 # VPC
 #=============
 module "vpc_module" {
-  
+
   // モジュールのResourceを参照.
   source = "../modules/vpc"
-  
+
   // モジュールに値を注入.
   region                      = var.region
   vpc_cidr_block              = var.vpc_cidr_block
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
-  igw_cidr_block              = var.igw_cidr_block 
+  igw_cidr_block              = var.igw_cidr_block
   instance_app_name           = var.instance_app_name
 }
 
@@ -158,7 +252,7 @@ module "vpc_module" {
 # Security Gruop
 #================
 module "security_group_module" {
-  
+
   // モジュールのResourceを参照.
   source = "../modules/security_group"
 
@@ -173,7 +267,7 @@ module "security_group_module" {
 # ALB
 #=============
 module "alb_module" {
-  
+
   // モジュールのResourceを参照.
   source = "../modules/alb"
 
@@ -208,36 +302,48 @@ module "route53_module" {
 module "ami_module" {
   source = "../modules/ami"
 }
+
+#==============
+# ECR
+#==============
+module "ecr_module" {
+
+  source = "../modules/ecr"
+
+  instance_app_name = var.instance_app_name
+}
 ```
 
 #### ・リソース構築
 
-```yml
+**【実装例】**
+
+```tf
 #==============
 # EC2 Instance
 #==============
 resource "aws_instance" "www-1a" {
-  ami = module.ami_module.ami_amazon_linux_2_id
-  instance_type = "t2.micro"
-  vpc_security_group_ids = [module.security_group_module.security_group_instance_id]
-  subnet_id = module.vpc_module.subnet_public_1a_id
+  ami                     = module.ami_module.ami_amazon_linux_2_id
+  instance_type           = "t2.micro"
+  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
+  subnet_id               = module.vpc_module.subnet_public_1a_id
   disable_api_termination = true
-  monitoring = true
+  monitoring              = true
   tags = {
-    Name = "${var.instance_app_name}-www-1a"
+    Name          = "${var.instance_app_name}-www-1a"
     Subnet-status = "public"
   }
 }
 
 resource "aws_instance" "www-1c" {
-  ami = module.ami_module.ami_amazon_linux_2_id
-  instance_type = "t2.micro"
-  vpc_security_group_ids = [module.security_group_module.security_group_instance_id]
-  subnet_id = module.vpc_module.subnet_public_1c_id
+  ami                     = module.ami_module.ami_amazon_linux_2_id
+  instance_type           = "t2.micro"
+  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
+  subnet_id               = module.vpc_module.subnet_public_1c_id
   disable_api_termination = true
-  monitoring = true
+  monitoring              = true
   tags = {
-    Name = "${var.instance_app_name}-www-1c"
+    Name          = "${var.instance_app_name}-www-1c"
     Subnet-status = "public"
   }
 }
@@ -245,7 +351,9 @@ resource "aws_instance" "www-1c" {
 
 #### ・公開鍵の登録
 
-```yml
+**【実装例】**
+
+```tf
 #==============
 # Public Key
 #==============
@@ -261,7 +369,11 @@ resource "aws_key_pair" "key_pair" {
 
 #### ・rootモジュールファイルからの変数入力
 
-```yml
+```variable```によって，rootモジュールファイルから変数を入力できる．
+
+**【実装例】**
+
+```tf
 // AWS認証情報
 variable "region" {}
 
@@ -281,7 +393,11 @@ variable "instance_app_name" {}
 
 #### ・リソース構築
 
-```yml
+```resource```によって，クラウド上に構築するリソースを定義できる．
+
+**【実装例】**
+
+```tf
 #=============
 # VPC
 #=============
@@ -296,8 +412,8 @@ resource "aws_vpc" "vpc" {
 # Subnet
 #=============
 resource "aws_subnet" "subnet_public_1a" {
-  vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block = var.subnet_public_1a_cidr_block
+  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
+  cidr_block        = var.subnet_public_1a_cidr_block
   availability_zone = "${var.region}a"
   tags = {
     Name = "${var.instance_app_name}-public-subnet-1a"
@@ -305,8 +421,8 @@ resource "aws_subnet" "subnet_public_1a" {
 }
 
 resource "aws_subnet" "subnet_public_1c" {
-  vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block = var.subnet_public_1c_cidr_block
+  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
+  cidr_block        = var.subnet_public_1c_cidr_block
   availability_zone = "${var.region}c"
   tags = {
     Name = "${var.instance_app_name}-public-subnet-1c"
@@ -341,12 +457,12 @@ resource "aws_route_table" "route_table_public" {
 # Subnet と Route Table の紐付け
 #==============================
 resource "aws_route_table_association" "route_table_association_public_1a" {
-  subnet_id = aws_subnet.subnet_public_1a.id // アタッチするSubnetのID
+  subnet_id      = aws_subnet.subnet_public_1a.id        // アタッチするSubnetのID
   route_table_id = aws_route_table.route_table_public.id // アタッチするRoute TableのID
 }
 
 resource "aws_route_table_association" "route_table_association_public_1c" {
-  subnet_id = aws_subnet.subnet_public_1c.id
+  subnet_id      = aws_subnet.subnet_public_1c.id
   route_table_id = aws_route_table.route_table_public.id
 }
 ```
@@ -357,7 +473,11 @@ resource "aws_route_table_association" "route_table_association_public_1c" {
 
 モジュールで構築されたリソースがもつ特定の値を出力する．
 
-```yml
+**【実装例】**
+
+例えば，VPCやSubnetのIDは，他のリソースに紐づけるために，値を出力する必要がある．
+
+```tf
 // VPC
 output "vpc_id" {
   value = aws_vpc.vpc.id
@@ -369,6 +489,51 @@ output "subnet_public_1a_id" {
 }
 output "subnet_public_1c_id" {
   value = aws_subnet.subnet_public_1c.id
+}
+```
+
+
+
+### 外部サービスからの値の取得
+
+```data```によって，外部サービスから値を取得する．
+
+**【実装例】**
+
+例えば，　AMIをフィルタリングした上で，AWSから特定のAMIの値を取得する．
+
+```tf
+#==============
+# AMI
+#==============
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "block-device-mapping.volume-type"
+    values = ["gp2"]
+  }
 }
 ```
 
