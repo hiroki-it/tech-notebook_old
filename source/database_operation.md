@@ -378,7 +378,7 @@ DB ＞ テーブル ＞ レコード ＞ カラム の順に，粒度は大き�
 #### ・句の処理の順番
 
 ```
-from => join => where => group by => having => select => order by
+FROM => JOIN => WHERE => GROUP BY => HAVING => SELECT => ORDER BY
 ```
 
 #### ・使い方で用いた略号
@@ -391,46 +391,46 @@ from => join => where => group by => having => select => order by
 
 
 
-### ```select```句
+### ```SELECT```句
 
-#### ・```sum()```
+#### ・```SUM()```
 
 ```SQL
-// 指定したカラムで，『フィールド』の合計を取得
-select sum(C)  
-    from T;
+-- 指定したカラムで，『フィールド』の合計を取得
+SELECT SUM(C)  
+FROM T;
 ```
 
-#### ・```avg()```
+#### ・```AVG()```
 
 ```SQL
-// 指定したカラムで，『フィールド』の平均値を取得
-select avg(C)  
-    from T;
+-- 指定したカラムで，『フィールド』の平均値を取得
+SELECT AVG(C)  
+FROM T;
 ```
 
 #### ・```min()```
 
 ```SQL
-// 指定したカラムで，『フィールド』の最小値を取得
-select min(C)
-    from T;
+-- 指定したカラムで，『フィールド』の最小値を取得
+SELECT MIN(C)
+FROM T;
 ```
 
 #### ・```max()```
 
 ```SQL
-// 指定したカラムで，『フィールド』の最大値を取得
-select max(C)
-    from T;
+-- 指定したカラムで，『フィールド』の最大値を取得
+SELECT MAX(C)
+FROM T;
 ```
 
-#### ・```count()```
+#### ・```COUNT()```
 
 ```SQL
-// 指定したカラムで，『フィールド』の個数を取得
-select count(C)
-    from T;
+-- 指定したカラムで，『フィールド』の個数を取得
+SELECT COUNT(*)
+FROM T;
 ```
 
 **※消去法の小技：集合関数を入れ子状にはできない**
@@ -438,41 +438,33 @@ select count(C)
 **【実装例】**
 
 ```SQL
-// 集合関数を集合関数の中に入れ子状にすることはできない．
-select avg(sum(C))
-    from T;
+-- 集合関数を集合関数の中に入れ子状にすることはできない．
+SELECT AVG(SUM(C))
+FROM T;
 ```
 
 ```SQL
-// 指定したカラムで，値無しも含む『フィールド』を取得
-select count(*)
-    from T;
+-- 指定したカラムで，値無しも含む『フィールド』を取得
+SELECT COUNT(*)
+FROM T;
 ```
 
 ```SQL
-// 指定したカラムで，値無しを除いた『フィールド』を取得
-select count(C);
-
-// 上に同じ
-select count(all C);
-```
-
-```SQL
-// 指定したカラムで，重複した『フィールド』を除く全ての『フィールド』を取得 
-select count(distinct C);
+-- 指定したカラムで，値無しを除いた『フィールド』を取得
+SELECT COUNT(*);
 ```
 
 
 
-### ```from```句
+### ```FROM```句
 
-#### ・```join```句の種類
+#### ・```JOIN```句の種類
 
 ![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部結合のベン図.jpg)
 
 
 
-#### ・```left join```（左外部結合）
+#### ・```left JOIN```（左外部結合）
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
@@ -480,47 +472,47 @@ select count(distinct C);
 
 
 
-#### ・```inner join```（内部結合）
+#### ・```INNER JOIN```（内部結合）
 
 基本情報技術者試験では，内部結合（A∩B）しか出題されない．
 
-#### ・内部結合に```where```を用いる場合
+#### ・内部結合に```WHERE```を用いる場合
 
-2つの```where```文が，```AND```で結びつけられている時，まず一つ目の```where```を満たすレコードを取得した後，取得したレコードの中から，二つ目の```where```を満たすレコードを取得する．
-
-**【実装例】**
-
-```SQL
-// 『カラム』だけでなく，どの『表』なの物なのかも指定
-select T1.C1,
-    // 複数の表を指定
-    from T1, T2,
-    // まず，1つ目のフィールドと2つ目のフィールドが同じレコードを取得．
-    where R1 = R2 and  
-    // 次に，上記で取得したレコードのうち，次の条件も満たすレコードのみを取得．
-    R2 = R3  
-```
-
-#### ・内部結合に```inner join on```を用いる場合
+2つの```WHERE```文が，```AND```で結びつけられている時，まず一つ目の```WHERE```を満たすレコードを取得した後，取得したレコードの中から，二つ目の```WHERE```を満たすレコードを取得する．
 
 **【実装例】**
 
 ```SQL
-// 『カラム』だけでなく，どの『表』なの物なのかも指定
-select T1.C1,
-    // 複数の表を指定
-    from T1  
-    inner join T2
-        // 2つ目の表の『レコード』と照合
-        on T1.C1 = T2.C2  
-    inner join T3
-        // 3つ目の表の『レコード』と照合
-        on T1.C1 = T3.C3  
+-- 『カラム』だけでなく，どの『表』なの物なのかも指定
+SELECT T1.C1,
+-- 複数の表を指定
+FROM T1, T2,
+-- まず，1つ目のフィールドと2つ目のフィールドが同じレコードを取得．
+WHERE R1 = R2
+  -- 次に，上記で取得したレコードのうち，次の条件も満たすレコードのみを取得．
+  AND R2 = R3  
+```
+
+#### ・内部結合に```INNER JOIN ON```を用いる場合
+
+**【実装例】**
+
+```SQL
+-- 『カラム』だけでなく，どの『表』なの物なのかも指定
+SELECT T1.C1,
+-- 複数の表を指定
+FROM T1
+  INNER JOIN T2
+  -- 2つ目の表の『レコード』と照合
+  ON T1.C1 = T2.C2  
+  INNER JOIN T3
+  -- 3つ目の表の『レコード』と照合
+  ON T1.C1 = T3.C3  
 ```
 
 
 
-### ```order by```句
+### ```ORDER BY```句
 
 #### ・使い方
 
@@ -556,60 +548,66 @@ $sql = <<<SQL
 
 
 
+### ```IN```句，```ANY```句の違い
 
-
-### ```in```句，```any```句の違い
-
-#### ・```in```句の使い方
+#### ・```IN```句の使い方
 
   指定した値と同じ『フィールド』を取得
 
 **【実装例】**
 
 ```SQL
-select * from T
-    // 指定したカラムで，指定した値の『フィールド』を取得
-    where C in (xxx, xxx, ...);
+SELECT *
+FROM T
+-- 指定したカラムで，指定した値の『フィールド』を取得
+WHERE C in (xxx, xxx, ...);
 ```
 
 ```SQL
-select * from T
-    // 指定したカラムで，指定した値以外の『フィールド』を取得
-    where C not in (R1, R2, ...);
+SELECT *
+FROM T
+-- 指定したカラムで，指定した値以外の『フィールド』を取得
+WHERE C not in (R1, R2, ...);
 ```
 
 ```SQL
-select * from T
-    // フィールドを指定の値として用いる
-    where C not in (
-        // 指定したカラムで，『フィールド』を取得
-        select C from T where R >= 160);
+SELECT * FROM T
+-- フィールドを指定の値として用いる
+WHERE C not in (
+  -- 指定したカラムで，『フィールド』を取得
+  SELECT C FROM T WHERE R >= 160);
 ```
 
 **【IN句を使用しなかった場合】**
 
 ```SQL
-SELECT * FROM fruit WHERE name = "みかん" OR name = "りんご";
+SELECT *
+FROM fruit
+WHERE name = "みかん"
+  OR name = "りんご";
 ```
 
 **【IN句を使用した場合】**
 
 ```SQL
-SELECT * FROM fruit WHERE name IN("みかん","りんご");
+SELECT * 
+FROM fruit
+WHERE name IN("みかん","りんご");
 ```
 
-#### ・```any```句の使い方
+#### ・```ANY```句の使い方
 
   書き方が異なるだけで，```in```と同じ出力
 
 ```SQL
-select * from T
-    where C = any(xxx, xxx, xxx);
+SELECT *
+FROM T
+WHERE C = ANY(xxx, xxx, xxx);
 ```
 
 
 
-### ```group by```句
+### ```GROUP BY```句
 
 #### ・使い方
 
@@ -618,97 +616,97 @@ select * from T
 **【実装例】**
 
 ```SQL
-select C1, avg(C2)
-    from T
-    // 指定したカラムをグループ化し，フィールドの値を合計する．
-    group by C;
+SELECT C1, AVG(C2)
+FROM T
+-- 指定したカラムをグループ化し，フィールドの値を合計する．
+GROUP BY C;
 ```
 
 
 
-### ```having```句
+### ```HAVING```句
 
 #### ・使い方
 
-各句の処理の順番から考慮して，```group by```でグループ化した結果から，```having```で『フィールド』を取得．```select```における集計関数が，```having```における集計関数の結果を指定していることに注意せよ．
+各句の処理の順番から考慮して，```GROUP BY```でグループ化した結果から，```HAVING```で『フィールド』を取得．```SELECT```における集計関数が，```HAVING```における集計関数の結果を指定していることに注意せよ．
 
 **【実装例】**
 
 ```SQL
-// havingによる集計結果を指定して出力．
-select C1, count(C2) 
-    from T
-    group by C2
-    // グループ化した結果を集計し，２個以上の『フィールド』を取得
-    having count(C2) >= 2; 
+-- HAVINGによる集計結果を指定して出力．
+SELECT C1, COUNT(C2) 
+FROM T
+GROUP BY C2
+-- グループ化した結果を集計し，２個以上の『フィールド』を取得
+HAVING COUNT(*) >= 2; 
 ```
 
-※以下の場合，```group by + having```を使っても，```where```を使っても，同じ出力結果になる．
+※以下の場合，```GROUP BY + HAVING```を使っても，```WHERE```を使っても，同じ出力結果になる．
 
 ```SQL
-select C
-    from T
-    group by C
-    having R;
-```
-
-```SQL
-select C
-    from T
-    where R
-    group by C;
-```
-
-
-
-### ```wildcard```句
-
-#### ・使い方
-
-**【実装例】**
-
-```SQL
-select * from T
-    // 任意の文字（文字無しも含まれる）
-    where C like '%営業';
+SELECT C
+FROM T
+GROUP BY C
+HAVING R;
 ```
 
 ```SQL
-select * from T
-    // 任意の一文字
-    where C like '_営業';
+SELECT C
+FROM T
+WHERE R
+GROUP BY C;
 ```
 
 
 
-### ```between```句
+### ```WILDCARD```句
 
 #### ・使い方
 
 **【実装例】**
 
 ```SQL
-select * from T
-    // 指定したカラムで，1以上10以下の『フィールド』を取得
-    between 1 and 10;
+SELECT * FROM T
+-- 任意の文字（文字無しも含まれる）
+WHERE C LIKE '%営業';
+```
+
+```SQL
+SELECT * FROM T
+-- 任意の一文字
+WHERE C LIKE '_営業';
 ```
 
 
 
-### ```set```句
+### ```BETWEEN```句
 
 #### ・使い方
 
 **【実装例】**
 
 ```SQL
-/* 括弧内に値を設定してください */
+SELECT * FROM T
+-- 指定したカラムで，1以上10以下の『フィールド』を取得
+BETWEEN 1 AND 10;
+```
+
+
+
+### ```SET```句
+
+#### ・使い方
+
+**【実装例】**
+
+```SQL
+-- 括弧内に値を設定してください
 SET @STAFF_NAME = {パラメータ値};
 SET @STAFF_ID = {パラメータ値};
 
 UPDATE `mst_staff`
-  SET `staff_name` = @STAFF_NAME,
-  WHERE `staff_id` = @STAFF_ID;
+SET `staff_name` = @STAFF_NAME,
+WHERE `staff_id` = @STAFF_ID;
 ```
 
 
@@ -722,10 +720,12 @@ UPDATE `mst_staff`
 **【実装例】**
 
 ```SQL
-// Main-query
-select * from T
-    // Sub-query
-    where C != (select max(C) from T);
+-- Main-query
+SELECT * FROM T
+
+WHERE C != (
+  -- Sub-query
+  SELECT max(C) FROM T);
 ```
 
 
@@ -757,7 +757,7 @@ select * from T
 **【実装例】**
 
 ```PHP
-// select文を定義して実行．
+// SELECT文を定義して実行．
 $sql = "SELECT * FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
 $stmt->execute()
@@ -794,7 +794,7 @@ print_r($data);
 読み出された全てのレコードのうち，最初のレコードの一番左のカラムのみを取得し，混合型で返却する．主に，```COUNT()```の場合に用いる
 
 ```PHP
-// select文を定義して実行．
+// SELECT文を定義して実行．
 $sql = "SELECT COUNT(*) FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
 $stmt->execute()
@@ -817,7 +817,7 @@ PHPとは異なり，変数定義に『$』は用いないことに注意．
 **【実装例】**
 
 ```java
-// select文を定義して実行．
+// SELECT文を定義して実行．
 String sql = "SELECT * FROM doraemon_characters";
 ResultSet result statement.executeQuery();
 
@@ -830,9 +830,8 @@ while(result.next()){
     System.out.println(result.getString("typeL"));
 }
 
-
 // カラム名と値の連想配列として取得できる．
-ここに出力結果コードを書く．
+// ここに出力結果コードを書く．
 
 ```
 
@@ -929,7 +928,7 @@ $dbh = null;
 
 **【実装例】**
 
-```SQL
+```PHP
 namespace Migration
 
 class ItemQuery
@@ -955,29 +954,29 @@ class ItemQuery
 **【実装例】**
 
 ```SQL
-// 注文テーブル作成
+-- 注文テーブル作成
 CREATE TABLE order_data (
 
-    // Primary Key制約
+    -- Primary Key制約
     order_id INT(10) PRIMARY KEY COMMENT '注文ID',
 
-    // Not Null制約
+    -- Not Null制約
     order_kbn INT(3) NOT NULL COMMENT '注文区分',
     system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
     system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
     delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
   
-    // 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
+    -- 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
     PRIMARY KEY(order_id, order_kbn)
   
-    // 参照制約キー
+    -- 参照制約キー
     FOREIGN KEY order_kbn REFERENCES order_kbn_data
 )
 ```
 
 
 
-### ```create view```句
+### ```CREATE VIEW```句
 
 #### ・使い方
 
@@ -987,8 +986,8 @@ CREATE TABLE order_data (
 **【実装例】**
 
 ```SQL
-create view T as
-    select * from ...;
+CREATE VIEW T AS
+    SELECT * FROM T1;
 ```
 
 
@@ -1038,14 +1037,14 @@ create view T as
 **【実装例】**
 
 ```SQL
-// PROCEDUREを作成し，データベースへ格納しておく．
+-- PROCEDUREを作成し，データベースへ格納しておく．
 CREATE PROCEDURE SelectContact AS　
   SELECT CustomerID, CompanyName, ContactName, Phone
   FROM Customers
 ```
 
 ```SQL
-// PROCEDUREを実行
+-- PROCEDUREを実行
 EXEC SelectContact
 ```
 
