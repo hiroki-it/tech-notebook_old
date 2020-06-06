@@ -36,7 +36,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 #### ・Version
 
-```yml
+```yaml
 # バージョン
 version: 2.1
 ```
@@ -45,7 +45,7 @@ version: 2.1
 
 汎用的なパッケージの使用を宣言する．
 
-```yml
+```yaml
 # AWS-ECRパッケージを使用．
 orbs:
   aws-ecr: circleci/aws-ecr@4.0.4
@@ -53,7 +53,7 @@ orbs:
 
 ```Commands```や```Executors```を用いて設定を部品化し，異なる```Job```で繰り返し利用できる．
 
-```yml
+```yaml
 # ホスト（CircleCI）側の環境の設定
 executors:
   setup-executor:
@@ -65,7 +65,7 @@ executors:
 
 また，```Job```において，特定のオプション（例```aws-ecr/build-and-push-image```）を宣言し．その機能を使える．
 
-```yml
+```yaml
   push-builder-to-ecr:
     executor: setup-executor
     steps:
@@ -86,7 +86,7 @@ executors:
 
 ```Job```を定義する．少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
-```yml
+```yaml
 # ジョブの設定
 jobs:
   push-images:
@@ -177,7 +177,7 @@ jobs:
 
 ```job```をどのような順番で行うかなどを定義する．並列的に実行することも可能．
 
-```yml
+```yaml
 # 実行の順番を定義
 workflows:
   version: 2.1
@@ -208,7 +208,7 @@ workflows:
 ホストOS側で，以下のコマンドを実行する．
 
 ```bash
-circleci config validate
+$ circleci config validate
 
 # 以下の文章が表示されれば問題ない．
 # Config file at .circleci/config.yml is valid.
@@ -219,7 +219,7 @@ circleci config validate
 ローカルでビルドを行う．
 
 ```bash
-circleci build .circleci/config.yml
+$ circleci build .circleci/config.yml
 ```
 
 

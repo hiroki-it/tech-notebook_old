@@ -1,6 +1,6 @@
 # コンテナ
 
-## 01. Dockerによるコンテナの構築
+## 03. Dockerによるコンテナの構築
 
 ### Dockerの操作
 
@@ -16,7 +16,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 
 
-## 01-02. コンテナにssh接続するまでの手順
+## 03-02. コンテナにssh接続するまでの手順
 
 ### 手順の流れ
 
@@ -53,12 +53,28 @@ Dockerイメージは，実行OSによらずに一貫してビルドできるた
 | **```docker pull {イメージ名}```**                           | レジストリ側のDockerイメージをクライアント側にインストール． |
 | **```docker images```**                                      | ホストOSにインストールされたDockerイメージを確認．           |
 
+```bash
+$ docker search {イメージ名}
+
+$ docker pull {イメージ名}
+
+$ docker images
+```
+
+
+
 #### ・Dockerイメージを削除するコマンド
 
 | コマンド                                                     | 処理                                                   |
 | ------------------------------------------------------------ | ------------------------------------------------------ |
 | **```docker image prune```**                                 | コンテナに使用されていないDockerイメージを一括で削除． |
 | **```docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)```** | タグ名のないイメージのみを全て削除．                   |
+
+```bash
+$ docker image prune
+
+$ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)
+```
 
 
 
@@ -113,9 +129,14 @@ EXPOSE 80
 
 #### ・Dockerイメージのビルドを行うコマンド
 
+
 | コマンド                                                     | 処理                                                         | 注意点                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ |
 | **```docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .```** | キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド．失敗したときは削除する． | コマンド最後のドットを忘れない |
+
+```bash
+$ docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .
+```
 
 #### ・ビルドしたDockerイメージをDocker Hubに登録するコマンド
 
@@ -123,6 +144,12 @@ EXPOSE 80
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **```docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | コンテナからDockerイメージを作成．                           |
 | **```docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | ホストOSで作成したDockerイメージをレジストリ側にアップロード． |
+
+```bash
+$ docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
+
+$ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
+```
 
 #### ・Docker Hub上での継続的インテグレーション
 
@@ -188,6 +215,10 @@ RUN yum -y install\
 | ------------------------------------ | -------------------------------------------------------- |
 | **```docker create {イメージ名}```** | コンテナレイヤーを生成し，コンテナを構築．起動はしない． |
 
+```bash
+$ docker create {イメージ名}
+```
+
 ![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
 
 #### ・構築に失敗した時のデバッグを行うコマンド
@@ -196,6 +227,9 @@ RUN yum -y install\
 | ----------------------------------------------------------- | -------------------------------------- |
 | **```docker logs --follow=true --tail=500 {コンテナ名}```** | 指定した行数だけ，ログを出力し続ける． |
 
+```bash
+$ docker logs --follow=true --tail=500 {コンテナ名}
+```
 
 #### ・ビルドされるDockerイメージとコンテナの役割の対応例
 
@@ -220,6 +254,18 @@ RUN yum -y install\
 | **```docker stop $(docker ps --all --quiet)```**       | 全てのコンテナを停止                 |
 | **```docker container prune```**                       | 停止中のコンテナのみを全て削除       |
 | **```docker rm --force $(docker ps --all --quiet)```** | 起動中／停止中の全てコンテナを削除   |
+```bash
+$ docker start
+
+$ docker stop
+
+$ docker stop $(docker ps --all --quiet)
+
+$ docker container prune
+
+$ docker rm --force $(docker ps --all --quiet)
+```
+
 #### ・コンテナ情報表示を行うコマンド
 
 | コマンド                                               | 処理                                 |
@@ -227,6 +273,11 @@ RUN yum -y install\
 | **```docker ps```**                                    | 起動中コンテナのIDなどを一覧で表示   |
 | **```docker inspect {コンテナID}```**                  | 起動中コンテナの全ての設定内容を表示 |
 
+```bash
+$ docker ps
+
+$ docker inspect {コンテナID}
+```
 
 
 
@@ -238,9 +289,13 @@ RUN yum -y install\
 | ------------------------------------------- | ------------------------- | ------------------------ |
 | **```docker exec -it {コンテナ名} bash```** | 起動中のコンテナにssh接続 | i：interactive<br>t：tty |
 
+```bash
+$ docker exec -it {コンテナ名} bash
+```
 
 
-## 01-03. コンテナ側に対するファイルのマウント方法
+
+## 03-03. コンテナ側に対するファイルのマウント方法
 
 ### ホストOSのマウント元のディレクトリの設定画面
 
@@ -282,7 +337,7 @@ RUN yum -y install\
 
 
 
-## 01-04. ホストとコンテナの間のネットワーク接続
+## 03-04. ホストとコンテナの間のネットワーク接続
 
 ### bridgeネットワーク
 
@@ -332,7 +387,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-## 02. コンテナオーケストレーション
+## 04. コンテナオーケストレーション
 
 ### コンテナオーケストレーションの種類
 
@@ -376,7 +431,7 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 #### ・実装例
 
-```yml
+```yaml
 version: '3.7'
 services:
 
@@ -431,6 +486,12 @@ services:
 | ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **```docker-compose up -d```**                   | ・Dockerfileを基にイメージのビルド<br>・全てのコンテナレイヤーを生成し，コンテナを構築<br>・コンテナを起動 | すでにコンテナがある場合，それを再起動                       |
 | **```docker-compose run -d -it {イメージ名}```** | ・Dockerfileを基にイメージをビルド<br>・指定のコンテナレイヤーを生成し，コンテナを構築（※依存含む）<br>・コンテナを起動 | すでにコンテナがあっても，それを残して構築／起動．以前のコンテナが削除されずに残ってしまう． |
+
+```bash
+$ docker-compose up -d
+
+$ docker-compose run -d -it {イメージ名}
+```
 
 
 
