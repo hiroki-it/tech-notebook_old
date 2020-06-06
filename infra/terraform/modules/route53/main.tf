@@ -16,11 +16,11 @@ resource "aws_route53_zone" "r53_zone" {
 
 resource "aws_route53_record" "r53_record" {
   zone_id = aws_route53_zone.r53_zone.id
-  name = var.r53_record_set_name
-  type = var.r53_record_type
+  name    = var.r53_record_set_name
+  type    = var.r53_record_type
   alias {
-    name = var.r53_alb_dns_name
-    zone_id = var.r53_alb_zone_id
+    name                   = var.r53_alb_dns_name
+    zone_id                = var.r53_alb_zone_id
     evaluate_target_health = false
   }
 }
