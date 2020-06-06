@@ -226,7 +226,7 @@ provider "aws" {
 
 #### ・モジュールの読み込み
 
-モジュールに変数を入力する．
+モジュールを読み込み，変数を渡す．
 
 **【実装例】**
 
@@ -239,7 +239,6 @@ module "vpc_module" {
   // モジュールのResourceを参照.
   source = "../modules/vpc"
 
-  // モジュールに値を注入.
   region                      = var.region
   vpc_cidr_block              = var.vpc_cidr_block
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
@@ -256,8 +255,9 @@ module "security_group_module" {
   // モジュールのResourceを参照.
   source = "../modules/security_group"
 
-  // モジュールに値を注入.
-  vpc_id                 = module.vpc_module.vpc_id
+  // 他のモジュールの出力値を渡す.
+  vpc_id = module.vpc_module.vpc_id
+
   sg_inbound_cidr_block  = var.sg_inbound_cidr_block
   sg_outbound_cidr_block = var.sg_outbound_cidr_block
   instance_app_name      = var.instance_app_name
@@ -271,13 +271,13 @@ module "alb_module" {
   // モジュールのResourceを参照.
   source = "../modules/alb"
 
-  // モジュールに値を注入.
-  region                = var.region
+  // 他のモジュールの出力値を渡す.
   vpc_id                = module.vpc_module.vpc_id
   subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
-  instance_app_name     = var.instance_app_name
+  
+  instance_app_name = var.instance_app_name
 }
 
 #=============
@@ -288,9 +288,10 @@ module "route53_module" {
   // モジュールのResourceを参照.
   source = "../modules/route53"
 
-  // モジュールに値を注入.
-  r53_alb_dns_name    = module.alb_module.alb_dns_name
-  r53_alb_zone_id     = module.alb_module.alb_zone_id
+  // 他のモジュールの出力値を渡す.
+  r53_alb_dns_name = module.alb_module.alb_dns_name
+  r53_alb_zone_id  = module.alb_module.alb_zone_id
+
   r53_domain_name     = var.r53_domain_name
   r53_record_set_name = var.r53_record_set_name
   r53_record_type     = var.r53_record_type
