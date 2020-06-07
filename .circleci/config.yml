@@ -3,7 +3,7 @@ version: 2.1
 
 # AWS-ECRパッケージを使用．
 orbs:
-  aws-ecr: circleci/aws-ecr@4.0.4
+  aws-ecr: circleci/aws-ecr@6.9.0
 
 # ホスト（CircleCI）側の環境の設定
 executors:
