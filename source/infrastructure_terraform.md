@@ -22,7 +22,7 @@ $ terraform fmt
 main.tf
 ```
 
-#### ・```import```
+#### ・```import```：
 
 terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．
 
@@ -48,12 +48,20 @@ $ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.
 Error: error creating ECR repository: RepositoryAlreadyExistsException: The repository with name 'tech-notebook_www' already exists in the registry with id 'XXXXXXXXXXXX'
 ```
 
-#### ・```plan```：
+#### ・```refresh```：
 
-```apply```コマンドで構築されるリソースと実際のクラウドインフラの間で，差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
+クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルに反映する．
 
 ```bash
-$ terraform plan -var-file XXX.tfvars
+$ terraform refresh -var-file=config.tfvars
+```
+
+#### ・```plan```：
+
+クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルには反映せずに，設定ファイルの記述との差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
+
+```bash
+$ terraform plan -var-file=XXX.tfvars
 ```
 
 差分がなければ，以下の通りになる．
@@ -64,6 +72,12 @@ No changes. Infrastructure is up-to-date.
 This means that Terraform did not detect any differences between your
 configuration and real physical resources that exist. As a result, no
 actions need to be performed.
+```
+
+ちなみに，```-refresh=true```オプションをつければ，```refresh```コマンドを同時に実行してくれる．
+
+```bash
+$ terraform plan -var-file=XXX.tfvars -refresh=true 
 ```
 
 #### ・```apply```：
