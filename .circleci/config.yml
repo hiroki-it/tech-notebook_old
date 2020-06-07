@@ -45,7 +45,7 @@ jobs:
           name: Push www
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
-  
+
   push-builder-to-ecr:
     executor: setup-executor
     steps:
@@ -60,7 +60,7 @@ jobs:
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
           tag: ${VERSION}
-  
+
   push-www-to-ecr:
     executor: setup-executor
     steps:
@@ -96,7 +96,7 @@ jobs:
           name: Clean up html
           command: |
             make clean
-            
+
 # 実行の順番を定義
 workflows:
   version: 2.1
@@ -109,7 +109,7 @@ workflows:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_circleci_config
-                - feature/update_infrastructure
+                - feature/update_dockerfile
       # AWS ECR builder
       - push-builder-to-ecr:
           requires:
