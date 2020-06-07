@@ -103,7 +103,13 @@ workflows:
   build-push:
     jobs:
       # Docker Hub
-      - push-images
+      - push-images:
+          filters:
+            branches:
+              only:
+                # NOTE: デプロイする場合は指定のブランチを作成
+                - feature/update_circleci_config
+                - feature/update_infrastructure
       # AWS ECR builder
       - push-builder-to-ecr:
           requires:
