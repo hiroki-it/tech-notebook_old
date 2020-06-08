@@ -2,9 +2,18 @@
 
 ## 01. ブラウザレンダリングの仕組み
 
-### 構成するプロセス
+### 構成する処理
 
-Loading，Scripting，Rendering，Painting，の4つのプロセスからなる．クライアントの操作のたびにイベントが発火し，Scriptingプロセスが繰り返し実行される．
+以下の8つの処理からなる．クライアントの操作のたびにイベントが発火し，Scriptingプロセスが繰り返し実行される．
+
+- Downloading
+- Parse
+- Scripting
+- Rendering
+- CalculateStyle
+- Paint
+- Rasterize
+- Composite
 
 ![BrowserRenderingプロセス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/BrowserRenderingプロセス.png)
 
@@ -250,21 +259,26 @@ JavaScriptやHTMLの更新にブラウザが追いついていない場合に，
 
 
 
-## 02. Loadingプロセス
+## 02. Downloading処理
 
-### Loadingプロセスとは
+### Downloading処理とは
 
-サーバサイドからリソース（Html，CSS，画像ファイル）が，バイト形式でレスポンスされる．これを，優先度に基づいて読み込む．Downloading処理とParse処理の二つの段階に分けられる．
+#### ・非同期的な読み込み
 
+サーバサイドからリソース（Html，CSS，JS，画像）は，分割されながら，バイト形式でレスポンスされ，これを優先度に基づいて読み込む処理．分割でレスポンスされたリソースを，随時読み込んでいくため，各リソースの読み込みは非同期的に行われる．Downloading処理が終了したリソースから，次のParse処理に進んでいく．
 
+#### ・リソースの優先順位
 
-## 02-02. Downloading処理
+1. HTML
+2. CSS
+3. JS
+4. 画像
 
 ### Pre-Loading
 
 #### ・Pre-Loadingとは
 
-指定したファイルのDownloading処理の優先順位を上げる方法．
+指定したファイルのDownloading処理の優先順位を上げる方法．優先度の高い分割リソースは，次のParse処理，Scripting処理も行われる．そのため，JSファイルのScripting処理が，以降のimageファイルのDownloading処理よりも早くに行われることがある．
 
 ```html
 <head>
@@ -307,7 +321,12 @@ Intersection Observerによる要素の交差率を監視し，指定の交差�
 
 
 
-## 02-03. Parse処理
+## 02-02. Parse処理
+
+### Parse処理とは
+
+Downloading処理によって読み込まれたリソースを翻訳するプロセス
+
 
 
 ### HTML形式テキストファイルの構造解析
@@ -344,18 +363,20 @@ img { float: right }
 ```
 
 
-2. 一連の文字列からHTMLタグが認識され，トークンに変換される．
+2. リソースの文字列からHTMLタグが認識され，トークンに変換される．
 3. 各トークンは，一つのオブジェクトに変換される．
 
 ![DOMツリーが生成されるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DOMツリーが生成されるまで.png)
 
-4. HTMLパーサーは，オブジェクトをノードとして，DOMツリーを生成する．DOMのインターフェースについては，こちら．
+4. HTMLパーサーは，オブジェクトをノードとして，DOMツリーを生成する．DOMツリーを生成する途中で```<script>```に到達すると，一旦，JSファイルを読み込んでScripting処理を終えてから，DOMツリーの生成を再開する．
 
+   DOMのインターフェースについては，こちら．
+   
    https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
 
 ![DOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DOMツリー.png)
 
-5. CSSパーサーは，オブジェクトをノードとして，CSSOMツリーを生成する．
+5. 同時に，CSSパーサーは，```<head>```にある```<link>```をもとにサーバにリクエストを行う．レスポンスされたcssファイルに対してDownloading処理を行った後，オブジェクトをノードとして，CSSOMツリーを生成する．
 
 ![CSSOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CSSOMツリー.png)
 
@@ -376,11 +397,11 @@ img { float: right }
 
 
 
-## 03. Scriptingプロセス
+## 03. Scripting処理
 
-### Scriptingプロセスとは
+### Scripting処理とは
 
-JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳され，実行されるプロセス．このプロセスは，初回アクセス時だけでなく，イベントが発火した時にも実行される．
+JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳され，実行される．この処理は，初回アクセス時だけでなく，イベントが発火した時にも実行される．
 
 ### JavaScriptエンジン
 
@@ -399,15 +420,17 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 
 
-## 04. Renderingプロセス
+## 04. Rendering処理
 
-### Renderingプロセスとは
+### Rendering処理とは
 
-レンダリングツリーが生成され，ブラウザ上のどこに何を描画するのかを計算するプロセス．CalculateStyle処理とLayout処理に分けられる．
+レンダリングツリーが生成され，ブラウザ上のどこに何を描画するのかを計算する．CalculateStyle処理とLayout処理に分けられる．
 
 
 
 ## 04-02. CalculateStyle処理
+
+### CalculateStyle処理とは
 
 レンダリングエンジンは，DOMツリーのルートのノードから順にCSSOSツリーを適用し，Renderツリーを生成する．
 
@@ -417,24 +440,30 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ## 04-03. Layout処理
 
+### Layout処理とは
+
 上記で読み込まれたHTML形式テキストファイルには，ネストされた 2 つの div がある．1 つ目（親）の```div```より，ノードの表示サイズをビューポートの幅の 50% に設定し、この親に含まれている 2 つ目（子）の```div```より，その幅を親の50%、つまりビューポートの幅の25%になるようにレイアウトされる．
 
 ![Layout処理](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Layout処理.png)
 
 
 
-## 05. Paintingプロセス
+## 05. Paint処理
 
-### Paintingプロセスとは
+### Paint処理とは
 
 DOMツリーの各ノードを，ブラウザ上に描画する．
 
 
 
-## 05-02. Paint処理
+## 05-02. Rasterize処理
 
-## 05-03. Rasterize処理
+### Rasterize処理とは
 
-## 04-04. CompositeLayers処理
+
+
+## 05-03. CompositeLayers処理
+
+### CompositeLaysers処理とは
 
 
