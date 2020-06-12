@@ -4,6 +4,7 @@ version: 2.1
 # AWS-ECRパッケージを使用．
 orbs:
   aws-ecr: circleci/aws-ecr@6.9.0
+  aws-ecs: circleci/aws-ecs@1.2.0
 
 # ジョブの設定
 jobs:
@@ -11,7 +12,7 @@ jobs:
     # ホスト側環境の設定
     machine: true
     # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
-    working_directory: ~/tech-notebook
+    working_directory: '~/${APP_NAME}'
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -78,28 +79,52 @@ workflows:
                 - feature/update_dockerfile
       # AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
+          name: build-and-push-image-builder
           account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/builder/Dockerfile"
-          path: "."
+          dockerfile: 'infra/docker/builder/Dockerfile'
+          path: '.'
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
-          tag: ${VERSION}
+          tag: ${CIRCLE_SHA1}
           requires:
             - build
       # AWS ECR www -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
+          name: build-and-push-image-www
           account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/www/Dockerfile"
-          path: "."
+          dockerfile: 'infra/docker/www/Dockerfile'
+          path: '.'
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
-          tag: ${VERSION}
+          tag: ${CIRCLE_SHA1}
           requires:
             - build
       - build:
           requires:
             - push-images
+      # AWS ECS builder
+      - aws-ecs/deploy-service-update:
+          name: deploy-service-update-builder
+          cluster-name: '${APP_NAME}-cluster'
+          family: '${APP_NAME}-service'
+          container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
+          requires:
+            - build-and-push-image-builder
+            - build-and-push-image-www
+      # AWS ECS www
+      - aws-ecs/deploy-service-update:
+          name: deploy-service-update-www
+          cluster-name: '${APP_NAME}-cluster'
+          family: '${APP_NAME}-service'
+          container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
+          requires:
+            - build-and-push-image-builder
+            - build-and-push-image-www
+      - aws-ecs/run-task:
+          cluster: '${APP_NAME}-cluster'
+          awsvpc: true
+          launch-type: FARGATE
+          task-definition: '${APP_NAME}-task-definition'
+          requires:
+            - deploy-service-update-builder
+            - deploy-service-update-www
