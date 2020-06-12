@@ -46,36 +46,6 @@ jobs:
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
-  push-builder-to-ecr:
-    executor: setup-executor
-    steps:
-      - checkout
-      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/builder/Dockerfile"
-          path: "."
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_BUILDER}
-          tag: ${VERSION}
-
-  push-www-to-ecr:
-    executor: setup-executor
-    steps:
-      - checkout
-      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/www/Dockerfile"
-          path: "."
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_WWW}
-          tag: ${VERSION}
-    
   build:
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
@@ -110,12 +80,28 @@ workflows:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_circleci_config
                 - feature/update_dockerfile
-      # AWS ECR builder
-      - push-builder-to-ecr:
+      # AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          dockerfile: "infra/docker/builder/Dockerfile"
+          path: "."
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_BUILDER}
+          tag: ${VERSION}
           requires:
             - build
-      # AWS ECR www
-      - push-www-to-ecr:
+      # AWS ECR www -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          dockerfile: "infra/docker/www/Dockerfile"
+          path: "."
+          region: AWS_REGION
+          repo: ${REPOSITORY_NAME_WWW}
+          tag: ${VERSION}
           requires:
             - build
       - build:
