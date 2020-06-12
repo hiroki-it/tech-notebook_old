@@ -5,18 +5,13 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.9.0
 
-# ホスト（CircleCI）側の環境の設定
-executors:
-  setup-executor:
-    # 環境タイプの設定
-    machine: true
-    # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
-    working_directory: ~/tech-notebook
-
 # ジョブの設定
 jobs:
   push-images:
-    executor: setup-executor
+    # ホスト側環境の設定
+    machine: true
+    # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
+    working_directory: ~/tech-notebook
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -47,6 +42,7 @@ jobs:
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
   build:
+    # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
     steps:
