@@ -23,7 +23,10 @@ RUN dnf upgrade -y \
       openssl-devel \
       readline-devel \
       sqlite-devel \
-      zlib-devel
+      zlib-devel \
+  # 以降のレイヤーに影響がないようにキャッシュ削除
+  && rm -rf /var/cache/dnf/* \
+  && dnf clean all
 
 # Pyenvインストール
 RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
