@@ -12,7 +12,7 @@ jobs:
     # ホスト側環境の設定
     machine: true
     # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
-    working_directory: ~/${APP_NAME}
+    working_directory: ~/tech-notebook
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
