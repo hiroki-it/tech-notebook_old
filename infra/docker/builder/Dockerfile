@@ -23,10 +23,7 @@ RUN dnf upgrade -y \
       openssl-devel \
       readline-devel \
       sqlite-devel \
-      zlib-devel \
-  # 以降のレイヤーに影響がないようにキャッシュ削除
-  && rm -rf /var/cache/dnf/* \
-  && dnf clean all
+      zlib-devel
 
 # Pyenvインストール
 RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
@@ -40,6 +37,9 @@ ENV PYTHON_VERSION_38 "3.8.0"
 RUN pyenv install ${PYTHON_VERSION_38} \
   # バージョン切り替え
   && pyenv global ${PYTHON_VERSION_38} \
+  # 事前にdnfコマンドのキャッシュ削除
+  && rm -rf /var/cache/dnf/* \
+  && dnf clean all
   && dnf upgrade -y \
   && dnf install -y \
       # PIP
