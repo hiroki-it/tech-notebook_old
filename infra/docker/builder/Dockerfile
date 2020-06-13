@@ -39,7 +39,7 @@ RUN pyenv install ${PYTHON_VERSION_38} \
   && pyenv global ${PYTHON_VERSION_38} \
   # 事前にdnfコマンドのキャッシュ削除
   && rm -rf /var/cache/dnf/* \
-  && dnf clean all
+  && dnf clean all \
   && dnf upgrade -y \
   && dnf install -y \
       # PIP
