@@ -3,7 +3,7 @@ ARG OS_VERSION="8"
 FROM centos:${OS_VERSION}
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-RUN dnf update -y \
+RUN dnf upgrade -y \
   && dnf install -y \
       # EPELリポジトリ
       epel-release \
@@ -23,9 +23,7 @@ RUN dnf update -y \
       openssl-devel \
       readline-devel \
       sqlite-devel \
-      zlib-devel \
-  && rm -rf /var/cache/dnf/* \
-  && dnf clean all
+      zlib-devel
 
 # Pyenvインストール
 RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
@@ -39,6 +37,7 @@ ENV PYTHON_VERSION_38 "3.8.0"
 RUN pyenv install ${PYTHON_VERSION_38} \
   # バージョン切り替え
   && pyenv global ${PYTHON_VERSION_38} \
+  && dnf upgrade -y \
   && dnf install -y \
       # PIP
       python3-pip \
