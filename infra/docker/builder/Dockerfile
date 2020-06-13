@@ -33,13 +33,13 @@ ENV PATH ${PATH}:/${PYENV_ROOT}/bin
 
 # バージョン
 ENV PYTHON_VERSION_38 "3.8.0"
-# 事前にdnfコマンドのキャッシュ削除
-RUN dnf clean all \
-  && rm -rf /var/cache/dnf/ \
-  # Python
-  && pyenv install ${PYTHON_VERSION_38} \
+
+RUN pyenv install ${PYTHON_VERSION_38} \
   # Pythonバージョン切り替え
   && pyenv global ${PYTHON_VERSION_38} \
+  # 事前にdnfコマンドのキャッシュ削除
+  && dnf clean all \
+  && rm -rf /var/cache/dnf \
   && dnf upgrade -y \
   && dnf install -y \
       # PIP
