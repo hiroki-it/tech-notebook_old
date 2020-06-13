@@ -3,7 +3,7 @@ ARG OS_VERSION="8"
 FROM centos:${OS_VERSION}
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-RUN dnf update -y \
+RUN dnf upgrade -y \
   # nginxインストール
   && dnf install -y \
       epel-release \
