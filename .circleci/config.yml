@@ -87,6 +87,7 @@ workflows:
           path: '.'
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
+          create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
             - build
@@ -100,6 +101,7 @@ workflows:
           path: '.'
           region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
+          create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
             - build
