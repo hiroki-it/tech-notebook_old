@@ -81,6 +81,8 @@ workflows:
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
           account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: 'infra/docker/builder/Dockerfile'
           path: '.'
           region: AWS_REGION
@@ -92,6 +94,8 @@ workflows:
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
           account-url: AWS_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
           dockerfile: 'infra/docker/www/Dockerfile'
           path: '.'
           region: AWS_REGION
