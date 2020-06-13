@@ -83,9 +83,9 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
+          region: AWS_REGION
           dockerfile: 'infra/docker/builder/Dockerfile'
           path: '.'
-          region: AWS_REGION
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
           tag: ${CIRCLE_SHA1}
@@ -97,9 +97,9 @@ workflows:
           account-url: AWS_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
+          region: AWS_REGION
           dockerfile: 'infra/docker/www/Dockerfile'
           path: '.'
-          region: AWS_REGION
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
           tag: ${CIRCLE_SHA1}
@@ -112,6 +112,9 @@ workflows:
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
           cluster-name: '${APP_NAME}-cluster'
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          aws-region: AWS_REGION
           family: '${APP_NAME}-service'
           container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
           requires:
@@ -121,6 +124,9 @@ workflows:
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
           cluster-name: '${APP_NAME}-cluster'
+          aws-access-key-id: AWS_ACCESS_KEY
+          aws-secret-access-key: AWS_SECRET_KEY
+          aws-region: AWS_REGION
           family: '${APP_NAME}-service'
           container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
           requires:
