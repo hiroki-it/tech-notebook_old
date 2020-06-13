@@ -5,8 +5,6 @@ LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
 RUN dnf upgrade -y \
   && dnf install -y \
-      # EPELリポジトリ
-      epel-release \
       # システム全体要件
       curl \
       git \
@@ -24,8 +22,9 @@ RUN dnf upgrade -y \
       readline-devel \
       sqlite-devel \
       zlib-devel \
-  # 事前にdnfコマンドのキャッシュ削除
+  # メタデータ削除
   && dnf clean all \
+  # キャッシュ削除
   && rm -rf /var/cache/dnf
 
 # Pyenvインストール
@@ -40,7 +39,6 @@ ENV PYTHON_VERSION_38 "3.8.0"
 RUN pyenv install ${PYTHON_VERSION_38} \
   # Pythonバージョン切り替え
   && pyenv global ${PYTHON_VERSION_38} \
-  && dnf upgrade -y \
   && dnf install -y \
       # PIP
       python3-pip \
