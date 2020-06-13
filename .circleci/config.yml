@@ -113,9 +113,6 @@ workflows:
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
           cluster-name: '${APP_NAME}-cluster'
-          aws-access-key-id: ${AWS_ACCESS_KEY}
-          aws-secret-access-key: ${AWS_SECRET_KEY}
-          aws-region: ${AWS_REGION}
           family: '${APP_NAME}-service'
           container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
           requires:
