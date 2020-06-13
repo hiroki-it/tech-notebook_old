@@ -91,7 +91,7 @@ workflows:
           tag: ${CIRCLE_SHA1}
           requires:
             - build
-      # AWS ECR www -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      # AWS ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
           account-url: AWS_ACCOUNT_URL
@@ -108,13 +108,13 @@ workflows:
       - build:
           requires:
             - push-images
-      # AWS ECS builder
+      # AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
           cluster-name: '${APP_NAME}-cluster'
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: ${AWS_ACCESS_KEY}
+          aws-secret-access-key: ${AWS_SECRET_KEY}
+          aws-region: ${AWS_REGION}
           family: '${APP_NAME}-service'
           container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
           requires:
@@ -124,9 +124,9 @@ workflows:
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
           cluster-name: '${APP_NAME}-cluster'
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: ${AWS_ACCESS_KEY}
+          aws-secret-access-key: ${AWS_SECRET_KEY}
+          aws-region: ${AWS_REGION}
           family: '${APP_NAME}-service'
           container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
           requires:
