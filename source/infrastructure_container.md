@@ -106,27 +106,6 @@ $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet
 | **```ADD```**     | ・ホストOSのファイルを，コンテナの指定ディレクトリにコピー（**```COPY```と同じ**）<br>・インターネットからファイルをダウンロードし，解凍も行う．<br>・イメージのビルド時にコピーされるだけで，ビルド後のコードの変更は反映されない． |
 | **```WORKDIR```** | 絶対パスによる指定で，現在のディレクトリを変更.              |
 
-**【nginxのDockerイメージの例】**
-
-ubuntuのDockerイメージをベースとして，nginxのDockerイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
-
-```dockerfile
-# ベースのDockerイメージ（ubuntu）を，コンテナにインストール
-FROM centos:latest
-
-# ubuntu上に，nginxをインストール
-RUN yum update -y && yum install -y nginx
-
-# ホストOSの設定ファイルを，コンテナ側の指定ディレクトリにコピー
-COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
-
-# nginxをデーモン起動
-CMD ["nginx -g daemon off"]
-
-# 処理は発生しない．ポート番号80（HTTP）をドキュメンテーションとして記載
-EXPOSE 80
-```
-
 #### ・Dockerイメージのビルドを行うコマンド
 
 
@@ -164,6 +143,99 @@ $ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
 Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．
 
 ![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
+
+
+
+### Dockerfileの例
+
+#### ・NginxのDockerイメージの例
+
+ubuntuのDockerイメージをベースとして，nginxのDockerイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
+
+```dockerfile
+# ベースのDockerイメージ（ubuntu）を，コンテナにインストール
+FROM centos:latest
+
+# ubuntu上に，nginxをインストール
+RUN yum update -y && yum install -y nginx
+
+# ホストOSの設定ファイルを，コンテナ側の指定ディレクトリにコピー
+COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
+
+# nginxをデーモン起動
+CMD ["nginx -g daemon off"]
+
+# 処理は発生しない．ポート番号80（HTTP）をドキュメンテーションとして記載
+EXPOSE 80
+```
+
+#### ・静的ファイルBuilderのDockerイメージの例
+
+
+
+```dockerfile
+# ベースイメージのインストール
+ARG OS_VERSION="8"
+FROM centos:${OS_VERSION}
+LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
+
+RUN dnf upgrade -y \
+  && dnf install -y \
+      # システム全体要件
+      curl \
+      git \
+      langpacks-ja \
+      make \
+      unzip \
+      vim \
+      # Pyenv要件
+      bzip2 \
+      bzip2-devel \
+      gcc \
+      gcc-c++ \
+      libffi-devel \
+      openssl-devel \
+      readline-devel \
+      sqlite-devel \
+      zlib-devel \
+  # メタデータ削除
+  && dnf clean all \
+  # キャッシュ削除
+  && rm -rf /var/cache/dnf
+
+# Pyenvインストール
+RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
+# 環境変数PATHの設定
+ENV PYENV_ROOT /.pyenv
+ENV PATH ${PATH}:/${PYENV_ROOT}/bin
+
+# バージョン
+ENV PYTHON_VERSION_38 "3.8.0"
+
+RUN pyenv install ${PYTHON_VERSION_38} \
+  # Pythonバージョン切り替え
+  && pyenv global ${PYTHON_VERSION_38} \
+  && dnf install -y \
+      # PIP
+      python3-pip \
+  && pip3 install \
+      # NOTE: sphinx-buildが認識されない問題への対処
+      sphinx --upgrade --ignore-installed six \
+      # テーマ
+      sphinx_rtd_theme \
+      # 拡張機能
+      sphinx-autobuild \
+      recommonmark \
+      sphinx_markdown_tables \
+      sphinxcontrib-sqltable \
+      sphinx_fontawesome
+
+WORKDIR "/var/www/tech-notebook"
+
+CMD ["/bin/bash"]
+```
+
+
 
 
 

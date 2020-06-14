@@ -77,7 +77,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 #### ・Route53とは
 
-クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とクラウドWebサーバのグローバルIPアドレスをマッピングしている．
+クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とEC2のグローバルIPアドレスをマッピングしている．
 
 ![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Route53の仕組み.png)
 
@@ -103,7 +103,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 1. クライアントPCは，レスポンスされたIPv4アドレスを基に，Webページを，リバースProxyサーバにリクエスト．
 2. リバースProxyサーバは，Webページを，Webサーバに代理リクエスト．
-3. クラウドWebサーバは，Webページを，リバースProxyサーバにレスポンス．
+3. EC2は，Webページを，リバースProxyサーバにレスポンス．
 4. リバースProxyサーバは，Webページを，クライアントPCに代理レスポンス．
 
 
@@ -252,7 +252,7 @@ AWSの使用上，ATS証明書を設置できないサービスに対しては�
 
 #### ・VPCとは
 
-クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってkクラウドWebサーバを立ち上げることによって，クラウドサーバをデュアル化することできる．
+クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってEC2を立ち上げることによって，クラウドサーバをデュアル化することできる．
 
 ![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCが提供できるネットワークの範囲.png)
 
@@ -300,7 +300,7 @@ ALBを使用する代わりに，NginxやNginxPlusをEC2にデプロイし，リ
 
 #### ・Availability Zone
 
-Regionは，さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにクラウドWebサーバを構築できる．
+Regionは，さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにEC2を構築できる．
 
 
 
@@ -314,11 +314,11 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 #### ・Internet Gatewayとは
 
-グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT）の機能を持つ．一つのPublic IPに対して，一つのクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAT（静的NAT）を参照せよ．
+グローバルネットワークとプライベートネットワーク間（ここではVPC）におけるNAT（静的NAT）の機能を持つ．一つのPublic IPに対して，一つのEC2のPrivate IPを紐づけられる．詳しくは，NAT（静的NAT）を参照せよ．
 
 #### ・NAT Gatewayとは
 
-NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のクラウドWebサーバのPrivate IPを紐づけられる．詳しくは，NAPT（動的NAT）を参照せよ．
+NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のEC2のPrivate IPを紐づけられる．Public subnetに置き，Private SubnetのEC2からのレスポンスを受け付ける．詳しくは，NAPT（動的NAT）を参照せよ．
 
 ![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/InternetGatewayとNATGateway.png)
 
@@ -331,11 +331,11 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 #### ・Public subnetとは
 
-非武装地帯に相当し，クラウドWebサーバが構築される．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，
+非武装地帯に相当する．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，
 
 #### ・Private subnetとは
 
-内部ネットワークに相当し，Amazon Aurora（クラウドデータベース）などが構築される．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
+内部ネットワークに相当する．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
 
 ![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
 
@@ -386,8 +386,38 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 |                        | Aurora | RDS  | DynamoDB | ElasticCache |
 | :--------------------: | :----: | :--: | :------: | :----------: |
 | **データベースの種類** |  RDB   | RDB  |  NoSQL   |              |
-|                        |        |      |          |              |
-|                        |        |      |          |              |
+
+
+
+## 02-03. Fargateを用いたプライベートネットワーク構成
+
+### クラウドデザイン例
+
+![Fargateを用いたクラウドデザインの一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Fargateを用いたクラウドデザインの一例.png)
+
+
+
+### ECS
+
+#### ・Fargate
+
+
+
+#### ・クラスター
+
+タスクとサービスをグルーピングしたもの．
+
+![ECSクラスター](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ECSクラスター.png)
+
+#### ・タスクとタスク定義
+
+タスク（コンテナの集合）を，タスク定義（```json```形式ファイル）に基づいて，構築する．
+
+![タスクとタスク定義](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/タスクとタスク定義.png)
+
+### ECR
+
+#### ・タグの変性／不変性
 
 
 
