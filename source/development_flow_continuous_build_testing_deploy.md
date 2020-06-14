@@ -61,6 +61,11 @@ executors:
     machine: true
     # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
     working_directory: ~/tech-notebook
+
+jobs:
+   push-images:
+     # Executorsで定義した処理を実行
+     executors: setup-executor
 ```
 
 また，```Job```において，特定のオプション（例```aws-ecr/build-and-push-image```）を宣言し．その機能を使える．
@@ -72,14 +77,21 @@ executors:
       - checkout
       # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/builder/Dockerfile"  # -f に相当
-          path: "." # PATHに相当
-          region: AWS_REGION
+          name: build-and-push-image-builder
+          dockerfile: 'infra/docker/builder/Dockerfile'  # -f に相当
+          path: '.' # PATHに相当
           repo: ${REPOSITORY_NAME_BUILDER}
           tag: ${VERSION}
+```
+
+以下のAWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，ここでせってしなくても，自動で補完してくれる．
+
+```yaml
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_KEY_ID
+          region: AWS_REGION
 ```
 
 #### ・Jobs
@@ -90,8 +102,10 @@ executors:
 # ジョブの設定
 jobs:
   push-images:
-    # 部品化したexecutorを使用
-    executor: setup-executor
+    # ホスト側環境の設定
+    machine: true
+    # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
+    working_directory: ~/tech-notebook
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -120,38 +134,9 @@ jobs:
           name: Push www
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
-  
-  push-builder-to-ecr:
-    executor: setup-executor
-    steps:
-      - checkout
-      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/builder/Dockerfile"
-          path: "."
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_BUILDER}
-          tag: ${VERSION}
-  
-  push-www-to-ecr:
-    executor: setup-executor
-    steps:
-      - checkout
-      # -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
-          dockerfile: "infra/docker/www/Dockerfile"
-          path: "."
-          region: AWS_REGION
-          repo: ${REPOSITORY_NAME_WWW}
-          tag: ${VERSION}
-    
+
   build:
+    # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
     steps:

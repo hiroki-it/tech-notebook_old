@@ -27,19 +27,19 @@ main.tf
 terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．
 
 ```bash
-$ terraform import -var-file=config.tfvars {リソース}.{リソース名}
+$ terraform import -var-file=config.tfvars {リソース}.{リソース名} {AWS上リソース名}
 ```
 
 モジュール化されている場合，指定の方法が異なる．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.{モジュール名}.{リソース}.{リソース名}
+$ terraform import -var-file=config.tfvars module.{モジュール名}.{リソース}.{リソース名} {AWS上リソース名}
 ```
 
 例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebook_www
+$ terraform import -var-file=config.tfvars　module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebookwww
 ```
 
 もし```import```を行わないと，すでにクラウド上にリソースが存在しているためにリソースを構築できない，というエラーになる．
@@ -174,7 +174,7 @@ r53_record_type     = "A"                  // レコードタイプ
 #==============
 # EC2 Instance
 #==============
-instance_app_name = "example-app"  // アプリケーション名
+app_name = "example-app"  // アプリケーション名
 
 #==============
 # Key Pair
@@ -194,6 +194,9 @@ public_key_path = "~/.ssh/aws/aws_key.pub"
 **【実装例】**
 
 ```tf
+#=============
+# Input Value
+#=============
 // AWS認証情報
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
@@ -218,8 +221,8 @@ variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
 variable "r53_record_type" {}
 
-// EC2 Instance
-variable "instance_app_name" {}
+// ECS，EC2 Instance
+variable "app_name" {}
 
 // Key Pair
 variable "key_name" {}
@@ -240,7 +243,7 @@ provider "aws" {
 
 #### ・モジュールの読み込み
 
-モジュールを読み込み，変数を渡す．
+モジュールを読み込み，変数を渡す．各モジュールの記述例を以下に示す．
 
 **【実装例】**
 
@@ -258,9 +261,10 @@ module "vpc_module" {
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
   igw_cidr_block              = var.igw_cidr_block
-  instance_app_name           = var.instance_app_name
+  app_name           = var.app_name
 }
-
+```
+```tf
 #================
 # Security Gruop
 #================
@@ -274,9 +278,10 @@ module "security_group_module" {
 
   sg_inbound_cidr_block  = var.sg_inbound_cidr_block
   sg_outbound_cidr_block = var.sg_outbound_cidr_block
-  instance_app_name      = var.instance_app_name
+  app_name      = var.app_name
 }
-
+```
+```tf
 #=============
 # ALB
 #=============
@@ -290,10 +295,11 @@ module "alb_module" {
   subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
-  
-  instance_app_name = var.instance_app_name
-}
 
+  app_name = var.app_name
+}
+```
+```tf
 #=============
 # Route53
 #=============
@@ -310,14 +316,16 @@ module "route53_module" {
   r53_record_set_name = var.r53_record_set_name
   r53_record_type     = var.r53_record_type
 }
-
+```
+```tf
 #==============
 # AMI
 #==============
 module "ami_module" {
   source = "../modules/ami"
 }
-
+```
+```tf
 #==============
 # ECR
 #==============
@@ -325,8 +333,20 @@ module "ecr_module" {
 
   source = "../modules/ecr"
 
-  instance_app_name = var.instance_app_name
+  app_name = var.app_name
 }
+```
+```tf
+#==============
+# ECS
+#==============
+module "ecs_module" {
+  source = "../modules/ecs"
+
+  alb_target_group_arn = module.alb_module.alb_target_group_arn
+  app_name = var.app_name
+}
+
 ```
 
 #### ・リソース構築
@@ -408,7 +428,7 @@ variable "instance_app_name" {}
 
 #### ・リソース構築
 
-```resource```によって，クラウド上に構築するリソースを定義できる．
+```resource```によって，クラウド上に構築するリソースを定義できる．各リソースの記述例を以下に示す．
 
 **【実装例】**
 
@@ -422,7 +442,8 @@ resource "aws_vpc" "vpc" {
     Name = "${var.instance_app_name}-vpc"
   }
 }
-
+```
+```tf
 #=============
 # Subnet
 #=============
@@ -434,7 +455,6 @@ resource "aws_subnet" "subnet_public_1a" {
     Name = "${var.instance_app_name}-public-subnet-1a"
   }
 }
-
 resource "aws_subnet" "subnet_public_1c" {
   vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
   cidr_block        = var.subnet_public_1c_cidr_block
@@ -443,7 +463,8 @@ resource "aws_subnet" "subnet_public_1c" {
     Name = "${var.instance_app_name}-public-subnet-1c"
   }
 }
-
+```
+```tf
 #=================
 # Internet Gateway
 #=================
@@ -453,7 +474,8 @@ resource "aws_internet_gateway" "internet_gateway" {
     Name = "${var.instance_app_name}-internet-gateway"
   }
 }
-
+```
+```tf
 #=============
 # Route Table
 #=============
@@ -467,7 +489,8 @@ resource "aws_route_table" "route_table_public" {
     Name = "${var.instance_app_name}-public-route-table"
   }
 }
-
+```
+```tf
 #==============================
 # Subnet と Route Table の紐付け
 #==============================
@@ -551,4 +574,3 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 ```
-
