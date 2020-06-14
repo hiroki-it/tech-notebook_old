@@ -103,8 +103,8 @@ workflows:
       # AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
-          cluster-name: '${APP_NAME}-cluster'
-          family: '${APP_NAME}-service'
+          cluster-name: '${APP_NAME}-ecs-cluster'
+          family: '${APP_NAME}-ecs-service'
           container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
           requires:
             - build-and-push-image-builder
@@ -112,17 +112,17 @@ workflows:
       # AWS ECS www
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
-          cluster-name: '${APP_NAME}-cluster'
-          family: '${APP_NAME}-service'
+          cluster-name: '${APP_NAME}-ecs-cluster'
+          family: '${APP_NAME}-ecs-service'
           container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
       - aws-ecs/run-task:
-          cluster: '${APP_NAME}-cluster'
+          cluster: '${APP_NAME}-ecs-cluster'
           awsvpc: true
           launch-type: FARGATE
-          task-definition: '${APP_NAME}-task-definition'
+          task-definition: '${APP_NAME}-ecs-task-definition'
           requires:
             - deploy-service-update-builder
             - deploy-service-update-www
