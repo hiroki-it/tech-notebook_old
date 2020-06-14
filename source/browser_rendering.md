@@ -119,7 +119,7 @@ globalNum = globalNum * 10;
 
 <script>
 document.write("<p>結果は" + globalNum + "です</p>");
-var hoge = true；
+var hoge = true;
 </script>
 
 <script src="sample.js"></script>
@@ -278,12 +278,13 @@ JavaScriptやHTMLの更新にブラウザが追いついていない場合に，
 
 #### ・Pre-Loadingとは
 
-指定したファイルのDownloading処理の優先順位を上げる方法．優先度の高い分割リソースは，次のParse処理，Scripting処理も行われる．そのため，JSファイルのScripting処理が，以降のimageファイルのDownloading処理よりも早くに行われることがある．
+Downloading処理の優先順位を上げるように宣言する方法．優先度の高い分割リソースは，次のParse処理，Scripting処理も行われる．そのため，JSファイルのScripting処理が，以降のimageファイルのDownloading処理よりも早くに行われることがある．
 
 ```html
 <head>
   <meta charset="utf-8">
   <title>Title</title>
+  <!-- preloadしたいものを宣言 -->
   <link rel="preload" href="style.css" as="style">
   <link rel="preload" href="main.js" as="script">
   <link rel="stylesheet" href="style.css">
