@@ -11,3 +11,4 @@ production/config.tfvars
 production/terraform.tfstate
 production/terraform.tfstate.backup
 production/.terraform.tfstate.lock.info
+production/task_definition.json
