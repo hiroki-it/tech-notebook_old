@@ -54,13 +54,13 @@
 
   少数対少数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報は必要ない．
 
-  ![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/回線交換方式.png)
+![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/回線交換方式.png)
 
 #### ・パケット交換方式
 
   通信するデータをパケット化する．多数対多数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報が必要になる．
 
-  ![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケット交換方式.png)
+![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケット交換方式.png)
 
 
 
