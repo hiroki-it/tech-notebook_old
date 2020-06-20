@@ -1,4 +1,4 @@
-.. tech-notebook documentation master file, created by
+infrastruct.. tech-notebook documentation master file, created by
    sphinx-quickstart on Thu Feb 27 02:57:48 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -29,22 +29,21 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: PHP ロジック
 
-   validation_logic_backend.md
-   iteration_logic_backend.md
-   main_algorithm_logic.md
+   backend_validation_logic.md
+   backend_iteration_logic.md
 
 .. toctree::
    :maxdepth: 1
    :caption: PHP restful-api
 
-   api_restful.md
+   backend_api_restful.md
 
 .. toctree::
    :maxdepth: 1
    :caption: PHP ライブラリ／フレームワーク
 
-   library_backend.md
-   framework_symfony.md
+   backend_library.md
+   backend_framework_symfony.md
 
 .. toctree::
    :maxdepth: 1
@@ -55,16 +54,21 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
+   :caption: ブラウザ
+
+   frontend_browser_rendering.md
+
+.. toctree::
+   :maxdepth: 1
    :caption: JS オブジェクト指向
 
    object_oriented_based_prototype.md
-   browser_rendering.md
 
 .. toctree::
    :maxdepth: 1
    :caption: JS ロジック
 
-   validation_logic_frontend.md
+   frontend_validation_logic.md
 
 .. toctree::
    :maxdepth: 1
@@ -83,18 +87,28 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: データベース
 
-   database_operation.md
+   backend_database_operation.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ネットワーク／セキュリティ
+
+   infrastructure_network_internet.md
+   infrastructure_network_malware_and_cyber_attacks.md
+   infrastructure_network_encryption_technology.md
 
 .. toctree::
    :maxdepth: 1
    :caption: インフラストラクチャ
 
    infrastructure_as_code.md
-   infrastructure_server.md
+   infrastructure_nginx.md
    infrastructure_virtualization_technology_comparison.md
    infrastructure_virtual_server.md
    infrastructure_container.md
    infrastructure_cloud_computing.md
+   infrastructure_cloud_computing_aws.md
+   infrastructure_cloud_computing_gcp.md
    infrastructure_terraform.md
 
 .. toctree::
@@ -103,15 +117,13 @@ Hiroki tech-notebook ドキュメントサイト
 
    infrastructure_software.md
    infrastructure_machine_language_and_radix.md
-   infrastructure_hardware.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: ネットワーク／セキュリティ
+   :caption: ハードウェア
 
-   internet_structure.md
-   internet_malware_and_cyber_attacks.md
-   internet_encryption_technology.md
+   hardware.md
+   hardware_embedded_system.md
 
 .. toctree::
    :maxdepth: 1
@@ -129,12 +141,12 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: r言語
+   :caption: アルゴリズム
 
-   statistic_analysis.md
+   algorithm_logic.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: 組み込み機器
+   :caption: r言語
 
-   embedded_system.md
+   statistic_analysis.md
