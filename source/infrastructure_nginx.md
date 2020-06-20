@@ -1,14 +1,14 @@
-# Webシステムにおけるサーバの実現方法
+# Nginx
 
-## 01. Webサーバ
+### 01. WebサーバとしてのNginx
 
-### Nginx
+#### ・Nginxの仕組み
 
-#### ・WebサーバとしてのNginxとは
+Webサーバのミドルウェアとして機能する．
 
 ![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
 
-Webサーバのミドルウェアとして機能する．
+#### ・実装方法
 
 **【実装例】**
 
@@ -93,6 +93,6 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg``` |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
-#### ・リバースProxyサーバとしてのNginx
+### 02. リバースProxyサーバとしてのNginx
 
 ネットワークのノートを参照せよ．

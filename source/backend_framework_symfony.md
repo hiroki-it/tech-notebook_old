@@ -1,6 +1,61 @@
 # Symfonyフレームワーク
 
-## 01. 特に汎用的なコンポーネント
+## 01. Symfonyのディレクトリ構成
+
+```
+Symfony
+│ 
+├── config　#設定ファイル（カーネルのためのルート定義ファイル等）
+│
+├── bin　#コマンドラインツール
+│   ├── console #bin/consoleコマンドの実行ファイル
+│   └── symfony_requirements
+│
+├── public    
+|   ├── index.php #本番環境で、カーネルとして動く
+|   └── index_dev.php #開発環境で、カーネルとして動く
+│
+├── src　#主要なPHPファイル
+│   ├── AppBundle　(a) #アプリケーションのソースコード
+│   │  ├── Controller　#UserCase層
+│   │  ├── Entity #エンティティ　⇒　Domain層
+│   │  ├── Repository #リポジトリ ⇒ Infrastructure層
+│   │  ├── Form #フォーム
+│   │  └── Resources
+│   │       └── views #画面テンプレート（※本書では扱わない） 
+│   │           
+│   └── その他のBundle #汎用的なライブラリのソースコード（※本書では扱わない）
+|
+├── templates　#UserInterface層
+│   
+├── test #自動テスト（Unit tests等）
+│  
+├── var #自動生成されるファイル
+│   ├── cache #キャッシュファイル
+│   ├── logs #ログファイル
+│   └── sessions
+│
+├── vendor (c)  #外部ライブラリ
+│   ├── doctrine #ライブラリ
+│   ├── league #ライブラリ
+│   ├── sensio
+│   ├── swiftmailer #ライブラリ
+│   ├── symfonyコンポーネント #コンポーネント 
+│   └── twig #ライブラリ
+│
+└── asset #ブラウザコンソールに公開されるファイル（css, javascript, image等）
+    ├── admin
+    ├── bootstrap
+    ├── css
+    ├── fontawesome
+    ├── img #画像ファイル
+    ├── jquery #jquery（javascriptフレームワーク）
+    └── js #javascriptファイル
+```
+
+
+
+## 02. 特に汎用的なSymfonyコンポーネント
 
 ### Consoleコンポーネント
 
@@ -86,7 +141,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 
 
-## 02. Consoleコンポーネント
+## 03. Consoleコンポーネント
 
 ### CLI：Command Line Interface
 
@@ -164,7 +219,7 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 
 
 
-## 02-02. HttpFoundationコンポーネント
+## 03-02. HttpFoundationコンポーネント
 
 ### AppKernel
 
@@ -278,7 +333,7 @@ class ExampleController extends AbstractController
 
 
 
-## 02-03. HttpKernelコンポーネント
+## 03-03. HttpKernelコンポーネント
 
 ### HttpKernelによるリクエストとレスポンス
 
@@ -286,9 +341,7 @@ class ExampleController extends AbstractController
 
 
 
-
-
-## 02-04. Pimpleコンポーネント
+## 03-04. Pimpleコンポーネント
 
 ### Service Container
 
@@ -296,7 +349,7 @@ Symfonyから提供されるDIコンテナのこと．
 
 
 
-## 02-05. Routingコンポーネント
+## 03-05. Routingコンポーネント
 
 ### RoutingConfigurator
 
@@ -322,7 +375,7 @@ return function (RoutingConfigurator $routes) {
 
 
 
-## 02-06. Cacheコンポーネント
+## 03-06. Cacheコンポーネント
 
 ### FilesystemAdapter
 

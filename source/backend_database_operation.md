@@ -456,6 +456,23 @@ SELECT COUNT(*);
 
 
 
+### ```CASE```句
+
+ カラムAがtrueだったら，カラムBを取得する．falseであったら，カラムCを取得する．
+
+```SQL
+SELECT
+  CASE
+    WHEN t.CA = 1 THEN t.CB
+    ELSE t.CC
+  END AS name
+FROM
+  T AS t
+;
+```
+
+
+
 ### ```FROM```句
 
 #### ・```JOIN```句の種類
@@ -760,7 +777,7 @@ WHERE C != (
 // SELECT文を定義して実行．
 $sql = "SELECT * FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
-$stmt->execute()
+$stmt->execute();
 
 
 // 全てのレコードを取得
@@ -797,7 +814,7 @@ print_r($data);
 // SELECT文を定義して実行．
 $sql = "SELECT COUNT(*) FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
-$stmt->execute()
+$stmt->execute();
 
 // レコードを取得
 $data = $stmt->fetchColumn();
@@ -1038,7 +1055,7 @@ CREATE VIEW T AS
 
 ```SQL
 -- PROCEDUREを作成し，データベースへ格納しておく．
-CREATE PROCEDURE SelectContact AS　
+CREATE PROCEDURE SelectContact AS
   SELECT CustomerID, CompanyName, ContactName, Phone
   FROM Customers
 ```
