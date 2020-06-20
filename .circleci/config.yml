@@ -69,7 +69,7 @@ workflows:
   version: 2.1
   build-push:
     jobs:
-      # Docker Hub
+      # Update Docker Hub
       - push-images:
           filters:
             branches:
@@ -77,20 +77,20 @@ workflows:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_circleci_config
                 - feature/update_dockerfile
-      # AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      # Update AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
-          dockerfile: 'infra/docker/builder/Dockerfile'
+          dockerfile: infra/docker/builder/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
             - build
-      # AWS ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
+      # Update AWS ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
-          dockerfile: 'infra/docker/www/Dockerfile'
+          dockerfile: infra/docker/www/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
@@ -100,7 +100,7 @@ workflows:
       - build:
           requires:
             - push-images
-      # AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
+      # Update AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
           cluster-name: '${APP_NAME}-ecs-cluster'
@@ -109,7 +109,7 @@ workflows:
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
-      # AWS ECS www
+      # Update AWS ECS www
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
           cluster-name: '${APP_NAME}-ecs-cluster'
@@ -118,11 +118,14 @@ workflows:
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
+      # Run AWS ECS
       - aws-ecs/run-task:
           cluster: '${APP_NAME}-ecs-cluster'
           awsvpc: true
           launch-type: FARGATE
           task-definition: '${APP_NAME}-ecs-task-definition'
+          subnet-ids: $AWS_SUBNET_IDS
+          security-group-ids: $AWS_SUBNET_GROUPS
           requires:
             - deploy-service-update-builder
             - deploy-service-update-www
