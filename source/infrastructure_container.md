@@ -61,8 +61,6 @@ $ docker pull {イメージ名}
 $ docker images
 ```
 
-
-
 #### ・Dockerイメージを削除するコマンド
 
 | コマンド                                                     | 処理                                                   |
@@ -171,8 +169,6 @@ EXPOSE 80
 
 #### ・静的ファイルBuilderのDockerイメージの例
 
-
-
 ```dockerfile
 # ベースイメージのインストール
 ARG OS_VERSION="8"
@@ -234,8 +230,6 @@ WORKDIR "/var/www/tech-notebook"
 
 CMD ["/bin/bash"]
 ```
-
-
 
 
 
