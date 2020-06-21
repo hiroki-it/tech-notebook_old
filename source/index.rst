@@ -91,9 +91,14 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ネットワーク／セキュリティ
+   :caption: ネットワーク
 
    infrastructure_network_internet.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ネットワークセキュリティ
+
    infrastructure_network_malware_and_cyber_attacks.md
    infrastructure_network_encryption_technology.md
 
