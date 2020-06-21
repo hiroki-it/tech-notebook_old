@@ -6,6 +6,9 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "region" {}
 
+// App Name
+variable "app_name" {}
+
 // VPC
 variable "vpc_cidr_block" {}
 
@@ -25,9 +28,6 @@ variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
 variable "r53_record_type" {}
 
-// ECS，EC2 Instance
-variable "instance_app_name" {}
-
 // Key Pair
 variable "key_name" {}
 variable "public_key_path" {}
@@ -41,9 +41,9 @@ provider "aws" {
   region     = var.region
 }
 
-#=============
+#======
 # VPC
-#=============
+#======
 module "vpc_module" {
 
   // モジュールのResourceを参照.
@@ -54,12 +54,12 @@ module "vpc_module" {
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
   igw_cidr_block              = var.igw_cidr_block
-  instance_app_name           = var.instance_app_name
+  app_name                    = var.app_name
 }
 
-#================
+#=================
 # Security Gruop
-#================
+#=================
 module "security_group_module" {
 
   // モジュールのResourceを参照.
@@ -70,12 +70,12 @@ module "security_group_module" {
 
   sg_inbound_cidr_block  = var.sg_inbound_cidr_block
   sg_outbound_cidr_block = var.sg_outbound_cidr_block
-  instance_app_name      = var.instance_app_name
+  app_name               = var.app_name
 }
 
-#=============
+#======
 # ALB
-#=============
+#======
 module "alb_module" {
 
   // モジュールのResourceを参照.
@@ -86,13 +86,13 @@ module "alb_module" {
   subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
-  
-  instance_app_name = var.instance_app_name
+
+  app_name = var.app_name
 }
 
-#=============
+#==========
 # Route53
-#=============
+#==========
 module "route53_module" {
 
   // モジュールのResourceを参照.
@@ -107,55 +107,30 @@ module "route53_module" {
   r53_record_type     = var.r53_record_type
 }
 
-#==============
-# AMI
-#==============
-module "ami_module" {
-  source = "../modules/ami"
-}
-
-#==============
+#======
 # ECR
-#==============
+#======
 module "ecr_module" {
 
   source = "../modules/ecr"
 
-  instance_app_name = var.instance_app_name
+  app_name = var.app_name
 }
 
-#==============
-# EC2 Instance
-#==============
-resource "aws_instance" "www-1a" {
-  ami                     = module.ami_module.ami_amazon_linux_2_id
-  instance_type           = "t2.micro"
-  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
-  subnet_id               = module.vpc_module.subnet_public_1a_id
-  disable_api_termination = true
-  monitoring              = true
-  tags = {
-    Name          = "${var.instance_app_name}-www-1a"
-    Subnet-status = "public"
-  }
+#======
+# ECS
+#======
+module "ecs_module" {
+  
+  source = "../modules/ecs"
+
+  alb_target_group_arn = module.alb_module.alb_target_group_arn
+  app_name             = var.app_name
 }
 
-resource "aws_instance" "www-1c" {
-  ami                     = module.ami_module.ami_amazon_linux_2_id
-  instance_type           = "t2.micro"
-  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
-  subnet_id               = module.vpc_module.subnet_public_1c_id
-  disable_api_termination = true
-  monitoring              = true
-  tags = {
-    Name          = "${var.instance_app_name}-www-1c"
-    Subnet-status = "public"
-  }
-}
-
-#==============
+#=============
 # Public Key
-#==============
+#=============
 resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name
   public_key = file(var.public_key_path)
