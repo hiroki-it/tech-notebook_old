@@ -191,9 +191,9 @@ class FormatValidator
 ```PHP
 class Converter
 {
+    // オブジェクトを連想配列に詰め替える処理．
     public function convertToArray(XxxEntity $xxxEntity)
     {
-        // オブジェクトを連想配列に詰め替える処理．
         $xxxArray['id'] = $xxxEntity->id;
         $xxxArray['name'] = $xxxEntity->name;
         $xxxArray['email'] = $xxxEntity->email;
@@ -223,8 +223,6 @@ abstract class getDogToyEntityRepository
 
 }
 ```
-
-#### 
 
 
 
@@ -260,7 +258,7 @@ class XxxSpecification
 
 #### ・検索条件オブジェクトの生成
 
-検索条件のデータを保持するオブジェクト．ビジネスルールのValidationを行うSpecificationクラスと区別するために，Criteriaオブジェクトという名前としても用いられる．
+リクエストのパスパラメータとクエリパラメータを引数として，検索条件のオブジェクトを生成する．ビジネスルールのValidationを行うSpecificationクラスと区別するために，Criteriaオブジェクトという名前としても用いられる．
 
 **【実装例】**
 
