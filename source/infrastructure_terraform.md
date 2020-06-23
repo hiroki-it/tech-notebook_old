@@ -39,10 +39,18 @@ $ terraform import -var-file=config.tfvars module.{モジュール名}.{リソ�
 例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
 
 ```bash
-$ terraform import -var-file=config.tfvars　module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebookwww
+$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebook-www
 ```
 
 もし```import```を行わないと，すでにクラウド上にリソースが存在しているためにリソースを構築できない，というエラーになる．
+
+（エラー例1）
+
+```bash
+Error: InvalidParameterException: Creation of service was not idempotent.
+```
+
+（エラー例2）
 
 ```bash
 Error: error creating ECR repository: RepositoryAlreadyExistsException: The repository with name 'tech-notebook_www' already exists in the registry with id 'XXXXXXXXXXXX'
