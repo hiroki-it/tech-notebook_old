@@ -28,6 +28,10 @@ variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
 variable "r53_record_type" {}
 
+// ECS
+variable "ecs_task_size_cpu" {}
+variable "ecs_task_size_memory" {}
+
 // Key Pair
 variable "key_name" {}
 variable "public_key_path" {}
@@ -39,6 +43,14 @@ provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.region
+}
+
+#========
+# Roles
+#========
+module "roles_module" {
+  // モジュールのResourceを参照.
+  source = "../modules/roles"
 }
 
 #======
@@ -112,6 +124,7 @@ module "route53_module" {
 #======
 module "ecr_module" {
 
+  // モジュールのResourceを参照.
   source = "../modules/ecr"
 
   app_name = var.app_name
@@ -121,11 +134,20 @@ module "ecr_module" {
 # ECS
 #======
 module "ecs_module" {
-  
+
+  // モジュールのResourceを参照.
   source = "../modules/ecs"
 
-  alb_target_group_arn = module.alb_module.alb_target_group_arn
+  // 他のモジュールの出力値を渡す.
+  ecs_task_execution_role_arn = module.roles_module.ecs_task_execution_role_arn
+  alb_target_group_arn        = module.alb_module.alb_target_group_arn
+  subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
+  security_group_ecs_id       = module.security_group_module.security_group_ecs_id
+
   app_name             = var.app_name
+  ecs_task_size_cpu    = var.ecs_task_size_cpu
+  ecs_task_size_memory = var.ecs_task_size_memory
 }
 
 #=============
