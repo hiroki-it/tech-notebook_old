@@ -171,6 +171,20 @@ AWSの使用上，ATS証明書を設置できないサービスに対しては�
 
 
 
+### RegionとAvailability Zone
+
+#### ・Regionとは
+
+2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．
+
+![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSリージョンマップ.PNG)
+
+#### ・Availability Zone
+
+Regionは，さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．例えば，東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにEC2を構築できる．
+
+
+
 ### セキュリティグループ（＝ パケットフィルタリング型ファイアウォール）
 
 #### ・セキュリティグループとは
@@ -192,6 +206,23 @@ AWSの使用上，ATS証明書を設置できないサービスに対しては�
 クラウドプライベートネットワークとして働く．プライベートIPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってEC2を立ち上げることによって，クラウドサーバをデュアル化することできる．
 
 ![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCが提供できるネットワークの範囲.png)
+
+
+
+
+### VPC subnet
+
+クラウドプライベートネットワークにおけるセグメントとして働く．
+
+#### ・Public subnetとは
+
+非武装地帯に相当する．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，
+
+#### ・Private subnetとは
+
+内部ネットワークに相当する．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
+
+![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
 
 
 
@@ -224,20 +255,6 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 
 
-### RegionとAvailability Zone
-
-#### ・Regionとは
-
-2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．
-
-![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSリージョンマップ.PNG)
-
-#### ・Availability Zone
-
-Regionは，さらに，各データセンターは物理的に独立したAvailability Zoneというロケーションから構成されている．例えば，東京Regionには，3つのAvailability Zoneがある．AZの中に，VPC subnetを作ることができ，そこにEC2を構築できる．
-
-
-
 ### Internet Gateway，NAT Gateway
 
 
@@ -255,23 +272,6 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のEC2のPrivate IPを紐づけられる．Public subnetに置き，Private SubnetのEC2からのレスポンスを受け付ける．詳しくは，NAPT（動的NAT）を参照せよ．
 
 ![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/InternetGatewayとNATGateway.png)
-
-
-
-
-### VPC subnet
-
-クラウドプライベートネットワークにおけるセグメントとして働く．
-
-#### ・Public subnetとは
-
-非武装地帯に相当する．攻撃の影響が内部ネットワークに広がる可能性を防ぐために，外部から直接リクエストを受ける，
-
-#### ・Private subnetとは
-
-内部ネットワークに相当する．外部から直接リクエストを受けずにレスポンスを返せるように，プライベートサブネット内のNATを経由させる必要がある．
-
-![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
 
 
 
@@ -307,6 +307,8 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 
 
+
+
 ### ネットワークACL
 
 
@@ -320,6 +322,20 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 |                        | Aurora | RDS  | DynamoDB | ElasticCache |
 | :--------------------: | :----: | :--: | :------: | :----------: |
 | **データベースの種類** |  RDB   | RDB  |  NoSQL   |              |
+
+
+
+### オートスケーリング
+
+#### ・オートスケーリングとは
+
+ユーザが指定した条件で，EC2の自動水平スケーリングを行う．他のスケーリングについては，ネットワークのノートを参照．
+
+| スケールアウト      | スケールイン        |
+| ------------------- | ------------------- |
+| ・起動するEC2の個数 | ・終了するEC2の条件 |
+
+![Auto-scaling](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Auto-scaling.png)
 
 
 
@@ -354,7 +370,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 
 
-## 03. Fargateを用いたプライベートネットワーク構成
+## 03. ECSを用いたプライベートネットワーク構成
 
 ### クラウドデザイン例
 
@@ -367,6 +383,8 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 
 ### クラスター
+
+#### ・クラスターとは
 
 タスクとサービスをグルーピングしたもの．
 
@@ -382,7 +400,24 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 タスク（コンテナの集合）をどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．
 
-#### ・設定項目
+#### ・ネットワークモードとは
+
+| 項目   | 相当するDockerのネットワーク機能 |
+| ------ | -------------------------------- |
+| bridge | bridgeネットワーク               |
+| host   | hostネットワーク                 |
+| awsvpc | なし                             |
+
+#### ・タスクサイズとは
+
+| 項目         | 内容                                     |
+| ------------ | ---------------------------------------- |
+| タスクメモリ | タスク当たりのコンテナの合計メモリ使用量 |
+| タスクCPU    | タスク当たりのコンテナの合計CPU使用量    |
+
+#### ・コンテナ定義とは
+
+タスク内のコンテナ一つに対して，環境を設定する．
 
 | 項目             | 内容                                                         | 対応するdockerコマンドオプション             |
 | ---------------- | ------------------------------------------------------------ | -------------------------------------------- |
@@ -407,21 +442,19 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 タスク定義に基づいたタスクを，どのように自動的に配置するかを設定できる，タスク定義一つに対して，サービスを一つ定義する．
 
-#### ・設定項目
-
 | 項目           | 内容                                                         |
 | -------------- | ------------------------------------------------------------ |
 | タスクの数     | タスクの構築数をいくつに維持するかを設定．タスクが何らかの原因で停止した場合，空いているリソースを使用して，タスクが自動的に補填される． |
-| デプロイメント |                                                              |
+| デプロイメント | ローリングアップデートと，Blue/Greenデプロイがある．         |
 
-#### ・ローリングアップデート
+#### ・ローリングアップデートとは
 
 1. ECRのイメージを更新
 2. タスク定義の新しいリビジョンを作成．
 3. サービスを更新．
 4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
 
-#### ・CodeDeployを使用したBlue/Greenデプロイ
+#### ・CodeDeployを使用したBlue/Greenデプロイとは
 
 1. ECRのイメージを更新
 2. タスク定義の新しいリビジョンを作成．
@@ -435,3 +468,38 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 ### ECR
 
 #### ・タグの変性／不変性
+
+
+
+## 04. IAM：Identify and Access Management
+
+### ユーザ
+
+#### ・ルートユーザとは
+
+全ての権限をもったアカウントのこと．
+
+#### ・IAMユーザとは
+
+特定の権限をもったアカウントのこと．
+
+### グループ
+
+#### ・グループとは
+
+IAMユーザをグループ化したもの．グループごとにロールを付与すれば，IAMユーザのロールを管理しやすくなる．
+
+![グループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループ.png)
+
+### ロール
+
+#### ・ロールとは
+
+#### ・ロールを付与する方法
+
+まず，グループに対して，ロールを紐づける．そのグループに対して，ロールを付与したいIAMユーザを追加していく．
+
+![グループに所属するユーザにロールを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループに所属するユーザにロールを付与.png)
+
+
+
