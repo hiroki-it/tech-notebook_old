@@ -103,29 +103,29 @@ workflows:
       # Update AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
-          family: '${APP_NAME}-ecs-task-definition'
-          cluster-name: '${APP_NAME}-ecs-cluster'
-          service-name: '${APP_NAME}-ecs-service'
-          container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
+          family: "${APP_NAME}-ecs-task-definition"
+          cluster-name: "${APP_NAME}-ecs-cluster"
+          service-name: "${APP_NAME}-ecs-service"
+          container-image-name-updates: "container=builder,tag=${CIRCLE_SHA1}"
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
       # Update AWS ECS www
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
-          family: '${APP_NAME}-ecs-task-definition'
-          cluster-name: '${APP_NAME}-ecs-cluster'
-          service-name: '${APP_NAME}-ecs-service'
-          container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
+          family: "${APP_NAME}-ecs-task-definition"
+          cluster-name: "${APP_NAME}-ecs-cluster"
+          service-name: "${APP_NAME}-ecs-service"
+          container-image-name-updates: "container=www,tag=${CIRCLE_SHA1}"
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
       # Run AWS ECS
       - aws-ecs/run-task:
-          cluster: '${APP_NAME}-ecs-cluster'
+          cluster: "${APP_NAME}-ecs-cluster"
           awsvpc: true
           launch-type: FARGATE
-          task-definition: '${APP_NAME}-ecs-task-definition'
+          task-definition: "${APP_NAME}-ecs-task-definition"
           subnet-ids: $AWS_SUBNET_IDS
           security-group-ids: $AWS_SUBNET_GROUPS
           requires:
