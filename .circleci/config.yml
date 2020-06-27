@@ -103,8 +103,9 @@ workflows:
       # Update AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
-          cluster-name: '${APP_NAME}-ecs-cluster'
           family: '${APP_NAME}-ecs-task-definition'
+          cluster-name: '${APP_NAME}-ecs-cluster'
+          service-name: '${APP_NAME}-ecs-service'
           container-image-name-updates: 'container=builder,tag=${CIRCLE_SHA1}'
           requires:
             - build-and-push-image-builder
@@ -112,8 +113,9 @@ workflows:
       # Update AWS ECS www
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
-          cluster-name: '${APP_NAME}-ecs-cluster'
           family: '${APP_NAME}-ecs-task-definition'
+          cluster-name: '${APP_NAME}-ecs-cluster'
+          service-name: '${APP_NAME}-ecs-service'
           container-image-name-updates: 'container=www,tag=${CIRCLE_SHA1}'
           requires:
             - build-and-push-image-builder
