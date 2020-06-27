@@ -171,6 +171,8 @@ EXPOSE 80
 
 #### ・静的ファイルBuilderのDockerイメージの例
 
+例として，Python製ドキュメントジェネレーターSphinxのDockerfileである．
+
 ```dockerfile
 # ベースイメージのインストール
 ARG OS_VERSION="8"
