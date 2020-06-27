@@ -2,7 +2,7 @@
 
 # バックエンドのデバッグの豆知識
 
-## 01. PHP
+## 01. ```var_dump()```によるデバッグ
 
 ### ローカル環境 vs テスト環境
 
@@ -61,4 +61,81 @@ header('Content-Type: text/html; charset=UTF-8');
 ```
 
 
+
+## 02. Xdebugによるデバッグ
+
+### 導入方法
+
+#### 1. ローカルサーバへのインストール
+
+ローカルサーバで以下のコマンドを実行．
+
+```bash
+sudo pecl install xdebug-2.2.7
+```
+
+#### 2. Xdebugの設定
+
+Xdebugのあるローカルサーバから見て，PhpStromビルトインサーバを接続先と見なす．
+
+```ini
+zend_extension=/usr/lib64/php/modules/xdebug.so
+
+xdebug.default_enable=1
+# リモートデバッグの有効化．
+xdebug.remote_enable=1
+
+# DBGプロトコル
+xdebug.remote_handler=dbgp
+
+# エディタサーバのプライベートIPアドレス．
+xdebug.remote_host=10.0.2.2
+
+# エディタサーバの解放ポート．
+xdebug.remote_port=9001
+
+# 常にデバッグセッションを実行．
+xdebug.remote_autostart=1
+
+# DBGpハンドラーに渡すIDEキーを設定．
+xdebug.idekey=PhpStorm
+```
+
+#### 3. ローカルサーバを再起動
+
+```bash
+sudo service httpd restart
+```
+
+#### 4. PhpStormビルトインサーバの設定
+
+
+
+### デバッグにおける通信の仕組み
+
+#### 1. エディタサーバの構築
+
+エディタはサーバを構築し，ポート```9000```を開放する．
+
+#### 2. エディタからデバッガーエンジンへのリクエスト
+
+デバッガーエンジン（Xdebug）はポート```80```を開放する．エディタサーバはこれに対して，セッション開始のリクエストをHTTPプロトコルで送信する．
+
+#### 3. デバッガーエンジンからサーバへのリクエスト
+
+デバッガーエンジン（Xdebug）はセッションを開始し，エディタサーバのポート```9000```に対して，レスポンスを送信する．
+
+#### 4. Breakpointの設定
+
+エディタサーバは，デバッガーエンジンに対して，Breakpointを設定するリクエストを送信する．
+
+#### 5. DBGプロトコル：Debuggerプロトコルによる相互通信の確立
+
+DBGプロトコルを使用し，エディタサーバとデバッガーエンジンの間の相互通信を確立する．
+
+#### 6. 相互通信の実行
+
+エディタは，デバッガーエンジンに対してソースコードを送信する．デバッガーエンジンは，Breakpointまでの各変数の中身を解析し，エディタサーバに返信する．
+
+![Xdebug仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Xdebug仕組み.png)
 
