@@ -134,9 +134,7 @@ module.vpc_module.aws_vpc.vpc
 
 
 
-## 02. リソースの構築に必要なファイル
-
-### 変数定義ファイル
+## 02. 値定義ファイル
 
 実行ファイルに入力したい値を定義する．
 
@@ -193,9 +191,9 @@ public_key_path = "~/.ssh/aws/aws_key.pub"
 
 
 
-### rootモジュールファイル
+## 02-02. rootモジュールファイル
 
-#### ・変数定義ファイルからの変数格納
+### 変数の定義
 
 変数定義ファイルから，ファイル内の変数に値を格納する．
 
@@ -237,7 +235,7 @@ variable "key_name" {}
 variable "public_key_path" {}
 ```
 
-#### ・AWSの認証
+### AWSの認証
 
 **【実装例】**
 
@@ -249,9 +247,11 @@ provider "aws" {
 }
 ```
 
-#### ・モジュールの読み込み
+### モジュールの読み込み
 
 モジュールを読み込み，変数を渡す．各モジュールの記述例を以下に示す．
+
+#### ・VPCの場合
 
 **【実装例】**
 
@@ -272,6 +272,11 @@ module "vpc_module" {
   app_name           = var.app_name
 }
 ```
+
+#### ・Securitygroupの場合
+
+**【実装例】**
+
 ```tf
 #================
 # Security Gruop
@@ -289,24 +294,11 @@ module "security_group_module" {
   app_name      = var.app_name
 }
 ```
-```tf
-#=============
-# ALB
-#=============
-module "alb_module" {
 
-  // モジュールのResourceを参照.
-  source = "../modules/alb"
+#### ・Route53の場合
 
-  // 他のモジュールの出力値を渡す.
-  vpc_id                = module.vpc_module.vpc_id
-  subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
-  subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
-  security_group_alb_id = module.security_group_module.security_group_alb_id
+**【実装例】**
 
-  app_name = var.app_name
-}
-```
 ```tf
 #=============
 # Route53
@@ -325,6 +317,36 @@ module "route53_module" {
   r53_record_type     = var.r53_record_type
 }
 ```
+
+
+#### ・ALBの場合
+
+**【実装例】**
+
+
+```tf
+#=============
+# ALB
+#=============
+module "alb_module" {
+
+  // モジュールのResourceを参照.
+  source = "../modules/alb"
+
+  // 他のモジュールの出力値を渡す.
+  vpc_id                = module.vpc_module.vpc_id
+  subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
+  security_group_alb_id = module.security_group_module.security_group_alb_id
+
+  app_name = var.app_name
+}
+```
+
+#### ・AMIの場合
+
+**【実装例】**
+
 ```tf
 #==============
 # AMI
@@ -333,6 +355,11 @@ module "ami_module" {
   source = "../modules/ami"
 }
 ```
+
+#### ・ECRの場合
+
+**【実装例】**
+
 ```tf
 #==============
 # ECR
@@ -344,20 +371,36 @@ module "ecr_module" {
   app_name = var.app_name
 }
 ```
+
+#### ・ECSの場合
+
+**【実装例】**
+
 ```tf
-#==============
+#======
 # ECS
-#==============
+#======
 module "ecs_module" {
+
+  // モジュールのResourceを参照.
   source = "../modules/ecs"
 
-  alb_target_group_arn = module.alb_module.alb_target_group_arn
-  app_name = var.app_name
-}
+  // 他のモジュールの出力値を渡す.
+  ecs_task_execution_role_arn = module.roles_module.ecs_task_execution_role_arn
+  alb_target_group_arn        = module.alb_module.alb_target_group_arn
+  subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
+  security_group_ecs_id       = module.security_group_module.security_group_ecs_id
 
+  app_name             = var.app_name
+  ecs_task_size_cpu    = var.ecs_task_size_cpu
+  ecs_task_size_memory = var.ecs_task_size_memory
+}
 ```
 
-#### ・リソース構築
+### リソース構築
+
+#### ・EC2の場合
 
 **【実装例】**
 
@@ -392,7 +435,7 @@ resource "aws_instance" "www-1c" {
 }
 ```
 
-#### ・公開鍵の登録
+#### ・公開鍵の場合
 
 **【実装例】**
 
@@ -408,35 +451,29 @@ resource "aws_key_pair" "key_pair" {
 
 
 
-### モジュールファイル
+## 02-03. モジュールファイル
 
-#### ・rootモジュールファイルからの変数入力
+### rootモジュールファイルからの変数入力
 
 ```variable```によって，rootモジュールファイルから変数を入力できる．
 
 **【実装例】**
 
 ```tf
-// AWS認証情報
-variable "region" {}
-
-// VPC
-variable "vpc_cidr_block" {}
-
-// Subnet
-variable "subnet_public_1a_cidr_block" {}
-variable "subnet_public_1c_cidr_block" {}
-
-// Internet Gateway
-variable "igw_cidr_block" {}
-
-// EC2 Instance
-variable "instance_app_name" {}
+#=============
+# Input Value
+#=============
+// App Name
+variable "app_name" {}
 ```
 
-#### ・リソース構築
+
+
+### リソース構築
 
 ```resource```によって，クラウド上に構築するリソースを定義できる．各リソースの記述例を以下に示す．
+
+#### ・VPCの場合
 
 **【実装例】**
 
@@ -451,6 +488,11 @@ resource "aws_vpc" "vpc" {
   }
 }
 ```
+
+#### ・Subnetの場合
+
+**【実装例】**
+
 ```tf
 #=============
 # Subnet
@@ -472,6 +514,10 @@ resource "aws_subnet" "subnet_public_1c" {
   }
 }
 ```
+#### ・Internet Gatewayの場合
+
+**【実装例】**
+
 ```tf
 #=================
 # Internet Gateway
@@ -483,6 +529,11 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 ```
+
+#### ・Route Tableの場合
+
+**【実装例】**
+
 ```tf
 #=============
 # Route Table
@@ -513,22 +564,167 @@ resource "aws_route_table_association" "route_table_association_public_1c" {
 }
 ```
 
+#### ・Route53の場合
+
+```tf
+#==========
+# Route53
+#==========
+resource "aws_route53_zone" "r53_zone" {
+  name = var.r53_domain_name
+}
+
+resource "aws_route53_record" "r53_record" {
+  zone_id = aws_route53_zone.r53_zone.id
+  name    = var.r53_record_set_name
+  type    = var.r53_record_type
+  alias {
+    name                   = var.r53_alb_dns_name
+    zone_id                = var.r53_alb_zone_id
+    evaluate_target_health = false
+  }
+}
+```
+
+#### ・ALBの場合
+
+```tf
+#======
+# ALB
+#======
+resource "aws_alb" "alb" {
+  name               = "${var.app_name}-alb"
+  load_balancer_type = "application"
+  security_groups    = [var.security_group_alb_id]
+  subnets            = [var.subnet_public_1a_id, var.subnet_public_1c_id]
+}
+
+#===============
+# Target Group
+#===============
+resource "aws_alb_target_group" "alb_target_group" {
+  name        = "${var.app_name}-alb-target-group"
+  port        = 80 // ALBからのルーティング時の解放ポート
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+  health_check {
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 5
+    interval            = 10
+  }
+}
+
+#===========
+# Listener
+#===========
+resource "aws_lb_listener" "lb_listener" {
+  load_balancer_arn = aws_alb.alb.arn
+  port              = 80 // ALBの受信時の解放ポート
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.alb_target_group.arn
+  }
+}
+```
+
+#### ・ECRの場合
+
+```
+#======
+# ECR
+#======
+resource "aws_ecr_repository" "ecr_repository_builder" {
+  name                 = "${var.app_name}-builder"
+  image_tag_mutability = "IMMUTABLE"
+}
+
+resource "aws_ecr_repository" "ecr_repository_www" {
+  name                 = "${var.app_name}-www"
+  image_tag_mutability = "IMMUTABLE"
+}
+```
+
+#### ・ECSの場合
+
+```tf
+#=============
+# ECS Cluster
+#=============
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = "${var.app_name}-ecs-cluster"
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+}
+
+#======================
+# ECS Task Definition
+#======================
+resource "aws_ecs_task_definition" "ecs_task_definition" {
+
+  // ファミリーにリビジョン番号がついてタスク定義名．
+  family                   = "${var.app_name}-ecs-task-definition"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = var.ecs_task_execution_role_arn
+  // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定．
+  cpu                      = var.ecs_task_size_cpu
+  memory                   = var.ecs_task_size_memory
+  // 引数パスはルートモジュール基準．
+  container_definitions    = file("container_definition.json")
+}
+
+#==============
+# ECS Service
+#==============
+resource "aws_ecs_service" "ecs_service" {
+  name            = "${var.app_name}-ecs-service"
+  cluster         = aws_ecs_cluster.ecs_cluster.id
+  task_definition = aws_ecs_task_definition.ecs_task_definition.arn
+  launch_type     = "FARGATE"
+  desired_count   = "1"
+  platform_version = "LATEST"
+
+  load_balancer {
+    target_group_arn = var.alb_target_group_arn
+    container_name   = "www"
+    container_port   = 80
+  }
+  
+  network_configuration {
+    subnets = [var.subnet_public_1a_id, var.subnet_public_1c_id]
+    security_groups = [var.security_group_ecs_id]
+  }
+}
+```
+
 
 
 ### モジュールから値出力ファイル
 
 モジュールで構築されたリソースがもつ特定の値を出力する．
 
+#### ・VPCの場合
+
 **【実装例】**
 
-例えば，VPCやSubnetのIDは，他のリソースに紐づけるために，値を出力する必要がある．
+例えば，VPCやSubnetのIDは，他のリソースに紐づけるために，値を出力する必要がある．
 
 ```tf
 // VPC
 output "vpc_id" {
   value = aws_vpc.vpc.id
 }
+```
 
+#### ・Subnetの場合
+
+**【実装例】**
+
+```tf
 // Subnet
 output "subnet_public_1a_id" {
   value = aws_subnet.subnet_public_1a.id
@@ -540,9 +736,28 @@ output "subnet_public_1c_id" {
 
 
 
+#### ・ALBの場合
+
+```tf
+// ALB
+output "alb_dns_name" {
+  value = aws_alb.alb.dns_name
+}
+output "alb_zone_id" {
+  value = aws_alb.alb.zone_id
+}
+output "alb_target_group_arn" {
+  value = aws_alb_target_group.alb_target_group.arn
+}
+```
+
+
+
 ### 外部サービスからの値の取得
 
 ```data```によって，外部サービスから値を取得する．
+
+#### ・AMIの場合
 
 **【実装例】**
 
@@ -582,3 +797,10 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 ```
+
+
+
+## 02-04. 外部ファイルとしての切り出し
+
+### IAMポリシーのJSONファイル
+
