@@ -13,13 +13,9 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www/tech-notebook
-      - ./logs/www:/var/log/nginx
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
-    depends_on:
-      - builder
-
   builder:
     container_name: builder
     build:
@@ -29,7 +25,8 @@ services:
     tty: true
     volumes:
       - ./:/var/www/tech-notebook
-      - ./logs/builder:/tmp
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
+    depends_on:
+      - www
