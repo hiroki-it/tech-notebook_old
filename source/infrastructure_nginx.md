@@ -25,11 +25,31 @@ events {
 }
 
 http {
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
+    #=====================================
+    # 情報の非公開
+    #=====================================
+    # Nginxバージョンの非表示
+    server_tokens off;
+
+    #=====================================
+    # ログ
+    #=====================================
+    log_format        main '$remote_addr - $remote_user [$time_local] "$request" '
+                           '$status $body_bytes_sent "$http_referer" '
+                           '"$http_user_agent" "$http_x_forwarded_for"'; 
+    access_log        /var/log/nginx/access.log main;
+    error_log         /var/log/nginx/error.log warn;
+    
+    #=====================================
+    # その他
+    #===================================== 
     # リクエストのタウムアウト秒数
     keepalive_timeout 65;
+    include           /etc/nginx/mime.types;
     
+    #=====================================
+    # wwwサーバ
+    #=====================================
     # リクエストメッセージを受信するサーバ
     server {
         # リクエスト受信ために開放するポート番号
@@ -37,12 +57,12 @@ http {
         # ドメイン名
         server_name  hiroki-it.work;
         # Rootとするディレクトリ
-        root         /var/www/source;
+        root         /var/www/tech-notebook/build/html;
         # エントリーポイント
-        index        index.html index.htm;
-        # リクエストメッセージの処理条件
+        index        index.html;
+        # ページが存在しない場合，index.htmlにレスポンス．index.htmlもなければ，404レスポンス．
         location / {
-        
+            try_files $uri $uri/ =404;
         }
     }
 }
