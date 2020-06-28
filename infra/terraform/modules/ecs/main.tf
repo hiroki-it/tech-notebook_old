@@ -51,11 +51,11 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 # ECS Service
 #==============
 resource "aws_ecs_service" "ecs_service" {
-  name            = "${var.app_name}-ecs-service"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task_definition.arn
-  launch_type     = "FARGATE"
-  desired_count   = "1"
+  name             = "${var.app_name}-ecs-service"
+  cluster          = aws_ecs_cluster.ecs_cluster.id
+  task_definition  = aws_ecs_task_definition.ecs_task_definition.arn
+  launch_type      = "FARGATE"
+  desired_count    = "1"
   platform_version = "LATEST"
 
   load_balancer {
@@ -63,9 +63,9 @@ resource "aws_ecs_service" "ecs_service" {
     container_name   = "www"
     container_port   = 80
   }
-  
+
   network_configuration {
-    subnets = [var.subnet_public_1a_id, var.subnet_public_1c_id]
+    subnets         = [var.subnet_public_1a_id, var.subnet_public_1c_id]
     security_groups = [var.security_group_ecs_id]
   }
 }
