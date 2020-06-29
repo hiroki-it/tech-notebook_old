@@ -12,6 +12,7 @@ RUN dnf upgrade -y \
       make \
       unzip \
       vim \
+      crontabs \
       # Pyenv要件
       bzip2 \
       bzip2-devel \
@@ -43,6 +44,8 @@ RUN pyenv install ${PYTHON_VERSION_38} \
       # PIP
       python3-pip \
   && pip3 install \
+      # 常駐プログラム
+      supervisor \
       # NOTE: sphinx-buildが認識されない問題への対処
       sphinx --upgrade --ignore-installed six \
       # テーマ
@@ -53,7 +56,10 @@ RUN pyenv install ${PYTHON_VERSION_38} \
       sphinx_markdown_tables \
       sphinxcontrib-sqltable \
       sphinx_fontawesome
+      
+COPY infra/docker/builder/cron /etc/cron.d/cron
+COPY infra/docker/builder/supervisord.conf /etc/supervisor/supervisord.conf
 
 WORKDIR "/var/www/tech-notebook"
 
-CMD ["/bin/bash"]
+CMD ["/usr/local/bin/supervisord"]
