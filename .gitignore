@@ -2,4 +2,4 @@
 # Folder
 #============
 build/
-logs/
+supervisord.pid
