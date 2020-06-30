@@ -170,15 +170,37 @@ Slackware
 
 ### サービスプログラム（ユーティリティ）の種類
 
+#### ・Linuxの場合
+
+よく使うものを記載する．
+
+| シェル系 | ファイルシステム系 | プロセス管理系 | テキスト処理系 | ネットワーク系 | その他   |
+| :------- | ------------------ | -------------- | -------------- | -------------- | -------- |
+| echo*    | cd*                | batch*         | tail*          | nslookup*      | crontab* |
+| sleep*   | ls*                | ps*            | -              | curl*          | grep*    |
+| -        | cp*                | kill*          | -              | netstat*       | -        |
+| -        | find*              | -              | -              | route*         | -        |
+| -        | mv*                | -              | -              | -              | -        |
+| -        | chmod*             | -              | -              | -              | -        |
+| -        | rm*                | -              | -              | -              | -        |
+| -        | pwd*               | -              | -              | -              | -        |
+| -        | chown*             | -              | -              | -              | -        |
+| -        | cat*               | -              | -              | -              | -        |
+
+#### ・Windowsの場合
+
+よく使うものを記載する．
+
 | システム系         | ストレージデバイス管理系 | ファイル管理系         | その他             |
 | ------------------ | ------------------------ | ---------------------- | ------------------ |
 | マネージャ         | デフラグメントツール     | ファイル圧縮プログラム | スクリーンセーバー |
-| クリップボード     |                          |                        |                    |
-| レジストリクリーナ |                          |                        |                    |
+| クリップボード     | アンインストーラー       | -                      | ファイアウォール   |
+| レジストリクリーナ | -                        | -                      | -                  |
+| アンチウイルス     | -                        | -                      | -                  |
 
 
 
-### マネージャについて
+### マネージャユーティリティ
 
 #### ・ライブラリとパッケージの大まかな違い
 
@@ -215,6 +237,89 @@ php -d memory_limit=-1 /usr/local/bin/composer update
 | phpenv                     | PHP                    |
 | pyenv                      | Python                 |
 | rbenv                      | Ruby                   |
+
+
+
+### crontabユーティリティ
+
+#### ・crontabユーティリティとは
+
+cronデーモンの動作が定義されたファイルを操作するためのユーティリティ
+
+#### ・crondとは
+
+cronデーモンを起動するためのプログラム
+
+```bash
+# フォアグラウンドプロセスとしてcronを起動
+crond -n
+```
+
+#### ・cronデーモンの種類
+
+```etc/```には，cronファイルの配置ディレクトリが用意されており，これをcrontabで制御する．
+
+| ファイル/ディレクトリ名 | 利用者   | 主な用途                                               |
+| ----------------------- | -------- | ------------------------------------------------------ |
+| /var/spool/cron/*user*  | 全ユーザ | ユーザの自動タスク設定ファイル                         |
+| /etc/crontab            | root     | 毎時、毎日、毎月、毎週の自動タスクのメイン設定ファイル |
+| /etc/cron.hourly        | root     | 毎時実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.daily         | root     | 毎日実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.monthly       | root     | 毎月実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.weekly        | root     | 毎週実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.d             | root     | 上記以外の自動タスク設定ファイルを置くディレクトリ     |
+
+**【実装例】**
+
+あらかじめ，各ディレクトリにcronファイルを配置しておく．```run-parts```コマンドで，指定した時間に，ディレクトリ内のcronファイルを一括で実行する．
+
+```bash
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+HOME=/
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+
+# run-parts
+01 * * * * root run-parts /etc/cron.hourly
+05 2 * * * root run-parts /etc/cron.daily
+20 2 * * 0 root run-parts /etc/cron.weekly
+40 2 1 * * root run-parts /etc/cron.monthly
+```
+
+**【実装例】**
+
+crontabでまとめて制御せず，個別ファイルで制御する場合は，cron.dで制御する．
+
+```bash
+# ファイル1
+01 * * * * root run-parts /etc/cron.hourly
+```
+
+```bash
+# ファイル2
+05 2 * * * root run-parts /etc/cron.daily
+```
+
+```bash
+# ファイル3
+20 2 * * 0 root run-parts /etc/cron.weekly
+```
+
+```bash
+# ファイル4
+40 2 1 * * root run-parts /etc/cron.monthly
+```
 
 
 
