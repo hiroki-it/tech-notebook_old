@@ -1,0 +1,9 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO="hasegawafeedshop@gmail.com"
+LANG=ja_JP.UTF-8
+LC_ALL=ja_JP.UTF-8
+CONTENT_TYPE=text/plain; charset=UTF-8
+
+# Build Html
+* */12 * * * root cd /var/www/tech-notebook; make clean html;
