@@ -174,18 +174,18 @@ Slackware
 
 よく使うものを記載する．
 
-| シェル系 | ファイルシステム系 | プロセス管理系 | テキスト処理系 | ネットワーク系 | その他   |
-| :------- | ------------------ | -------------- | -------------- | -------------- | -------- |
-| echo*    | cd*                | batch*         | tail*          | nslookup*      | crontab* |
-| sleep*   | ls*                | ps*            | -              | curl*          | grep*    |
-| -        | cp*                | kill*          | -              | netstat*       | -        |
-| -        | find*              | -              | -              | route*         | -        |
-| -        | mv*                | -              | -              | -              | -        |
-| -        | chmod*             | -              | -              | -              | -        |
-| -        | rm*                | -              | -              | -              | -        |
-| -        | pwd*               | -              | -              | -              | -        |
-| -        | chown*             | -              | -              | -              | -        |
-| -        | cat*               | -              | -              | -              | -        |
+| シェル系 | ファイルシステム系 | プロセス管理系 | テキスト処理系 | ネットワーク系 | その他                   |
+| :------- | ------------------ | -------------- | -------------- | -------------- | ------------------------ |
+| echo*    | cd*                | batch*         | tail*          | nslookup*      | crontab*                 |
+| sleep*   | ls*                | ps*            | -              | curl*          | grep*                    |
+| -        | cp*                | kill*          | -              | netstat*       | メタパッケージマネージャ |
+| -        | find*              | -              | -              | route*         | -                        |
+| -        | mv*                | -              | -              | -              | -                        |
+| -        | chmod*             | -              | -              | -              | -                        |
+| -        | rm*                | -              | -              | -              | -                        |
+| -        | pwd*               | -              | -              | -              | -                        |
+| -        | chown*             | -              | -              | -              | -                        |
+| -        | cat*               | -              | -              | -              | -                        |
 
 #### ・Windowsの場合
 
@@ -200,49 +200,42 @@ Slackware
 
 
 
-### マネージャユーティリティ
+### find
 
-#### ・ライブラリとパッケージの大まかな違い
-
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
-
-#### ・ライブラリマネージャ
-
-| ライブラリマネージャ名            | 対象プログラミング言語 |
-| --------------------------------- | ---------------------- |
-| composer.phar：Composer           | PHP                    |
-| npm：Node Package Manager         | Node.js                |
-| pip：Package Installer for Python | Python                 |
-| maven：Apache Maven               | Java                   |
-| gem：Ruby Gems                    | Ruby                   |
+#### ・全てのファイルからテキスト検索
 
 ```bash
-// phpのメモリ上限を無しにしてcomposer updateを行う方法
-php -d memory_limit=-1 /usr/local/bin/composer update
+find /* |xargs grep 'example'
 ```
 
-#### ・パッケージマネージャ
+#### ・指定したファイルからテキスト検索
 
-| パッケージマネージャ名                                  | 対象OS       | 依存関係のインストール可否 |
-| ------------------------------------------------------- | ------------ | -------------------------- |
-| Rpm：Red Hat Package Manager                            | RedHat系     | ✕                          |
-| Yum：Yellow dog Updater Modified<br/>DNF：Dandified Yum | RedHat系     | 〇                         |
-| Apt：Advanced Packaging Tool                            | Debian系     | 〇                         |
-| Apk：Alpine Linux package management                    | Alpine Linux | 〇                         |
-
-#### ・言語バージョンマネージャ
-
-| 言語バージョンマネージャ名 | 対象プログラミング言語 |
-| -------------------------- | ---------------------- |
-| phpenv                     | PHP                    |
-| pyenv                      | Python                 |
-| rbenv                      | Ruby                   |
+```bash
+find /* -name '*.conf' |xargs grep 'example'
+```
 
 
 
-### crontabユーティリティ
 
-#### ・crontabユーティリティとは
+
+### chmod：change mode
+
+#### ・chmodとは
+
+ファイルの権限を変更する．よく使用されるパーミッションのパターンは次の通り．
+
+| パーミッション | 意味                                                         |
+| :------------- | :----------------------------------------------------------- |
+| 644 rw-r--r--  | 通常のHTMLファイルなど．自分は読み込み，書き込みができるが，グループメンバや他人は読み込みしかできない． |
+| 666 rw-rw-rw-  | CGIスクリプトが書き込むファイルなど．自分もグループメンバも他人も，読み込みと書き込みができる． |
+| 755 rwxr-xr-x  | 通常のディレクトリ，コマンド，CGIスクリプトなど．誰でも読込みと実行はできるが，書き込みは自分だけ． |
+| 777 rwxrwxrwx  | CGIスクリプトがファイルを作成するためのディレクトリなど．誰でもなんでもOK．セキュリティ上は少々危険． |
+
+
+
+### crontab：command run on table
+
+#### ・crontabとは
 
 cronデーモンの動作が定義されたファイルを操作するためのユーティリティ
 
@@ -262,7 +255,7 @@ crond -n
 | ファイル/ディレクトリ名 | 利用者   | 主な用途                                               |
 | ----------------------- | -------- | ------------------------------------------------------ |
 | /var/spool/cron/*user*  | 全ユーザ | ユーザの自動タスク設定ファイル                         |
-| /etc/crontab            | root     | 毎時、毎日、毎月、毎週の自動タスクのメイン設定ファイル |
+| /etc/crontab            | root     | 毎時，毎日，毎月，毎週の自動タスクのメイン設定ファイル |
 | /etc/cron.hourly        | root     | 毎時実行される自動タスク設定ファイルを置くディレクトリ |
 | /etc/cron.daily         | root     | 毎日実行される自動タスク設定ファイルを置くディレクトリ |
 | /etc/cron.monthly       | root     | 毎月実行される自動タスク設定ファイルを置くディレクトリ |
@@ -320,6 +313,46 @@ crontabでまとめて制御せず，個別ファイルで制御する場合は�
 # ファイル4
 40 2 1 * * root run-parts /etc/cron.monthly
 ```
+
+
+
+### マネージャの種類
+
+#### ・ライブラリとパッケージの大まかな違い
+
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
+
+#### ・ライブラリマネージャ
+
+| ライブラリマネージャ名            | 対象プログラミング言語 |
+| --------------------------------- | ---------------------- |
+| composer.phar：Composer           | PHP                    |
+| npm：Node Package Manager         | Node.js                |
+| pip：Package Installer for Python | Python                 |
+| maven：Apache Maven               | Java                   |
+| gem：Ruby Gems                    | Ruby                   |
+
+```bash
+// phpのメモリ上限を無しにしてcomposer updateを行う方法
+php -d memory_limit=-1 /usr/local/bin/composer update
+```
+
+#### ・メタパッケージマネージャ
+
+| メタパッケージマネージャ名                              | 対象OS       | 依存関係のインストール可否 |
+| ------------------------------------------------------- | ------------ | -------------------------- |
+| Rpm：Red Hat Package Manager                            | RedHat系     | ✕                          |
+| Yum：Yellow dog Updater Modified<br/>DNF：Dandified Yum | RedHat系     | 〇                         |
+| Apt：Advanced Packaging Tool                            | Debian系     | 〇                         |
+| Apk：Alpine Linux package management                    | Alpine Linux | 〇                         |
+
+#### ・言語バージョンマネージャ
+
+| 言語バージョンマネージャ名 | 対象プログラミング言語 |
+| -------------------------- | ---------------------- |
+| phpenv                     | PHP                    |
+| pyenv                      | Python                 |
+| rbenv                      | Ruby                   |
 
 
 
