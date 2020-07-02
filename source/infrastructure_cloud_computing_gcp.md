@@ -1,3 +1,5 @@
+# Google Cloud Platform
+
 ## 01. GCPによるWebサービスのリリース
 
 GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供され，Webサービスがリリースされる．
