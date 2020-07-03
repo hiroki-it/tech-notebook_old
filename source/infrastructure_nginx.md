@@ -88,76 +88,112 @@ http {
 
 
 
-## 02-02. ディレクティブブロック
+## 02-02. ```Main```モジュール
 
-### ディレクティブブロックとは
+### Mainモジュールとは
 
-Nginxでは，モジュールを読み込むことで，様々な機能を利用できる．ディレクティブブロックは，ディレクティブモジューリを用いて設定することできる．
-
-| ディレクティブブロック |      | ディレクティブモジュール |
-| :--------------------: | :--: | :----------------------: |
-|  ```events```ブロック  |  ⇄   |  ```events```モジュール  |
-|   ```http```ブロック   |  ⇄   |   ```http```モジュール   |
-|  ```server```ブロック  |  ⇄   |  ```server```モジュール  |
-| ```location```ブロック |  ⇄   | ```location```モジュール |
+ブロックに含まれないディレクティブを提供するモジュール．
 
 
 
-### ```events```ブロックのディレクティブ
+### ブロックの種類
 
-#### ・```worker_connections```ディレクティブ
+ブロックは無し．
+
+
+
+### ディレクティブの種類
+
+#### ・```user```
+
+本設定ファイルの実行ユーザを設定する．
+
+```nginx
+user nginx;
+```
+
+
+
+## 02-03. Configurationモジュール
+
+### Configurationモジュールとは
+
+```include```ディレクティブを提供するモジュール．
+
+
+
+### ブロックの種類
+
+ブロックは無し．
+
+
+
+
+### ディレクティブの種類
+
+####  ・```include```
+
+他のファイルの設定を読み込む．
+
+```nginx
+include /etc/nginx/mime.types;
+```
+
+ワイルドカードも可能
+
+```nginx
+include /etc/nginx/*.types;
+```
+
+
+
+
+
+## 02-04. Eventsモジュール
+
+### Eventsモジュールとは
+
+```events```ブロックのディレクティブを提供するモジュール．
+
+
+
+
+### ブロックの種類
+
+#### ・```events```ブロック
+
+```nginx
+events {
+  
+}
+```
+
+
+
+
+### ディレクティブの種類
+
+#### ・```worker_connections```
 
 workerプロセスが同時に処理可能なコネクションの最大数を設定する．
 
 ```nginx
-events {
-    worker_connections 1024;
-}
-```
-
-### ```server```ブロックのディレクティブ
-
-#### ・```listen```ディレクティブ
-
-ポート```80```で受信．
-
-```nginx
-listen 80
-```
-
-ポート```443```で受信．
-
-```nginx
-listen 443 ssl;
-```
-
-#### ・```ssl```ディレクティブ
-
-NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効にする必要がある．
-
-```nginx
-ssl on;
-```
-
-#### ・```ssl_certificate```ディレクティブ
-
-PEM証明書のパスを設定する．
-
-```nginx
-ssl_certificate /etc/nginx/ssl/server.crt;
-```
-
-#### ・```ssl_certificate_key```ディレクティブ
-
-PEM秘密鍵のパスを設定する．
-
-```nginx
-ssl_certificate_key /etc/nginx/ssl/server.key;
+worker_connections 1024;
 ```
 
 
 
-###  ```location```ブロックのディレクティブ
+## 02-05. HTTPCoreモジュール
+
+### HTTPCoreモジュールとは
+
+```http```ブロックのディレクティブを提供するモジュール．
+
+
+
+### ブロックの種類
+
+####  ・```location```ブロック
 
 リクエストメッセージのURL内のルートごとに，異なる処理を設定する．
 
@@ -202,43 +238,68 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
-
-
-## 02-03. メインブロック
-
-### メインブロックとは
-
-ディレクティブブロック以外の部分のこと．メインブロックは，メインモジュールを用いて設定することできる．
-
-| ディレクティブブロック |      | ディレクティブモジュール |
-| :--------------------: | :--: | :----------------------: |
-|   メインブロック   |  ⇄   |   メインモジュール   |
-
-
-
-### メインブロックのディレクティブ
-
-#### ・```user```ディレクティブ
-
-本設定ファイルの実行ユーザを設定する．
+#### ・```server```ブロック
 
 ```nginx
-user nginx;
+server {
+  
+}
 ```
 
 
-#### ・```include```ディレクティブ
 
-他のファイルの設定を読み込む．
+### ディレクティブの種類
+
+#### ・```listen```
+
+開放するポート```80```を設定する．
 
 ```nginx
-include /etc/nginx/mime.types;
+listen 80
 ```
 
-ワイルドカードも可能
+開放するポート```443```を設定する．
 
 ```nginx
-include /etc/nginx/*.types;
+listen 443 ssl;
+```
+
+#### ・```server_name```
+
+パブリックIPアドレスに紐づくドメイン名を設定する．
+
+```nginx
+server_name hiroki-it.work;
+```
+
+パブリックIPアドレスを直接記述してもよい．
+
+```nginx
+server_name 192.168.0.0;
+```
+
+#### ・```ssl```
+
+NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効にする必要がある．
+
+```nginx
+ssl on;
+```
+
+#### ・```ssl_certificate```
+
+PEM証明書のパスを設定する．
+
+```nginx
+ssl_certificate /etc/nginx/ssl/server.crt;
+```
+
+#### ・```ssl_certificate_key```
+
+PEM秘密鍵のパスを設定する．
+
+```nginx
+ssl_certificate_key /etc/nginx/ssl/server.key;
 ```
 
 
