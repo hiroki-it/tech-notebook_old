@@ -7,13 +7,13 @@
 #### ・設定ファイルのバリデーション
 
 ```bash
-nginx -t
+$ nginx -t
 ```
 
 #### ・設定ファイルの反映と安全な再起動
 
 ```bash
-kill -s HUP NINGXPID
+$ kill -s HUP NINGXPID
 ```
 
 
