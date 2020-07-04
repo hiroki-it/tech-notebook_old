@@ -176,16 +176,16 @@ Slackware
 
 | シェル系 | ファイルシステム系 | プロセス管理系 | テキスト処理系 | ネットワーク系 | その他                   |
 | :------- | ------------------ | -------------- | -------------- | -------------- | ------------------------ |
-| echo*    | cd*                | batch*         | tail*          | nslookup*      | crontab*                 |
-| sleep*   | ls*                | ps*            | -              | curl*          | grep*                    |
-| -        | cp*                | kill*          | -              | netstat*       | メタパッケージマネージャ |
-| -        | find*              | -              | -              | route*         | -                        |
-| -        | mv*                | -              | -              | -              | -                        |
-| -        | chmod*             | -              | -              | -              | -                        |
-| -        | rm*                | -              | -              | -              | -                        |
-| -        | pwd*               | -              | -              | -              | -                        |
-| -        | chown*             | -              | -              | -              | -                        |
-| -        | cat*               | -              | -              | -              | -                        |
+| echo     | cd                 | batch          | tail           | nslookup       | crontab                  |
+| sleep    | ls                 | ps             | -              | curl           | grep                     |
+| -        | cp                 | kill           | -              | netstat        | メタパッケージマネージャ |
+| -        | find               | systemctl      | -              | route          | -                        |
+| -        | mv                 | -              | -              | -              | -                        |
+| -        | chmod              | -              | -              | -              | -                        |
+| -        | rm                 | -              | -              | -              | -                        |
+| -        | pwd                | -              | -              | -              | -                        |
+| -        | chown              | -              | -              | -              | -                        |
+| -        | cat                | -              | -              | -              | -                        |
 
 #### ・Windowsの場合
 
@@ -202,19 +202,21 @@ Slackware
 
 ### find
 
-#### ・全てのファイルからテキスト検索
+#### ・findとは
+
+ファイルを検索するためのユーティリティ．
 
 ```bash
-find /* |xargs grep 'example'
+# ルートディレクトリ以下で， example という文字をもつファイルを全て検索．
+# コマンド実行時のエラーを表示しない場合は，2>/dev/null をつける．
+$ find /* -type f |xargs grep 'example' 2>/dev/null
 ```
-
-#### ・指定したファイルからテキスト検索
 
 ```bash
-find /* -name '*.conf' |xargs grep 'example'
+# ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
+# コマンド実行時のエラーを表示しない場合は， 2>/dev/null をつける．
+$ find /* -name '*.conf' -type f |xargs grep 'example' 2>/dev/null
 ```
-
-
 
 
 
@@ -222,14 +224,45 @@ find /* -name '*.conf' |xargs grep 'example'
 
 #### ・chmodとは
 
-ファイルの権限を変更する．よく使用されるパーミッションのパターンは次の通り．
+ファイルの権限を変更するためのユーティリティ．よく使用されるパーミッションのパターンは次の通り．
 
-| パーミッション | 意味                                                         |
-| :------------- | :----------------------------------------------------------- |
-| 644 rw-r--r--  | 通常のHTMLファイルなど．自分は読み込み，書き込みができるが，グループメンバや他人は読み込みしかできない． |
-| 666 rw-rw-rw-  | CGIスクリプトが書き込むファイルなど．自分もグループメンバも他人も，読み込みと書き込みができる． |
-| 755 rwxr-xr-x  | 通常のディレクトリ，コマンド，CGIスクリプトなど．誰でも読込みと実行はできるが，書き込みは自分だけ． |
-| 777 rwxrwxrwx  | CGIスクリプトがファイルを作成するためのディレクトリなど．誰でもなんでもOK．セキュリティ上は少々危険． |
+```bash
+# example.conf に「666」権限を付与
+$ chmod 666 example.conf
+```
+
+#### ・よく使う権限
+
+| 数字 | 権限      | 意味                                                         |
+| ---- | :-------- | :----------------------------------------------------------- |
+| 644  | rw-r--r-- | 通常のHTMLファイルなど．自分は読み込み，書き込みができるが，グループメンバや他人は読み込みしかできない． |
+| 666  | rw-rw-rw- | CGIスクリプトが書き込むファイルなど．自分もグループメンバも他人も，読み込みと書き込みができる． |
+| 755  | rwxr-xr-x | 通常のディレクトリ，コマンド，CGIスクリプトなど．誰でも読込みと実行はできるが，書き込みは自分だけ． |
+| 777  | rwxrwxrwx | CGIスクリプトがファイルを作成するためのディレクトリなど．誰でもなんでもOK．セキュリティ上は少々危険． |
+
+
+
+### systemctl：system control
+
+#### ・systemctlとは
+
+systemdを制御するためのユーティリティ．
+
+```bash
+# サービスの自動起動設定を一覧で確認．
+$ systemctl list-unit-files --type=service
+
+crond.service           enabled  # enable：自動起動する
+supervisord.service     disabled # disable：自動起動しない
+systemd-reboot.service  static   # enable：他サービス依存
+```
+```bash
+# サービスの自動起動を有効化．
+$ systemctl enable crond.service
+
+# サービスの自動起動を無効化．
+$ systemctl disable crond.service
+```
 
 
 
@@ -237,7 +270,7 @@ find /* -name '*.conf' |xargs grep 'example'
 
 #### ・crontabとは
 
-cronデーモンの動作が定義されたファイルを操作するためのユーティリティ
+cronデーモンの動作が定義されたファイルを操作するためのユーティリティ．
 
 #### ・crondとは
 
@@ -245,7 +278,7 @@ cronデーモンを起動するためのプログラム
 
 ```bash
 # フォアグラウンドプロセスとしてcronを起動
-crond -n
+$ crond -n
 ```
 
 #### ・cronデーモンの種類
@@ -334,7 +367,7 @@ crontabでまとめて制御せず，個別ファイルで制御する場合は�
 
 ```bash
 // phpのメモリ上限を無しにしてcomposer updateを行う方法
-php -d memory_limit=-1 /usr/local/bin/composer update
+$ php -d memory_limit=-1 /usr/local/bin/composer update
 ```
 
 #### ・メタパッケージマネージャ
