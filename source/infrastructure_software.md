@@ -246,7 +246,7 @@ $ chmod 666 example.conf
 
 #### ・systemctlとは
 
-systemdを制御するためのユーティリティ．
+systemdを制御するためのユーティリティ．systemd
 
 ```bash
 # サービスの自動起動設定を一覧で確認．
@@ -264,26 +264,21 @@ $ systemctl enable crond.service
 $ systemctl disable crond.service
 ```
 
+#### ・systemdとは：system daemon
+
+Linuxの起動プロセスの一つである，initプロセス（PID 1）を制御するプログラム．詳しくは，追って学習する．
+
 
 
 ### crontab：command run on table
 
 #### ・crontabとは
 
-cronデーモンの動作が定義されたファイルを操作するためのユーティリティ．
+cronデーモンの動作が定義されたcrontabファイルを操作するためのユーティリティ．cron.dファイルは操作できない．
 
-#### ・crondとは
+#### ・crontabファイルとcron.dファイルの違い
 
-cronデーモンを起動するためのプログラム
-
-```bash
-# フォアグラウンドプロセスとしてcronを起動
-$ crond -n
-```
-
-#### ・cronデーモンの種類
-
-```etc/```には，cronファイルの配置ディレクトリが用意されており，これをcrontabで制御する．
+どちらもcronの動作を定義するファイルではあるが，crontabは，ユーザ毎に個別の動作を定義する場合に用いる．cron.dファイルはユーザ関係なく，また動作ごとに一つのファイルで定義する場合に用いる．
 
 | ファイル/ディレクトリ名 | 利用者   | 主な用途                                               |
 | ----------------------- | -------- | ------------------------------------------------------ |
@@ -299,11 +294,14 @@ $ crond -n
 
 あらかじめ，各ディレクトリにcronファイルを配置しておく．```run-parts```コマンドで，指定した時間に，ディレクトリ内のcronファイルを一括で実行する．
 
-```bash
+```
+# 設定
 SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO=root
-HOME=/
+MAILTO="hasegawafeedshop@gmail.com"
+LANG=ja_JP.UTF-8
+LC_ALL=ja_JP.UTF-8
+CONTENT_TYPE=text/plain; charset=UTF-8
 
 # For details see man 4 crontabs
 
@@ -317,34 +315,92 @@ HOME=/
 # *  *  *  *  * user-name command to be executed
 
 # run-parts
-01 * * * * root run-parts /etc/cron.hourly
-05 2 * * * root run-parts /etc/cron.daily
-20 2 * * 0 root run-parts /etc/cron.weekly
-40 2 1 * * root run-parts /etc/cron.monthly
+1 * * * * root run-parts /etc/cron.hourly # 毎時・1分
+5 2 * * * root run-parts /etc/cron.daily # 毎日・2時5分
+20 2 * * 0 root run-parts /etc/cron.weekly # 毎週日曜日・2時20分
+40 2 1 * * root run-parts /etc/cron.monthly # 毎月一日・2時40分
+@reboot make clean html # cron起動時に一度だけ
 ```
 
 **【実装例】**
 
 crontabでまとめて制御せず，個別ファイルで制御する場合は，cron.dで制御する．
 
-```bash
-# ファイル1
-01 * * * * root run-parts /etc/cron.hourly
+```
+# 毎時・1分
+1 * * * * root run-parts /etc/cron.hourly
 ```
 
-```bash
-# ファイル2
-05 2 * * * root run-parts /etc/cron.daily
+```
+# 毎日・2時5分
+5 2 * * * root run-parts /etc/cron.daily
 ```
 
-```bash
-# ファイル3
+```
+# 毎週日曜日・2時20分
 20 2 * * 0 root run-parts /etc/cron.weekly
 ```
 
-```bash
-# ファイル4
+```
+# 毎月一日・2時40分
 40 2 1 * * root run-parts /etc/cron.monthly
+```
+
+```
+# cron起動時に一度だけ
+@reboot make clean html
+```
+
+#### ・crondとは
+
+cronデーモンを起動するためのプログラム
+
+```bash
+# フォアグラウンドプロセスとしてcronを起動
+$ crond -n
+```
+
+#### ・supervisorとの組み合わせ
+
+ユーザーが，OS上のプロセスを制御できるようにするためのプログラム．
+
+```bash
+# インストール
+$ pip3 install supervisor
+
+# /etc/supervisor/supervisord.conf に設定ファイルを置いて起動．
+$ /usr/local/bin/supervisord
+```
+
+以下に設定ファイルの例を示す．
+
+**【実装例】**
+
+```
+[supervisord]
+# 実行ユーザ
+user=root
+# フォアグラウンドで起動
+nodaemon=true
+# ログ
+logfile=/var/log/supervisord.log
+# Pid
+pidfile=/var/tmp/supervisord.pid
+
+[program:crond]
+# 実行コマンド
+command=/usr/sbin/crond -n
+# プログラムの自動起動
+autostart=true
+# プログラム停止後の再起動
+autorestart=true
+# コマンドの実行ログ
+stdout_logfile=/var/log/command.log
+stderr_logfile=/var/log/command-error.log
+# コマンドの実行ユーザ
+user=root
+# コマンドの実行ディレクトリ
+directory=/var/www/tech-notebook
 ```
 
 
