@@ -150,6 +150,13 @@ module "ecs_module" {
   ecs_task_size_memory = var.ecs_task_size_memory
 }
 
+#==================
+# CloudWatch Logs
+#==================
+module "cloudwatch_logs" {
+  source = "../modules/cloud_watch_logs"
+}
+
 #=============
 # Public Key
 #=============
