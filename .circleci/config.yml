@@ -106,7 +106,7 @@ workflows:
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
           service-name: "${APP_NAME}-ecs-service"
-          container-image-name-updates: "container=builder,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=builder-container,tag=${CIRCLE_SHA1}"
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
@@ -116,7 +116,7 @@ workflows:
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
           service-name: "${APP_NAME}-ecs-service"
-          container-image-name-updates: "container=www,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=www-container,tag=${CIRCLE_SHA1}"
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
