@@ -19,6 +19,9 @@ variable "ecs_task_size_cpu" {}
 variable "ecs_task_size_memory" {}
 variable "ecs_task_execution_role_arn" {}
 
+// Port
+variable "port_http" {}
+
 #=============
 # ECS Cluster
 #=============
@@ -41,12 +44,14 @@ resource "aws_ecs_service" "ecs_service" {
   desired_count    = "1"
   platform_version = "LATEST"
 
+  // ロードバランシング
   load_balancer {
     target_group_arn = var.alb_target_group_arn
     container_name   = "www-container"
-    container_port   = 80
+    container_port   = var.port_http
   }
 
+  // ネットワークアクセス
   network_configuration {
     subnets         = [var.subnet_public_1a_id, var.subnet_public_1c_id]
     security_groups = [var.security_group_ecs_id]
@@ -73,12 +78,14 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 #====================
 # ECS Task Schedule
 #====================
+// スケジュールルール
 resource "aws_cloudwatch_event_rule" "cloudwatch_event_rule_ecs" {
   name                = "builder-event-rule"
   description         = "Build Html"
   schedule_expression = "cron(0 20 * * ? *)"
 }
 
+// ターゲットのスケジュール
 resource "aws_cloudwatch_event_target" "cloudwatch_event_target_ecs" {
   target_id = "${var.app_name}-builder"
   rule      = aws_cloudwatch_event_rule.cloudwatch_event_rule_ecs.name
@@ -90,7 +97,7 @@ resource "aws_cloudwatch_event_target" "cloudwatch_event_target_ecs" {
     platform_version    = "latest"
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.ecs_task_definition.arn
-    
+
     network_configuration {
       subnets         = [var.subnet_public_1a_id, var.subnet_public_1c_id]
       security_groups = [var.security_group_ecs_id]
