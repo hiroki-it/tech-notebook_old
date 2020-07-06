@@ -26,11 +26,15 @@ variable "igw_cidr_block" {}
 // Route53
 variable "r53_domain_name" {}
 variable "r53_record_set_name" {}
-variable "r53_record_type" {}
 
 // ECS
 variable "ecs_task_size_cpu" {}
 variable "ecs_task_size_memory" {}
+
+// Port
+variable "port_http" {}
+variable "port_https" {}
+variable "port_ssh" {}
 
 // Key Pair
 variable "key_name" {}
@@ -83,6 +87,9 @@ module "security_group_module" {
   sg_inbound_cidr_block  = var.sg_inbound_cidr_block
   sg_outbound_cidr_block = var.sg_outbound_cidr_block
   app_name               = var.app_name
+  port_http              = var.port_http
+  port_https             = var.port_https
+  port_ssh               = var.port_ssh
 }
 
 #======
@@ -99,7 +106,9 @@ module "alb_module" {
   subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
 
-  app_name = var.app_name
+  app_name   = var.app_name
+  port_http  = var.port_http
+  port_https = var.port_https
 }
 
 #==========
@@ -111,12 +120,11 @@ module "route53_module" {
   source = "../modules/route53"
 
   // 他のモジュールの出力値を渡す.
-  r53_alb_dns_name = module.alb_module.alb_dns_name
-  r53_alb_zone_id  = module.alb_module.alb_zone_id
+  alb_dns_name = module.alb_module.alb_dns_name
+  alb_zone_id  = module.alb_module.alb_zone_id
 
   r53_domain_name     = var.r53_domain_name
   r53_record_set_name = var.r53_record_set_name
-  r53_record_type     = var.r53_record_type
 }
 
 #======
@@ -148,6 +156,7 @@ module "ecs_module" {
   app_name             = var.app_name
   ecs_task_size_cpu    = var.ecs_task_size_cpu
   ecs_task_size_memory = var.ecs_task_size_memory
+  port_http            = var.port_http
 }
 
 #==================
