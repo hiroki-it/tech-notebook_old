@@ -14,6 +14,10 @@ variable "subnet_public_1c_id" {}
 // Security Group
 variable "security_group_alb_id" {}
 
+// Port
+variable "port_http" {}
+variable "port_https" {}
+
 #======
 # ALB
 #======
@@ -29,7 +33,7 @@ resource "aws_alb" "alb" {
 #===============
 resource "aws_alb_target_group" "alb_target_group" {
   name        = "${var.app_name}-alb-target-group"
-  port        = 80 // ALBからのルーティング時の解放ポート
+  port        = var.port_http // ALBからのルーティング時の解放ポート
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -46,7 +50,7 @@ resource "aws_alb_target_group" "alb_target_group" {
 #===========
 resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_alb.alb.arn
-  port              = 80 // ALBの受信時の解放ポート
+  port              = var.port_http // ALBの受信時の解放ポート
   default_action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.alb_target_group.arn
