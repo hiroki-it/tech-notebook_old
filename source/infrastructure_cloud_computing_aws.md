@@ -18,6 +18,20 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とEC2のグローバルIPアドレスをマッピングしている．
 
+![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/URLと電子メールの構造.png)
+
+#### ・主要なレコードタイプと名前解決の仕組み
+
+| レコードタイプ | 名前解決の仕組み（1） |      |    （2）    |      |    （3）    |
+| -------------- | :-------------------: | :--: | :---------: | :--: | :---------: |
+| A              |  完全修飾ドメイン名   |  →   | Public IPv4 |  →   |      -      |
+| AAAA           |  完全修飾ドメイン名   |  →   | Public IPv6 |  →   |      -      |
+| CNAME          |  完全修飾ドメイン名   |  →   | エイリアス  |  →   | Public IPv4 |
+
+#### ・エイリアス
+
+ルーティング先のリソースのホスト名を設定する．ALBがルーティング先であれば，ALBのDNS名を設定する．
+
 ![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Route53の仕組み.png)
 
 #### ・（1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
