@@ -104,24 +104,29 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: インフラストラクチャ
+   :caption: ソフトウェア
 
-   infrastructure_as_code.md
-   infrastructure_nginx.md
-   infrastructure_virtualization_technology_comparison.md
-   infrastructure_virtual_server.md
-   infrastructure_container.md
-   infrastructure_cloud_computing.md
-   infrastructure_cloud_computing_aws.md
-   infrastructure_cloud_computing_gcp.md
-   infrastructure_terraform.md
+   infrastructure_software.md
+   infrastructure_software_middleware_nginx.md
+   infrastructure_machine_language_and_radix.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: ソフトウェアからハードウェアへの命令伝達
+   :caption: クラウドインフラストラクチャ
 
-   infrastructure_software.md
-   infrastructure_machine_language_and_radix.md
+   infrastructure_cloud_computing.md
+   infrastructure_cloud_computing_aws.md
+   infrastructure_cloud_computing_gcp.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Infrastructure as Code
+
+   infrastructure_as_code.md
+   infrastructure_virtualization_technology_comparison.md
+   infrastructure_virtual_server.md
+   infrastructure_container.md
+   infrastructure_terraform.md
 
 .. toctree::
    :maxdepth: 1
