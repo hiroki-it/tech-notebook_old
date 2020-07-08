@@ -98,8 +98,6 @@ Google Drive，Dropbox
 
 #### ・Nginx
 
-![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
-
 #### ・Node.js
 
 
@@ -420,11 +418,6 @@ directory=/var/www/tech-notebook
 | pip：Package Installer for Python | Python                 |
 | maven：Apache Maven               | Java                   |
 | gem：Ruby Gems                    | Ruby                   |
-
-```bash
-// phpのメモリ上限を無しにしてcomposer updateを行う方法
-$ php -d memory_limit=-1 /usr/local/bin/composer update
-```
 
 #### ・メタパッケージマネージャ
 
