@@ -141,6 +141,39 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 AWSの各種サービスで生成されたログファイルを収集できる．
 
+**【設定例】**
+
+confファイルを，EC2内の```etc```ディレクトリ下に設置する．
+
+```
+# --- /etc/awslogs/awscli.conf --- # 
+[plugins]
+cwlogs = cwlogs
+[default]
+region = ap-northeast-1
+```
+
+```
+# --- /etc/awslogs/awslogs.conf --- #
+[/var/log/messages]
+
+# タイムスタンプ（例）May 14 08:10:00
+datetime_format = %b %d %H:%M:%S
+
+# 収集したいログファイル．ここでは，CentOSのログを指定．
+file = /var/log/messages
+
+# 要勉強
+buffer_duration = 5000
+log_stream_name = {instance_id}
+initial_position = start_of_file
+
+# AWS上で管理するロググループ名
+log_group_name = /var/log/messages
+```
+
+
+
 #### ・Cloud Watch Events
 
 イベントやスケジュールを検知し，指定したアクションを行う．
@@ -273,7 +306,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 | ターゲットグループ | ・ALBからターゲットグループへのルーティングで使用するプロトコルとポート番号を設定<br>・ルーティング先のターゲットを設定．ターゲットは，IPアドレス，インスタンス，Lambdaなどから選択可能． |
 | ヘルスチェック     | ALBからターゲットに対して，定期的にリクエストを送信する．    |
 
-#### ・IPアドレス範囲について
+#### ・IPアドレス範囲
 
 ALBのIPアドレス範囲には，VPCのものが適用される．そのため，EC2のセキュリティグループでは，VPCのIPアドレス範囲を許可するように設定する必要がある．
 
@@ -328,8 +361,6 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 |         ```0.0.0.0/0```         | Internet Gateway |
 
 ![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルートテーブル.png)
-
-
 
 
 
