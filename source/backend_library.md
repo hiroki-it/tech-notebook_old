@@ -2,7 +2,38 @@
 
 # ライブラリ
 
-## 01. ライブラリの読み込み
+## 01. ライブラリの管理
+
+#### ・composer
+
+```bash
+# キャッシュを削除．
+$ php /usr/local/bin/composer clear-cache
+```
+
+```bash
+# phpのメモリ上限を無しにしてcomposer updateを行う．
+$ php -d memory_limit=-1 /usr/local/bin/composer update
+```
+
+```bash
+# プロセスを表示しながら，インストールする．
+$ php /usr/local/bin/composer update -vvv
+```
+
+```bash
+# requireタグ内の特定のライブラリ（コンポーネント）をインストール．
+$ php /usr/local/bin/composer require symfony/event-dispatcher
+```
+
+```bash
+# require-devタグ内のライブラリは除いてインストール．
+$ php /usr/local/bin/composer require --no-dev
+```
+
+
+
+## 02. ライブラリの読み込み
 
 ### エントリポイントでの```autoload.php```の読み込み
 
@@ -214,7 +245,7 @@ try{
 ```
 
 
-## 03. Carbonライブラリ
+## 04. Carbonライブラリ
 
 ### Date型
 
@@ -321,7 +352,7 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-## 04. Pinqライブラリ
+## 05. Pinqライブラリ
 
 ### Pinqとは：Php Integrated Query
 
@@ -360,7 +391,7 @@ class Example
 
 
 
-## 05. Guzzleライブラリ
+## 06. Guzzleライブラリ
 
 ### Guzzleライブラリとは
 
@@ -397,7 +428,7 @@ $body = json_decode($response->getBody(), true);
 
 
 
-## 06. Knp/Snappyライブラリ
+## 07. Knp/Snappyライブラリ
 
 ###  Knp/Snappyとは
 
@@ -412,12 +443,12 @@ htmlファイルを元にして，ローカルディレクトリにPDFファイ�
 ```PHP
 $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
 
-$snappy->generateFromHtml('example.html', '.../example.pdf')
+$snappy->generateFromHtml('example.html', '.../example.pdf');
 ```
 
 
 
-## 07. Respect/Validationライブラリ
+## 08. Respect/Validationライブラリ
 
 ### Respect/Validationとは
 
