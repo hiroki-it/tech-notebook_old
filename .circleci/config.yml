@@ -122,6 +122,7 @@ workflows:
             - build-and-push-image-www
       # Run AWS ECS
       - aws-ecs/run-task:
+          name: run-task-fargate
           cluster: "${APP_NAME}-ecs-cluster"
           awsvpc: true
           launch-type: FARGATE
