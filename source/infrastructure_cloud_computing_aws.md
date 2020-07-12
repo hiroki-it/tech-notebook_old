@@ -198,24 +198,36 @@ log_group_name = /var/log/messages
 
 #### ・認証局
 
+ATSによって認証されたACM；AWS Certificate Managerは，AWS上でのSSLサーバ証明書を発行する．
+
 | サーバ提供者 | 自社の中間認証局名         | ルート認証局名 |
 | ------------ | -------------------------- | -------------- |
 | AWS          | ATS：Amazon Trust Services | Starfield社    |
 
 #### ・SSLサーバ証明書の設置場所でよくあるパターン
 
-AWSの使用上，ATS証明書を設置できないサービスに対しては，外部の証明書を手に入れて設置する．SSLプロトコルを受け付けるネットワーク地点のことを，SSLターミネーションという．
+AWSの使用上，ACM証明書を設置できないサービスに対しては，外部の証明書を手に入れて設置する．SSLプロトコルを受け付けるネットワーク地点のことを，SSLターミネーションという．
 
 | パターン                                     | SSLターミネーション |
 | -------------------------------------------- | ------------------- |
-| Route53 → ALB(+ATS証明書) → EC2              | ALB                 |
-| Route53 → ALB(+ATS証明書) → EC2(+外部証明書) | EC2                 |
+| Route53 → ALB(+ACM証明書) → EC2              | ALB                 |
+| Route53 → ALB(+ACM証明書) → EC2(+外部証明書) | EC2                 |
 | Route53 → NLB → EC2(+外部証明書)             | EC2                 |
 | Route53 → EC2(+外部証明書)                   | EC2                 |
-| Route53 → CloudFront(+ATS証明書) → ALB → EC2 | CloudFront          |
-| Route53 → CloudFront(+ATS証明書) → EC2       | CloudFront          |
-| Route53 → CloudFront(+ATS証明書) → S3        | CloudFront          |
-| Route53 → Lightsail(+ATS証明書)              | Lightsail           |
+| Route53 → CloudFront(+ACM証明書) → ALB → EC2 | CloudFront          |
+| Route53 → CloudFront(+ACM証明書) → EC2       | CloudFront          |
+| Route53 → CloudFront(+ACM証明書) → S3        | CloudFront          |
+| Route53 → Lightsail(+ACM証明書)              | Lightsail           |
+
+#### ・セキュリティポリシー
+
+許可するプロトコルを定義したルールこと．SSL/TLSプロトコルを許可しており，対応できるバージョンが異なるため，ブラウザがそのバージョンのSSL/TLSプロトコルを使用できるかを認識しておく必要がある．
+
+|                      | Policy-2016-08 | Policy-TLS-1-1 | Policy-TLS-1-2 |
+| -------------------- | :------------: | :------------: | :------------: |
+| **Protocol-TLSv1**   |       〇       |                |                |
+| **Protocol-TLSv1.1** |       〇       |       〇       |                |
+| **Protocol-TLSv1.2** |       〇       |       〇       |       〇       |
 
 
 
