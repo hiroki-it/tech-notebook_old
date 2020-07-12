@@ -30,7 +30,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 #### ・エイリアス
 
-ルーティング先のリソースのホスト名を設定する．ALBがルーティング先であれば，ALBのDNS名を設定する．
+ルーティング先のAWSサービスのホスト名を設定する．ALBがルーティング先であれば，ALBのDNS名を設定する．
 
 ![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Route53の仕組み.png)
 
@@ -137,7 +137,14 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 ### CloudWatch系
 
-#### ・Cloud Watch Logs（＝ ログ収集サーバ）
+#### ・CloudWatch Logs
+
+```bash
+aws cloudwatch set-alarm-state --alarm-name "Warning Alarm" --state-value ALARM --state-reason "アラームテスト"
+
+```
+
+#### ・CloudWatch Logs（＝ ログ収集サーバ）
 
 AWSの各種サービスで生成されたログファイルを収集できる．
 
@@ -174,7 +181,7 @@ log_group_name = /var/log/messages
 
 
 
-#### ・Cloud Watch Events
+#### ・CloudWatch Events
 
 イベントやスケジュールを検知し，指定したアクションを行う．
 
@@ -187,7 +194,7 @@ log_group_name = /var/log/messages
 
 
 
-### SSLサーバ証明書の設置場所
+### SSLサーバ証明書
 
 #### ・認証局
 
@@ -273,9 +280,9 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 ![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
 
-#### ・同一VPC内の各リソースに割り当てる最低限のIPアドレス数
+#### ・同一VPC内の各AWSサービスに割り当てる最低限のIPアドレス数
 
-一つのVPC内には複数のSubnetが入る．そのため，SubnetのIPアドレス範囲は，Subnetの個数だけ狭めなければならない．また，VPCがもつIPアドレス範囲から，VPC内の各リソースにIPアドレスを割り当てていかなければならない．VPC内でIPアドレスが枯渇しないように，　以下の手順で，割り当てを考える．
+一つのVPC内には複数のSubnetが入る．そのため，SubnetのIPアドレス範囲は，Subnetの個数だけ狭めなければならない．また，VPCがもつIPアドレス範囲から，VPC内の各AWSサービスにIPアドレスを割り当てていかなければならない．VPC内でIPアドレスが枯渇しないように，　以下の手順で，割り当てを考える．
 
 1. rfc1918 に準拠し，VPCに以下の範囲内でIPアドレスを割り当てる．
 
@@ -285,9 +292,9 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 | ```172.16.0.0``` ~ ```172.31.255.255```   | ```/12```                    | ```172.16.0.0/12```  |
 | ```192.168.0.0``` ~ ```192.168.255.255``` | ```/16```                    | ```192.168.0.0/16``` |
 
-2. VPC内の各リソースにIPアドレス範囲を割り当てる．
+2. VPC内の各AWSサービスにIPアドレス範囲を割り当てる．
 
-| リソースの種類     | 最低限のIPアドレス数                    |
+| AWSサービスの種類     | 最低限のIPアドレス数                    |
 | ------------------ | --------------------------------------- |
 | ALB                | ALB1つ当たり，8個                       |
 | オートスケーリング | 水平スケーリング時のEC2最大数と同じ個数 |
@@ -392,9 +399,19 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 データベースの種類については，別のノートを参照せよ．
 
-|                        | Aurora | RDS  | DynamoDB | ElasticCache |
-| :--------------------: | :----: | :--: | :------: | :----------: |
-| **データベースの種類** |  RDB   | RDB  |  NoSQL   |              |
+|                        | Aurora | RDS  | DynamoDB |
+| :--------------------: | :----: | :--: | :------: |
+| **データベースの種類** |  RDB   | RDB  |  NoSQL   |
+
+
+
+### ElastiCache
+
+| Redis  | Memcached |
+| ------ | --------- |
+| 要学習 | 要学習    |
+| 要学習 | 要学習    |
+| 要学習 | 要学習    |
 
 
 
@@ -519,7 +536,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 | 項目           | 内容                                                         |
 | -------------- | ------------------------------------------------------------ |
-| タスクの数     | タスクの構築数をいくつに維持するかを設定．タスクが何らかの原因で停止した場合，空いているリソースを使用して，タスクが自動的に補填される． |
+| タスクの数     | タスクの構築数をいくつに維持するかを設定．タスクが何らかの原因で停止した場合，空いているAWSサービスを使用して，タスクが自動的に補填される． |
 | デプロイメント | ローリングアップデートと，Blue/Greenデプロイがある．         |
 
 #### ・ローリングアップデートとは
@@ -548,7 +565,99 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 ## 04. IAM：Identify and Access Management
 
-### ユーザ
+### IAMポリシー，IAMステートメント
+
+#### ・IAMポリシーとは
+
+実行権限のあるアクションが定義されたIAMステートメントのセットを持つ，JSON型オブジェクトデータのこと．
+
+**【具体例】**
+
+以下に，EC2の読み出しのみ権限（```AmazonEC2ReadOnlyAccess```）を付与できるポリシーを示す．このIAMポリシーには，他のAWSサービスに対する権限も含まれている．
+
+```yaml
+# AmazonEC2ReadOnlyAccess
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "elasticloadbalancing:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:ListMetrics",
+                "cloudwatch:GetMetricStatistics",
+                "cloudwatch:Describe*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "autoscaling:Describe*",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+####  ・IAMステートメントとは
+
+実行権限のあるアクションを定義した，JSON型オブジェクトデータのこと．
+
+**【具体例】**
+
+以下に，```AmazonEC2ReadOnlyAccess```に含まれるIAMステートメントの一つを示す．```elasticloadbalancing:XXX```を用いて，ELBに対する実行権限を定義できる．ここでは，```Describe```の文字から始まるアクションの権限が与えられている．
+
+```yaml
+{
+# ~~~ 省略 ~~~
+    "Statement": [    
+        {
+            "Effect": "Allow",
+            "Action": "elasticloadbalancing:Describe*",
+            "Resource": "*"
+        },
+    ]
+# ~~~ 省略 ~~~
+}
+```
+
+以下に，```Describe```の文字から始まるアクションをいくつか示す．
+
+
+| アクション名                | 権限                                                         | アクセスレベル |
+| --------------------------- | ------------------------------------------------------------ | -------------- |
+| ```DescribeLoadBalancers``` | 指定されたロードバランサーの説明を表示できる．               | 読み出し       |
+| ```DescribeRules```         | 指定されたルール，または指定されたリスナーのルールの説明を表示できる． | 読み出し       |
+| ```DescribeTargetGroups```  | 指定されたターゲットグループまたはすべてのターゲットグループの説明を表示できる． | 読み出し       |
+
+
+
+### IAMポリシーを付与できる対象
+
+#### ・IAMユーザに対する付与
+
+![IAMユーザにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMユーザにポリシーを付与.jpeg)
+
+#### ・IAMグループに対する付与
+
+![IAMグループにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMグループにポリシーを付与.jpeg)
+
+#### ・IAMロールに対する付与
+
+![IAMロールにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMロールにポリシーを付与.jpeg)
+
+
+
+### ルートユーザ，IAMユーザ
 
 #### ・ルートユーザとは
 
@@ -558,29 +667,24 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 特定の権限をもったアカウントのこと．
 
-### グループ
+### IAMグループ
 
-#### ・グループとは
+#### ・IAMグループとは
 
-IAMユーザをグループ化したもの．グループごとにロールを付与すれば，IAMユーザのロールを管理しやすくなる．
+IAMユーザをグループ化したもの．IAMグループごとにIAMロールを付与すれば，IAMユーザのIAMロールを管理しやすくなる．
 
 ![グループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループ.png)
 
-### ロール
+### IAMロール
 
-#### ・ロールとは
+#### ・IAMロールとは
 
-#### ・ロールを付与する方法
+IAMポリシーのセットを持つ
 
-まず，グループに対して，ロールを紐づける．そのグループに対して，ロールを付与したいIAMユーザを追加していく．
+#### ・IAMロールを付与する方法
+
+まず，IAMグループに対して，IAMロールを紐づける．そのIAMグループに対して，IAMロールを付与したいIAMユーザを追加していく．
 
 ![グループに所属するユーザにロールを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループに所属するユーザにロールを付与.png)
-
-
-
-### ポリシー
-
-#### ・ポリシーとは
-
 
 
