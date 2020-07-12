@@ -2423,9 +2423,24 @@ class requiredTime
 
 自動的に値が格納されている定数．
 
+#### ・```__DIR__```
+
+この定数がコールされたファイルが設置されたディレクトリのパスが，ルートディレクトリ基準で格納されている．
+
+**【実装例】**
+
+以下の実装を持つファイルを，「```/var/www/app```」下に置いておき，「```/vendor/autoload.php```」と結合してパスを通す．
+
+```php
+# /var/www/app/vendor/autoload.php
+require_once realpath(__DIR__ . '/vendor/autoload.php');
+```
+
 #### ・```__FUNCTION__```
 
 この定数がコールされたメソッド名が格納されている．
+
+**【実装例】**
 
 ```PHP
 class ExampleA
@@ -2445,6 +2460,8 @@ $example->a(); // a が返却される．
 #### ・```__METHOD__```
 
 この定数がコールされたクラス名とメソッド名が，```{クラス名}::{メソッド名}```の形式で格納されている．
+
+**【実装例】**
 
 ```PHP
 class ExampleB
