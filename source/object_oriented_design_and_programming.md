@@ -703,14 +703,50 @@ class ModuleB
 
 
 
-### DI Container（依存性注入コンテナ）
+### DI Container（依存性注入コンテナ），Service Container
 
-サプライヤー側をグローバル変数のように扱い，クライアント側のインスタンスに自動的に注入できる実装方法．例えば，Symfonyでは，```__construct()```でLoggerInterfaceを記述するだけで，クライアント側のインスタンス内にLoggerInterfaceが自動的に渡される．コンテナへの登録ファイル，インスタンスへのコンテナ渡しのファイルを実装する．
+#### ・DI Container（依存性注入コンテナ），Service Containerとは
+
+サービスコンテナともいう．名前を宣言しただけで新しいインスタンスを提供してくれるインスタンス生成専用クラスのこと．
 
 **【実装例】**
 
 ```PHP
+use Pimple\Container;
 
+use XxxLogger;
+use YyyNotification;
+
+class Container
+{
+    public function __construct()
+    {
+        $container['xxx.logger'] = function ($container) {
+            return new XxxLogger();
+        };
+        
+        $container['yyy.notification'] = function ($container) {
+            return new YyyNotification();
+        };
+        
+        $container['sample'] = function ($container) {
+            return new Sample($container['xxx.logger'], $container['yyy.notification']);
+        };
+    }
+}
+```
+
+```PHP
+// autoload.php で，DIコンテナ自体のインスタンスを事前に生成．
+$container = new Container();
+```
+
+```PHP
+// DIコンテナの読み込み
+require_once __DIR__ . '/autoload.php';
+
+// クラス名を宣言．
+$sample = $container['sample'];
 ```
 
 #### ・アンチパターンのService Locater Pattern
@@ -720,7 +756,18 @@ class ModuleB
 **【実装例】**
 
 ```PHP
-
+class Sample
+{
+    public function __construct($container)
+    {
+        $this->logger            = $container['xxx.logger'];
+        $this->notification      = $container['yyy.notification'];
+    }
+}
+```
+```PHP
+// DIコンテナ自体をインジェクションしてしまうと，不要なインスタンスにも依存してしまう．
+$sample = new Sample($container);
 ```
 
 
