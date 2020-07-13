@@ -1,7 +1,7 @@
 #=============
 # Input Value
 #=============
-// App Name
+// App Info
 variable "app_name" {}
 
 #======

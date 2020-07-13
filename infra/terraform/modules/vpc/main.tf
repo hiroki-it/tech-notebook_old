@@ -4,7 +4,7 @@
 // AWS認証情報
 variable "region" {}
 
-// App Name
+// App Info
 variable "app_name" {}
 
 // VPC
