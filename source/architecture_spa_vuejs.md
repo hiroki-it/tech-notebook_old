@@ -882,7 +882,7 @@ module.exports = {
 ```javascript
 class Staff {
   
-  
+    //-- JSON型で渡すとJavaScriptのオブジェクトに変換 --//
     constructor(properties) {
         this.id   = properties.id;
         this.name = properties.name;
@@ -891,6 +891,7 @@ class Staff {
   
     //-- デシリアライズ（JSONからJavaScriptへ） --//
     static deserializeStaff(data) {
+       // JSON型データを自身に渡して変換
        return new Staff({
             id: data.id,
             name: data.name
@@ -904,6 +905,7 @@ class Staff {
         const query = {}
         // ID
         if (criteria.id) {
+          // JSON型オブジェクトが生成される．
           query.id = _.trim(criteria.id);
         }
         // 氏名
