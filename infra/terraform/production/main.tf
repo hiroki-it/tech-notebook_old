@@ -6,8 +6,10 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "region" {}
 
-// App Name
+// App Info
 variable "app_name" {}
+variable "app_domain_name" {}
+variable "app_sub_domain_name" {}
 
 // VPC
 variable "vpc_cidr_block" {}
@@ -17,28 +19,29 @@ variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
 
 // Security Group
-variable "sg_inbound_cidr_block" {}
-variable "sg_outbound_cidr_block" {}
+variable "security_group_inbound_cidr_block" {}
+variable "security_group_outbound_cidr_block" {}
 
 // Internet Gateway
 variable "igw_cidr_block" {}
-
-// Route53
-variable "r53_domain_name" {}
-variable "r53_record_set_name" {}
 
 // ECS
 variable "ecs_task_size_cpu" {}
 variable "ecs_task_size_memory" {}
 
 // Port
-variable "port_http" {}
-variable "port_https" {}
+variable "port_http_blue" {}
+variable "port_http_green" {}
+variable "port_https_blue" {}
+variable "port_https_green" {}
 variable "port_ssh" {}
 
 // Key Pair
 variable "key_name" {}
 variable "public_key_path" {}
+
+// certificate
+variable "ssl_policy" {}
 
 #============
 # AWS認証情報
@@ -53,7 +56,7 @@ provider "aws" {
 # Roles
 #========
 module "roles_module" {
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/roles"
 }
 
@@ -62,7 +65,7 @@ module "roles_module" {
 #======
 module "vpc_module" {
 
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/vpc"
 
   region                      = var.region
@@ -78,18 +81,19 @@ module "vpc_module" {
 #=================
 module "security_group_module" {
 
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/security_group"
 
-  // 他のモジュールの出力値を渡す.
+  // 他のモジュールの出力値を渡す
   vpc_id = module.vpc_module.vpc_id
 
-  sg_inbound_cidr_block  = var.sg_inbound_cidr_block
-  sg_outbound_cidr_block = var.sg_outbound_cidr_block
-  app_name               = var.app_name
-  port_http              = var.port_http
-  port_https             = var.port_https
-  port_ssh               = var.port_ssh
+  security_group_inbound_cidr_block  = var.security_group_inbound_cidr_block
+  security_group_outbound_cidr_block = var.security_group_outbound_cidr_block
+  app_name                           = var.app_name
+  port_http_blue                     = var.port_http_blue
+  port_http_green                    = var.port_http_green
+  port_https                         = var.port_https_blue
+  port_ssh                           = var.port_ssh
 }
 
 #======
@@ -97,18 +101,23 @@ module "security_group_module" {
 #======
 module "alb_module" {
 
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/alb"
 
-  // 他のモジュールの出力値を渡す.
-  vpc_id                = module.vpc_module.vpc_id
-  subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
-  subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
-  security_group_alb_id = module.security_group_module.security_group_alb_id
+  // 他のモジュールの出力値を渡す
+  vpc_id                                = module.vpc_module.vpc_id
+  subnet_public_1a_id                   = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id                   = module.vpc_module.subnet_public_1c_id
+  security_group_alb_id                 = module.security_group_module.security_group_alb_id
+  acm_certificate_arn                   = module.acm_certificate_module.acm_certificate_arn
+  acm_certificate_validation_dependency = module.acm_certificate_module.acm_certificate_validation_dependency
 
-  app_name   = var.app_name
-  port_http  = var.port_http
-  port_https = var.port_https
+  app_name         = var.app_name
+  port_http_blue   = var.port_http_blue
+  port_http_green  = var.port_http_green
+  port_https_blue  = var.port_https_blue
+  port_https_green = var.port_https_green
+  ssl_policy       = var.ssl_policy
 }
 
 #==========
@@ -121,10 +130,11 @@ module "route53_module" {
 
   // 他のモジュールの出力値を渡す.
   alb_dns_name = module.alb_module.alb_dns_name
-  alb_zone_id  = module.alb_module.alb_zone_id
+  vpc_id       = module.vpc_module.vpc_id
 
-  r53_domain_name     = var.r53_domain_name
-  r53_record_set_name = var.r53_record_set_name
+  app_domain_name     = var.app_domain_name
+  app_sub_domain_name = var.app_sub_domain_name
+  region              = var.region
 }
 
 #======
@@ -132,7 +142,7 @@ module "route53_module" {
 #======
 module "ecr_module" {
 
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/ecr"
 
   app_name = var.app_name
@@ -143,12 +153,12 @@ module "ecr_module" {
 #======
 module "ecs_module" {
 
-  // モジュールのResourceを参照.
+  // モジュールのResourceを参照
   source = "../modules/ecs"
 
-  // 他のモジュールの出力値を渡す.
+  // 他のモジュールの出力値を渡す
   ecs_task_execution_role_arn = module.roles_module.ecs_task_execution_role_arn
-  alb_target_group_arn        = module.alb_module.alb_target_group_arn
+  alb_target_group_arn        = module.alb_module.alb_target_group_blue_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
   security_group_ecs_id       = module.security_group_module.security_group_ecs_id
@@ -156,14 +166,47 @@ module "ecs_module" {
   app_name             = var.app_name
   ecs_task_size_cpu    = var.ecs_task_size_cpu
   ecs_task_size_memory = var.ecs_task_size_memory
-  port_http            = var.port_http
+  port_http            = var.port_http_blue
+}
+
+#=============
+# CodeDeploy
+#=============
+module "codedeploy_module" {
+  // モジュールのResourceを参照
+  source = "../modules/codedeploy"
+
+  // 他のモジュールの出力値を渡す
+  alb_listener_blue_arn           = module.alb_module.alb_listener_blue_arn
+  alb_target_group_blue_name      = module.alb_module.alb_target_group_blue_name
+  alb_target_group_green_name     = module.alb_module.alb_target_group_green_name
+  codedeployment_role_for_ecs_arn = module.roles_module.codedeployment_role_for_ecs_arn
+  ecs_cluster_name                = module.ecs_module.ecs_cluster_name
+  ecs_service_name                = module.ecs_module.ecs_service_name
+
+  app_name = var.app_name
 }
 
 #==================
 # CloudWatch Logs
 #==================
-module "cloudwatch_logs" {
-  source = "../modules/cloud_watch_logs"
+module "cloudwatch_logs_module" {
+  source = "../modules/cloudwatch_logs"
+}
+
+#================
+# Certificate
+#================
+module "acm_certificate_module" {
+  // モジュールのResourceを参照
+  source = "../modules/acm_certificate"
+
+  // 他のモジュールの出力値を渡す
+  route53_record_fqdn       = module.route53_module.route53_record_fqdn
+  route53_zone_id           = module.route53_module.route53_zone_id
+
+  app_domain_name     = var.app_domain_name
+  app_sub_domain_name = var.app_sub_domain_name
 }
 
 #=============
