@@ -1,27 +1,36 @@
 #=============
 # Input Value
 #=============
-variable "r53_domain_name" {}
-variable "r53_record_set_name" {}
+// App Info
+variable "app_domain_name" {}
+variable "app_sub_domain_name" {}
+variable "region" {}
+
+// VPC
+variable "vpc_id" {}
+
+// ALB
 variable "alb_dns_name" {}
-variable "alb_zone_id" {}
 
 #==========
 # Route53
 #==========
-resource "aws_route53_zone" "r53_zone" {
-  name = var.r53_domain_name
-}
+// ホストゾーン
+resource "aws_route53_zone" "route53_zone" {
+  name = var.app_domain_name
 
-resource "aws_route53_record" "r53_record" {
-  zone_id = aws_route53_zone.r53_zone.id
-  name    = var.r53_record_set_name
-  type    = "A"
-
-  // ルーティング先のリソース情報
-  alias {
-    name                   = var.alb_dns_name
-    zone_id                = var.alb_zone_id
-    evaluate_target_health = false
+  vpc {
+    vpc_id     = var.vpc_id
+    vpc_region = var.region
   }
+}
+// レコードセット
+resource "aws_route53_record" "route53_record" {
+  zone_id = aws_route53_zone.route53_zone.id
+  name    = "${var.app_sub_domain_name}.${var.app_domain_name}"
+  type    = "CNAME"
+  ttl     = 300
+
+  // ルーティング先のDNS名
+  records = [var.alb_dns_name]
 }
