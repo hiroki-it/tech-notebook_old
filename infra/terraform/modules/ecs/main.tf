@@ -1,7 +1,7 @@
 #=============
 # Input Value
 #=============
-// App Name
+// App Info
 variable "app_name" {}
 
 // Subnet
@@ -44,6 +44,11 @@ resource "aws_ecs_service" "ecs_service" {
   desired_count    = "1"
   platform_version = "LATEST"
 
+  // デプロイメント
+  deployment_controller {
+    type = "CODE_DEPLOY" // Blue/Greenデプロイメント
+  }
+
   // ロードバランシング
   load_balancer {
     target_group_arn = var.alb_target_group_arn
@@ -62,17 +67,13 @@ resource "aws_ecs_service" "ecs_service" {
 # ECS Task Definition
 #======================
 resource "aws_ecs_task_definition" "ecs_task_definition" {
-
-  // ファミリーにリビジョン番号がついてタスク定義名．
-  family                   = "${var.app_name}-ecs-task-definition"
+  family                   = "${var.app_name}-ecs-task-definition" // ファミリーにリビジョン番号がついてタスク定義名
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = var.ecs_task_execution_role_arn
-  // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定．
-  cpu    = var.ecs_task_size_cpu
-  memory = var.ecs_task_size_memory
-  // 引数パスはルートモジュール基準．
-  container_definitions = file("container_definition.json")
+  cpu                      = var.ecs_task_size_cpu // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定
+  memory                   = var.ecs_task_size_memory
+  container_definitions    = file("container_definition.json") // 引数パスはルートモジュール基準
 }
 
 #====================
