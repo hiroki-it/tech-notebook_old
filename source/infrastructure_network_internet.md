@@ -171,9 +171,11 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 ```
 
-#### ・各部品の様々な組み合わせ
+#### ・サブドメイン名
 
-![ホスト名とドメイン名の組み合わせの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ホスト名とドメイン名の組み合わせの種類.gif)
+ドメイン名の子関係にある名前．ホスト名（以下では省略されている）と，ドメイン名の間につける．
+
+![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サブドメイン.png)
 
 
 
