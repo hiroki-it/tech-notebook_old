@@ -202,18 +202,16 @@ Slackware
 
 #### ・findとは
 
-ファイルを検索するためのユーティリティ．
+ファイルを検索するためのユーティリティ．アスタリスクを付けなくとも，自動的にワイルドカードが働く．
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもつファイルを全て検索．
-# コマンド実行時のエラーを表示しない場合は，2>/dev/null をつける．
-$ find /* -type f |xargs grep 'example' 2>/dev/null
+$ find /* -type f |xargs grep "example"
 ```
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
-# コマンド実行時のエラーを表示しない場合は， 2>/dev/null をつける．
-$ find /* -name '*.conf' -type f |xargs grep 'example' 2>/dev/null
+$ find /* -name "*.conf" -type f | xargs grep "example"
 ```
 
 

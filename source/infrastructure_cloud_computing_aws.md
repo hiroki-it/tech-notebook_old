@@ -140,8 +140,7 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 #### ・CloudWatch Logs
 
 ```bash
-aws cloudwatch set-alarm-state --alarm-name "Warning Alarm" --state-value ALARM --state-reason "アラームテスト"
-
+aws cloudwatch set-alarm-state --alarm-name "Alarm名" --state-value ALARM --state-reason "アラーム文言"
 ```
 
 #### ・CloudWatch Logs（＝ ログ収集サーバ）
