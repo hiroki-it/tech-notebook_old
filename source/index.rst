@@ -88,6 +88,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: データベース
 
    backend_database_operation.md
+   backend_database_sql.md
 
 .. toctree::
    :maxdepth: 1
