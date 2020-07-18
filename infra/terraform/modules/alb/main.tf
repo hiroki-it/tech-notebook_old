@@ -21,7 +21,6 @@ variable "port_https_blue" {}
 variable "port_https_green" {}
 
 // certificate
-variable "acm_certificate_validation_dependency" {}
 variable "acm_certificate_arn" {}
 variable "ssl_policy" {}
 
@@ -47,10 +46,14 @@ resource "aws_lb_target_group" "alb_target_group_blue" {
 
   // ヘルスチェック
   health_check {
+    path                = "/"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 5
     interval            = 10
+    matcher             = 200
+    port                = var.port_http_blue
+    protocol            = "HTTP"
   }
 
   depends_on = [aws_lb.alb]
@@ -65,10 +68,14 @@ resource "aws_lb_target_group" "alb_target_group_green" {
 
   // ヘルスチェック
   health_check {
+    path                = "/"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 5
     interval            = 10
+    matcher             = 200
+    port                = var.port_http_green
+    protocol            = "HTTP"
   }
 
   depends_on = [aws_lb.alb]
@@ -89,8 +96,6 @@ resource "aws_lb_listener" "lb_listener_blue" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group_blue.arn
   }
-
-  depends_on = [var.acm_certificate_validation_dependency]
 }
 
 resource "aws_lb_listener" "lb_listener_green" {
@@ -105,6 +110,4 @@ resource "aws_lb_listener" "lb_listener_green" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group_green.arn
   }
-
-  depends_on = [var.acm_certificate_validation_dependency]
 }
