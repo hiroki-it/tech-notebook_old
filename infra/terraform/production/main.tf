@@ -43,13 +43,14 @@ variable "public_key_path" {}
 // certificate
 variable "ssl_policy" {}
 
-#============
+#=============
 # AWS認証情報
-#============
+#=============
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.region
+  version    = "~> 2.7" // プロバイダーのバージョンの変更時は，initを実行
 }
 
 #========
@@ -105,12 +106,11 @@ module "alb_module" {
   source = "../modules/alb"
 
   // 他のモジュールの出力値を渡す
-  vpc_id                                = module.vpc_module.vpc_id
-  subnet_public_1a_id                   = module.vpc_module.subnet_public_1a_id
-  subnet_public_1c_id                   = module.vpc_module.subnet_public_1c_id
-  security_group_alb_id                 = module.security_group_module.security_group_alb_id
-  acm_certificate_arn                   = module.acm_certificate_module.acm_certificate_arn
-  acm_certificate_validation_dependency = module.acm_certificate_module.acm_certificate_validation_dependency
+  vpc_id                = module.vpc_module.vpc_id
+  subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
+  security_group_alb_id = module.security_group_module.security_group_alb_id
+  acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
 
   app_name         = var.app_name
   port_http_blue   = var.port_http_blue
@@ -202,9 +202,9 @@ module "acm_certificate_module" {
   source = "../modules/acm_certificate"
 
   // 他のモジュールの出力値を渡す
-  route53_record_fqdn       = module.route53_module.route53_record_fqdn
-  route53_zone_id           = module.route53_module.route53_zone_id
+  route53_zone_id = module.route53_module.route53_zone_id
 
+  app_name            = var.app_name
   app_domain_name     = var.app_domain_name
   app_sub_domain_name = var.app_sub_domain_name
 }
