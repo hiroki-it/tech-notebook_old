@@ -75,8 +75,7 @@ workflows:
             branches:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
-                - feature/update_circleci_config
-                - feature/update_dockerfile
+                - feature/update_infrastructure
       # Update AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
