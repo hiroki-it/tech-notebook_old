@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.9.0
   aws-ecs: circleci/aws-ecs@1.2.0
+  aws-code-deploy: circleci/aws-code-deploy@1.0.1
 
 # ジョブの設定
 jobs:
@@ -69,14 +70,14 @@ workflows:
   version: 2.1
   build-push:
     jobs:
-      # Update Docker Hub
+      # Deploy Image To Docker Hub
       - push-images:
           filters:
             branches:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_infrastructure
-      # Update AWS ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
           dockerfile: infra/docker/builder/Dockerfile
@@ -86,7 +87,7 @@ workflows:
           tag: ${CIRCLE_SHA1}
           requires:
             - build
-      # Update AWS ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
+      # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
           dockerfile: infra/docker/www/Dockerfile
@@ -99,7 +100,18 @@ workflows:
       - build:
           requires:
             - push-images
-      # Update AWS ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
+      # Deploy Source Code
+      - aws-code-deploy/deploy:
+          name: deploy-source-code
+          application-name: ${APP_NAME}
+          bundle-bucket: "${APP_NAME}-bucket"
+          bundle-key: "${CIRCLE_SHA1}.zip"
+          deployment-group: "${APP_NAME}-deployment-group"
+          service-role-arn: ${USER_CIRCLECI_ARN}
+          requires:
+            - build-and-push-image-builder
+            - build-and-push-image-www
+      # Deploy Service To ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-builder
           family: "${APP_NAME}-ecs-task-definition"
@@ -107,9 +119,8 @@ workflows:
           service-name: "${APP_NAME}-ecs-service"
           container-image-name-updates: "container=builder-container,tag=${CIRCLE_SHA1}"
           requires:
-            - build-and-push-image-builder
-            - build-and-push-image-www
-      # Update AWS ECS www
+            - deploy-source-code
+      # Deploy Service To ECS www
       - aws-ecs/deploy-service-update:
           name: deploy-service-update-www
           family: "${APP_NAME}-ecs-task-definition"
@@ -117,9 +128,8 @@ workflows:
           service-name: "${APP_NAME}-ecs-service"
           container-image-name-updates: "container=www-container,tag=${CIRCLE_SHA1}"
           requires:
-            - build-and-push-image-builder
-            - build-and-push-image-www
-      # Run AWS ECS
+             - deploy-source-code
+      # Run Fargate
       - aws-ecs/run-task:
           name: run-task-fargate
           cluster: "${APP_NAME}-ecs-cluster"
