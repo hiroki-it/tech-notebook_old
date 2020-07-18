@@ -64,6 +64,14 @@ jobs:
           name: Clean up html
           command: |
             make clean
+            
+  deploy-source-code:
+    machine: true
+    steps:
+      - aws-code-deploy/push-bundle:
+          application-name: ${APP_NAME}
+          bundle-bucket: "${APP_NAME}-bucket"
+          bundle-key: "${CIRCLE_SHA1}.zip"
 
 # 実行の順番を定義
 workflows:
@@ -102,11 +110,7 @@ workflows:
           requires:
             - build
       # Deploy Source Code
-      - aws-code-deploy/push-bundle:
-          name: deploy-source-code
-          application-name: ${APP_NAME}
-          bundle-bucket: "${APP_NAME}-bucket"
-          bundle-key: "${CIRCLE_SHA1}.zip"
+      - deploy-source-code:
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
