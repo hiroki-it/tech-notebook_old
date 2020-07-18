@@ -77,6 +77,10 @@ workflows:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_infrastructure
+      # Build Html
+      - build:
+          requires:
+            - push-images
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
@@ -97,17 +101,12 @@ workflows:
           tag: ${CIRCLE_SHA1}
           requires:
             - build
-      - build:
-          requires:
-            - push-images
       # Deploy Source Code
-      - aws-code-deploy/deploy:
+      - aws-code-deploy/push-bundle:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-key: "${CIRCLE_SHA1}.zip"
-          deployment-group: "${APP_NAME}-deployment-group"
-          service-role-arn: ${USER_CIRCLECI_ARN}
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
