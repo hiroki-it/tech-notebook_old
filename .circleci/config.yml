@@ -108,7 +108,7 @@ workflows:
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-key: "${CIRCLE_SHA1}.zip"
           deployment-config: CodeDeployDefault.ECSAllAtOnce
-          deployment-group: "tech-notebook-deployment-group"
+          deployment-group: "${APP_NAME}-deployment-group"
           service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
           requires:
             - build-and-push-image-builder
