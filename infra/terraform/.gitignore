@@ -4,7 +4,7 @@
 production/.terraform/*
 modules/acm_certificate/*
 modules/security_group/*
-modules/roles/*
+modules/service_role/*
 
 #============
 # File
