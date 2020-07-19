@@ -106,6 +106,7 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
+          bundle-source: .
           bundle-key: "${CIRCLE_SHA1}.zip"
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
