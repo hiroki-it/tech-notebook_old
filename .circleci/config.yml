@@ -43,7 +43,7 @@ jobs:
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
-  build:
+  make-html:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
@@ -56,7 +56,7 @@ jobs:
       - checkout
       - run:
           # Htmlの生成
-          name: Build html
+          name: Make html
           command: |
             make html
       - run:
@@ -77,11 +77,10 @@ workflows:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_infrastructure
-      # Build Html
-      - build:
+      # Make Html
+      - make-html:
           requires:
             - push-images
-
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
@@ -91,7 +90,7 @@ workflows:
           create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
-            - build
+            - make-html
       # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
@@ -101,7 +100,7 @@ workflows:
           create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
-            - build
+            - make-html
       # Deploy Source Code
       - aws-code-deploy/deploy:
           name: deploy-source-code
@@ -109,7 +108,7 @@ workflows:
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-key: "${CIRCLE_SHA1}.zip"
           deployment-group: "${APP_NAME}-deployment-group"
-          service-role-arn: ${USER_CIRCLECI_ARN}
+          service-role-arn: ${CODE_DEPLOY_ROLE_ARN}
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
