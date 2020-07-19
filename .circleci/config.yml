@@ -107,8 +107,9 @@ workflows:
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-key: "${CIRCLE_SHA1}.zip"
+          deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
-          service-role-arn: ${ECS_SERVICE_ROLE_ARN}
+          service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
