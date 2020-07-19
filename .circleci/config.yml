@@ -64,14 +64,6 @@ jobs:
           name: Clean up html
           command: |
             make clean
-            
-  deploy-source-code:
-    machine: true
-    steps:
-      - aws-code-deploy/push-bundle:
-          application-name: ${APP_NAME}
-          bundle-bucket: "${APP_NAME}-bucket"
-          bundle-key: "${CIRCLE_SHA1}.zip"
 
 # 実行の順番を定義
 workflows:
@@ -89,6 +81,7 @@ workflows:
       - build:
           requires:
             - push-images
+
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
@@ -110,7 +103,13 @@ workflows:
           requires:
             - build
       # Deploy Source Code
-      - deploy-source-code:
+      - aws-code-deploy/deploy:
+          name: deploy-source-code
+          application-name: ${APP_NAME}
+          bundle-bucket: "${APP_NAME}-bucket"
+          bundle-key: "${CIRCLE_SHA1}.zip"
+          deployment-group: "${APP_NAME}-deployment-group"
+          service-role-arn: ${USER_CIRCLECI_ARN}
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
