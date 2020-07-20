@@ -159,18 +159,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class createExampleCommand extends \Symfony\Component\Console\Command\Command
 {
-  // オプションの設定
+    // オプションの設定
     protected function configure()
     {
         // コマンド名
         $this->setName('create:example');
-    
+
         // コマンド名の後に追加したい引数名
         $this->addArgument(
           'year-month',
           InputArgument::REQUIRED,
           '処理年月を設定してください．'
-        )
+        );
     }
   
     // コマンドの処理内容
@@ -185,8 +185,8 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
         
         } catch (\Exception $e) {
             // エラーログの文章を作成
-  }  
-  
+        }
+    }
 }
 ```
 
