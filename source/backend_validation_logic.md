@@ -35,6 +35,8 @@
 
 #### ・```if```-```elseif```-```else```
 
+**【実装例】**
+
 ```PHP
 // 変数に Tue を格納
 $weeks = 'Tue';
@@ -63,6 +65,8 @@ if ($weeks == 'Mon') {
 #### ・```switch```-```case```-```break```
 
 定数ごとに処理が変わる時，こちらの方が可読性が高い．
+
+**【実装例】**
 
 ```PHP
 // 変数に Tue を格納
@@ -107,6 +111,8 @@ switch ($weeks) {
 
 可読性が悪いため，避けるべき．
 
+**【実装例】**
+
 ```PHP
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
@@ -148,6 +154,8 @@ function ()
 
 よりすっきりした書き方になる．
 
+**【実装例】**
+
 ```PHP
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
@@ -181,6 +189,8 @@ function ($result)
 #### ・初期値と上書きのロジックを用いた場合
 
 よりすっきりした書き方になる．
+
+**【実装例】**
 
 ```PHP
 // マジックナンバーを使わずに，定数として定義
@@ -241,6 +251,8 @@ function ($result)
 
 可読性が悪いため，避けるべき．
 
+**【実装例】**
+
 ```PHP
 // 西暦を格納する．
 $year = N;
@@ -276,6 +288,8 @@ public function leapYear(Int $year): String
 #### ・```if```と```return```を用いた早期リターン
 
 ```return```を用いることで，```if```が入れ子状になることを防ぐことができる．これを，早期リターンともいう．
+
+**【実装例】**
 
 ```PHP
 // 西暦を格納する．
@@ -315,6 +329,8 @@ public function leapYear(Int $year): String
 
 ```switch```-```case```-```break```によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，```break```ではなく```return```を用いている．
 
+**【実装例】**
+
 ```PHP
 public function leapYear(Int $year): String
 {   
@@ -348,6 +364,8 @@ public function leapYear(Int $year): String
 
 早期リターンのif文の波括弧を省略した記法を，ガード節という．
 
+**【実装例】**
+
 ```PHP
 public function leapYear(Int $year): String
 {
@@ -379,6 +397,8 @@ public function leapYear(Int $year): String
 
 同じオブジェクトから別々に作られたインスタンスであっても，『同じもの』として認識される．
 
+**【実装例】**
+
 ```PHP
 class Example {};
 
@@ -394,6 +414,8 @@ if(new Example == new Example){
 
 同じオブジェクトから別々に作られたインスタンスであっても，『異なるもの』として認識される．
 
+**【実装例】**
+
 ```PHP
 class Example {};
 
@@ -406,6 +428,8 @@ if(new Example === new Example){
 ```
 
 同一のインスタンスの場合のみ，『同じもの』として認識される．
+
+**【実装例】**
 
 ```PHP
 class Example {};
@@ -422,13 +446,13 @@ if($a === $b){
 
 
 
-
-
-## 03. 例外
+## 03. 例外処理とロギング
 
 ### 例外クラスと例外スロー
 
 #### ・Exceptionクラスを継承した独自例外クラス
+
+**【実装例】**
 
 ```PHP
 // HttpRequestに対処する例外クラス
@@ -452,6 +476,8 @@ class HttpRequestException extends Exception
 
 特定の処理の中に，想定できる例外があり，それをエラー文として出力するために用いる．ここでは，全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている．
 
+**【実装例】**
+
 ```PHP
 if (empty($value)) {
     throw new Exception('Variable is empty');
@@ -464,7 +490,11 @@ return $value;
 
 ### ```try```-```catch```文
 
-特定の処理の中に，想定できない例外があり，それをエラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．
+#### ・単なる```if```-```throw```文との違い
+
+何らかの処理の合間全てに```if```-```throw```を行うと，様々な可能性を考慮しなければいけなくなる．そこで，特定の処理の中で起こる想定できない例外を捉え，エラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．
+
+**【実装例】**
 
 ```PHP
 // Exceptionを投げる
@@ -504,17 +534,7 @@ try{
 
 以下，上記で使用した独自の例外クラス．
 
-```PHP
-// HttpRequestに対処する例外クラス
-class HttpRequestException extends Exception
-{
-    // インスタンスが作成された時に実行される処理
-    public function __construct()
-    {
-        parent::__construct("HTTPリクエストに失敗しました", 400);
-    }
-}
-```
+**【実装例】**
 
 ```PHP
 // HttpRequestに対処する例外クラス
@@ -528,6 +548,58 @@ class HttpRequestException extends Exception
 }
 ```
 
+```PHP
+// HttpRequestに対処する例外クラス
+class HttpRequestException extends Exception
+{
+    // インスタンスが作成された時に実行される処理
+    public function __construct()
+    {
+        parent::__construct("HTTPリクエストに失敗しました", 400);
+    }
+}
+```
 
 
-## 03-02. ログの出力
+
+### ロギング
+
+#### ・外部APIとの接続時に必要なロギング
+
+例えば，メッセージアプリのAPIに対してメッセージ生成のリクエストを送信する時，例外処理に合わせて，外部APIとの接続失敗によるエラーログを生成と，自社システムなどその他原因によるエラーログを生成を行う必要がある．
+
+**【実装例】**
+
+```php
+/**
+ * @param message $message
+ * @return bool
+ * @throws CouldNotSendMessageException
+ */
+public function sendMessage(Message $message)
+{
+    // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
+
+    try {
+            
+        // 外部APIのためのリクエストメッセージを生成．
+        // 外部APIのURL，送信方法，トークンなどのパラメータを設定．
+
+    } catch (ClientException $e) {
+            
+        // 外部APIとの接続失敗によるエラーログを生成
+
+        throw new CouldNotSendNotificationException();
+            
+    } catch (\Exception $e) {
+            
+        // 自社システムなどその他原因によるエラーログを生成
+            
+        throw new CouldNotSendNotMessageException();
+     }
+    
+    // 問題なければTRUEを返却．
+    return true;
+}
+```
+
