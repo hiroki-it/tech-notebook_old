@@ -175,7 +175,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ドメイン名の子関係にある名前．ホスト名（以下では省略されている）と，ドメイン名の間につける．
 
-![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サブドメイン.png)
+![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サブドメイン.png)
 
 
 

@@ -32,7 +32,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 ## 03. CircleCI
 
-### 設定ファイルの参考リンク
+### 設定ファイルの参考ドキュメント
 
 https://circleci.com/docs/ja/2.0/configuration-reference/
 
@@ -263,9 +263,13 @@ workflows:
 
 ```yaml
 steps:
+   # composer.jsonが変更されている場合は処理をスキップ．
    - restore_cache:
-     key: # ファイル内容が変更されている場合は処理をスキップ．
+     key:
        - v1-dependecies-{{ checksum composer.json }}
+   # 取得したcomposer.jsonを元に，差分のvendorをインストール
+   - run: composer install
+   # 最新のvendorを保存
    - save_cache:
      key: v1-dependecies-{{ checksum composer.json }}
      paths:
@@ -280,11 +284,17 @@ steps:
 commands:
   restore_vendor:
     steps:
+      # composer.jsonが変更されている場合は処理をスキップ．
       - restore_cache:
-          key:　# ファイル内容が変更されている場合は処理をスキップ．
+          key:
             - v1-dependecies-{{ checksum composer.json }}
+  # 取得したcomposer.jsonを元に，差分のvendorをインストール
+  install_vendor:
+     steps:
+       - run: composer install
   save_vendor:
     steps:
+      # 最新のvendorを保存
       - save_cache:
           key: v1-dependecies-{{ checksum composer.json }}
           paths:
