@@ -106,8 +106,8 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: infra/aws_codedeploy/
-          bundle-key: "${CIRCLE_SHA1}.zip"
+          bundle-source: .
+          bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
           service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
