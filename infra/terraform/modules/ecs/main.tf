@@ -82,7 +82,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 // スケジュールルール
 resource "aws_cloudwatch_event_rule" "cloudwatch_event_rule_ecs" {
   name                = "builder-event-rule"
-  description         = "Build Html"
+  description         = "Make Html"
   schedule_expression = "cron(0 20 * * ? *)"
 }
 
