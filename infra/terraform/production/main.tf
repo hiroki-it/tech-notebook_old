@@ -58,7 +58,7 @@ provider "aws" {
 #========
 module "roles_module" {
   // モジュールのResourceを参照
-  source = "../modules/roles"
+  source = "../modules/service_role"
 }
 
 #======
@@ -183,6 +183,15 @@ module "codedeploy_module" {
   codedeployment_role_for_ecs_arn = module.roles_module.codedeployment_role_for_ecs_arn
   ecs_cluster_name                = module.ecs_module.ecs_cluster_name
   ecs_service_name                = module.ecs_module.ecs_service_name
+
+  app_name = var.app_name
+}
+
+#=====
+# S3
+#=====
+module "s3_module" {
+  source = "../modules/s3"
 
   app_name = var.app_name
 }
