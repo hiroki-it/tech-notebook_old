@@ -2,13 +2,13 @@
 # Folder
 #============
 build/
-source/.idea/
-source/images/
+app/source/.idea/
+images/
 
 #============
 # File
 #============
 .gitignore
-make.bat
-Makefile
+app/make.bat
+app/Makefile
 README.md
