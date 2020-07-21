@@ -193,6 +193,12 @@ public_key_path = "~/.ssh/aws/aws_key.pub"
 
 ## 02-02. rootモジュールファイル
 
+### 設定ファイルの参考ドキュメント
+
+https://www.terraform.io/docs/providers/aws/
+
+
+
 ### 変数の定義
 
 変数定義ファイルから，ファイル内の変数に値を格納する．
