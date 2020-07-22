@@ -1,7 +1,6 @@
 # バージョン
 version: 2.1
 
-# AWS-ECRパッケージを使用．
 orbs:
   aws-ecr: circleci/aws-ecr@6.9.0
   aws-ecs: circleci/aws-ecs@1.2.0
@@ -84,7 +83,7 @@ workflows:
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
-          dockerfile: infra/docker/builder/Dockerfile
+          dockerfile: /infra/docker/builder/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
@@ -94,7 +93,7 @@ workflows:
       # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
-          dockerfile: infra/docker/www/Dockerfile
+          dockerfile: /infra/docker/www/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
@@ -106,7 +105,7 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: app/
+          bundle-source: /app
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
