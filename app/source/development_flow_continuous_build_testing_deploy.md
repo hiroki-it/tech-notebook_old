@@ -6,7 +6,7 @@
 
 Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に回して，システムの品質を継続的に担保することを，『Continuous Integration』という．また，変更内容をステージング環境などに自動的に反映し，継続的にリリースすることを，『Continuous Delivery』という．
 
-![cicdツールの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/cicdツールの種類.png)
+![cicdツールの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/cicdツールの種類.png)
 
 
 
@@ -24,7 +24,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 4. 結果を通知することも可能．
 
-![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/継続的インテグレーション.png)
+![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/継続的インテグレーション.png)
 
 #### ・PHPStanの自動実行
 
@@ -202,7 +202,7 @@ jobs:
 
 特定の文字列や整数のみを引数として許可したいときに用いる．Jobで呼び出した時に，Enumのいずれかを引数として渡す．
 
-```yaml
+``` yaml
 jobs:
   deploy:
     parameters:
@@ -255,7 +255,7 @@ workflows:
 
 #### ・restore_cache，save_cache
 
-![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CircleCIキャッシュ.png)
+![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CircleCIキャッシュ.png)
 
 生成したファイルをキャッシュとして保存する．使い所として，例えば，ライブラリはcomposer.jsonの設定が変更されない限り，同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
 
@@ -365,7 +365,7 @@ jobs:
 2. クラウドデプロイサーバの自動デプロイツール（例：Capistrano）が，クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
 3. 自動デプロイツールが，クラウドWebサーバのGitを操作し，```pull```あるいは```clone```を実行する．その結果，GitHubからクラウドデプロイサーバに指定のブランチの状態が取り込まれる．
 
-![デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デプロイ.png)
+![デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デプロイ.png)
 
 
 
@@ -373,5 +373,5 @@ jobs:
 
 #### ・デプロイ
 
-![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CodeDeployを用いた自動デプロイ.png)
+![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CodeDeployを用いた自動デプロイ.png)
 

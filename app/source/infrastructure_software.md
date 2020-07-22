@@ -6,7 +6,7 @@
 
 #### ・ユーザの操作が，ソフトウェアを介して，ハードウェアに伝わるまで
 
-![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ソフトウェアとハードウェア.png)
+![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソフトウェアとハードウェア.png)
 
 #### 1. 応用ソフトウェア
 
@@ -14,7 +14,7 @@
 
 #### 3. 基本ソフトウェア（広義のOS）
 
-![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/基本ソフトウェアの構成.png)
+![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/基本ソフトウェアの構成.png)
 
 #### 4. Firmware
 
@@ -34,7 +34,7 @@
 
 ### ネイティブアプリケーション
 
-![ネイティブアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ネイティブアプリ.png)
+![ネイティブアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネイティブアプリ.png)
 
 端末のシステムによって稼働するアプリのこと．一度ダウンロードしてしまえば，インターネットに繋がっていなくとも，使用できる．
 
@@ -46,7 +46,7 @@ Office，BookLiveのアプリ版
 
 ### Webアプリケーションとクラウドアプリケーション
 
-![Webアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webアプリ.png)
+![Webアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webアプリ.png)
 
 #### ・Webアプリケーション
 
@@ -72,9 +72,9 @@ Google Drive，Dropbox
 
 ### ハイブリッドアプリケーション
 
-![Webviewよるアプリパッケージ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webviewよるアプリパッケージ.png)
+![Webviewよるアプリパッケージ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webviewよるアプリパッケージ.png)
 
-![ハイブリッドアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ハイブリッドアプリ.png)
+![ハイブリッドアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハイブリッドアプリ.png)
 
 端末でWebviewを稼働させ，WebシステムのレンダリングなどをWebview上で行うアプリのこと．
 
@@ -88,7 +88,7 @@ Google Drive，Dropbox
 
 ### Webシステムを構成するサーバのミドルウェア
 
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
 ### Webサーバとしてのミドルウェア
 
@@ -108,7 +108,7 @@ Google Drive，Dropbox
 
 #### ・CGIプログラム：Common Gateway Interface
 
-![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CGIの仕組み.png)
+![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
 
 #### ・NGINX Unit
 
@@ -134,13 +134,13 @@ Unixを源流として派生したOS．現在では主に，Linux系統（緑色
 
 ※ちなみに，MacOSはBSD系統
 
-![Unix系OSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Unix系OSの歴史.png)
+![Unix系OSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Unix系OSの歴史.png)
 
 #### ・WindowsOS
 
 MS-DOSを源流として派生したOS．今では，全ての派生がWindows 10に集約された．
 
-![WindowsOSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/WindowsOSの歴史.png)
+![WindowsOSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WindowsOSの歴史.png)
 
 
 
@@ -160,7 +160,7 @@ Debian，Ubuntu，
 
 Slackware
 
-![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/LinuxDistribution.png)
+![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LinuxDistribution.png)
 
 
 
@@ -405,7 +405,7 @@ directory=/var/www/tech-notebook
 
 #### ・ライブラリとパッケージの大まかな違い
 
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ライブラリ，パッケージ，モジュールの違い.png)
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ライブラリ，パッケージ，モジュールの違い.png)
 
 #### ・ライブラリマネージャ
 
@@ -470,7 +470,7 @@ directory=/var/www/tech-notebook
 
   Java仮想マシンによって，中間言語方式で翻訳される．
 
-![コンパイル型とインタプリタ型言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/コンパイル型とインタプリタ型言語.jpg)
+![コンパイル型とインタプリタ型言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイル型とインタプリタ型言語.jpg)
 
 
 
@@ -482,23 +482,23 @@ directory=/var/www/tech-notebook
 
 C#
 
-![コンパイラ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/コンパイラ言語.png)
+![コンパイラ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイラ言語.png)
 
 #### ・コンパイラ方式によるコンパイラ型言語のビルド
 
   コンパイラ（C#）による翻訳では，ソースコードは機械語からなるオブジェクトコードに変換される．コンパイル後に，各オブジェクトコードはリンクされる．この一連のプロセスを『ビルド』という．
 
-![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ビルドとコンパイル.jpg)
+![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ビルドとコンパイル.jpg)
 
 #### ・コンパイラ方式の機械語翻訳の流れ
 
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/字句解析，構文解析，意味解析，最適化.png)
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
    ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
 
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -536,17 +536,17 @@ C#
 
 PHP，Ruby，JavaScript，Python
 
-![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インタプリタ言語.png)
+![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インタプリタ言語.png)
 
 #### ・インタプリタ方式の機械語翻訳の流れ
 
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/字句解析，構文解析，意味解析，最適化.png)
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
    ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
 
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/構文規則と説明.png)
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -576,19 +576,19 @@ Scala，Groovy，Kotlin
 2. JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．
 3. 結果的に，OS（制御プログラム？）に依存せずに，命令を実行できる．（C言語）
 
-![Javaによる言語処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Javaによる言語処理_1.png)
+![Javaによる言語処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_1.png)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
 
-![Javaによる言語処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Javaによる言語処理_2.png)
+![Javaによる言語処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_2.png)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
 
-![Javaによる言語処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Javaによる言語処理_3.png)
+![Javaによる言語処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_3.png)
 
 #### ・C言語とJavaのOSへの依存度比較
 
-![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CとJavaのOSへの依存度比較.png)
+![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CとJavaのOSへの依存度比較.png)
 
 - JVM言語
 
@@ -663,7 +663,7 @@ public class Age
 
 クライアントは，マスタスケジュールに対して，ジョブを実行するための命令を与える．
 
-![ジョブ管理とタスク管理の概要](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ジョブ管理とタスク管理の概要.jpg)
+![ジョブ管理とタスク管理の概要](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブ管理とタスク管理の概要.jpg)
 
 
 
@@ -697,13 +697,13 @@ public class Age
 
 Initiatorによって，ジョブはジョブステップに分解される．
 
-![ジョブからジョブステップへの分解](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ジョブからジョブステップへの分解.png)
+![ジョブからジョブステップへの分解](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブからジョブステップへの分解.png)
 
 
 
 ### タスク管理
 
-![ジョブステップからタスクの生成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ジョブステップからタスクの生成.png)
+![ジョブステップからタスクの生成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブステップからタスクの生成.png)
 
 タスクとは，スレッドに似たような，単一のプロセスのこと．Initiatorによるジョブステップから，タスク管理によって，タスクが生成される．タスクが生成されると実行可能状態になる．ディスパッチャによって実行可能状態から実行状態になる．
 
@@ -715,32 +715,32 @@ Initiatorによって，ジョブはジョブステップに分解される．
 
 待ち行列に登録されたタスクから順に，ディスパッチしていく方式．
 
-![到着順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/到着順方式_1.png)
+![到着順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/到着順方式_1.png)
 
 **【具体例】**
 
 以下の様に，タスクがCPUに割り当てられていく．
 
-![到着順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/到着順方式_2.png)
+![到着順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/到着順方式_2.png)
 
 #### ・Round robin 方式
 
 Round robinは，『総当たり』の意味．一定時間（タイムクウォンタム）ごとに，実行状態にあるタスクが強制的に待ち行列に登録される．交代するように，他のタスクがディスパッチされる．
 
-![ラウンドロビン方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ラウンドロビン方式.png)
+![ラウンドロビン方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ラウンドロビン方式.png)
 
 **【具体例】**
 
 生成されたタスクの到着時刻と処理時間は以下のとおりである．強制的なディスパッチは，『20秒』ごとに起こるとする．
 
-![優先順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/優先順方式_1.png)
+![優先順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/優先順方式_1.png)
 
 1. タスクAが0秒に待ち行列へ登録される．
 2. 20秒間，タスクAは実行状態へ割り当てられる．
 3. 20秒時点で，タスクAは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクBは，実行可能状態から実行状態にディスパッチされる．
 4. 40秒時点で，タスクCは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクAは，実行可能状態から実行状態にディスパッチされる．
 
-![優先順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/優先順方式_2.png)
+![優先順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/優先順方式_2.png)
 
 
 
@@ -748,7 +748,7 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 アプリケーションから低速な周辺機器へデータを出力する時，まず，CPUはスプーラにデータを出力する．Spoolerは，全てのデータをまとめて出力するのではなく，一時的に補助記憶装置（Spool）にためておきながら，少しずつ出力する（Spooling）．
 
-![スプーリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スプーリング.jpg)
+![スプーリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スプーリング.jpg)
 
 
 
@@ -762,7 +762,7 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 ### BIOS：Basic Input/Output System
 
-![BIOS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/BIOS.jpg)
+![BIOS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/BIOS.jpg)
 
 
 
@@ -770,7 +770,7 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 Windows 8以降で採用されている新しいFirmware
 
-![UEFIとセキュアブート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/UEFIとセキュアブート.jpg)
+![UEFIとセキュアブート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UEFIとセキュアブート.jpg)
 
 
 
@@ -804,7 +804,7 @@ Windows 8以降で採用されている新しいFirmware
 
 ### OSSの具体例
 
-![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSS一覧.png)
+![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSS一覧.png)
 
 引用：https://openstandia.jp/oss_info/
 

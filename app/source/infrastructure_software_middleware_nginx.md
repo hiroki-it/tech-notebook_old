@@ -24,7 +24,7 @@ $ kill -s HUP NINGXPID
 
 Webサーバのミドルウェアとして機能する．
 
-![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
+![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Nginxの仕組み.png)
 
 ### 設定ファイル例
 
