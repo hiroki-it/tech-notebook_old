@@ -1,4 +1,4 @@
-
+# SQL
 
 ## 01. レコードの読み出し操作（```READ```）
 
@@ -107,7 +107,7 @@ FROM
 
 #### ・```JOIN```句の種類
 
-![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部結合のベン図.jpg)
+![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部結合のベン図.jpg)
 
 
 
@@ -115,7 +115,7 @@ FROM
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
-![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/LEFT_JOIN.png)
+![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LEFT_JOIN.png)
 
 
 
@@ -490,19 +490,19 @@ while(result.next()){
 
 ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
 
-![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_1.PNG)
+![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_1.PNG)
 
 
 
 ### 突き合わせ処理のアルゴリズム
 
-![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_4.png)
+![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_4.png)
 
 **【突き合わせ処理の具体例】**
 
 とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
 
-![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_2.PNG)
+![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_2.PNG)
 
 前処理として，契約マスタデータと異動トランザクションデータに共通する識別子が同じ順番で並んでいる必要がある．
 
@@ -512,7 +512,7 @@ while(result.next()){
 4. 『契約マスタデータ < 異動トランザクションデータ』になるまで，データを突き合わせる．
 5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
-![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マッチング処理_3.png)
+![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_3.png)
 
 
 
@@ -645,7 +645,7 @@ CREATE VIEW T AS
 
 テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
 
-![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/主キー.jpg)
+![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/主キー.jpg)
 
 主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
 
@@ -667,7 +667,7 @@ CREATE VIEW T AS
 
 親テーブルで参照される値は，子テーブルからは削除できない．
 
-![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/外部キー.png)
+![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部キー.png)
 
 
 
@@ -677,7 +677,7 @@ CREATE VIEW T AS
 
 あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
 
-![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p325.gif)
+![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p325.gif)
 
 #### ・使い方
 
