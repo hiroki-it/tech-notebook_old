@@ -6,7 +6,7 @@
 
 ネットワークには，『インターネット』『WAN』『LAN』がある．家庭内LAN，学内LAN，企業内LAN，企業WANなど，さまざまなネットワークがあり，インターネットは，それぞれのネットワークを互いに接続しているネットワークである．
 
-![インターネットとWANとLAN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/インターネットとWANとLAN.png)
+![インターネットとWANとLAN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターネットとWANとLAN.png)
 
 
 
@@ -14,13 +14,13 @@
 
 例えば，LANとしてEthernet，WANとしてデジタル専用線を用いる．
 
-![WAN，LANの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/WAN，LANの具体例.png)
+![WAN，LANの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WAN，LANの具体例.png)
 
 
 
 ### WANの種類と歴史
 
-![WANの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/WANの種類と歴史.png)
+![WANの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WANの種類と歴史.png)
 
 
 
@@ -28,7 +28,7 @@
 
 ルータを境に，プライベートネットワークとグローバルネットワークに分けられる．ややこしいが，ルータにはグローバルIPアドレスが割り当てられている．
 
-![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グローバルネットワークとプライベートネットワーク.PNG)
+![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルネットワークとプライベートネットワーク.PNG)
 
 
 
@@ -44,7 +44,7 @@
 
 外部から直接リクエストを受けない．『データベースサーバ』は，内部ネットワークに設置するべき．
 
-![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/内部，DMZ，外部.png)
+![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部，DMZ，外部.png)
 
 
 
@@ -54,13 +54,13 @@
 
   少数対少数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報は必要ない．
 
-![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/回線交換方式.png)
+![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/回線交換方式.png)
 
 #### ・パケット交換方式
 
   通信するデータをパケット化する．多数対多数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報が必要になる．
 
-![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケット交換方式.png)
+![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケット交換方式.png)
 
 
 
@@ -74,7 +74,7 @@
 
 伝送速度は，『プロバイダ』，『光回線』，『自宅の有線／無線』の三つに影響される．
 
-![伝送速度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/伝送速度.png)
+![伝送速度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/伝送速度.png)
 
 #### ・伝送秒数の求め方
 
@@ -87,11 +87,11 @@
 
 ネットワークの，とある地点での伝送速度```(bit/s)```のこと．
 
-![トラフィック](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トラフィック.png)
+![トラフィック](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィック.png)
 
 総務省のデータで，日本のブロードバンド大手5社の総トラフィックを年次でグラフ化したものがある．
 
-![トラフィックのグラフ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トラフィックのグラフ.png)
+![トラフィックのグラフ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィックのグラフ.png)
 
 
 
@@ -101,13 +101,13 @@
 
 パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
 
-![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケットの構造.jpg)
+![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
 
 
 
 ### OSI参照モデルにおいて各概念層で追加されるヘッダ情報の内容
 
-![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSI参照モデル.png)
+![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデル.png)
 
 
 
@@ -115,7 +115,7 @@
 
 TCP/IPモデルで用いられるプロトコルのうち，最も代表的な「TCP」と「IP」から名前をとって「TCP/IP」と名付けられた．プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
 
-![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/セキュアプロトコル.png)
+![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セキュアプロトコル.png)
 
 
 
@@ -123,7 +123,7 @@ TCP/IPモデルで用いられるプロトコルのうち，最も代表的な�
 
 ### 各概念層の実際の通信機器の対応関係
 
-![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSI参照モデルと通信機器.jpg)
+![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器.jpg)
 
 #### ・ネットワーク層
 
@@ -139,7 +139,7 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 送信元で作成されたパケットは，非カプセル化されながら，通信機器に認識される．
 
-![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/OSI参照モデルと通信機器でのパケット認識.jpg)
+![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器でのパケット認識.jpg)
 
 
 
@@ -149,13 +149,13 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 #### ・各部品の名称
 
-![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/URLと電子メールの構造.png)
+![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/URLと電子メールの構造.png)
 
 #### ・完全修飾ドメイン名とサーバー中継
 
 完全修飾ドメイン名をもとにして，サーバーを中継していき，最終的なサーバにたどり着く．
 
-![ドメイン名の構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン名の構造.PNG)
+![ドメイン名の構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン名の構造.PNG)
 
 #### ・URLにおけるパスパラメータとクエリパラメータの使い分け
 
@@ -175,7 +175,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ドメイン名の子関係にある名前．ホスト名（以下では省略されている）と，ドメイン名の間につける．
 
-![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サブドメイン.png)
+![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/サブドメイン.png)
 
 
 
@@ -282,7 +282,7 @@ https://github.com/postmanlabs/postman-app-support/issues/131
 
   GmailでPOPかIMAPを設定可能
 
-![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/GmailでPOPかIMAPを設定.jpg)
+![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GmailでPOPかIMAPを設定.jpg)
 
 #### ・APOP：Authenticated POP
 
@@ -294,7 +294,7 @@ https://github.com/postmanlabs/postman-app-support/issues/131
 
 ### TCPによるヘッダ情報の追加と識別の仕組み
 
-![トランスポート層からアプリケーション層へのパケットの移動](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/トランスポート層からアプリケーション層へのパケットの移動.PNG)
+![トランスポート層からアプリケーション層へのパケットの移動](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トランスポート層からアプリケーション層へのパケットの移動.PNG)
 
 #### ・リクエスト時（図の右矢印）
 
@@ -326,9 +326,11 @@ http://localhost:8080/
 
 #### ・Well known ポート番号（0 ～ 1023）
 
-  IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号．Webサーバがリクエストを受信する時，またレスポンスを送信する時に使用される．ホストPCとゲストPC（仮想サーバ）との通信では，80番（HTTP）の受信に関する様々な設定が必要になる．
+  IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号．Webサーバがリクエストを受信する時，またレス
 
-  ![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ポート番号とプロトコルの対応関係.png)
+ポンスを送信する時に使用される．ホストPCとゲストPC（仮想サーバ）との通信では，80番（HTTP）の受信に関する様々な設定が必要になる．
+
+  ![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ポート番号とプロトコルの対応関係.png)
 
 #### ・登録済みポート番号（1024 ～ 49151）
 
@@ -348,13 +350,13 @@ http://localhost:8080/
 2. ルータAは，IPパケットをデジタル専用線に乗せて，ルータBに送信．
 3. ルータBは，構成したIPパケットをEthernetに乗せて，Webサーバに送信．
 
-![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ネットワークにおけるTCP_IPを用いたデータ通信.png)
+![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネットワークにおけるTCP_IPを用いたデータ通信.png)
 
 
 
 ### IPv4アドレスの種類
 
-![プライベートIPアドレスとグローバルIPアドレス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プライベートIPアドレスとグローバルIPアドレス.png)
+![プライベートIPアドレスとグローバルIPアドレス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プライベートIPアドレスとグローバルIPアドレス.png)
 
 #### ・プライベートIPアドレス
 
@@ -370,13 +372,13 @@ http://localhost:8080/
 
 例えば，プライベートIPアドレスの４つのオクテット（第一オクテットから第四オクテットまで）が１Byteの容量をもち，IPアドレス全体で４Byteの容量をもつ．ちなみに，```172```から始まるIPアドレスは，クラスBである．　
 
-![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスとbitの関係.png)
+![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスとbitの関係.png)
 
 
 
 ### プライベート／グローバルIPアドレスのネットワーク部とホスト部
 
-![IPアドレスのホスト部とネットワーク部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスのホスト部とネットワーク部.png)
+![IPアドレスのホスト部とネットワーク部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスのホスト部とネットワーク部.png)
 
 #### ・クラスによるホスト部とネットワーク部の定義
 
@@ -426,7 +428,7 @@ IPアドレスをクラスとして分類し，各クラスでIPアドレスの�
 
 #### ・完全修飾ドメイン名とグローバルIPアドレスのマッピング
 
-![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスと完全修飾ドメイン名のマッピング4.png)
+![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング4.png)
 
 例えば，外部WebサーバのグローバルIPアドレスが『203.142.205.139』であると知っている場合，URLのプロトコル部分以下を『```203.142.205.139```』としてリクエストすれば，外部Webサーバが提供するウェブサイトにアクセスできる．しかし，グローバルIPアドレスは数字の羅列であるため，人間には覚えにくい．そこで，グローバルIPアドレスの代わりに，完全修飾ドメイン名をURLの一部として用いる．
 
@@ -479,13 +481,13 @@ http://www.example.co.jp:53/
 
 4. これらの『送信元プライベートIPアドレス』が，NATルータで，グローバルIPアドレスに変換される．
 
-![プライベートからグローバルへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プライベートからグローバルへのnat変換.png)
+![プライベートからグローバルへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プライベートからグローバルへのnat変換.png)
 
 #### ・レスポンス時の変換
 
 プライベートネットワークに入る時に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスをプライベートIPアドレスに変換する．
 
-![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グローバルからプライベートへのnat変換.png)
+![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルからプライベートへのnat変換.png)
 
 
 
@@ -504,13 +506,13 @@ http://www.example.co.jp:53/
 |      ```192.168.2.1```       |   ```50011```    |      |   ```130.X.X.X:50011```    |   ```50011```    |
 |      ```192.168.3.1```       |   ```50011```    |      |   ```130.X.X.X:50012```    |   ```50012```    |
 
-![napt変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/napt変換.png)
+![napt変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/napt変換.png)
 
 #### ・レスポンス時の変換
 
 プライベートネットワークに入る時に，付け加えられたポート番号を元に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスを，異なるプライベートIPアドレスに変換し分ける．
 
-![napt変換_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/napt変換_2.png)
+![napt変換_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/napt変換_2.png)
 
 #### ・ソケット，ソケット接続とは
 
@@ -524,7 +526,7 @@ http://www.example.co.jp:53/
 
 Webサーバ，APサーバ，DBサーバによるネットワークの仕組みをWebシステムという．ソフトウェアとハードウェアのノートも参照せよ．
 
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Webサーバ，APサーバ，DBサーバ.png)
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
 ### Webサーバ
 
@@ -532,7 +534,7 @@ Webサーバ，APサーバ，DBサーバによるネットワークの仕組み�
 
 ミドルウェア（Apache，Nginxなど）がインストールされている．また，Web兼APサーバのミドルウェアとして機能する（NGINX Unit）がインストールされていることもある．
 
-![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Nginxの仕組み.png)
+![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Nginxの仕組み.png)
 
 |                                | Webサーバ |  →   | APサーバ |  →   |  DBサーバ  |
 | ------------------------------ | :-------: | :--: | :------: | :--: | :--------: |
@@ -652,13 +654,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
   サーバ自体のスペックをより高くすることで，サーバ当たりの処理能力を向上させる．その逆は，スケールダウン．設定で，仮想サーバのスペックを上げることも，これに該当する．
 
-![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアップ.png)
+![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スケールアップ.png)
 
 #### ・水平スケーリング（スケールアウト ⇔ スケールイン）
 
   サーバの台数を増やすことで，サーバ全体の処理能力を向上させる．その逆は，スケールイン．
 
-![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/スケールアウト.png)
+![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スケールアウト.png)
 
 
 
@@ -668,7 +670,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 同じ処理を行う2つのシステムからなるシステム構成のこと．随時，処理結果を照合する．いずれかが故障した場合，異常が発生したシステムを切り離し，残る片方で処理を続けることによって，故障を乗り切る．
 
-![デュアルシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デュアルシステム.png)
+![デュアルシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デュアルシステム.png)
 
 
 
@@ -676,17 +678,17 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 オンライン処理を行う主系システムと，バッチ処理を行う従系システムからなるシステム構成のこと．主系システムが故障した場合，主系システムのオンライン処理を従系システムに引き継ぎ，処理を続けることによって，故障を乗り切る．
 
-![デュプレックスシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/デュプレックスシステム.png)
+![デュプレックスシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デュプレックスシステム.png)
 
 従系システムの待機方法には２つの種類がある．
 
 #### ・ホットスタンバイ
 
-  ![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p613-1.png)
+  ![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-1.png)
 
 #### ・コールドスタンバイ
 
-  ![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/p613-2.png)
+  ![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-2.png)
 
 
 
@@ -698,7 +700,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 １－(1－0.81) × (1－0.64) = 0.9316
 
-![稼働率の計算](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/稼働率の計算.jpg)
+![稼働率の計算](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/稼働率の計算.jpg)
 
 
 
@@ -708,7 +710,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，これに基づいた設計をRESTfulという．RESTful APIについては，RESTfulAPIの概念と実装（PHP）のノートを参照せよ．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．
 
-![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/RESTfulAPIを用いたリクエスト.png)
+![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RESTfulAPIを用いたリクエスト.png)
 
 
 
@@ -726,13 +728,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 代理でリクエストを送るフォワードProxyサーバと，レスポンスを送るリバースProxyサーバに分類できる．
 
-![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
+![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
 
 #### ・キャッシュ機能
 
 リバースProxyサーバに，Webページのコンテンツをキャッシュとして保存することによって，Webサーバのアクセス負荷を抑える．ちなみに，ブラウザもキャッシュ機能を持っている．
 
-![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プロキシサーバのキャッシュ機能.png)
+![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロキシサーバのキャッシュ機能.png)
 
 
 
@@ -742,7 +744,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 フォワードProxyサーバはプロバイダの会社に，リバースProxyサーバはリクエスト先の社内ネットワークに設置されている．
 
-![プロキシサーバの設置場所](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/プロキシサーバの設置場所.png)
+![プロキシサーバの設置場所](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロキシサーバの設置場所.png)
 
 #### ・クラウド上の場合
 
@@ -756,13 +758,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 Webサーバとしてではなく，リバースProxyサーバとして使用し，代理リクエストやキャッシュを行わせることが可能．
 
-![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/リバースプロキシサーバとしてのNginx.png)
+![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/リバースプロキシサーバとしてのNginx.png)
 
 
 
 ## 03-05. フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
 
-![IPアドレスと完全修飾ドメイン名のマッピング3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
+![IPアドレスと完全修飾ドメイン名のマッピング3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
 
 ### （1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
 
@@ -811,7 +813,7 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 
 クライアントのブラウザに，キャッシュとして保存される．
 
-![ブラウザのキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ブラウザのキャッシュ.png)
+![ブラウザのキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ブラウザのキャッシュ.png)
 
 
 
@@ -824,7 +826,7 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 3. ブラウザは，そのCookie情報を保存する．
 4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
 
-![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Cookieの仕組み.png)
+![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
 
 
 
@@ -837,11 +839,11 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 3. ブラウザは，そのセッションIDを保存する．
 4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
 
-![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/セッションIDの仕組み.png)
+![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
 
 #### ・セッションID送受信とページ遷移
 
-![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/セッションIdとページ遷移.png)
+![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
 
 
 

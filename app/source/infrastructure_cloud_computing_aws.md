@@ -8,7 +8,7 @@ AWSから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 以下のデザイン例では，Dualシステムが採用されている．
 
-![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSのクラウドデザイン一例.png)
+![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSのクラウドデザイン一例.png)
 
 ### ACM：Amazon Certificate Manager
 
@@ -53,7 +53,7 @@ AWSの使用上，ACM証明書を設置できないサービスに対しては�
 
 クラウドDNSサーバーとして働く．リクエストされた完全修飾ドメイン名とEC2のグローバルIPアドレスをマッピングしている．
 
-![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/URLと電子メールの構造.png)
+![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/URLと電子メールの構造.png)
 
 #### ・レコードタイプ
 
@@ -73,7 +73,7 @@ CNAMEレコードを用いて，ドメインの所有者であることを証明
 
 #### （1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
 
-![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Route53の仕組み.png)
+![Route53の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Route53の仕組み.png)
 
 1. クライアントPCは，完全修飾ドメイン名を，フォワードProxyサーバにリクエスト．
 
@@ -106,7 +106,7 @@ CNAMEレコードを用いて，ドメインの所有者であることを証明
 
 クラウドプロキシサーバとして働く．リクエストを受け付ける．動的コンテンツの場合は，リクエストをEC2に振り分ける．また，静的コンテンツの場合は，キャッシュした上でAmazon S3へ振り分ける．
 
-![CloudFront](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CloudFront.png)
+![CloudFront](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CloudFront.png)
 
 ### CloudTrail
 
@@ -114,7 +114,7 @@ CNAMEレコードを用いて，ドメインの所有者であることを証明
 
 IAMユーザによる操作や，ロールのアタッチの履歴を記録し，ログファイルとしてS3に転送する．CloudWatchと連携することもできる．
 
-![CloudTrailとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/CloudTrailとは.jpeg)
+![CloudTrailとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CloudTrailとは.jpeg)
 
 
 
@@ -132,7 +132,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 API Gatewayは，メソッドリクエスト，統合リクエスト，統合レスポンス，メソッドレスポンス，から構成される．
 
-![APIGatewayの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/APIGatewayの仕組み.png)
+![APIGatewayの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/APIGatewayの仕組み.png)
 
 #### 1. メソッドリクエスト
 
@@ -158,7 +158,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 クラウドメッセージキューとして働く．異なるVPC間でも，メッセージキューを同期できる．クラウドサーバで生成されたメッセージは，一旦SQSに追加される．コマンドによってバッチが実行され，メッセージが取り出される．その後，例えば，バッチ処理によってメッセージからデータが取り出されてファイルが生成され，S3に保存されるような処理が続く．
 
-![AmazonSQSとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AmazonSQSとは.jpeg)
+![AmazonSQSとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AmazonSQSとは.jpeg)
 
 #### ・SQSの種類
 
@@ -172,7 +172,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
 
-![サーバレスアーキテクチャとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/サーバレスアーキテクチャとは.png)
+![サーバレスアーキテクチャとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/サーバレスアーキテクチャとは.png)
 
 
 
@@ -240,7 +240,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 ### クラウドデザイン例（再掲）
 
-![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSのクラウドデザイン一例.png)
+![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSのクラウドデザイン一例.png)
 
 
 
@@ -250,7 +250,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．
 
-![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/AWSリージョンマップ.PNG)
+![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSリージョンマップ.PNG)
 
 #### ・Availability Zone
 
@@ -268,7 +268,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 パケットのヘッダ情報に記載された送信元IPアドレスやポート番号などによって，パケットを許可するべきかどうかを決定する．速度を重視する場合はこちら．ファイアウォールとWebサーバの間には，NATルータやNAPTルータが設置されている．これらによる送信元Private IPアドレスから送信元グローバルIPアドレスへの変換についても参照せよ．
 
-![パケットフィルタリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パケットフィルタリング.gif)
+![パケットフィルタリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットフィルタリング.gif)
 
 
 
@@ -278,7 +278,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 クラウドプライベートネットワークとして働く．Private IPアドレスが割り当てられた，VPCと呼ばれるプライベートネットワークを仮想的に構築することができる．異なるAvailability Zoneに渡ってEC2を立ち上げることによって，クラウドサーバをデュアル化することできる．
 
-![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCが提供できるネットワークの範囲.png)
+![VPCが提供できるネットワークの範囲](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCが提供できるネットワークの範囲.png)
 
 
 
@@ -295,7 +295,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 内部ネットワークに相当する．外部から直接リクエストを受けずにレスポンスを返せるように，内のNATを経由させる必要がある．
 
-![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/パブリックサブネットとプライベートサブネットの設計.png)
+![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パブリックサブネットとプライベートサブネットの設計.png)
 
 #### ・同一VPC内の各AWSサービスに割り当てる最低限のIPアドレス数
 
@@ -327,7 +327,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 NATとインターネットゲートウェイを経由せずにVPCの外側と通信できるため，NATの負荷を抑え，またより安全に通信できる．
 
-![VPCエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCエンドポイント.png)
+![VPCエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCエンドポイント.png)
 
 
 
@@ -339,7 +339,7 @@ NATとインターネットゲートウェイを経由せずにVPCの外側と�
 
 #### ・機能
 
-![ターゲットグループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ターゲットグループ.jpg)
+![ターゲットグループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ターゲットグループ.jpg)
 
 | 機能               | 内容                                                         |
 | ------------------ | ------------------------------------------------------------ |
@@ -370,7 +370,7 @@ ALBのIPアドレス範囲には，VPCのものが適用される．そのため
 
 NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数のEC2のPrivate IPを紐づけられる．Public subnetに置き，Private SubnetのEC2からのレスポンスを受け付ける．詳しくは，NAPT（動的NAT）を参照せよ．
 
-![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/InternetGatewayとNATGateway.png)
+![InternetGatewayとNATGateway](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/InternetGatewayとNATGateway.png)
 
 
 
@@ -402,7 +402,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 |        ```10.0.0.0/16```        |      local       |
 |         ```0.0.0.0/0```         | Internet Gateway |
 
-![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルートテーブル.png)
+![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ルートテーブル.png)
 
 
 
@@ -447,7 +447,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 | ------------------- | ------------------- |
 | ・起動するEC2の個数 | ・終了するEC2の条件 |
 
-![Auto-scaling](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Auto-scaling.png)
+![Auto-scaling](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Auto-scaling.png)
 
 
 
@@ -459,7 +459,7 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 異なるVPCにあるAWSのサービス間で，相互にデータ通信を行うことができる．
 
-![VPCピアリング接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCピアリング接続.png)
+![VPCピアリング接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCピアリング接続.png)
 
 
 
@@ -476,11 +476,11 @@ NAPT（動的NAT）の機能を持つ．一つのPublic IPに対して，複数�
 
 VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブロックがある場合は、VPC ピアリング接続はできない．
 
-![VPCピアリング接続不可の場合-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCピアリング接続不可の場合-1.png)
+![VPCピアリング接続不可の場合-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCピアリング接続不可の場合-1.png)
 
 たとえ，IPv6が異なっていても，同様である．
 
-![VPCピアリング接続不可の場合-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VPCピアリング接続不可の場合-2.png)
+![VPCピアリング接続不可の場合-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCピアリング接続不可の場合-2.png)
 
 
 
@@ -488,7 +488,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 ### クラウドデザイン例
 
-![Fargateを用いたクラウドデザインの一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Fargateを用いたクラウドデザインの一例.png)
+![Fargateを用いたクラウドデザインの一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Fargateを用いたクラウドデザインの一例.png)
 
 
 
@@ -502,13 +502,13 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 タスクとサービスをグルーピングしたもの．
 
-![ECSクラスター](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ECSクラスター.png)
+![ECSクラスター](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ECSクラスター.png)
 
 
 
 ### タスク，タスク定義
 
-![タスクとタスク定義](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/タスクとタスク定義.png)
+![タスクとタスク定義](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/タスクとタスク定義.png)
 
 #### ・タスクとは
 
@@ -570,7 +570,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 #### ・CodeDeployを使用したBlue/Greenデプロイ
 
-![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Blue-Greenデプロイ.jpeg)
+![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
 
 1. ECRのイメージを更新
 2. タスク定義の新しいリビジョンを作成．
@@ -682,15 +682,15 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 #### ・IAMユーザに対する付与
 
-![IAMユーザにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMユーザにポリシーを付与.jpeg)
+![IAMユーザにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IAMユーザにポリシーを付与.jpeg)
 
 #### ・IAMグループに対する付与
 
-![IAMグループにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMグループにポリシーを付与.jpeg)
+![IAMグループにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IAMグループにポリシーを付与.jpeg)
 
 #### ・IAMロールに対する付与
 
-![IAMロールにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/IAMロールにポリシーを付与.jpeg)
+![IAMロールにポリシーを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IAMロールにポリシーを付与.jpeg)
 
 
 
@@ -710,7 +710,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 IAMユーザをグループ化したもの．IAMグループごとにIAMロールを付与すれば，IAMユーザのIAMロールを管理しやすくなる．
 
-![グループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループ.png)
+![グループ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グループ.png)
 
 ### IAMロール
 
@@ -730,6 +730,6 @@ IAMポリシーのセットを持つ
 
 まず，IAMグループに対して，IAMロールを紐づける．そのIAMグループに対して，IAMロールを付与したいIAMユーザを追加していく．
 
-![グループに所属するユーザにロールを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/グループに所属するユーザにロールを付与.png)
+![グループに所属するユーザにロールを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グループに所属するユーザにロールを付与.png)
 
 

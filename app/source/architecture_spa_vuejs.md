@@ -6,7 +6,7 @@
 
 1つのWebページの中で，サーバとデータを非同期的に通信し，レンダリングすることができるようにする設計のこと．SPA設計では，ページ全体をローディングするのは最初のみで，２回目以降は，サーバ側からJsonデータを受け取り，部分的にローディングを行う．Vueでは，意識せずともSPA設計の元で実装できるようになっている．
 
-![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/SPアプリにおけるデータ通信の仕組み.png)
+![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SPアプリにおけるデータ通信の仕組み.png)
 
 
 
@@ -14,7 +14,7 @@
 
 サーバとデータを非同期的に通信できるため，1つのWebページの中で必要なデータだけを通信すればよく，レンダリングが速い．
 
-![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/従来WebアプリとSPアプリの処理速度の違い.png)
+![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/従来WebアプリとSPアプリの処理速度の違い.png)
 
 
 
@@ -44,7 +44,7 @@
 
 View層とModel層の間にViewModel層を置き，View層とViewModel層の間で双方向にデータをやり取り（双方向データバインディング）することによって，View層とModel層の間を疎結合にするための設計手法の一つ．
 
-![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/一般的なMVVMアーキテクチャ.png)
+![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/一般的なMVVMアーキテクチャ.png)
 
 #### ・ MVVMアーキテクチャにおける各層の責務
 
@@ -70,7 +70,7 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 3. Model層では，Vuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
 4. これの元，双方向データバインディングが実現される仕組みとして，View層でイベントが起こると，ViewModel層でこれにバインディングされたイベントハンドラ関数がコールされる．
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueにおけるMVVMアーキテクチャ.png)
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VueにおけるMVVMアーキテクチャ.png)
 
 
 ### 親子コンポーネント間のデータ渡し
@@ -79,9 +79,9 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 
 まず，双方向データバインディングとは異なる概念なので，混乱しないように注意する．コンポーネント（```xxx-component.vue```）の```script```タグ部分（ViewModel層）の親子間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
 
-![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/親子コンポーネント間の双方向データバインディング.png)
+![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/親子コンポーネント間の双方向データバインディング.png)
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
 
 
@@ -149,9 +149,11 @@ var vm = new Vue({
 
 #### (1) 【View層】テンプレート（```xxx.html```，```xxx.twig```）
 
-データが，テンプレートからJavaScriptファイルに渡される仕組みは，フレークワークを使わない場合と同じである．データがJavaScriptファイルに渡される状況としては，イベント発火時である．例えば，テンプレートの親コンポーネントタグでクリックイベントが発火した時，親コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
+データが，テンプレートからJavaScriptファイルに渡される仕組みは，フレークワークを使わない場合と同じである．データがJavaScriptファイルに渡される状況としては，イベント発火時である．
 
 **【実装例】**
+
+例えば，テンプレートの親コンポーネントタグでクリックイベントが発火した時，親コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
 
 ```html
 <!-- divタグのidは『app』とする -->
@@ -280,16 +282,19 @@ var vm = new Vue({
 ```
 #### (2) 【View + ViewModel層】単一ファイルコンポーネントとしてのコンポーネント（```xxx-component.vue```）
 
-コンポーネントはView層としての```template```タグ，ViewModel層としての```script```タグと```style```タグを用いて，単一ファイルコンポーネントとする．例えば，親コンポーネントの子コンポーネントタグでクリックイベントが発火した時，子コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
+コンポーネントは，View層としての```template```タグ，ViewModel層としての```script```タグと```style```タグを用いて，単一ファイルコンポーネントとする．
 
 **【実装例】**
 
+例えば，親コンポーネントの子コンポーネントタグでクリックイベントが発火した時，子コンポーネントから，イベントに紐づいたイベントハンドラ関数がコールされる．
+
 ```vue
-<!-- 
-・親コンポーネント
-・ここに，出力したいHTMLやTWIGを記述する． 
--->
 <template>
+<!----------------------------------------
+// View層
+// ・親コンポーネント
+// ・ここに，出力したいHTMLやTWIGを記述する． 
+------------------------------------------>
 
   <!-- 
   ・子コンポーネントタグを記述 
@@ -312,10 +317,16 @@ var vm = new Vue({
 </template>
 
 <script>
+//=============
+// ViewModel層
+//=============
+    
 // 親コンポーネント以降では，Vueインスタンスを生成しないようにする．
 module.exports = {
 
-  // 親コンポーネントまたはAjaxからpropsオブジェクトのプロパティに値が格納される．
+  /* propsオプション
+  ・親コンポーネントまたはAjaxからpropsオブジェクトのプロパティに値が格納される．
+  */
   props: {
       'criteria': {
           type: Object,
@@ -411,7 +422,7 @@ class Example {
 
 #### ・```v-on:```とは
 
-![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Vueにおけるemitとv-onの連携.png)
+![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Vueにおけるemitとv-onの連携.png)
 
 View層（```template```タグ部分）のイベントを，ViewModel層（```script```タグ部分）のイベントハンドラ関数（```methods:```内にあるメソッド）やインラインJSステートメントにバインディングし，イベントが発火した時点でイベントハンドラ関数をコールする．コンポーネントの```script```タグ部分（ViewModel層）の親子間データ渡しである「Props Down, Events Up」とは異なる概念なので注意する．
 
@@ -527,6 +538,11 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 ```v-show```または```v-if```で，```v-xxx="{propsのプロパティ名}"```で記述する．親テンプレートから渡された```props```内のプロパティ名がもつ値が```TRUE```の時に表示し，```FALSE```の時に非表示にする．もし頻繁に表示と非表示の切り替えを行うようなら，```v-if```の方が，描画コストが重たくなるリスクが高くなる為，```v-show```推奨である．
 
+| タグ   | 使い分け                        |
+| ------ | :------------------------------ |
+| v-if   | 単発の切り替えがメインの場合    |
+| v-show | 表示/非表示の切替回数が多い場合 |
+
 
 
 ### 属性データバインディング
@@ -575,7 +591,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 #### ・Vue-Routerとは
 
-![ルーティングコンポーネント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ルーティングコンポーネント.png)
+![ルーティングコンポーネント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ルーティングコンポーネント.png)
 
 ルーティングライブラリの一つ．コンポーネントに対してルーティングを行い，```/{ルート}/パラメータ}```に応じて，コールするコンポーネントを動的に切り替えることができる．
 
@@ -654,7 +670,7 @@ Vuejsでライブラリの一つで，MVVMアーキテクチャのモデルに�
 
 ※Vuexからなるモデルはどうあるべきか，について要勉強
 
-![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/VueコンポーネントツリーとVuexの関係.png)
+![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VueコンポーネントツリーとVuexの関係.png)
 
 
 
@@ -873,7 +889,7 @@ module.exports = {
 
 クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
 
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シリアライズとデシリアライズ.png)
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
 
 **【実装例】**
 
