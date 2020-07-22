@@ -14,7 +14,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ホストOS上で稼働し，Dockerの操作を担う．Dockerクライアントは，Dockerデーモンを通して，Docker全体を操作できる．
 
-![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerの仕組み.png)
+![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerの仕組み.png)
 
 
 
@@ -22,7 +22,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 ### 手順の流れ
 
-![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileの作成からコンテナ構築までの手順.png)
+![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerfileの作成からコンテナ構築までの手順.png)
 
 1. Docker Hubから，ベースとなるDockerイメージをインストールする．
 2. DockerfileがイメージレイヤーからなるDockerイメージをビルド．
@@ -82,7 +82,7 @@ $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet
 
 #### ・DockerイメージのカスタマイズとDockerfile
 
-![イメージレイヤーからなるDockerイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/イメージレイヤーからなるDockerイメージのビルド.png)
+![イメージレイヤーからなるDockerイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/イメージレイヤーからなるDockerイメージのビルド.png)
 
 任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，ベースのイメージの上に，他のイメージレイヤーを積み重ねる必要がある．この時，Dockerfileを用いて，各命令によってイメージレイヤーを積み重ねていく．
 
@@ -143,7 +143,7 @@ $ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
 
 Dockerfileを用いない場合，各イメージレイヤーのインストールを手動で行わなければならない．しかし，Dockerfileを用いることで，これを自動化することができる．
 
-![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerfileのメリット.png)
+![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerfileのメリット.png)
 
 
 
@@ -290,7 +290,7 @@ RUN yum -y install\
 $ docker create {イメージ名}
 ```
 
-![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
+![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
 
 #### ・構築に失敗した時のデバッグを行うコマンド
 
@@ -372,7 +372,7 @@ $ docker exec -it {コンテナ名} bash
 
 以下の通り，ホストOSのマウント元のディレクトリにはいくつか選択肢がある．
 
-![マウントされるホスト側のディレクトリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/マウントされるホスト側のディレクトリ.png)
+![マウントされるホスト側のディレクトリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マウントされるホスト側のディレクトリ.png)
 
 
 
@@ -416,7 +416,7 @@ $ docker exec -it {コンテナ名} bash
 
 複数のコンテナ間に対して，仮想ネットワークで接続させる．また，仮想ネットワークを物理ネットワークの間を，仮想ブリッジを用いてbridge接続する．ほとんどの場合，この方法を用いる．
 
-![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Dockerエンジン内の仮想ネットワーク.jpg)
+![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
 
 #### ・物理サーバへのリクエストメッセージがコンテナに届くまで
 
@@ -566,13 +566,13 @@ $ docker-compose run -d -it {イメージ名}
 
 ### Docker Swarm
 
-![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/DockerSwarmの仕組み.png)
+![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerSwarmの仕組み.png)
 
 
 
 ### Google Kubernetes
 
-![Kubernetesの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/Kubernetesの仕組み.png)
+![Kubernetesの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Kubernetesの仕組み.png)
 
 #### ・Master Node
 

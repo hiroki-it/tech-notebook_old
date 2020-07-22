@@ -119,7 +119,7 @@ while($i < 4){
 
 #### ・```for()```
 
-![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_for文.png)
+![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_for文.png)
 
 ```PHP
 $a = [1, -1, 2, ..., N];
@@ -135,7 +135,7 @@ for ($i = 0; $i < N; $i++) {
 
 #### ・```while()```
 
-![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_while文.png)
+![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_while文.png)
 
 ```PHP
 $a = [1, -1, 2, ..., N];
@@ -155,7 +155,7 @@ while ($i < N) {
 
 #### ・```foreach()```
 
-![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/流れ図_foreach文.png)
+![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_foreach文.png)
 
 ```PHP
 $a = [1, -1, 2, ..., N];

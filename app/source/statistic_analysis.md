@@ -12,7 +12,7 @@
 
 データに，どの程度の直線的関係があるかを検出する分析手法．回帰分析を行うか否かの判断材料になる．
 
-![相関分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/相関分析.png)
+![相関分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/相関分析.png)
 
 **【分析例】**
 
@@ -51,11 +51,11 @@ cor(ts, method = "pearson")
 
 原因と結果が一つずつと仮定した時に，最も当てはまりの良い線形モデルを推定できる．
 
-<img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/単回帰分析.png" width = 60%>
+<img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/単回帰分析.png" width = 60%>
 
 #### ・回帰方程式
 
-![単回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/単回帰式.png)
+![単回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/単回帰式.png)
 
 ##### 分析例
 
@@ -90,11 +90,11 @@ summary(Reg)
 
 原因が二つ以上で結果が一つと仮定した時に，最も当てはまりの良い線形モデルを推定できる．ただし，グラフでは，モデルは平面で表される．
 
-![重回帰分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/重回帰分析.png)
+![重回帰分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/重回帰分析.png)
 
 #### ・回帰方程式
 
-![重回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/重回帰式.png)
+![重回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/重回帰式.png)
 
 #### ・分析例
 
@@ -154,11 +154,11 @@ summary(Reg)
 
 説明変数が質的変数の場合に，最も当てはまりの良い非線形モデル（ロジスティック分布）を推定する．
 
-<img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロジスティック回帰分析.png" width = 70%>
+<img src = "https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ロジスティック回帰分析.png" width = 70%>
 
 #### ・回帰方程式
 
-![ロジスティック回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ロジスティック回帰式.png)
+![ロジスティック回帰式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ロジスティック回帰式.png)
 
 
 
@@ -199,11 +199,11 @@ exp(result_lg2$coefficients)
 
 青い点：被験者が暑くないと感じた日
 
-![決定木分析_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/決定木分析_1.png)
+![決定木分析_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/決定木分析_1.png)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
 
-![決定木分析_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/決定木分析_2.png)
+![決定木分析_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/決定木分析_2.png)
 
 #### ・分析例
 
@@ -235,7 +235,7 @@ fancyRpartPlot(tree)
 
 データを，似ている順に階層的にグループ化（クラスタリング）していく分析手法．データ間の同一性を明らかにすることができる．
 
-![階層クラスタ解析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/階層クラスタ解析.png)
+![階層クラスタ解析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/階層クラスタ解析.png)
 
 **【分析例】**
 
@@ -276,4 +276,4 @@ plot(cluster1)
 2. ```geom_XXX()```：グラフをプロット
 3. ```theme()```：グラフを追加加工
 
-![ggplotの概念](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ggplotの概念.png)
+![ggplotの概念](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ggplotの概念.png)

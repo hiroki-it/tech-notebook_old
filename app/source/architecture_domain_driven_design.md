@@ -6,7 +6,7 @@
 
 ドメイン駆動設計が考案される以前，MVCの考え方が主流であった．
 
-![MVCモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/MVCモデル.png)
+![MVCモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/MVCモデル.png)
 
 
 
@@ -80,7 +80,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
 4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_依存性逆転の原則.jpg)
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
 #### ・Domain層とInfrastructure層のバインディング
 
@@ -105,7 +105,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 4. Readしたオブジェクトデータを連想配列に変換する．
 5. 最後に，連想配列をJSON型データにパースし，JavaScriptに送信する．
 
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/シリアライズとデシリアライズ.png)
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
 
 **【実装例】**
 
@@ -125,7 +125,7 @@ class AcceptOrdersController
 
 オンラインショッピングにおけるUse case
 
-![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ユースケース図.png)
+![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ユースケース図.png)
 
 
 
@@ -325,7 +325,7 @@ class XxxCriteria
 
 ### Entityの具体例
 
-![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_エンティティ.jpg)
+![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_エンティティ.jpg)
 
 
 
@@ -374,7 +374,7 @@ class ToyOrderEntity
 
 ### Route Entityとは
 
-![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_集約関係.jpg)
+![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_集約関係.jpg)
 
   EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
 
@@ -439,7 +439,7 @@ class DogToyEntity
 
 金額，数字，電話番号，文字列，日付，氏名，色などのユビキタス言語に関するデータと，これを扱うメソッドを実装する場合，一意で識別できるデータ（例えば，```$id```データ）をもたないオブジェクトとして，これらの実装をまとめておくべきである．このオブジェクトを，Value Objectという．
 
-![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_バリューオブジェクト.jpg)
+![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_バリューオブジェクト.jpg)
 
 **【実装例】**
 
@@ -713,7 +713,7 @@ DBに対する書き込み操作を行う．
 
 7. DBに対して，書き込みを行う．
 
-   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_リポジトリ_データ更新.png)
+   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ更新.png)
 
 **【実装例】**
 
@@ -766,7 +766,7 @@ DBに対する書き込み操作を行う．
 4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
 
-![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/source/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
+![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
 
 **【実装例】**
 
