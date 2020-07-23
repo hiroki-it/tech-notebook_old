@@ -54,6 +54,4 @@ RUN pyenv install ${PYTHON_VERSION_38} \
       sphinxcontrib-sqltable \
       sphinx_fontawesome
 
-WORKDIR "/var/www/app"
-
 CMD ["/bin/bash"]
