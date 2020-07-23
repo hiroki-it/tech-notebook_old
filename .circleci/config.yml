@@ -19,6 +19,7 @@ jobs:
           name: Setup git config
           command: |
             git config --global core.quotepath false
+      # ソースコードをコピー
       - checkout
       - run:
           name: Build builder
@@ -54,12 +55,13 @@ jobs:
           name: Setup git config
           command: |
             git config --global core.quotepath false
+      # ソースコードをコピー
       - checkout
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
           name: Change to app directory
           command: |
-            cd ./app
+            cd ~/tech-notebook/app
       - run:
           # Htmlの生成
           name: Make html
