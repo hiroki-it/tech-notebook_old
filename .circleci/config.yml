@@ -57,16 +57,17 @@ jobs:
             git config --global core.quotepath false
       # ソースコードをコピー
       - checkout
+      - run:
           # 本番環境にデプロイされるappディレクトリに移動
           # Htmlの生成
-          name: Make and Clean html
+          name: Make html
           command: |
             cd ./app
             && make clean html
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
           # 格納ディレクトリの掃除
-          name: Clean up html
+          name: Clean html
           command: |
             cd ./app
             && make clean
