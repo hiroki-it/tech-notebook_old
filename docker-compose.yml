@@ -6,8 +6,8 @@ services:
     container_name: www
     build:
       context: .
-      dockerfile: infra/docker/www/Dockerfile
-    image: tech-notebook/www:latest
+      dockerfile: ./infra/docker/www/Dockerfile
+    image: tech-notebook-www:latest
     tty: true
     ports:
       - "8080:80"
@@ -21,8 +21,8 @@ services:
     container_name: builder
     build:
       context: .
-      dockerfile: infra/docker/builder/Dockerfile
-    image: tech-notebook/builder:latest
+      dockerfile: ./infra/docker/builder/Dockerfile
+    image: tech-notebook-builder:latest
     tty: true
     volumes:
       - ./app:/var/www/tech-notebook
