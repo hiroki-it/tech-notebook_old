@@ -23,11 +23,11 @@ jobs:
       - run:
           name: Build builder
           command: |
-            docker build -f infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
+            docker build -f ./infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
           name: Build www
           command: |
-            docker build -f infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
+            docker build -f ./infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
       - run:
           name: Login to docker hub
           command: |
@@ -46,6 +46,7 @@ jobs:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
+    working_directory: ~/tech-notebook/app
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -83,7 +84,7 @@ workflows:
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-builder
-          dockerfile: /infra/docker/builder/Dockerfile
+          dockerfile: ./infra/docker/builder/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
@@ -93,7 +94,7 @@ workflows:
       # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
-          dockerfile: /infra/docker/www/Dockerfile
+          dockerfile: ./infra/docker/www/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
@@ -105,7 +106,7 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: /app
+          bundle-source: ./app
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"

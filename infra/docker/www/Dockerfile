@@ -11,6 +11,6 @@ RUN dnf upgrade -y \
       langpacks-ja \
       vim
 
-COPY infra/docker/www/nginx.conf /etc/nginx/nginx.conf
+COPY ./infra/docker/www/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]
