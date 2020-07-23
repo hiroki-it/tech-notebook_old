@@ -63,14 +63,14 @@ jobs:
           name: Make html
           command: |
             cd ./app
-            && make clean html
+            make clean html
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
           # 格納ディレクトリの掃除
           name: Clean html
           command: |
             cd ./app
-            && make clean
+            make clean
 
 # 実行の順番を定義
 workflows:
