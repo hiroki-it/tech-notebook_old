@@ -11,7 +11,7 @@ jobs:
   push-images:
     # ホスト側環境の設定
     machine: true
-    # -- Fix: CircleCIのディレクトリは，/root/project(=tech-notebook)/
+    # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
     working_directory: ~/tech-notebook
     steps:
       - run:
@@ -42,11 +42,12 @@ jobs:
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
-  make-html:
+  build-app:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
-    working_directory: ~/tech-notebook/app
+    # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
+    working_directory: ~/tech-notebook
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
@@ -54,6 +55,11 @@ jobs:
           command: |
             git config --global core.quotepath false
       - checkout
+      - run:
+          # 本番環境にデプロイされるappディレクトリに移動
+          name: Change to app directory
+          command: |
+            cd ./app
       - run:
           # Htmlの生成
           name: Make html
@@ -77,8 +83,8 @@ workflows:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_infrastructure
-      # Make Html
-      - make-html:
+      # Build App
+      - build-app:
           requires:
             - push-images
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
@@ -90,7 +96,7 @@ workflows:
           create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
-            - make-html
+            - build-app
       # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           name: build-and-push-image-www
@@ -100,7 +106,7 @@ workflows:
           create-repo: true
           tag: ${CIRCLE_SHA1}
           requires:
-            - make-html
+            - build-app
       # Deploy Source Code
       - aws-code-deploy/deploy:
           name: deploy-source-code
