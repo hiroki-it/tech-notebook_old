@@ -7,13 +7,30 @@ orbs:
   aws-code-deploy: circleci/aws-code-deploy@1.0.1
 
 commands:
-  setup_git_config:
+  setup-git-config:
     steps:
       - run:
           # -- Fix: checkoutが日本語を認識できないので対処
           name: Setup git config
           command: |
             git config --global core.quotepath false
+            
+  set-up-bundle-source:
+     steps:
+      - run:
+          name: Copy appspec to workspace
+          command: |
+            mkdir -p ../tmp/workspace/app
+            cp ./infra/aws_codedeploy/appspec.* ../tmp/workspace/app
+      - run:
+          name: Compress and copy source code to workspace
+          command: |
+            tar -cvJf source.tar.xz ./app/*
+            cp *.tar.xz ../tmp/workspace/app
+      - persist_to_workspace:
+          root: ../tmp/workspace
+          paths:
+            - ./app
 
 # ジョブの設定
 jobs:
@@ -22,7 +39,7 @@ jobs:
     machine: true
     # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
     steps:
-      - setup_git_config
+      - setup-git-config
       # ソースコードをコピー
       - checkout
       - run:
@@ -53,7 +70,7 @@ jobs:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
     # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
     steps:
-      - setup_git_config
+      - setup-git-config
       # ソースコードをコピー
       - checkout
       - run:
@@ -106,20 +123,9 @@ workflows:
             - build-and-push-image-builder
             - build-and-push-image-www
           pre-steps:
-            - run:
-                name: Copy appspec to workspace
-                command: |
-                  mkdir -p ../tmp/workspace/app
-                  cp ./infra/aws_codedeploy/appspec.* ../tmp/workspace/app
-            - run:
-                name: Compress and copy source code to workspace
-                command: |
-                  tar -cvJf source.tar.xz ./app/*
-                  cp *.tar.xz ../tmp/workspace/app
-            - persist_to_workspace:
-                root: ../tmp/workspace
-                paths:
-                  - ./app/build
+            - setup-git-config
+            - checkout
+            - set-up-bundle-source
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
