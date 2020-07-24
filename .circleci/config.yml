@@ -81,7 +81,7 @@ workflows:
             - push-images
           post-steps:
             - persist_to_workspace:
-                root: .
+                root: '.'
                 paths:
                   - ./app/build
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
@@ -111,7 +111,7 @@ workflows:
             - build-and-push-image-www
           pre-steps:
             - attach_workspace:
-                at: ./app/build
+                at: '.'
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
