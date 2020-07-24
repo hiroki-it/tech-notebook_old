@@ -82,6 +82,7 @@ workflows:
           post-steps:
             - run:
                 command: |
+                  mkdir ../tmp/workspace/app/build
                   cp -r ./app/build ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
