@@ -86,7 +86,7 @@ workflows:
             - persist_to_workspace:
                 root: ../tmp/workspace
                 paths:
-                  - /app/build
+                  - ./app/build
       # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           requires:
