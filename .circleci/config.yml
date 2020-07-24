@@ -82,8 +82,10 @@ workflows:
             - push-images
           post-steps:
             - run:
+                name: Copy appspec and html to workspace
                 command: |
                   mkdir -p ../tmp/workspace/app/build
+                  cp ./app/appspec.* ../tmp/workspace/app/build
                   cp -r ./app/build ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
