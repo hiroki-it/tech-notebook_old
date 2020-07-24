@@ -87,10 +87,10 @@ workflows:
                   mkdir -p ../tmp/workspace/app/build
                   cp ./app/appspec.* ../tmp/workspace/app/build
             - run:
-                name: Compress and copy source code
+                name: Compress and copy source code to workspace
                 command: |
                   tar -cvJf source.tar.xz ./app/build/*
-                  cp *.tar.gz ../tmp/workspace/app/build
+                  cp *.tar.xz ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
                 paths:
