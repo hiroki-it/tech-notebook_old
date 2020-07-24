@@ -86,7 +86,7 @@ workflows:
                 command: |
                   mkdir -p ../tmp/workspace/app/build
                   cp ./app/appspec.* ../tmp/workspace/app/build
-                  cp -r ./app/build ../tmp/workspace/app/build
+                  cp -r ./app/build/* ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
                 paths:
@@ -118,7 +118,7 @@ workflows:
             - build-and-push-image-www
           pre-steps:
             - attach_workspace:
-                at: ../tmp/workspace/app/build
+                at: ../tmp/workspace
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
