@@ -82,10 +82,14 @@ workflows:
             - push-images
           post-steps:
             - run:
-                name: Copy appspec and html to workspace
+                name: Copy appspec to workspace
                 command: |
                   mkdir -p ../tmp/workspace/app/build
                   cp ./app/appspec.* ../tmp/workspace/app/build
+            - run:
+                name: Compress and copy source code
+                command: |
+                  tar -czvf source.tar.gz ./app/build/*
                   cp -r ./app/build/* ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
@@ -123,7 +127,7 @@ workflows:
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-source: ../tmp/workspace/app/build
-          bundle-type: tar
+          bundle-type: zip
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
