@@ -89,8 +89,8 @@ workflows:
             - run:
                 name: Compress and copy source code
                 command: |
-                  tar -czvf source.tar.gz ./app/build/*
-                  cp -r ./app/build/* ../tmp/workspace/app/build
+                  tar -cvJf source.tar.xz ./app/build/*
+                  cp *.tar.gz ../tmp/workspace/app/build
             - persist_to_workspace:
                 root: ../tmp/workspace
                 paths:
