@@ -68,7 +68,7 @@ jobs:
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
 
-  build-app:
+  make-deploy-source:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
@@ -79,7 +79,7 @@ jobs:
       - checkout
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
-          # Htmlの生成
+          # デプロイ用のHtmlを生成
           name: Make html
           command: |
             cd ./app
@@ -97,30 +97,30 @@ workflows:
               only:
                 # NOTE: デプロイする場合は指定のブランチを作成
                 - feature/update_infrastructure
-      # Build App
-      - build-app:
+      # Make Deploy Source
+      - make-deploy-source:
           requires:
             - push-images
           post-steps:
             - persist-deploy-source
-      # Deploy Productin Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+      # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           requires:
-            - build-app
-          pre-steps:
-            - attach-deploy-source
+            - make-deploy-source
           name: build-and-push-image-builder
-          dockerfile: ./infra/docker/builder/production.Dockerfile
+          dockerfile: ./infra/docker/builder/Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
           tag: ${CIRCLE_SHA1}
-      # Deploy Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
+      # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           requires:
-            - build-app
+            - make-deploy-source
+          pre-steps:
+            - attach-deploy-source
           name: build-and-push-image-www
-          dockerfile: ./infra/docker/www/Dockerfile
+          dockerfile: ./infra/docker/www/production.Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
