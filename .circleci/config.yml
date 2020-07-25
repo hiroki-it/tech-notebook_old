@@ -27,10 +27,6 @@ commands:
           command: |
             tar -cvJf source.tar.xz ./app/*
             cp *.tar.xz ../tmp/workspace/app
-      - persist_to_workspace:
-          root: ../tmp/workspace
-          paths:
-            - ./app
 
 # ジョブの設定
 jobs:
@@ -80,6 +76,13 @@ jobs:
           command: |
             cd ./app
             make html
+      - run:
+          # 本番環境にデプロイされるappディレクトリに移動
+          # Htmlの掃除
+          name: Make clean
+          command: |
+            cd ./app
+            make clean
 
 # 実行の順番を定義
 workflows:
