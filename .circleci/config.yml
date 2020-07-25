@@ -21,7 +21,7 @@ commands:
           name: Make dir & Copy source to workspace
           command: |
             mkdir -p ../workspace/app/build
-            cp ./app/build/* ../workspace/app/build
+            cp -rp ./app/build/* ../workspace/app/build
       - persist_to_workspace:
           root: ../workspace
           paths:
