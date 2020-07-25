@@ -15,18 +15,26 @@ commands:
           command: |
             git config --global core.quotepath false
             
-  set-up-bundle-source:
-     steps:
+  persist-deploy-source:
+    steps:
       - run:
-          name: Copy appspec to workspace
+          name: Make dir & Copy source to workspace
           command: |
-            mkdir -p ../tmp/workspace/app
-            cp ./infra/aws_codedeploy/appspec.* ../tmp/workspace/app
-      - run:
-          name: Compress and copy source code to workspace
+            mkdir -p ../workspace/app/build
+            cp ./app/build/* ../workspace/app/build
+      - persist_to_workspace:
+          root: ../workspace
+          paths:
+            - ./app/build
+  
+  attach-deploy-source:
+    steps:
+      - run: 
+          name: Make dir
           command: |
-            tar -cvJf source.tar.xz ./app/*
-            cp *.tar.xz ../tmp/workspace/app
+            mkdir ../workspace
+      - attach_workspace:
+          at: ../workspace
 
 # ジョブの設定
 jobs:
@@ -76,13 +84,6 @@ jobs:
           command: |
             cd ./app
             make html
-      - run:
-          # 本番環境にデプロイされるappディレクトリに移動
-          # Htmlの掃除
-          name: Make clean
-          command: |
-            cd ./app
-            make clean
 
 # 実行の順番を定義
 workflows:
@@ -100,12 +101,16 @@ workflows:
       - build-app:
           requires:
             - push-images
-      # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
+          post-steps:
+            - persist-deploy-source
+      # Deploy Productin Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
       - aws-ecr/build-and-push-image:
           requires:
             - build-app
+          pre-steps:
+            - attach-deploy-source
           name: build-and-push-image-builder
-          dockerfile: ./infra/docker/builder/Dockerfile
+          dockerfile: ./infra/docker/builder/production.Dockerfile
           path: '.'
           repo: ${REPOSITORY_NAME_BUILDER}
           create-repo: true
@@ -125,14 +130,10 @@ workflows:
           requires:
             - build-and-push-image-builder
             - build-and-push-image-www
-          pre-steps:
-            - setup-git-config
-            - checkout
-            - set-up-bundle-source
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: ../tmp/workspace/app
+          bundle-source: ./infra/aws_codedepoy
           bundle-type: zip
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
