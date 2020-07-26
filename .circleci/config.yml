@@ -31,7 +31,7 @@ commands:
 
 # ジョブの設定
 jobs:
-  push-images:
+  push-builder-images:
     # ホスト側環境の設定
     machine: true
     # ソースコードの配置先を，/root/project(=tech-notebook) に設定
@@ -44,10 +44,6 @@ jobs:
           command: |
             docker build -f ./infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
       - run:
-          name: Build www
-          command: |
-            docker build -f ./infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
-      - run:
           name: Login to docker hub
           command: |
             echo ${DOCKER_PASS} |
@@ -56,6 +52,24 @@ jobs:
           name: Push builder
           command: |
             docker push ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
+  
+  push-www-images:
+    # ホスト側環境の設定
+    machine: true
+    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
+    steps:
+      - setup-git-config
+      # ソースコードをコピー
+      - checkout
+      - run:
+          name: Build www
+          command: |
+            docker build -f ./infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
+      - run:
+          name: Login to docker hub
+          command: |
+            echo ${DOCKER_PASS} |
+            docker login -u ${DOCKER_USER} --password-stdin
       - run:
           name: Push www
           command: |
@@ -84,7 +98,14 @@ workflows:
   build-push:
     jobs:
       # Deploy Image To Docker Hub
-      - push-images:
+      - push-builder-images:
+          filters:
+            branches:
+              only:
+                # NOTE: デプロイする場合は指定のブランチを作成
+                - feature/update_infrastructure
+      # Deploy Image To Docker Hub
+      - push-www-images:
           filters:
             branches:
               only:
@@ -93,7 +114,8 @@ workflows:
       # Make Deploy Source
       - make-deploy-source:
           requires:
-            - push-images
+            - push-builder-images
+            - push-www-images
           post-steps:
             - persist-deploy-source
       # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
