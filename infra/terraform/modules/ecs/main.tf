@@ -46,7 +46,9 @@ resource "aws_ecs_service" "ecs_service" {
 
   // デプロイメント
   deployment_controller {
-    type = "CODE_DEPLOY" // Blue/Greenデプロイメント
+    type = "ECS" 
+    
+    // NOTE: Blue/Greenデプロイメントの場合，{ type = "CODE_DEPLOY"} 
   }
 
   // ロードバランシング
