@@ -96,16 +96,6 @@ workflows:
             - push-images
           post-steps:
             - persist-deploy-source
-      # Deploy Image To ECR builder -- Fix: env_var_name型とstring型の間で，変数展開の記述方法が異なる
-      - aws-ecr/build-and-push-image:
-          requires:
-            - make-deploy-source
-          name: build-and-push-image-builder
-          dockerfile: ./infra/docker/builder/Dockerfile
-          path: '.'
-          repo: ${REPOSITORY_NAME_BUILDER}
-          create-repo: true
-          tag: ${CIRCLE_SHA1}
       # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           requires:
@@ -132,15 +122,6 @@ workflows:
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
           service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
-      # Deploy Service To ECS builder -- Fix: string型設定項目は，${}をつけて環境変数を出力
-      - aws-ecs/deploy-service-update:
-          requires:
-            - deploy-source-code
-          name: deploy-service-update-builder
-          family: "${APP_NAME}-ecs-task-definition"
-          cluster-name: "${APP_NAME}-ecs-cluster"
-          service-name: "${APP_NAME}-ecs-service"
-          container-image-name-updates: "container=builder-container,tag=${CIRCLE_SHA1}"
       # Deploy Service To ECS www
       - aws-ecs/deploy-service-update:
           requires:
