@@ -117,8 +117,6 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - make-deploy-source
-          pre-steps:
-            - attach-deploy-source
           name: build-and-push-image-www
           dockerfile: ./infra/docker/www/production.Dockerfile
           path: '.'
