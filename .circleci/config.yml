@@ -151,7 +151,7 @@ workflows:
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
           service-name: "${APP_NAME}-ecs-service"
-          container-image-name-updates: "container=www-container,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=www-container,tag=latest"
       # Run Fargate
       - aws-ecs/run-task:
           requires:
