@@ -20,10 +20,10 @@ commands:
       - run:
           name: Make dir & Copy source to workspace
           command: |
-            mkdir -p ../workspace/app/build
-            cp -rp ./app/build/* ../workspace/app/build
+            mkdir -p ./workspace/app/build
+            cp -rp ./app/build/* ./workspace/app/build
       - persist_to_workspace:
-          root: ../workspace
+          root: ./workspace
           paths:
             - ./app/build
   
@@ -32,9 +32,9 @@ commands:
       - run: 
           name: Make dir
           command: |
-            mkdir ../workspace
+            mkdir ./workspace
       - attach_workspace:
-          at: ../workspace
+          at: ./workspace
 
 # ジョブの設定
 jobs:
