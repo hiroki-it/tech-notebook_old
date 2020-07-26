@@ -1,4 +1,14 @@
+# This is an appspec.yml template file for use with an Amazon ECS deployment in CodeDeploy.
+# The lines in this template that start with the hashtag are 
+#   comments that can be safely left in the file or 
+#   ignored.
+# For help completing this file, see the "AppSpec File Reference" in the  
+#   "CodeDeploy User Guide" at
+#   https://docs.aws.amazon.com/codedeploy/latest/userguide/app-spec-ref.html
 version: 0.0
+# In the Resources section, you must specify the following: the Amazon ECS service, task definition name, 
+# and the name and port of the your load balancer to route traffic,
+# target version, and (optional) the current version of your AWS Lambda function. 
 Resources:
   - TargetService:
       Type: AWS::ECS::Service
@@ -6,4 +16,4 @@ Resources:
         TaskDefinition: "<TASK_DEFINITION>"
         LoadBalancerInfo:
           ContainerName: "www-container"
-          ContainerPort: 80
+          ContainerPort: "80"
