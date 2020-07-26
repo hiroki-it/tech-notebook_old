@@ -56,7 +56,7 @@ provider "aws" {
 #========
 # Roles
 #========
-module "roles_module" {
+module "service_role_module" {
   // モジュールのResourceを参照
   source = "../modules/service_role"
 }
@@ -157,7 +157,7 @@ module "ecs_module" {
   source = "../modules/ecs"
 
   // 他のモジュールの出力値を渡す
-  ecs_task_execution_role_arn = module.roles_module.ecs_task_execution_role_arn
+  ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
   alb_target_group_arn        = module.alb_module.alb_target_group_blue_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
@@ -180,7 +180,7 @@ module "codedeploy_module" {
   alb_listener_blue_arn           = module.alb_module.alb_listener_blue_arn
   alb_target_group_blue_name      = module.alb_module.alb_target_group_blue_name
   alb_target_group_green_name     = module.alb_module.alb_target_group_green_name
-  codedeployment_role_for_ecs_arn = module.roles_module.codedeployment_role_for_ecs_arn
+  codedeployment_role_for_ecs_arn = module.service_role_module.codedeployment_role_for_ecs_arn
   ecs_cluster_name                = module.ecs_module.ecs_cluster_name
   ecs_service_name                = module.ecs_module.ecs_service_name
 
