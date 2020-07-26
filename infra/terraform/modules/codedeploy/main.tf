@@ -54,11 +54,13 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     deployment_type   = "BLUE_GREEN"
   }
 
+  // 環境設定
   ecs_service {
     cluster_name = var.ecs_cluster_name
     service_name = var.ecs_service_name
   }
 
+  // Load Balancer
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
