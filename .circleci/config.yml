@@ -127,7 +127,7 @@ workflows:
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
           bundle-source: ./infra/aws_codedeploy
-          bundle-type: zip
+          bundle-type: yml
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
