@@ -126,6 +126,7 @@ workflows:
           create-repo: true
           tag: ${CIRCLE_SHA1}
           attach-workspace: true
+          workspace-root: ./workspace
       # Deploy Source Code
       - aws-code-deploy/deploy:
           requires:
