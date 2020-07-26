@@ -130,23 +130,10 @@ workflows:
           tag: latest
           attach-workspace: true
           workspace-root: ./workspace
-      # Deploy Source Code
-      - aws-code-deploy/deploy:
-          requires:
-            - build-and-push-image-www
-          name: deploy-source-code
-          application-name: ${APP_NAME}
-          bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: ./infra/aws_codedeploy
-          bundle-type: zip
-          bundle-key: www-container
-          deployment-config: CodeDeployDefault.ECSAllAtOnce
-          deployment-group: "${APP_NAME}-deployment-group"
-          service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
       # Deploy Service To ECS www
       - aws-ecs/deploy-service-update:
           requires:
-            - deploy-source-code
+            - build-and-push-image-www
           name: deploy-service-update-www
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
