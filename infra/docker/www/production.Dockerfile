@@ -12,7 +12,7 @@ RUN dnf upgrade -y \
       vim
 
 # CircleCIコンテナのワークスペースに保存したデプロイソースをコピー
-COPY ../workspace/app/build /var/www
+COPY ./workspace/app/build /var/www
 
 COPY ./infra/docker/www/nginx.conf /etc/nginx/nginx.conf
 
