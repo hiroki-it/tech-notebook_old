@@ -126,7 +126,7 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: ./infra/aws_codedeploy/appspec.*
+          bundle-source: ./infra/aws_codedeploy
           bundle-type: zip
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
