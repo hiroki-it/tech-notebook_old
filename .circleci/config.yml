@@ -127,7 +127,7 @@ workflows:
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
-          tag: ${CIRCLE_SHA1}
+          tag: latest
           attach-workspace: true
           workspace-root: ./workspace
       # Deploy Source Code
