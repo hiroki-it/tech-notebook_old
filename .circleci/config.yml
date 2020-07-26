@@ -2,19 +2,21 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@6.9.0
+  aws-ecr: circleci/aws-ecr@6.11.0
   aws-ecs: circleci/aws-ecs@1.2.0
   aws-code-deploy: circleci/aws-code-deploy@1.0.1
 
 commands:
+  # checkoutに日本語対応化
   setup-git-config:
     steps:
       - run:
-          # -- Fix: checkoutが日本語を認識できないので対処
+          
           name: Setup git config
           command: |
             git config --global core.quotepath false
-            
+  
+  # ソースコードをワークスペースに保存
   persist-deploy-source:
     steps:
       - run:
@@ -26,22 +28,13 @@ commands:
           root: ./workspace
           paths:
             - ./app/build
-  
-  attach-deploy-source:
-    steps:
-      - run: 
-          name: Make dir
-          command: |
-            mkdir ./workspace
-      - attach_workspace:
-          at: ./workspace
 
 # ジョブの設定
 jobs:
   push-images:
     # ホスト側環境の設定
     machine: true
-    # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
+    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
       - setup-git-config
       # ソースコードをコピー
@@ -72,7 +65,7 @@ jobs:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
-    # ソースコードの配置先を，/root/project(=tech-notebook) に設定．
+    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
       - setup-git-config
       # ソースコードをコピー
@@ -133,7 +126,7 @@ workflows:
           name: deploy-source-code
           application-name: ${APP_NAME}
           bundle-bucket: "${APP_NAME}-bucket"
-          bundle-source: ./infra/aws_codedepoy
+          bundle-source: ./infra/aws_codedeploy/appspec.*
           bundle-type: zip
           bundle-key: ${CIRCLE_SHA1}
           deployment-config: CodeDeployDefault.ECSAllAtOnce
