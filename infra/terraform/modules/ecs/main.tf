@@ -75,35 +75,3 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   memory                   = var.ecs_task_size_memory
   container_definitions    = file("container_definition.json") // 引数パスはルートモジュール基準
 }
-
-#====================
-# ECS Task Schedule
-#====================
-// スケジュールルール
-resource "aws_cloudwatch_event_rule" "cloudwatch_event_rule_ecs" {
-  name                = "builder-event-rule"
-  description         = "Make Html"
-  schedule_expression = "cron(0 20 * * ? *)"
-}
-
-// ターゲットのスケジュール
-resource "aws_cloudwatch_event_target" "cloudwatch_event_target_ecs" {
-  target_id = "${var.app_name}-builder"
-  rule      = aws_cloudwatch_event_rule.cloudwatch_event_rule_ecs.name
-  arn       = aws_ecs_cluster.ecs_cluster.arn
-  role_arn  = var.ecs_task_execution_role_arn
-
-  // ロードバランシング
-  ecs_target {
-    launch_type         = "FARGATE"
-    platform_version    = "latest"
-    task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.ecs_task_definition.arn
-
-    // ネットワークアクセス
-    network_configuration {
-      subnets         = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-      security_groups = [var.security_group_ecs_id]
-    }
-  }
-}
