@@ -396,7 +396,7 @@ stderr_logfile=/var/log/command-error.log
 # コマンドの実行ユーザ
 user=root
 # コマンドの実行ディレクトリ
-directory=/var/www/tech-notebook
+directory=/var/www/app
 ```
 
 
