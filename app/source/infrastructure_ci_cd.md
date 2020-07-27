@@ -1,4 +1,4 @@
-# 継続的な ビルド／テスト／デプロイ の流れ
+# 継続的な ビルド／テスト／デプロイ 
 
 ## 01. CI/CDの流れ
 
@@ -75,47 +75,7 @@ version: 2.1
 
 
 
-## 03-03. orbs
-
-### orbsとは
-
-CircleCIから提供される汎用的なパッケージの使用を読み込む．
-
-**【実装例】**
-
-```yaml
-version: 2.1
-orbs:
-    hello: circleci/hello-build@0.0.5
-    
-workflows:
-    "Hello Workflow":
-        jobs:
-          - hello/hello-build
-```
-
-以下のAWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，ここでせってしなくても，自動で補完してくれる．
-
-**【実装例】**
-
-```yaml
-version: 2.1
-orbs:
-  aws-ecr: circleci/aws-ecr@6.9.0
-  
-workflows:
-  version: 2.1
-  build-push:
-    - aws-ecr/build-and-push-image:
-        account-url: AWS_ECR_ACCOUNT_URL
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-secret-access-key: AWS_SECRET_KEY_ID
-        region: AWS_REGION
-```
-
-
-
-## 03-04. jobs
+## 03-03. jobs
 
 ### jobsとは
 
@@ -125,15 +85,21 @@ workflows:
 
 ### docker，machine
 
+#### ・仮想環境の選択
+
+Jobを実行する仮想環境を選択できる．
+
 #### ・docker
 
-Docker環境で，同じくDockerイメージをビルドする場合，CircleCIコンテナの外でこれをビルドする必要がある．本環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
+![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/docker_executor.png)
+
+コンテナ環境でJobを行う．JobにDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外でJobを行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
 
 **【実装例】**
 
 
 ```yaml
-version: 2
+version: 2.1
 jobs:
  build:
    docker:
@@ -154,10 +120,12 @@ jobs:
 
 #### ・machine
 
+![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/machine_executor.png)
+
 **【実装例】**
 
 ```yaml
-version: 2
+version: 2.1
 jobs:
  build:
    machine: true
@@ -244,6 +212,7 @@ jobs:
             - checkout
             
 workflows:
+  version: 2.1
   build-test-deploy:
     jobs:
       - custom_checkout:
@@ -288,22 +257,103 @@ commands:
       - restore_cache:
           key:
             - v1-dependecies-{{ checksum composer.json }}
-  # 取得したcomposer.jsonを元に，差分のvendorをインストール
+  # 取得したcomposer.jsonを元に，差分のvendorをインストール．
   install_vendor:
      steps:
        - run: composer install
   save_vendor:
     steps:
-      # 最新のvendorを保存
+      # 最新のvendorを保存．
       - save_cache:
           key: v1-dependecies-{{ checksum composer.json }}
           paths:
             - /vendor
 ```
 
+#### ・persist_to_workspace，attach_workspace
+
+![workflow_workspace_cache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/workflow_workspace_cache.png)
+
+CircleCIでは，Jobごとに異なる仮想環境が構築されるため，他のJobで使用された一時ファイルを再利用したい場合に，これを使う．
+
+**【実装例】**
+
+```yaml
+# JobA
+- persist_to_workspace:
+    # JobAにて，Workspaceを割り当てるパスのroot
+    root: /tmp/workspace
+    # Rootディレクトリを基準とした相対パス
+    paths:
+      - target/application.jar
+      - build/*
+```
+
+```yaml
+# JobB
+- attach_workspace:
+    # JobBにて，Workspaceを割り当てる
+    # JobAとは異なるディレクトリに，Workspaceを割り当てても良い．
+    at: /tmp/workspace
+```
+
+#### ・pre-steps，post-steps
+
+Workspaceで，Jobの前に実行する処理を定義する．
+
+**【実装例】**
+
+```yaml
+version: 2.1
+jobs:
+  bar:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: echo "building"
+      - run:
+          command: echo "testing"
+          
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - bar:
+          # Workspace前に行う処理
+          pre-steps:
+            - run:
+                command: echo "install custom dependency"
+          # Workspace後に行う処理
+          post-steps:
+            - run:
+                command: echo "upload artifact to s3"
+```
+
+Orbsを使う場合は，オプションに引数を渡す前に定義する．
+
+```yaml
+workflows:
+  build:
+    jobs:
+      - aws-xxx/build-push-yyy:
+          # Workspace前に行う処理
+          pre-steps:
+            - run:
+                command: echo "XXX"
+          # Workspace後に行う処理
+          post-steps:
+            - run:
+                command: echo "XXX"
+          # Orbsのオプション
+          name: xxx
+          dockerfile: xxx
+          tag: xxx
+```
 
 
-## 03-05. command
+
+## 03-04. command
 
 ### commandとは
 
@@ -333,7 +383,7 @@ jobs:
 
 
 
-## 03-06. executors
+## 03-05. executors
 
 ### executorsとは
 
@@ -351,6 +401,189 @@ jobs:
     executor: my-executor
     steps:
       - run: echo "Executor の外で定義しました"
+```
+
+
+
+## 03-06. CircleCIライブラリ
+
+### orbs
+
+#### ・orbsとは
+
+CircleCIから提供される汎用的なパッケージの使用を読み込む．
+
+**【実装例】**
+
+```yaml
+version: 2.1
+orbs:
+    hello: circleci/hello-build@0.0.5
+    
+workflows:
+    "Hello Workflow":
+        jobs:
+          - hello/hello-build
+```
+
+#### ・オプションへの引数の渡し方
+
+AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，オプションで渡さなくとも，自動で　入力してくれる．
+
+```yaml
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-xxx@x.y.z
+
+workflows:
+  version: 2.1
+  build_and_push_image:
+    jobs:
+      - aws-xxx/yyy-yyy-yyy:
+          # デフォルト名であれば，記述しなくても自動的に入力してくれる．
+          account-url: ${AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME}
+          aws-access-key-id: ${ACCESS_KEY_ID_ENV_VAR_NAME}
+          aws-secret-access-key: ${SECRET_ACCESS_KEY_ENV_VAR_NAME}
+          region: ${AWS_REGION_ENV_VAR_NAME}
+```
+
+
+
+### aws-ecr
+
+#### ・Job：build-and-push-image
+
+CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイできる．
+
+**【実装例】**
+
+```yaml
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@x.y.z
+
+workflows:
+  version: 2.1
+  build_and_push_image:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          account-url: ${AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME}
+          aws-access-key-id: ${ACCESS_KEY_ID_ENV_VAR_NAME}
+          aws-secret-access-key: ${SECRET_ACCESS_KEY_ENV_VAR_NAME}
+          region: ${AWS_REGION_ENV_VAR_NAME}
+          # リポジトリがない時に作成するかどうか．
+          create-repo: true
+          no-output-timeout: 20m
+          # projectを作業ディレクトリとした時の相対パス
+          dockerfile: ./infra/docker/Dockerfile
+          path: '.'
+          profile-name: myProfileName
+          repo: '${APP_NAME}-repository'
+          # CircleCIのハッシュタグによるバージョビング
+          tag: ${CIRCLE_SHA1}
+          # attach_workspaceコマンドを宣言
+          attach-workspace: true
+          # attach_workspaceコマンド時のrootディレクトリ
+          workspace-root: ./workspace
+```
+
+
+
+### aws-ecs
+
+#### ・Job：deploy-service-update
+
+ECSのサービスのリビジョンを更新できる．
+
+**【実装例】**
+
+```yaml
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@x.y.z
+  aws-ecs: circleci/aws-ecs@x.y.z
+  
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+      
+      # ~~~ 省略 ~~~ #
+      
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          # タスク定義名
+          family: '${APP_NAME}-ecs-task-definition'
+          # クラスター名
+          cluster-name: '${APP_NAME}-cluster'
+          # コンテナ名
+          container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
+          # サービス名
+          service-name: '${APP_NAME}-service'
+```
+
+#### ・Job：run-task-fargate
+
+ECRにあるDockerイメージをFargateにデプロイできる．
+
+**【実装例】**
+
+```yaml
+version: 2.1
+orbs:
+  aws-ecs: circleci/aws-ecs@x.y.z
+
+workflows:
+  version: 2.1
+  run-task:
+    jobs:
+      - aws-ecs/run-task:
+          name: run-task-fargate
+          cluster: '${APP_NAME}-ecs-cluster'
+          awsvpc: true
+          launch-type: FARGATE
+          task-definition: '${APP_NAME}-ecs-task-definition'
+          subnet-ids: ${AWS_SUBNET_IDS}
+          security-group-ids: ${AWS_SUBNET_GROUPS}
+  
+```
+
+
+
+### aws-code-deploy
+
+#### ・Job：deploy
+
+S3にappspecファイルをデプロイできる．また，CodeDeployを用いて，EC2またはFargateにソースコードまたはDockerイメージをデプロイできる．
+
+```yaml
+version: 2.1
+orbs:
+  aws-code-deploy: circleci/aws-ecs@x.y.z
+
+workflows:
+  version: 2.1
+  run-task:
+    jobs:
+      - aws-code-deploy/deploy:
+          requires:
+            - build-and-push-image-www
+          name: deploy-source-code
+          application-name: ${APP_NAME}
+          # appspecファイルを保存するバケット名
+          bundle-bucket: "${APP_NAME}-bucket"
+          # appspecファイルのあるフォルダ
+          bundle-source: ./infra/aws_codedeploy
+          # appspecファイルをzipフォルダで保存
+          bundle-type: zip
+          # zipフォルダ名
+          bundle-key: xxx-bundle
+          deployment-config: CodeDeployDefault.ECSAllAtOnce
+          deployment-group: "${APP_NAME}-deployment-group"
+          # ECSにアクセスできるCodeDeployサービスロール
+          service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
 ```
 
 
