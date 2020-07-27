@@ -88,7 +88,7 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: データベース
 
    backend_database_operation.md
-   backend_database_sql.md
+   backend_database_mysql.md
 
 .. toctree::
    :maxdepth: 1
@@ -128,6 +128,7 @@ Hiroki tech-notebook ドキュメントサイト
    infrastructure_virtual_server.md
    infrastructure_container.md
    infrastructure_terraform.md
+   infrastructure_ci_cd.md
 
 .. toctree::
    :maxdepth: 1
@@ -141,7 +142,6 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: 開発フロー
 
    development_flow_overview.md
-   development_flow_continuous_build_testing_deploy.md
    development_testing.md
 
 .. toctree::
