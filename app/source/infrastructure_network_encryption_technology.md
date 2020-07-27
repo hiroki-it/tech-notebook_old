@@ -180,6 +180,12 @@ Webコンテンツデータ，メールデータ，その他
 
 『OpenSSH』，『Apache MINA/SSHD』
 
+#### ・SSHポートフォワード（SSHトンネル）
+
+ローカルサーバのポート（例：```20000```）と，直接はアクセスできないリモートサーバ（例：Aurora）のポート（例：```3306```）を，マッピングする方法．ローカルサーバから踏み台サーバへのSSH接続と，踏み台サーバからリモートサーバへの転送を用いる．DBMSクライアントソフトでは，リモートにあるDBサーバに接続するために，この仕組みがよく用いられる．
+
+![SSHポートフォワード](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSHポートフォワード.png)
+
 
 
 ### SCP：Secure Copy Protocol
