@@ -19,7 +19,8 @@ variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
 
 // Security Group
-variable "security_group_inbound_cidr_block" {}
+variable "security_group_inbound_cidr_block_https" {}
+variable "security_group_inbound_cidr_block_ssh" {}
 variable "security_group_outbound_cidr_block" {}
 
 // Internet Gateway
@@ -88,13 +89,15 @@ module "security_group_module" {
   // 他のモジュールの出力値を渡す
   vpc_id = module.vpc_module.vpc_id
 
-  security_group_inbound_cidr_block  = var.security_group_inbound_cidr_block
-  security_group_outbound_cidr_block = var.security_group_outbound_cidr_block
-  app_name                           = var.app_name
-  port_http_blue                     = var.port_http_blue
-  port_http_green                    = var.port_http_green
-  port_https                         = var.port_https_blue
-  port_ssh                           = var.port_ssh
+  security_group_inbound_cidr_block_http  = var.security_group_inbound_cidr_block_https
+  security_group_inbound_cidr_block_https = var.security_group_inbound_cidr_block_https
+  security_group_inbound_cidr_block_ssh   = var.security_group_inbound_cidr_block_ssh
+  security_group_outbound_cidr_block      = var.security_group_outbound_cidr_block
+  app_name                                = var.app_name
+  port_http_blue                          = var.port_http_blue
+  port_http_green                         = var.port_http_green
+  port_https                              = var.port_https_blue
+  port_ssh                                = var.port_ssh
 }
 
 #======
