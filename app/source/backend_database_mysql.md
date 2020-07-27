@@ -25,7 +25,7 @@ FROM => JOIN => WHERE => GROUP BY => HAVING => SELECT => ORDER BY
 
 #### ・```SUM()```
 
-```SQL
+```mysql
 -- 指定したカラムで，『フィールド』の合計を取得
 SELECT SUM(C)  
 FROM T;
@@ -33,7 +33,7 @@ FROM T;
 
 #### ・```AVG()```
 
-```SQL
+```mysql
 -- 指定したカラムで，『フィールド』の平均値を取得
 SELECT AVG(C)  
 FROM T;
@@ -41,7 +41,7 @@ FROM T;
 
 #### ・```min()```
 
-```SQL
+```mysql
 -- 指定したカラムで，『フィールド』の最小値を取得
 SELECT MIN(C)
 FROM T;
@@ -49,7 +49,7 @@ FROM T;
 
 #### ・```max()```
 
-```SQL
+```mysql
 -- 指定したカラムで，『フィールド』の最大値を取得
 SELECT MAX(C)
 FROM T;
@@ -57,7 +57,7 @@ FROM T;
 
 #### ・```COUNT()```
 
-```SQL
+```mysql
 -- 指定したカラムで，『フィールド』の個数を取得
 SELECT COUNT(*)
 FROM T;
@@ -67,19 +67,19 @@ FROM T;
 
 **【実装例】**
 
-```SQL
+```mysql
 -- 集合関数を集合関数の中に入れ子状にすることはできない．
 SELECT AVG(SUM(C))
 FROM T;
 ```
 
-```SQL
+```mysql
 -- 指定したカラムで，値無しも含む『フィールド』を取得
 SELECT COUNT(*)
 FROM T;
 ```
 
-```SQL
+```mysql
 -- 指定したカラムで，値無しを除いた『フィールド』を取得
 SELECT COUNT(*);
 ```
@@ -90,7 +90,7 @@ SELECT COUNT(*);
 
  カラムAがtrueだったら，カラムBを取得する．falseであったら，カラムCを取得する．
 
-```SQL
+```mysql
 SELECT
   CASE
     WHEN t.CA = 1 THEN t.CB
@@ -129,7 +129,7 @@ FROM
 
 **【実装例】**
 
-```SQL
+```mysql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
 SELECT T1.C1,
 -- 複数の表を指定
@@ -144,7 +144,7 @@ WHERE R1 = R2
 
 **【実装例】**
 
-```SQL
+```mysql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
 SELECT T1.C1,
 -- 複数の表を指定
@@ -203,21 +203,21 @@ $sql = <<<SQL
 
 **【実装例】**
 
-```SQL
+```mysql
 SELECT *
 FROM T
 -- 指定したカラムで，指定した値の『フィールド』を取得
 WHERE C in (xxx, xxx, ...);
 ```
 
-```SQL
+```mysql
 SELECT *
 FROM T
 -- 指定したカラムで，指定した値以外の『フィールド』を取得
 WHERE C not in (R1, R2, ...);
 ```
 
-```SQL
+```mysql
 SELECT * FROM T
 -- フィールドを指定の値として用いる
 WHERE C not in (
@@ -227,7 +227,7 @@ WHERE C not in (
 
 **【IN句を使用しなかった場合】**
 
-```SQL
+```mysql
 SELECT *
 FROM fruit
 WHERE name = "みかん"
@@ -236,7 +236,7 @@ WHERE name = "みかん"
 
 **【IN句を使用した場合】**
 
-```SQL
+```mysql
 SELECT * 
 FROM fruit
 WHERE name IN("みかん","りんご");
@@ -246,7 +246,7 @@ WHERE name IN("みかん","りんご");
 
   書き方が異なるだけで，```in```と同じ出力
 
-```SQL
+```mysql
 SELECT *
 FROM T
 WHERE C = ANY(xxx, xxx, xxx);
@@ -262,7 +262,7 @@ WHERE C = ANY(xxx, xxx, xxx);
 
 **【実装例】**
 
-```SQL
+```mysql
 SELECT C1, AVG(C2)
 FROM T
 -- 指定したカラムをグループ化し，フィールドの値を合計する．
@@ -279,7 +279,7 @@ GROUP BY C;
 
 **【実装例】**
 
-```SQL
+```mysql
 -- HAVINGによる集計結果を指定して出力．
 SELECT C1, COUNT(C2) 
 FROM T
@@ -290,14 +290,14 @@ HAVING COUNT(*) >= 2;
 
 ※以下の場合，```GROUP BY + HAVING```を使っても，```WHERE```を使っても，同じ出力結果になる．
 
-```SQL
+```mysql
 SELECT C
 FROM T
 GROUP BY C
 HAVING R;
 ```
 
-```SQL
+```mysql
 SELECT C
 FROM T
 WHERE R
@@ -312,13 +312,13 @@ GROUP BY C;
 
 **【実装例】**
 
-```SQL
+```mysql
 SELECT * FROM T
 -- 任意の文字（文字無しも含まれる）
 WHERE C LIKE '%営業';
 ```
 
-```SQL
+```mysql
 SELECT * FROM T
 -- 任意の一文字
 WHERE C LIKE '_営業';
@@ -332,7 +332,7 @@ WHERE C LIKE '_営業';
 
 **【実装例】**
 
-```SQL
+```mysql
 SELECT * FROM T
 -- 指定したカラムで，1以上10以下の『フィールド』を取得
 BETWEEN 1 AND 10;
@@ -346,7 +346,7 @@ BETWEEN 1 AND 10;
 
 **【実装例】**
 
-```SQL
+```mysql
 -- 括弧内に値を設定してください
 SET @STAFF_NAME = {パラメータ値};
 SET @STAFF_ID = {パラメータ値};
@@ -366,7 +366,7 @@ WHERE `staff_id` = @STAFF_ID;
 
 **【実装例】**
 
-```SQL
+```mysql
 -- Main-query
 SELECT * FROM T
 
@@ -486,19 +486,19 @@ while(result.next()){
 
 ## 01-03. レコードの突き合わせ
 
-### 突き合わせ処理とは
+### 突き合わせ処理
+
+#### ・突き合わせ処理とは
 
 ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
 
 ![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_1.PNG)
 
-
-
-### 突き合わせ処理のアルゴリズム
+#### ・アルゴリズム
 
 ![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_4.png)
 
-**【突き合わせ処理の具体例】**
+#### ・具体例
 
 とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
 
@@ -513,8 +513,6 @@ while(result.next()){
 5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
 ![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_3.png)
-
-
 
 
 
@@ -576,19 +574,17 @@ $dbh = null;
 **【実装例】**
 
 ```PHP
-namespace Migration
+namespace Migration;
 
 class ItemQuery
 {
     // 列名と値を指定してINSERT
     public static function insert()
     {
-        return "INSERT INTO item_table VALUES(1, '商品A', 1000, '2019-07-24 07:07:07');"
+        return "INSERT INTO item_table VALUES(1, '商品A', 1000, '2019-07-24 07:07:07');";
     }
 }
 ```
-
-
 
 
 
@@ -600,7 +596,7 @@ class ItemQuery
 
 **【実装例】**
 
-```SQL
+```mysql
 -- 注文テーブル作成
 CREATE TABLE order_data (
 
@@ -632,7 +628,7 @@ CREATE TABLE order_data (
 
 **【実装例】**
 
-```SQL
+```mysql
 CREATE VIEW T AS
     SELECT * FROM T1;
 ```
@@ -683,14 +679,14 @@ CREATE VIEW T AS
 
 **【実装例】**
 
-```SQL
+```mysql
 -- PROCEDUREを作成し，データベースへ格納しておく．
 CREATE PROCEDURE SelectContact AS
   SELECT CustomerID, CompanyName, ContactName, Phone
   FROM Customers
 ```
 
-```SQL
+```mysql
 -- PROCEDUREを実行
 EXEC SelectContact
 ```
@@ -699,30 +695,32 @@ EXEC SelectContact
 
 ## 03. ユーザの読み出し，書き込み
 
-### mysqlテーブル
+### CREATE
 
-#### ・ユーザの一覧を確認
+#### ・ユーザ作成
 
-ここで表示される特権と．ALL特権は異なる．
-
-```SQL
-SELECT * FROM mysql.user;
+```mysql
+CREATE USER '{ユーザ名}' IDENTIFIED BY '{パスワード}'
 ```
+
+
 
 ### GRANT
 
 #### ・ユーザに全権限を付与
 
+DB名は，シングルクオーテーションで囲う必要が無い．
 
-```SQL
-GRANT ALL ON *.* TO {ユーザ名} IDENTIFIED BY {パスワード};
+
+```mysql
+GRANT ALL ON {DB名}.* TO '{ユーザ名}';
 ```
 
 
 #### ・ユーザの権限を確認
 
-```SQL
-SHOW GRANTS FOR {ユーザ名};
+```mysql
+SHOW GRANTS FOR '{ユーザ名}';
 ```
 
 
@@ -731,14 +729,39 @@ SHOW GRANTS FOR {ユーザ名};
 
 #### ・全ての権限を削除
 
-```SQL
-REVOKE ALL PRIVILEGES ON {DB名}.* FROM {ユーザ名};
+```mysql
+REVOKE ALL PRIVILEGES ON {DB名}.* FROM '{ユーザ名}';
 ```
 
 
 #### ・ユーザ名を変更
 
-```SQL
-RENAME USER {古いユーザ名} TO {新しいユーザ名};
+```mysql
+RENAME USER '{古いユーザ名}' TO '{新しいユーザ名}';
+```
+
+
+
+## 04. mysqlコマンド
+
+### mysqlテーブルの操作
+
+#### ・ユーザの一覧を確認
+
+ここで表示される特権と．ALL特権は異なる．
+
+```mysql
+SELECT * FROM mysql.user;
+```
+
+
+
+### テーブルの生成
+
+#### ・テーブルをインポート
+
+```bash
+# forceオプションで，エラーが出ても強制的にインポート
+mysql --force -u '{アカウント}' -p -h '{DBのホスト}' '{DB名}' < table_backup.sql
 ```
 
