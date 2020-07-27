@@ -138,6 +138,11 @@ workflows:
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
           service-name: "${APP_NAME}-ecs-service"
+          deployment-controller: CODE_DEPLOY
+          codedeploy-application-name: ${APP_NAME}
+          codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
+          codedeploy-load-balanced-container-name: www-container
+          codedeploy-load-balanced-container-port: 80
           container-image-name-updates: "container=www-container,tag=latest"
       # Run Fargate
       - aws-ecs/run-task:
