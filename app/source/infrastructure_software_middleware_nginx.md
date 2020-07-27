@@ -74,8 +74,8 @@ http {
         listen       80;
         # ドメイン名
         server_name  hiroki-it.work;
-        # Rootとするディレクトリ
-        root         /var/www/tech-notebook/build/html;
+        # index.phpとindex.htmlのあるディレクトリ
+        root         /var/www/app;
         # エントリーポイント
         index        index.html;
         # ページが存在しない場合，index.htmlにレスポンス．index.htmlもなければ，404レスポンス．
