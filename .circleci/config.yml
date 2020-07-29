@@ -149,6 +149,8 @@ workflows:
             - deploy-service-update-www
           name: run-task-fargate
           cluster: "${APP_NAME}-ecs-cluster"
+          platform-version: LATEST
+          assign-public-ip: ENABLED
           awsvpc: true
           launch-type: FARGATE
           task-definition: "${APP_NAME}-ecs-task-definition"
