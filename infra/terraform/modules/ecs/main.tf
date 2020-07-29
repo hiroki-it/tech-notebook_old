@@ -39,7 +39,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_service" "ecs_service" {
   name             = "${var.app_name}-ecs-service"
   cluster          = aws_ecs_cluster.ecs_cluster.id
-  task_definition  = aws_ecs_task_definition.ecs_task_definition.arn
+  task_definition  = "${aws_ecs_task_definition.ecs_task_definition.family}:${max("${aws_ecs_task_definition.ecs_task_definition.revision}", "${data.aws_ecs_task_definition.ecs_task_definition.revision}")}"
   launch_type      = "FARGATE"
   desired_count    = "1"
   platform_version = "1.3.0" // LATESTとすると自動で変換されてしまうため，直接指定する．
@@ -67,8 +67,12 @@ resource "aws_ecs_service" "ecs_service" {
 #======================
 # ECS Task Definition
 #======================
+data "aws_ecs_task_definition" ecs_task_definition {
+  task_definition = "${var.app_name}-ecs-task-definition"
+}
+
 resource "aws_ecs_task_definition" "ecs_task_definition" {
-  family                   = "${var.app_name}-ecs-task-definition" // ファミリーにリビジョン番号がついてタスク定義名
+  family                   = data.aws_ecs_task_definition.ecs_task_definition.family // ファミリーにリビジョン番号がついてタスク定義名
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = var.ecs_task_execution_role_arn
