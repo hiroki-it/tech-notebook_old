@@ -126,7 +126,7 @@ workflows:
           path: '.'
           repo: ${REPOSITORY_NAME_WWW}
           create-repo: true
-          tag: ${CIRCLE_SHA1}
+          tag: latest
           attach-workspace: true
           workspace-root: ./workspace
       # Deploy Service To ECS www
@@ -142,7 +142,7 @@ workflows:
           codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
           codedeploy-load-balanced-container-name: www-container
           codedeploy-load-balanced-container-port: 80
-          container-image-name-updates: "container=www-container,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=www-container,tag=latest"
       # Run Fargate
       - aws-ecs/run-task:
           requires:
