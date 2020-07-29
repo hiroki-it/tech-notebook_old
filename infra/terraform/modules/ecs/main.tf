@@ -42,7 +42,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition  = aws_ecs_task_definition.ecs_task_definition.arn
   launch_type      = "FARGATE"
   desired_count    = "1"
-  platform_version = "1.3.0"
+  platform_version = "1.3.0" // LATESTとすると自動で変換されてしまうため，直接指定する．
 
   // デプロイメント
   deployment_controller {
