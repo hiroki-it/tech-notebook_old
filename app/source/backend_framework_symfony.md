@@ -4,7 +4,6 @@
 
 ```
 Symfony
-│ 
 ├── config　#設定ファイル（カーネルのためのルート定義ファイル等）
 │
 ├── bin　#コマンドラインツール
@@ -16,7 +15,7 @@ Symfony
 |   └── index_dev.php #開発環境で、カーネルとして動く
 │
 ├── src　#主要なPHPファイル
-│   ├── AppBundle　(a) #アプリケーションのソースコード
+│   ├── AppBundle #アプリケーションのソースコード
 │   │  ├── Controller　#UserCase層
 │   │  ├── Entity #エンティティ　⇒　Domain層
 │   │  ├── Repository #リポジトリ ⇒ Infrastructure層
@@ -35,7 +34,7 @@ Symfony
 │   ├── logs #ログファイル
 │   └── sessions
 │
-├── vendor (c)  #外部ライブラリ
+├── vendor #外部ライブラリ
 │   ├── doctrine #ライブラリ
 │   ├── league #ライブラリ
 │   ├── sensio
