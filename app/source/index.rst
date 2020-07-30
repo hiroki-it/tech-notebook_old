@@ -121,14 +121,14 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: Terraform
+   :caption: インフラストラクチャ｜Terraform
 
    infrastructure_as_code.md
    infrastructure_terraform.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: 仮想化サーバ，コンテナ
+   :caption: インフラストラクチャ｜仮想化サーバ，コンテナ
 
    infrastructure_virtualization_technology_comparison.md
    infrastructure_virtual_server.md
@@ -137,7 +137,7 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: CI/CD
+   :caption: インフラストラクチャ｜CI/CD
 
    infrastructure_ci_cd.md
 
