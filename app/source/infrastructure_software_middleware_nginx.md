@@ -35,6 +35,7 @@ Webサーバのミドルウェアとして機能する．
 user nginx;
 # プロセス数
 worker_processes auto;
+# Nginxデーモンのpidファイルのパス
 pid /var/run/nginx.pid;
 
 events {
@@ -66,6 +67,24 @@ http {
     include           /etc/nginx/mime.types;
     
     #=====================================
+    # ALBヘルスチェック
+    #=====================================
+    server {
+        # wwwサーバのドメイン名に該当しなければ受信
+        listen 80 default_server;
+        # 任意のIPv6も受信
+        listen [::]:80 default_server;
+
+        # レスポンス
+        location / {
+                # gifファイルを200番で返却
+                empty_gif;
+                access_log off;
+                break;
+        }
+    }
+    
+    #=====================================
     # wwwサーバ
     #=====================================
     # リクエストメッセージを受信するサーバ
@@ -73,12 +92,12 @@ http {
         # リクエスト受信ために開放するポート番号
         listen       80;
         # ドメイン名
-        server_name  hiroki-it.work;
+        server_name  tech-notebook.hiroki-it.work;
         # index.phpとindex.htmlのあるディレクトリ
         root         /var/www/app;
         # エントリーポイント
-        index        index.html;
-        # ページが存在しない場合，index.htmlにレスポンス．index.htmlもなければ，404レスポンス．
+        index        index.php index.html;
+        # レスポンス．ページが存在しない場合index.html（index.htmlもなければ404）
         location / {
             try_files $uri $uri/ =404;
         }
