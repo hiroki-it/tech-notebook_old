@@ -20,34 +20,34 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP オブジェクト指向
+   :caption: PHP｜オブジェクト指向
 
    object_oriented_analysis_and_design.md
    object_oriented_design_and_programming.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP ロジック
+   :caption: PHP｜ロジック
 
    backend_validation_logic.md
    backend_iteration_logic.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP restful-api
+   :caption: PHP｜RESTful-API
 
    backend_api_restful.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP ライブラリ／フレームワーク
+   :caption: PHP｜ライブラリ／フレームワーク
 
    backend_library.md
    backend_framework_symfony.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP アーキテクチャ
+   :caption: PHP｜アーキテクチャ
 
    architecture_domain_driven_design.md
    architecture_cqrs.md
@@ -60,19 +60,19 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: JS オブジェクト指向
+   :caption: JS｜オブジェクト指向
 
    object_oriented_based_prototype.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: JS ロジック
+   :caption: JS｜ロジック
 
    frontend_validation_logic.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: JS アーキテクチャ
+   :caption: JS｜アーキテクチャ
 
    architecture_spa_vuejs.md
 
@@ -107,9 +107,9 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: ソフトウェア
 
+   infrastructure_machine_language_and_radix.md
    infrastructure_software.md
    infrastructure_software_middleware_nginx.md
-   infrastructure_machine_language_and_radix.md
 
 .. toctree::
    :maxdepth: 1
@@ -121,13 +121,24 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: Infrastructure as Code
+   :caption: Terraform
 
    infrastructure_as_code.md
+   infrastructure_terraform.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: 仮想化サーバ，コンテナ
+
    infrastructure_virtualization_technology_comparison.md
    infrastructure_virtual_server.md
    infrastructure_container.md
-   infrastructure_terraform.md
+   infrastructure_container_orchestration.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: CI/CD
+
    infrastructure_ci_cd.md
 
 .. toctree::
