@@ -428,7 +428,7 @@ workflows:
 
 #### ・オプションへの引数の渡し方
 
-AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，オプションで渡さなくとも，自動で　入力してくれる．
+AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，オプションで渡さなくとも，自動で入力してくれる．
 
 ```yaml
 version: 2.1
@@ -526,7 +526,7 @@ workflows:
 
 #### ・Job：run-task-fargate
 
-ECRにあるDockerイメージをFargateにデプロイできる．
+ECRにあるDockerイメージをFargateにデプロイできる．なお，デプロイが行われた後，Fargateは起動される．
 
 **【実装例】**
 
