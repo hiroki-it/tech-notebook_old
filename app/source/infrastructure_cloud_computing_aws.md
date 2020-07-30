@@ -236,6 +236,30 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 
+### CodeDeploy
+
+#### ・appspecファイル
+
+デプロイの設定を行う．
+
+```yaml
+version: 0.0
+
+Resources:
+  - TargetService:
+      # 使用するサービス
+      Type: AWS::ECS::Service
+      Properties:
+        # 使用するタスク定義．<TASK_DEFINITION> とすると，自動補完してくれる．
+        TaskDefinition: "<TASK_DEFINITION>"
+        # 使用するロードバランサー
+        LoadBalancerInfo:
+          ContainerName: "xxx-container"
+          ContainerPort: "80"
+```
+
+
+
 ## 02. AWSにおけるプライベートネットワーク構成
 
 ### クラウドデザイン例（再掲）
