@@ -2,7 +2,7 @@
 
 # コンテナ
 
-## 03. Dockerによるコンテナの構築
+## 01. Dockerによるコンテナの構築
 
 ### Dockerの操作
 
@@ -18,7 +18,7 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 
 
-## 03-02. コンテナにssh接続するまでの手順
+## 02. コンテナにssh接続するまでの手順
 
 ### 手順の流れ
 
@@ -153,6 +153,8 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 
 ubuntuのDockerイメージをベースとして，nginxのDockerイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
 
+**【実装例】**
+
 ```dockerfile
 # ベースのDockerイメージ（ubuntu）を，コンテナにインストール
 FROM centos:latest
@@ -173,6 +175,8 @@ EXPOSE 80
 #### ・静的ファイルBuilderのDockerイメージの例
 
 例として，Python製ドキュメントジェネレーターSphinxのDockerfileである．
+
+**【実装例】**
 
 ```dockerfile
 # ベースイメージのインストール
@@ -231,8 +235,6 @@ RUN pyenv install ${PYTHON_VERSION_38} \
       sphinxcontrib-sqltable \
       sphinx_fontawesome
 
-WORKDIR "/var/www/tech-notebook"
-
 CMD ["/bin/bash"]
 ```
 
@@ -277,6 +279,7 @@ RUN yum -y install\
 ```
 
 #### ・プロセス単位によるDockerfileの分割
+
 
 
 ### Dockerイメージ上でのコンテナレイヤーの生成，コンテナの構築
@@ -367,7 +370,7 @@ $ docker exec -it {コンテナ名} bash
 
 
 
-## 03-03. コンテナ側に対するファイルのマウント方法
+## 03. コンテナ側に対するファイルのマウント方法
 
 ### ホストOSのマウント元のディレクトリの設定画面
 
@@ -389,18 +392,15 @@ $ docker exec -it {コンテナ名} bash
 
 #### ・```/Volumes```とは
 
-ホストOSの```/Volumes```には，開発途中にコンテナ側で作成されたデータのうち，ホストOSに永続化したいデータが保存される．Data Volumeともいう．
+ホストOSの```/Volumes```（```/var/lib/docker/volumes```）ディレクトリには，開発途中にコンテナ側で作成されたデータのうち，ホストOSに永続化したいデータが保存される．Data Volumeともいう．
 
 #### ・Volumeマウントとは
 
-ホストOSにある```/Volumes```ディレクトリをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として，推奨である．Dockerfileまたはdocker-composeファイルに記述する方法があるが，後者が推奨である．
+ホストOSにある```/Volumes```（```/var/lib/docker/volumes```）ディレクトリをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として，推奨である．Dockerfileまたはdocker-composeファイルに記述する方法があるが，後者が推奨である．
 
 #### ・Data Volumeコンテナによる永続化データの提供
 
 一旦，Data Volumeをコンテナ （Data Volumeコンテナ）のディレクトリにマウントしておく．そして，他のコンテナでDataVolumeを使用したい時は，Data Volumeコンテナとディレクトリを共有することによって，データを要求する．
-
-
-
 
 ### 一時ファイルシステムマウント
 
@@ -409,7 +409,7 @@ $ docker exec -it {コンテナ名} bash
 
 
 
-## 03-04. ホストとコンテナの間のネットワーク接続
+## 04. ホストとコンテナの間のネットワーク接続
 
 ### bridgeネットワーク
 
@@ -436,7 +436,7 @@ $ docker exec -it {コンテナ名} bash
 DHCPによって，自身のパソコンに動的にプライベートIPアドレスが割り当てられる．ネットワーク設定でプライベートIPアドレスを確認する．その後，コンテナにSSH接続し，コンテナ側からホストOS側にリクエストメッセージを送信することで，接続の確認を行うことができる．
 
 ```bash
-user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
+user@ee84f5a213ee:/var/www/xxx$ curl --fail http://192.168.3.2:8080/
 
 # curl: (52) Empty reply from server
 ```
@@ -459,138 +459,34 @@ user@ee84f5a213ee:/var/www/xxx$ curl http://192.168.3.2:8080/
 
 
 
-## 04. コンテナオーケストレーション
+## 05. プラグイン
 
-### コンテナオーケストレーションの種類
+### ボリュームプラグイン
 
-#### ・単一ホストOS上のコンテナオーケストレーション
+#### ・NFSストレージ
 
-単一ホストOS上のコンテナが対象である．異なるDockerfileに基づいて，Dockerイメージのビルド，コンテナレイヤーの生成，コンテナの構築，コンテナの起動，を実行できる．
+NFSプラグインを使用することで，永続化データを````/var/lib/docker/volumes```ではなく，NFSストレージに保存する．
 
-| 名前           |      |
-| -------------- | ---- |
-| Docker Compose |      |
+**【実装例】**
 
-#### ・複数ホストOSに渡るコンテナオーケストレーション
-
-複数ホストOS上のコンテナが対象である．どのホストOSのDockerデーモンに対して，どのコンテナに関する操作を行うのかを選択的に命令できる．
-
-| 名前                          |      |
-| ----------------------------- | ---- |
-| Docker Swarm                  |      |
-| Google Kubernetes             |      |
-| AWS Elastic Container Service |      |
-
-
-
-### Docker Compose
-
-#### ・設定項目
-
-| 記述項目                  | 意味                                                         |
-| :------------------------ | :----------------------------------------------------------- |
-| **```container_name:```** | コンテナ名の命名                                             |
-| **```build:```**          | Dockerfileのディレクトリの相対パス．                         |
-| **```tty:```** |  |
-| **```image:```**          | ベースイメージをそのまま使用する場合の設定．                 |
-| **```ports:```**           | ```{ホストOS側のポート番号}:{コンテナのポート番号}```<br>マウントするディレクトリ間をマッピング．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる． |
-| **```volumes:```**         | ```{ホストOSのディレクトリ}:{コンテナのディレクトリ}```<br>ホストOSの```/var/lib/docker/volumes/```の下にDataVolumeのディレクトリを作成し，DataVolumeをマウントするコンテナ側のディレクトリをマッピング． |
-| **```environment:```**     | DBコンテナに設定する環境変数．<br>・```MYSQL_ROOT_PASSWORD:```（rootパスワード）<br>・```MYSQL_DATABASE:```（データベース名）<br>・```MYSQL_USER:```（一般ユーザ名）<br>・```MYSQL_PASSWORD:（一般ユーザパスワード）``` |
-| **```depends_on:```**      | コンテナが起動する順番．                                     |
-| **```networks:```**        | コンテナ間のネットワークを設定．要勉強．  |
-
-#### ・実装例
+以下にdocker-composeを使用した場合を示す．docker-composeについては，コンテナオーケストレーションのノートを参照．
 
 ```yaml
 version: '3.7'
+
 services:
-
-  # DBコンテナ
-  db:
-    container_name: db
-    image: mysql
-    command: ["--default-authentication-plugin=mysql_native_password"]
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: XXXXX
-      MYSQL_DATABASE: XXXXX
-      MYSQL_USER: XXXXX
-      MYSQL_PASSWORD: XXXXX
-    networks:
-      - db
-
-  # APコンテナ
-  php:
-    container_name: php-fpm
-    build: ./php-fpm
-    ports:
-      - "9000:9001"
+  app:
+    build: # 省略
+    ports: # 省略
+    depends_on: # 省略
     volumes:
-      - ./symfony:/var/www/symfony:cached
-      - ./logs/symfony:/var/www/symfony/var/log:cached
-    depends_on:
-      - db
-    networks:
-      - db
-      - php
-
-  # Webコンテナ
-  nginx:
-    container_name: nginx
-    build: ./nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - php
-    networks:
-      - php
-    volumes:
-      - ./logs/nginx:/var/log/nginx:cached
-      - ./symfony:/var/www/symfony:cached
+      - example:/data # 下方のオプションが適用される．
+      
+volumes:
+  example:
+    driver_opts: # NFSプラグインを使用し，NFSストレージに保存．
+      type: "nfs"
+      o: "addr=10.40.0.199,nolock,soft,rw"
+      device: ":/nfs/example"
 ```
 
-#### ・```docker-compose```：
-
-| コマンド                                         | 処理                                                         | 注意点                                                       |
-| ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **```docker-compose up -d```**                   | ・Dockerfileを基にイメージのビルド<br>・全てのコンテナレイヤーを生成し，コンテナを構築<br>・コンテナを起動 | すでにコンテナがある場合，それを再起動                       |
-| **```docker-compose run -d -it {イメージ名}```** | ・Dockerfileを基にイメージをビルド<br>・指定のコンテナレイヤーを生成し，コンテナを構築（※依存含む）<br>・コンテナを起動 | すでにコンテナがあっても，それを残して構築／起動．以前のコンテナが削除されずに残ってしまう． |
-
-```bash
-$ docker-compose up -d
-
-$ docker-compose run -d -it {イメージ名}
-```
-
-
-
-### Docker Swarm
-
-![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerSwarmの仕組み.png)
-
-
-
-### Google Kubernetes
-
-![Kubernetesの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Kubernetesの仕組み.png)
-
-#### ・Master Node
-
-Kubernetesが実行される物理サーバを指す．
-
-#### ・Worker Node
-
-Dockerが実行される仮想サーバを指す．
-
-#### ・Pod
-
-仮想サーバのホストOS上のコンテナをグループ化したもの．
-
-#### ・Secret
-
-セキュリティに関するデータを管理し，コンテナに選択的に提供するもの．
-
-#### ・Replica Set（Replication Controller）
-
-#### ・Kubectl
