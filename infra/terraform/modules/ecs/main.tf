@@ -20,7 +20,7 @@ variable "ecs_task_size_memory" {}
 variable "ecs_task_execution_role_arn" {}
 
 // Port
-variable "port_http" {}
+variable "port_http_default" {}
 
 #=============
 # ECS Cluster
@@ -53,7 +53,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.alb_target_group_arn
     container_name   = "www-container"
-    container_port   = var.port_http
+    container_port   = var.port_http_default
   }
 
   // ネットワークアクセス
