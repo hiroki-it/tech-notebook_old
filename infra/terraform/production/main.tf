@@ -31,10 +31,9 @@ variable "ecs_task_size_cpu" {}
 variable "ecs_task_size_memory" {}
 
 // Port
-variable "port_http_blue" {}
-variable "port_http_green" {}
-variable "port_https_blue" {}
-variable "port_https_green" {}
+variable "port_http_default" {}
+variable "port_http_custom" {}
+variable "port_https" {}
 variable "port_ssh" {}
 
 // Key Pair
@@ -94,9 +93,8 @@ module "security_group_module" {
   security_group_inbound_cidr_block_ssh   = var.security_group_inbound_cidr_block_ssh
   security_group_outbound_cidr_block      = var.security_group_outbound_cidr_block
   app_name                                = var.app_name
-  port_http_blue                          = var.port_http_blue
-  port_http_green                         = var.port_http_green
-  port_https                              = var.port_https_blue
+  port_http_default                       = var.port_http_default
+  port_https                              = var.port_https
   port_ssh                                = var.port_ssh
 }
 
@@ -115,12 +113,11 @@ module "alb_module" {
   security_group_alb_id = module.security_group_module.security_group_alb_id
   acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
 
-  app_name         = var.app_name
-  port_http_blue   = var.port_http_blue
-  port_http_green  = var.port_http_green
-  port_https_blue  = var.port_https_blue
-  port_https_green = var.port_https_green
-  ssl_policy       = var.ssl_policy
+  app_name          = var.app_name
+  port_http_default = var.port_http_default
+  port_http_custom  = var.port_http_custom
+  port_https        = var.port_https
+  ssl_policy        = var.ssl_policy
 }
 
 #==========
@@ -169,7 +166,7 @@ module "ecs_module" {
   app_name             = var.app_name
   ecs_task_size_cpu    = var.ecs_task_size_cpu
   ecs_task_size_memory = var.ecs_task_size_memory
-  port_http            = var.port_http_blue
+  port_http_default    = var.port_http_default
 }
 
 #=============
