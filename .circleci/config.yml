@@ -155,4 +155,4 @@ workflows:
           launch-type: FARGATE
           task-definition: "${APP_NAME}-ecs-task-definition"
           subnet-ids: $AWS_SUBNET_IDS
-          security-group-ids: $AWS_SUBNET_GROUPS
+          security-group-ids: $AWS_SECURITY_GROUPS
