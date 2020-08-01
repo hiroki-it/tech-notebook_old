@@ -58,8 +58,8 @@ resource "aws_ecs_service" "ecs_service" {
 
   // ネットワークアクセス
   network_configuration {
-    subnets         = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-    security_groups = [var.security_group_ecs_id]
+    subnets          = [var.subnet_public_1a_id, var.subnet_public_1c_id]
+    security_groups  = [var.security_group_ecs_id]
     assign_public_ip = true
   }
 }
@@ -75,6 +75,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = data.aws_ecs_task_definition.ecs_task_definition.family // ファミリーにリビジョン番号がついてタスク定義名
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
+  task_role_arn            = var.ecs_task_execution_role_arn
   execution_role_arn       = var.ecs_task_execution_role_arn
   cpu                      = var.ecs_task_size_cpu // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定
   memory                   = var.ecs_task_size_memory
