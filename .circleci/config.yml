@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Push builder
           command: |
-            docker push ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
+            docker push ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${DOCKER_VERSION}
   
   push-www-images:
     # ホスト側環境の設定
@@ -72,12 +72,12 @@ jobs:
       - run:
           name: Push www
           command: |
-            docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${VERSION}
+            docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${DOCKER_VERSION}
 
   make-deploy-source:
     # ホスト側環境の設定
     docker:
-      - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${VERSION}
+      - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${DOCKER_VERSION}
     # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
       - setup-git-config
