@@ -110,6 +110,7 @@ Hiroki tech-notebook ドキュメントサイト
    infrastructure_machine_language_and_radix.md
    infrastructure_software.md
    infrastructure_software_middleware_nginx.md
+   infrastructure_software_middleware_apache.md
 
 .. toctree::
    :maxdepth: 1
