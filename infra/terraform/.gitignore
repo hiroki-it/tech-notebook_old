@@ -2,9 +2,8 @@
 # Folder
 #============
 production/.terraform/*
-modules/acm_certificate/*
-modules/security_group/*
-modules/service_role/*
+modules/security_group/main.tf
+modules/service_role/main.tf
 
 #============
 # File
