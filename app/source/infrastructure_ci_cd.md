@@ -332,6 +332,8 @@ workflows:
 
 Orbsを使う場合は，オプションに引数を渡す前に定義する．
 
+**【実装例】**
+
 ```yaml
 workflows:
   build:
@@ -389,6 +391,8 @@ jobs:
 
 ホストOS環境に関する設定を部品化し，異なる```Job```で繰り返し利用できる．
 
+**【実装例】**
+
 ```yaml
 version: 2.1
 executors:
@@ -429,6 +433,8 @@ workflows:
 #### ・オプションへの引数の渡し方
 
 AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登録しておけば，オプションで渡さなくとも，自動で入力してくれる．
+
+**【実装例】**
 
 ```yaml
 version: 2.1
@@ -479,7 +485,7 @@ workflows:
           path: '.'
           profile-name: myProfileName
           repo: '${APP_NAME}-repository'
-          # CircleCIのハッシュタグによるバージョビング
+          # CircleCIのハッシュ値によるバージョニング
           tag: ${CIRCLE_SHA1}
           # attach_workspaceコマンドを宣言
           attach-workspace: true
@@ -514,14 +520,20 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          # タスク定義名
+          # タスク定義名を指定
           family: '${APP_NAME}-ecs-task-definition'
-          # クラスター名
+          # クラスター名を指定
           cluster-name: '${APP_NAME}-cluster'
-          # コンテナ名
-          container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
-          # サービス名
+          # サービス名を指定
           service-name: '${APP_NAME}-service'
+          # CodeDeployにおけるデプロイの作成を設定
+          deployment-controller: CODE_DEPLOY
+          codedeploy-application-name: ${APP_NAME}
+          codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
+          codedeploy-load-balanced-container-name: www-container
+          codedeploy-load-balanced-container-port: 80
+          # コンテナ名とイメージタグを上書き．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
+          container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
 ```
 
 #### ・Job：run-task-fargate
@@ -541,13 +553,16 @@ workflows:
     jobs:
       - aws-ecs/run-task:
           name: run-task-fargate
-          cluster: '${APP_NAME}-ecs-cluster'
+          cluster: "${APP_NAME}-ecs-cluster"
+          # LATESTとするとその時点の最新バージョンを自動で割り振られてしまう．
+          platform-version: 1.3.0
+          assign-public-ip: ENABLED
           awsvpc: true
           launch-type: FARGATE
-          task-definition: '${APP_NAME}-ecs-task-definition'
-          subnet-ids: ${AWS_SUBNET_IDS}
-          security-group-ids: ${AWS_SUBNET_GROUPS}
-  
+          # タスク定義名．リビジョン番号を指定しない場合は，最新リビジョン番号が自動補完される．
+          task-definition: "${APP_NAME}-ecs-task-definition"
+          subnet-ids: $AWS_SUBNET_IDS
+          security-group-ids: $AWS_SECURITY_GROUPS
 ```
 
 
@@ -556,7 +571,9 @@ workflows:
 
 #### ・Job：deploy
 
-S3にappspecファイルをデプロイできる．また，CodeDeployを用いて，EC2またはFargateにソースコードまたはDockerイメージをデプロイできる．
+S3にソースコードとappspecファイルをデプロイできる．また，CodeDeployを用いて，これをEC2にデプロイできる．
+
+**【実装例】**
 
 ```yaml
 version: 2.1
