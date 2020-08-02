@@ -158,7 +158,7 @@ module "ecs_module" {
 
   // 他のモジュールの出力値を渡す
   ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
-  alb_target_group_arn        = module.alb_module.alb_target_group_blue_arn
+  alb_target_group_blue_arn   = module.alb_module.alb_target_group_blue_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
   security_group_ecs_id       = module.security_group_module.security_group_ecs_id
@@ -178,6 +178,7 @@ module "codedeploy_module" {
 
   // 他のモジュールの出力値を渡す
   alb_listener_blue_arn           = module.alb_module.alb_listener_blue_arn
+  alb_listener_green_arn          = module.alb_module.alb_listener_green_arn
   alb_target_group_blue_name      = module.alb_module.alb_target_group_blue_name
   alb_target_group_green_name     = module.alb_module.alb_target_group_green_name
   codedeployment_role_for_ecs_arn = module.service_role_module.codedeployment_role_for_ecs_arn

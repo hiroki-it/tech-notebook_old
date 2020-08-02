@@ -62,7 +62,7 @@ resource "aws_lb_target_group" "alb_target_group_blue" {
 // Green
 resource "aws_lb_target_group" "alb_target_group_green" {
   name        = "${var.app_name}-target-group-green"
-  port        = var.port_http_default // ALBからのルーティング時解放ポート
+  port        = var.port_http_custom // ALBからのルーティング時解放ポート
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -75,7 +75,7 @@ resource "aws_lb_target_group" "alb_target_group_green" {
     timeout             = 5
     interval            = 10
     matcher             = 200
-    port                = var.port_http_default
+    port                = var.port_http_custom
     protocol            = "HTTP"
   }
 
