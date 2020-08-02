@@ -8,6 +8,7 @@ variable "app_name" {}
 variable "alb_target_group_blue_name" {}
 variable "alb_target_group_green_name" {}
 variable "alb_listener_blue_arn" {}
+variable "alb_listener_green_arn" {}
 
 // ECS
 variable "ecs_cluster_name" {}
@@ -38,6 +39,13 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     events  = ["DEPLOYMENT_FAILURE"]
   }
 
+  // デプロイタイプ
+  deployment_style {
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+    deployment_type   = "BLUE_GREEN"
+  }
+
+  // デプロイ設定
   blue_green_deployment_config {
     deployment_ready_option {
       action_on_timeout = "CONTINUE_DEPLOYMENT"
@@ -49,28 +57,30 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     }
   }
 
-  deployment_style {
-    deployment_option = "WITH_TRAFFIC_CONTROL"
-    deployment_type   = "BLUE_GREEN"
-  }
-
   // 環境設定
   ecs_service {
     cluster_name = var.ecs_cluster_name
     service_name = var.ecs_service_name
   }
 
-  // Load Balancer
+  // Load Balancer（Additional configure in ECS）
   load_balancer_info {
     target_group_pair_info {
+      
+      // 本稼働リスナーARN
       prod_traffic_route {
         listener_arns = [var.alb_listener_blue_arn]
       }
-
+      // ターゲットグループ１（Blue）
       target_group {
         name = var.alb_target_group_blue_name
       }
-
+      
+      // テストリスナーARN
+      test_traffic_route {
+        listener_arns = [var.alb_listener_green_arn]
+      }
+      // ターゲットグループ２（Green）
       target_group {
         name = var.alb_target_group_green_name
       }
