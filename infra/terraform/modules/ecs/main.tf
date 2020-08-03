@@ -48,6 +48,9 @@ resource "aws_ecs_service" "ecs_service" {
   deployment_controller {
     type = "CODE_DEPLOY" // CodeDeploy制御によるBlue/Greenデプロイ
   }
+  
+  // ヘルスチェック猶予期間
+  health_check_grace_period_seconds = 5
 
   // ロードバランシング
   load_balancer {
