@@ -94,6 +94,7 @@ module "security_group_module" {
   security_group_outbound_cidr_block      = var.security_group_outbound_cidr_block
   app_name                                = var.app_name
   port_http_default                       = var.port_http_default
+  port_http_custom                        = var.port_http_custom 
   port_https                              = var.port_https
   port_ssh                                = var.port_ssh
 }
