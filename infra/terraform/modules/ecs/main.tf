@@ -20,7 +20,7 @@ variable "ecs_task_size_memory" {}
 variable "ecs_task_execution_role_arn" {}
 
 // Port
-variable "port_http_default" {}
+variable "port_http" {}
 
 #=============
 # ECS Cluster
@@ -48,7 +48,7 @@ resource "aws_ecs_service" "ecs_service" {
   deployment_controller {
     type = "CODE_DEPLOY" // CodeDeploy制御によるBlue/Greenデプロイ
   }
-  
+
   // ヘルスチェック猶予期間
   health_check_grace_period_seconds = 5
 
@@ -56,7 +56,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.alb_target_group_blue_arn
     container_name   = "www-container"
-    container_port   = var.port_http_default
+    container_port   = var.port_http
   }
 
   // ネットワークアクセス
