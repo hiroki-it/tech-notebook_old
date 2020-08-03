@@ -13,7 +13,7 @@ variable "route53_zone_id" {}
 # 証明書発行
 #============
 resource "aws_acm_certificate" "acm_certificate" {
-  domain_name               = var.app_domain_name // ネイキッドドメイン
+  domain_name               = var.app_domain_name          // ネイキッドドメイン
   subject_alternative_names = ["*.${var.app_domain_name}"] // サブドメイン群
   validation_method         = "DNS"
 
