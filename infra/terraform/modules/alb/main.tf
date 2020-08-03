@@ -15,8 +15,7 @@ variable "subnet_public_1c_id" {}
 variable "security_group_alb_id" {}
 
 // Port
-variable "port_http_default" {}
-variable "port_http_custom" {}
+variable "port_http" {}
 variable "port_https" {}
 
 // certificate
@@ -39,7 +38,7 @@ resource "aws_lb" "alb" {
 // Blue
 resource "aws_lb_target_group" "alb_target_group_blue" {
   name        = "${var.app_name}-target-group-blue"
-  port        = var.port_http_default // ALBからのルーティング時解放ポート
+  port        = var.port_http // ALBからのルーティング時解放ポート
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -52,7 +51,7 @@ resource "aws_lb_target_group" "alb_target_group_blue" {
     timeout             = 5
     interval            = 10
     matcher             = 200
-    port                = var.port_http_default
+    port                = var.port_http
     protocol            = "HTTP"
   }
 
@@ -62,7 +61,7 @@ resource "aws_lb_target_group" "alb_target_group_blue" {
 // Green
 resource "aws_lb_target_group" "alb_target_group_green" {
   name        = "${var.app_name}-target-group-green"
-  port        = var.port_http_custom // ALBからのルーティング時解放ポート
+  port        = var.port_http // ALBからのルーティング時解放ポート
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -75,7 +74,7 @@ resource "aws_lb_target_group" "alb_target_group_green" {
     timeout             = 5
     interval            = 10
     matcher             = 200
-    port                = var.port_http_custom
+    port                = var.port_http
     protocol            = "HTTP"
   }
 
@@ -101,7 +100,7 @@ resource "aws_lb_listener" "lb_listener_blue" {
 
 resource "aws_lb_listener" "lb_listener_green" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_http_custom // ALBの受信時の解放ポート
+  port              = var.port_http // ALBの受信時の解放ポート
   protocol          = "HTTP"
 
   // アクション
