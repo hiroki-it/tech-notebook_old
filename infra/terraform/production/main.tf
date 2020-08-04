@@ -14,6 +14,9 @@ variable "app_sub_domain_name" {}
 // VPC
 variable "vpc_cidr_block" {}
 
+// Internet Gateway
+variable "igw_cidr_block" {}
+
 // Subnet
 variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
@@ -22,9 +25,6 @@ variable "subnet_public_1c_cidr_block" {}
 variable "security_group_inbound_cidr_block_https" {}
 variable "security_group_inbound_cidr_block_ssh" {}
 variable "security_group_outbound_cidr_block" {}
-
-// Internet Gateway
-variable "igw_cidr_block" {}
 
 // ECS
 variable "ecs_task_size_cpu" {}
@@ -70,9 +70,9 @@ module "vpc_module" {
 
   region                      = var.region
   vpc_cidr_block              = var.vpc_cidr_block
+  igw_cidr_block              = var.igw_cidr_block
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
-  igw_cidr_block              = var.igw_cidr_block
   app_name                    = var.app_name
 }
 
