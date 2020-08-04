@@ -10,12 +10,12 @@ variable "app_name" {}
 // VPC
 variable "vpc_cidr_block" {}
 
+// Internet Gateway
+variable "igw_cidr_block" {}
+
 // Subnet
 variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
-
-// Internet Gateway
-variable "igw_cidr_block" {}
 
 #======
 # VPC
@@ -27,24 +27,32 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-#=========
-# Subnet
-#=========
-resource "aws_subnet" "subnet_public_1a" {
-  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block        = var.subnet_public_1a_cidr_block
-  availability_zone = "${var.region}a"
-  tags = {
-    Name = "${var.app_name}-public-subnet-1a"
-  }
-}
+#==============
+# Network ACL
+#==============
+resource "aws_network_acl" "network_acl" {
+  vpc_id = aws_vpc.vpc.id
 
-resource "aws_subnet" "subnet_public_1c" {
-  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block        = var.subnet_public_1c_cidr_block
-  availability_zone = "${var.region}c"
+  ingress {
+    protocol   = -1 // 全てのポート番号
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = aws_vpc.vpc.cidr_block
+    from_port  = 0
+    to_port    = 0
+  }
+
+  egress {
+    protocol   = -1 // 全てのポート番号
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
   tags = {
-    Name = "${var.app_name}-public-subnet-1c"
+    Name = "${var.app_name}-network-acl"
   }
 }
 
@@ -72,8 +80,29 @@ resource "aws_route_table" "route_table_public" {
   }
 }
 
+#=========
+# Subnet
+#=========
+resource "aws_subnet" "subnet_public_1a" {
+  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
+  cidr_block        = var.subnet_public_1a_cidr_block
+  availability_zone = "${var.region}a"
+  tags = {
+    Name = "${var.app_name}-public-subnet-1a"
+  }
+}
+
+resource "aws_subnet" "subnet_public_1c" {
+  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
+  cidr_block        = var.subnet_public_1c_cidr_block
+  availability_zone = "${var.region}c"
+  tags = {
+    Name = "${var.app_name}-public-subnet-1c"
+  }
+}
+
 #================================
-# Subnet と Route Table の紐付け
+# Route Table と Subnet の紐付け
 #================================
 resource "aws_route_table_association" "route_table_association_public_1a" {
   subnet_id      = aws_subnet.subnet_public_1a.id        // アタッチするSubnetのID
