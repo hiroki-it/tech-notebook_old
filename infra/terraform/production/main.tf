@@ -17,6 +17,9 @@ variable "vpc_cidr_block" {}
 // Internet Gateway
 variable "igw_cidr_block" {}
 
+// Network ACL
+variable "nacl_outbound_cidr_block" {}
+
 // Subnet
 variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
@@ -71,6 +74,7 @@ module "vpc_module" {
   region                      = var.region
   vpc_cidr_block              = var.vpc_cidr_block
   igw_cidr_block              = var.igw_cidr_block
+  nacl_outbound_cidr_block    = var.nacl_outbound_cidr_block
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
   app_name                    = var.app_name
