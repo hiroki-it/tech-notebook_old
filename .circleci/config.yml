@@ -10,7 +10,6 @@ commands:
   setup-git-config:
     steps:
       - run:
-          
           name: Setup git config
           command: |
             git config --global core.quotepath false
