@@ -2,11 +2,13 @@
 
 ## 01. ソフトウェアとは
 
-### ソフトウェアの種類
+### ユーザの操作による命令の流れ
 
-#### ・ユーザの操作が，ソフトウェアを介して，ハードウェアに伝わるまで
+ユーザの操作による命令が，ソフトウェアを介して，ハードウェアに伝わるまで，を以下に示す．
 
 ![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソフトウェアとハードウェア.png)
+
+### ソフトウェアの種類
 
 #### 1. 応用ソフトウェア
 
@@ -164,9 +166,9 @@ Slackware
 
 
 
-## 04-02. 基本ソフトウェア｜サービスプログラム（ユーティリティ）
+## 04-02. 基本ソフトウェア｜ユーティリティ
 
-### サービスプログラム（ユーティリティ）の種類
+### ユーティリティの種類
 
 #### ・Linuxの場合
 
@@ -187,7 +189,7 @@ Slackware
 
 #### ・Windowsの場合
 
-よく使うものを記載する．
+Windowsは，GUIでユーティリティを使用する．よく使うものを記載する．
 
 | システム系         | ストレージデバイス管理系 | ファイル管理系         | その他             |
 | ------------------ | ------------------------ | ---------------------- | ------------------ |
@@ -198,9 +200,29 @@ Slackware
 
 
 
+### パイプライン
+
+#### ・パイプラインとは
+
+「```|```」の縦棒記号のこと．コマンドの出力結果を表示せずに，次のコマンドの引数として渡す．例えば，```find```コマンドの出力結果を```grep```コマンドに渡し，フィルタリングを行う．
+
+```bash
+# find ---> grep
+$ find /* -type f |xargs grep "example"
+```
+
+その反対で，フィルタリングしたものに対して，```kill```コマンドを行うような使い方もある．
+
+```bash
+# pgrep ---> kill
+$ sudo pgrep -f {コマンド名} | sudo xargs kill -9
+```
+
+
+
 ### ファイルシステム系｜ls
 
-#### ・lsとは
+#### ・lsの使い方
 
 ```bash
 # 隠しファイルや隠しディレクトリも含めて，全ての詳細を表示．
@@ -211,7 +233,7 @@ $ ls -l -a
 
 ### ファイルシステム系｜find
 
-#### ・findとは
+#### ・findの使い方
 
 ファイルを検索するためのユーティリティ．アスタリスクを付けなくとも，自動的にワイルドカードが働く．
 
@@ -225,11 +247,16 @@ $ find /* -type f |xargs grep "example"
 $ find /* -name "*.conf" -type f | xargs grep "example"
 ```
 
+```bash
+# パーミッションエラーなどのログを破棄して検索．
+$ find /* -type f |xargs grep "example" 2> /dev/null
+```
+
 
 
 ### ファイルシステム系｜chmod：change mode
 
-#### ・chmodとは
+#### ・chmodの使い方
 
 ファイルの権限を変更するためのユーティリティ．よく使用されるパーミッションのパターンは次の通り．
 
@@ -268,7 +295,7 @@ $ chmod 666 example.conf
 
 ### プロセス系｜ps： process status
 
-#### ・psとは
+#### ・psの使い方
 
 稼働しているプロセスの詳細情報を表示するためのユーティリティ．
 
@@ -277,16 +304,22 @@ $ chmod 666 example.conf
 $ ps aux | grep xxx
 ```
 
-
-
-### プロセス系｜systemctl：system control
-
-#### ・systemctlとは
-
-systemdを制御するためのユーティリティ．systemd
+指定したコマンドによるプロセスを全て削除する．
 
 ```bash
-# サービスの自動起動設定を一覧で確認．
+$ sudo pgrep -f {コマンド名} | sudo xargs kill -9
+```
+
+
+
+### プロセス系｜systemctl：system control（旧service）
+
+#### ・systemctlの使い方
+
+デーモンを起動するsystemdを制御するためのユーティリティ．
+
+```bash
+# デーモンのUnitを一覧で確認．
 $ systemctl list-unit-files --type=service
 
 crond.service           enabled  # enable：自動起動する
@@ -294,22 +327,28 @@ supervisord.service     disabled # disable：自動起動しない
 systemd-reboot.service  static   # enable：他サービス依存
 ```
 ```bash
-# サービスの自動起動を有効化．
+# デーモンの自動起動を有効化．
 $ systemctl enable crond.service
 
-# サービスの自動起動を無効化．
+# デーモンの自動起動を無効化．
 $ systemctl disable crond.service
 ```
 
-#### ・systemdとは：system daemon
+#### ・systemd：system daemon のUnitの種類
 
-Linuxの起動プロセスの一つである，initプロセス（PID 1）を制御するプログラム．詳しくは，追って学習する．
+各デーモンを，```/usr/lib/systemd/system```や```/etc/systemd/system```下でUnit別に管理し，Unitごとに起動する．Unitは拡張子の違いで判別する．
+
+| Unitの拡張子 | 意味                                       | デーモン例         |
+| ------------ | ------------------------------------------ | ------------------ |
+| mount        | ファイルのマウントに関するデーモン．       |                    |
+| service      | プロセス起動停止に関するデーモン．         | httpd：http daemon |
+| socket       | ソケットとプロセスの紐づけに関するデーモン |                    |
 
 
 
 ### その他｜crontab：command run on table
 
-#### ・crontabとは
+#### ・crontabの使い方
 
 cronデーモンの動作が定義されたcrontabファイルを操作するためのユーティリティ．cron.dファイルは操作できない．
 
@@ -318,12 +357,21 @@ cronデーモンの動作が定義されたcrontabファイルを操作するた
 $ crontab {ファイルパス}
 ```
 
+| ファイル名<br>ディレクトリ名 | 利用者 | 主な用途                                               |
+| ---------------------------- | ------ | ------------------------------------------------------ |
+| /etc/crontab                 | root   | 毎時，毎日，毎月，毎週の自動タスクのメイン設定ファイル |
+| /etc/cron.hourly             | root   | 毎時実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.daily              | root   | 毎日実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.monthly            | root   | 毎月実行される自動タスク設定ファイルを置くディレクトリ |
+| /etc/cron.weekly             | root   | 毎週実行される自動タスク設定ファイルを置くディレクトリ |
+
+
 **【実装例】**
 
 1. あらかじめ，各ディレクトリにcronファイルを配置しておく．
-2. cronとして登録するファイルを作成する．```run-parts```コマンドで，指定した時間に，ディレクトリ内のcronファイルを一括で実行するように記述しておく．
+2. cronとして登録するファイルを作成する．```run-parts```コマンドで，指定した時間に，各cronディレクトリ内のcronファイルを一括で実行するように記述しておく．
 
-```
+```bash
 # 設定
 SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -350,6 +398,32 @@ CONTENT_TYPE=text/plain; charset=UTF-8
 40 2 1 * * root run-parts /etc/cron.monthly # 毎月一日・2時40分
 @reboot make clean html # cron起動時に一度だけ
 ```
+**【実装例】**
+
+```bash
+# 毎時・1分
+1 * * * * root run-parts /etc/cron.hourly
+```
+
+```bash
+# 毎日・2時5分
+5 2 * * * root run-parts /etc/cron.daily
+```
+
+```bash
+# 毎週日曜日・2時20分
+20 2 * * 0 root run-parts /etc/cron.weekly
+```
+
+```bash
+# 毎月一日・2時40分
+40 2 1 * * root run-parts /etc/cron.monthly
+```
+
+```bash
+# cron起動時に一度だけ
+@reboot make clean html
+```
 
 3. このファイルをcrontabコマンドで登録する．cronファイルの実体はないことと，変更した場合は登録し直さなければいけないことに注意する．
 
@@ -371,50 +445,13 @@ $ tail -f cron
 ```
 
 
+#### ・cron.dファイル
 
-#### ・cron.dファイルとは
+複数のcronファイルで全ての一つのディレクトリで管理する場合に用いる．
 
-どちらもcronの動作を定義するファイルではあるが，crontabは，ユーザ毎に個別の動作を定義する場合に用いる．cron.dファイルはユーザ関係なく，また動作ごとに一つのファイルで定義する場合に用いる．
-
-| ファイル/ディレクトリ名 | 利用者   | 主な用途                                               |
-| ----------------------- | -------- | ------------------------------------------------------ |
-| /var/spool/cron/*user*  | 全ユーザ | ユーザの自動タスク設定ファイル                         |
-| /etc/crontab            | root     | 毎時，毎日，毎月，毎週の自動タスクのメイン設定ファイル |
-| /etc/cron.hourly        | root     | 毎時実行される自動タスク設定ファイルを置くディレクトリ |
-| /etc/cron.daily         | root     | 毎日実行される自動タスク設定ファイルを置くディレクトリ |
-| /etc/cron.monthly       | root     | 毎月実行される自動タスク設定ファイルを置くディレクトリ |
-| /etc/cron.weekly        | root     | 毎週実行される自動タスク設定ファイルを置くディレクトリ |
-| /etc/cron.d             | root     | 上記以外の自動タスク設定ファイルを置くディレクトリ     |
-
-
-**【実装例】**
-
-crontabでまとめて制御せず，個別ファイルで制御する場合は，cron.dで制御する．
-
-```
-# 毎時・1分
-1 * * * * root run-parts /etc/cron.hourly
-```
-
-```
-# 毎日・2時5分
-5 2 * * * root run-parts /etc/cron.daily
-```
-
-```
-# 毎週日曜日・2時20分
-20 2 * * 0 root run-parts /etc/cron.weekly
-```
-
-```
-# 毎月一日・2時40分
-40 2 1 * * root run-parts /etc/cron.monthly
-```
-
-```
-# cron起動時に一度だけ
-@reboot make clean html
-```
+| ディレクトリ名 | 利用者 | 主な用途                                           |
+| -------------- | ------ | -------------------------------------------------- |
+| /etc/cron.d    | root   | 上記以外の自動タスク設定ファイルを置くディレクトリ |
 
 #### ・crondによるプロセス操作
 
@@ -470,15 +507,7 @@ directory=/var/www/tech-notebook
 
 
 
-### パイプライン
 
-#### ・パイプラインとは
-
-「```|```」の縦棒記号のこと．コマンドの出力結果を表示せずに，次のコマンドの引数として渡す．例えば，```find```コマンドの出力結果を```grep```コマンドに渡し，フィルタリングを行う．
-
-```bash
-$ find /* -type f |xargs grep "example"
-```
 
 
 
