@@ -17,6 +17,8 @@ services:
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
+    networks:
+      - default
       
   builder:
     container_name: builder
@@ -33,3 +35,5 @@ services:
       LANG: "ja_JP.UTF-8"
     depends_on:
       - www
+    networks:
+      - default
