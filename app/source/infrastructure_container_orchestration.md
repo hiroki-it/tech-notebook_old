@@ -26,70 +26,127 @@
 
 ### docker-compose.yml
 
-#### ・各項目の意味
+#### ・```container_name```
 
-| 記述項目                  | 意味                                                         |
-| :------------------------ | :----------------------------------------------------------- |
-| **```container_name:```** | コンテナ名の命名                                             |
-| **```build:```**          | Dockerfileのディレクトリの相対パス．                         |
-| **```tty:```**            |                                                              |
-| **```image:```**          | ベースイメージをそのまま使用する場合の設定．                 |
-| **```ports:```**          | ```{ホストOS側のポート番号}:{コンテナのポート番号}```<br>マウントするディレクトリ間をマッピング．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる． |
-| **```volumes:```**        | ```{ホストOSのディレクトリ}:{コンテナのディレクトリ}```<br>ホストOSの```/var/lib/docker/volumes/```の下にDataVolumeのディレクトリを作成し，DataVolumeをマウントするコンテナ側のディレクトリをマッピング． |
-| **```environment:```**    | DBコンテナに設定する環境変数．<br>・```MYSQL_ROOT_PASSWORD:```（rootパスワード）<br>・```MYSQL_DATABASE:```（データベース名）<br>・```MYSQL_USER:```（一般ユーザ名）<br>・```MYSQL_PASSWORD:（一般ユーザパスワード）``` |
-| **```depends_on:```**     | コンテナが起動する順番．                                     |
-| **```networks:```**       | コンテナ間のネットワークを設定．要勉強．                     |
-
-#### ・実装例
+コンテナ名の命名
 
 ```yaml
-version: '3.7'
-services:
-
-  # DBコンテナ
-  db:
-    container_name: db
-    image: mysql
-    command: ["--default-authentication-plugin=mysql_native_password"]
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: XXXXX
-      MYSQL_DATABASE: XXXXX
-      MYSQL_USER: XXXXX
-      MYSQL_PASSWORD: XXXXX
-    networks:
-      - db
-
-  # APコンテナ
-  php:
-    container_name: php-fpm
-    build: ./php-fpm
-    ports:
-      - "9000:9001"
-    volumes:
-      - ./symfony:/var/www/symfony:cached
-      - ./logs/symfony:/var/www/symfony/var/log:cached
-    depends_on:
-      - db
-    networks:
-      - db
-      - php
-
-  # Webコンテナ
-  nginx:
-    container_name: nginx
-    build: ./nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - php
-    networks:
-      - php
-    volumes:
-      - ./logs/nginx:/var/log/nginx:cached
-      - ./symfony:/var/www/symfony:cached
+# ここに実装例
 ```
+
+#### ・```build```
+
+Dockerfileのディレクトリの相対パス． 
+
+```yaml
+# ここに実装例
+```
+
+#### ・```tty```
+
+```yaml
+# ここに実装例
+```
+
+#### ・```image```
+```yaml
+# ここに実装例
+```
+
+
+#### ・```ports```
+
+ホストOSとコンテナの間のポートフォワーディングを設定．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる．
+
+```yaml
+ports:
+  - "8080:80" # {ホストOS側のポート番号}:{コンテナのポート番号}
+```
+
+#### ・```volumes```
+
+ホストOSの```/var/lib/docker/volumes/```の下にDataVolumeのディレクトリを作成し，DataVolumeをマウントするコンテナ側のディレクトリをマッピング．
+
+
+```yaml
+volumes:
+  - ./app:/var/www/app # {ホストOSのディレクトリ}:{コンテナのディレクトリ}
+```
+
+#### ・```environment```
+
+DBコンテナに設定する環境変数．
+
+```yaml
+environment:
+  MYSQL_ROOT_PASSWORD: xxxxx # Rootパス
+  MYSQL_DATABASE: example # データベース名
+  MYSQL_USER: example_user # ユーザ名
+  MYSQL_PASSWORD: xxxxx # ユーザパス
+```
+
+
+#### ・```depends_on```
+
+コンテナが起動する順番．
+
+**【実装例】**
+
+```yaml
+# ここに実装例
+```
+
+#### ・```networks```
+
+作成使用する内部／外部ネットワークを設定．
+
+![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
+
+**【実装例】**
+
+バックエンドとフロントエンドが異なるdocker composeで管理されており，フロントエンドコンテナからバックエンドコンテナに接続する．
+
+```yaml
+# バックエンドのDocker-compose
+services:
+  app:
+    container_name: backend-container
+    
+# --- 省略 --- #
+    
+networks:
+  backend: # 作成したい外部ネットワーク
+    external: true  
+```
+
+```yaml
+# フロントエンドのDocker-compose
+services:
+  app:
+    container_name: frontend-container
+    networks: # 接続した内部／外部ネットワークのいずれかを選択．
+      - default
+      - backend
+
+# --- 省略 --- #
+
+networks:
+  default:
+    external:
+      name: backend # 接続したい外部ネットワーク
+```
+
+作成した内部／外部ネットワークは，以下のコマンドで確認できる．```xxx_default```という名前になる．
+
+```bash
+$ docker network ls
+
+NETWORK ID       NAME                      DRIVER       SCOPE
+xxxxxxxxxxxx     backend_default           bridge       local
+xxxxxxxxxxxx     {プロジェクト名}_default     bridge      local
+```
+
+
 
 ### ```docker-compose```コマンド
 
@@ -118,8 +175,6 @@ $ docker-compose run -d -it {イメージ名}
 
 ### Node
 
-#### 
-
 #### ・Master Node
 
 Kubernetesが実行される物理サーバを指す．
@@ -127,6 +182,8 @@ Kubernetesが実行される物理サーバを指す．
 #### ・Worker Node
 
 Dockerが実行される仮想サーバを指す．
+
+
 
 ### Pod
 
