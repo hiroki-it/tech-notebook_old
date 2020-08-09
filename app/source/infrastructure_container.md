@@ -365,7 +365,19 @@ $ docker inspect {コンテナID} | grep IPAddress # grepとも組み合わせ�
 | **```docker exec -it {コンテナ名} bash```** | 起動中のコンテナにssh接続 | i：interactive<br>t：tty |
 
 ```bash
-$ docker exec -it {コンテナ名} bash
+$ docker exec -it {コンテナ名} /bin/bash
+```
+
+#### ・起動中のコンテナにホストOSのファイルをコピー
+
+Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにDockerイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．
+
+```bash
+$ docker cp ./docker/www/nginx.conf {コンテナID}:/etc/nginx/nginx.conf
+
+# コンテナにSSH接続後に，nginxの設定ファイルを再読み込み．
+$ docker exec -it {コンテナ名} bin/bash
+$ nginx -s reload
 ```
 
 
