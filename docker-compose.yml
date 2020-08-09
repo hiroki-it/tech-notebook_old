@@ -13,6 +13,7 @@ services:
       - "8080:80"
     volumes:
       - ./app:/var/www/app
+    working_dir: /var/www/app
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
