@@ -13,4 +13,4 @@ RUN dnf upgrade -y \
 
 COPY ./infra/docker/www/nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
