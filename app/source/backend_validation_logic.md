@@ -38,6 +38,7 @@
 **【実装例】**
 
 ```PHP
+<?php
 // 変数に Tue を格納
 $weeks = 'Tue';
  
@@ -69,6 +70,7 @@ if ($weeks == 'Mon') {
 **【実装例】**
 
 ```PHP
+<?php
 // 変数に Tue を格納
 $weeks = 'Tue';
  
@@ -114,6 +116,7 @@ switch ($weeks) {
 **【実装例】**
 
 ```PHP
+<?php
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
@@ -157,6 +160,7 @@ function ()
 **【実装例】**
 
 ```PHP
+<?php
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
@@ -193,6 +197,7 @@ function ($result)
 **【実装例】**
 
 ```PHP
+<?php
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
@@ -254,11 +259,13 @@ function ($result)
 **【実装例】**
 
 ```PHP
+<?php
 // 西暦を格納する．
 $year = N;
 ```
 
 ```PHP
+<?php
 public function leapYear(Int $year): String
 { 
     // (5)
@@ -292,11 +299,13 @@ public function leapYear(Int $year): String
 **【実装例】**
 
 ```PHP
+<?php
 // 西暦を格納する．
 $year = N;
 ```
 
 ```PHP
+<?php
 public function leapYear(Int $year): String
 {
     // (5)
@@ -332,6 +341,7 @@ public function leapYear(Int $year): String
 **【実装例】**
 
 ```PHP
+<?php
 public function leapYear(Int $year): String
 {   
     switch(true) {
@@ -367,6 +377,7 @@ public function leapYear(Int $year): String
 **【実装例】**
 
 ```PHP
+<?php
 public function leapYear(Int $year): String
 {
     // (5)
@@ -400,6 +411,7 @@ public function leapYear(Int $year): String
 **【実装例】**
 
 ```PHP
+<?php
 class Example {};
 
 if(new Example == new Example){
@@ -417,6 +429,7 @@ if(new Example == new Example){
 **【実装例】**
 
 ```PHP
+<?php
 class Example {};
 
 if(new Example === new Example){
@@ -432,6 +445,7 @@ if(new Example === new Example){
 **【実装例】**
 
 ```PHP
+<?php
 class Example {};
 
 $a = $b = new Example;
@@ -455,6 +469,7 @@ if($a === $b){
 **【実装例】**
 
 ```PHP
+<?php
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
@@ -479,6 +494,7 @@ class HttpRequestException extends Exception
 **【実装例】**
 
 ```PHP
+<?php
 if (empty($value)) {
     throw new Exception('Variable is empty');
 }
@@ -497,6 +513,7 @@ return $value;
 **【実装例】**
 
 ```PHP
+<?php
 // Exceptionを投げる
 try{
     // WebAPIの接続に失敗した場合
@@ -537,6 +554,7 @@ try{
 **【実装例】**
 
 ```PHP
+<?php
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
@@ -549,6 +567,7 @@ class HttpRequestException extends Exception
 ```
 
 ```PHP
+<?php
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
@@ -570,7 +589,8 @@ class HttpRequestException extends Exception
 
 **【実装例】**
 
-```php
+```PHP
+<?php
 /**
  * @param message $message
  * @return bool

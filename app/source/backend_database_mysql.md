@@ -84,8 +84,6 @@ FROM T;
 SELECT COUNT(*);
 ```
 
-
-
 ### ```CASE```句
 
  カラムAがtrueだったら，カラムBを取得する．falseであったら，カラムCを取得する．
@@ -167,6 +165,7 @@ FROM T1
 
 
 ```PHP
+<?php
 $joinedIdList = implode(',', $idList);
 
 // 並び替え条件を設定
@@ -404,6 +403,7 @@ WHERE C != (
 **【実装例】**
 
 ```PHP
+<?php
 // SELECT文を定義して実行．
 $sql = "SELECT * FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
@@ -441,6 +441,7 @@ print_r($data);
 読み出された全てのレコードのうち，最初のレコードの一番左のカラムのみを取得し，混合型で返却する．主に，```COUNT()```の場合に用いる
 
 ```PHP
+<?php
 // SELECT文を定義して実行．
 $sql = "SELECT COUNT(*) FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
@@ -523,6 +524,7 @@ while(result.next()){
 #### ・PDOを用いた```insert```処理
 
 ```PHP
+<?php
 // $_POSTを用いて，送信されたpostメソッドのリクエストを受け取り，属性から各値を取得
 $staff_name = $_POST['name'];
 $staff_pass = $_POST['pass'];
@@ -574,6 +576,7 @@ $dbh = null;
 **【実装例】**
 
 ```PHP
+<?php
 namespace Migration;
 
 class ItemQuery

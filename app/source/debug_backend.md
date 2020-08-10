@@ -55,6 +55,7 @@
 以下を，```var_dump()```よりも上流に追加する．
 
 ```PHP
+<?php
 header('Content-Type: text/html; charset=UTF-8');
 ```
 
