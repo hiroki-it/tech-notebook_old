@@ -40,6 +40,7 @@ $ php /usr/local/bin/composer require --no-dev
 **【実装例】**
 
 ```PHP
+<?php
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 ```
 
@@ -64,6 +65,7 @@ https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-
 **【実装例】**
 
 ```PHP
+<?php
 // QueryBuilderインスタンスを作成．
 $queryBuilder = $this->createQueryBuilder();
 ```
@@ -75,6 +77,7 @@ $queryBuilder = $this->createQueryBuilder();
 **【実装例】**
 
 ```PHP
+<?php
 $queryBuilder
     ->insert('mst_users')
 ```
@@ -86,6 +89,7 @@ $queryBuilder
 **【実装例】**
 
 ```PHP
+<?php
 $queryBuilder
     ->select('id', 'name')
     ->from('mst_users');
@@ -98,6 +102,7 @@ $queryBuilder
 **【実装例】**
 
 ```PHP
+<?php
 $queryBuilder
     ->update('mst_users');
 ```
@@ -109,6 +114,7 @@ $queryBuilder
 **【実装例】**
 
 ```PHP
+<?php
 $queryBuilder
     ->delete('mst_users');
 ```
@@ -120,6 +126,7 @@ $queryBuilder
 **【実装例】**
 
 ```PHP
+<?php
 // データベースに接続．
 $queryBuilder->getConnection()
     // SQLを実行し，レコードを読み出す．
@@ -139,6 +146,7 @@ $queryBuilder->getConnection()
 **【実装例】**
 
 ```PHP
+<?php
 use Doctrine\DBAL\Connection;
 
 class DogToyQuery
@@ -183,6 +191,7 @@ class DogToyQuery
 読み出し系で取得したデータをキャッシュすることができる．
 
 ```PHP
+<?php
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 
@@ -227,6 +236,7 @@ https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transa
 **【実装例】**
 
 ```PHP
+<?php
 $conn = new Doctrine\DBAL\Connection
 
 // トランザクションの開始 
@@ -263,6 +273,7 @@ try{
 DateTimeインスタンスを引数として，Carbonインスタンスを作成する．
 
 ```PHP
+<?php
 $datetime = new \DateTime('2019-07-07 19:07:07');
 $carbon = Carbon::instance($datetime);
 
@@ -278,6 +289,7 @@ echo $carbon; // 2019-07-07 19:07:07
 **【実装例】**
 
 ```PHP
+<?php
 $carbon = Carbon::create(2019, 07, 07, 19, 07, 07);
 
 echo $carbon; // 2019-07-07 19:07:07
@@ -294,6 +306,7 @@ echo $carbon; // 2019-07-07 19:07:07
 **【実装例】**
 
 ```PHP
+<?php
 // 日時数字から，Carbonインスタンスを作成する．
 $carbonFromeDate = Carbon::createFromDate(2019, 07, 07);
 
@@ -305,6 +318,7 @@ echo $carbonFromeDate; // 2019-07-07
 **【実装例】**
 
 ```PHP
+<?php
 // 時間数字から，Carbonインスタンスを作成する．
 $carbonFromTime = Carbon::createFromTime(19, 07, 07);
 
@@ -318,6 +332,7 @@ echo $carbonFromTime; // 19:07:07
 **【実装例】**
 
 ```PHP
+<?php
 // 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．
 // 第一引数でフォーマットを指定する必要がある．
 $carbonFromFormat = Carbon::createFromFormat('Y-m-d H:m:s', '2019-07-07 19:07:07');
@@ -330,6 +345,7 @@ echo $carbonFromFormat; // 2019-07-07 19:07:07
 **【実装例】**
 
 ```PHP
+<?php
 // タイムスタンプフォーマットから，Carbonインスタンスを作成する．
 $carbonFromTimestamp = Carbon::createFromTimestamp(1562494027);
 
@@ -345,6 +361,7 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 **【実装例】**
 
 ```PHP
+<?php
 $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
@@ -365,6 +382,7 @@ SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```
 **【実装例】**
 
 ```PHP
+<?php
 use Pinq\Traversable;
 
 class Example
@@ -404,6 +422,7 @@ class Example
 **【実装例】**
 
 ```PHP
+<?php
 $client = new Client();
 
 // GET送信
@@ -415,6 +434,7 @@ $response = $client->request("GET", {アクセスしたいURL});
 **【実装例】**
 
 ```PHP
+<?php
 $client = new Client();
 
 // POST送信
@@ -439,6 +459,7 @@ htmlファイルを元にして，ローカルディレクトリにPDFファイ�
 **【実装例】**
 
 ```PHP
+<?php
 $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
 
 $snappy->generateFromHtml('example.html', '.../example.pdf');
@@ -453,6 +474,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf');
 リクエストされたデータが正しいかを，サーバサイド側で検証する．フロントエンドからリクエストされるデータに関しては，JavaScriptとPHPの両方によるバリデーションが必要である．
 
 ```PHP
+<?php
 // ここに実装例
 ```
 

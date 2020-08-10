@@ -127,11 +127,9 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ## 02. インスタンス間の関係性
 
+『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．
+
 ![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
-
-以下，『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．
-
-![Association, Aggregation, Compositionの関係の強さの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Association, Aggregation, Compositionの関係の強さの違い.png)
 
 
 
@@ -152,12 +150,14 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 【Tireクラス】
 
 ```PHP
+<?php
 class Tire {}
 ```
 
 【CarXクラス】
 
 ```PHP
+<?php
 //CarXクラス定義
 class CarX
 {
@@ -169,10 +169,10 @@ class CarX
     
     private $tire4;
 
-//CarXクラスがタイヤクラスを引数として扱えるように設定
+    //CarXクラスがタイヤクラスを引数として扱えるように設定
     public function __construct(Tire $t1, Tire $t2, Tire $t3, Tire $t4)
     {
-// Tireクラスのインスタンスをデータとして保持
+        // Tireクラスのインスタンスをデータとして保持
         $this->tire1 = $t1;
         $this->tire2 = $t2;
         $this->tire3 = $t3;
@@ -184,6 +184,7 @@ class CarX
 【CarYクラス】
 
 ```PHP
+<?php
 //CarYクラス定義
 class CarY
 {
@@ -210,6 +211,7 @@ class CarY
 以下の様に，Tireクラスのインスタンスを，CarXクラスとCarYクラスの引数として用いている．
 
 ```PHP
+<?php
 //Tireクラスをインスタンス化
 $tire1 = new Tire();
 $tire2 = new Tire();
@@ -236,6 +238,7 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 【Lockクラス】
 
 ```PHP
+<?php
 //Lockクラス定義
 class Lock {}
 ```
@@ -243,6 +246,7 @@ class Lock {}
 【Carクラス】
 
 ```PHP
+<?php
 //Carクラスを定義
 class Car
 {
@@ -260,6 +264,7 @@ class Car
 以下の様に，Lockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．このように，LockインスタンスからCarクラスの方向には，Compositionの関係性がある．
 
 ```PHP
+<?php
 // Carクラスのインスタンスの中で，Lockクラスがインスタンス化される．
 $car = new Car();
 ```
@@ -279,6 +284,7 @@ $car = new Car();
 【親クラス】
 
 ```PHP
+<?php
 // 通常クラス
 class Goods
 {
@@ -319,6 +325,7 @@ class Goods
 【子クラス】
 
 ```PHP
+<?php
 // 通常クラス
 class GoodsWithTax extends Goods
 {
@@ -372,6 +379,7 @@ class GoodsWithTax extends Goods
 **【実装例】**
 
 ```PHP
+<?php
 // 抽象クラス．型として提供したいものを定義する．
 abstract class ShainManagement
 {
@@ -424,6 +432,7 @@ abstract class ShainManagement
 ```
 
 ```PHP
+<?php
 // 子クラス
 class EnginnerShainManagement extends ShainManagement
 {
@@ -466,6 +475,7 @@ class EnginnerShainManagement extends ShainManagement
 **【実装例】**
 
 ```PHP
+<?php
 // コミュニケーションのメソッドの実装を強制するインターフェース
 interface Communication
 {
@@ -477,6 +487,7 @@ interface Communication
 ```
 
 ```PHP
+<?php
 // 正常に機能するように，コミュニケーションのメソッドの実装を強制する．
 class Human implements Communication
 {
@@ -566,6 +577,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 ModuleAとModuleBは，データ結合の関係にある．
 
 ```PHP
+<?php
 class ModuleA // コールされる側
 {
     public function methodA(int $a, int $b, string $c)
@@ -576,6 +588,7 @@ class ModuleA // コールされる側
 ```
 
 ```PHP
+<?php
 class ModuleB // コールする側
 {
     public function methodB()
@@ -591,6 +604,7 @@ class ModuleB // コールする側
 デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．Factoryクラスのインスタンスと，これをコールする他インスタンス は，データ結合の関係にある．
 
 ```PHP
+<?php
 /**
  * コールされる側
  *
@@ -621,6 +635,7 @@ object型のデータをサプライヤー側として，クライアント側�
 ModuleAとModuleBは，スタンプ結合の関係にある．
 
 ```PHP
+<?php
 class Common
 {
     private $value;
@@ -639,6 +654,7 @@ class Common
 ```
 
 ```PHP
+<?php
 class ModuleA
 {
     public function methodA()
@@ -653,6 +669,7 @@ class ModuleA
 ```
 
 ```PHP
+<?php
 class ModuleB
 {
     public function methodB(Common $common)
@@ -712,6 +729,7 @@ class ModuleB
 **【実装例】**
 
 ```PHP
+<?php
 use Pimple\Container;
 
 use XxxLogger;
@@ -737,11 +755,13 @@ class Container
 ```
 
 ```PHP
+<?php
 // autoload.php で，DIコンテナ自体のインスタンスを事前に生成．
 $container = new Container();
 ```
 
 ```PHP
+<?php
 // DIコンテナの読み込み
 require_once __DIR__ . '/autoload.php';
 
@@ -756,6 +776,7 @@ $sample = $container['sample'];
 **【実装例】**
 
 ```PHP
+<?php
 class Sample
 {
     public function __construct($container)
@@ -766,6 +787,7 @@ class Sample
 }
 ```
 ```PHP
+<?php
 // DIコンテナ自体をインジェクションしてしまうと，不要なインスタンスにも依存してしまう．
 $sample = new Sample($container);
 ```
@@ -821,6 +843,7 @@ $sample = new Sample($container);
 **【実装例】**
 
 ```PHP
+<?php
 // 継承元クラス
 class Example
 {
@@ -834,6 +857,7 @@ class Example
 ```
 
 ```PHP
+<?php
 // 継承先クラス
 class SubExample extends Example
 {
@@ -847,6 +871,7 @@ class SubExample extends Example
 ```
 
 ```PHP
+<?php
 $subExample = new SubExample;
 
 // SubExampleクラスにはgetValue()は無い．
@@ -861,6 +886,7 @@ echo $subExample->getValue();
 **【実装例】**
 
 ```PHP
+<?php
 abstract class Example 
 {
     public function example()
@@ -871,6 +897,7 @@ abstract class Example
 ```
 
 ```PHP
+<?php
 class SubExample extends Example
 {
     public function subExample()
@@ -892,6 +919,7 @@ PHPでは，```use```によって，外部ファイルの名前空間，クラ�
 **【以下で読み込まれるクラスの実装例】**
 
 ```PHP
+<?php
 // 名前空間を定義．
 namespace Domain/Entity1;
 
@@ -910,6 +938,7 @@ class Example1
 #### ・名前空間の読み込み
 
 ```PHP
+<?php
 // use文で名前空間を読み込む．
 use Domain/Entity2
 
@@ -930,6 +959,7 @@ class Example2
 #### ・クラスの読み込み
 
 ```PHP
+<?php
 // use文でクラス名を読み込む．
 use Domain/Entity1/Example1;
 
@@ -949,6 +979,7 @@ class Example2
 #### ・メソッドの読み込み
 
 ```PHP
+<?php
 // use文でメソッドを読み込む．
 use Domain/Entity1/Example1;
 
@@ -967,6 +998,7 @@ class Eeample2
 #### ・定数の読み込み
 
 ```PHP
+<?php
 // use文で定数を読み込む．
 use Domain/Entity1/Example1;
 
@@ -1218,6 +1250,7 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 **【実装例】**
 
 ```PHP
+<?php
 // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
 public static function aggregateDogToyEntity(Array $fetchedData)
 {
@@ -1235,6 +1268,7 @@ public static function aggregateDogToyEntity(Array $fetchedData)
 **【実装例】**
 
 ```PHP
+<?php
 // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
 public static function computeExampleFee(Entity $order): Money
 {
@@ -1256,6 +1290,7 @@ Getterでは，データを取得するだけではなく，何かしらの処�
 **【実装例】**
 
 ```PHP
+<?php
 class ABC {
 
     private $property; 
@@ -1283,6 +1318,7 @@ class ABC {
 **【実装例】**
 
 ```PHP
+<?php
 class Test01 {
 
     private $property01;
@@ -1303,6 +1339,7 @@ class Test01 {
 **【実装例】**
 
 ```PHP
+<?php
 class Test02 {
 
     private $property02;
@@ -1321,6 +1358,7 @@ class Test02 {
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．
 
 ```PHP
+<?php
 $test01 = new Test01;
 
 $test01->setProperty01("データ01の値");
@@ -1331,6 +1369,7 @@ $test01->setProperty01("新しいデータ01の値");
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なクラスとなる．
 
 ```PHP
+<?php
 $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
@@ -1351,6 +1390,7 @@ Entityは，Mutableであるため，Setterと```__construct()```の両方を持
 **【実装例】**
 
 ```PHP
+<?php
 class Example
 {
 
@@ -1366,6 +1406,7 @@ class Example
 ```
 
 ```PHP
+<?php
 // 存在しないデータを取得．
 $example = new Example();
 $example->hoge;
@@ -1393,6 +1434,7 @@ hogeデータは存在しないため，値を呼び出せません．
 **【実装例】**
 
 ```PHP
+<?php
 class Example
 {
 
@@ -1408,6 +1450,7 @@ class Example
 ```
 
 ```PHP
+<?php
 // 存在しないデータに値をセット．
 $example = new Example();
 $example->hoge = "HOGE";
@@ -1423,6 +1466,7 @@ hogeデータは存在しないため，HOGEを設定できません．
 **【実装例】**
 
 ```PHP
+<?php
 class Test02 {
 
     private $property02;
@@ -1441,6 +1485,7 @@ class Test02 {
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
 ```PHP
+<?php
 $test01 = new Test01;
 
 $test01->setProperty01("データ01の値");
@@ -1451,6 +1496,7 @@ $test01->setProperty01("新しいデータ01の値");
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
 
 ```PHP
+<?php
 $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
@@ -1473,6 +1519,7 @@ $test02 = new Test02("新しいデータ02の値");
 どちらも，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
 
 ```PHP
+<?php
 class A
 {
     public static function get_self()
@@ -1488,12 +1535,14 @@ class A
 ```
 
 ```PHP
+<?php
 class B extends A {}
 ```
 
 以下の通り，```new self()```は定義されたクラスをインスタンス化する．一方で，```new static()```はコールされたクラスをインスタンス化する．自身のインスタンス化処理が継承される場合は，```new static```を用いた方が良い．
 
 ```PHP
+<?php
 echo get_class(B::get_self());   // 継承元のクラスA
 
 echo get_class(B::get_static()); // 継承先のクラスB
@@ -1512,6 +1561,7 @@ echo get_class(A::get_static()); // 継承元のクラスA
 【オブジェクトA（オブジェクトBをデータに持つ）】
 
 ```PHP
+<?php
 class Obj_A{
     private $objB;
     
@@ -1526,6 +1576,7 @@ class Obj_A{
 【オブジェクトB（オブジェクトCをデータに持つ）】
 
 ```PHP
+<?php
 class Obj_B{
     private $objC;
  
@@ -1540,6 +1591,7 @@ class Obj_B{
 【オブジェクトC（オブジェクトDをデータに持つ）】
 
 ```PHP
+<?php
 class Obj_C{
     private $objD;
  
@@ -1554,6 +1606,7 @@ class Obj_C{
 以下のように，返却値のオブジェクトを用いて，より深い層に連続してアクセスしていく場合…
 
 ```PHP
+<?php
 $ObjA = new Obj_A;
 
 $ObjB = $ObjA->getObjB();
@@ -1566,6 +1619,7 @@ $ObjD = $C->getObjD();
 以下のように，メソッドチェーンという書き方が可能．
 
 ```PHP
+<?php
 $D = getObjB()->getObjC()->getObjC();
 
 // $D には ObjD が格納されている．
@@ -1593,6 +1647,7 @@ $D = getObjB()->getObjC()->getObjC();
 **【実装例】**
 
 ```PHP
+<?php
 function quickSort(Array $array): Array 
 {
     // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
@@ -1639,6 +1694,7 @@ function quickSort(Array $array): Array
 ```
 
 ```PHP
+<?php
 // 実際に使ってみる．
 $array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
 $result = quickSort($array);
@@ -1664,6 +1720,7 @@ var_dump($result);
 
 
 ```PHP
+<?php
 function returnMethod()
 {
     print "returnMethod()です。\n";
@@ -1672,6 +1729,7 @@ function returnMethod()
 ```
 
 ```PHP
+<?php
 returnMethod(); // returnMethod()です。
 ... // 処理は続く．
 ```
@@ -1680,6 +1738,7 @@ returnMethod(); // returnMethod()です。
 #### ・```exit;```
 
 ```PHP
+<?php
 function exitMethod()
 {
     print "exitMethod()です。\n";
@@ -1688,6 +1747,7 @@ function exitMethod()
 ```
 
 ```PHP
+<?php
 exitMethod(); // exitMethod()です。
 // ここで，システム全体の処理が終了する．
 ```
@@ -1707,6 +1767,7 @@ exitMethod(); // exitMethod()です。
 **【実装例】**
 
 ```PHP
+<?php
 function getOneToThree(): array
 {
     for ($i = 1; $i <= 3; $i++) {
@@ -1717,6 +1778,7 @@ function getOneToThree(): array
 ```
 
 ```PHP
+<?php
 $oneToThree = getOneToThree();
 
 foreach ($oneToThree as $value) {
@@ -1737,6 +1799,7 @@ foreach ($oneToThree as $value) {
 特定の文字列によって，動的にメソッドをコールするオブジェクトをDispatcherという．
 
 ```PHP
+<?php
 $dispatcher = new Dispatcher
 
 // 文字列とメソッドの登録.
@@ -1753,6 +1816,7 @@ $dispatcher->dispatch(string $name, $param)
 **【実装例】**
 
 ```PHP
+<?php
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ExampleEventDispatcher
@@ -1768,6 +1832,7 @@ class ExampleEventDispatcher
 **【実装例】**
 
 ```PHP
+<?php
 class ResultCacher
 {
     private $resultCollection;
@@ -1834,6 +1899,7 @@ class ResultCacher
 **【実装例】**
 
 ```PHP
+<?php
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -1854,6 +1920,7 @@ echo $optionName;
 **【実装例】**
 
 ```PHP
+<?php
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -1875,6 +1942,7 @@ echo $optionName("BC");
 **【実装例】**
 
 ```PHP
+<?php
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -1903,6 +1971,7 @@ echo $option->name("BC");
 **【実装例】**
 
 ```PHP
+<?php
 $item = new Item;
 $param = "BC";
 
@@ -1932,6 +2001,7 @@ echo $optionName;
 **【実装例】**
 
 ```PHP
+<?php
 // 第一引数のみの場合
 
 // 高階関数を定義
@@ -1955,6 +2025,7 @@ test("callbackMethod");
 ```
 
 ```PHP
+<?php
 // 第一引数と第二引数の場合
 
 // 高階関数を定義
@@ -1981,6 +2052,7 @@ higherOrder("第一引数", "callbackMethod");
 **【実装例】**
 
 ```PHP
+<?php
 // 高階関数のように，関数を引数として渡す．
 function higherOrder($parentVar, $callback)
 {
@@ -2005,6 +2077,7 @@ higherOrder($parentVar, function () use ($parentVar) {
 ### 高階関数を使いこなす！
 
 ```PHP
+<?php
 class Example
 {
     
@@ -2055,6 +2128,7 @@ class Example
 番号キーごとに値が格納されたArray型のこと．
 
 ```PHP
+<?php
 Array
 (
     [0] => A
@@ -2068,6 +2142,7 @@ Array
 配列の中に配列をもつArray型のこと．配列の入れ子構造が２段の場合，『二次元配列』と呼ぶ．
 
 ```PHP
+<?php
 ( 
     [0] => Array
         (
@@ -2090,6 +2165,7 @@ Array
 キー名（赤，緑，黄，果物，野菜）ごとに値が格納されたArray型のこと．下の例は，二次元配列かつ連想配列である．
 
 ```PHP
+<?php
 Array
 (
     [赤] => Array
@@ -2119,6 +2195,7 @@ Array
 『内部ポインタ』とは，配列において，参照したい要素を位置で指定するためのカーソルのこと．
 
 ```PHP
+<?php
 $array = array("あ", "い", "う");
 
 // 内部ポインタが現在指定している要素を出力．
@@ -2148,6 +2225,7 @@ PHPで用いることはあまりないデータ格納様式．詳しくは，Ja
 PHPの```list()```は，List型とは意味合いが異なる．配列の要素一つ一つを変数に格納したい場合，List型を使わなければ，冗長ではあるが，以下のように実装する必要がある．
 
 ```PHP
+<?php
 $array = array("あ", "い", "う");
 $a = $array[0];
 $i = $array[1];
@@ -2159,6 +2237,7 @@ echo $a.$i.$u; // あいう
 しかし，以下の様に，```list()```を使うことによって，複数の変数への格納を一行で実装することができる．
 
 ```PHP
+<?php
 list($a, $i, $u) = array("あ", "い", "う");
 
 echo $a.$i.$u; // あいう
@@ -2185,6 +2264,7 @@ echo $a.$i.$u; // あいう
 PHPでは，```array_push()```と```array_shift()```を組み合わせることで実装できる．
 
 ```PHP
+<?php
 $array = array("Blue", "Green");
 
 // 引数を，配列の最後に，要素として追加する．
@@ -2348,6 +2428,7 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 #### ・object
 
 ```PHP
+<?php
 Fruit Object
 (
     [id:private] => 1
@@ -2380,6 +2461,7 @@ Fruit Object
 #### ・```(string)```
 
 ```PHP
+<?php
 $var = 10; // $varはInt型．
 
 // キャスト演算子でデータ型を変換
@@ -2389,26 +2471,31 @@ $var = (string) $var; // $varはString型
 #### ・```(int)```
 
 ```PHP
+<?php
 // Int型
 $var = (int) $var;
 ```
 #### ・```(bool)```
 ```PHP
+<?php
 // Boolean型
 $var = (bool) $var;
 ```
 #### ・```(float)```
 ```PHP
+<?php
 // Float型
 $var = (float) $var;
 ```
 #### ・```(array)```
 ```PHP
+<?php
 // Array型
 $var = (array) $var;
 ```
 #### ・```(object)```
 ```PHP
+<?php
 // Object型
 $var = (object) $var;
 ```
@@ -2422,6 +2509,7 @@ $var = (object) $var;
 計算処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．例えば，ValueObjectにおける定数がある．
 
 ```PHP
+<?php
 class requiredTime
 {
     // 判定値，歩行速度の目安，車速度の目安，を定数で定義する．
@@ -2478,7 +2566,8 @@ class requiredTime
 
 以下の実装を持つファイルを，「```/var/www/app```」下に置いておき，「```/vendor/autoload.php```」と結合してパスを通す．
 
-```php
+```PHP
+<?php
 # /var/www/app/vendor/autoload.php
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 ```
@@ -2490,6 +2579,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 **【実装例】**
 
 ```PHP
+<?php
 class ExampleA
 {
   public function a()
@@ -2500,6 +2590,7 @@ class ExampleA
 ```
 
 ```PHP
+<?php
 $exampleA = new ExmapleA;
 $example->a(); // a が返却される．
 ```
@@ -2511,6 +2602,7 @@ $example->a(); // a が返却される．
 **【実装例】**
 
 ```PHP
+<?php
 class ExampleB
 {
   public function b()
@@ -2521,6 +2613,7 @@ class ExampleB
 ```
 
 ```PHP
+<?php
 $exampleB = new ExmapleB;
 $exampleB->b(); // ExampleB::b が返却される．
 ```
@@ -2540,6 +2633,7 @@ $exampleB->b(); // ExampleB::b が返却される．
 シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．
 
 ```PHP
+<?php
 $fruit = "リンゴ";
 
 // 出力結果
@@ -2551,6 +2645,7 @@ echo 'これは$fruitです．'; // これは，$fruitです．
 シングルクオーテーションの中身は全て文字列として認識され，変数は展開されない．
 
 ```PHP
+<?php
 $fruit = "リンゴ";
 
 // 出力結果
@@ -2562,6 +2657,7 @@ echo 'これは{$fruit}です．'; // これは，{$fruit}です．
 変数の前後に半角スペースを置いた場合にのみ，変数は展開される．（※半角スペースがないとエラーになる）
 
 ```PHP
+<?php
 $fruit = "リンゴ";
 
 // 出力結果
@@ -2573,6 +2669,7 @@ echo "これは $fruit です．"; // これは リンゴ です．
 波括弧を用いると，明示的に変数として扱うことができる．これによって，変数の前後に半角スペースを置かなくとも，変数は展開される．
 
 ```PHP
+<?php
 $fruit = "リンゴ";
 
 // 出力結果
@@ -2588,6 +2685,7 @@ echo "これは{$fruit}です．"; // これは，リンゴです．
 「参照渡し」とは，変数に代入した値の参照先（メモリアドレス）を渡すこと．
 
 ```PHP
+<?php
 $value = 1;
 $result = &$value; // 値の入れ物を参照先として代入
 ```
@@ -2595,6 +2693,7 @@ $result = &$value; // 値の入れ物を参照先として代入
 **【実装例】**```$b```には，```$a```の参照によって10が格納される．
 
 ```PHP
+<?php
 $a = 2;
 $b = &$a;  // 変数aを&をつけて代入
 $a = 10;    // 変数aの値を変更
@@ -2608,6 +2707,7 @@ echo $b; // 10
 「値渡し」とは，変数に代入した値のコピーを渡すこと．
 
 ```PHP
+<?php
 $value = 1;
 $result = $value; // 1をコピーして代入
 ```
@@ -2615,6 +2715,7 @@ $result = $value; // 1をコピーして代入
 **【実装例】**```$b```には，```$a```の一行目の格納によって2が格納される．
 
 ```PHP
+<?php
 $a = 2;
 $b = $a;  // 変数aを代入
 $a = 10;  // 変数aの値を変更
@@ -2629,12 +2730,14 @@ echo $b; // 2
 #### ・正規表現を用いた文字列検索
 
 ```PHP
+<?php
 
 ```
 
 #### ・オプションとしてのパターン演算子
 
 ```PHP
+<?php
 // jpegの大文字小文字
 preg_match('/jpeg$/i', $x);
 ```
@@ -2648,6 +2751,7 @@ preg_match('/jpeg$/i', $x);
 ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．
 
 ```PHP
+<?php
 <img src="http://fruits.com/img/apple.png">
 ```
 
@@ -2658,6 +2762,7 @@ preg_match('/jpeg$/i', $x);
 起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．
 
 ```PHP
+<?php
 <img src="../img/apple.png">
 ```
 
