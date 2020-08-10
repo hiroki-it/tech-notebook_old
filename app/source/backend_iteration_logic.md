@@ -11,6 +11,7 @@
 単に配列を作るだけでなく，要素にアクセスするためにも使われる．
 
 ```PHP
+<?php
 class Example
 {
     
@@ -47,6 +48,7 @@ class Example
 ```call_user_func_array()```の第一引数に```array_merge()```の文字列，第二引数に二次元配列を渡すと，平坦になって一次元配列になる．例えば，不要なインデックス（0）で入れ子になっている場合に役に立つ．
 
 ```PHP
+<?php
 $oneD = call_user_func_array(
             'array_merge',
             $twoD
@@ -58,6 +60,7 @@ $oneD = call_user_func_array(
 例えば，以下のような多次元配列があったとする．
 
 ```PHP
+<?php
 $array = [
     [
         "date" => "2015/11/1" ,
@@ -79,6 +82,7 @@ $array = [
 この配列の```score```キーから値を取り出し，一次元配列を生成する．
 
 ```PHP
+<?php
 array_column($array, "score");
 
 // Array
@@ -98,6 +102,7 @@ array_column($array, "score");
 #### ・```break```
 
 ```PHP
+<?php
 // 初期化
 $i = 0; 
 while($i < 4){
@@ -122,6 +127,7 @@ while($i < 4){
 ![流れ図_for文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_for文.png)
 
 ```PHP
+<?php
 $a = [1, -1, 2, ..., N];
 $sum = 0;
 
@@ -138,6 +144,7 @@ for ($i = 0; $i < N; $i++) {
 ![流れ図_while文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_while文.png)
 
 ```PHP
+<?php
 $a = [1, -1, 2, ..., N];
 $sum = 0;
 
@@ -158,6 +165,7 @@ while ($i < N) {
 ![流れ図_foreach文](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/流れ図_foreach文.png)
 
 ```PHP
+<?php
 $a = [1, -1, 2, ..., N];
 $sum = 0;
 

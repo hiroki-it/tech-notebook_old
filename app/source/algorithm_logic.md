@@ -21,6 +21,7 @@
 4. この処理をn-1回繰り返す．
 
 ```PHP
+<?php
 function minSelectSort(Array $array): Array
 {
 
@@ -58,6 +59,7 @@ function minSelectSort(Array $array): Array
 ```
 
 ```PHP
+<?php
 // 実際に使ってみる．
 $array = array(10,2,12,7,16,8,13)
 $result = selectSort($array);
@@ -97,6 +99,7 @@ var_dump($result);
 4. ソートを繰り返し実行する．
 
 ```PHP
+<?php
 function quickSort(Array $array): Array 
 {
     // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
@@ -143,6 +146,7 @@ function quickSort(Array $array): Array
 ```
 
 ```PHP
+<?php
 // 実際に使ってみる．
 $array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
 $result = quickSort($array);
@@ -318,6 +322,7 @@ var_dump($result);
 
 
 ```PHP
+<?php
 // 各地点間の距離を二次元の連想配列で定義
 $matrix = array(
     'P0' => array(0, 2, 8, 4, -1, -1, -1),
@@ -331,6 +336,7 @@ $matrix = array(
 ```
 
 ```PHP
+<?php
 // 各地点間の距離，出発地点，開始地点を引数にとる．
 public function bestFirstSearchByDijkstra(
     Array $matrix,

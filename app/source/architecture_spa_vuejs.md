@@ -966,6 +966,7 @@ module.exports = Example;
 **【実装例】**
 
 ```PHP
+<?php
 class Example
 {
     private $fruit;
