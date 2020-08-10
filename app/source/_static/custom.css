@@ -1,22 +1,44 @@
 /***********************
- 目次
+ サイト全体
  ***********************/
-.toctree-wrapper.compound .caption {
-    background: #d7d7d7; /* 背景：色 */
-    border-left: 15px solid #2980B9; /* 左線：太さ，色 */
-    color: #010101; /* 文字：色 */
-    padding: 0.6em; /* 内部余白：文字周り */
-    margin-top: 1em; /* 上外部余白：大きさ */
+.wy-nav-content {
+    /* テーマのサイト幅制限を上書き */
+    max-width: 200em;
+    /* ノート左幅 */
+    padding-left: 28em;
+    /* ノート右幅 */
+    padding-right: 20em;
 }
 
+/***********************
+ サイドバー
+ ***********************/
+.wy-nav-side {
+   width: 25em
+}
+.wy-side-scroll {
+  /* サイドバーが隠れないように */
+    width: auto;
+}
 
 /***********************
- サイドナビ
+ サイドバーの検索部分
+ ***********************/
+.wy-side-nav-search {
+    /* サイドバー幅に合わせる */
+    width: auto;
+    font-size: 1.25em;
+}
+
+/***********************
+ サイドバーのナビ部分
  ***********************/
 
 /* ナビ全体 */
 .wy-menu.wy-menu-vertical {
-    font-size: 14px;
+    /* サイドバー幅に合わせる */
+    width: auto;
+    font-size: 0.9em;
 }
 
 /* ノート名 */
@@ -31,100 +53,168 @@
 
 /* 現在開いている見出し */
 .wy-menu.wy-menu-vertical .current .toctree-l1.current a.reference.internal.current:before {
-    color: #2980B9; /*アイコン色*/
-    content: "\f08d"; /*アイコンのユニコード*/
+    /*アイコン色*/
+    color: #2980B9;
+    /*アイコンのユニコード*/
+    content: "\f08d";
+
     font-family: "FontAwesome", serif;
-    font-size: 1.2em; /*サイズ*/
+    /*サイズ*/
+    font-size: 1.2em;
+
     margin-left: 0.3em;
+
     margin-right: 0.3em;
 }
 
-/* アイコンと文字 */
-.wy-side-nav-search {
-    font-size: 20px;
+/***********************
+ インデックスノート
+ ***********************/
+section.toctree-wrapper.compound caption {
+    /* 背景：色 */
+    background: #d7d7d7;
+    /* 左線：太さ，色 */
+    border-left: 0.95em solid #2980B9;
+    /* 文字：色 */
+    color: #010101;
+    /* 内部余白：文字周り */
+    padding: 0.6em;
+    /* 上外部余白：大きさ */
+    margin-top: 1em;
 }
-
 
 /***********************
  各ノート
  ***********************/
 
+/* ノートタイトル */
 h1 {
+
     background: black;
-    border-radius: 7px;
+
+    border-radius: 0.45em;
+
     color: white;
-    font-size: 28px;
+
+    font-size: 1.75em;
+
     padding: 0.6em;
+
     position: relative;
 }
 
 h1:after {
+
     border: 15px solid transparent;
+
     border-top: 15px solid black;
+
     content: '';
+
     height: 0;
-    left: 26px;
+
+    left: 1.6em;
+
     position: absolute;
+
     top: 100%;
+
     width: 0;
-    
 }
 
+/* 章 */
 h2 {
-    background: #d7d7d7; /* 背景：色 */
-    border-left: 15px solid #2980B9; /* 左線：太さ，色 */
-    color: #010101; /* 文字：色 */
-    font-size: 18px;
-    margin-top: 1.5em; /* 上外部余白：大きさ */
-    padding: 0.6em; /* 内部余白：文字周り */
+    /* 背景：色 */
+    background: #d7d7d7;
+    /* 左線：太さ，色 */
+    border-left: 0.95em solid #2980B9;
+    /* 文字：色 */
+    color: #010101;
+    font-size: 1.2em;
+    /* 上外部余白：大きさ */
+    margin-top: 1.5em;
+    /* 内部余白：文字周り */
+    padding: 0.6em;
 }
 
+/* 節 */
 h3 {
     background: #ffffd5;
-    border-bottom: dotted 1px gray;
-    border-top: dotted 1px gray;
-    color: black; /*文字色*/
-    font-size: 16px;
-    line-height: 1.4; /*行高*/
-    padding: 0.5em 0.5em 0.5em 1.5em; /*アイコン分のスペース*/
-    position: relative; /*相対位置*/
+    
+    border-bottom: dotted 0.06em gray;
+    
+    border-top: dotted 0.06em gray;
+    /*文字色*/
+    color: black;
+    font-size: 1.1em;
+    /*行高*/
+    line-height: 1.4;
+    /*アイコン分のスペース*/
+    padding: 0.5em 0.5em 0.5em 1.5em;
+    /*相対位置*/
+    position: relative;
 }
 
 h3:before {
-    color: #2980B9; /*アイコン色*/
-    content: "\f138"; /*アイコンのユニコード*/
-    position: absolute; /*絶対位置*/
+    /*アイコン色*/
+    color: #2980B9;
+    /*アイコンのユニコード*/
+    content: "\f138";
+    /*絶対位置*/
+    position: absolute;
+
     font-family: "FontAwesome", serif;
-    font-size: 1.0em; /*サイズ*/
-    left: 0.25em; /*アイコンの位置*/
-    top: 0.5em; /*アイコンの位置*/
+    /*サイズ*/
+    font-size: 1.1em;
+    /*アイコンの位置*/
+    left: 0.25em;
+    /*アイコンの位置*/
+    top: 0.5em;
 }
 
+/* 項 */
 h4 {
-    font-size: 16px;
+    font-size: 1em;
 }
 
+/* 説明 */
 p {
-    font-size: 14px;
+    font-size: 0.9em;
 }
 
+/* 画像 */
 img {
-    border: 1px solid #ddd; /* 囲み線 */
-    border-radius: 4px;
+    /* 囲み線 */
+    border: 0.1em solid #ddd;
+
+    border-radius: 0.25em;
+
     display: block;
+    
+    /* 縦長の画像を制限 */
+    max-height: 35em;
+    
+    width: auto;
+    
+    height: auto;
+
     margin: 0 auto;
+
     text-align: center;
 }
 
+/* テーブル */
+table {
+
+    margin-left: auto;
+
+    margin-right: auto;
+}
 
 /***********************
  コードブロック
  ***********************/
-
 pre code {
-    font-size: 14px;
-}
 
-.wy-nav-content {
-    max-width: none;
+    font-size: 0.9em;
 }
