@@ -711,6 +711,7 @@ Scala，Groovy，Kotlin
 動的型付け言語では，エントリポイントが指定プログラムの先頭行と決まっており，そこから枝分かれ状に処理が実行されていく．PHPでは，```index.php```がエントリポイントと決められている．その他のファイルにはエントリポイントは存在しない．
 
 ```PHP
+<?php
 use App\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;

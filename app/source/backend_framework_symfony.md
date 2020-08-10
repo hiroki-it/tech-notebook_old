@@ -59,6 +59,7 @@ Symfony
 ### Consoleコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputArgument;
@@ -71,6 +72,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 ### HttpFoundationコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -84,6 +86,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 ### HttpKernelコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -95,6 +98,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 ### Pimpleコンポーネント
 
 ```PHP
+<?php
 use Pimple\ConfigSupport;
 use Pimple\Container;
 use Pimple\DiSupport;
@@ -106,6 +110,7 @@ use Pimple\ServiceProviderInterface;
 ### Securityコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
@@ -116,6 +121,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 ### EventDispatcherコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -126,6 +132,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 ### Routingコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 ```
 
@@ -134,6 +141,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 ### Cacheコンポーネント
 
 ```PHP
+<?php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 ```
 
@@ -151,6 +159,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 **【実装例】**
 
 ```PHP
+<?php
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -248,6 +257,7 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 **【app.phpの実装例】**
 
 ```PHP
+<?php
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -270,6 +280,7 @@ $kernel->terminate($request, $response);
 上記の```handle()```が定義されているファイル．ここで定義された```handle()```が，C/Aへのルートの特定，特定されたC/Aの実行，テンプレートのレンダリングを行う．
 
 ```PHP
+<?php
 public function handle
 (
     Request $request,
@@ -302,6 +313,7 @@ public function handle
 2. Ajaxによるリクエストでない場合，ページレンダリングのみ
 
 ```PHP
+<?php
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -357,6 +369,7 @@ Symfonyから提供されるDIコンテナのこと．
 コントローラへのルーティングを設定する．
 
 ```PHP
+<?php
 use App\Controller\BlogApiController; // ルーティング先のコントローラを読み込み
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -383,6 +396,7 @@ return function (RoutingConfigurator $routes) {
 データをキャッシングできるコンポーネント．オプションで，名前空間，キャッシュ存続時間，キャッシュルートパスを指定できる．
 
 ```PHP
+<?php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 $cache = new FilesystemAdapter('', 0, 'example/cache/');

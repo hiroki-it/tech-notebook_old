@@ -231,7 +231,7 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 
 以下のようなログになる．
 
-```log
+```
 # common形式
 118.86.194.71 - - [17/Aug/2011:23:04:03 +0900] "GET /home/name/category/web HTTP/1.1" 200 11815
 
