@@ -174,18 +174,18 @@ Slackware
 
 よく使うものを記載する．
 
-| シェル系 | ファイルシステム系 | プロセス管理系 | テキスト処理系 | ネットワーク系 | その他                   |
-| :------- | ------------------ | -------------- | -------------- | -------------- | ------------------------ |
-| echo     | cd                 | batch          | tail           | nslookup       | crontab                  |
-| sleep    | ls                 | ps             | -              | curl           | grep                     |
-| -        | cp                 | kill           | -              | netstat        | メタパッケージマネージャ |
-| -        | find               | systemctl      | -              | route          | -                        |
-| -        | mv                 | -              | -              | -              | -                        |
-| -        | chmod              | -              | -              | -              | -                        |
-| -        | rm                 | -              | -              | -              | -                        |
-| -        | pwd                | -              | -              | -              | -                        |
-| -        | chown              | -              | -              | -              | -                        |
-| -        | cat                | -              | -              | -              | -                        |
+| シェル系 | ファイルシステム系 | プロセス管理系 | ジョブスケジュール系 | ネットワーク系 | テキスト処理系 |
+| :------- | ------------------ | -------------- | -------------------- | -------------- | -------------- |
+| echo     | cd                 | batch          | cron                 | nslookup       | tail           |
+| sleep    | ls                 | ps             | -                    | curl           | vim            |
+| -        | cp                 | kill           | -                    | netstat        | grep           |
+| -        | find               | systemctl      | -                    | route          | -              |
+| -        | mv                 | -              | -                    | -              | -              |
+| -        | chmod              | -              | -                    | -              | -              |
+| -        | rm                 | -              | -                    | -              | -              |
+| -        | pwd                | -              | -                    | -              | -              |
+| -        | chown              | -              | -                    | -              | -              |
+| -        | cat                | -              | -                    | -              | -              |
 
 #### ・Windowsの場合
 
@@ -346,13 +346,14 @@ $ systemctl disable crond.service
 
 
 
-### その他｜crontab：command run on table
+### ジョブスケジュール系｜cron
 
-#### ・crontabの使い方
+#### ・cronの使い方
 
 cronデーモンの動作が定義されたcrontabファイルを操作するためのユーティリティ．cron.dファイルは操作できない．
 
 ```bash
+# crontab：command run on table
 # 作成したcronファイルを登録する．
 $ crontab {ファイルパス}
 ```
@@ -507,19 +508,30 @@ directory=/var/www/tech-notebook
 
 
 
+### テキスト処理系｜vim：Vi Imitaion，Vi Improved  
+
+#### ・vimの使い方
+
+```bash
+# vim上でファイルを開く
+$ vim {ファイル名}
+```
 
 
 
+##  04-03. 基本ソフトウェア｜管理ユーティリティ
 
-### マネージャの種類
+### 管理ユーティリティの種類
 
-#### ・ライブラリとパッケージの大まかな違い
+#### ・管理ユーティリティの対象
+
+様々なレベルを対象にした管理ユーティリティがある．
 
 ![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ライブラリ，パッケージ，モジュールの違い.png)
 
-#### ・ライブラリマネージャ
+#### ・ライブラリ管理ユーティリティ
 
-| ライブラリマネージャ名            | 対象プログラミング言語 |
+| ユーティリティ名                  | 対象プログラミング言語 |
 | --------------------------------- | ---------------------- |
 | composer.phar：Composer           | PHP                    |
 | npm：Node Package Manager         | Node.js                |
@@ -527,26 +539,86 @@ directory=/var/www/tech-notebook
 | maven：Apache Maven               | Java                   |
 | gem：Ruby Gems                    | Ruby                   |
 
-#### ・メタパッケージマネージャ
+#### ・パッケージ管理ユーティリティ
 
-| メタパッケージマネージャ名                              | 対象OS       | 依存関係のインストール可否 |
+| ユーティリティ名                                        | 対象OS       | 依存関係のインストール可否 |
 | ------------------------------------------------------- | ------------ | -------------------------- |
 | Rpm：Red Hat Package Manager                            | RedHat系     | ✕                          |
 | Yum：Yellow dog Updater Modified<br/>DNF：Dandified Yum | RedHat系     | 〇                         |
 | Apt：Advanced Packaging Tool                            | Debian系     | 〇                         |
 | Apk：Alpine Linux package management                    | Alpine Linux | 〇                         |
 
-#### ・言語バージョンマネージャ
+#### ・言語バージョン管理ユーティリティ
 
-| 言語バージョンマネージャ名 | 対象プログラミング言語 |
-| -------------------------- | ---------------------- |
-| phpenv                     | PHP                    |
-| pyenv                      | Python                 |
-| rbenv                      | Ruby                   |
+| ユーティリティ名 | 対象プログラミング言語 |
+| ---------------- | ---------------------- |
+| phpenv           | PHP                    |
+| pyenv            | Python                 |
+| rbenv            | Ruby                   |
 
 
 
-## 04-03. 基本ソフトウェア ｜ 言語プロセッサ
+### パッケージ管理ユーティリティ｜rpm，yum
+
+#### ・rpmの使い方
+
+一度に複数のオプションを組み合わせて記述する．インストール時にパッケージ間の依存関係を解決できないので注意．
+
+```bash
+# パッケージをインストール
+# -ivh：--install -v --hash 
+$ rpm -ivh {パッケージ名}
+```
+
+```bash
+# インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
+# -qa：
+$ rpm -qa | grep {検索文字}
+```
+
+```bash
+# 指定したパッケージ名で，関連する全てのファイルの場所を表示．
+# -ql：
+$ rpm -ql {パッケージ名}
+```
+
+```bash
+# 指定したパッケージ名で，インストール日などの情報を表示．
+# -qi：
+$ rpm -qi {パッケージ名}
+```
+
+#### ・yumの使い方
+
+rpmと同様の使い方ができる．また，インストール時にパッケージ間の依存関係を解決できる．
+
+```bash
+# パッケージをインストール
+$ yum install -y {パッケージ名}
+```
+```bash
+# インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
+$ yum list | grep {検索文字}
+```
+
+#### ・EPELリポジトリ，Remiリポジトリ
+
+CentOS公式リポジトリはパッケージのバージョンが古いことがある．そこで，```--enablerepo```オプションを使用すると，CentOS公式リポジトリではなく，最新バージョンを扱う外部リポジトリ（EPEL，Remi）から，パッケージをインストールできる．外部リポジトリ間で依存関係にあるため，両方のリポジトリをインストールする必要がある．
+
+```bash
+# EPELリポジトリをインストール
+$ yum install -y epel-release
+
+# Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．
+$ yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+
+# 外部リポジトリから，php，php-mbstring，php-mcryptをインストール
+$ yum install -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
+```
+
+
+
+## 04-05. 基本ソフトウェア ｜ 言語プロセッサ
 
 ### 言語プロセッサの例
 
@@ -585,6 +657,8 @@ directory=/var/www/tech-notebook
 
 
 ### コンパイラによるコンパイラ型言語の機械語翻訳（じ，こ，い，さい，せい，リンク，実行）
+
+#### ・機械語翻訳と実行のタイミング
 
 コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
 
@@ -638,15 +712,39 @@ C#
 
 ### インタプリタによるインタプリタ型言語の機械語翻訳（じ，こ，い，実行）
 
-コードを，一行ずつ機械語に変換し，順次，命令を実行する言語．
+#### ・機械語翻訳と実行のタイミング
 
-※Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．
+コードを，一行ずつ機械語に変換し，その都度，CPUに対して命令が実行される．
 
 **【インタプリタ型言語の具体例】**
 
 PHP，Ruby，JavaScript，Python
 
 ![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インタプリタ言語.png)
+
+コマンドラインでそのまま入力し，機械語翻訳と実行を行うことができる．
+
+```bash
+#===========
+# PHPの場合
+#===========
+
+# PHPなので，処理終わりにセミコロンが必要
+$ php -r '{何らかの処理}'
+
+# Hello Worldを出力
+$ php -r 'echo "Hello World";'
+
+# phpinfoを出力
+$ php -r 'phpinfo();'
+
+# （おまけ）phpinfoの出力をテキストファイルに保存
+$ php -r 'phpinfo();' > phpinfo.txt
+```
+
+#### ・JavaScriptのインタプリタについて
+
+Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．
 
 #### ・インタプリタ方式の機械語翻訳の流れ
 
@@ -762,7 +860,7 @@ public class Age
 
 
 
-## 04-04. 基本ソフトウェア ｜ 制御プログラム（カーネル）
+## 04-06. 基本ソフトウェア ｜ 制御プログラム（カーネル）
 
 ### 制御プログラム（カーネル）の例
 
