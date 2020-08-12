@@ -5,9 +5,9 @@
     /* テーマのサイト幅制限を上書き */
     max-width: 200em;
     /* ノート左幅 */
-    padding-left: 28em;
+    padding-left: 15em;
     /* ノート右幅 */
-    padding-right: 20em;
+    padding-right: 10em;
 }
 
 /***********************
@@ -192,7 +192,7 @@ img {
     display: block;
     
     /* 縦長の画像を制限 */
-    max-height: 35em;
+    max-height: 22.5em;
     
     width: auto;
     
