@@ -607,12 +607,17 @@ CentOS公式リポジトリはパッケージのバージョンが古いこと�
 
 ```bash
 # EPELリポジトリをインストール
-$ yum install -y epel-release
+$ yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 # Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．
 $ yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
-# 外部リポジトリから，php，php-mbstring，php-mcryptをインストール
+# config-managerのインストール
+# Remiリポジトリの有効化
+$ yum install -y yum-utils
+$ yum-config-manager --enable remi
+
+# いずれかの外部リポジトリから，php，php-mbstring，php-mcryptをインストール
 $ yum install -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
 ```
 
