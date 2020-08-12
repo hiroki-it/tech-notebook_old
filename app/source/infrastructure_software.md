@@ -742,6 +742,13 @@ $ php -r 'phpinfo();'
 $ php -r 'phpinfo();' > phpinfo.txt
 ```
 
+```bash
+# php.iniの読み込み状況を出力
+$ php --ini
+```
+
+
+
 #### ・JavaScriptのインタプリタについて
 
 Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．
