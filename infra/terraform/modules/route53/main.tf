@@ -10,6 +10,7 @@ variable "region" {}
 variable "vpc_id" {}
 
 // ALB
+variable "alb_zone_id" {}
 variable "alb_dns_name" {}
 
 #==========
@@ -23,7 +24,12 @@ data "aws_route53_zone" "route53_zone" {
 resource "aws_route53_record" "route53_record" {
   zone_id = data.aws_route53_zone.route53_zone.id
   name    = "${var.app_sub_domain_name}.${data.aws_route53_zone.route53_zone.name}" // サブドメインを含むFQDN
-  type    = "CNAME"
-  ttl     = 60
-  records = [var.alb_dns_name] // ルーティング先のDNS名
+  type    = "A"
+
+  // エイリアス
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = true
+  }
 }
