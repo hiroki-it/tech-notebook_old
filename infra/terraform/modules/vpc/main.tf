@@ -14,6 +14,7 @@ variable "vpc_cidr_block" {}
 variable "igw_cidr_block" {}
 
 // Network ACL
+variable "nacl_inbound_cidr_block" {}
 variable "nacl_outbound_cidr_block" {}
 
 // Subnet
@@ -40,7 +41,7 @@ resource "aws_network_acl" "network_acl" {
     protocol   = -1 // 全てのポート番号
     rule_no    = 100
     action     = "allow"
-    cidr_block = aws_vpc.vpc.cidr_block
+    cidr_block = var.nacl_inbound_cidr_block
     from_port  = 0
     to_port    = 0
   }
