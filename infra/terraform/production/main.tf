@@ -18,6 +18,7 @@ variable "vpc_cidr_block" {}
 variable "igw_cidr_block" {}
 
 // Network ACL
+variable "nacl_inbound_cidr_block" {}
 variable "nacl_outbound_cidr_block" {}
 
 // Subnet
@@ -35,7 +36,8 @@ variable "ecs_task_size_memory" {}
 
 // Port
 variable "port_http" {}
-variable "port_https" {}
+variable "port_https_main" {}
+variable "port_https_sub" {}
 variable "port_ssh" {}
 
 // Key Pair
@@ -74,6 +76,7 @@ module "vpc_module" {
   region                      = var.region
   vpc_cidr_block              = var.vpc_cidr_block
   igw_cidr_block              = var.igw_cidr_block
+  nacl_inbound_cidr_block     = var.nacl_inbound_cidr_block
   nacl_outbound_cidr_block    = var.nacl_outbound_cidr_block
   subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
   subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
@@ -97,7 +100,8 @@ module "security_group_module" {
   security_group_outbound_cidr_block      = var.security_group_outbound_cidr_block
   app_name                                = var.app_name
   port_http                               = var.port_http
-  port_https                              = var.port_https
+  port_https_main                         = var.port_https_main
+  port_https_sub                          = var.port_https_sub
   port_ssh                                = var.port_ssh
 }
 
@@ -116,10 +120,11 @@ module "alb_module" {
   security_group_alb_id = module.security_group_module.security_group_alb_id
   acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
 
-  app_name   = var.app_name
-  port_http  = var.port_http
-  port_https = var.port_https
-  ssl_policy = var.ssl_policy
+  app_name        = var.app_name
+  port_http       = var.port_http
+  port_https_main = var.port_https_main
+  port_https_sub  = var.port_https_sub
+  ssl_policy      = var.ssl_policy
 }
 
 #==========
@@ -131,6 +136,7 @@ module "route53_module" {
   source = "../modules/route53"
 
   // 他のモジュールの出力値を渡す.
+  alb_zone_id  = module.alb_module.alb_zone_id
   alb_dns_name = module.alb_module.alb_dns_name
   vpc_id       = module.vpc_module.vpc_id
 
