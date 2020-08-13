@@ -16,7 +16,8 @@ variable "security_group_alb_id" {}
 
 // Port
 variable "port_http" {}
-variable "port_https" {}
+variable "port_https_main" {}
+variable "port_https_sub" {}
 
 // certificate
 variable "acm_certificate_arn" {}
@@ -51,7 +52,7 @@ resource "aws_lb_target_group" "alb_target_group_blue" {
     timeout             = 5
     interval            = 10
     matcher             = 200
-    port                = var.port_http
+    port                = "traffic-port"
     protocol            = "HTTP"
   }
 
@@ -74,7 +75,7 @@ resource "aws_lb_target_group" "alb_target_group_green" {
     timeout             = 5
     interval            = 10
     matcher             = 200
-    port                = var.port_http
+    port                = "traffic-port"
     protocol            = "HTTP"
   }
 
@@ -86,7 +87,7 @@ resource "aws_lb_target_group" "alb_target_group_green" {
 #===========
 resource "aws_lb_listener" "lb_listener_blue" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_https // ALBの受信時の解放ポート
+  port              = var.port_https_main // ALBの受信時の解放ポート
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = var.acm_certificate_arn
@@ -100,8 +101,10 @@ resource "aws_lb_listener" "lb_listener_blue" {
 
 resource "aws_lb_listener" "lb_listener_green" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_http // ALBの受信時の解放ポート
-  protocol          = "HTTP"
+  port              = var.port_https_sub // ALBの受信時の解放ポート
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.acm_certificate_arn
 
   // アクション
   default_action {
