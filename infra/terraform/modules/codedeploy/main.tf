@@ -68,24 +68,25 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     target_group_pair_info {
       
       // 本稼働リスナーARN
+      // デプロイ後に本番とする環境
       prod_traffic_route {
-        listener_arns = [var.alb_listener_blue_arn]
-      }
-      
-      // テストリスナーARN
-      // NOTE: B/Gの切り替え時にCodeDeployが混乱しないよう，テストリスナールールを明示的に認識させる必要がある．
-      test_traffic_route {
         listener_arns = [var.alb_listener_green_arn]
       }
       
-      // ターゲットグループ１（Blue）
-      target_group {
-        name = var.alb_target_group_blue_name
+      // テストリスナーARN
+      // デプロイ後に削除する環境
+      test_traffic_route {
+        listener_arns = [var.alb_listener_blue_arn]
       }
       
-      // ターゲットグループ２（Green）
+      // ターゲットグループ１（Green）
       target_group {
         name = var.alb_target_group_green_name
+      }
+      
+      // ターゲットグループ２（Blue）
+      target_group {
+        name = var.alb_target_group_blue_name
       }
     }
   }
