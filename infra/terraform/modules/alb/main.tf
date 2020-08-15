@@ -85,19 +85,30 @@ resource "aws_lb_target_group" "alb_target_group_green" {
 #===========
 # Listener
 #===========
-resource "aws_lb_listener" "lb_listener_blue_green" {
+resource "aws_lb_listener" "lb_listener_blue" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_http // ALBの受信時の解放ポート
-  protocol          = "HTTP"
+  port              = var.port_https_main // ALBの受信時の解放ポート
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.acm_certificate_arn
 
   // アクション
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group_blue.arn
   }
+}
 
-  // ターゲットグループの動的差分を無視する
-  lifecycle {
-    ignore_changes = [default_action]
+resource "aws_lb_listener" "lb_listener_green" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = var.port_https_sub // ALBの受信時の解放ポート
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.acm_certificate_arn
+
+  // アクション
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.alb_target_group_green.arn
   }
 }
