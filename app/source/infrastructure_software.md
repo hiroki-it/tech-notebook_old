@@ -297,7 +297,7 @@ $ chmod 666 example.conf
 
 #### ・psの使い方
 
-稼働しているプロセスの詳細情報を表示するためのユーティリティ．
+稼働しているプロセスの詳細情報を表示するためのユーティリティa．
 
 ```bash
 # 稼働しているプロセスのうち，詳細情報に「xxx」を含むものを表示する．
@@ -595,6 +595,9 @@ rpmと同様の使い方ができる．また，インストール時にパッ�
 ```bash
 # パッケージをインストール
 $ yum install -y {パッケージ名}
+
+# 再インストールする時は，reinstallとすること
+$ yum reinstall -y {パッケージ名}
 ```
 ```bash
 # インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
@@ -606,10 +609,12 @@ $ yum list | grep {検索文字}
 CentOS公式リポジトリはパッケージのバージョンが古いことがある．そこで，```--enablerepo```オプションを使用すると，CentOS公式リポジトリではなく，最新バージョンを扱う外部リポジトリ（EPEL，Remi）から，パッケージをインストールできる．外部リポジトリ間で依存関係にあるため，両方のリポジトリをインストールする必要がある．
 
 ```bash
-# EPELリポジトリをインストール
+# CentOS7系EPELリポジトリをインストール
+# インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
 $ yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-# Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．
+# CentOS7系Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．
+# インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
 $ yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
 # config-managerのインストール
@@ -619,6 +624,43 @@ $ yum-config-manager --enable remi
 
 # いずれかの外部リポジトリから，php，php-mbstring，php-mcryptをインストール
 $ yum install -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
+
+# 再インストールする時は，reinstallとすること
+$ yum reinstall -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
+
+# Remiリポジトリを経由してインストールしたソフトウェアは /opt/remi/* に配置される．
+# /opt/remi/*
+```
+
+設定ファイルへは，インストール先のリンクなどが自動的に書き込まれる．
+
+```
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Debug
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch/debug
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
+
+[epel-source]
+name=Extra Packages for Enterprise Linux 6 - $basearch - Source
+#baseurl=http://download.fedoraproject.org/pub/epel/6/SRPMS
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+gpgcheck=1
 ```
 
 
