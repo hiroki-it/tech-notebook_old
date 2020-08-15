@@ -65,6 +65,15 @@ resource "aws_ecs_service" "ecs_service" {
     security_groups  = [var.security_group_ecs_id]
     assign_public_ip = true
   }
+
+  // タスク数，タスク定義，ロードバランサーの動的な差分を無視する
+  lifecycle {
+    ignore_changes = [
+      "desired_count",
+      "task_definition",
+      "load_balancer",
+    ]
+  }
 }
 
 #======================

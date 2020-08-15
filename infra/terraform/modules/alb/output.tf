@@ -21,9 +21,6 @@ output "alb_target_group_blue_arn" {
 }
 
 // Listener
-output "alb_listener_blue_arn" {
-  value = aws_lb_listener.lb_listener_blue.arn
-}
-output "alb_listener_green_arn" {
-  value = aws_lb_listener.lb_listener_green.arn
+output "alb_listener_blue_green_arn" {
+  value = aws_lb_listener.lb_listener_blue_green.arn
 }
