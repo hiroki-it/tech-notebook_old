@@ -78,7 +78,7 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: デバッグ
+   :caption: PHP／JS｜デバッグ
 
    debug_backend.md
    debug_frontend.md
@@ -92,7 +92,7 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ネットワーク
+   :caption: ネットワークの構造
 
    infrastructure_network_internet.md
 
@@ -105,9 +105,8 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ソフトウェア
+   :caption: ソフトウェア｜種類
 
-   infrastructure_machine_language_and_radix.md
    infrastructure_software.md
 
 .. toctree::
@@ -122,6 +121,12 @@ Hiroki tech-notebook ドキュメントサイト
 
    infrastructure_software_middleware_nginx.md
    infrastructure_software_middleware_apache.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ソフトウェア｜CentOS
+
+   infrastructure_software_centos.md
 
 .. toctree::
    :maxdepth: 1
