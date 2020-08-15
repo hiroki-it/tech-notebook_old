@@ -109,6 +109,17 @@ Hiroki tech-notebook ドキュメントサイト
 
    infrastructure_machine_language_and_radix.md
    infrastructure_software.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ソフトウェア｜機械語と進数
+
+   infrastructure_software_language_and_radix.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ソフトウェア｜ミドルウェア
+
    infrastructure_software_middleware_nginx.md
    infrastructure_software_middleware_apache.md
 
