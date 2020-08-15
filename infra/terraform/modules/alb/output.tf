@@ -16,8 +16,8 @@ output "alb_target_group_green_name" {
 output "alb_target_group_blue_name" {
   value = aws_lb_target_group.alb_target_group_blue.name
 }
-output "alb_target_group_blue_arn" {
-  value = aws_lb_target_group.alb_target_group_blue.arn
+output "alb_target_group_green_arn" {
+  value = aws_lb_target_group.alb_target_group_green.arn
 }
 
 // Listener

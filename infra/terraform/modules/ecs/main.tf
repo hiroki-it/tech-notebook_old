@@ -12,7 +12,7 @@ variable "subnet_public_1c_id" {}
 variable "security_group_ecs_id" {}
 
 // ALB
-variable "alb_target_group_blue_arn" {}
+variable "alb_target_group_green_arn" {}
 
 // ECS
 variable "ecs_task_size_cpu" {}
@@ -54,7 +54,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   // ロードバランシング
   load_balancer {
-    target_group_arn = var.alb_target_group_blue_arn
+    target_group_arn = var.alb_target_group_green_arn
     container_name   = "www-container"
     container_port   = var.port_http
   }
