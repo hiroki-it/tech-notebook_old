@@ -131,10 +131,10 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: インフラストラクチャ｜仮想化サーバ，コンテナ
 
-   infrastructure_virtualization_technology_comparison.md
-   infrastructure_virtual_server.md
-   infrastructure_container.md
-   infrastructure_container_orchestration.md
+   infrastructure_virtualization_comparison.md
+   infrastructure_virtualization_server.md
+   infrastructure_virtualization_container.md
+   infrastructure_virtualization_container_orchestration.md
 
 .. toctree::
    :maxdepth: 1
