@@ -120,11 +120,10 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: ソフトウェア｜ミドルウェア
 
    infrastructure_software_middleware_nginx.md
-   infrastructure_software_middleware_apache.md
-
-.. toctree::
+   infrastructure_software_middleware_apache
+.. toct
    :maxdepth: 1
-   :caption: ソフトウェア｜CentOS
+   :caption: ソフトウェア｜CentOSの構成
 
    infrastructure_software_centos.md
 
