@@ -185,7 +185,8 @@ module "codedeploy_module" {
   source = "../modules/codedeploy"
 
   // 他のモジュールの出力値を渡す
-  alb_listener_blue_green_arn     = module.alb_module.alb_listener_blue_green_arn
+  alb_listener_blue_arn           = module.alb_module.alb_listener_blue_arn
+  alb_listener_green_arn          = module.alb_module.alb_listener_green_arn
   alb_target_group_blue_name      = module.alb_module.alb_target_group_blue_name
   alb_target_group_green_name     = module.alb_module.alb_target_group_green_name
   codedeployment_role_for_ecs_arn = module.service_role_module.codedeployment_role_for_ecs_arn
