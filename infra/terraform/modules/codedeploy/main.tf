@@ -73,6 +73,7 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
       }
       
       // テストリスナーARN
+      // NOTE: B/Gの切り替え時にCodeDeployが混乱しないよう，テストリスナールールを明示的に認識させる必要がある．
       test_traffic_route {
         listener_arns = [var.alb_listener_green_arn]
       }
