@@ -68,25 +68,23 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     target_group_pair_info {
       
       // 本稼働リスナーARN
-      // デプロイ後に本番とする環境
       prod_traffic_route {
-        listener_arns = [var.alb_listener_green_arn]
-      }
-      
-      // テストリスナーARN
-      // デプロイ後に削除する環境
-      test_traffic_route {
         listener_arns = [var.alb_listener_blue_arn]
       }
       
-      // ターゲットグループ１（Green）
-      target_group {
-        name = var.alb_target_group_green_name
+      // テストリスナーARN（新本稼働リスナーARN）
+      test_traffic_route {
+        listener_arns = [var.alb_listener_green_arn]
       }
       
-      // ターゲットグループ２（Blue）
+      // ターゲットグループ１（Blue）
       target_group {
         name = var.alb_target_group_blue_name
+      }
+      
+      // ターゲットグループ２（Green）
+      target_group {
+        name = var.alb_target_group_green_name
       }
     }
   }
