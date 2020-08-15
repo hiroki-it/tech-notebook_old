@@ -121,7 +121,8 @@ Hiroki tech-notebook ドキュメントサイト
 
    infrastructure_software_middleware_nginx.md
    infrastructure_software_middleware_apache
-.. toct
+
+.. toctree::
    :maxdepth: 1
    :caption: ソフトウェア｜CentOSの構成
 
