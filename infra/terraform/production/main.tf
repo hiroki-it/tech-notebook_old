@@ -26,8 +26,10 @@ variable "subnet_public_1a_cidr_block" {}
 variable "subnet_public_1c_cidr_block" {}
 
 // Security Group
-variable "security_group_inbound_cidr_block_https" {}
-variable "security_group_inbound_cidr_block_ssh" {}
+variable "security_group_alb_inbound_cidr_block_http" {}
+variable "security_group_alb_inbound_cidr_block_https" {}
+variable "security_group_ecs_inbound_cidr_block_http" {}
+variable "security_group_ecs_inbound_cidr_block_ssh" {}
 variable "security_group_outbound_cidr_block" {}
 
 // ECS
@@ -92,17 +94,17 @@ module "security_group_module" {
   source = "../modules/security_group"
 
   // 他のモジュールの出力値を渡す
-  vpc_id = module.vpc_module.vpc_id
-
-  security_group_inbound_cidr_block_http  = var.security_group_inbound_cidr_block_https
-  security_group_inbound_cidr_block_https = var.security_group_inbound_cidr_block_https
-  security_group_inbound_cidr_block_ssh   = var.security_group_inbound_cidr_block_ssh
-  security_group_outbound_cidr_block      = var.security_group_outbound_cidr_block
-  app_name                                = var.app_name
-  port_http                               = var.port_http
-  port_https_main                         = var.port_https_main
-  port_https_sub                          = var.port_https_sub
-  port_ssh                                = var.port_ssh
+  vpc_id                                      = module.vpc_module.vpc_id
+  security_group_alb_inbound_cidr_block_http  = var.security_group_alb_inbound_cidr_block_http
+  security_group_alb_inbound_cidr_block_https = var.security_group_alb_inbound_cidr_block_https
+  security_group_ecs_inbound_cidr_block_http  = var.security_group_ecs_inbound_cidr_block_http
+  security_group_ecs_inbound_cidr_block_ssh   = var.security_group_ecs_inbound_cidr_block_ssh
+  security_group_outbound_cidr_block          = var.security_group_outbound_cidr_block
+  app_name                                    = var.app_name
+  port_http                                   = var.port_http
+  port_https_main                             = var.port_https_main
+  port_https_sub                              = var.port_https_sub
+  port_ssh                                    = var.port_ssh
 }
 
 #======
@@ -166,7 +168,7 @@ module "ecs_module" {
 
   // 他のモジュールの出力値を渡す
   ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
-  alb_target_group_blue_arn   = module.alb_module.alb_target_group_blue_arn
+  alb_target_group_green_arn  = module.alb_module.alb_target_group_green_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
   security_group_ecs_id       = module.security_group_module.security_group_ecs_id
