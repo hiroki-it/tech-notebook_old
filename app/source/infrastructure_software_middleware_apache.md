@@ -27,11 +27,29 @@ $ systemctl httpd graceful
 
 ## 02. Coreにおける設定ディレクティブ
 
+### ServerRoot
+
+#### ・ServerRootとは
+
+他の設定ディレクティブで，相対パスが設定されている場合に適用される．そのルートディレクトリを定義する．
+
+**【実装例】**
+
+CentOSの場合，Apacheのインストール後に，optディレクティブ以下にconfファイルが設置される．
+
+```apacheconf
+ServerRoot /opt/rh/httpd24/root/etc/httpd
+```
+
+
+
 ### VirtualHost
 
 #### ・VirtualHostとは
 
 ディレクティブを囲うディレクティブの一つ．特定のホスト名やIPアドレスにリクエストがあった時に実行するディレクティブを定義する．VirtualHostという名前の通り，1 つのサーバ上で，仮想的に複数のドメインを扱うような処理も定義できる．複数のVirtualHostを設定した場合，一つ目がデフォルト設定として認識される．
+
+**【実装例】**
 
 ```apacheconf
 Listen 80
@@ -61,7 +79,9 @@ NameVirtualHost *:80
 
 #### ・DocumentRootとは
 
-ドキュメントのルートディレクトリを指定する．ドキュメントルートに「index.html」というファイルを置くと，ファイル名を指定しなくとも，ルートディレクトリ内のindex.htmlが，エントリーポイントとして自動的に認識されて表示される．
+ドキュメントのルートディレクトリを定義する．ドキュメントルートに「index.html」というファイルを置くと，ファイル名を指定しなくとも，ルートディレクトリ内のindex.htmlが，エントリーポイントとして自動的に認識されて表示される．
+
+**【実装例】**
 
 ```apacheconf
 <VirtualHost *:80>
@@ -71,6 +91,8 @@ NameVirtualHost *:80
 ```
 
 index.html以外の名前をエントリーポイントにする場合，ファイル名を指定する必要がある．
+
+**【実装例】**
 
 ```apacheconf
 <VirtualHost *:80>
@@ -89,7 +111,27 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 
 
-## 03. mod_dirにおける設定ディレクティブ
+## 03. mod_so
+
+### LoadModule
+
+#### ・LoadModule
+
+モジュールを読み込み，設定ディレクティブを宣言できるようにする．
+
+**【実装例】**
+
+相対パスを指定し，ServerRootを適用させる．これにより，httpdディレクトリのmodulesディレクトリが参照される．
+
+```apacheconf
+# ServerRoot が /opt/rh/httpd24/root/etc/httpd だとする．
+
+LoadModule dir_module modules/mod_dir.so
+```
+
+
+
+## 03-02. mod_dirにおける設定ディレクティブ
 
 ### DirectoryIndex
 
@@ -97,11 +139,14 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 indexファイルを指定する．
 
+**【実装例】**
+
 ```apacheconf
 <Directory "/example">
     DirectoryIndex index.html index.php
 </Directory>
 ```
+**【実装例】**
 
 ```apacheconf
 <Directory "/example">
@@ -116,6 +161,8 @@ indexファイルを指定する．
 
 htaccessファイルで有効化するディレクティブを定義する．
 
+**【実装例】**
+
 ```apacheconf
 <Directory "/example">
     DirectoryIndex index.php
@@ -127,6 +174,8 @@ htaccessファイルで有効化するディレクティブを定義する．
 
 htaccessファイルで実装可能なディレクティブを全て有効化する．
 
+**【実装例】**
+
 ```apacheconf
 AllowOverride All
 ```
@@ -134,6 +183,8 @@ AllowOverride All
 #### ・None
 
 全て無効化する．
+
+**【実装例】**
 
 ```apacheconf
 AllowOverride None
@@ -143,19 +194,23 @@ AllowOverride None
 
 htaccessファイルでDirectoryIndexを有効化する．
 
+**【実装例】**
+
 ```apacheconf
 AllowOverride Indexes
 ```
 
 
 
-## 03-02. mod_writeにおける設定ディレクティブ
+## 03-03. mod_writeにおける設定ディレクティブ
 
 ### RewriteCond
 
 #### ・RewriteCondとは
 
 条件分岐と，それによる処理を定義する．
+
+**【実装例】**
 
 ```apacheconf
 RewriteCond %変数名 条件
@@ -188,7 +243,7 @@ RewriteRule ^(.*)?$ https://%{HTTP_HOST}$1 [R=301,L]
 
 
 
-## 03-03. mod_setenvifにおける設定ディレクティブ
+## 03-04. mod_setenvifにおける設定ディレクティブ
 
 ### SetEnvIf
 
@@ -207,7 +262,7 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 
 
 
-## 03-04. mod_log_configにおける設定ディレクティブ
+## 03-05. mod_log_configにおける設定ディレクティブ
 
 ### LogFormat
 
@@ -218,6 +273,8 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 #### ・アクセスログ形式と出力内容
 
 アクセスログの出力先ログファイルとフォーマットを合わせて定義する．
+
+**【実装例】**
 
 ```apacheconf
 # common形式
@@ -265,6 +322,8 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 
 エラーログの出力先を定義する．
 
+**【実装例】**
+
 ```apacheconf
 ErrorLog /var/log/httpd/error_log
 ```
@@ -290,13 +349,15 @@ ErrorLog /var/log/httpd/error_log
 
 
 
-## 03-05. mod_sslにおける設定ディレクティブ 
+## 03-06. mod_sslにおける設定ディレクティブ 
 
 ### SSLCertificateFile
 
 #### ・SSLCertificateFileとは
 
-PKIにおける公開鍵の検証に必要なSSLサーバ証明書のディレクトリを定義する．
+PKIにおける公開鍵の検証に必要なSSLサーバ証明書のディレクトリを定義する．本番環境ではAWSのACM証明書を用いることが多いため，基本的な用途としては，ローカル開発でのオレオレ証明書読み込みのために用いる．
+
+**【実装例】**
 
 ```apacheconf
 SSLCertificateFile /etc/httpd/conf.d/server.crt
@@ -307,6 +368,8 @@ SSLCertificateFile /etc/httpd/conf.d/server.crt
 #### ・SSLCertificateKeyFileとは
 
 PKIにおける公開鍵の検証に必要な秘密鍵のディレクトリを定義する．
+
+**【実装例】**
 
 ```apacheconf
 SSLCertificateKeyFile /etc/httpd/conf.d/server.key
