@@ -7,7 +7,8 @@ variable "app_name" {}
 // ALB
 variable "alb_target_group_blue_name" {}
 variable "alb_target_group_green_name" {}
-variable "alb_listener_blue_green_arn" {}
+variable "alb_listener_blue_arn" {}
+variable "alb_listener_green_arn" {}
 
 // ECS
 variable "ecs_cluster_name" {}
@@ -68,7 +69,12 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
       
       // 本稼働リスナーARN
       prod_traffic_route {
-        listener_arns = [var.alb_listener_blue_green_arn]
+        listener_arns = [var.alb_listener_blue_arn]
+      }
+      
+      // テストリスナーARN
+      test_traffic_route {
+        listener_arns = [var.alb_listener_green_arn]
       }
       
       // ターゲットグループ１（Blue）
