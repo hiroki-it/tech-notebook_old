@@ -1,4 +1,4 @@
-# 継続的な ビルド／テスト／デプロイ 
+# CircleCI，Capistrano
 
 ## 01. CI/CDの流れ
 
@@ -10,27 +10,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 
 
-## 02. CIツールによるビルドフェイズとテストフェイズの自動実行
-
-### CircleCI
-
-#### ・PHPUnitの自動実行
-
-1. テストクラスを実装したうえで，新機能を設計実装する．
-
-2. リポジトリへPushすると，CIツールがGituHubからブランチの状態を取得する．
-
-3. CIツールによって，DockerHubから取得したDockerfileのビルド，PHPUnitなどが自動実行される．
-
-4. 結果を通知することも可能．
-
-![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/継続的インテグレーション.png)
-
-#### ・PHPStanの自動実行
-
-
-
-## 03. CircleCI
+## 02. CircleCI
 
 ### 設定ファイルの参考ドキュメント
 
@@ -58,6 +38,28 @@ $ circleci config validate
 ```bash
 $ circleci build .circleci/config.yml
 ```
+
+
+
+### PHPUnitの自動実行
+
+#### ・仕組み
+
+1. テストクラスを実装したうえで，新機能を設計実装する．
+
+2. リポジトリへPushすると，CIツールがGituHubからブランチの状態を取得する．
+
+3. CIツールによって，DockerHubから取得したDockerfileのビルド，PHPUnitなどが自動実行される．
+
+4. 結果を通知することも可能．
+
+![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/継続的インテグレーション.png)
+
+### PHPStanの自動実行
+
+#### ・仕組み
+
+
 
 
 
@@ -180,7 +182,7 @@ jobs:
         enum: ["staging", "production"]
     steps:
       - run:
-        name: Deploy to << parameters.env >>
+        name: Deploy to << parameters.environment >>
 ```
 
 
@@ -360,6 +362,8 @@ workflows:
 ### commandとは
 
 設定を部品化し，異なる```Job```で繰り返し利用できる．
+
+#### ・再利用と引数渡し
 
 **【実装例】**
 
@@ -605,23 +609,14 @@ workflows:
 
 
 
-## 04. CDツールによるデプロイフェイズの自動実行
+## 04. Capistrano
 
-### Capistrano
+### デプロイ処理の自動実行
 
-#### ・クラウドデプロイサーバにおけるデプロイ
+#### ・仕組み
 
 1. 自身のパソコンからクラウドデプロイサーバにリモート接続する．
 2. クラウドデプロイサーバの自動デプロイツール（例：Capistrano）が，クラウドデプロイサーバからクラウドWebサーバにリモート接続する．
 3. 自動デプロイツールが，クラウドWebサーバのGitを操作し，```pull```あるいは```clone```を実行する．その結果，GitHubからクラウドデプロイサーバに指定のブランチの状態が取り込まれる．
 
 ![デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デプロイ.png)
-
-
-
-### AWS CodeDeploy
-
-#### ・デプロイ
-
-![CodeDeployを用いた自動デプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CodeDeployを用いた自動デプロイ.png)
-
