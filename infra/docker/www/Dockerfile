@@ -6,7 +6,6 @@ LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 RUN dnf upgrade -y \
   # nginxインストール
   && dnf install -y \
-      epel-release \
       nginx \
       langpacks-ja \
       vim
