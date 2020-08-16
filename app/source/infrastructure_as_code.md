@@ -2,28 +2,15 @@
 
 ## 01. 仮想サーバ(仮想マシン)のコード化
 
-### 仮想サーバの構築
-
-#### ・コード化ツールの種類
-
-詳しくは，仮想サーバ(仮想マシン)とコンテナの構築，のノートを参照．
-
-| Provider名                |      | 特徴               |
-| ------------------------- | ---- | ------------------ |
-| Oracle VM VirtualBox      |      | ホスト型           |
-| VMware vSphere Hypervisor |      | ハイパーバイザー型 |
-
-
-
 ### 仮想サーバの構成管理
 
 #### ・コード化ツールの種類
 
 | ツール名 | 対象のProvider |
 | -------- | -------------- |
-| Ansible  |                |
-| Puppet   |                |
-| Chef     |                |
+| Ansible  | 要勉強         |
+| Puppet   | 要勉強         |
+| Chef     | 要勉強         |
 
 #### ・Ansible
 
@@ -40,27 +27,14 @@ Ansibleでは，ymlの文法を用いて関数処理を実行できる．
 
 ## 02. コンテナのコード化
 
-### コンテナの構築
-
-#### ・コード化ツールの種類
-
-詳しくは，仮想サーバ(仮想マシン)とコンテナの構築，のノートを参照．
-| Provider名 |
-| ---------- |
-| Docker     |
-| LXC        |
-| OpenVZ     |
-
-
-
 ### コンテナの構成管理
 
 #### ・コード化ツールの種類
 
-| 名前              |
-| ----------------- |
-| Dockerfile        |
-| Ansible Container |
+| 名前              | 対象のProvider |
+| ----------------- | -------------- |
+| Dockerfile        | Docker         |
+| Ansible Container | 要勉強         |
 
 
 
@@ -76,5 +50,3 @@ Ansibleでは，ymlの文法を用いて関数処理を実行できる．
 | Terraform              | いろいろ       |
 | AWS CloudFormation     | AWS            |
 | Azure Resource Manager | Azure          |
-
-### Terraform
