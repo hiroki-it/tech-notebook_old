@@ -93,6 +93,11 @@ resource "aws_lb_listener" "lb_listener_blue" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group_blue.arn
   }
+  
+  // Blue/Greenデプロイメントによるターゲットグループの動的差分を無視
+  lifecycle {
+    ignore_changes = [default_action]
+  }
 }
 
 // Green環境
