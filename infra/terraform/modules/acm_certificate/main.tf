@@ -1,24 +1,13 @@
-#=============
-# Input Value
-#=============
-// App Info
-variable "app_name" {}
-variable "app_domain_name" {}
-variable "app_sub_domain_name" {}
-
-// Route53
-variable "route53_zone_id" {}
-
 #============
 # 証明書発行
 #============
 resource "aws_acm_certificate" "acm_certificate" {
-  domain_name               = var.app_domain_name          // ネイキッドドメイン
-  subject_alternative_names = ["*.${var.app_domain_name}"] // サブドメイン群
+  domain_name               = var.domain_name          // ネイキッドドメイン
+  subject_alternative_names = ["*.${var.domain_name}"] // サブドメイン群
   validation_method         = "DNS"
 
   tags = {
-    Name = var.app_domain_name
+    Name = var.domain_name
   }
 
   // 証明書の再生成のタイミング

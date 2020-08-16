@@ -1,28 +1,3 @@
-#=============
-# Input Value
-#=============
-// App Info
-variable "app_name" {}
-
-// VPC
-variable "vpc_id" {}
-
-// Subnet
-variable "subnet_public_1a_id" {}
-variable "subnet_public_1c_id" {}
-
-// Security Group
-variable "security_group_alb_id" {}
-
-// Port
-variable "port_http" {}
-variable "port_https_main" {}
-variable "port_https_sub" {}
-
-// certificate
-variable "acm_certificate_arn" {}
-variable "ssl_policy" {}
-
 #======
 # ALB
 #======
@@ -88,8 +63,8 @@ resource "aws_lb_target_group" "alb_target_group_green" {
 // HTTP -> HTTPS リダイレクト 
 resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_lb.alb.arn
-  port = var.port_http
-  protocol = "HTTP"
+  port              = var.port_http
+  protocol          = "HTTP"
 
   // アクション
   default_action {
@@ -97,18 +72,18 @@ resource "aws_lb_listener" "lb_listener" {
 
     // リダイレクト先
     redirect {
-      port = var.port_https_main
-      protocol = "HTTPS"
+      port        = var.port_https
+      protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
   }
-  
+
 }
 
 // Blue環境
 resource "aws_lb_listener" "lb_listener_blue" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_https_main // ALBの受信時の解放ポート
+  port              = var.port_https // ALBの受信時の解放ポート
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = var.acm_certificate_arn
@@ -123,7 +98,7 @@ resource "aws_lb_listener" "lb_listener_blue" {
 // Green環境
 resource "aws_lb_listener" "lb_listener_green" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_https_sub // ALBの受信時の解放ポート
+  port              = var.port_custom_tcp_https // ALBの受信時の解放ポート
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = var.acm_certificate_arn

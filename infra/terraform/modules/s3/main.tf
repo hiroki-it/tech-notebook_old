@@ -1,9 +1,3 @@
-#=============
-# Input Value
-#=============
-// App Info
-variable "app_name" {}
-
 #=====
 # S3
 #=====

@@ -1,61 +1,10 @@
 #=============
-# Input Value
-#=============
-// AWS認証情報
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
-variable "region" {}
-
-// App Info
-variable "app_name" {}
-variable "app_domain_name" {}
-variable "app_sub_domain_name" {}
-
-// VPC
-variable "vpc_cidr_block" {}
-
-// Internet Gateway
-variable "igw_cidr_block" {}
-
-// Network ACL
-variable "nacl_inbound_cidr_block" {}
-variable "nacl_outbound_cidr_block" {}
-
-// Subnet
-variable "subnet_public_1a_cidr_block" {}
-variable "subnet_public_1c_cidr_block" {}
-
-// Security Group
-variable "security_group_alb_inbound_cidr_block_http" {}
-variable "security_group_alb_inbound_cidr_block_https" {}
-variable "security_group_ecs_inbound_cidr_block_http" {}
-variable "security_group_ecs_inbound_cidr_block_ssh" {}
-variable "security_group_outbound_cidr_block" {}
-
-// ECS
-variable "ecs_task_size_cpu" {}
-variable "ecs_task_size_memory" {}
-
-// Port
-variable "port_http" {}
-variable "port_https_main" {}
-variable "port_https_sub" {}
-variable "port_ssh" {}
-
-// Key Pair
-variable "key_name" {}
-variable "public_key_path" {}
-
-// certificate
-variable "ssl_policy" {}
-
-#=============
 # AWS認証情報
 #=============
 provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region     = var.region
+  access_key = var.credential.aws_access_key
+  secret_key = var.credential.aws_secret_key
+  region     = var.credential.region
   version    = "~> 2.7" // プロバイダーのバージョンの変更時は，initを実行
 }
 
@@ -75,14 +24,15 @@ module "vpc_module" {
   // モジュールのResourceを参照
   source = "../modules/vpc"
 
-  region                      = var.region
-  vpc_cidr_block              = var.vpc_cidr_block
-  igw_cidr_block              = var.igw_cidr_block
-  nacl_inbound_cidr_block     = var.nacl_inbound_cidr_block
-  nacl_outbound_cidr_block    = var.nacl_outbound_cidr_block
-  subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
-  subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
   app_name                    = var.app_name
+  credential_region           = var.credential.region
+  igw_cidr_block              = var.igw_cidr_block
+  nacl_inbound_cidr_block     = var.nacl.inbound_cidr_block
+  nacl_outbound_cidr_block    = var.nacl.outbound_cidr_block
+  subnet_public_1a_cidr_block = var.subnet.public_1a_cidr_block
+  subnet_public_1c_cidr_block = var.subnet.public_1c_cidr_block
+  vpc_cidr_block              = var.vpc_cidr_block
+
 }
 
 #=================
@@ -94,17 +44,18 @@ module "security_group_module" {
   source = "../modules/security_group"
 
   // 他のモジュールの出力値を渡す
-  vpc_id                                      = module.vpc_module.vpc_id
-  security_group_alb_inbound_cidr_block_http  = var.security_group_alb_inbound_cidr_block_http
-  security_group_alb_inbound_cidr_block_https = var.security_group_alb_inbound_cidr_block_https
-  security_group_ecs_inbound_cidr_block_http  = var.security_group_ecs_inbound_cidr_block_http
-  security_group_ecs_inbound_cidr_block_ssh   = var.security_group_ecs_inbound_cidr_block_ssh
-  security_group_outbound_cidr_block          = var.security_group_outbound_cidr_block
+  vpc_id = module.vpc_module.vpc_id
+
   app_name                                    = var.app_name
-  port_http                                   = var.port_http
-  port_https_main                             = var.port_https_main
-  port_https_sub                              = var.port_https_sub
-  port_ssh                                    = var.port_ssh
+  port_http                                   = var.port.http
+  port_https_main                             = var.port.https
+  port_custom_tcp_https                       = var.port.custom_tcp_https
+  port_ssh                                    = var.port.ssh
+  security_group_alb_inbound_cidr_block_http  = var.security_group.alb_inbound_cidr_block_http
+  security_group_alb_inbound_cidr_block_https = var.security_group.alb_inbound_cidr_block_https
+  security_group_ecs_inbound_cidr_block_http  = var.security_group.ecs_inbound_cidr_block_http
+  security_group_ecs_inbound_cidr_block_ssh   = var.security_group.ecs_inbound_cidr_block_ssh
+  security_group_outbound_cidr_block          = var.security_group.outbound_cidr_block
 }
 
 #======
@@ -116,17 +67,18 @@ module "alb_module" {
   source = "../modules/alb"
 
   // 他のモジュールの出力値を渡す
-  vpc_id                = module.vpc_module.vpc_id
+  acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
   subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
   security_group_alb_id = module.security_group_module.security_group_alb_id
-  acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
+  vpc_id                = module.vpc_module.vpc_id
 
-  app_name        = var.app_name
-  port_http       = var.port_http
-  port_https_main = var.port_https_main
-  port_https_sub  = var.port_https_sub
-  ssl_policy      = var.ssl_policy
+
+  app_name              = var.app_name
+  port_http             = var.port.http
+  port_https            = var.port.https
+  port_custom_tcp_https = var.port.custom_tcp_https
+  ssl_policy            = var.ssl_policy
 }
 
 #==========
@@ -142,9 +94,10 @@ module "route53_module" {
   alb_dns_name = module.alb_module.alb_dns_name
   vpc_id       = module.vpc_module.vpc_id
 
-  app_domain_name     = var.app_domain_name
-  app_sub_domain_name = var.app_sub_domain_name
-  region              = var.region
+  credential_region = var.credential.region
+  domain_name       = var.domain.name
+  domain_sub_name   = var.domain.sub_name
+
 }
 
 #======
@@ -167,16 +120,16 @@ module "ecs_module" {
   source = "../modules/ecs"
 
   // 他のモジュールの出力値を渡す
-  ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
   alb_target_group_green_arn  = module.alb_module.alb_target_group_green_arn
+  ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
   security_group_ecs_id       = module.security_group_module.security_group_ecs_id
 
   app_name             = var.app_name
-  ecs_task_size_cpu    = var.ecs_task_size_cpu
-  ecs_task_size_memory = var.ecs_task_size_memory
-  port_http            = var.port_http
+  ecs_task_size_cpu    = var.ecs.task_size_cpu
+  ecs_task_size_memory = var.ecs.task_size_memory
+  port_http            = var.port.http
 }
 
 #=============
@@ -224,15 +177,15 @@ module "acm_certificate_module" {
   // 他のモジュールの出力値を渡す
   route53_zone_id = module.route53_module.route53_zone_id
 
-  app_name            = var.app_name
-  app_domain_name     = var.app_domain_name
-  app_sub_domain_name = var.app_sub_domain_name
+  app_name        = var.app_name
+  domain_name     = var.domain.name
+  sub_domain_name = var.domain.sub_name
 }
 
 #=============
 # Public Key
 #=============
 resource "aws_key_pair" "key_pair" {
-  key_name   = var.key_name
-  public_key = file(var.public_key_path)
+  key_name   = var.public_key.name
+  public_key = file(var.public_key.path)
 }
