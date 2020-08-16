@@ -54,12 +54,6 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ブラウザ
-
-   frontend_browser_rendering.md
-
-.. toctree::
-   :maxdepth: 1
    :caption: JS｜オブジェクト指向
 
    object_oriented_based_prototype.md
@@ -78,10 +72,16 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: PHP／JS｜デバッグ
+   :caption: PHP / JS｜デバッグ
 
    debug_backend.md
    debug_frontend.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: JS / HTML｜ブラウザレンダリング
+
+   frontend_browser_rendering.md
 
 .. toctree::
    :maxdepth: 1
@@ -92,13 +92,13 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ネットワークの構造
+   :caption: ネットワーク｜構造
 
    infrastructure_network_internet.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: ネットワークセキュリティ
+   :caption: ネットワーク｜セキュリティ
 
    infrastructure_network_malware_and_cyber_attacks.md
    infrastructure_network_encryption_technology.md
@@ -113,7 +113,7 @@ Hiroki tech-notebook ドキュメントサイト
    :maxdepth: 1
    :caption: ソフトウェア｜機械語と進数
 
-   infrastructure_software_language_and_radix.md
+   infrastructure_software_machine_language_and_radix.md
 
 .. toctree::
    :maxdepth: 1
@@ -138,9 +138,14 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: インフラストラクチャ｜Terraform
+   :caption: IaC｜種類
 
    infrastructure_as_code.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: IaC｜Terraform
+
    infrastructure_terraform.md
 
 .. toctree::
