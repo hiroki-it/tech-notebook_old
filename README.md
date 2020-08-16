@@ -4,14 +4,14 @@
 
 ![tech-notebook_aws_design](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/tech-notebook_aws_design.png)
 
-## サイトの目的
+## サイト（PC版のみ）の目的
 
 普通のエンジニアである長谷川広樹が，以下の目的のために使用しています．
 
 - インプットしたことを自分の言葉で書き，アウトプットを行う．
 - 誤った知識をその都度修正し，また体系的に整理する．
 - インプットした内容を思い出すために閲覧する．
-- AWS，IaCツール，CI/CDツール，について学ぶ．
+- AWS，Docker，IaCツール，CI/CDツール，Nginx，について学ぶ．
 
 そのため，誤った情報，誤った体系化，わかりにくい日本語，が多く散見されると思います．
 
