@@ -1,5 +1,9 @@
 # このサイトについて
 
+## クラウドインフラ構成図
+
+![tech-notebook_aws_design](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/tech-notebook_aws_design.png)
+
 ## サイトの目的
 
 普通のエンジニアである長谷川広樹が，以下の目的のために使用しています．
