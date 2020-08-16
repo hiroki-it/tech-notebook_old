@@ -13,7 +13,31 @@ commands:
           name: Setup git config
           command: |
             git config --global core.quotepath false
-  
+            
+  # 各イメージをDockerHubにプッシュ
+  push-images:
+    parameters:
+      container-name:
+        type: string
+    steps:
+      # ソースコードの配置先を，/root/project(=tech-notebook) に設定
+      - setup-git-config
+      # ソースコードをコピー
+      - checkout
+      - run:
+          name: Build << parameters.container-name >>
+          command: |
+            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
+      - run:
+          name: Login to docker hub
+          command: |
+            echo ${DOCKER_PASS} |
+            docker login -u ${DOCKER_USER} --password-stdin
+      - run:
+          name: Push << parameters.container-name >>
+          command: |
+            docker push ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >>:${DOCKER_VERSION}
+      
   # ソースコードをワークスペースに保存
   persist-deploy-source:
     steps:
@@ -29,54 +53,24 @@ commands:
 
 # ジョブの設定
 jobs:
-  push-builder-images:
+  push-images-builder:
     # ホスト側環境の設定
     machine: true
-    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
-      - setup-git-config
-      # ソースコードをコピー
-      - checkout
-      - run:
-          name: Build builder
-          command: |
-            docker build -f ./infra/docker/builder/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER} .
-      - run:
-          name: Login to docker hub
-          command: |
-            echo ${DOCKER_PASS} |
-            docker login -u ${DOCKER_USER} --password-stdin
-      - run:
-          name: Push builder
-          command: |
-            docker push ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${DOCKER_VERSION}
-  
-  push-www-images:
+      - push-images:
+          container-name: "builder"
+          
+  push-images-www:
     # ホスト側環境の設定
     machine: true
-    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
-      - setup-git-config
-      # ソースコードをコピー
-      - checkout
-      - run:
-          name: Build www
-          command: |
-            docker build -f ./infra/docker/www/Dockerfile -t ${DOCKER_USER}/${REPOSITORY_NAME_WWW} .
-      - run:
-          name: Login to docker hub
-          command: |
-            echo ${DOCKER_PASS} |
-            docker login -u ${DOCKER_USER} --password-stdin
-      - run:
-          name: Push www
-          command: |
-            docker push ${DOCKER_USER}/${REPOSITORY_NAME_WWW}:${DOCKER_VERSION}
-
+      - push-images:
+          container-name: "www"
+        
   make-deploy-source:
     # ホスト側環境の設定
     docker:
-      - image: ${DOCKER_USER}/${REPOSITORY_NAME_BUILDER}:${DOCKER_VERSION}
+      - image: ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
     # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
       - setup-git-config
@@ -96,14 +90,14 @@ workflows:
   build-push:
     jobs:
       # Deploy Image To Docker Hub
-      - push-builder-images:
+      - push-images-builder:
           filters:
             branches:
               only:
                 # NOTE: masterブランチのみ起動
                 - master
       # Deploy Image To Docker Hub
-      - push-www-images:
+      - push-images-www:
           filters:
             branches:
               only:
@@ -112,8 +106,8 @@ workflows:
       # Make Deploy Source
       - make-deploy-source:
           requires:
-            - push-builder-images
-            - push-www-images
+            - push-images-builder
+            - push-images-www
           post-steps:
             - persist-deploy-source
       # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
@@ -123,7 +117,7 @@ workflows:
           name: build-and-push-image-www
           dockerfile: ./infra/docker/www/production.Dockerfile
           path: '.'
-          repo: ${REPOSITORY_NAME_WWW}
+          repo: ${APP_NAME}-www
           create-repo: true
           tag: ${CIRCLE_SHA1}
           attach-workspace: true
