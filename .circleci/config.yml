@@ -100,15 +100,15 @@ workflows:
           filters:
             branches:
               only:
-                # NOTE: デプロイする場合は指定のブランチを作成
-                - feature/update_infrastructure
+                # NOTE: masterブランチのみ起動
+                - master
       # Deploy Image To Docker Hub
       - push-www-images:
           filters:
             branches:
               only:
-                # NOTE: デプロイする場合は指定のブランチを作成
-                - feature/update_infrastructure
+                # NOTE: masterブランチのみ起動
+                - master
       # Make Deploy Source
       - make-deploy-source:
           requires:
