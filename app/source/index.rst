@@ -111,12 +111,6 @@ Hiroki tech-notebook ドキュメントサイト
 
 .. toctree::
    :maxdepth: 1
-   :caption: ソフトウェア｜機械語と進数
-
-   infrastructure_software_machine_language_and_radix.md
-
-.. toctree::
-   :maxdepth: 1
    :caption: ソフトウェア｜ミドルウェア
 
    infrastructure_software_middleware_nginx.md
@@ -127,6 +121,12 @@ Hiroki tech-notebook ドキュメントサイト
    :caption: ソフトウェア｜CentOSの構成
 
    infrastructure_software_centos.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ソフトウェア｜機械語と進数
+
+   infrastructure_software_machine_language_and_radix.md
 
 .. toctree::
    :maxdepth: 1
