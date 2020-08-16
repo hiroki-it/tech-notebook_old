@@ -1,29 +1,14 @@
-#=============
-# Input Value
-#=============
-// App Info
-variable "app_domain_name" {}
-variable "app_sub_domain_name" {}
-variable "region" {}
-
-// VPC
-variable "vpc_id" {}
-
-// ALB
-variable "alb_zone_id" {}
-variable "alb_dns_name" {}
-
 #==========
 # Route53
 #==========
 // ホストゾーンの取得
 data "aws_route53_zone" "route53_zone" {
-  name = var.app_domain_name
+  name = var.domain_name
 }
 // レコードセット
 resource "aws_route53_record" "route53_record" {
   zone_id = data.aws_route53_zone.route53_zone.id
-  name    = "${var.app_sub_domain_name}.${data.aws_route53_zone.route53_zone.name}" // サブドメインを含むFQDN
+  name    = "${var.domain_sub_name}.${data.aws_route53_zone.route53_zone.name}" // サブドメインを含むFQDN
   type    = "A"
 
   // エイリアス
@@ -36,7 +21,7 @@ resource "aws_route53_record" "route53_record" {
 
 // ヘルスチェック
 resource "aws_route53_health_check" "route53_health_check" {
-  fqdn              = "${var.app_sub_domain_name}.${data.aws_route53_zone.route53_zone.name}"
+  fqdn              = "${var.domain_sub_name}.${data.aws_route53_zone.route53_zone.name}"
   resource_path     = "/"
   failure_threshold = 3
   request_interval  = 10
@@ -44,6 +29,6 @@ resource "aws_route53_health_check" "route53_health_check" {
   port              = 443
 
   tags = {
-    Name = "${var.app_sub_domain_name}-route53-health-check"
+    Name = "${var.domain_sub_name}-route53-health-check"
   }
 }

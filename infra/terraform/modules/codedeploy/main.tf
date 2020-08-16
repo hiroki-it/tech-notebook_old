@@ -1,22 +1,3 @@
-#=============
-# Input Value
-#=============
-// App Info
-variable "app_name" {}
-
-// ALB
-variable "alb_target_group_blue_name" {}
-variable "alb_target_group_green_name" {}
-variable "alb_listener_blue_arn" {}
-variable "alb_listener_green_arn" {}
-
-// ECS
-variable "ecs_cluster_name" {}
-variable "ecs_service_name" {}
-
-// CodeDeploy
-variable "codedeployment_role_for_ecs_arn" {}
-
 #=================
 # CodeDeploy App
 #=================
@@ -66,22 +47,22 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
   // Load Balancer（Additional configure in ECS）
   load_balancer_info {
     target_group_pair_info {
-      
+
       // 本稼働リスナーARN
       prod_traffic_route {
         listener_arns = [var.alb_listener_blue_arn]
       }
-      
+
       // テストリスナーARN（新本稼働リスナーARN）
       test_traffic_route {
         listener_arns = [var.alb_listener_green_arn]
       }
-      
+
       // ターゲットグループ１（Blue）
       target_group {
         name = var.alb_target_group_blue_name
       }
-      
+
       // ターゲットグループ２（Green）
       target_group {
         name = var.alb_target_group_green_name
