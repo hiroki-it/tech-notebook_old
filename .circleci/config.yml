@@ -75,6 +75,11 @@ jobs:
       # ソースコードを，/root/project(=tech-notebook) に配置
       - checkout
       - run:
+          # READMEをサイト紹介ページとして利用
+          name: Copy README.md
+          command: |
+            cp README.md ./app/about_this_site.md
+      - run:
           # 本番環境にデプロイされるappディレクトリに移動
           # デプロイ用のHtmlを生成
           name: Make html
