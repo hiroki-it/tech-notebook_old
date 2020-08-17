@@ -20,9 +20,8 @@ commands:
       container-name:
         type: string
     steps:
-      # ソースコードの配置先を，/root/project(=tech-notebook) に設定
       - setup-git-config
-      # ソースコードをコピー
+      # ソースコードを，/root/project(=tech-notebook) に配置# ソースコードを，/root/project(=tech-notebook) に配置
       - checkout
       - run:
           name: Build << parameters.container-name >>
@@ -71,10 +70,9 @@ jobs:
     # ホスト側環境の設定
     docker:
       - image: ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
-    # ソースコードの配置先を，/root/project(=tech-notebook) に設定
     steps:
       - setup-git-config
-      # ソースコードをコピー
+      # ソースコードを，/root/project(=tech-notebook) に配置
       - checkout
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
