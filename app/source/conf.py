@@ -95,6 +95,15 @@ html_show_sourcelink = False
 # 検索言語の設定
 html_search_language = 'ja'
 
+# 最新更新日のフォーマット
+html_last_updated_fmt = '%Y-%m-%d'
+
+# 著作権の表示/非表示
+html_show_copyright = False
+
+# Sphinxで生成したという文言の表示/非表示
+html_show_sphinx = False
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
