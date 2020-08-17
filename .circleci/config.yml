@@ -78,7 +78,7 @@ jobs:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
           command: |
-            cp README.md ./app/about_this_site.md
+            cp README.md ./app/source/about_this_site.md
       - run:
           # 本番環境にデプロイされるappディレクトリに移動
           # デプロイ用のHtmlを生成
