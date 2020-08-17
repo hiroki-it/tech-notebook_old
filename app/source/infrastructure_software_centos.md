@@ -18,7 +18,7 @@
 
 | シェル系 | ファイルシステム系 | プロセス管理系 | ジョブスケジュール系 | ネットワーク系 | テキスト処理系 |
 | :------- | ------------------ | -------------- | -------------------- | -------------- | -------------- |
-| echo     | cd                 | batch          | cron                 | nslookup       | tail           |
+| echo     | mkdir              | batch          | cron                 | nslookup       | tail           |
 | sleep    | ls                 | ps             | -                    | curl           | vim            |
 | -        | cp                 | kill           | -                    | netstat        | grep           |
 | -        | find               | systemctl      | -                    | route          | -              |
@@ -28,6 +28,7 @@
 | -        | pwd                | -              | -                    | -              | -              |
 | -        | chown              | -              | -                    | -              | -              |
 | -        | cat                | -              | -                    | -              | -              |
+| -        | ln                 |                |                      |                |                |
 
 #### ・Windowsの場合
 
@@ -50,7 +51,7 @@ Windowsは，GUIでユーティリティを使用する．よく使うものを�
 
 ```bash
 # find ---> grep
-$ find /* -type f |xargs grep "example"
+$ find /* -type f |xargs grep "{検索文字}"
 ```
 
 その反対で，フィルタリングしたものに対して，```kill```コマンドを行うような使い方もある．
@@ -62,9 +63,22 @@ $ sudo pgrep -f {コマンド名} | sudo xargs kill -9
 
 
 
-### ファイルシステム系｜ls
+## 02-02. ファイルシステム系
 
-#### ・lsの使い方
+### mkdir
+
+#### ・よく使うオプション集
+
+```bash
+# 複数階層のディレクトリを作成
+$ mkdir -p /{ディレクトリ名1}/{ディレクトリ名2}
+```
+
+
+
+### ls
+
+#### ・よく使うオプション集
 
 ```bash
 # 隠しファイルや隠しディレクトリも含めて，全ての詳細を表示．
@@ -73,32 +87,45 @@ $ ls -l -a
 
 
 
-### ファイルシステム系｜find
+### cp
 
-#### ・findの使い方
+#### ・よく使うオプション集
+
+```bash
+# ディレクトリの属性情報も含めて，ディレクトリ構造とファイルを再帰的にコピー．
+$ cp -Rp /{ディレクトリ名1}/{ディレクトリ名2} /{ディレクトリ名1}/{ディレクトリ名2}
+```
+
+
+
+
+
+### find
+
+#### ・よく使うオプション集
 
 ファイルを検索するためのユーティリティ．アスタリスクを付けなくとも，自動的にワイルドカードが働く．
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもつファイルを全て検索．
-$ find /* -type f |xargs grep "example"
+$ find /* -type f |xargs grep "{検索文字}"
 ```
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
-$ find /* -name "*.conf" -type f | xargs grep "example"
+$ find /* -name "*.conf" -type f | xargs grep "{検索文字}"
 ```
 
 ```bash
 # パーミッションエラーなどのログを破棄して検索．
-$ find /* -type f |xargs grep "example" 2> /dev/null
+$ find /* -type f |xargs grep "{検索文字}" 2> /dev/null
 ```
 
 
 
-### ファイルシステム系｜chmod：change mode
+### chmod：change mode
 
-#### ・chmodの使い方
+#### ・よく使うオプション集
 
 ファイルの権限を変更するためのユーティリティ．よく使用されるパーミッションのパターンは次の通り．
 
@@ -127,7 +154,7 @@ $ chmod 666 example.conf
 | 666  | rw-    | rw-      | rw-    | 全てにExecut権限なし |
 | 777  | rwx    | rwx      | rwx    | 全てに全権限あり     |
 
-#### ・その他
+#### ・その他でよく使う数値
 
 | 数字 | 所有者 | グループ | その他 | 特徴                               |
 | :--: | :----- | :------- | :----- | ---------------------------------- |
@@ -135,15 +162,47 @@ $ chmod 666 example.conf
 | 755  | rwx    | r-x      | r-x    | 所有者以外にWrite権限なし          |
 
 
-### プロセス系｜ps： process status
 
-#### ・psの使い方
+### ln，unlink
+
+#### ・よく使うオプション集
+
+```bash
+# カレントディレクトリに，シンボリックリンクを作成．
+$ ln -s {リンク先のファイル／ディレクトリまでのパス} {シンボリックリンク名} 
+```
+
+```bash
+# カレントディレクトリのシンボリックリンクを削除．
+$ unlink {シンボリックリンク名}
+```
+
+
+
+### rm
+
+#### ・よく使うオプション集
+
+```bash
+# ディレクトリ自体と中のファイルを再帰的に削除．
+$ rm -R {ディレクトリ名} 
+```
+
+
+
+
+
+## 02-03. プロセス系
+
+### ps： process status
+
+#### ・よく使うオプション集
 
 稼働しているプロセスの詳細情報を表示するためのユーティリティa．
 
 ```bash
 # 稼働しているプロセスのうち，詳細情報に「xxx」を含むものを表示する．
-$ ps aux | grep xxx
+$ ps aux | grep "{検索文字}"
 ```
 
 指定したコマンドによるプロセスを全て削除する．
@@ -154,9 +213,9 @@ $ sudo pgrep -f {コマンド名} | sudo xargs kill -9
 
 
 
-### プロセス系｜systemctl：system control（旧service）
+### systemctl：system control（旧service）
 
-#### ・systemctlの使い方
+#### ・よく使うオプション集
 
 デーモンを起動するsystemdを制御するためのユーティリティ．
 
@@ -189,9 +248,11 @@ $ systemctl disable crond.service
 
 
 
-### ジョブスケジュール系｜cron
+## 02-04. ジョブスケジュール系
 
-#### ・cronの使い方
+### cron
+
+#### ・よく使うオプション集
 
 cronデーモンの動作が定義されたcrontabファイルを操作するためのユーティリティ．cron.dファイルは操作できない．
 
@@ -352,9 +413,11 @@ directory=/var/www/tech-notebook
 
 
 
-### テキスト処理系｜vim：Vi Imitaion，Vi Improved  
+## 02-05. テキスト処理系
 
-#### ・vimの使い方
+### vim：Vi Imitaion，Vi Improved  
+
+#### ・よく使うオプション集
 
 ```bash
 # vim上でファイルを開く
@@ -363,7 +426,7 @@ $ vim {ファイル名}
 
 
 
-##  02-02. 管理ユーティリティ
+##  03. 管理ユーティリティ
 
 ### 管理ユーティリティの種類
 
@@ -402,9 +465,11 @@ $ vim {ファイル名}
 
 
 
-### パッケージ管理ユーティリティ｜rpm，yum
+## 03-02. パッケージ管理ユーティリティ
 
-#### ・rpmの使い方
+### rpm
+
+#### ・よく使うオプション集
 
 一度に複数のオプションを組み合わせて記述する．インストール時にパッケージ間の依存関係を解決できないので注意．
 
@@ -432,7 +497,11 @@ $ rpm -ql {パッケージ名}
 $ rpm -qi {パッケージ名}
 ```
 
-#### ・yumの使い方
+
+
+### yum
+
+#### ・よく使うオプション集
 
 rpmと同様の使い方ができる．また，インストール時にパッケージ間の依存関係を解決できる．
 
@@ -453,31 +522,18 @@ $ yum list | grep {検索文字}
 
 CentOS公式リポジトリはパッケージのバージョンが古いことがある．そこで，```--enablerepo```オプションを使用すると，CentOS公式リポジトリではなく，最新バージョンを扱う外部リポジトリ（EPEL，Remi）から，パッケージをインストールできる．外部リポジトリ間で依存関係にあるため，両方のリポジトリをインストールする必要がある．
 
+1. CentOS7系EPELリポジトリをインストール．インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
+
 ```bash
-# CentOS7系EPELリポジトリをインストール
-# インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
 $ yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+```
+2. CentOS7系Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．インストール時の設定ファイルは，```/etc/yu.repos.d/*```に配置される．
 
-# CentOS7系Remiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．
-# インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
+```bash
 $ yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-
-# config-managerのインストール
-# Remiリポジトリの有効化
-$ yum install -y yum-utils
-$ yum-config-manager --enable remi
-
-# いずれかの外部リポジトリから，php，php-mbstring，php-mcryptをインストール
-$ yum install -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
-
-# 再インストールする時は，reinstallとすること
-$ yum reinstall -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
-
-# Remiリポジトリを経由してインストールしたソフトウェアは /opt/remi/* に配置される．
-# /opt/remi/*
 ```
 
-設定ファイルへは，インストール先のリンクなどが自動的に書き込まれる．
+4. 設定ファイルへは，インストール先のリンクなどが自動的に書き込まれる．
 
 ```
 [epel]
@@ -508,9 +564,42 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 gpgcheck=1
 ```
 
+5. config-managerのインストール．Remiリポジトリを有効化する．
+
+```bash
+$ yum install -y yum-utils
+$ yum-config-manager --enable remi
+```
+
+6. いずれかの外部リポジトリから，php，php-mbstring，php-mcryptをインストールする．Remiリポジトリを経由してインストールしたソフトウェアは```/opt/remi/*```に配置される．
+
+```bash
+$ yum install -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
+```
+
+7. 再インストールする時は，reinstallとすること．
+
+```bash
+$ yum reinstall -y --enablerepo=epel,remi,remi-php70 php php-mbstring php-mcrypt
+```
 
 
-## 03.  言語プロセッサ
+
+## 03-03. 言語バージョン管理ユーティリティ
+
+### pyenv
+
+#### ・よく使うオプション集
+
+```bash
+# pythonのインストールディレクトリを確認
+$ pyenv which python
+/.pyenv/versions/3.8.0/bin/python
+```
+
+
+
+## 04.  言語プロセッサ
 
 ### 言語プロセッサの例
 
@@ -528,180 +617,27 @@ gpgcheck=1
 
 
 
-### コンパイラ型言語，インタプリタ型言語，JavaまたはJava仮想マシン型言語
+### 言語の種類
 
 プログラム言語のソースコードは，言語プロセッサによって機械語に変換された後，CPUによって読み込まれる．そして，ソースコードに書かれた様々な処理が実行される．
 
-#### ・コンパイラとコンパイラ型言語
+#### ・コンパイラ型言語
 
-  コンパイラという言語プロセッサによって，コンパイラ方式で翻訳される言語．
+C#など．コンパイラという言語プロセッサによって，コンパイラ方式で翻訳される言語．
 
-#### ・インタプリタとインタプリタ型言語
+#### ・インタプリタ型言語
 
-  インタプリタという言語プロセッサによって，インタプリタ方式で翻訳される言語をインタプリタ型言語という．
+PHP，Ruby，JavaScript，Python，など．インタプリタという言語プロセッサによって，インタプリタ方式で翻訳される言語をインタプリタ型言語という．
 
-#### ・JavaやJava仮想マシン型言語
+#### ・Java仮想マシン型言語
 
-  Java仮想マシンによって，中間言語方式で翻訳される．
+Scala，Groovy，Kotlin，など．Java仮想マシンによって，中間言語方式で翻訳される．
 
 ![コンパイル型とインタプリタ型言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイル型とインタプリタ型言語.jpg)
 
 
 
-### コンパイラによるコンパイラ型言語の機械語翻訳（じ，こ，い，さい，せい，リンク，実行）
-
-#### ・機械語翻訳と実行のタイミング
-
-コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
-
-**【コンパイラ型言語の具体例】**
-
-C#
-
-![コンパイラ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイラ言語.png)
-
-#### ・コンパイラ方式によるコンパイラ型言語のビルド
-
-  コンパイラ（C#）による翻訳では，ソースコードは機械語からなるオブジェクトコードに変換される．コンパイル後に，各オブジェクトコードはリンクされる．この一連のプロセスを『ビルド』という．
-
-![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ビルドとコンパイル.jpg)
-
-#### ・コンパイラ方式の機械語翻訳の流れ
-
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
-
-1. **Lexical analysis（字句解析）**
-
-   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
-
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
-
-2. **Syntax analysis（構文解析）**
-
-   トークンの列をツリー構造に変換．
-
-3. **Semantics analysis（意味解析）**
-
-   ツリー構造を基に，ソースコードに論理的な誤りがないか解析．
-
-4. **Code optimization（コード最適化）**
-
-   ソースコードの冗長な部分を削除または編集．機械語をより短くするこができる．
-
-5. **Code generation（コード生成）**
-
-   最適化されたコードをバイナリ形式のオブジェクトコードに変換．
-
-6. **リンク**
-
-   オブジェクトコードをリンクする．
-
-7. **命令の実行**
-
-   リンクされたオブジェクトコードを基に，命令が実行される．
-
-
-
-### インタプリタによるインタプリタ型言語の機械語翻訳（じ，こ，い，実行）
-
-#### ・機械語翻訳と実行のタイミング
-
-コードを，一行ずつ機械語に変換し，その都度，CPUに対して命令が実行される．
-
-**【インタプリタ型言語の具体例】**
-
-PHP，Ruby，JavaScript，Python
-
-![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インタプリタ言語.png)
-
-コマンドラインでそのまま入力し，機械語翻訳と実行を行うことができる．
-
-```bash
-#===========
-# PHPの場合
-#===========
-
-# PHPなので，処理終わりにセミコロンが必要
-$ php -r '{何らかの処理}'
-
-# Hello Worldを出力
-$ php -r 'echo "Hello World";'
-
-# phpinfoを出力
-$ php -r 'phpinfo();'
-
-# （おまけ）phpinfoの出力をテキストファイルに保存
-$ php -r 'phpinfo();' > phpinfo.txt
-```
-
-```bash
-# php.iniの読み込み状況を出力
-$ php --ini
-```
-
-
-
-#### ・JavaScriptのインタプリタについて
-
-Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．
-
-#### ・インタプリタ方式の機械語翻訳の流れ
-
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
-
-1. **Lexical analysis（字句解析）**
-
-   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
-
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
-
-2. **Syntax analysis（構文解析）**
-
-   トークンの列をツリー構造に変換．ソースコードから構造体を構築することを構文解析といい，htmlを構文解析してDOMツリーを構築する処理とは別物なので注意．
-
-3. **Semantics analysis（意味解析）**
-
-   ツリー構造を基に，ソースコードに論理的な誤りがないか解析．
-
-4. **命令の実行**
-
-   意味解析の結果を基に，命令が実行される．
-
-5. **１から４をコード行ごとに繰り返す**
-
-
-
-### Java仮想マシンによるJavaまたはJava仮想マシン型言語の機械語翻訳
-
-**【JVM型言語の具体例】**
-
-Scala，Groovy，Kotlin
-
-#### ・中間言語方式の機械語翻訳の流れ
-
-1. JavaまたはJVM型言語のソースコードを，Javaバイトコードを含むクラスファイルに変換する．
-2. JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．
-3. 結果的に，OS（制御プログラム？）に依存せずに，命令を実行できる．（C言語）
-
-![Javaによる言語処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_1.png)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
-![Javaによる言語処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_2.png)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
-![Javaによる言語処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_3.png)
-
-#### ・C言語とJavaのOSへの依存度比較
-
-![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CとJavaのOSへの依存度比較.png)
-
-- JVM言語
-
-ソースコード
-
-### プログラムの実行開始のエントリポイント
+### 実行のエントリポイント
 
 #### ・PHPの場合
 
@@ -744,22 +680,167 @@ $kernel->terminate($request, $response);
 ```java
 public class Age
 {
-		public static void main(String[] args)
-		{
-			// 定数を定義．
-			final int age = 20;
-			System.out.println("私の年齢は" + age);
+    public static void main(String[] args)
+    {
+        // 定数を定義．
+        final int age = 20;
+		System.out.println("私の年齢は" + age);
 
-			// 定数は再定義できないので，エラーになる．
-			age = 31;
-			System.out.println("…いや，本当の年齢は" + age);
-		}
+		// 定数は再定義できないので，エラーになる．
+		age = 31;
+		System.out.println("…いや，本当の年齢は" + age);
+	}
 }
 ```
 
 
 
-## 04. 制御プログラム（カーネル）
+## 04-02. コンパイラ型言語の機械語翻訳
+
+### コンパイラ方式
+
+#### ・機械語翻訳と実行のタイミング
+
+コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
+
+![コンパイラ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイラ言語.png)
+
+#### ・ビルド（コンパイル＋リンク）
+
+コンパイルによって，ソースコードは機械語からなるオブジェクトコードに変換される．その後，各オブジェクトコードはリンクされ．exeファイルとなる．この一連のプロセスを『ビルド』という．
+
+![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ビルドとコンパイル.jpg)
+
+#### ・仕組み（じ，こ，い，さい，せい，リンク，実行）
+
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
+
+1. **Lexical analysis（字句解析）**
+
+   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
+
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
+
+2. **Syntax analysis（構文解析）**
+
+   トークンの列をツリー構造に変換．
+
+3. **Semantics analysis（意味解析）**
+
+   ツリー構造を基に，ソースコードに論理的な誤りがないか解析．
+
+4. **Code optimization（コード最適化）**
+
+   ソースコードの冗長な部分を削除または編集．機械語をより短くするこができる．
+
+5. **Code generation（コード生成）**
+
+   最適化されたコードをバイナリ形式のオブジェクトコードに変換．
+
+6. **リンク**
+
+   オブジェクトコードをリンクする．
+
+7. **命令の実行**
+
+   リンクされたオブジェクトコードを基に，命令が実行される．
+   
+   
+
+### インタプリタによるインタプリタ型言語の機械語翻訳（じ，こ，い，実行）
+
+#### ・機械語翻訳と実行のタイミング
+
+コードを，一行ずつ機械語に変換し，その都度，CPUに対して命令が実行される．
+
+![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インタプリタ言語.png)
+
+コマンドラインでそのまま入力し，機械語翻訳と実行を行うことができる．
+
+```bash
+#===========
+# PHPの場合
+#===========
+
+# PHPなので，処理終わりにセミコロンが必要
+$ php -r '{何らかの処理}'
+
+# Hello Worldを出力
+$ php -r 'echo "Hello World";'
+
+# phpinfoを出力
+$ php -r 'phpinfo();'
+
+# （おまけ）phpinfoの出力をテキストファイルに保存
+$ php -r 'phpinfo();' > phpinfo.txt
+```
+
+```bash
+# php.iniの読み込み状況を出力
+$ php --ini
+```
+
+#### ・仕組み（じ，こ，い，実行）
+
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
+
+1. **Lexical analysis（字句解析）**
+
+   ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
+
+   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
+
+2. **Syntax analysis（構文解析）**
+
+   トークンの列をツリー構造に変換．ソースコードから構造体を構築することを構文解析といい，htmlを構文解析してDOMツリーを構築する処理とは別物なので注意．
+
+3. **Semantics analysis（意味解析）**
+
+   ツリー構造を基に，ソースコードに論理的な誤りがないか解析．
+
+4. **命令の実行**
+
+   意味解析の結果を基に，命令が実行される．
+
+5. **１から４をコード行ごとに繰り返す**
+
+#### ・補足：JSの機械語翻訳について
+
+Webサーバを仮想的に構築する時，PHPの言語プロセッサが同時に組み込まれるため，PHPのソースコードの変更はブラウザに反映される．しかし，JavaScriptの言語プロセッサは組み込まれない．そのため，JavaScriptのインタプリタは別に手動で起動する必要がある．
+
+
+
+## 04-04. Java仮想マシン型言語の機械語翻訳
+
+### 中間言語方式
+
+#### ・中間言語方式の機械語翻訳の流れ
+
+1. JavaまたはJVM型言語のソースコードを，Javaバイトコードを含むクラスファイルに変換する．
+2. JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．
+3. 結果的に，OS（制御プログラム？）に依存せずに，命令を実行できる．（C言語）
+
+![Javaによる言語処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_1.png)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
+
+![Javaによる言語処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_2.png)
+
+![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
+
+![Javaによる言語処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_3.png)
+
+#### ・C言語とJavaのOSへの依存度比較
+
+![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CとJavaのOSへの依存度比較.png)
+
+- JVM言語
+
+ソースコード
+
+
+
+## 05. 制御プログラム（カーネル）
 
 ### 制御プログラム（カーネル）の例
 
