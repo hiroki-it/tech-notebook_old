@@ -229,11 +229,17 @@ systemd-reboot.service  static   # enable：他サービス依存
 ```
 
 ```bash
-# デーモンの自動起動を有効化．
+# マシン起動時にデーモンが自動起動するように設定．
+$ systemctl enable {プロセス名}
+# 例：Cron，Apache
 $ systemctl enable crond.service
+$ systemctl enable httpd.service
 
-# デーモンの自動起動を無効化．
+# マシン起動時にデーモンが自動起動しないように設定．
+$ systemctl disable {プロセス名}
+# 例：Cron，Apache
 $ systemctl disable crond.service
+$ systemctl disable httpd.service
 ```
 
 #### ・systemd：system daemon のUnitの種類
