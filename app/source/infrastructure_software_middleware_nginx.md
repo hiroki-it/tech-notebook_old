@@ -1,8 +1,23 @@
 # Nginx
 
-## 01. コマンド
+## 01. 概論
 
-### 起動コマンド
+### WebサーバのミドルウェアとしてのNginx
+
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+
+
+
+### コマンド
+
+#### ・起動／停止
+
+```bash
+$ systemctl start nginx
+$ systemctl stop nginx
+```
+
+
 
 #### ・設定ファイルのバリデーション
 
