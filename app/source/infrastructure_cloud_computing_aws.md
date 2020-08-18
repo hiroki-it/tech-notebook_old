@@ -608,15 +608,26 @@ aws cloudwatch set-alarm-state --alarm-name "Alarm名" --state-value ALARM --sta
 confファイルを，EC2内の```etc```ディレクトリ下に設置する．
 
 ```
-# --- /etc/awslogs/awscli.conf --- # 
+#############################
+# /var/awslogs/awscli.conf
+#############################
+
 [plugins]
 cwlogs = cwlogs
 [default]
 region = ap-northeast-1
 ```
 
+OS，ミドルウェア，アプリケーション，の各層でログを収集するのがよい．
+
 ```
-# --- /etc/awslogs/awslogs.conf --- #
+#############################
+# /var/awslogs/awslogs.conf
+#############################
+
+# ------------------------------------------
+# CentOS CloudWatch Logs
+# ------------------------------------------
 [/var/log/messages]
 
 # タイムスタンプ（例）May 14 08:10:00
@@ -632,6 +643,16 @@ initial_position = start_of_file
 
 # AWS上で管理するロググループ名
 log_group_name = /var/log/messages
+
+# ------------------------------------------
+# Nginx CloudWatch Logs
+# ------------------------------------------
+
+
+# ------------------------------------------
+# Application CloudWatch Logs
+# ------------------------------------------
+
 ```
 
 以下のコマンドで起動する．

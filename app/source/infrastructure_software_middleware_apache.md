@@ -1,26 +1,38 @@
 # Apache
 
+## 01. 概論
 
-## 01. コマンド
+### WebサーバのミドルウェアとしてのApache
 
-#### 起動コマンド
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+
+
+
+### コマンド
 
 #### ・設定ファイルのバリデーション
 
 ```bash
-$ systemctl httpd configtest
+# systemctlコマンドは無い
+$ service httpd configtest
+$ apachectl configtest
+$ apachectl -t
 ```
 
-#### ・強制的な再起動
+#### ・強制的な起動／停止／再起動
 
 ```bash
-$ systemctl httpd restart
+$ systemctl start httpd
+
+$ systemctl stop httpd
+
+$ systemctl restart httpd
 ```
 
 #### ・安全な再起動
 
 ```bash
-$ systemctl httpd graceful
+$ apachectl -k graceful
 ```
 
 
@@ -35,7 +47,13 @@ $ systemctl httpd graceful
 
 **【実装例】**
 
-CentOSの場合，Apacheのインストール後に，optディレクティブ以下にconfファイルが設置される．
+通常であれば，etcディレクトリ以下にconfファイルが配置される．
+
+```apacheconf
+ServerRoot /etc/httpd
+```
+
+CentOSのEPELリポジトリ経由でインストールした場合，Apacheのインストール後に，optディレクトリ以下にconfファイルが設置される．
 
 ```apacheconf
 ServerRoot /opt/rh/httpd24/root/etc/httpd
