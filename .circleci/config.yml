@@ -59,9 +59,9 @@ commands:
     steps:
       - slack/status:
           # 成功した場合
-          success_message: "<< parameters.message >> に成功しました．"
+          success_message: "<< parameters.message >>に成功しました:tada:"
           # 失敗した場合
-          failure_message: "<< parameters.message >> に失敗しました．"
+          failure_message: "<< parameters.message >>に失敗しました:cry:"
 
 # ジョブの設定
 jobs:
@@ -158,7 +158,7 @@ workflows:
             - deploy-service-update-www
           post-steps:
             - notify-to-slack:
-                message: "Run Fargate"
+                message: ${CIRCLE_JOB}
           name: run-task-fargate
           cluster: "${APP_NAME}-ecs-cluster"
           platform-version: 1.3.0
