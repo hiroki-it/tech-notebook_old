@@ -14,21 +14,18 @@
 
 #### ・Linuxの場合
 
-よく使うものを記載する．
+今回，以下に紹介するものをまとめる．
 
-| シェル系 | ファイルシステム系 | プロセス管理系 | ジョブスケジュール系 | ネットワーク系 | テキスト処理系 |
-| :------- | ------------------ | -------------- | -------------------- | -------------- | -------------- |
-| echo     | mkdir              | batch          | cron                 | nslookup       | tail           |
-| sleep    | ls                 | ps             | -                    | curl           | vim            |
-| -        | cp                 | kill           | -                    | netstat        | grep           |
-| -        | find               | systemctl      | -                    | route          | -              |
-| -        | mv                 | -              | -                    | -              | -              |
-| -        | chmod              | -              | -                    | -              | -              |
-| -        | rm                 | -              | -                    | -              | -              |
-| -        | pwd                | -              | -                    | -              | -              |
-| -        | chown              | -              | -                    | -              | -              |
-| -        | cat                | -              | -                    | -              | -              |
-| -        | ln                 |                |                      |                |                |
+| シェル系 | ファイルシステム系 | プロセス管理系 | ジョブスケジュール系 | ネットワーク系 | テキスト処理系 | ハードウェア系 |
+| :------- | ------------------ | -------------- | -------------------- | -------------- | -------------- | -------------- |
+| echo     | mkdir              | batch          | cron                 | nslookup       | tail           | df             |
+| sleep    | ls                 | ps             | -                    | curl           | vim            | free           |
+| -        | cp                 | kill           | -                    | netstat        | grep           | -              |
+| -        | find               | systemctl      | -                    | route          | -              | -              |
+| -        | chmod              | -              | -                    | -              | -              | -              |
+| -        | rm                 | -              | -                    | -              | -              | -              |
+| -        | chown              | -              | -                    | -              | -              | -              |
+| -        | ln                 | -              | -                    | -              | -              | -              |
 
 #### ・Windowsの場合
 
@@ -428,6 +425,59 @@ directory=/var/www/tech-notebook
 ```bash
 # vim上でファイルを開く
 $ vim {ファイル名}
+```
+
+
+
+## 02-06. ハードウェア系
+
+### df
+
+#### ・よく使うオプション集
+
+```bash
+# ストレージの使用状況を確認
+# h：--human-readable
+$ df -h --total
+```
+
+
+
+### free
+
+#### ・よく使うオプション集
+
+```bash
+# 物理メモリ，スワップ領域，の使用状況を確認
+# h：--human-readable
+$ free -h --total
+```
+
+
+
+### mkswap，swapon，swapoff
+
+#### ・スワッピング方式
+
+物理メモリのアドレス空間管理の方法の一つ．ハードウェアのノートを参照．
+
+![スワッピング方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スワッピング方式.png)
+
+#### ・よく使うオプション集
+
+```bash
+# 指定したディレクトリをスワップ領域として使用
+$ mkswap /swap_volume
+```
+```bash
+# スワップ領域を有効化
+# 優先度のプログラムが，メモリからディレクトリに，一時的に退避されるようになる
+$ swapon /swap_volume
+# スワップ領域の使用状況を確認
+$ swapon -s
+
+# スワップ領域を無効化
+$ swapoff /swap_volume
 ```
 
 
