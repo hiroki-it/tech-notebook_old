@@ -1,18 +1,6 @@
 # Amazon Web Service
 
-## 01. クラウドデザイン例
-
-### EC2をベースとした構成
-
-![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSのクラウドデザイン一例.png)
-
-### Fargateをベースとした構成
-
-![Fargateを用いたクラウドデザインの一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Fargateを用いたクラウドデザインの一例.png)
-
-
-
-## 02. コンピューティング
+## 01. コンピューティング
 
 ### EC2
 
@@ -53,7 +41,7 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 
 
-## 02-02. コンピューティングに付随する設定
+## 01-02. コンピューティングに付随する設定
 
 ### Region，Availability Zone
 
@@ -83,7 +71,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 
 
-## 03. コンテナ｜ECS x Fargate
+## 02. コンテナ｜ECS x Fargate
 
 ### ECS：Elastc Cotainer Service
 
@@ -190,17 +178,21 @@ Control Plane（コンテナ管理環境）である．ほかにEKSがある．
 
 #### ・割り当てられるパブリックIPアドレス，FargateのIPアドレス問題
 
-現状，Elastic IPアドレスの設定項目がなく，動的パブリックIPアドレスしか設定できない，そのため，アウトバウンド通信（グローバルネットワーク向き通信）時に送信元パケットに付加されるIPアドレスが動的になってしまう．そこで，Elastic IPアドレスを持つNAT Gatewayを使用すると，これのIPアドレスが送信元パケットに付加されるため，Fargateの送信元IPアドレスを見かけ上静的に扱うことができるようになる．
+FargateにパブリックIPアドレスを持たせたい場合，Elastic IPアドレスの設定項目がなく，動的パブリックIPアドレスしか設定できない（Fargateの再構築後に変化する）．アウトバウンド通信の先にある外部サービスが，セキュリティ上で静的なIPアドレスを要求する場合，アウトバウンド通信（グローバルネットワーク向き通信）時に送信元パケットに付加されるIPアドレスが動的になり，リクエストができなくなってしまう．
 
-| 項目                     | 機能                                              |
-| ------------------------ | ------------------------------------------------- |
-| 動的パブリックIPアドレス | 動的なIPアドレスで，Fargateの再構築後に変化する． |
+![NatGatewayを介したFargateから外部サービスへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateから外部サービスへのアウトバウンド通信.png)
+
+そこで，Fargateのアウトバウンド通信が，Elastic IPアドレスを持つNAT Gatewayを経由するようにする（Fargateは，パブリックサブネットとプライベートサブネットのどちらに置いても良い）．これによって，Nat GatewayのElastic IPアドレスが送信元パケットに付加されるため，Fargateの送信元IPアドレスを見かけ上静的に扱うことができるようになる．
 
 #### ・ECRに対するDockerイメージのプル
 
-FargateからECRに対するDockerイメージのプルは，アウトバウンド通信（グローバルネットワーク向き通信）である．「FargateのIPアドレス問題」に対処するためにNAT Gatewayを設置したとする．この場合，ECRに対するイメージのプルが全てNAT Gatewayを通過するため，高額料金を請求されてしまう．
+FargateからECRに対するDockerイメージのプルは，アウトバウンド通信（グローバルネットワーク向き通信）である．以下の通り，NAT Gatewayを設置したとする．この場合，ECSやECRとのアウトバウンド通信がNAT Gatewayを通過するため，高額料金を請求されてしまう．
 
+![NatGatewayを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateからECRECSへのアウトバウンド通信.png)
 
+そこで，一つの方法として，PrivateLinkを介して，ECRやECSとのアウトバウンド通信を行う設計方法がある．
+
+![PrivateLinkを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/PrivateLinkを介したFargateからECRECSへのアウトバウンド通信.png)
 
 ### ECR
 
@@ -208,7 +200,7 @@ FargateからECRに対するDockerイメージのプルは，アウトバウン�
 
 
 
-## 04. ストレージ
+## 03. ストレージ
 
 ### EBS：Elastic Block Storage（＝内蔵ストレージ）
 
@@ -231,7 +223,7 @@ FargateからECRに対するDockerイメージのプルは，アウトバウン�
 
 
 
-## 05. データベース
+## 04. データベース
 
 ### Aurora，RDS
 
@@ -248,6 +240,10 @@ FargateからECRに対するDockerイメージのプルは，アウトバウン�
 
 #### ・インスタンス識別子
 
+#### ・Aurora，RDSのセキュリティグループ
+
+コンピューティングからのインバウンド通信のみを許可するように，これらのプライベートIPアドレス（```n.n.n.n/32```）を設定する．
+
 
 
 ### ElastiCache
@@ -260,7 +256,7 @@ FargateからECRに対するDockerイメージのプルは，アウトバウン�
 
 
 
-## 06. ネットワーキング，コンテンツデリバリー
+## 05. ネットワーキング，コンテンツデリバリー
 
 ### ALB：Application Load Balancing（＝ リバースプロキシサーバ ＋ ロードバランサー）
 
@@ -334,7 +330,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 クラウドプロキシサーバとして働く．リクエストを受け付ける．動的コンテンツの場合は，リクエストをEC2に振り分ける．また，静的コンテンツの場合は，キャッシュした上でAmazon S3へ振り分ける．
 
-![CloudFront](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CloudFront.png)
+![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CloudFrontによるリクエストの振り分け.png)
 
 
 
@@ -391,7 +387,7 @@ HTTPステータスを追加．また，データをレスポンスメッセー�
 
 CNAMEレコードランダムトークンを用いて，ドメインの所有者であることを証明する方法．ACMによって生成されたCNAMEレコードランダムトークンが提供されるので，これをRoute53に設定しておけば，ACMがこれを検証し，証明書を発行してくれる．
 
-## 06-02. ネットワーキング，コンテンツデリバリー｜VPC
+## 05-02. ネットワーキング，コンテンツデリバリー｜VPC
 
 ### VPC：Virtual Private Cloud（＝プライベートネットワーク）
 
@@ -549,7 +545,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 
 
-## 07. アプリケーションインテグレーション
+## 06. アプリケーションインテグレーション
 
 ### SQS：Amazon Simple Queue Service
 
@@ -565,7 +561,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 
 
-## 08. マネジメント，ガバナンス
+## 07. マネジメント，ガバナンス
 
 ### オートスケーリング
 
@@ -686,7 +682,7 @@ AWSの各種サービスで生成されたログファイルを収集できる�
 
 
 
-## 09. 開発者用ツール
+## 08. 開発者用ツール
 
 ### CodeDeploy
 
@@ -718,7 +714,7 @@ Resources:
 
 
 
-## 10. 暗号化とPKI
+## 09. 暗号化とPKI
 
 ### ACM：Amazon Certificate Manager
 
@@ -767,7 +763,7 @@ AWSの使用上，ACM証明書を設置できないサービスに対しては�
 
 
 
-## 11. セキュリティ｜IAM：Identify and Access Management
+## 10. セキュリティ｜IAM：Identify and Access Management
 
 ### IAMポリシー，IAMステートメント
 
