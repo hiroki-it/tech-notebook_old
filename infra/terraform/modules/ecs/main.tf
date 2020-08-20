@@ -30,7 +30,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   // ロードバランシング
   load_balancer {
-    target_group_arn = var.alb_target_group_green_arn
+    target_group_arn = var.alb_target_group_blue_arn
     container_name   = "www-container"
     container_port   = var.port_http
   }
