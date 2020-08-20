@@ -89,6 +89,9 @@ html_theme_options = {
     'prev_next_buttons_location': None
 }
 
+# 各ノートのtitleタグがノート名になるように設定
+html_title = ''
+
 # ViewPageSourceの表示／非表示を設定
 html_show_sourcelink = False
 
