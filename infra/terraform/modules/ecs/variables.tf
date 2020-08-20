@@ -12,7 +12,7 @@ variable "subnet_public_1c_id" {}
 variable "security_group_ecs_id" {}
 
 // ALB
-variable "alb_target_group_green_arn" {}
+variable "alb_target_group_blue_arn" {}
 
 // ECS
 variable "ecs_task_size_cpu" {}
