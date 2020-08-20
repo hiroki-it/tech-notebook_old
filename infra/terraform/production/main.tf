@@ -120,7 +120,7 @@ module "ecs_module" {
   source = "../modules/ecs"
 
   // 他のモジュールの出力値を渡す
-  alb_target_group_green_arn  = module.alb_module.alb_target_group_green_arn
+  alb_target_group_blue_arn   = module.alb_module.alb_target_group_blue_arn
   ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
