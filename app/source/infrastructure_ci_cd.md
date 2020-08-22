@@ -503,7 +503,11 @@ workflows:
 
 #### ・Job：deploy-service-update
 
-ECSのサービスのリビジョンを更新できる．
+ECSのサービスのリビジョンを更新する．以下のaws-cliに対応している．
+
+```bash
+$ aws ecs update-service {複数のオプション}
+```
 
 **【実装例】**
 
@@ -540,11 +544,17 @@ workflows:
           container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
 ```
 
-#### ・Job：run-task-fargate
+#### ・Job：run-task
 
-ECRにあるDockerイメージをFargateにデプロイできる．なお，デプロイが行われた後，Fargateは起動される．
+サービスに内包されるタスクを指定して，設定したオプションで，現在起動中のタスクとは別のものを新しく起動する．以下のaws-cliを内部で実行している．
+
+```bash
+$ aws ecs run-task {複数のオプション}
+```
 
 **【実装例】**
+
+例えば，マイグレーション用のタスクを起動し，データベースを更新する手法がある．
 
 ```yaml
 version: 2.1
@@ -563,11 +573,14 @@ workflows:
           assign-public-ip: ENABLED
           awsvpc: true
           launch-type: FARGATE
-          # タスク定義名．リビジョン番号を指定しない場合は，最新リビジョン番号が自動補完される．
+          # タスク定義名．最新リビジョン番号が自動補完される．
           task-definition: "${APP_NAME}-ecs-task-definition"
           subnet-ids: $AWS_SUBNET_IDS
           security-group-ids: $AWS_SECURITY_GROUPS
+          # タスク起動時にマイグレーションコマンドを実行
+          overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"app\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
 ```
+
 
 
 
