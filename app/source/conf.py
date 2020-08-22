@@ -37,7 +37,6 @@ extensions = [
     'recommonmark',
     'sphinx_markdown_tables',
     'sphinxcontrib.sqltable',
-    'sphinx_fontawesome'
 ]
 
 # 拡張子を設定
