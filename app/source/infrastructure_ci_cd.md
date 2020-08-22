@@ -622,6 +622,36 @@ workflows:
 
 
 
+### slack
+
+#### ・Command：status
+
+ジョブの終了時に，成功または失敗に基づいて，ステータスを通知する．ジョブの最後のステップとして設定しなければならない．
+
+```yaml
+orbs:
+  slack: circleci/slack@x.y.z
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: <docker image>
+    steps:
+      - run: exit 0
+      - slack/status:
+          # 成功した場合
+          success_message: ':tada: A $CIRCLE_JOB job has succeeded!'
+          # 失敗した場合
+          failure_message: ':red_circle: A $CIRCLE_JOB job has failed!'
+          # 通知先のUSERIDをカンマ区切りで指定
+          mentions: 'USERID1,USERID2'
+          # SlackチャンネルのWebhookURL（CircleCI環境変数として登録していれば設定不要）
+          webhook: webhook
+```
+
+
+
 ## 04. Capistrano
 
 ### デプロイ処理の自動実行
