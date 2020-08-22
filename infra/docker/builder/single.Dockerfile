@@ -1,15 +1,18 @@
-#============================
-# Base Stage
-#============================
-ARG CENTOS_VERSION="8"
-FROM centos:${CENTOS_VERSION} as base
+# ベースイメージのインストール
+ARG OS_VERSION="8"
+FROM centos:${OS_VERSION}
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
 RUN dnf upgrade -y \
   && dnf install -y \
-      # Pyenv要件
+      # システム全体要件
+      curl \
       git \
+      langpacks-ja \
       make \
+      unzip \
+      vim \
+      # Pyenv要件
       bzip2 \
       bzip2-devel \
       gcc \
@@ -29,29 +32,13 @@ RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
 # 環境変数PATHの設定
 ENV PYENV_ROOT /.pyenv
 ENV PATH ${PATH}:/${PYENV_ROOT}/bin
+
+# バージョン
 ENV PYTHON_VERSION_38 "3.8.0"
 
-# Pythonインストール
 RUN pyenv install ${PYTHON_VERSION_38} \
   # Pythonバージョン切り替え
-  && pyenv global ${PYTHON_VERSION_38}
-
-#============================
-# Production Stage
-#============================
-ARG CENTOS_VERSION="8"
-FROM centos:${CENTOS_VERSION}
-
-ENV PYTHON_VERSION_38 "3.8.0"
-COPY --from=base /.pyenv/versions/${PYTHON_VERSION_38}/bin/python /.pyenv/versions/${PYTHON_VERSION_38}/bin/python
-
-RUN dnf upgrade -y \
-  && dnf install -y \
-      # システム全体要件
-      curl \
-      langpacks-ja \
-      make \
-      vim \
+  && pyenv global ${PYTHON_VERSION_38} \
   && dnf install -y \
       # PIP
       python3-pip \
@@ -65,10 +52,6 @@ RUN dnf upgrade -y \
       recommonmark \
       sphinx_markdown_tables \
       sphinxcontrib-sqltable \
-      sphinx_fontawesome \
-  # メタデータ削除
-  && dnf clean all \
-  # キャッシュ削除
-  && rm -rf /var/cache/dnf
-  
+      sphinx_fontawesome
+
 CMD ["/bin/bash"]
