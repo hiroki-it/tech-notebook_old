@@ -42,11 +42,14 @@ resource "aws_ecs_service" "ecs_service" {
     assign_public_ip = true
   }
 
-  // タスク数，タスク定義，ロードバランサーの動的な差分を無視する
+  // 動的な差分を無視
   lifecycle {
     ignore_changes = [
+      // タスク数の増減
       desired_count,
+      // リビジョン番号
       task_definition,
+      // ALBの切り替え
       load_balancer,
     ]
   }
