@@ -153,12 +153,12 @@ EXPOSE 80
 
 ```dockerfile
 # ENVは，OS上のコマンド処理で扱える変数を定義
-ENV PYTHON_VERSION_38 "3.8.0" 
-RUN pyenv install ${PYTHON_VERSION_38}
+ARG PYTHON_VERSION="3.8.0"
+RUN pyenv install ${PYTHON_VERSION}
 
 # ARGは，OS上のコマンド処理では扱えない
-ARG PYTHON_VERSION_38="3.8.0" 
-RUN pyenv install ${PYTHON_VERSION_38} # ===> 変数を展開できない
+ARG PYTHON_VERSION="3.8.0"
+RUN pyenv install ${PYTHON_VERSION} # ===> 変数を展開できない
 ```
 
 二つ目に，```ARG```が使えて，```ENV```が使えない例．
@@ -177,17 +177,19 @@ FROM centos:${OS_VERSION} # ===> 変数を展開できない
 
 ```dockerfile
 # 最初に全て，ARGで定義
-ARG OS_VERSION="8"
-ARG PYTHON_VERSION_38="3.8.0" 
+ARG CENTOS_VERSION="8"
+ARG PYTHON_VERSION="3.8.0"
 
 # 変数展開できる
 FROM centos:${OS_VERSION}
 
-# 必要に応じて，事前にENVに詰め替える
-ENV PYTHON_VERSION_38 ${PYTHON_VERSION_38}
+# ARGを事前に宣言
+ARG PYTHON_VERSION
+# 必要に応じて，事前にENVに詰め替える．
+ENV PYTHON_VERSION ${PYTHON_VERSION}
 
 # 変数展開できる
-RUN pyenv install ${PYTHON_VERSION_38}
+RUN pyenv install ${PYTHON_VERSION}
 ```
 
 
