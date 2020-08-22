@@ -70,6 +70,7 @@ COPY --from=base /.pyenv/versions/${PYTHON_VERSION}/bin/python /.pyenv/versions/
 RUN dnf upgrade -y \
   && dnf install -y \
       # システム全体要件
+      git \
       which \
       curl \
       make \
