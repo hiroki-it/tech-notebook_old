@@ -8,7 +8,7 @@
 
 #### ・Dockerクライアント
 
-Dockerクライアントは，ssh接続によって，Dockerデーモンを操作できる．
+Dockerクライアントは，接続によって，Dockerデーモンを操作できる．
 
 #### ・Dockerデーモン
 
@@ -18,120 +18,180 @@ Dockerクライアントは，ssh接続によって，Dockerデーモンを操�
 
 
 
-## 02. コンテナにssh接続するまでの手順
+## 02. コンテナに接続するまでの手順
 
 ### 手順の流れ
 
 ![Dockerfileの作成からコンテナ構築までの手順](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerfileの作成からコンテナ構築までの手順.png)
 
-1. Docker Hubから，ベースとなるDockerイメージをインストールする．
-2. DockerfileがイメージレイヤーからなるDockerイメージをビルド．
-3. コマンドによって，Dockerイメージ上にコンテナレイヤーを生成し，コンテナを構築．
+1. Docker Hubから，ベースとなるイメージをインストールする．
+2. Dockerfileがイメージレイヤーからなるイメージをビルド．
+3. コマンドによって，イメージ上にコンテナレイヤーを生成し，コンテナを構築．
 4. コマンドによって，構築されたコンテナを起動．
-5. コマンドによって，起動中のコンテナにssh接続．
+5. コマンドによって，起動中のコンテナに接続．
 
 
 
-### ベースとなるDockerイメージのインストール
+## 02-02. イメージのインストール
+
+### ベースとなるイメージ（ベースイメージ）のインストール
 
 #### ・Docker Hubとは
 
-Dockerイメージは，実行OSによらずに一貫してビルドできるため，配布できる．Docker Hubには，カスタマイズする上でのベースとなるDockerイメージが提供されている．
+イメージは，実行OSによらずに一貫してビルドできるため，配布できる．Docker Hubには，カスタマイズする上でのベースとなるイメージが提供されている．
 
-#### ・ベースとなるDockerイメージの種類
+#### ・ベースイメージの種類
 
-| Dockerイメージ   | 特徴                                                         | 相性の良いシステム例 |
+| イメージ   | 特徴                                                         | 相性の良いシステム例 |
 | ---------------- | ------------------------------------------------------------ | -------------------- |
 | **scratch**      | 以下の通り，何も持っていない<br>・OS：無<br>・パッケージ：無<br>・パッケージマネージャ：無 | ？                   |
 | **BusyBox**      | ・OS：Linux（※ディストリビューションではない）<br>・パッケージ：基本ユーティリティツール<br>・パッケージマネージャ：無 | 組み込みシステム     |
 | **Alpine Linux** | ・OS：Linux（※ディストリビューションではない）<br/>・パッケージ：基本ユーティリティツール<br>・パッケージマネージャ：Apk | ？                   |
 
-#### ・ベースとなるDockerイメージをインストールするコマンド
-
-
-| コマンド                                                     | 処理                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **```docker search {イメージ名}```**                         | レジストリ側に保管されているDockerイメージを検索．           |
-| **```docker pull {イメージ名}```**                           | レジストリ側のDockerイメージをクライアント側にインストール． |
-| **```docker images```**                                      | ホストOSにインストールされたDockerイメージを確認．           |
+#### ・ベースイメージをインストール
 
 ```bash
+# レジストリ側に保管されているイメージを検索
 $ docker search {イメージ名}
 
+# レジストリ側のイメージをクライアント側にインストール
 $ docker pull {イメージ名}
 
+# ホストOSにインストールされたイメージを確認
 $ docker images
 ```
 
-#### ・Dockerイメージを削除するコマンド
-
-| コマンド                                                     | 処理                                                   |
-| ------------------------------------------------------------ | ------------------------------------------------------ |
-| **```docker image prune```**                                 | コンテナに使用されていないDockerイメージを一括で削除． |
-| **```docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)```** | タグ名のないイメージのみを全て削除．                   |
+#### ・イメージを削除するコマンド
 
 ```bash
+# コンテナに使用されていないイメージを一括で削除
 $ docker image prune
 
+# タグ名のないイメージのみを全て削除
 $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)
 ```
 
 
 
-### ベースとなるDockerイメージのカスタマイズとビルド
+## 02-03. イメージのビルド
 
-#### ・DockerイメージのカスタマイズとDockerfile
+### コマンド
 
-![イメージレイヤーからなるDockerイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/イメージレイヤーからなるDockerイメージのビルド.png)
+#### ・イメージのビルド
 
-任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，ベースのイメージの上に，他のイメージレイヤーを積み重ねる必要がある．この時，Dockerfileを用いて，各命令によってイメージレイヤーを積み重ねていく．
+```bash
+# キャッシュ無しで，指定のDockerfileを基に，イメージをビルド
+# 失敗したときは削除する
+$ docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .
+```
+
+#### ・Docker Hubに登録
+
+```bash
+# コンテナからイメージを作成
+$ docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
+
+# ホストOSで作成したイメージをレジストリ側にアップロード
+$ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
+```
+
+
+
+### イメージレイヤーの積み重ね
+
+#### ・Dockerfileの仕組み
+
+![イメージレイヤーからなるイメージのビルド](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/イメージのビルド.png)
+
+任意のイメージをベースとして，新しいイメージをビルドするためには，ベースのイメージの上に，他のイメージレイヤーを積み重ねる必要がある．この時，Dockerfileを用いて，各命令によってイメージレイヤーを積み重ねていく．
+
 
 #### ・Dockerfileの記述方法
 
-任意のDockerイメージをベースとして，新しいDockerイメージをビルドするためには，以下の5つ順番で命令を用いて，イメージレイヤーを積み重ねていく．命令は，慣例的に大文字で記述する．
+任意のイメージをベースとして，新しいイメージをビルドするためには，以下の5つ順番で命令を用いて，イメージレイヤーを積み重ねていく．命令は，慣例的に大文字で記述する．
+
+**【実装例】**
+
+ubuntuのイメージをベースとして，nginxのイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
+
+```dockerfile
+# ベースのイメージ（ubuntu）を，コンテナにインストール
+FROM centos:latest
+
+# ubuntu上に，nginxをインストール
+RUN yum update -y \
+　　&& yum install -y \
+　　nginx
+
+# ホストOSの設定ファイルを，コンテナ側の指定ディレクトリにコピー
+COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
+
+# nginxをデーモン起動
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+
+# 処理は発生しない．アプリケーションのポート番号80（HTTP）をドキュメンテーションとして記載
+EXPOSE 80
+```
 
 | 命令                 | 処理                                                         |
 | -------------------- | ------------------------------------------------------------ |
-| **```FROM```**       | ベースのDockerイメージを，コンテナにインストール.            |
+| **```FROM```**       | ベースのイメージを，コンテナにインストール.            |
 | **```RUN```**        | ベースイメージ上に，ソフトウェアをインストール.              |
 | **```COPY```**       | ・ホストOSのファイルをイメージレイヤー化し，コンテナの指定ディレクトリにコピー.<br>・イメージのビルド時にコピーされるだけで，ビルド後のコードの変更は反映されない． |
 | **```CMD```**        | イメージレイヤーをデーモン起動.                              |
 | **```VOLUME```**     | Volumeマウントを行う．```COPY```とは異なり，ビルド後のコードの変更が反映される．Docker Composeで記述した方が良い． |
 | **```EXPOSE```**     | 処理は発生しない．アプリケーションのポート番号をドキュメンテーションとして記載する． |
 | **```ENTRYPOINT```** | 指定されたスクリプトを実行し，終了するとコンテナを停止する．常駐スクリプトのために用いる． |
-
-必須ではないその他の命令には，以下がある．
-
-| 命令              | 処理                                                         |
-| ----------------- | ------------------------------------------------------------ |
+| **```ENV```**        | OS上のコマンド処理で扱える変数を定義する．Dockerfileの命令では扱えない．```ARG```との違いの具体例については下記． |
+| **```ARG```**        | Dockerfikeの命令で扱える変数を定義する．OS上のコマンド処理では扱えない．```ENV```との違いの具体例については下記． |
 | **```ADD```**     | ・ホストOSのファイルを，コンテナの指定ディレクトリにコピー（**```COPY```と同じ**）<br>・インターネットからファイルをダウンロードし，解凍も行う．<br>・イメージのビルド時にコピーされるだけで，ビルド後のコードの変更は反映されない． |
 | **```WORKDIR```** | 絶対パスによる指定で，現在のディレクトリを変更.              |
 
-#### ・Dockerイメージのビルドを行うコマンド
+#### ・ENVとARGの違い
 
+一つ目に，```ENV```が使えて，```ARG```が使えない例．
 
-| コマンド                                                     | 処理                                                         | 注意点                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ |
-| **```docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .```** | キャッシュ無しで，指定のDockerfileを基に，Dockerイメージをビルド．失敗したときは削除する． | コマンド最後のドットを忘れない |
+```dockerfile
+# ENVは，OS上のコマンド処理で扱える変数を定義
+ENV PYTHON_VERSION_38 "3.8.0" 
+RUN pyenv install ${PYTHON_VERSION_38}
 
-```bash
-$ docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .
+# ARGは，OS上のコマンド処理では扱えない
+ARG PYTHON_VERSION_38="3.8.0" 
+RUN pyenv install ${PYTHON_VERSION_38} # ===> 変数を展開できない
 ```
 
-#### ・ビルドしたDockerイメージをDocker Hubに登録するコマンド
+二つ目に，```ARG```が使えて，```ENV```が使えない例．
 
-| コマンド                                                     | 処理                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **```docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | コンテナからDockerイメージを作成．                           |
-| **```docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}```** | ホストOSで作成したDockerイメージをレジストリ側にアップロード． |
+```dockerfile
+# ARGは,Dockerfikeの命令で扱える変数を定義
+ARG OS_VERSION="8"
+FROM centos:${OS_VERSION}
 
-```bash
-$ docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
-
-$ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
+# ENVは，OS上のコマンド処理では扱えない
+ENV OS_VERSION "8"
+FROM centos:${OS_VERSION} # ===> 変数を展開できない
 ```
 
-#### ・Docker Hub上での継続的インテグレーション
+三つ目に，これらの違いによる可読性の悪さの対策として，```ENV```と```ARG```を組み合わせた例．
+
+```dockerfile
+# 最初に全て，ARGで定義
+ARG OS_VERSION="8"
+ARG PYTHON_VERSION_38="3.8.0" 
+
+# 変数展開できる
+FROM centos:${OS_VERSION}
+
+# 必要に応じて，事前にENVに詰め替える
+ENV PYTHON_VERSION_38 ${PYTHON_VERSION_38}
+
+# 変数展開できる
+RUN pyenv install ${PYTHON_VERSION_38}
+```
+
+
+#### ・Docker Hubに対する継続的インテグレーション
 
 | 方法                  | 仕組み                                            |
 | --------------------- | ------------------------------------------------- |
@@ -147,100 +207,21 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 
 
 
-### Dockerfileの例
+### イメージの軽量化
 
-#### ・NginxのDockerイメージの例
+#### ・キャッシュの削除
 
-ubuntuのDockerイメージをベースとして，nginxのDockerイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
-
-**【実装例】**
+Linuxユーティリティをインストールすると，キャッシュが残る．これを削除しておく．
 
 ```dockerfile
-# ベースのDockerイメージ（ubuntu）を，コンテナにインストール
-FROM centos:latest
-
-# ubuntu上に，nginxをインストール
-RUN yum update -y && yum install -y nginx
-
-# ホストOSの設定ファイルを，コンテナ側の指定ディレクトリにコピー
-COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
-
-# nginxをデーモン起動
-CMD ["nginx -g daemon off"]
-
-# 処理は発生しない．アプリケーションのポート番号80（HTTP）をドキュメンテーションとして記載
-EXPOSE 80
-```
-
-#### ・静的ファイルBuilderのDockerイメージの例
-
-例として，Python製ドキュメントジェネレーターSphinxのDockerfileである．
-
-**【実装例】**
-
-```dockerfile
-# ベースイメージのインストール
-ARG OS_VERSION="8"
-FROM centos:${OS_VERSION}
-LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
-
 RUN dnf upgrade -y \
   && dnf install -y \
-      # システム全体要件
       curl \
-      git \
-      langpacks-ja \
-      make \
-      unzip \
-      vim \
-      # Pyenv要件
-      bzip2 \
-      bzip2-devel \
-      gcc \
-      gcc-c++ \
-      libffi-devel \
-      openssl-devel \
-      readline-devel \
-      sqlite-devel \
-      zlib-devel \
   # メタデータ削除
   && dnf clean all \
   # キャッシュ削除
   && rm -rf /var/cache/dnf
-
-# Pyenvインストール
-RUN git clone https://github.com/pyenv/pyenv.git /.pyenv
-# 環境変数PATHの設定
-ENV PYENV_ROOT /.pyenv
-ENV PATH ${PATH}:/${PYENV_ROOT}/bin
-
-# バージョン
-ENV PYTHON_VERSION_38 "3.8.0"
-
-RUN pyenv install ${PYTHON_VERSION_38} \
-  # Pythonバージョン切り替え
-  && pyenv global ${PYTHON_VERSION_38} \
-  && dnf install -y \
-      # PIP
-      python3-pip \
-  && pip3 install \
-      # NOTE: sphinx-buildが認識されない問題への対処
-      sphinx --upgrade --ignore-installed six \
-      # テーマ
-      sphinx_rtd_theme \
-      # 拡張機能
-      sphinx-autobuild \
-      recommonmark \
-      sphinx_markdown_tables \
-      sphinxcontrib-sqltable \
-      sphinx_fontawesome
-
-CMD ["/bin/bash"]
 ```
-
-
-
-### Dockerイメージの軽量化
 
 #### ・```RUN```コマンドをまとめる．
 
@@ -254,7 +235,7 @@ RUN yum -y install php-mbstring
 RUN yum -y install php-pear
 ```
 
-これは，以下のように一行でまとめられる．イメージレイヤーが少なくなり，Dockerイメージを軽量化することができる．
+これは，以下のように一行でまとめられる．イメージレイヤーが少なくなり，イメージを軽量化することができる．
 
 ```dockerfile
 # ベースイメージ上に，複数のソフトウェアをインストール
@@ -265,10 +246,10 @@ RUN yum -y install httpd php php-mbstring php-pear
 
 ```dockerfile
 # ベースイメージ上に，複数のソフトウェアをインストール
-RUN yum -y install\
-     httpd\
-     php\
-     php-mbstring\
+RUN yum -y install \
+     httpd \
+     php \
+     php-mbstring \
      php-pear
 ```
 
@@ -282,102 +263,181 @@ RUN yum -y install\
 
 
 
-### Dockerイメージ上でのコンテナレイヤーの生成，コンテナの構築
+## 02-04. イメージ上でのコンテナレイヤーの生成，コンテナの構築
 
-#### ・コンテナレイヤー生成，コンテナ構築，を行うコマンド
+### コンテナレイヤーの生成
 
-| コマンド                             | 処理                                                     |
-| ------------------------------------ | -------------------------------------------------------- |
-| **```docker create {イメージ名}```** | コンテナレイヤーを生成し，コンテナを構築．起動はしない． |
+#### ・コンテナレイヤーとは
+
+イメージレイヤーの上に積み重ねられる
+
+![イメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/イメージ上へのコンテナレイヤーの積み重ね.png)
+
+### コマンド
+
+#### ・コンテナレイヤー生成，コンテナ構築
 
 ```bash
-$ docker create {イメージ名}
+# コンテナレイヤーを生成し，コンテナを構築．起動はしない．
+$ docker create {コンテナ名} {使用イメージ名}
 ```
 
-![Dockerイメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerイメージ上へのコンテナレイヤーの積み重ね.png)
-
-#### ・構築に失敗した時のデバッグを行うコマンド
-
-| コマンド                                                    | 処理                                   |
-| ----------------------------------------------------------- | -------------------------------------- |
-| **```docker logs --follow=true --tail=500 {コンテナ名}```** | 指定した行数だけ，ログを出力し続ける． |
+#### ・構築に失敗した時のデバッグ
 
 ```bash
+# 指定した行数だけ，ログを出力し続ける．
 $ docker logs --follow=true --tail=500 {コンテナ名}
 ```
 
-#### ・ビルドされるDockerイメージとコンテナの役割の対応例
+#### ・構築されたコンテナの起動
 
-| ビルドされるDockerイメージ | コンテナの役割               |
-| :------------------------- | :--------------------------- |
-| Redis                      | **NoSQL（非RDB）**           |
-| MySQL                      | **RDBMS**                    |
-| Nginx                      | **Webサーバソフトウェア**    |
-| PHP-FPM                    | **APサーバソフトウェア**     |
-| MailDev                    | **メールサーバソフトウェア** |
+```start```コマンドでは，アタッチモードでしか起動できない．
 
-
-
-### 構築されたコンテナの操作
-
-#### ・構築されたコンテナ起動／停止／削除を行うコマンド
-
-| コマンド                                               | 処理                                                     |
-| :----------------------------------------------------- | -------------------------------------------------------- |
-| **```docker start```**                                 | 事前にコンテナ構築が成功していること．既存コンテナを起動 |
-| **```docker stop```**                                  | 起動中コンテナを停止                                     |
-| **```docker stop $(docker ps --all --quiet)```**       | 全てのコンテナを停止                                     |
-| **```docker container prune```**                       | 停止中のコンテナのみを全て削除                           |
-| **```docker rm --force $(docker ps --all --quiet)```** | 起動中／停止中の全てコンテナを削除                       |
 ```bash
-$ docker start
+# 停止中コンテナをアタッチモードで起動
+$ docker start -i {停止中コンテナ名}
+```
 
-$ docker stop
+```run```コマンドでは，アタッチモードとデタッチモードを選ぶことができる．
 
+```bash
+# コンテナレイヤーを生成し，コンテナを構築，起動までを行う．
+
+# アタッチモードによる起動．フォアグラウンドで起動する．
+$ docker run -a -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+
+# デタッチドモードによる起動．バックグラウンドで起動する．
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+```
+
+#### ・構築されたコンテナの停止／削除
+
+```bash
+# 起動中コンテナを停止
+$ docker stop {起動中コンテナ名}
+
+# 全てのコンテナを停止
 $ docker stop $(docker ps --all --quiet)
 
+# 停止中のコンテナのみを全て削除
 $ docker container prune
 
+# 起動中／停止中の全てコンテナを削除
 $ docker rm --force $(docker ps --all --quiet)
 ```
 
-### 起動中のコンテナの操作
 
-#### ・起動中のコンテナ情報表示を行うコマンド
 
-| コマンド                              | 処理                                                         |
-| :------------------------------------ | ------------------------------------------------------------ |
-| **```docker ps -a```**                | 事前に，コンテナ起動が成功していること．エラーも含めて，起動中コンテナのIDなどを一覧で表示． |
-| **```docker inspect {コンテナID}```** | 起動中コンテナの全ての設定内容を表示                         |
+### 起動モードの違い
+
+#### ・アタッチモード起動
+
+アタッチモードは，フォアグラウンド起動である．ターミナルにプロセスのログが表示されないため，同一ターミナルで他のコマンドを入力できる．
 
 ```bash
-$ docker ps -a
-
-$ docker inspect {コンテナID}
-$ docker inspect {コンテナID} | grep IPAddress # grepとも組み合わせられる．
+# -a：atattch mode
+$ docker run -a -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
 ```
 
-#### ・起動中のコンテナにssh接続
+#### ・デタッチドモード起動
 
+デタッチドモードは，バックグラウンド起動である．ターミナルにプロセスのログが表示され続けるため，同一ターミナルで他のコマンドを入力できない．プロセスのログを監視できるが，他のプロセスを入力するためには，そのターミナル上でコンテナを停止させる必要がある．
 
-| コマンド                                    | 処理                      | 注意点                   |
-| ------------------------------------------- | ------------------------- | ------------------------ |
-| **```docker exec -it {コンテナ名} bash```** | 起動中のコンテナにssh接続 | i：interactive<br>t：tty |
 
 ```bash
-$ docker exec -it {コンテナ名} /bin/bash
+# -d；detached mode
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+```
+
+
+
+## 02-06. 起動中のコンテナの操作
+
+### コマンド
+
+#### ・起動中のコンテナ情報を表示
+
+```bash
+# コンテナの起動と停止にかかわらず，IDなどを一覧で表示．
+$ docker ps -a
+
+# 起動中コンテナの全ての設定内容を表示
+# grepとも組み合わせられる．
+$ docker inspect {コンテナID}
+$ docker inspect {コンテナID} | grep IPAddress
+```
+
+#### ・起動中のコンテナに接続
+
+```bash
+# デタッチドモードで起動中のコンテナに接続
+$ docker attach {起動中コンテナ名}
+
+# デタッチドモードで起動中のコンテナに接続
+# i：interactive，t：tty
+$ docker exec -it {起動中コンテナ名} /bin/bash
 ```
 
 #### ・起動中のコンテナにホストOSのファイルをコピー
 
-Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにDockerイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．
+Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．
 
 ```bash
+# ホストのファイルをコンテナにコピー
 $ docker cp ./docker/www/nginx.conf {コンテナID}:/etc/nginx/nginx.conf
 
-# コンテナにSSH接続後に，nginxの設定ファイルを再読み込み．
+# コンテナに接続後に，nginxの設定ファイルを再読み込み．
 $ docker exec -it {コンテナ名} bin/bash
 $ nginx -s reload
+```
+
+
+
+### 接続コマンドの違い
+
+#### ・attach
+
+```bash
+# デタッチドモードで起動
+$ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名}
+
+# デタッチドモードのコンテナに接続
+$ docker attach {起動中コンテナ名}
+
+# PID=1で，1つの/bin/bashプロセスが稼働していることが確認できる
+[root@de17f4edf7d0 app] ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1  16152  3872 pts/0    Ss+  18:06   0:00 /bin/bash
+root        33  0.0  0.1  45696  3732 pts/1    R+   18:22   0:00 ps aux
+
+# コンテナとの接続を切断
+[root@de17f4edf7d0 app] exit
+
+# コンテナの状態を確認
+$ docker container ps -a # ==> コンテナのSTATUSがEXITedになっている
+```
+
+#### ・exe
+
+```bash
+# デタッチドモードで起動
+$ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名} /bin/bash
+
+# デタッチドモードのコンテナに接続
+$ docker exec -it {起動中コンテナ名} /bin/bash
+
+# PID=1,17で，2つの/bin/bashプロセスが稼働していることが確認できる
+[root@de17f4edf7d0 app] ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1  16152  3872 pts/0    Ss+  18:06   0:00 /bin/bash
+root        17  0.0  0.1  16152  4032 pts/1    Ss   18:21   0:00 /bin/bash
+root        34  0.0  0.1  45696  3732 pts/1    R+   18:22   0:00 ps aux
+
+# コンテナとの接続を切断
+[root@de17f4edf7d0 app] exit
+
+# コンテナの状態を確認
+$ docker container ps -a # ==> コンテナのSTATUSがUPになっている
 ```
 
 
@@ -502,7 +562,7 @@ $ curl --fail http://{nginxに登録したドメイン名}:8080/
 
 #### ・コンテナ内部 ---> アプリケーション
 
-bridge接続を経由してコンテナにSSH接続し，コンテナ内部からアプリケーションにリクエストメッセージを送信することによって，アプリケーションの成否を確認することができる．
+bridge接続を経由してコンテナに接続し，コンテナ内部からアプリケーションにリクエストメッセージを送信することによって，アプリケーションの成否を確認することができる．
 
 ```bash
 # コンテナの中で，ポート番号80のアプリケーションに対してリクエスト
