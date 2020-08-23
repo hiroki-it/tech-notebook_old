@@ -150,7 +150,7 @@ module "codedeploy_module" {
   ecs_cluster_name                = module.ecs_module.ecs_cluster_name
   ecs_service_name                = module.ecs_module.ecs_service_name
 
-  app_name = var.app_name.camel
+  app_name = var.app_name.kebab
 }
 
 #=====
