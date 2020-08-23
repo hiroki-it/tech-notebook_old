@@ -151,8 +151,10 @@ h3 {
     line-height: 1.4;
     /*アイコン分のスペース*/
     padding: 0.5em 0.5em 0.5em 1.5em;
-    /*相対位置*/
+    
+    /* 画像より背面 */
     position: relative;
+    z-index: 1;
 }
 
 h3:before {
@@ -201,6 +203,22 @@ img {
     margin: 0 auto;
 
     text-align: center;
+
+    /* ホバー画像より背面 */
+    position: relative;
+    z-index: 2;
+}
+
+img:hover {
+    /* 拡大率 */
+    transform: scale(1.2,1.2);
+    
+    /* 最大拡大まで時間 */
+    transition-duration: 0.25s;
+
+    /* h3と画像より前面 */
+    position: relative;
+    z-index: 3;
 }
 
 /* テーブル */
