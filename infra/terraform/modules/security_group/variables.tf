@@ -8,11 +8,13 @@ variable "app_name" {}
 variable "vpc_id" {}
 
 // Security Group
-variable "security_group_alb_inbound_cidr_block_http" {}
-variable "security_group_alb_inbound_cidr_block_https" {}
-variable "security_group_ecs_inbound_cidr_block_http" {}
-variable "security_group_ecs_inbound_cidr_block_ssh" {}
-variable "security_group_outbound_cidr_block" {}
+variable "sg_alb_inbound_cidr_block_http" {}
+variable "sg_alb_inbound_ipv6_cidr_block_http" {}
+variable "sg_alb_inbound_cidr_block_https" {}
+variable "sg_alb_inbound_ipv6_cidr_block_https" {}
+variable "sg_ecs_inbound_cidr_block_ssh" {}
+variable "sg_ecs_inbound_cidr_block_http" {}
+variable "sg_outbound_cidr_block" {}
 
 // Port
 variable "port_http" {}

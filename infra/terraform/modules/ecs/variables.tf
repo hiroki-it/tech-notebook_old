@@ -9,14 +9,12 @@ variable "subnet_public_1a_id" {}
 variable "subnet_public_1c_id" {}
 
 // Security Group
-variable "security_group_ecs_id" {}
+variable "sg_ecs_id" {}
 
 // ALB
 variable "alb_target_group_blue_arn" {}
 
 // ECS
-variable "ecs_task_size_cpu" {}
-variable "ecs_task_size_memory" {}
 variable "ecs_task_execution_role_arn" {}
 
 // Port
