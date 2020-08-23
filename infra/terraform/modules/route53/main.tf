@@ -23,8 +23,8 @@ resource "aws_route53_record" "route53_record" {
 resource "aws_route53_health_check" "route53_health_check" {
   fqdn              = "${var.domain_sub_name}.${data.aws_route53_zone.route53_zone.name}"
   resource_path     = "/"
+  request_interval  = 30
   failure_threshold = 3
-  request_interval  = 10
   type              = "HTTPS"
   port              = 443
 
