@@ -14,7 +14,7 @@
  サイドバー
  ***********************/
 .wy-nav-side {
-   width: 25em
+   width: 25em;
 }
 .wy-side-scroll {
   /* サイドバーが隠れないように */
