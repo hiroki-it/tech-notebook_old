@@ -168,7 +168,10 @@ module "s3_module" {
 module "cloudwatch_module" {
   source = "../modules/cloudwatch"
 
-  app_name = var.app_name.kebab
+  sns_topic_arn = module.sns_module.sns_topic_arn
+  
+  app_name_kebab = var.app_name.kebab
+  app_name_camel = var.app_name.camel
 }
 
 #================
