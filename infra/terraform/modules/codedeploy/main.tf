@@ -10,9 +10,9 @@ resource "aws_codedeploy_app" "codedeploy_app" {
 # CodeDeploy Group
 #===================
 resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
-  app_name               = var.app_name
+  app_name               = aws_codedeploy_app.codedeploy_app.name
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
-  deployment_group_name  = "${var.app_name}-deployment-group"
+  deployment_group_name  = "${aws_codedeploy_app.codedeploy_app.name}-deployment-group"
   service_role_arn       = var.codedeployment_role_for_ecs_arn
 
   auto_rollback_configuration {
