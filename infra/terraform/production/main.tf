@@ -165,8 +165,10 @@ module "s3_module" {
 #==================
 # CloudWatch Logs
 #==================
-module "cloudwatch_logs_module" {
-  source = "../modules/cloudwatch_logs"
+module "cloudwatch_module" {
+  source = "../modules/cloudwatch"
+
+  app_name = var.app_name.kebab
 }
 
 #================
