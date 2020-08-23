@@ -51,16 +51,16 @@ commands:
           paths:
             - ./app/build
 
-  # Slackに通知する
-  notify-to-slack:
+  # Slackに失敗を通知する
+  notify-failure-to-slack:
     parameters:
       message:
         type: string
+        default: ${CIRCLE_JOB}
     steps:
       - slack/status:
-          # 成功した場合
-          success_message: "<< parameters.message >>に成功しました:tada:"
-          # 失敗した場合
+          fail_only: true
+          # メッセージ
           failure_message: "<< parameters.message >>に失敗しました:cry:"
 
 # ジョブの設定
@@ -107,6 +107,8 @@ workflows:
     jobs:
       # Deploy Image To Docker Hub
       - push-images-builder:
+          post-steps:
+            - notify-failure-to-slack
           filters:
             branches:
               only:
@@ -114,6 +116,8 @@ workflows:
                 - master
       # Deploy Image To Docker Hub
       - push-images-www:
+          post-steps:
+            - notify-failure-to-slack
           filters:
             branches:
               only:
@@ -126,10 +130,13 @@ workflows:
             - push-images-www
           post-steps:
             - persist-deploy-source
+            - notify-failure-to-slack
       # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           requires:
             - make-deploy-source
+          post-steps:
+            - notify-failure-to-slack
           name: build-and-push-image-www
           dockerfile: ./infra/docker/www/production.Dockerfile
           path: .
@@ -143,8 +150,7 @@ workflows:
           requires:
             - build-and-push-image-www
           post-steps:
-            - notify-to-slack:
-                message: ${CIRCLE_JOB} 
+            - notify-failure-to-slack
           name: deploy-service-update-www
           family: "${APP_NAME}-ecs-task-definition"
           cluster-name: "${APP_NAME}-ecs-cluster"
