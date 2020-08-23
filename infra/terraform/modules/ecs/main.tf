@@ -17,7 +17,7 @@ resource "aws_ecs_service" "ecs_service" {
   cluster          = aws_ecs_cluster.ecs_cluster.id
   task_definition  = "${aws_ecs_task_definition.ecs_task_definition.family}:${max("${aws_ecs_task_definition.ecs_task_definition.revision}", "${data.aws_ecs_task_definition.ecs_task_definition.revision}")}"
   launch_type      = "FARGATE"
-  desired_count    = "1"
+  desired_count    = 1
   platform_version = "1.3.0" // LATESTとすると自動で変換されてしまうため，直接指定する．
 
   // デプロイメント
@@ -38,7 +38,7 @@ resource "aws_ecs_service" "ecs_service" {
   // ネットワークアクセス
   network_configuration {
     subnets          = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-    security_groups  = [var.security_group_ecs_id]
+    security_groups  = [var.sg_ecs_id]
     assign_public_ip = true
   }
 
@@ -68,7 +68,11 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = var.ecs_task_execution_role_arn
   execution_role_arn       = var.ecs_task_execution_role_arn
-  cpu                      = var.ecs_task_size_cpu // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定
-  memory                   = var.ecs_task_size_memory
-  container_definitions    = file("container_definition.json") // 引数パスはルートモジュール基準
+
+  // タスクサイズでは，タスク当たり，定義されたコンテナが最大2つ入るように設定
+  cpu    = 512
+  memory = 1024
+
+  // コンテナ定義
+  container_definitions = file("container_definition.json") // 引数パスはルートモジュール基準
 }

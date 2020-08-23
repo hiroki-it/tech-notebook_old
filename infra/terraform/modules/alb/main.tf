@@ -4,7 +4,7 @@
 resource "aws_lb" "alb" {
   name               = "${var.app_name}-alb"
   load_balancer_type = "application"
-  security_groups    = [var.security_group_alb_id]
+  security_groups    = [var.sg_alb_id]
   subnets            = [var.subnet_public_1a_id, var.subnet_public_1c_id]
 }
 
@@ -93,7 +93,7 @@ resource "aws_lb_listener" "lb_listener_blue" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb_target_group_blue.arn
   }
-  
+
   // Blue/Greenデプロイメントによるターゲットグループの動的差分を無視
   lifecycle {
     ignore_changes = [default_action]

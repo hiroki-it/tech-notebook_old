@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 #==============
 # Route Table
 #==============
-resource "aws_route_table" "route_table_public" {
+resource "aws_route_table" "rt_public" {
   vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
   route {
     cidr_block = var.igw_cidr_block
@@ -85,12 +85,12 @@ resource "aws_subnet" "subnet_public_1c" {
 #================================
 # Route Table と Subnet の紐付け
 #================================
-resource "aws_route_table_association" "route_table_association_public_1a" {
+resource "aws_route_table_association" "rta_public_1a" {
   subnet_id      = aws_subnet.subnet_public_1a.id        // アタッチするSubnetのID
-  route_table_id = aws_route_table.route_table_public.id // アタッチするRoute TableのID
+  route_table_id = aws_route_table.rt_public.id // アタッチするRoute TableのID
 }
 
-resource "aws_route_table_association" "route_table_association_public_1c" {
+resource "aws_route_table_association" "rta_public_1c" {
   subnet_id      = aws_subnet.subnet_public_1c.id
-  route_table_id = aws_route_table.route_table_public.id
+  route_table_id = aws_route_table.rt_public.id
 }
