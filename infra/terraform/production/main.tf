@@ -14,6 +14,8 @@ provider "aws" {
 module "service_role_module" {
   // モジュールのResourceを参照
   source = "../modules/service_role"
+
+  app_name = var.app_name.camel
 }
 
 #======
@@ -24,7 +26,7 @@ module "vpc_module" {
   // モジュールのResourceを参照
   source = "../modules/vpc"
 
-  app_name                    = var.app_name
+  app_name                    = var.app_name.kebab
   credential_region           = var.credential.region
   igw_cidr_block              = var.igw_cidr_block
   nacl_inbound_cidr_block     = var.nacl.inbound_cidr_block
@@ -46,16 +48,18 @@ module "security_group_module" {
   // 他のモジュールの出力値を渡す
   vpc_id = module.vpc_module.vpc_id
 
-  app_name                                    = var.app_name
-  port_http                                   = var.port.http
-  port_https_main                             = var.port.https
-  port_custom_tcp_https                       = var.port.custom_tcp_https
-  port_ssh                                    = var.port.ssh
-  security_group_alb_inbound_cidr_block_http  = var.security_group.alb_inbound_cidr_block_http
-  security_group_alb_inbound_cidr_block_https = var.security_group.alb_inbound_cidr_block_https
-  security_group_ecs_inbound_cidr_block_http  = var.security_group.ecs_inbound_cidr_block_http
-  security_group_ecs_inbound_cidr_block_ssh   = var.security_group.ecs_inbound_cidr_block_ssh
-  security_group_outbound_cidr_block          = var.security_group.outbound_cidr_block
+  app_name                             = var.app_name.kebab
+  port_http                            = var.port.http
+  port_https_main                      = var.port.https
+  port_custom_tcp_https                = var.port.custom_tcp_https
+  port_ssh                             = var.port.ssh
+  sg_alb_inbound_cidr_block_http       = var.sg.alb_inbound_cidr_block_http
+  sg_alb_inbound_ipv6_cidr_block_http  = var.sg.alb_inbound_ipv6_cidr_block_http
+  sg_alb_inbound_cidr_block_https      = var.sg.alb_inbound_cidr_block_https
+  sg_alb_inbound_ipv6_cidr_block_https = var.sg.alb_inbound_ipv6_cidr_block_https
+  sg_ecs_inbound_cidr_block_ssh        = var.sg.ecs_inbound_cidr_block_ssh
+  sg_ecs_inbound_cidr_block_http       = var.sg.ecs_inbound_cidr_block_http
+  sg_outbound_cidr_block               = var.sg.outbound_cidr_block
 }
 
 #======
@@ -67,14 +71,13 @@ module "alb_module" {
   source = "../modules/alb"
 
   // 他のモジュールの出力値を渡す
-  acm_certificate_arn   = module.acm_certificate_module.acm_certificate_arn
-  subnet_public_1a_id   = module.vpc_module.subnet_public_1a_id
-  subnet_public_1c_id   = module.vpc_module.subnet_public_1c_id
-  security_group_alb_id = module.security_group_module.security_group_alb_id
-  vpc_id                = module.vpc_module.vpc_id
+  acm_certificate_arn = module.acm_certificate_module.acm_certificate_arn
+  subnet_public_1a_id = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id = module.vpc_module.subnet_public_1c_id
+  sg_alb_id           = module.security_group_module.sg_alb_id
+  vpc_id              = module.vpc_module.vpc_id
 
-
-  app_name              = var.app_name
+  app_name              = var.app_name.kebab
   port_http             = var.port.http
   port_https            = var.port.https
   port_custom_tcp_https = var.port.custom_tcp_https
@@ -108,7 +111,7 @@ module "ecr_module" {
   // モジュールのResourceを参照
   source = "../modules/ecr"
 
-  app_name = var.app_name
+  app_name = var.app_name.kebab
 }
 
 #======
@@ -124,12 +127,11 @@ module "ecs_module" {
   ecs_task_execution_role_arn = module.service_role_module.ecs_task_execution_role_arn
   subnet_public_1a_id         = module.vpc_module.subnet_public_1a_id
   subnet_public_1c_id         = module.vpc_module.subnet_public_1c_id
-  security_group_ecs_id       = module.security_group_module.security_group_ecs_id
+  sg_ecs_id                   = module.security_group_module.sg_ecs_id
 
-  app_name             = var.app_name
-  ecs_task_size_cpu    = var.ecs.task_size_cpu
-  ecs_task_size_memory = var.ecs.task_size_memory
-  port_http            = var.port.http
+  app_name  = var.app_name.kebab
+  port_http = var.port.http
+
 }
 
 #=============
@@ -148,7 +150,7 @@ module "codedeploy_module" {
   ecs_cluster_name                = module.ecs_module.ecs_cluster_name
   ecs_service_name                = module.ecs_module.ecs_service_name
 
-  app_name = var.app_name
+  app_name = var.app_name.camel
 }
 
 #=====
@@ -157,7 +159,7 @@ module "codedeploy_module" {
 module "s3_module" {
   source = "../modules/s3"
 
-  app_name = var.app_name
+  app_name = var.app_name.kebab
 }
 
 #==================
@@ -177,9 +179,9 @@ module "acm_certificate_module" {
   // 他のモジュールの出力値を渡す
   route53_zone_id = module.route53_module.route53_zone_id
 
-  app_name        = var.app_name
+  app_name        = var.app_name.kebab
   domain_name     = var.domain.name
-  sub_domain_name = var.domain.sub_name
+  domain_sub_name = var.domain.sub_name
 }
 
 #=============

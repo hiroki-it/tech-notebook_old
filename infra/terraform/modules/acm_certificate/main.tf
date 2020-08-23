@@ -16,8 +16,8 @@ resource "aws_acm_certificate" "acm_certificate" {
   }
 }
 
-// 証明書の検証
-resource "aws_route53_record" "route53_record_certificate" {
+// 証明書のDNS検証
+resource "aws_route53_record" "route53_record_verification" {
   zone_id = var.route53_zone_id
   name    = aws_acm_certificate.acm_certificate.domain_validation_options.0.resource_record_name
   type    = aws_acm_certificate.acm_certificate.domain_validation_options.0.resource_record_type
@@ -28,5 +28,5 @@ resource "aws_route53_record" "route53_record_certificate" {
 // 証明書検証の待機
 resource "aws_acm_certificate_validation" "acm_certificate_validation" {
   certificate_arn         = aws_acm_certificate.acm_certificate.arn
-  validation_record_fqdns = [aws_route53_record.route53_record_certificate.fqdn]
+  validation_record_fqdns = [aws_route53_record.route53_record_verification.fqdn]
 }
