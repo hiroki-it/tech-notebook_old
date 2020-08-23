@@ -48,7 +48,7 @@ resource "aws_lb_target_group" "alb_target_group_green" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 5
-    interval            = 10
+    interval            = 300
     matcher             = 200
     port                = "traffic-port"
     protocol            = "HTTP"
