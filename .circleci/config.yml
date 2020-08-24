@@ -113,7 +113,7 @@ workflows:
             branches:
               only:
                 # NOTE: masterブランチのみ起動
-                - master
+                - stop_master
       # Deploy Image To Docker Hub
       - push-images-www:
           post-steps:
@@ -122,7 +122,7 @@ workflows:
             branches:
               only:
                 # NOTE: masterブランチのみ起動
-                - master
+                - stop_master
       # Make Deploy Source
       - make-deploy-source:
           requires:
