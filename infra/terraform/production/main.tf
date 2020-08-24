@@ -162,6 +162,15 @@ module "s3_module" {
   app_name = var.app_name.kebab
 }
 
+#======
+# SNS
+#======
+module "sns_module" {
+  source = "../modules/sns"
+
+  app_name = var.app_name.kebab
+}
+
 #==================
 # CloudWatch Logs
 #==================
