@@ -589,6 +589,10 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 ### CloudWatch
 
+#### ・名前空間，メトリクス，ディメンション
+
+![名前空間，メトリクス，ディメンション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前空間，メトリクス，ディメンション.jpeg)
+
 
 #### ・コマンド
 
