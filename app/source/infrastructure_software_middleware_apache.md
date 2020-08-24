@@ -127,6 +127,77 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 ディレクティブを囲うディレクティブの一つ．指定したディレクトリ内にリクエストがあった時に実行するディレクティブを定義する．
 
+**【実装例】**
+
+```apacheconf
+<Directory "/var/www/example">
+    DirectoryIndex index.php
+    AllowOverride All
+</Directory>
+```
+
+
+
+### User，Group
+
+#### ・Userとは
+
+httpdプロセスのユーザ名を定義する．httpdプロセスによって作成されたファイルの所有者名は，このディレクティブで定義したものになる．
+
+**【実装例】**
+
+```apacheconf
+User apache
+```
+
+#### ・Groupとは
+
+httpdプロセスのグループ名を定義する．httpdプロセスによって作成されたファイルのグループ名は，このディレクティブで定義したものになる．
+
+**【実装例】**
+
+```apacheconf
+Group apache
+```
+
+
+
+### KeepAlive，MaxKeepAliveRequests，KeepAliveTimeout
+
+#### ・KeepAliveとは
+
+HTTPプロトコルのリクエストのクライアントに対して，セッションIDを付与するかどうか，を定義する．
+
+**【実装例】**
+
+```
+KeepAlive On
+```
+
+#### ・KeepAliveTimeout
+
+セッションIDを付与中のクライアントにおいて，再びリクエストを送信するまでに何秒間空いたら，セッションIDを破棄するか，を定義する．
+
+**【実装例】**
+
+```
+# KeepAliveがOnの時のみ
+KeepAliveTimeout 5
+```
+
+#### ・MaxKeepAliveRequests
+
+セッションIDを付与中のクライアントにおいて，リクエストのファイルの最大数を定義する．
+
+**【実装例】**
+
+```
+# KeepAliveがOnの時のみ
+MaxKeepAliveRequests 1000
+```
+
+
+
 
 
 ## 03. mod_so
@@ -155,19 +226,19 @@ LoadModule dir_module modules/mod_dir.so
 
 #### ・DirectoryIndexとは
 
-indexファイルを指定する．
+Directoryディレクトリによってリクエストされたディレクトリのインデックスファイルをレスポンスする．
 
 **【実装例】**
 
 ```apacheconf
-<Directory "/example">
+<Directory "/var/www/example">
     DirectoryIndex index.html index.php
 </Directory>
 ```
 **【実装例】**
 
 ```apacheconf
-<Directory "/example">
+<Directory "/var/www/example">
     DirectoryIndex index.html
     DirectoryIndex index.php
 </Directory>
@@ -182,7 +253,7 @@ htaccessファイルで有効化するディレクティブを定義する．
 **【実装例】**
 
 ```apacheconf
-<Directory "/example">
+<Directory "/var/www/example">
     DirectoryIndex index.php
     AllowOverride All
 </Directory>
