@@ -2,14 +2,25 @@
 
 ## 01. RESTとRESTfulとは
 
-### REST
+### RESTとは
 
-#### ・RESTとは
+分散型アプリケーションを構築する時に，それぞれアプリケーションを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
 
-分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
+![REST](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/REST.png)
+
+### RESTの４原則
 
 #### ・Addressability
 #### ・Stateless
+
+クライアントに対してレスポンスを送信したら，クライアントの情報を保持せずに破棄する仕組みのこと．擬似的にStatefulな通信を行う時は，キャッシュ，Cookie，セッションIDを用いて，クライアントの情報を保持する．
+
+| Statelessプロトコル | Statefulプロトコル |
+| ------------------- | ------------------ |
+| HTTP                | SSH                |
+| HTTPS               | TLS/SSL            |
+| -                   | SFTP               |
+
 #### ・Connectability
 #### ・Uniform Interface
 
