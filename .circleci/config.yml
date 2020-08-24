@@ -112,8 +112,8 @@ workflows:
           filters:
             branches:
               only:
-                # NOTE: masterブランチのみ起動
-                - stop_master
+                # NOTE: productionブランチのみ起動
+                - production
       # Deploy Image To Docker Hub
       - push-images-www:
           post-steps:
@@ -121,8 +121,8 @@ workflows:
           filters:
             branches:
               only:
-                # NOTE: masterブランチのみ起動
-                - stop_master
+                # NOTE: productionブランチのみ起動
+                - production
       # Make Deploy Source
       - make-deploy-source:
           requires:
