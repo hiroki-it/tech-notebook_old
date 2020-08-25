@@ -33,13 +33,13 @@ $ terraform import -var-file=config.tfvars {リソース}.{リソース名} {AWS
 モジュール化されている場合，指定の方法が異なる．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.{モジュール名}.{リソース}.{リソース名} {AWS上リソース名}
+$ terraform import -var-file=config.tfvars module.{モジュール名}.{リソース}.{リソース名} {AWS上リソースID}
 ```
 
 例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www tech-notebook-www
+$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www xxxxxxxxx
 ```
 
 もし```import```を行わないと，すでにクラウド上にリソースが存在しているためにリソースを構築できない，というエラーになる．
@@ -149,20 +149,25 @@ vpc_cidr_block = "n.n.n.n/n" // IPv4アドレス範囲
 
 
 
-## 03. Rootモジュール
+### variable 
 
-### Rootモジュールにおけるvariable 
-
-変数定義ファイルから，ファイル内の変数に値を格納する．各サービスの間で実装方法が同じため，VPCのみ例を示す．
+宣言することで，リソースに変数を与えることができるようになる．
 
 **【実装例】**
 
 ```tf
-// VPC
-variable "vpc_cidr_block" {}
+#=============
+# Input Value
+#=============
+// AWS認証情報
+variable "credential" {
+  type = map(string)
+}
 ```
 
 
+
+##  03. Rootモジュールにおける実装
 
 ### provider
 
@@ -174,7 +179,8 @@ AWSの他，GCPなどのプロバイダの認証を行う．
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
-  region = var.region
+  region     = var.region
+  version    = "~2.7" // プロバイダーのバージョン変更時は initを実行
 }
 ```
 
@@ -182,518 +188,57 @@ provider "aws" {
 
 ### module
 
-モジュールを読み込み，変数を渡す．各モジュールの記述例を以下に示す．各サービスの間で実装方法が同じため，VPCのみ例を示す．
-
-
-
-
-#### ・VPC
+モジュールを読み込み，変数を渡す．
 
 **【実装例】**
 
+ALBの場合
+
 ```tf
 #======
-# VPC
+# ALB
 #======
-module "vpc_module" {
+module "alb_module" {
 
   // モジュールのResourceを参照
-  source = "../modules/vpc"
+  source = "../modules/alb"
 
-  region                      = var.region
-  vpc_cidr_block              = var.vpc_cidr_block
-  subnet_public_1a_cidr_block = var.subnet_public_1a_cidr_block
-  subnet_public_1c_cidr_block = var.subnet_public_1c_cidr_block
-  igw_cidr_block              = var.igw_cidr_block
-  app_name                    = var.app_name
+  // 他のモジュールの出力値を渡す
+  acm_certificate_arn = module.acm_certificate_module.acm_certificate_arn
+  subnet_public_1a_id = module.vpc_module.subnet_public_1a_id
+  subnet_public_1c_id = module.vpc_module.subnet_public_1c_id
+  sg_alb_id           = module.security_group_module.sg_alb_id
+  vpc_id              = module.vpc_module.vpc_id
+
+  app_name              = var.app_name.kebab
+  port_http             = var.port.http
+  port_https            = var.port.https
+  port_custom_tcp_https = var.port.custom_tcp_https
+  ssl_policy            = var.ssl_policy
 }
 ```
 
 
 
-## 04. 各モジュール｜resource
+## 04. 各モジュールにおける実装
 
-### 各モジュールにおけるvariable
+### resource
 
-```variable```によって，rootモジュールファイルから変数を入力できる．
+aws-cliを用いて，クラウドインフラストラクチャの構築を行う．
 
 **【実装例】**
 
-```tf
-#=============
-# Input Value
-#=============
-// App Name
-variable "app_name" {}
-```
-
-
-
-### コンピューティング
-
-```resource```によって，クラウド上に構築するリソースを定義できる．各リソースの記述例を以下に示す．なお，各モジュールファイルにおける変数入力の実装は省略している．
-
-#### ・EC2
-
-**【実装例】**
-
-```tf
-#==============
-# EC2 Instance
-#==============
-resource "aws_instance" "www-1a" {
-  ami                     = module.ami_module.ami_amazon_linux_2_id
-  instance_type           = "t2.micro"
-  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
-  subnet_id               = module.vpc_module.subnet_public_1a_id
-  disable_api_termination = true
-  monitoring              = true
-  tags = {
-    Name          = "${var.instance_app_name}-www-1a"
-    Subnet-status = "public"
-  }
-}
-
-resource "aws_instance" "www-1c" {
-  ami                     = module.ami_module.ami_amazon_linux_2_id
-  instance_type           = "t2.micro"
-  vpc_security_group_ids  = [module.security_group_module.security_group_instance_id]
-  subnet_id               = module.vpc_module.subnet_public_1c_id
-  disable_api_termination = true
-  monitoring              = true
-  tags = {
-    Name          = "${var.instance_app_name}-www-1c"
-    Subnet-status = "public"
-  }
-}
-```
-#### ・公開鍵
-
-**【実装例】**
-
-```tf
-#==============
-# Public Key
-#==============
-resource "aws_key_pair" "key_pair" {
-  key_name = var.key_name
-  public_key = file(var.public_key_path)
-}
-```
-
-
-
-### コンテナ｜ECS x Fargate
-
-#### ・ECS
-
-Blue/Greenデプロイメントを行う場合の例を示す．
-
-```tf
-#=============
-# ECS Cluster
-#=============
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.app_name}-ecs-cluster"
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-}
-
-#==============
-# ECS Service
-#==============
-resource "aws_ecs_service" "ecs_service" {
-  name             = "${var.app_name}-ecs-service"
-  cluster          = aws_ecs_cluster.ecs_cluster.id
-  task_definition  = "${aws_ecs_task_definition.ecs_task_definition.family}:${max("${aws_ecs_task_definition.ecs_task_definition.revision}", "${data.aws_ecs_task_definition.ecs_task_definition.revision}")}"
-  launch_type      = "FARGATE"
-  desired_count    = "1"
-  platform_version = "1.3.0" // LATESTとすると自動で変換されてしまうため，直接指定する．
-
-  // デプロイメント
-  deployment_controller {
-    type = "CODE_DEPLOY" // CodeDeploy制御によるBlue/Greenデプロイ
-  }
-
-  // ロードバランシング
-  load_balancer {
-    target_group_arn = var.alb_target_group_blue_arn
-    container_name   = "www-container"
-    container_port   = var.port_http_default
-  }
-
-  // ネットワークアクセス
-  network_configuration {
-    subnets          = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-    security_groups  = [var.security_group_ecs_id]
-    assign_public_ip = true
-  }
-}
-
-#======================
-# ECS Task Definition
-#======================
-data "aws_ecs_task_definition" ecs_task_definition {
-  task_definition = "${var.app_name}-ecs-task-definition"
-}
-
-resource "aws_ecs_task_definition" "ecs_task_definition" {
-  family                   = data.aws_ecs_task_definition.ecs_task_definition.family // ファミリーにリビジョン番号がついてタスク定義名
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  task_role_arn            = var.ecs_task_execution_role_arn
-  execution_role_arn       = var.ecs_task_execution_role_arn
-  cpu                      = var.ecs_task_size_cpu // タスクサイズ．タスク当たり，定義されたコンテナが指定個数入ることを想定
-  memory                   = var.ecs_task_size_memory
-  container_definitions    = file("container_definition.json") // 引数パスはルートモジュール基準
-}
-```
-
-
-#### ・ECR
+ALBの場合
 
 ```
-#======
-# ECR
-#======
-resource "aws_ecr_repository" "ecr_repository_www" {
-  name                 = "${var.app_name}-www"
-  image_tag_mutability = "IMMUTABLE"
-}
-```
-
-
-
-### ストレージ
-
-#### ・S3
-
-```
-#=====
-# S3
-#=====
-resource "aws_s3_bucket" "s3_bucket" {
-  bucket = "${var.app_name}-bucket"
-  acl    = "private"
-  versioning {
-    enabled = true
-  }
-}
-```
-
-
-
-### ネットワーキング，コンテンツデリバリー
-
-#### ・ALB
-
-```tf
 #======
 # ALB
 #======
 resource "aws_lb" "alb" {
   name               = "${var.app_name}-alb"
   load_balancer_type = "application"
-  security_groups    = [var.security_group_alb_id]
+  security_groups    = [var.sg_alb_id]
   subnets            = [var.subnet_public_1a_id, var.subnet_public_1c_id]
-}
-
-#===============
-# Target Group
-#===============
-// Blue
-resource "aws_lb_target_group" "alb_target_group_blue" {
-  name        = "${var.app_name}-target-group-blue"
-  port        = var.port_http_default // ALBからのルーティング時解放ポート
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.vpc_id
-
-  // ヘルスチェック
-  health_check {
-    path                = "/"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    timeout             = 5
-    interval            = 10
-    matcher             = 200
-    port                = var.port_http_default
-    protocol            = "HTTP"
-  }
-
-  depends_on = [aws_lb.alb]
-}
-
-// Green
-resource "aws_lb_target_group" "alb_target_group_green" {
-  name        = "${var.app_name}-target-group-green"
-  port        = var.port_http_custom // ALBからのルーティング時解放ポート
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.vpc_id
-
-  // ヘルスチェック
-  health_check {
-    path                = "/"
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    timeout             = 5
-    interval            = 10
-    matcher             = 200
-    port                = var.port_http_custom
-    protocol            = "HTTP"
-  }
-
-  depends_on = [aws_lb.alb]
-}
-
-#===========
-# Listener
-#===========
-resource "aws_lb_listener" "lb_listener_blue" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_https // ALBの受信時の解放ポート
-  protocol          = "HTTPS"
-  ssl_policy        = var.ssl_policy
-  certificate_arn   = var.acm_certificate_arn
-
-  // アクション
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_target_group_blue.arn
-  }
-}
-
-resource "aws_lb_listener" "lb_listener_green" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = var.port_http_custom // ALBの受信時の解放ポート
-  protocol          = "HTTP"
-
-  // アクション
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_target_group_green.arn
-  }
-}
-```
-
-#### ・Route53
-
-ホストゾーンはコンソールから入力し，Terraformの変更対象外とした方が運用上都合が良いため，dataリソースを用いている．
-
-```tf
-#==========
-# Route53
-#==========
-// ホストゾーンの取得
-data "aws_route53_zone" "route53_zone" {
-  name = var.app_domain_name
-}
-
-// レコードセット
-resource "aws_route53_record" "route53_record" {
-  zone_id = data.aws_route53_zone.route53_zone.id
-  name    = "${var.app_sub_domain_name}.${data.aws_route53_zone.route53_zone.name}" // サブドメインを含むFQDN
-  type    = "CNAME"
-  ttl     = 60
-  records = [var.alb_dns_name] // ルーティング先のDNS名
-}
-```
-
-#### ・VPC
-
-**【実装例】**
-
-```tf
-#=============
-# VPC
-#=============
-resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr_block
-  tags = {
-    Name = "${var.instance_app_name}-vpc"
-  }
-}
-```
-
-#### ・Subnet
-
-**【実装例】**
-
-```tf
-#=============
-# Subnet
-#=============
-resource "aws_subnet" "subnet_public_1a" {
-  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block        = var.subnet_public_1a_cidr_block
-  availability_zone = "${var.region}a"
-  tags = {
-    Name = "${var.instance_app_name}-public-subnet-1a"
-  }
-}
-resource "aws_subnet" "subnet_public_1c" {
-  vpc_id            = aws_vpc.vpc.id // アタッチするVPCのID
-  cidr_block        = var.subnet_public_1c_cidr_block
-  availability_zone = "${var.region}c"
-  tags = {
-    Name = "${var.instance_app_name}-public-subnet-1c"
-  }
-}
-```
-
-#### ・Route Table
-
-**【実装例】**
-
-```tf
-#=============
-# Route Table
-#=============
-resource "aws_route_table" "route_table_public" {
-  vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
-  route {
-    cidr_block = var.igw_cidr_block
-    gateway_id = aws_internet_gateway.internet_gateway.id
-  }
-  tags = {
-    Name = "${var.instance_app_name}-public-route-table"
-  }
-}
-```
-
-```tf
-#==============================
-# Subnet と Route Table の紐付け
-#==============================
-resource "aws_route_table_association" "route_table_association_public_1a" {
-  subnet_id      = aws_subnet.subnet_public_1a.id        // アタッチするSubnetのID
-  route_table_id = aws_route_table.route_table_public.id // アタッチするRoute TableのID
-}
-
-resource "aws_route_table_association" "route_table_association_public_1c" {
-  subnet_id      = aws_subnet.subnet_public_1c.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-```
-
-#### ・Internet Gateway
-
-**【実装例】**
-
-```tf
-#=================
-# Internet Gateway
-#=================
-resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.vpc.id // アタッチするVPCのID
-  tags = {
-    Name = "${var.instance_app_name}-internet-gateway"
-  }
-}
-```
-
-
-
-### 開発者用ツール
-
-#### ・CodeDeploy
-
-Blue/Greenデプロイメントを行う場合の例を示す．
-
-```
-#=================
-# CodeDeploy App
-#=================
-resource "aws_codedeploy_app" "codedeploy_app" {
-  name             = var.app_name
-  compute_platform = "ECS"
-}
-
-#===================
-# CodeDeploy Group
-#===================
-resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
-  app_name               = var.app_name
-  deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
-  deployment_group_name  = "${var.app_name}-deployment-group"
-  service_role_arn       = var.codedeployment_role_for_ecs_arn
-
-  auto_rollback_configuration {
-    enabled = true
-    events  = ["DEPLOYMENT_FAILURE"]
-  }
-
-  // デプロイタイプ
-  deployment_style {
-    deployment_option = "WITH_TRAFFIC_CONTROL"
-    deployment_type   = "BLUE_GREEN"
-  }
-
-  // デプロイ設定
-  blue_green_deployment_config {
-    deployment_ready_option {
-      action_on_timeout = "CONTINUE_DEPLOYMENT"
-    }
-
-    terminate_blue_instances_on_deployment_success {
-      action                           = "TERMINATE"
-      termination_wait_time_in_minutes = 5
-    }
-  }
-
-  // 環境設定
-  ecs_service {
-    cluster_name = var.ecs_cluster_name
-    service_name = var.ecs_service_name
-  }
-
-  // Load Balancer（Additional configure in ECS）
-  load_balancer_info {
-    target_group_pair_info {
-      
-      // 本稼働リスナーARN
-      prod_traffic_route {
-        listener_arns = [var.alb_listener_blue_arn]
-      }
-      // ターゲットグループ１（Blue）
-      target_group {
-        name = var.alb_target_group_blue_name
-      }
-      
-      // テストリスナーARN
-      test_traffic_route {
-        listener_arns = [var.alb_listener_green_arn]
-      }
-      // ターゲットグループ２（Green）
-      target_group {
-        name = var.alb_target_group_green_name
-      }
-    }
-  }
-}
-```
-
-
-
-## 04-02. 各モジュール｜その他
-
-### output
-
-モジュールで構築されたリソースがもつ特定の値を出力する．各サービスの間で実装方法が同じため，VPCのみ例を示す．
-
-#### ・VPC
-
-**【実装例】**
-
-例えば，VPCやSubnetのIDは，他のリソースに紐づけるために，値を出力する必要がある．
-
-```tf
-// VPC
-output "vpc_id" {
-  value = aws_vpc.vpc.id
 }
 ```
 
@@ -701,11 +246,11 @@ output "vpc_id" {
 
 ### data resource
 
-```data```によって，外部サービスから値を取得する．
+```data```によって，外部サービスから値を取得する．ルートモジュールに実装することも可能であるが，各モジュールに実装した方が分かりやすい．
 
 #### ・Role
 
-```
+```tf
 #======
 # ECS
 #======
@@ -757,7 +302,153 @@ data "aws_ami" "amazon_linux_2" {
 
 
 
-## 05. 外部ファイルとしての切り出し
+### output
+
+モジュールで構築されたリソースがもつ特定の値を出力する．
+
+#### ・ALB
+
+**【実装例】**
+
+ALBの場合
+
+```tf
+#====================
+# Output From Module
+#====================
+// ALB
+output "alb_dns_name" {
+  value = aws_lb.alb.dns_name
+}
+output "alb_zone_id" {
+  value = aws_lb.alb.zone_id
+}
+
+// ALB Target Group
+output "alb_target_group_green_name" {
+  value = aws_lb_target_group.alb_target_group_green.name
+}
+output "alb_target_group_blue_name" {
+  value = aws_lb_target_group.alb_target_group_blue.name
+}
+output "alb_target_group_blue_arn" {
+  value = aws_lb_target_group.alb_target_group_blue.arn
+}
+
+// Listener
+output "alb_listener_blue_arn" {
+  value = aws_lb_listener.lb_listener_blue.arn
+}
+output "alb_listener_green_arn" {
+  value = aws_lb_listener.lb_listener_green.arn
+}
+```
+
+
+
+## 05. メタ引数
+
+### メタ引数とは
+
+全てのリソースで使用できるオプションのこと．
+
+### ```depends_on```
+
+指定したリソースの後に構築を行う．
+
+```tf
+resource "aws_iam_role_policy" "example" {
+  name   = "example"
+  role   = aws_iam_role.example.name
+  policy = jsonencode({
+    "Statement" = [{
+      "Action" = "s3:*",
+      "Effect" = "Allow",
+    }],
+  })
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-a1b2c3d4"
+  instance_type = "t2.micro"
+  iam_instance_profile = aws_iam_instance_profile.example
+
+  depends_on = [
+    aws_iam_role_policy.example,
+  ]
+}
+```
+
+
+
+### ```count```
+
+```tf
+resource "aws_instance" "server" {
+  count = 4 # create four similar EC2 instances
+
+  ami           = "ami-a1b2c3d4"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "Server ${count.index}"
+  }
+}
+```
+
+
+
+### ```for_each```
+
+### ```lifecycle```
+
+#### ・```create_before_destroy```
+
+```tf
+resource "azurerm_resource_group" "example" {
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+```
+
+#### ・```ignore_changes```
+
+リソース内で変更を無視するオプションを設定する．
+
+```tf
+resource "aws_instance" "example" {
+
+  tags = {
+    Name = "xxx"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags["xxx"],
+    ]
+  }
+}
+```
+
+リソース全体を無視する場合，配列などは使用せず，```all```とする．
+
+```tf
+resource "aws_instance" "example" {
+
+  tags = {
+    Name = "xxx"
+  }
+
+  lifecycle {
+    ignore_changes = all
+}
+```
+
+
+
+## 06. 外部ファイルとしての切り出し
 
 ### IAMポリシーJSON
 

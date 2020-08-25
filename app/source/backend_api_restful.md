@@ -6,7 +6,7 @@
 
 分散型アプリケーションを構築する時に，それぞれアプリケーションを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
 
-![REST](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/REST.png)
+![REST](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/REST.jpg)
 
 ### RESTの４原則
 

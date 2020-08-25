@@ -141,6 +141,8 @@ git checkout -b feature/3 d7e49b04
 
 ### ```stash```：
 
+#### ・```stash```とは
+
 ファイルが，『インデックス』（=```add```）あるいは『HEAD』（=```commit```）に存在している状態で，異なるローカルブランチを```checkout```しようとすると，以下のエラーが出る．
 
 ```bash
@@ -243,7 +245,51 @@ $ git stash clear
 
 
 
+### ```revert```：
+
+#### ・```revert```とは
+
+作業中のローカルブランチにおいて，指定の履歴を削除．
+
+![revert.png](https://qiita-image-store.s3.amazonaws.com/0/292201/995d8f16-0a3e-117f-945f-c20a511edeaf.png)
+
+#### ・```revert [コミットID] --no-edit```
+
+指定したコミットのみを打ち消す新しいコミットを作成する．コミットメッセージは，打ち消すコミットと同じものになる．
+
+```bash
+$ git revert [コミットID] --no-edit
+```
+
+#### ・```revert [コミットID] --edit```
+
+指定したコミットのみを打ち消す新しいコミットを作成する．vimが起動するので，コミットメッセージを新しいものに変更する．
+
+```bash
+$ git revert [コミットID] --edit
+```
+
+#### ・```revert -m [マージナンバー] [マージコミットID]```
+
+指定したマージコミットのみを打ち消す新しいコミットを作成する．コミットメッセージは，打ち消すコミットと同じものになる．マージナンバーを事前に確認しておく必要がある．
+
+```bash
+$ git show
+commit xyz
+Merge: 1a1a1a 2b2b2b    #ここに注目
+Author: xxxx xxxx
+Date:   Thu Jul 13 09:00:00 2017 +0000
+
+    Merge commit
+    
+$ git revert -m 1 xyz
+```
+
+
+
 ### ```reset```：
+
+#### ・```reset```とは
 
 作業中のローカルブランチにおいて，指定の履歴まで戻し，それ以降を削除．
 
@@ -252,21 +298,37 @@ $ git stash clear
 #### ・```reset HEAD [ファイル名／ファイルパス]```
 インデックスから，指定したファイルを削除．
 
+```bash
+$ git reset HEAD [ファイル名／ファイルパス]
+```
+
 #### ・```reset --soft [コミットID]```
 作業中のローカルブランチにおいて，最新のHEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除
 ```commit```のみを取り消したい場合はこれ．
+
+```bash
+$ git reset --soft [コミットID]
+```
 
 #### ・```reset --mixed [コミットID]```
 作業中のローカルブランチにおいて，インデックス（=```add```後），HEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除．
 ```add```と```commit```を取り消したい場合はこれ．
 
+```bash
+$ git reset --mixed [コミットID]
+```
+
 #### ・```reset --hard [コミットID]```
 作業中のローカルブランチにおいて，最新のワークツリー（=フォルダ），インデックス（=```add```後），HEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除．
 <font color="red">**ワークツリー（=フォルダ）内のファイルの状態も戻ってしまうので，取り扱い注意！！**</font>
 
+```bash
+$ git reset --hard [コミットID]
+```
+
 #### ・```reset```の使用例
 
-（１）まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
+1. まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
 
 ```bash
 $ git log
@@ -290,13 +352,13 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
     add #0 xxxさんのREADME_1を追加
 ```
 
-（２）指定のコミットまで履歴を戻す．
+2. 指定のコミットまで履歴を戻す．
 
 ```bash
 $ git reset --soft f81c813a1ead9a968c109671e6d83934debcab2e
 ```
 
-（３）```log ```で，正しく変更されているか確認．
+3. ```log ```で，正しく変更されているか確認．
 
 ```bash
 $ git log
@@ -307,8 +369,8 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
     add 新しいREADMEを追加
 ```
 
-（４）```push --force```でローカルリポジトリの変更をリモートリポジトリに強制的に反映．
-<font color="red">**『強制的にpushした』というログも，リモート側には残らない．**</font>
+4. ```push --force```でローカルリポジトリの変更をリモートリポジトリに強制的に反映．
+   <font color="red">**『強制的にpushした』というログも，リモート側には残らない．**</font>
 
 ```bash
 $ git push --force
@@ -319,7 +381,9 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
 
 ### ```rebase```：
 
-作業中のローカルブランチにおいて，ブランチの派生元を変更．
+#### ・```rebase```とは（注意点あり）
+
+作業中のローカルブランチにおいて，ブランチの派生元を変更．リモートブランチにpushした後は使ってはならず，他のコマンドを使う．
 
 #### ・```rebase --interactive [コミットID]```
 
@@ -327,7 +391,7 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
 
 - **コミットメッセージの変更**
 
-（１）まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
+1. まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
 
 ```bash
 $ git log
@@ -351,7 +415,7 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
     add #0 xxxさんのREADME_1を追加
 ```
 
-（２）指定した履歴の削除
+2. 指定した履歴の削除
 
 ```bash
 $git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
@@ -376,20 +440,20 @@ pick b1b5c0f add #0 xxxxxxxxxx
 
 で終了．
 
-（3）```commit --amend```でエディタを開き，メッセージを変更．
+3. ```commit --amend```でエディタを開き，メッセージを変更．
 
 ```bash
 $ git commit --amend
 ```
 
-（4）```rebase --continue```を実行．
+4. ```rebase --continue```を実行．
 
 ```bash
 $ git rebase --continue
 Successfully rebased and updated refs/heads/develop.
 ```
 
-（5）```push```しようとすると，```![rejected] develop -> develop (non-fast-forward)```とエラーが出るので，
+5. ```push```しようとすると，```![rejected] develop -> develop (non-fast-forward)```とエラーが出るので，
 
 ```bash
 git merge --allow-unrelated-histories
@@ -454,14 +518,6 @@ $ git rebase --abort
 hasegawahiroki@Hiroki-Fujitsu MINGW64 /c/Projects/Symfony2_Nyumon (master)
 $
 ```
-
-
-
-### ```revert```：
-
-作業中のローカルブランチにおいて，指定の履歴を削除．
-
-![revert.png](https://qiita-image-store.s3.amazonaws.com/0/292201/995d8f16-0a3e-117f-945f-c20a511edeaf.png)
 
 
 

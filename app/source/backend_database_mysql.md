@@ -722,7 +722,15 @@ CREATE USER '{ユーザ名}' IDENTIFIED BY '{パスワード}'
 
 
 ```mysql
-# 全権限を付与
+# 全てのデータベースに関する権限を付与
+GRANT ALL PRIVILEGES ON *.* TO '{ユーザ名}';
+
+# Amazon AuroraまたはRDSの場合はこちら
+GRANT USAGE ON `%`.* TO '{ユーザー名}';
+```
+
+```mysql
+# 特定のデータベースに関する全権限を付与
 GRANT ALL PRIVILEGES ON {DB名}.* TO '{ユーザ名}';
 ```
 
