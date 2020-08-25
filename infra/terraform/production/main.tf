@@ -12,6 +12,7 @@ provider "aws" {
 # Roles
 #========
 module "service_role_module" {
+
   // モジュールのResourceを参照
   source = "../modules/service_role"
 
@@ -138,6 +139,7 @@ module "ecs_module" {
 # CodeDeploy
 #=============
 module "codedeploy_module" {
+
   // モジュールのResourceを参照
   source = "../modules/codedeploy"
 
@@ -157,19 +159,44 @@ module "codedeploy_module" {
 # S3
 #=====
 module "s3_module" {
+
+  // モジュールのResourceを参照
   source = "../modules/s3"
 
   app_name = var.app_name.kebab
+}
+
+#======
+# SNS
+#======
+module "sns_module" {
+
+  // モジュールのResourceを参照
+  source = "../modules/sns"
+
+  app_name         = var.app_name.kebab
+  chatbot_endpoint = module.chatbot_module.aws_chatbot_endpoint
+}
+
+#==========
+# Chatbot
+#==========
+module "chatbot_module" {
+
+  // モジュールのResourceを参照
+  source = "../modules/chatbot"
 }
 
 #==================
 # CloudWatch Logs
 #==================
 module "cloudwatch_module" {
+
+  // モジュールのResourceを参照
   source = "../modules/cloudwatch"
 
   sns_topic_arn = module.sns_module.sns_topic_arn
-  
+
   app_name_kebab = var.app_name.kebab
   app_name_camel = var.app_name.camel
 }
@@ -178,6 +205,7 @@ module "cloudwatch_module" {
 # Certificate
 #================
 module "acm_certificate_module" {
+
   // モジュールのResourceを参照
   source = "../modules/acm_certificate"
 
