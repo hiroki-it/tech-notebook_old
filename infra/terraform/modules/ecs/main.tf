@@ -43,6 +43,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   // 動的な差分を無視
+  // NOTE: apply時にコメントアウトする
   lifecycle {
     ignore_changes = [
       // タスク数の増減

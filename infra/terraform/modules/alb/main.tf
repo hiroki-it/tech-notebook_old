@@ -95,6 +95,7 @@ resource "aws_lb_listener" "lb_listener_blue" {
   }
 
   // Blue/Greenデプロイメントによるターゲットグループの動的差分を無視
+  // NOTE: apply時にコメントアウトする
   lifecycle {
     ignore_changes = [default_action]
   }
