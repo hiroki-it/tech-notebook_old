@@ -23,10 +23,12 @@ variable "public_key" {
 
 // VPC
 variable "vpc_cidr_block" {
+  type = string
 }
 
 // Internet Gateway
 variable "igw_cidr_block" {
+  type = string
 }
 
 // Network ACL
@@ -51,4 +53,5 @@ variable "port" {
 
 // certificate
 variable "ssl_policy" {
+  type = string
 }
