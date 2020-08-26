@@ -399,7 +399,7 @@ ALBからEC2へのルーティングをHTTPプロトコルとした場合，ア�
 
 #### ・Webサーバにおける対処方法
 
-ALBを経由したリクエストの場合，リクエストヘッダーに```X-Forwarded-Proto```が付与される．これには，ALBに対するリクエストのプロトコルの種類が．文字列で格納されている．これが「```https```」だった場合に，WebサーバへのリクエストをHTTPSであるとみなすように対処する．これにより，アプリケーションへのリクエストのプロトコルがHTTPSとなる（アプリケーション側では対応不要）．
+ALBを経由したリクエストの場合，リクエストヘッダーに```X-Forwarded-Proto```が付与される．これには，ALBに対するリクエストのプロトコルの種類が．文字列で格納されている．これが「```https```」だった場合に，WebサーバへのリクエストをHTTPSであるとみなすように対処する．これにより，アプリケーションへのリクエストのプロトコルがHTTPSとなる（こちらを行った場合は，アプリケーション側の対応不要）．
 
 **【実装例】**
 
@@ -415,7 +415,7 @@ ALBを経由したリクエストの場合，リクエストヘッダーに```HT
 
 
 ```php
-<?php     
+<?php
 // index.php
 if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])
     && $_SERVER["HTTP_X_FORWARDED_PROTO"] == 'https') {
@@ -641,7 +641,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 #### ・名前空間，メトリクス，ディメンション
 
-![名前空間，メトリクス，ディメンション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前空間，メトリクス，ディメンション.jpeg)
+![名前空間，メトリクス，ディメンション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前空間，メトリクス，ディメンション.png)
 
 
 #### ・コマンド

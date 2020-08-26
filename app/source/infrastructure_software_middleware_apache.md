@@ -170,7 +170,7 @@ HTTPプロトコルのリクエストのクライアントに対して，セッ�
 
 **【実装例】**
 
-```
+```apacheconf
 KeepAlive On
 ```
 
@@ -180,7 +180,7 @@ KeepAlive On
 
 **【実装例】**
 
-```
+```apacheconf
 # KeepAliveがOnの時のみ
 KeepAliveTimeout 5
 ```
@@ -191,7 +191,7 @@ KeepAliveTimeout 5
 
 **【実装例】**
 
-```
+```apacheconf
 # KeepAliveがOnの時のみ
 MaxKeepAliveRequests 1000
 ```
