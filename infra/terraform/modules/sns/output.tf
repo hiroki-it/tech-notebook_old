@@ -1,6 +1,12 @@
 #====================
 # Output From Module
 #====================
-output "sns_topic_arn" {
-  value = aws_sns_topic.sns_topic.arn
+// ECS
+output "sns_topic_ecs_arn" {
+value = aws_sns_topic.sns_topic_ecs.arn
+}
+
+// CodeDeploy
+output "sns_topic_codedeploy_arn" {
+  value = aws_sns_topic.sns_topic_codedeploy.arn
 }

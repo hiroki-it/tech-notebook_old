@@ -34,6 +34,6 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm" {
   comparison_operator = "GreaterThanThreshold" // 条件
   evaluation_periods  = 1
   threshold           = 0
-  actions_enabled     = true                // 通知トリガー
-  alarm_actions       = [var.sns_topic_arn] // 送信先 
+  actions_enabled     = true                    // 通知トリガー
+  alarm_actions       = [var.sns_topic_ecs_arn] // 送信先 
 }
