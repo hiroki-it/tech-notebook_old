@@ -16,3 +16,6 @@ variable "ecs_service_name" {}
 
 // CodeDeploy
 variable "codedeployment_role_for_ecs_arn" {}
+
+// SNS
+variable "sns_topic_codedeploy_arn" {}
