@@ -151,6 +151,7 @@ module "codedeploy_module" {
   codedeployment_role_for_ecs_arn = module.service_role_module.codedeployment_role_for_ecs_arn
   ecs_cluster_name                = module.ecs_module.ecs_cluster_name
   ecs_service_name                = module.ecs_module.ecs_service_name
+  sns_topic_codedeploy_arn        = module.sns_module.sns_topic_codedeploy_arn
 
   app_name = var.app_name.kebab
 }
@@ -174,8 +175,10 @@ module "sns_module" {
   // モジュールのResourceを参照
   source = "../modules/sns"
 
-  app_name         = var.app_name.kebab
   chatbot_endpoint = module.chatbot_module.aws_chatbot_endpoint
+
+  app_name = var.app_name.kebab
+
 }
 
 #==========
@@ -195,7 +198,7 @@ module "cloudwatch_module" {
   // モジュールのResourceを参照
   source = "../modules/cloudwatch"
 
-  sns_topic_arn = module.sns_module.sns_topic_arn
+  sns_topic_ecs_arn = module.sns_module.sns_topic_ecs_arn
 
   app_name_kebab = var.app_name.kebab
   app_name_camel = var.app_name.camel
