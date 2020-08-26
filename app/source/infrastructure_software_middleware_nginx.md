@@ -342,22 +342,22 @@ ssl_certificate_key /etc/nginx/ssl/server.key;
 **【実装例】**
 
 ```nginx
-# 1. ドキュメントルートを指定したリクエスト
+# 1. ドキュメントルートを指定したリクエストの場合
 location = / {
 
 }
 
-# 2. 『/images/』で始まるリクエストの場合．
+# 2. 『/images/』で始まるリクエストの場合
 location ^~ /images/ {
 
 }
 
-# 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合．
+# 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合
 location ~* \.(gif|jpg|jpeg)$ {
 
 }
 
-# 5-1. 『/docs/』で始まる全てのリクエストの場合．
+# 5-1. 『/docs/』で始まる全てのリクエストの場合
 location /docs/ {
 
 }
