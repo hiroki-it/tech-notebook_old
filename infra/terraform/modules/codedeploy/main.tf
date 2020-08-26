@@ -69,4 +69,11 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
       }
     }
   }
+
+  // トリガー
+  trigger_configuration {
+    trigger_name       = "${aws_codedeploy_app.codedeploy_app.name}-codedeploy-failure"
+    trigger_events     = ["DeploymentFailure"]
+    trigger_target_arn = var.sns_topic_codedeploy_arn // CodeDeployトピック
+  }
 }
