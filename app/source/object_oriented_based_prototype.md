@@ -94,7 +94,7 @@ function Example() {
     // 慣習的にアンダーバーでprivateを表す．
     _property = 0;
 
-    // プロパティ値として定義した関数を，メソッドという．
+    // プロパティ値として宣言した関数を，メソッドという．
     this.setValue = function(value) {
         this._property = value;
     };   
@@ -137,7 +137,7 @@ const Example = (value) => {
 }
 ```
 
-リテラル表記と```Object```コンストラクタ関数による生成とは異なり，コンストラクタ関数によって定義されたオブジェクトは，暗示的に```prototype```プロパティをもつ．
+リテラル表記と```Object```コンストラクタ関数による生成とは異なり，コンストラクタ関数によって宣言されたオブジェクトは，暗示的に```prototype```プロパティをもつ．
 
 **【実装例】**
 
@@ -148,7 +148,7 @@ const object1 = {};
 // Objectコンストラクタ関数による生成
 const object2 = new Object({});
 
-// ユーザ定義Functionコンストラクタ関数による生成
+// ユーザ宣言Functionコンストラクタ関数による生成
 const Object3 = function(){};
 
 // 出力結果
@@ -163,7 +163,7 @@ console.log(
 
 ### 糖衣構文の```class```の使用
 
-ES6から，糖衣構文の```class```によって，オブジェクトを定義できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
+ES6から，糖衣構文の```class```によって，オブジェクトを宣言できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
 
 **【実装例】**
 
@@ -173,7 +173,7 @@ class Example {
     
     // classでしか使えない．
     // Setterの代わりにコンストラクタでImmutableを実現．
-    // データの定義と格納が同時に行われる．
+    // データの宣言と格納が同時に行われる．
     constructor(value) {
         this.property = value;
     }
@@ -190,7 +190,7 @@ const Example = class {
     
     // classでしか使えない．
     // Setterの代わりにコンストラクタでImmutableを実現．
-    // データの定義と格納が同時に行われる．
+    // データの宣言と格納が同時に行われる．
     constructor(value) {
         this._property = value;
     }
@@ -222,7 +222,7 @@ const example = new Example(1)
 
 ```javascript
 // 大元となるオブジェクトは個別ファイルで管理しておくのがベター．
-// コンストラクタ関数の関数式による定義．
+// コンストラクタ関数の関数式による宣言．
 const Example = function(value) {
   
     // 慣習的にアンダーバーでprivateを表す．
@@ -244,7 +244,7 @@ const Example = function(value) {
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
-// prototypeプロパティの継承先のオブジェクトを定義．
+// prototypeプロパティの継承先のオブジェクトを宣言．
 const SubExample = function(subValue) {
     
     // 慣習的にアンダーバーでprivateを表す．
@@ -264,7 +264,7 @@ SubExample.prototype = new Example();
 
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）．
-var result = SubExample.getValue()
+const result = SubExample.getValue()
 console.log(result);
 ```
 
@@ -274,7 +274,7 @@ console.log(result);
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
-// prototypeプロパティの継承先のオブジェクトを定義．
+// prototypeプロパティの継承先のオブジェクトを宣言．
 const SubExample = function() {
     
     // 慣習的にアンダーバーでprivateを表す．
@@ -294,7 +294,7 @@ SubExample.prototype = Object.create(Example.prototype);
 
 // SubExampleクラスにはgetValue()は無い．
 // 継承元まで辿り，Examlpeクラスからメソッドがコールされる（プロトタイプチェーン）．
-var result = SubExample.getValue();
+const result = SubExample.getValue();
 console.log(result);
 ```
 
@@ -309,12 +309,12 @@ SubExample.prototype = Object.create(Example.prototype, {
     // メソッドを追加する．
     this.printSubValue = function() {
         return 'これは' + this.subProperty + 'です．';
-    };
+    }
   
 });
 
 // SubExampleクラスにはprintSubValue()が追加された．
-var result = SubExample.printSubValue();
+const result = SubExample.printSubValue();
 console.log(result);
 ```
 
@@ -370,13 +370,13 @@ function printParam(){
 }
 
 // オブジェクト1
-let object1 = {
+const object1 = {
   param: 'object1 param',
   func: printParam
 }
 
 // オブジェクト2
-let object2 = {
+const object2 = {
   param: 'object2 param',
   func: printParam
 }
@@ -394,7 +394,7 @@ object2.printParam; // object2 param
 
 #### ・アロー関数によるコンストラクタ関数内の```this```の場合
 
-アロー関数内の```this```の参照先には，十分な注意が必要である．今まで，JavaScriptでは，```this```の参照先が文脈によって変わることに批判が集まっていた．そこで，参照先が文脈によって変わらない機能が追加された．```this```は，自身が定義されたオブジェクトを指す．
+アロー関数内の```this```の参照先には，十分な注意が必要である．今まで，JavaScriptでは，```this```の参照先が文脈によって変わることに批判が集まっていた．そこで，参照先が文脈によって変わらない機能が追加された．```this```は，自身が宣言されたオブジェクトを指す．
 
 **【実装例】**
 
@@ -403,18 +403,18 @@ object2.printParam; // object2 param
 param = 'global param';
 
 // アロー関数による省略記法
-let printParam = () => {
+const printParam = () => {
   console.log(this.param);
 };
 
 // オブジェクト1
-let object1 = {
+const object1 = {
   param: 'object1 param',
   func: printParam
 };
 
 // オブジェクト2
-let object2 = {
+const object2 = {
   param: 'object2 param',
   func: printParam
 }
@@ -422,7 +422,7 @@ let object2 = {
 
 ```javascript
 /* アロー関数内のthisの場合
-thisは，自身が定義されたオブジェクトを指す．
+thisは，自身が宣言されたオブジェクトを指す．
 ここでは，一番外側のWindowオブジェクト．
 参照先は文脈によって変わらない．
 */
@@ -446,7 +446,7 @@ JavaScriptでは，画面上で何らかのイベントが発火し，これに�
 #### ・イベントの種類
 
 
-### ```addEventListener("event", methodA(){})```
+### ```addEventListener('イベント名', methodA(){})```
 
 第一引数で，```click```などのイベントを設定し，第二引数でメソッド（無名関数でも可）を渡す．
 
@@ -454,7 +454,7 @@ JavaScriptでは，画面上で何らかのイベントが発火し，これに�
 <button id="btn">表示</button>
 
 <script>
-var btn = document.getElementById('btn');
+const btn = document.getElementById('btn');
 btn.addEventListener('click', function() {
     console.log('クリックされました！');
     },
@@ -467,15 +467,17 @@ btn.addEventListener('click', function() {
 
 ## 03. データ型
 
-### ```null```／```undefined```
+### ```null```，```undefined```
+
+#### ・```null```と```undifined```の違い
 
 ```javascript
 // 変数a: 意図をもってnullを入れている
-var a = null;
+const a = null;
 console.log(a);  // null
 
 // 変数b: 初期化されていない（値が代入されていない）
-var b;
+const b;
 
 // 変数bの出力
 console.log(b);  // undefied
@@ -490,8 +492,120 @@ function hoge(){
     return; // 空の『return文』です。空なので『undefined』を返します。
 }
 
-var x = hoge(); // 変数『x』には関数『hoge』から返ってきた『undefined』が代入されます。
+const x = hoge(); // 変数『x』には関数『hoge』から返ってきた『undefined』が代入されます。
  
 console.log(x); // 『undefined』が出力されます。
+```
+
+
+
+## 04. 変数
+
+### 変数の種類
+
+#### ・一覧表
+
+|              | var          | let              | const            |
+| :----------- | :----------- | :--------------- | ---------------- |
+| **再宣言**   | 可能         | 不可能           | 不可能           |
+| **再代入**   | 可能         | 可能             | 不可能           |
+| **スコープ** | 関数スコープ | ブロックスコープ | ブロックスコープ |
+
+#### ・```const```
+
+基本的には，宣言に```const```を用いる
+
+```javascript
+if (true) {
+  // ブロック外からアクセス不可
+  const x = 'hoge';
+    
+  // 再宣言不可
+  const x = 'fuga'; // ERROR
+  
+  // 再代入不可
+  x = 'fuga'; // ERROR
+}
+
+// ブロック内のconstにアクセス不可
+console.log(x); // ERROR
+```
+
+#### ・ ```let```
+
+繰り返し処理において再代入が必要であれば，```const```ではなく```let```を用いる．
+
+
+```javascript
+if (true) {
+  // ブロック外からアクセス不可
+  let x = 'hoge';
+    
+  // 再宣言不可
+  let x = 'fuga'; // ERROR
+  
+  // 再代入可能
+  x = 'fuga';
+}
+
+// ブロック内のletにアクセス不可
+console.log(x); // ERROR
+```
+
+#### ・ ```var```
+
+
+```javascript
+if (true) {
+  // ブロック外からアクセス可
+  var x = 'hoge';
+    
+  // 再宣言
+  var x = 'fuga';
+    
+  // 再代入可能
+  x = 'fuga';
+}
+
+// ブロック内のvarにアクセス可能
+console.log(x); // fuga
+```
+
+
+
+### 変数の巻き上げ
+
+#### ・巻き上げの対策
+
+意図しない挙動を防ぐため，javascriptにおいて，変数の宣言と代入は，スコープの最初に行う．
+
+#### ・```var```
+
+```console.log()```を実行した場合，```x```を宣言していないため，「x is not defined 」エラーになりそうだが，```x```に値が代入されていないことを示す「undefined」となる．
+
+```javascript
+console.log(x); // undefined
+
+var x = 'hoge';
+```
+
+これは，スコープの範囲内で宣言代入した変数において，宣言処理がスコープの最初に行ったことになるという仕様のためである．
+
+```javascript
+var x // 宣言のみ行われる
+
+console.log(x); // undefined
+
+var x = 'hoge'; // 宣言と代入が行われる
+```
+
+#### ・```let```,```const```
+
+```let```，```const```の場合は，巻き上げは起こらない．
+
+```javascript
+console.log(x); // x is not defined
+
+let x = 'hoge';
 ```
 
