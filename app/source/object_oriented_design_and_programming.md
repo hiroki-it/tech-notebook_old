@@ -331,7 +331,7 @@ class GoodsWithTax extends Goods
 {
     // ★★★★★★注目★★★★★★
     // printPriceメソッドをOverride
-    public function printPrice(): void
+    public function printPrice()
     {
         // 商品価格の税込み価格を計算し，表示
         $priceWithTax = round($this->getPrice() * 1.08);  // （1）
@@ -940,7 +940,7 @@ class Example1
 ```PHP
 <?php
 // use文で名前空間を読み込む．
-use Domain/Entity2
+use Domain/Entity2;
 
 namespace Domain/Entity2;
 
@@ -1252,7 +1252,7 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 ```PHP
 <?php
 // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
-public static function aggregateDogToyEntity(Array $fetchedData)
+public static function aggregateDogToyEntity(array $fetchedData)
 {
     return new DogToyEntity
     (
@@ -1262,7 +1262,7 @@ public static function aggregateDogToyEntity(Array $fetchedData)
         new PriceVO($fetchedData['dog_toy_price']),
         new ColorVO($fetchedData['color_value'])
     );
-}	
+}
 ```
 
 **【実装例】**
@@ -1298,8 +1298,8 @@ class ABC {
     public function getEditProperty()
     {
         // 単なるGetterではなく，例外処理も加える．
-        if(!isset($this->property){
-            throw new ErrorException('データに値がセットされていません．')
+        if(!isset($this->property)){
+            throw new ErrorException('データに値がセットされていません．');
         }
         return $this->property;
     }
@@ -1397,9 +1397,9 @@ class Example
     private $example = [];
     
     // 引数と返却値のデータ型を指定
-    public function __get(String $name): String
+    public function __get(string $name): string
     {
-        echo "{$name}データは存在しないため，データ値を取得できません．"
+        echo "{$name}データは存在しないため，データ値を取得できません．";
     }
 
 }
@@ -1412,7 +1412,7 @@ $example = new Example();
 $example->hoge;
 
 // 結果
-hogeデータは存在しないため，値を呼び出せません．
+// hogeデータは存在しないため，値を呼び出せません．
 ```
 
 #### ・```__call()```
@@ -1443,7 +1443,7 @@ class Example
     // 引数と返り値のデータ型を指定
     public function __set(String $name, String $value): String
     {
-        echo "{$name}データは存在しないため，{$value}を設定できません．"
+        echo "{$name}データは存在しないため，{$value}を設定できません．";
     }
 
 }
@@ -1456,7 +1456,7 @@ $example = new Example();
 $example->hoge = "HOGE";
 
 // 結果
-hogeデータは存在しないため，HOGEを設定できません．
+// hogeデータは存在しないため，HOGEを設定できません．
 ```
 
 #### ・マジックメソッドの```__construct()```
@@ -1611,9 +1611,9 @@ $ObjA = new Obj_A;
 
 $ObjB = $ObjA->getObjB();
 
-$ObjC = $B->getObjB();
+$ObjC = $ObjB->getObjB();
 
-$ObjD = $C->getObjD();
+$ObjD = $ObjC->getObjD();
 ```
 
 以下のように，メソッドチェーンという書き方が可能．
@@ -1648,7 +1648,7 @@ $D = getObjB()->getObjC()->getObjC();
 
 ```PHP
 <?php
-function quickSort(Array $array): Array 
+function quickSort(array $array): array 
 {
     // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
     if (count($array) <= 1) {
@@ -1731,7 +1731,7 @@ function returnMethod()
 ```PHP
 <?php
 returnMethod(); // returnMethod()です。
-... // 処理は続く．
+// 処理は続く．
 ```
 
 
@@ -1800,7 +1800,7 @@ foreach ($oneToThree as $value) {
 
 ```PHP
 <?php
-$dispatcher = new Dispatcher
+$dispatcher = new Dispatcher;
 
 // 文字列とメソッドの登録.
 $dispatcher->addListener(string $name, callable $listener)
@@ -1874,7 +1874,7 @@ class ResultCacher
         ];
     }
   
-  　
+    
     private function dispatch(string $funcName)
     {
         // call_user_funcでメソッドを実行
@@ -2127,8 +2127,7 @@ class Example
 
 番号キーごとに値が格納されたArray型のこと．
 
-```PHP
-<?php
+```
 Array
 (
     [0] => A
@@ -2141,8 +2140,7 @@ Array
 
 配列の中に配列をもつArray型のこと．配列の入れ子構造が２段の場合，『二次元配列』と呼ぶ．
 
-```PHP
-<?php
+```
 ( 
     [0] => Array
         (
@@ -2164,8 +2162,7 @@ Array
 
 キー名（赤，緑，黄，果物，野菜）ごとに値が格納されたArray型のこと．下の例は，二次元配列かつ連想配列である．
 
-```PHP
-<?php
+```
 Array
 (
     [赤] => Array
@@ -2427,8 +2424,7 @@ HashMapクラスによって実装されるArray型．PHPの連想配列に相�
 
 #### ・object
 
-```PHP
-<?php
+```
 Fruit Object
 (
     [id:private] => 1
@@ -2750,8 +2746,7 @@ preg_match('/jpeg$/i', $x);
 
 ルートディレクトリ（fruit.com）から，指定のファイル（apple.png）までのパス．
 
-```PHP
-<?php
+```
 <img src="http://fruits.com/img/apple.png">
 ```
 
@@ -2761,8 +2756,7 @@ preg_match('/jpeg$/i', $x);
 
 起点となる場所（apple.html）から，指定のディレクトリやファイル（apple.png）の場所までを辿るパス．例えば，apple.htmlのページでapple.pngを使用したいとする．この時，『 .. 』を用いて一つ上の階層に行き，青の後，imgフォルダを指定する．
 
-```PHP
-<?php
+```
 <img src="../img/apple.png">
 ```
 
