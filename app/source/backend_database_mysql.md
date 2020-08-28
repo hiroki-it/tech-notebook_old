@@ -1,6 +1,252 @@
 # SQL
 
-## 01. レコードの読み出し操作（```READ```）
+## 01. データベース
+
+### パラメータ
+
+#### ・パラメータの表示
+
+データベースに登録されているグローバルパラメータとセッションパラメータを表示する．
+
+```mysql
+-- パラメータを全て表示
+SHOW variables;
+
+-- OSとDBのタイムゾーンに関するパラメータを表示
+SHOW variables LIKE '%time_zone';
+```
+
+#### ・パラメータの設定
+
+```mysql
+-- グローバルパラメータの場合
+SET GLOBAL time_zone = 'Asia/Tokyo';
+
+-- セッションパラメータの場合
+SET time_zone = 'Asia/Tokyo';
+```
+
+
+
+## 02. テーブル
+
+### ```CREATE TABLE```句
+
+#### ・使い方
+
+**【実装例】**
+
+```mysql
+-- 注文テーブル作成
+CREATE TABLE order_data (
+
+    -- Primary Key制約
+    order_id INT(10) PRIMARY KEY COMMENT '注文ID',
+
+    -- Not Null制約
+    order_kbn INT(3) NOT NULL COMMENT '注文区分',
+    system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
+    system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
+    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
+  
+    -- 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
+    PRIMARY KEY(order_id, order_kbn)
+  
+    -- 参照制約キー
+    FOREIGN KEY order_kbn REFERENCES order_kbn_data
+)
+```
+
+
+
+### ```CREATE VIEW```句
+
+#### ・使い方
+
+ビューとはある表の特定のカラムや指定した条件に合致するレコードなどを取り出した仮想の表．また，複数の表を結合したビューを作成できる．ビューを作成することによりユーザに必要最小限のカラムやレコードのみにアクセスさせる事ができ，また結合条件を指定しなくても既に結合された表にアクセスできる．
+⇒よくわからん…
+
+**【実装例】**
+
+```mysql
+CREATE VIEW { テーブル名 } AS
+SELECT
+    *
+FROM
+    { テーブル名 };
+```
+
+
+
+### 制約
+
+#### ・Primary key（主キー）制約と複合主キー制約
+
+テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
+
+![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/主キー.jpg)
+
+主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
+
+| *user_id* | *period_start_date* | period_end_date | fee_yen |
+| --------- | ------------------- | --------------- | ------- |
+| *1*       | *2019-04-03*        | 2019-05-03      | 200     |
+| *1*       | *2019-10-07*        | 2019-11-07      | 400     |
+| *2*       | *2019-10-11*        | 2019-11-11      | 200     |
+
+#### ・Not Null制約
+
+レコードに挿入される値のデータ型を指定しておくことによって，データ型不一致やNullのための例外処理を実装しなくてもよくなる．
+
+#### ・Foreign key（外部キー）と参照制約
+
+複数のテーブルを関連付けるために用いられるカラムのことをForeign key（外部キー）という．外部キーの参照先のテーブルには，外部キーの値と同じ値のカラムが存在していなければならない（参照制約）．参照制約を行うと，以下の2つが起こる．
+
+親テーブルに存在しない値は，子テーブルに登録できない．
+
+親テーブルで参照される値は，子テーブルからは削除できない．
+
+![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部キー.png)
+
+
+
+### stored procedure
+
+#### ・stored procedureとは
+
+あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
+
+![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p325.gif)
+
+#### ・使い方
+
+**【実装例】**
+
+```SELECT```文のstored procedureを作成するとする．
+
+```mysql
+-- PROCEDUREを作成し，データベースへ格納しておく．
+CREATE PROCEDURE SelectContact AS
+SELECT
+    { カラム名 }
+FROM
+    { テーブル名 }
+```
+
+```mysql
+-- PROCEDUREを実行
+EXEC SelectContact
+```
+
+
+
+### エクスポート，インポート
+
+#### ・テーブルのエクスポート
+
+DBからテーブルをエクスポートする．エクスポートしたいテーブルの数だけ，テーブル名を連ねる
+
+```bash
+$ mysqldump --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' '{ テーブル名1 }' '{ テーブル名2 }' > table.sql
+```
+
+#### ・テーブルのインポート
+
+DBにテーブルをインポートする．forceオプションで，エラーが出ても強制的にインポート．
+
+```bash
+ $ mysql --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' < table.sql
+```
+
+
+
+## 03. ユーザの管理
+
+### CREATE
+
+#### ・ユーザ作成
+
+```mysql
+CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{パスワード}'
+```
+
+#### ・ユーザ一覧
+
+ここで表示される特権と．ALL特権は異なる．
+
+```mysql
+SELECT * FROM mysql.user;
+```
+
+
+
+### GRANT
+
+#### ・ユーザ権限付与
+
+| SQLでの表記          | 意味             |
+| -------------------- | ---------------- |
+| ```ALL PRIVILEGES``` | 全権限           |
+| ```SELECT```         | 読み出し権限のみ |
+
+
+データベース名は，シングルクオーテーションで囲う必要が無い．全権限を付与する場合，```PRIVILEGES```は省略できるが，厳密には省略しないようほうがよい．
+
+
+```mysql
+-- 全てのデータベースに関する権限を付与
+GRANT ALL PRIVILEGES ON *.* TO '{ ユーザ名 }';
+
+-- Amazon AuroraまたはRDSの場合はこちら
+GRANT USAGE ON `%`.* TO '{ユーザー名}';
+```
+
+```mysql
+-- 特定のデータベースに関する全権限を付与
+GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
+```
+
+
+#### ・ユーザ権限一覧
+
+ユーザに付与されている権限を表示する．
+
+```mysql
+SHOW GRANTS FOR '{ ユーザ名 }';
+```
+
+作成しただけで権限を何も付与してないユーザの場合，「データベースサーバ内の全データベースに関して，全権限なし」を表す```USAGE```として表示される．
+
+```mysql
+GRANT USAGE ON *.* TO '{ユーザー名}';
+```
+
+特定のデータベースの操作権限を与えると，上記に加えて，以下も表示されるようになる．
+
+```mysql
+GRANT ALL PRIVILEGES ON { DB名 }.* TO '{ ユーザ名 }';
+```
+
+
+
+### REVOKE
+
+#### ・全権限削除
+
+```mysql
+REVOKE ALL PRIVILEGES ON { DB名 }.* FROM '{ ユーザ名 }';
+```
+
+
+#### ・ユーザ名変更
+
+```mysql
+RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
+```
+
+
+
+## 04. レコードの読み出し：READ
 
 
 ### はじめに
@@ -11,92 +257,105 @@
 FROM => JOIN => WHERE => GROUP BY => HAVING => SELECT => ORDER BY
 ```
 
-#### ・使い方で用いた略号
-
-**C**：column（列）
-
-**R**：record（行）
-
-**T**：table
-
 
 
 ### ```SELECT```句
 
 #### ・```SUM()```
 
+指定したカラムで，『フィールド』の合計を取得
+
 ```mysql
--- 指定したカラムで，『フィールド』の合計を取得
-SELECT SUM(C)  
-FROM T;
+SELECT
+    SUM({ カラム名 })
+FROM
+    { テーブル名 };
 ```
 
 #### ・```AVG()```
 
+指定したカラムで，『フィールド』の平均値を取得
+
 ```mysql
--- 指定したカラムで，『フィールド』の平均値を取得
-SELECT AVG(C)  
-FROM T;
+SELECT
+    AVG({ カラム名 })
+FROM
+    { テーブル名 };
 ```
 
-#### ・```min()```
+#### ・```MIN()```
+
+指定したカラムで，『フィールド』の最小値を取得
 
 ```mysql
--- 指定したカラムで，『フィールド』の最小値を取得
-SELECT MIN(C)
-FROM T;
+SELECT
+    MIN({ カラム名 })
+FROM
+    { テーブル名 };
 ```
 
-#### ・```max()```
+#### ・```MAX()```
+
+指定したカラムで，『フィールド』の最大値を取得
 
 ```mysql
--- 指定したカラムで，『フィールド』の最大値を取得
-SELECT MAX(C)
-FROM T;
+SELECT
+    MAX({ カラム名 })
+FROM
+    { テーブル名 };
 ```
 
 #### ・```COUNT()```
 
+指定したカラムで，『フィールド』の個数を取得
+
 ```mysql
--- 指定したカラムで，『フィールド』の個数を取得
-SELECT COUNT(*)
-FROM T;
+SELECT
+    { カラム名 } COUNT(*)
+FROM
+    { テーブル名 };
 ```
 
 **※消去法の小技：集合関数を入れ子状にはできない**
 
 **【実装例】**
 
-```mysql
--- 集合関数を集合関数の中に入れ子状にすることはできない．
-SELECT AVG(SUM(C))
-FROM T;
-```
+集合関数を集合関数の中に入れ子状にすることはできない．
 
 ```mysql
--- 指定したカラムで，値無しも含む『フィールド』を取得
-SELECT COUNT(*)
-FROM T;
+-- 
+SELECT
+    AVG(SUM({ カラム名 }))
+FROM
+    { テーブル名 };
 ```
 
+指定したカラムで，値無しも含む『フィールド』を取得
+
 ```mysql
--- 指定したカラムで，値無しを除いた『フィールド』を取得
-SELECT COUNT(*);
+SELECT
+    { カラム名 } COUNT(*)
+FROM
+    { テーブル名 };
+```
+指定したカラムで，値無しを除いた『フィールド』を取得
+```mysql
+SELECT
+    { カラム名 } COUNT(*);
 ```
 
 ### ```CASE```句
 
- カラムAがtrueだったら，カラムBを取得する．falseであったら，カラムCを取得する．
+ カラム1が```true```だったら，カラム2を取得する．```false```であったら，カラム3を取得する．
 
 ```mysql
 SELECT
-  CASE
-    WHEN t.CA = 1 THEN t.CB
-    ELSE t.CC
-  END AS name
+    CASE
+        WHEN { エイリアス }.{ カラム名1 } = 1 THEN { エイリアス }.{ カラム名2 }
+        ELSE { エイリアス }.{ カラム名3 }
+    END AS name
 FROM
-  T AS t
-;
+    { テーブル名 } AS { エイリアス };
 ```
 
 
@@ -129,13 +388,17 @@ FROM
 
 ```mysql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
-SELECT T1.C1,
--- 複数の表を指定
-FROM T1, T2,
--- まず，1つ目のフィールドと2つ目のフィールドが同じレコードを取得．
-WHERE R1 = R2
-  -- 次に，上記で取得したレコードのうち，次の条件も満たすレコードのみを取得．
-  AND R2 = R3  
+SELECT
+    { テーブル名1 }.{ カラム名1 },
+    -- 複数の表を指定
+FROM
+    { テーブル名1 },
+    { テーブル名2 },
+    -- まず，1つ目のフィールドと2つ目のフィールドが同じレコードを取得．
+WHERE
+    -- 次に，上記で取得したレコードのうち，次の条件も満たすレコードのみを取得．
+    { ロー名1 } = { ロー名2 }
+    AND { ロー名2 } = { ロー名3 }
 ```
 
 #### ・内部結合に```INNER JOIN ON```を用いる場合
@@ -144,15 +407,17 @@ WHERE R1 = R2
 
 ```mysql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
-SELECT T1.C1,
--- 複数の表を指定
-FROM T1
-  INNER JOIN T2
-  -- 2つ目の表の『レコード』と照合
-  ON T1.C1 = T2.C2  
-  INNER JOIN T3
-  -- 3つ目の表の『レコード』と照合
-  ON T1.C1 = T3.C3  
+SELECT
+    { テーブル名1 }.{ カラム名1 },
+    -- 複数の表を指定
+FROM
+    { テーブル名1 }
+    -- 2つ目の表の『レコード』と照合
+    INNER JOIN { テーブル名2 }
+    ON { テーブル名1 }.{ カラム名1 } = { テーブル名2 }.{ カラム名2 }
+    -- 3つ目の表の『レコード』と照合
+    INNER JOIN { テーブル名3 }
+    ON { テーブル名1 }.{ カラム名1 } = { テーブル名3 }.{ カラム名3 }
 ```
 
 
@@ -202,43 +467,67 @@ $sql = <<<SQL
 
 **【実装例】**
 
-```mysql
-SELECT *
-FROM T
--- 指定したカラムで，指定した値の『フィールド』を取得
-WHERE C in (xxx, xxx, ...);
-```
+
+指定したカラムで，指定した値の『フィールド』を取得
 
 ```mysql
-SELECT *
-FROM T
--- 指定したカラムで，指定した値以外の『フィールド』を取得
-WHERE C not in (R1, R2, ...);
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } in (xxx, xxx,...);
+```
+指定したカラムで，指定した値以外の『フィールド』を取得
+```mysql
+SELECT
+    *
+FROM
+    { テーブル名 } 
+WHERE
+    { カラム名 } not in ({ ロー名1 }, { ロー名2 },...);
 ```
 
+指定したカラムで，```SELECT```で読み出した値以外の『フィールド』を取得
+
 ```mysql
-SELECT * FROM T
--- フィールドを指定の値として用いる
-WHERE C not in (
-  -- 指定したカラムで，『フィールド』を取得
-  SELECT C FROM T WHERE R >= 160);
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } not in (
+        -- 
+        SELECT
+            { カラム名 }
+        FROM
+            { テーブル名 }
+        WHERE
+            { ロー名 } >= 160
+    );
 ```
 
 **【IN句を使用しなかった場合】**
 
 ```mysql
-SELECT *
-FROM fruit
-WHERE name = "みかん"
-  OR name = "りんご";
+SELECT
+    *
+FROM
+    fruit
+WHERE
+    name = "みかん"
+    OR name = "りんご";
 ```
 
 **【IN句を使用した場合】**
 
 ```mysql
-SELECT * 
-FROM fruit
-WHERE name IN("みかん","りんご");
+SELECT
+    *
+FROM
+    fruit
+WHERE
+    name IN("みかん", "りんご");
 ```
 
 #### ・```ANY```句の使い方
@@ -246,9 +535,12 @@ WHERE name IN("みかん","りんご");
   書き方が異なるだけで，```in```と同じ出力
 
 ```mysql
-SELECT *
-FROM T
-WHERE C = ANY(xxx, xxx, xxx);
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } = ANY(xxx, xxx, xxx);
 ```
 
 
@@ -261,11 +553,16 @@ WHERE C = ANY(xxx, xxx, xxx);
 
 **【実装例】**
 
+指定したカラムをグループ化し，フィールドの値の平均値を算出する．
+
 ```mysql
-SELECT C1, AVG(C2)
-FROM T
--- 指定したカラムをグループ化し，フィールドの値を合計する．
-GROUP BY C;
+SELECT
+    { カラム名1 },
+    AVG({ カラム名2 })
+FROM
+    { テーブル名 }
+GROUP BY
+    { カラム名1 };
 ```
 
 
@@ -280,27 +577,40 @@ GROUP BY C;
 
 ```mysql
 -- HAVINGによる集計結果を指定して出力．
-SELECT C1, COUNT(C2) 
-FROM T
-GROUP BY C2
+SELECT
+    { カラム名1 },
+    COUNT({ カラム名2 })
+FROM
+    { テーブル名 }
+GROUP BY
 -- グループ化した結果を集計し，２個以上の『フィールド』を取得
-HAVING COUNT(*) >= 2; 
+    { カラム名1 }
+HAVING
+    COUNT(*) >= 2;
 ```
 
 ※以下の場合，```GROUP BY + HAVING```を使っても，```WHERE```を使っても，同じ出力結果になる．
 
 ```mysql
-SELECT C
-FROM T
-GROUP BY C
-HAVING R;
+SELECT
+    { カラム名 }
+FROM
+    { テーブル名 }
+GROUP BY
+    { カラム名 }
+HAVING
+    { ロー名 };
 ```
 
 ```mysql
-SELECT C
-FROM T
-WHERE R
-GROUP BY C;
+SELECT
+    { カラム名 }
+FROM
+    { テーブル名 }
+WHERE
+    { ロー名 }
+GROUP BY
+    { カラム名 };
 ```
 
 
@@ -312,15 +622,21 @@ GROUP BY C;
 **【実装例】**
 
 ```mysql
-SELECT * FROM T
--- 任意の文字（文字無しも含まれる）
-WHERE C LIKE '%営業';
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } LIKE '%営業';
 ```
 
 ```mysql
-SELECT * FROM T
--- 任意の一文字
-WHERE C LIKE '_営業';
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } LIKE '_営業';
 ```
 
 
@@ -331,10 +647,15 @@ WHERE C LIKE '_営業';
 
 **【実装例】**
 
+指定したカラムで，1以上10以下の『フィールド』を取得
+
 ```mysql
-SELECT * FROM T
--- 指定したカラムで，1以上10以下の『フィールド』を取得
-BETWEEN 1 AND 10;
+SELECT
+    *
+FROM
+    { テーブル名 }
+    BETWEEN 1
+    AND 10;
 ```
 
 
@@ -346,13 +667,18 @@ BETWEEN 1 AND 10;
 **【実装例】**
 
 ```mysql
--- 括弧内に値を設定してください
-SET @STAFF_NAME = {パラメータ値};
-SET @STAFF_ID = {パラメータ値};
+SET
+    @A = { パラメータ値 };
 
-UPDATE `mst_staff`
-SET `staff_name` = @STAFF_NAME,
-WHERE `staff_id` = @STAFF_ID;
+SET
+    @B = { パラメータ値 };
+
+UPDATE
+    { テーブル名 }
+SET
+    { カラム名 } = @A,
+WHERE
+    { カラム名 } = @B;
 ```
 
 
@@ -367,30 +693,68 @@ WHERE `staff_id` = @STAFF_ID;
 
 ```mysql
 -- Main-query
-SELECT * FROM T
-
-WHERE C != (
-  -- Sub-query
-  SELECT max(C) FROM T);
+SELECT
+    *
+FROM
+    { テーブル名 }
+WHERE
+    { カラム名 } != (
+        -- Sub-query
+        SELECT
+            max({ カラム名 })
+        FROM
+            { テーブル名 }
+    );
 ```
 
 
 
-## 01-02. 読み出されたレコードの取得処理（```fetch```）
+### Tips
 
-###  ```fetch```
+#### ・各データベースの容量
 
-#### ・```fetch```とは
+```mysql
+SELECT
+    table_schema,
+    sum(data_length) / 1024 / 1024 AS mb
+FROM
+    information_schema.tables
+GROUP BY
+    table_schema
+ORDER BY
+    sum(data_length + index_length) DESC;
+```
+
+#### ・カラム検索
+
+```mysql
+SELECT
+    table_name,
+    column_name
+FROM
+    information_schema.columns
+WHERE
+    column_name = { 検索したいカラム名 }
+    AND table_schema = { 検索対象のデータベース名 }
+```
+
+
+
+## 04-02. 読み出されたレコードの取得
+
+###  ```FETCH```
+
+#### ・```FETCH```とは
 
 読み出したレコードをに一度に全て取得してしまうと，サーバ側のメモリを圧迫してしまう．そこで，少しずつ取得する．
 
-#### ・```fetch```のメソッド名に関する注意点
+#### ・```FETCH```のメソッド名に関する注意点
 
-```fetch()```系のメソッドは，ベンダーによって名前が異なっていることがあるため，同じ名前でも同じ分だけレコードを取得するとは限らない．
+```FETCH()```系のメソッドは，ベンダーによって名前が異なっていることがあるため，同じ名前でも同じ分だけレコードを取得するとは限らない．
 
 
 
-### PDOにおける```fetch```
+### PDOにおける```FETCH```
 
 #### ・```fetch():array```
 
@@ -443,7 +807,7 @@ print_r($data);
 ```PHP
 <?php
 // SELECT文を定義して実行．
-$sql = "SELECT COUNT(*) FROM doraemon_characters";
+$sql = "SELECT { カラム名 }OUNT(*) FROM doraemon_characters";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 
@@ -485,43 +849,11 @@ while(result.next()){
 
 
 
-## 01-03. レコードの突き合わせ
+## 05. レコードの書き込み ：CREATE，UPDATE，DELETE
 
-### 突き合わせ処理
+### ```INSERT```
 
-#### ・突き合わせ処理とは
-
-ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
-
-![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_1.PNG)
-
-#### ・アルゴリズム
-
-![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_4.png)
-
-#### ・具体例
-
-とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
-
-![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_2.PNG)
-
-前処理として，契約マスタデータと異動トランザクションデータに共通する識別子が同じ順番で並んでいる必要がある．
-
-1. 契約マスタデータの1行目と，異動トランザクションデータの1行目の識別子を突き合わせる．『契約マスタデータ = 異動トランザクションデータ』の時，異動トランザクションデータを基に契約マスタデータを更新し，それを新しいデータとして変更後契約マスタデータに挿入する．
-2. 契約マスタデータの2行目と，異動トランザクションデータの2行目の識別子を突き合わせる．『マスタデータ < トランザクションデータ』の場合，マスタデータをそのまま変更後マスタテーブルに挿入する．
-3. マスタデータの3行目と，固定したままのトランザクションデータの2行目の識別子を突き合わせる．『マスタデータ = トランザクションデータ』の時，トランザクションデータを基にマスタデータを更新し，それを変更後データとして変更後マスタテーブルに挿入する．
-4. 『契約マスタデータ < 異動トランザクションデータ』になるまで，データを突き合わせる．
-5. 最終的に，変更後マスタテーブルは以下の通りになる．
-
-![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_3.png)
-
-
-
-## 02. レコードの書き込み操作 （```CREATE```，```UPDATE```，```DELETE```）
-
-### ```insert```
-
-#### ・PDOを用いた```insert```処理
+#### ・PDOの場合
 
 ```PHP
 <?php
@@ -563,7 +895,7 @@ $stmt->execute($data);
 $dbh = null;
 ```
 
-#### ・マイグレーションにおける```insert```
+#### ・マイグレーションの場合
 
 マイグレーションファイルと呼ばれるスクリプトファイルを作成し，テーブルの新規作成やカラムの追加はこのスクリプトファイルに記述していく．
 
@@ -591,209 +923,49 @@ class ItemQuery
 
 
 
-## 02-02. テーブルの生成処理（```create```）
-
-### ```create table```句
-
-#### ・使い方
-
-**【実装例】**
+### ```UPDATE```
 
 ```mysql
--- 注文テーブル作成
-CREATE TABLE order_data (
 
-    -- Primary Key制約
-    order_id INT(10) PRIMARY KEY COMMENT '注文ID',
-
-    -- Not Null制約
-    order_kbn INT(3) NOT NULL COMMENT '注文区分',
-    system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
-    system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
-    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
-  
-    -- 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
-    PRIMARY KEY(order_id, order_kbn)
-  
-    -- 参照制約キー
-    FOREIGN KEY order_kbn REFERENCES order_kbn_data
-)
 ```
 
 
 
-### ```CREATE VIEW```句
-
-#### ・使い方
-
-ビューとはある表の特定のカラムや指定した条件に合致するレコードなどを取り出した仮想の表．また，複数の表を結合したビューを作成できる．ビューを作成することによりユーザに必要最小限のカラムやレコードのみにアクセスさせる事ができ，また結合条件を指定しなくても既に結合された表にアクセスできる．
-⇒よくわからん…
-
-**【実装例】**
+### ```DELETE```
 
 ```mysql
-CREATE VIEW T AS
-    SELECT * FROM T1;
+
 ```
 
 
 
-### 制約
+## 06. その他
 
-#### ・Primary key（主キー）制約と複合主キー制約
+### レコードの突き合わせ処理アルゴリズム
 
-テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
+#### ・突き合わせ処理とは
 
-![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/主キー.jpg)
+ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
 
-主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
+![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_1.PNG)
 
-| *user_id* | *period_start_date* | period_end_date | fee_yen |
-| --------- | ------------------- | --------------- | ------- |
-| *1*       | *2019-04-03*        | 2019-05-03      | 200     |
-| *1*       | *2019-10-07*        | 2019-11-07      | 400     |
-| *2*       | *2019-10-11*        | 2019-11-11      | 200     |
+#### ・アルゴリズム
 
-#### ・Not Null制約
+![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_4.png)
 
-レコードに挿入される値のデータ型を指定しておくことによって，データ型不一致やNullのための例外処理を実装しなくてもよくなる．
+#### ・具体例
 
-#### ・Foreign key（外部キー）と参照制約
+とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
 
-複数のテーブルを関連付けるために用いられるカラムのことをForeign key（外部キー）という．外部キーの参照先のテーブルには，外部キーの値と同じ値のカラムが存在していなければならない（参照制約）．参照制約を行うと，以下の2つが起こる．
+![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_2.PNG)
 
-親テーブルに存在しない値は，子テーブルに登録できない．
+前処理として，契約マスタデータと異動トランザクションデータに共通する識別子が同じ順番で並んでいる必要がある．
 
-親テーブルで参照される値は，子テーブルからは削除できない．
+1. 契約マスタデータの1行目と，異動トランザクションデータの1行目の識別子を突き合わせる．『契約マスタデータ = 異動トランザクションデータ』の時，異動トランザクションデータを基に契約マスタデータを更新し，それを新しいデータとして変更後契約マスタデータに挿入する．
+2. 契約マスタデータの2行目と，異動トランザクションデータの2行目の識別子を突き合わせる．『マスタデータ < トランザクションデータ』の場合，マスタデータをそのまま変更後マスタテーブルに挿入する．
+3. マスタデータの3行目と，固定したままのトランザクションデータの2行目の識別子を突き合わせる．『マスタデータ = トランザクションデータ』の時，トランザクションデータを基にマスタデータを更新し，それを変更後データとして変更後マスタテーブルに挿入する．
+4. 『契約マスタデータ < 異動トランザクションデータ』になるまで，データを突き合わせる．
+5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
-![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部キー.png)
-
-
-
-### stored procedure
-
-#### ・stored procedureとは
-
-あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
-
-![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p325.gif)
-
-#### ・使い方
-
-**【実装例】**
-
-```mysql
--- PROCEDUREを作成し，データベースへ格納しておく．
-CREATE PROCEDURE SelectContact AS
-  SELECT CustomerID, CompanyName, ContactName, Phone
-  FROM Customers
-```
-
-```mysql
--- PROCEDUREを実行
-EXEC SelectContact
-```
-
-
-
-## 03. ユーザの読み出し，書き込み
-
-### CREATE
-
-#### ・ユーザ作成
-
-```mysql
-CREATE USER '{ユーザ名}' IDENTIFIED BY '{パスワード}'
-```
-
-
-
-### GRANT
-
-#### ・ユーザに権限を付与
-
-| SQLでの表記          | 意味             |
-| -------------------- | ---------------- |
-| ```ALL PRIVILEGES``` | 全権限           |
-| ```SELECT```         | 読み出し権限のみ |
-
-
-データベース名は，シングルクオーテーションで囲う必要が無い．全権限を付与する場合，```PRIVILEGES```は省略できるが，厳密には省略しないようほうがよい．
-
-
-```mysql
-# 全てのデータベースに関する権限を付与
-GRANT ALL PRIVILEGES ON *.* TO '{ユーザ名}';
-
-# Amazon AuroraまたはRDSの場合はこちら
-GRANT USAGE ON `%`.* TO '{ユーザー名}';
-```
-
-```mysql
-# 特定のデータベースに関する全権限を付与
-GRANT ALL PRIVILEGES ON {DB名}.* TO '{ユーザ名}';
-```
-
-
-#### ・ユーザの権限を確認
-
-ユーザに付与されている権限を表示する．
-
-```mysql
-SHOW GRANTS FOR '{ユーザ名}';
-```
-
-作成しただけで権限を何も付与してないユーザの場合，「データベースサーバ内の全データベースに関して，全権限なし」を表す```USAGE```として表示される．
-
-```mysql
-GRANT USAGE ON *.* TO '{ユーザー名}';
-```
-
-特定のデータベースの操作権限を与えると，加えて，以下も表示されるようになる．
-
-```mysql
-GRANT ALL PRIVILEGES ON {DB名}.* TO '{ユーザ名}';
-```
-
-
-
-### REVOKE
-
-#### ・全ての権限を削除
-
-```mysql
-REVOKE ALL PRIVILEGES ON {DB名}.* FROM '{ユーザ名}';
-```
-
-
-#### ・ユーザ名を変更
-
-```mysql
-RENAME USER '{古いユーザ名}' TO '{新しいユーザ名}';
-```
-
-
-
-## 04. mysqlコマンド
-
-### mysqlテーブルの操作
-
-#### ・ユーザの一覧を確認
-
-ここで表示される特権と．ALL特権は異なる．
-
-```mysql
-SELECT * FROM mysql.user;
-```
-
-
-
-### テーブルの生成
-
-#### ・テーブルをインポート
-
-```bash
-# forceオプションで，エラーが出ても強制的にインポート
-mysql --force -u '{アカウント}' -p -h '{DBのホスト}' '{DB名}' < table_backup.sql
-```
+![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_3.png)
 
