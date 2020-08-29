@@ -4,10 +4,10 @@
 ARG NGINX_VERSION="1.19"
 
 #===================
-# Base Stage
+# Build Stage
 #===================
 # ミドルウェアベンダーのベースイメージを使用
-FROM nginx:${NGINX_VERSION} as base
+FROM nginx:${NGINX_VERSION} as build
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
 RUN apt-get update -y \
@@ -21,7 +21,7 @@ RUN apt-get update -y \
 # Develop Stage
 #===================
 # ベースステージを使用
-FROM base as develop
+FROM build as develop
 
 COPY ./infra/docker/www/develop.nginx.conf /etc/nginx/nginx.conf
 
@@ -31,7 +31,7 @@ CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 # Production Stage
 #===================
 # ベースステージを使用
-FROM base as production
+FROM build as production
 
 COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 
