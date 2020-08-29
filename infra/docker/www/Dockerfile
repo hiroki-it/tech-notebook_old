@@ -1,15 +1,41 @@
-# ベースイメージのインストール
-ARG CENTOS_VERSION="8"
-FROM centos:${CENTOS_VERSION}
+#===================
+# Global ARG
+#===================
+ARG NGINX_VERSION="1.19"
+
+#===================
+# Base Stage
+#===================
+# ミドルウェアベンダーのベースイメージを使用
+FROM nginx:${NGINX_VERSION} as base
 LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
-RUN dnf upgrade -y \
-  # nginxインストール
-  && dnf install -y \
-      nginx \
-      vim \
-      langpacks-ja
+RUN apt-get update -y \
+  && apt-get install -y \
+     curl \
+     vim \
+  # キャッシュ削除
+  && apt-get clean
 
-COPY ./infra/docker/www/nginx.conf /etc/nginx/nginx.conf
+#===================
+# Develop Stage
+#===================
+# ベースステージを使用
+FROM base as develop
+
+COPY ./infra/docker/www/develop.nginx.conf /etc/nginx/nginx.conf
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+
+#===================
+# Production Stage
+#===================
+# ベースステージを使用
+FROM base as production
+
+COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
+
+# CircleCIコンテナのワークスペースに保存したデプロイソースをコピー
+COPY ./workspace/app/build /var/www/app/build
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
