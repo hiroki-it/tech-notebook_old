@@ -2,13 +2,13 @@
 # Global ARG
 #===================
 ARG NGINX_VERSION="1.19"
+ARG LABEL="Hiroki <hasegawafeedshop@gmail.com>"
 
 #===================
 # Build Stage
 #===================
 # ミドルウェアベンダーのベースイメージを使用
 FROM nginx:${NGINX_VERSION} as build
-LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
 RUN apt-get update -y \
   && apt-get install -y \
@@ -22,6 +22,7 @@ RUN apt-get update -y \
 #===================
 # ベースステージを使用
 FROM build as develop
+LABEL mantainer=${LABEL}
 
 COPY ./infra/docker/www/develop.nginx.conf /etc/nginx/nginx.conf
 
@@ -32,6 +33,7 @@ CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 #===================
 # ベースステージを使用
 FROM build as production
+LABEL mantainer=${LABEL}
 
 COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 
