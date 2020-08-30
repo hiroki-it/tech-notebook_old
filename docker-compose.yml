@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   www:
-    container_name: www
+    container_name: tech-notebook-www
     build:
       dockerfile: ./infra/docker/www/Dockerfile
       target: develop
@@ -13,8 +13,8 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./app:/var/www/app
-    working_dir: /var/www/app
+      - ./public:/var/www/tech-notebook/public
+    working_dir: /var/www/tech-notebook/public
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
@@ -22,7 +22,7 @@ services:
       - default
       
   builder:
-    container_name: builder
+    container_name: tech-notebook-builder
     build:
       dockerfile: ./infra/docker/builder/Dockerfile
       target: develop
@@ -30,8 +30,8 @@ services:
     image: tech-notebook-builder:latest
     tty: true
     volumes:
-      - ./app:/var/www/app
-    working_dir: /var/www/app
+      - ./public:/var/www/tech-notebook/public
+    working_dir: /var/www/tech-notebook/public
     environment:
       TZ: "Asia/Tokyo"
       LANG: "ja_JP.UTF-8"
