@@ -53,10 +53,12 @@ Dockerクライアントは，接続によって，Dockerデーモンを操作�
 ```bash
 # レジストリ側に保管されているイメージを検索
 $ docker search {イメージ名}
-
+```
+```bash
 # レジストリ側のイメージをクライアント側にインストール
 $ docker pull {イメージ名}
-
+```
+```bash
 # ホストOSにインストールされたイメージを確認
 $ docker images
 ```
@@ -66,7 +68,8 @@ $ docker images
 ```bash
 # コンテナに使用されていないイメージを一括で削除
 $ docker image prune
-
+```
+```bash
 # タグ名のないイメージのみを全て削除
 $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)
 ```
@@ -90,7 +93,8 @@ $ docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no
 ```bash
 # コンテナからイメージを作成
 $ docker commit -a {作成者名} {コンテナ名} {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
-
+```
+```bash
 # ホストOSで作成したイメージをレジストリ側にアップロード
 $ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
 ```
@@ -112,16 +116,16 @@ $ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
 
 **【実装例】**
 
-ubuntuのイメージをベースとして，nginxのイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
+NginxのイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
 
 ```dockerfile
-# ベースのイメージ（ubuntu）を，コンテナにインストール
-FROM centos:latest
+# ベースのイメージ（CentOS）を，コンテナにインストール
+FROM centos:8
 
 # ubuntu上に，nginxをインストール
 RUN yum update -y \
-　　&& yum install -y \
-　　nginx
+   && yum install -y \
+　　    nginx
 
 # ホストOSの設定ファイルを，コンテナ側の指定ディレクトリにコピー
 COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
@@ -207,15 +211,24 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 
 ![Dockerfileのメリット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerfileのメリット.png)
 
+## 02-04 イメージの軽量化
+
+### プロセス単位によるDockerfileの分割
+
+これは，Dockerの原則である．アプリケーションを稼働させるには，最低限，Webサーバミドルウェア，アプリケーション，DBMSが必要である．これらを，個別のコンテナで稼働させ，ネットワークで接続するようにする．
+
+![プロセス単位のコンテナ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロセス単位のコンテナ.png)
 
 
-### イメージの軽量化
 
-#### ・キャッシュの削除
+### キャッシュの削除
 
-Linuxユーティリティをインストールすると，キャッシュが残る．これを削除しておく．
+Unixユーティリティをインストールすると，キャッシュが残る．
+
 
 ```dockerfile
+FROM centos:8
+
 RUN dnf upgrade -y \
   && dnf install -y \
       curl \
@@ -225,7 +238,10 @@ RUN dnf upgrade -y \
   && rm -rf /var/cache/dnf
 ```
 
-#### ・```RUN```コマンドをまとめる．
+
+
+
+### ```RUN```コマンドをまとめる
 
 Dockerfileの各命令によって，イメージ レイヤーが一つ増えてしまうため，同じ命令に異なるパラメータを与える時は，これを一つにまとめてしまう方が良い．例えば，以下のような時，
 
@@ -255,17 +271,140 @@ RUN yum -y install \
      php-pear
 ```
 
-#### ・マルチステージビルド
+
+
+### マルチステージビルド
+
+#### ・マルチステージビルドとは
+
+一つのDockerfile内に複数の独立したステージを定義する方法．以下の手順で作成する．
+
+1. シングルステージビルドに成功するDockerfileを作成する．
+2. ビルドによって生成されたバイナリファイルがどこに配置されるかを場所を調べる．
+3. Dockerfileで，二つ目の```FROM```を宣言する．
+4. 一つ目のステージで，バイナリファイルをコンパイルするだけで終わらせる．
+5. 二つ目のステージで，Unixユーティリティをインストールする．また，バイナリファイルを一つ目のステージからコピーする．
+
+#### ・コンパイルされたバイナリファイルを再利用
+
+**【実装例】**
 
 ```dockerfile
-# ここに記述例
+# 中間イメージ
+FROM golang:1.7.3 AS builder
+WORKDIR /go/src/github.com/alexellis/href-counter/
+RUN go get -d -v golang.org/x/net/html  
+COPY app.go    .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+# 最終イメージ
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
+CMD ["./app"]  
 ```
 
-#### ・プロセス単位によるDockerfileの分割
+#### ・実行環境別にステージを分ける
+
+```dockerfile
+
+```
 
 
 
-## 02-04. イメージ上でのコンテナレイヤーの生成，コンテナの構築
+### 可能な限りOSイメージをベースとしない
+
+#### ・OSイメージをベースとした場合（悪い例）
+
+OSベンダーが提供するベースイメージを使用すると，不要なバイナリファイルが含まれてしまう．原則として，一つのコンテナで一つのプロセスしか実行せず，OS全体のシステムは不要なため，OSイメージをベースとしないようにする．
+
+**【実装例】**
+
+```dockerfile
+# CentOSイメージを，コンテナにインストール
+FROM centos:8
+
+# PHPをインストールするために，EPELとRemiリポジトリをインストールして有効化．
+RUN dnf upgrade -y \
+  && dnf install -y \
+      https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+      https://rpms.remirepo.net/enterprise/remi-release-8.rpm \
+  && dnf module enable php:remi-${PHP_VERSION} \
+  # フレームワークの要件のPHP拡張機能をインストール
+  && dnf install -y \
+      php \
+      php-bcmath \
+      php-ctype \
+      php-fileinfo \
+      php-json \
+      php-mbstring \
+      php-openssl \
+      php-pdo \
+      php-tokenizer \
+      php-xml \
+  && dnf clean all \
+  && rm -Rf /var/cache/dnf
+
+# DockerHubのComposerイメージからバイナリファイルを取得
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+```
+
+**【実装例】**
+
+```dockerfile
+# CentOSイメージを，コンテナにインストール
+FROM centos:8
+
+# nginxをインストール
+RUN dnf upgrade -y \
+　　&& dnf install -y \
+　　   nginx \
+　　   curl \
+　　&& dnf clean all \
+　　&& rm -Rf /var/cache/dnf
+
+COPY infra/docker/web/nginx.conf /etc/nginx/nginx.conf
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+
+EXPOSE 80
+```
+
+#### ・ミドルウェアイメージをベースとした場合（良い例）
+
+代わりに，ミドルウェアベンダーが提供するベースイメージを使用するようにする．
+
+```dockerfile
+# Nginxイメージを，コンテナにインストール
+FROM nginx:1.19
+
+# NginxイメージがUbuntuベースなためにapt-getコマンド
+RUN apt-get updatedocke -y \
+  && apt-get install -y \
+     curl \
+  && apt-get clean
+
+COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
+```
+
+#### ・言語イメージをベースとした場合
+
+代わりに，言語ベンダーが提供するベースイメージを使用するようにする．
+
+```dockerfile
+# ここに実装例
+```
+
+#### ・alpineイメージをベースとした場合
+
+```dockerfile
+# ここに実装例
+```
+
+
+
+## 02-05. イメージ上でのコンテナレイヤーの生成，コンテナの構築
 
 ### コンテナレイヤーの生成
 
@@ -317,13 +456,16 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホス�
 ```bash
 # 起動中コンテナを停止
 $ docker stop {起動中コンテナ名}
-
+```
+```bash
 # 全てのコンテナを停止
 $ docker stop $(docker ps --all --quiet)
-
+```
+```bash
 # 停止中のコンテナのみを全て削除
 $ docker container prune
-
+```
+```bash
 # 起動中／停止中の全てコンテナを削除
 $ docker rm --force $(docker ps --all --quiet)
 ```
@@ -353,7 +495,7 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホス�
 
 
 
-## 02-05. 起動中のコンテナの操作
+## 02-06. 起動中のコンテナの操作
 
 ### コマンド
 
@@ -362,7 +504,8 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホス�
 ```bash
 # コンテナの起動と停止にかかわらず，IDなどを一覧で表示．
 $ docker ps -a
-
+```
+```bash
 # 起動中コンテナの全ての設定内容を表示
 # grepとも組み合わせられる．
 $ docker inspect {コンテナID}
