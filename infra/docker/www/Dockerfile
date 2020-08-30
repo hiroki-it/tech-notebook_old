@@ -7,7 +7,6 @@ ARG LABEL="Hiroki <hasegawafeedshop@gmail.com>"
 #===================
 # Build Stage
 #===================
-# ミドルウェアベンダーのベースイメージを使用
 FROM nginx:${NGINX_VERSION} as build
 
 RUN apt-get update -y \
@@ -20,7 +19,6 @@ RUN apt-get update -y \
 #===================
 # Develop Stage
 #===================
-# ベースステージを使用
 FROM build as develop
 LABEL mantainer=${LABEL}
 
@@ -31,7 +29,6 @@ CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 #===================
 # Production Stage
 #===================
-# ベースステージを使用
 FROM build as production
 LABEL mantainer=${LABEL}
 
