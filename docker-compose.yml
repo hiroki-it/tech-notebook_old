@@ -5,6 +5,8 @@ services:
   www:
     container_name: www
     build:
+      dockerfile: ./infra/docker/www/Dockerfile
+      target: develop
       context: .
       dockerfile: ./infra/docker/www/Dockerfile
       target: develop
