@@ -77,7 +77,15 @@ jobs:
       - run:
           name: Build ${APP_NAME}-www
           command: |
-            docker build -f ./infra/docker/www/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-www .
+            docker build -f ./infra/docker/www/Dockerfile --target production -t ${APP_NAME}-www:latest .
+      - run:
+          name: Run ${APP_NAME}-www
+          command: |
+            docker run -d -it --name ${APP_NAME}-www ${APP_NAME}-www:latest
+      - run:
+          name: Connect to ${APP_NAME}-www
+          command: |
+            docker exe -it ${APP_NAME}-www /bin/bash
       - run:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
