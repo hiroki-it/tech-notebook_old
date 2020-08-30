@@ -85,7 +85,7 @@ jobs:
       - run:
           name: Connect to builder
           command: |
-            docker exe -it ${APP_NAME}-builder /bin/bash
+            docker exec -it ${APP_NAME}-builder /bin/bash
       - run:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
