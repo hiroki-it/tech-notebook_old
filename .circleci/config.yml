@@ -75,17 +75,17 @@ jobs:
       # ソースコードを，/root/project(=tech-notebook) に配置
       - checkout
       - run:
-          name: Build ${APP_NAME}-www
+          name: Build builder
           command: |
-            docker build -f ./infra/docker/www/Dockerfile --target production -t ${APP_NAME}-www:latest .
+            docker build -f ./infra/docker/builder/Dockerfile --target production -t ${APP_NAME}-builder:latest .
       - run:
-          name: Run ${APP_NAME}-www
+          name: Run builder
           command: |
-            docker run -d -it --name ${APP_NAME}-www ${APP_NAME}-www:latest
+            docker run -d -it --name ${APP_NAME}-builder ${APP_NAME}-builder:latest
       - run:
-          name: Connect to ${APP_NAME}-www
+          name: Connect to builder
           command: |
-            docker exe -it ${APP_NAME}-www /bin/bash
+            docker exe -it ${APP_NAME}-builder /bin/bash
       - run:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
