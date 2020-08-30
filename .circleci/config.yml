@@ -58,14 +58,14 @@ jobs:
     machine: true
     steps:
       - push-images:
-          container-name: "${APP_NAME}-builder"
+          container-name: "builder"
           
   push-images-www:
     # ホスト側環境の設定
     machine: true
     steps:
       - push-images:
-          container-name: "${APP_NAME}-www"
+          container-name: "www"
         
   make-deploy-source:
     # ホスト側環境の設定
