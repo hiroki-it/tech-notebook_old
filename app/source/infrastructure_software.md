@@ -90,7 +90,7 @@ Google Drive，Dropbox
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
-### Webサーバとしてのミドルウェア
+### Webサーバのミドルウェアの種類
 
 #### ・Apache
 
