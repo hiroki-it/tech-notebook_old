@@ -27,7 +27,7 @@ commands:
       - run:
           name: Build << parameters.container-name >>
           command: |
-            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
+            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
       - run:
           name: Login to docker hub
           command: |
@@ -138,8 +138,9 @@ workflows:
           post-steps:
             - notify-failure-to-slack
           name: build-and-push-image-www
-          dockerfile: ./infra/docker/www/production.Dockerfile
-          path: .
+          path: ./infra/docker/www/Dockerfile
+          dockerfile: Dockerfile
+          extra-build-args: --target production
           repo: "${APP_NAME}-www"
           create-repo: true
           tag: ${CIRCLE_SHA1}
