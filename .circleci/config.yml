@@ -20,6 +20,7 @@ commands:
     parameters:
       container-name:
         type: string
+    # ホスト側環境の設定
     steps:
       - setup-git-config
       # ソースコードを，/root/project(=tech-notebook) に配置# ソースコードを，/root/project(=tech-notebook) に配置
@@ -27,7 +28,7 @@ commands:
       - run:
           name: Build << parameters.container-name >>
           command: |
-            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
+            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile --target develop -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
       - run:
           name: Login to docker hub
           command: |
@@ -38,20 +39,6 @@ commands:
           command: |
             docker push ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >>:${DOCKER_VERSION}
       
-  # ソースコードをワークスペースに保存
-  persist-deploy-source:
-    steps:
-      - run:
-          name: Make dir & Copy source to workspace
-          command: |
-            mkdir -p ./workspace/public/build
-            cp -Rp ./public/build/* ./workspace/public/build
-      - persist_to_workspace:
-          root: ./workspace
-          paths:
-            # Rootをカレントとした時の相対ディレクトリ
-            - ./public/build
-
   # Slackに失敗を通知する
   notify-failure-to-slack:
     parameters:
@@ -71,23 +58,26 @@ jobs:
     machine: true
     steps:
       - push-images:
-          container-name: "builder"
+          container-name: "${APP_NAME}-builder"
           
   push-images-www:
     # ホスト側環境の設定
     machine: true
     steps:
       - push-images:
-          container-name: "www"
+          container-name: "${APP_NAME}-www"
         
   make-deploy-source:
     # ホスト側環境の設定
-    docker:
-      - image: ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
+    machine: true
     steps:
       - setup-git-config
       # ソースコードを，/root/project(=tech-notebook) に配置
       - checkout
+      - run:
+          name: Build ${APP_NAME}-www
+          command: |
+            docker build -f ./infra/docker/www/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-www .
       - run:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
@@ -100,6 +90,16 @@ jobs:
           command: |
             cd ./public
             make html
+      - run:
+          name: Make dir & Copy source to workspace
+          command: |
+            mkdir -p ./workspace/public/build
+            cp -Rp ./public/build/* ./workspace/public/build
+      - persist_to_workspace:
+          root: ./workspace
+          paths:
+            # Rootをカレントとした時の相対ディレクトリ
+            - ./public/build
 
 # 実行の順番を定義
 workflows:
@@ -130,7 +130,6 @@ workflows:
             - push-images-builder
             - push-images-www
           post-steps:
-            - persist-deploy-source
             - notify-failure-to-slack
       # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
@@ -160,6 +159,6 @@ workflows:
           deployment-controller: CODE_DEPLOY
           codedeploy-application-name: ${APP_NAME}
           codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
-          codedeploy-load-balanced-container-name: www-container
+          codedeploy-load-balanced-container-name: "${APP_NAME}-www"
           codedeploy-load-balanced-container-port: 80
-          container-image-name-updates: "container=www-container,tag=${CIRCLE_SHA1}"
+          container-image-name-updates: "container=${APP_NAME}-www,tag=${CIRCLE_SHA1}"
