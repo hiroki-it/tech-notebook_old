@@ -44,12 +44,13 @@ commands:
       - run:
           name: Make dir & Copy source to workspace
           command: |
-            mkdir -p ./workspace/app/build
-            cp -Rp ./app/build/* ./workspace/app/build
+            mkdir -p ./workspace/public/build
+            cp -Rp ./public/build/* ./workspace/public/build
       - persist_to_workspace:
           root: ./workspace
           paths:
-            - ./app/build
+            # Rootをカレントとした時の相対ディレクトリ
+            - ./public/build
 
   # Slackに失敗を通知する
   notify-failure-to-slack:
@@ -91,13 +92,13 @@ jobs:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
           command: |
-            cp README.md ./app/source/about_this_site.md
+            cp README.md ./public/source/about_this_site.md
       - run:
-          # 本番環境にデプロイされるappディレクトリに移動
+          # 本番環境にデプロイされるpublicディレクトリに移動
           # デプロイ用のHtmlを生成
           name: Make html
           command: |
-            cd ./app
+            cd ./public
             make html
 
 # 実行の順番を定義
