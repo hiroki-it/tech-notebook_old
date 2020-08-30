@@ -2,12 +2,12 @@
 # Global ARG
 #===================
 ARG PYTHON_VERSION="3.8.5"
+ARG LABEL="Hiroki <hasegawafeedshop@gmail.com>"
 
 #===================
 # Build Stage
 #===================
 FROM python:${PYTHON_VERSION} as build
-LABEL mantainer="Hiroki <hasegawafeedshop@gmail.com>"
 
 RUN apt-get update -y \
   && apt-get install -y \
@@ -33,6 +33,7 @@ RUN apt-get update -y \
 # Develop Stage
 #===================
 FROM build as develop
+LABEL mantainer=${LABEL}
 
 CMD ["/bin/bash"]
 
@@ -40,5 +41,6 @@ CMD ["/bin/bash"]
 # Production Stage
 #===================
 FROM build as production
+LABEL mantainer=${LABEL}
 
 CMD ["/bin/bash"]
