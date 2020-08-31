@@ -1,4 +1,3 @@
-# バージョン
 version: 2.1
 
 orbs:
@@ -15,30 +14,6 @@ commands:
           command: |
             git config --global core.quotepath false
             
-  # 各イメージをDockerHubにプッシュ
-  push-images:
-    parameters:
-      container-name:
-        type: string
-    # ホスト側環境の設定
-    steps:
-      - setup-git-config
-      # ソースコードを，/root/project(=tech-notebook) に配置# ソースコードを，/root/project(=tech-notebook) に配置
-      - checkout
-      - run:
-          name: Build << parameters.container-name >>
-          command: |
-            docker build -f ./infra/docker/<< parameters.container-name >>/Dockerfile --target develop -t ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >> .
-      - run:
-          name: Login to docker hub
-          command: |
-            echo ${DOCKER_PASS} |
-            docker login -u ${DOCKER_USER} --password-stdin
-      - run:
-          name: Push << parameters.container-name >>
-          command: |
-            docker push ${DOCKER_USER}/${APP_NAME}-<< parameters.container-name >>:${DOCKER_VERSION}
-      
   # Slackに失敗を通知する
   notify-failure-to-slack:
     parameters:
@@ -51,24 +26,9 @@ commands:
           # メッセージ
           failure_message: "<< parameters.message >>に失敗しました:cry:"
 
-# ジョブの設定
 jobs:
-  push-images-builder:
-    # ホスト側環境の設定
-    machine: true
-    steps:
-      - push-images:
-          container-name: "builder"
-          
-  push-images-www:
-    # ホスト側環境の設定
-    machine: true
-    steps:
-      - push-images:
-          container-name: "www"
-        
-  make-deploy-source:
-    # ホスト側環境の設定
+  push-builder-image:
+    # stepsの実行環境
     machine: true
     steps:
       - setup-git-config
@@ -77,28 +37,38 @@ jobs:
       - run:
           name: Build builder
           command: |
-            docker build -f ./infra/docker/builder/Dockerfile --target production -t ${APP_NAME}-builder:latest .
+            docker build -f ./infra/docker/www/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION} .
       - run:
-          name: Run builder
+          name: Login to docker hub
           command: |
-            docker run -d -it --name ${APP_NAME}-builder ${APP_NAME}-builder:latest
+            echo ${DOCKER_PASS} |
+            docker login -u ${DOCKER_USER} --password-stdin
       - run:
-          name: Connect to builder
+          name: Push builder
           command: |
-            docker exec -it ${APP_NAME}-builder /bin/bash
+            docker push ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
+        
+  make-deploy-source-by-builder:
+    docker:
+      # stepsの実行環境
+      - image: ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
+    steps:
+      - setup-git-config
+      # ソースコードを，/root/project(=tech-notebook) に配置
+      - checkout
       - run:
           # READMEをサイト紹介ページとして利用
           name: Copy README.md
           command: |
             cp README.md ./public/source/about_this_site.md
       - run:
-          # 本番環境にデプロイされるpublicディレクトリに移動
-          # デプロイ用のHtmlを生成
+          # デプロイイメージに組み込むため，htmlを生成
           name: Make html
           command: |
             cd ./public
             make html
       - run:
+          # ソースコードをワークスペースに保存
           name: Make dir & Copy source to workspace
           command: |
             mkdir -p ./workspace/public/build
@@ -109,22 +79,12 @@ jobs:
             # Rootをカレントとした時の相対ディレクトリ
             - ./public/build
 
-# 実行の順番を定義
 workflows:
   version: 2.1
   build-push:
     jobs:
-      # Deploy Image To Docker Hub
-      - push-images-builder:
-          post-steps:
-            - notify-failure-to-slack
-          filters:
-            branches:
-              only:
-                # NOTE: productionブランチのみ起動
-                - production
-      # Deploy Image To Docker Hub
-      - push-images-www:
+      # Push Image To Docker Hub
+      - push-builder-image:
           post-steps:
             - notify-failure-to-slack
           filters:
@@ -133,16 +93,16 @@ workflows:
                 # NOTE: productionブランチのみ起動
                 - production
       # Make Deploy Source
-      - make-deploy-source:
+      - make-deploy-source-by-builder:
           requires:
-            - push-images-builder
-            - push-images-www
+            - push-builder-image
           post-steps:
             - notify-failure-to-slack
-      # Deploy Production Image To ECR www -- Fix: env_var_name型設定項目は，${}をつけずに環境変数を出力
+      # Deploy Production Image To ECR www
+      # env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
           requires:
-            - make-deploy-source
+            - make-deploy-source-by-builder
           post-steps:
             - notify-failure-to-slack
           name: build-and-push-image-www
