@@ -168,9 +168,9 @@ jobs:
 
 #### ・Enum型
 
-**【実装例】**
-
 特定の文字列や整数のみを引数として許可したいときに用いる．Jobで呼び出した時に，Enumのいずれかを引数として渡す．
+
+**【実装例】**
 
 ``` yaml
 jobs:
@@ -183,6 +183,24 @@ jobs:
     steps:
       - run:
         name: Deploy to << parameters.environment >>
+        command: # 何らかの処理
+```
+
+#### ・string型
+
+文字列をパラメータとして渡す．引数が与えられなかった場合に適用される```default```を設定できる．```default```を設定しない場合，引数が必須と見なされる．
+
+**【実装例】**
+
+```yaml
+jobs:
+  deploy:    
+    parameters:
+      text:
+        type: string
+        default: "Hello World"
+    steps:
+      - run: echo << parameters.text >> # parametersから渡されたtextを渡す
 ```
 
 
