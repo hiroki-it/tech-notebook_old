@@ -106,8 +106,8 @@ workflows:
           post-steps:
             - notify-failure-to-slack
           name: build-and-push-image-www
-          path: ./infra/docker/www/Dockerfile
-          dockerfile: Dockerfile
+          dockerfile: ./infra/docker/www/Dockerfile
+          path: .
           extra-build-args: --target production
           repo: "${APP_NAME}-www"
           create-repo: true
