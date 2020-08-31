@@ -443,6 +443,8 @@ object2.printParam; // global param
 
 JavaScriptでよく見かけるドルマーク．これは，関数の名前としてドルマークを使用しているだけである．
 
+**【実装例】**
+
 ```javascript
 function $(){
     return 'dollar';
@@ -450,6 +452,8 @@ function $(){
 ```
 
 jQueryでは，ライブラリの読み込み宣言時に，「Jquery」という名前の代わりにドルマークを使用する仕様になってる．これと混乱しないように注意する．
+
+**【実装例】**
 
 ```javascript
 // jQuery.get() と同じ
@@ -460,18 +464,173 @@ $.get() {
 
 
 
-### イベント駆動
 
-#### ・イベント駆動とは
+## 03. 標準ビルトインオブジェクト
 
-JavaScriptでは，画面上で何らかのイベントが発火し，これに紐づく大元の関数がコールされることで，他の関数に処理が広がっていく．これをイベント駆動という．
+### 標準ビルトオブジェクトとは
 
-#### ・イベントの種類
+JavaScriptの実行環境にあらかじめ組み込まれたオブジェクト．
 
 
-### ```addEventListener('イベント名', methodA(){})```
+
+### Object
+
+オブジェクトを生成するオブジェクト．他の全ての標準ビルトインオブジェクトの継承元になっているため，ほ９Objectが持つメソッドとデータを使うことができる．
+
+**【実装例】**
+
+```javascript
+// new演算子を使ってインスタンスを生成
+var obj = new Object();
+```
+
+
+
+### Function
+
+**【実装例】**
+
+```
+
+```
+
+
+
+### Array
+
+#### ・```Array.prototype.entries()```
+
+配列からkeyとvalueを取得する．
+
+**【実装例】**
+
+```javascript
+var array = ['a', 'b', 'c'];
+
+// key，valueを取得できる．
+var iterator = array.entries();
+
+// for-ofで展開
+for (const value of iterator) {
+  console.log(e);
+}
+
+// [0, 'a']
+// [1, 'b']
+// [2, 'c']
+```
+
+#### ・```Array.prototype.map()```
+
+**【実装例】**
+
+
+```javascript
+// ここに実装例
+```
+
+#### ・```Array.prototype.filter()```
+
+**【実装例】**
+
+```javascript
+// ここに実装例
+```
+
+#### ・```Array.length```
+
+要素数を出力する．
+
+**【実装例】**
+
+```javascript
+const clothing = ['shoes', 'shirts', 'socks', 'sweaters'];
+
+console.log(
+    clothing.length
+);
+
+// 4
+```
+
+
+
+### JSON
+
+#### ・```JSON.parse()```
+
+JavaScriptからJSONにシリアライズする．
+
+**【実装例】**
+
+```javascript
+console.log(
+    JSON.stringify({
+        x : 1,
+        y : 5,
+        z : "test"
+    })
+);
+
+// JSON形式オブジェクト
+// "{"x":5, "y":5 "z":"test"}"
+```
+
+#### ・```JSON.stringify()```
+
+JSONからJavaScriptにデシリアライズする．
+
+**【実装例】**
+
+```javascript
+console.log(
+    JSON.parse("{
+        "x" : 1,
+        "y" : 5,
+        "z" : "test"
+     }")
+);
+
+// JavaScriptオブジェクト
+// {x:5, y:5 z:"test"}
+```
+
+
+
+## 03-02. DOMオブジェクト
+
+### Document
+
+#### ・```Document.getElementbyId()```
+
+指定した```id```のhtml要素を取得する．
+
+**【実装例】**
+
+```html
+<html>
+ <body>
+  <p id="myid">Hello world!</p>
+  <script>
+   console.log(document.getElementById("myid"));
+  </script>
+ </body>
+</html>
+```
+
+```javascript
+// <p id="myid">Hello world!</p>
+```
+
+
+
+### EventTarget
+
+#### ・```EventTarget.addEventListener()```
 
 第一引数で，```click```などのイベントを設定し，第二引数でメソッド（無名関数でも可）を渡す．
+
+**【実装例】**
 
 ```html
 <button id="btn">表示</button>
@@ -488,17 +647,18 @@ btn.addEventListener('click', function() {
 
 
 
-## 03. データ型
+## 03-03. 標準ビルトオブジェクトのデータ型
 
-### ```null```，```undefined```
+### undefined，null
 
-#### ・```null```と```undifined```の違い
+#### ・undefined
+
+データを代入しない時に適用されるデータ型である．
+
+**【実装例】**
+
 
 ```javascript
-// 変数a: 意図をもってnullを入れている
-const a = null;
-console.log(a);  // null
-
 // 変数b: 初期化されていない（値が代入されていない）
 const b;
 
@@ -506,9 +666,25 @@ const b;
 console.log(b);  // undefied
 ```
 
-#### ・```return undefined```
+
+#### ・null
+
+nullは，undefinedとは異なり，意図して代入しなければ適用されないデータ型である．
+
+**【実装例】**
+
+```javascript
+// 変数a: 意図をもってnullを入れている
+const a = null;
+
+console.log(a); // null
+```
+
+#### ・undefined型データの返却
 
 ```undifined```を返却する場合，```return```のみを記述する．
+
+**【実装例】**
 
 ```JavaScript
 function hoge(){
