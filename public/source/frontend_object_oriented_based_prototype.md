@@ -435,7 +435,30 @@ object2.printParam; // global param
 
 
 
-## 02. 関数がコールされるタイミング
+## 02. 関数
+
+### 関数の命名
+
+#### ・ドルマーク
+
+JavaScriptでよく見かけるドルマーク．これは，関数の名前としてドルマークを使用しているだけである．
+
+```javascript
+function $(){
+    return 'dollar';
+}
+```
+
+jQueryでは，ライブラリの読み込み宣言時に，「Jquery」という名前の代わりにドルマークを使用する仕様になってる．これと混乱しないように注意する．
+
+```javascript
+// jQuery.get() と同じ
+$.get() {
+    return 'dollar';
+}
+```
+
+
 
 ### イベント駆動
 
