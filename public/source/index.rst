@@ -22,15 +22,15 @@
    :maxdepth: 2
    :caption: PHP｜オブジェクト指向
 
-   object_oriented_analysis_and_design.md
-   object_oriented_design_and_programming.md
+   backend_object_oriented_analysis_and_design.md
+   backend_object_oriented_design_and_programming.md
 
 .. toctree::
    :maxdepth: 2
    :caption: PHP｜ロジック
 
-   backend_validation_logic.md
-   backend_iteration_logic.md
+   backend_logic_validation.md
+   backend_logic_iteration.md
 
 .. toctree::
    :maxdepth: 2
@@ -44,38 +44,39 @@
 
    backend_library.md
    backend_framework_symfony.md
+   backend_testing.md
 
 .. toctree::
    :maxdepth: 2
    :caption: PHP｜アーキテクチャ
 
-   architecture_domain_driven_design.md
-   architecture_cqrs.md
+   backend_architecture_domain_driven_design.md
+   backend_architecture_cqrs.md
 
 .. toctree::
    :maxdepth: 2
    :caption: JS｜オブジェクト指向
 
-   object_oriented_based_prototype.md
+   frontend_object_oriented_based_prototype.md
 
 .. toctree::
    :maxdepth: 2
    :caption: JS｜ロジック
 
-   frontend_validation_logic.md
+   frontend_logic_validation.md
 
 .. toctree::
    :maxdepth: 2
    :caption: JS｜アーキテクチャ
 
-   architecture_spa_vuejs.md
+   frontend_architecture_spa_vuejs.md
 
 .. toctree::
    :maxdepth: 2
    :caption: PHP / JS｜デバッグ
 
-   debug_backend.md
-   debug_frontend.md
+   backend_debug.md
+   frontend_debug.md
 
 .. toctree::
    :maxdepth: 2
@@ -174,8 +175,7 @@
    :maxdepth: 2
    :caption: 開発フロー
 
-   development_flow_overview.md
-   development_testing.md
+   management_development_flow.md
 
 .. toctree::
    :maxdepth: 2
@@ -187,7 +187,7 @@
    :maxdepth: 2
    :caption: アルゴリズム
 
-   algorithm_logic.md
+   backend_logic_algorithm.md
 
 .. toctree::
    :maxdepth: 2
