@@ -844,154 +844,19 @@ module.exports = {
 
 
 
-## 03. JSON型データの解析（パース）
+## 03. JavaScriptとJSONの相互パース
 
-### データ記述言語の種類
-
-#### ・JSON：JavaScript Object Notation
-
-一番外側を波括弧で囲う．
-
-```json
-{
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200
-  }
-}
-```
-
-#### ・YAML：YAML Ain't a Markup Language
-
-```yaml
-{
-  Example:
-    fruit:
-      - "ばなな"
-      - "りんご"
-    account: 200
-}  
-```
-
-#### ・マークアップ言語
-
-マークアップ言語の章を参照せよ．
-
-#### ・CSV：Comma Separated Vector
-
-データ解析の入力ファイルとしてよく使うやつ．
+サーバとのデータ送受信の前後に，データ型のパースを行う必要がある，これについては，JSONのノートを参照．
 
 
-
-### シリアライズ，デシリアライズ
-
-#### ・シリアライズ，デシリアライズとは
-
-クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
-
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
-
-**【実装例】**
-
-サーバサイドでReadされたJSON型データを，JavaScriptのオブジェクトにデシリアライズ．
-
-```javascript
-class Staff {
-  
-    //-- JSON型で渡すとJavaScriptのオブジェクトに変換 --//
-    constructor(properties) {
-        this.id   = properties.id;
-        this.name = properties.name;
-    }
-  
-  
-    //-- デシリアライズ（JSONからJavaScriptへ） --//
-    static deserializeStaff(data) {
-       // JSON型データを自身に渡して変換
-       return new Staff({
-            id: data.id,
-            name: data.name
-       });
-    }
-  
-  
-    //-- シリアライズ（JavaScriptからJSONへ） --//
-    static serializeCriteria(criteria) {
-        // JavaScript上でのJSON型変数の定義方法
-        const query = {}
-        // ID
-        if (criteria.id) {
-          // JSON型オブジェクトが生成される．
-          query.id = _.trim(criteria.id);
-        }
-        // 氏名
-        if (criteria.name) {
-          query.name = _.trim(criteria.name);
-        }
-    }
-}     
-```
-
-#### 1. JavaScriptによるオブジェクト
-
-**【実装例】**
-
-```javascript
-// クラス宣言．
-class Example {
-    fruit: ["ばなな", "りんご"];
-    account: 200;
-}
-
-// 外部ファイルから読み込めるようにする．  
-module.exports = Example;  
-```
-
-#### 2. JSON型のオブジェクト
-
-**【実装例】**
-
-```json
-// 一番外側を波括弧で囲う．
-{
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200
-  }
-}
-```
-
-#### 3. PHPによるオブジェクト
-
-**【実装例】**
-
-```PHP
-<?php
-class Example
-{
-    private $fruit;
-    
-    private $account;
-}    
-```
-
-
-
-### JSONのクエリ言語
-
-#### ・JMESPath
-
-**【実装例】**
-
-```javascript
-// ここに実装例
-```
 
 
 
 ## 04. Ajaxによる非同期的なデータ送受信
 
 ### JQueryの```ajax()```を用いたAjaxの実装
+
+#### ・```ajax()```とは
 
 コンポーネントごとにリクエストメッセージを送信する必要があるので，```ajax()```には，メソッド，URL，ヘッダー，ボディを設定する項目がある．データ送信後は，その結果に応じて```JQuery.Defferred```モジュールで後処理を行う．リクエストメッセージの構造については，ネットワークのノートを参照せよ．
 
