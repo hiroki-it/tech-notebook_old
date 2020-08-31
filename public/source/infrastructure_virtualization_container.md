@@ -517,9 +517,10 @@ $ docker inspect {コンテナID} | grep IPAddress
 ```bash
 # デタッチドモードで起動中のコンテナに接続
 $ docker attach {起動中コンテナ名}
-
+```
+```bash
 # デタッチドモードで起動中のコンテナに接続
-# i：interactive，t：tty
+# i：interactive，t：tty（対話モード）
 $ docker exec -it {起動中コンテナ名} /bin/bash
 ```
 
@@ -568,7 +569,7 @@ $ docker container ps -a # ==> コンテナのSTATUSがEXITedになっている
 # デタッチドモードで起動
 $ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名} /bin/bash
 
-# デタッチドモードのコンテナに接続
+# 対話モードで，デタッチドモードのコンテナに接続
 $ docker exec -it {起動中コンテナ名} /bin/bash
 
 # PID=1,17で，2つの/bin/bashプロセスが稼働していることが確認できる
