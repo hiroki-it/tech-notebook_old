@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Build builder
           command: |
-            docker build -f ./infra/docker/www/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION} .
+            docker build -f ./infra/docker/builder/Dockerfile --target production -t ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION} .
       - run:
           name: Login to docker hub
           command: |
