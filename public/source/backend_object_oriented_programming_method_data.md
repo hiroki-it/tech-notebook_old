@@ -52,20 +52,22 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 ```PHP
 <?php
 class DogToyEntity {
-// 中身は省略
-}
-
-// インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
-function aggregateDogToyEntity(array $fetchedData)
-{
-    return new DogToyEntity
-    (
-        new ColorVO($fetchedData['dog_toy_type']),
-        $fetchedData['dog_toy_name'],
-        $fetchedData['number'],
-        new PriceVO($fetchedData['dog_toy_price']),
-        new ColorVO($fetchedData['color_value'])
-    );
+    
+    public function __construct(){
+        // 中身は省略
+    }
+    
+    // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
+    public function aggregateDogToyEntity(array $fetchedData)
+    {
+        return new DogToyEntity(
+            new ColorVO($fetchedData['dog_toy_type']),
+            $fetchedData['dog_toy_name'],
+            $fetchedData['number'],
+            new PriceVO($fetchedData['dog_toy_price']),
+            new ColorVO($fetchedData['color_value'])
+        );
+    }
 }
 ```
 
@@ -73,11 +75,13 @@ function aggregateDogToyEntity(array $fetchedData)
 
 ```PHP
 <?php
-// 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
-function computeExampleFee(Entity $order): Money
-{
-    $money = new Money($order->exampleFee);
-    return $money;
+class Example {
+    // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
+    public function computeExampleFee(Entity $order): Money
+    {
+        $money = new Money($order->exampleFee);
+        return $money;
+    }
 }
 ```
 
@@ -153,7 +157,6 @@ class Test02 {
     {
         $this->property02 = $property02;
     }
-    
 }
 ```
 
@@ -460,48 +463,50 @@ $D = getObjB()->getObjC()->getObjC();
 
 ```PHP
 <?php
-function quickSort(array $array): array 
-{
-    // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
-    if (count($array) <= 1) {
-        return $array;
-    }
-
-    // 一番最初の値をPivotとする．
-    $pivot = array_shift($array); 
-
-    // グループを定義
-    $left = $right = [];
-
-    foreach ($array as $value) {
-
-        if ($value < $pivot) {
+class Example{
+    
+    public function quickSort(array $array): array
+    {
+        // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
+        if (count($array) <= 1) {
+            return $array;
+        }
         
-            // Pivotより小さい数は左グループに格納
-            $left[] = $value;
+        // 一番最初の値をPivotとする．
+        $pivot = array_shift($array);
         
-        } else {
+        // グループを定義
+        $left = $right = [];
         
-            // Pivotより大きい数は右グループに格納
-            $right[] = $value;
+        foreach ($array as $value) {
             
+            if ($value < $pivot) {
+                
+                // Pivotより小さい数は左グループに格納
+                $left[] = $value;
+                
+            } else {
+                
+                // Pivotより大きい数は右グループに格納
+                $right[] = $value;
+                
             }
-
+            
+        }
+        
+        // 処理の周回ごとに，結果の配列を結合．
+        return array_merge
+        (
+        // 左のグループを再帰的にクイックソート．
+            quickSort($left),
+            
+            // Pivotを結果に組み込む．
+            array($pivot),
+            
+            // 左のグループを再帰的にクイックソート．
+            quickSort($right)
+        ); 
     }
-
-    // 処理の周回ごとに，結果の配列を結合．
-    return array_merge
-    (
-        // 左のグループを再帰的にクイックソート．
-        quickSort($left),
-        
-        // Pivotを結果に組み込む．
-        array($pivot),
-        
-        // 左のグループを再帰的にクイックソート．
-        quickSort($right)
-    );
-
 }
 
 // 実際に使ってみる．
@@ -530,13 +535,17 @@ var_dump($result);
 
 ```PHP
 <?php
-function returnMethod()
-{
-    print "returnMethod()です。\n";
-    return; // 何も返さない．
+class Example{
+  
+    public function returnMethod()
+    {
+        print "returnMethod()です。\n";
+        return; // 何も返さない．
+    }
 }
 
-returnMethod(); // returnMethod()です。
+$example = new Example();
+$example->returnMethod(); // returnMethod()です。
 // 処理は続く．
 ```
 
@@ -545,13 +554,17 @@ returnMethod(); // returnMethod()です。
 
 ```PHP
 <?php
-function exitMethod()
-{
-    print "exitMethod()です。\n";
-    exit;
+class Example{
+  
+    function exitMethod()
+    {
+        print "exitMethod()です。\n";
+        exit;
+    }
 }
 
-exitMethod(); // exitMethod()です。
+$example = new Example();
+$example->exitMethod(); // exitMethod()です。
 // ここで，システム全体の処理が終了する．
 ```
 
@@ -571,15 +584,19 @@ exitMethod(); // exitMethod()です。
 
 ```PHP
 <?php
-function getOneToThree(): array
+class Example
 {
-    for ($i = 1; $i <= 3; $i++) {
-        // yield を返却した後、$i の値が維持される．
-        yield $i;
+    function getOneToThree(): array
+    {
+        for ($i = 1; $i <= 3; $i++) {
+            // yield を返却した後、$i の値が維持される．
+            yield $i;
+        }
     }
 }
 
-$oneToThree = getOneToThree();
+$example = new Example();
+$oneToThree = $example->getOneToThree();
 
 foreach ($oneToThree as $value) {
     echo "{$value}\n";
@@ -832,22 +849,25 @@ echo $optionName;
 ```PHP
 <?php
 // 第一引数のみの場合
-
-// 高階関数を定義
-function test($callback)
+class Example
 {
-    echo $callback();
+     // 高階関数を定義
+    public function test($callback)
+    {
+        echo $callback();
+    }
+
+    // コールバックを定義
+    // 関数の中でコールされるため，「後で呼び出される」という意味合いから，コールバック関数といえる．
+    public function callbackMethod(): string
+    {
+        return "出力に成功しました．";
+    }
 }
 
-// コールバックを定義
-// 関数の中でコールされるため，「後で呼び出される」という意味合いから，コールバック関数といえる．
-function callbackMethod():string
-{
-    return "出力に成功しました．";
-}
-
+$example = new Example();
 // 高階関数の引数として，コールバック関数を渡す
-test("callbackMethod");
+$example->test("callbackMethod");
 
 // 出力結果
 // 出力に成功しました．
@@ -856,21 +876,24 @@ test("callbackMethod");
 ```PHP
 <?php
 // 第一引数と第二引数の場合
-
-// 高階関数を定義
-function higherOrder($param, $callback)
+class Example
 {
-    return $callback($param);
+    // 高階関数を定義
+    public function higherOrder($param, $callback)
+    {
+        return $callback($param);
+    }
+
+    // コールバック関数を定義
+    public function callbackMethod($param)
+    {
+        return $param."の出力に成功しました．";
+    }
 }
 
-// コールバック関数を定義
-function callbackMethod($param)
-{
-    return $param."の出力に成功しました．";
-}
- 
+$example = new Example();
 // 高階関数の第一引数にコールバック関数の引数，第二引数にコールバック関数を渡す
-higherOrder("第一引数", "callbackMethod");
+$example->higherOrder("第一引数", "callbackMethod");
 
 // 出力結果
 // 第一引数の出力に成功しました．
@@ -882,17 +905,21 @@ higherOrder("第一引数", "callbackMethod");
 
 ```PHP
 <?php
-// 高階関数のように，関数を引数として渡す．
-function higherOrder($parentVar, $callback)
+class Example
 {
-    $parentVar = "&親メソッドのスコープの変数";
-    return $callback($parentVar);
+    // 高階関数のように，関数を引数として渡す．
+    public function higherOrder($parentVar, $callback)
+    {
+        $parentVar = "&親メソッドのスコープの変数";
+        return $callback($parentVar);
+    }
 }
 
+$example = new Example;
 // 第二引数の無名関数．関数の中でコールされるため，「後でコールされる」という意味合いから，コールバック関数といえる．
 // コールバック関数は再利用されないため，名前をつけずに無名関数とすることが多い．
 // 親メソッドのスコープで定義されている変数を引数として渡す．（普段よくやっている値渡しと同じ）
-higherOrder($parentVar, function () use ($parentVar) {
+$example->higherOrder($parentVar, function () use ($parentVar) {
     return $parentVar . "の出力に成功しました．";
 }
 );
