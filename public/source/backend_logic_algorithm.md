@@ -22,7 +22,7 @@
 
 ```PHP
 <?php
-function minSelectSort(Array $array): Array
+function minSelectSort(array $array): array
 {
 
     // 比較基準値を固定し，それ以外の数値と比べていく．
@@ -66,7 +66,7 @@ $result = selectSort($array);
 var_dump($result); 
 
 // 昇順に並び替えられている．
-2, 7, 8, 10, 12, 13, 16
+// 2, 7, 8, 10, 12, 13, 16
 ```
 
 **【アルゴリズム解説】**
@@ -100,7 +100,7 @@ var_dump($result);
 
 ```PHP
 <?php
-function quickSort(Array $array): Array 
+function quickSort(array $array): array 
 {
     // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
     if (count($array) <= 1) {
@@ -153,7 +153,7 @@ $result = quickSort($array);
 var_dump($result); 
 
 // 昇順に並び替えられている．
-1, 2, 3, 4, 5, 6, 7, 8 
+// 1, 2, 3, 4, 5, 6, 7, 8 
 ```
 
 **【アルゴリズム解説】**
@@ -338,10 +338,10 @@ $matrix = array(
 ```PHP
 <?php
 // 各地点間の距離，出発地点，開始地点を引数にとる．
-public function bestFirstSearchByDijkstra(
-    Array $matrix,
-    Int $startPoint,
-    Int $goalPoint
+function bestFirstSearchByDijkstra(
+    array $matrix,
+    int $startPoint,
+    int $goalPoint
 )
 {
     // 地点数を定数で定義
@@ -349,7 +349,7 @@ public function bestFirstSearchByDijkstra(
     
     if($startPoint < self::POINT_NUMBER
         || self::POINT_NUMBER < $goalPoint){
-            throw new Exception('存在しない地点番号は設定できません．'）；
+            throw new Exception('存在しない地点番号は設定できません．');
     }
     
     // 出発地点を定数で定義
@@ -375,7 +375,7 @@ public function bestFirstSearchByDijkstra(
     $distance[self::START_POINT] = 0;
     
     // 
-    while(true)｛
+    while(true){
         $i = 0;
         
         while($i < self::POINT_NUMBER){
@@ -395,10 +395,11 @@ public function bestFirstSearchByDijkstra(
             }
         }
         
-        今の自分には，これ以上は難しい…
-        未来の俺，頑張ってくれ…
+        // 今の自分には，これ以上は難しい…
+        // 未来の俺，頑張ってくれ…
     
     }
+}
 ```
 
 **【最短経路探索処理の解説】**

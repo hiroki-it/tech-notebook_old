@@ -28,7 +28,7 @@
 ```PHP
 <?php
 // クラスの名前空間を引数として渡す．
-$mock = Phake::mock(Example::class)
+$mock = Phake::mock(Example::class);
 ```
 
 #### ・```when()```
@@ -52,7 +52,7 @@ $mock = Phake::mock(Example::class)
 ```PHP
 <?php
 // モックオブジェクトを生成．
-$mock = Phake::mock(Example::class)
+$mock = Phake::mock(Example::class);
 
 // モックオブジェクトに対してスタブを生成．
 \Phake::when($mock)
@@ -60,10 +60,10 @@ $mock = Phake::mock(Example::class)
     ->thenReturn([]);
 
 // スタブをコール．
-$mock->method("A")
+$mock->method("A");
 
 // $mockのmethod()が$n回コールされ，その時の引数が$paramであったかを検証．
-Phake::verify($mock, Phake::times($n))->method($param)
+Phake::verify($mock, Phake::times($n))->method($param);
 ```
 
 **【実装例2】**
@@ -84,7 +84,7 @@ class Aggregation
     public function aggMethod($param)
     {
         // privateメソッドをコール
-        $param = this->addB($param)
+        $param = $this->addB($param);
         // ExampleクラスのexaMethodをコール．
         return $this->example->exaMethod($param);
     }
@@ -177,23 +177,26 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 テストメソッドのアノテーションに，```@dataProvider {データ名}```とすることで，テストメソッドに定義した配列データを渡すことができる．
 
 ```PHP
-<?php
-* @test
-* @dataProvider provideData
-*/
-public function testMethod($paramA, $paramB, $paramC)
+class xxxTest
 {
-   // 何らかの処理 
-}
-
-public function provideData(): array
-{
-    return [
-        // 配列データは複数あっても良い，
-        // testMethod()の引数と同じ順番で，配列データの要素が並ぶ．
-        ["あ", "い", "う"],
-        ["1", "2", "3"]
-    ]
+    
+    /* @test
+     * @dataProvider provideData
+     */
+    public function testMethod($paramA, $paramB, $paramC)
+    {
+        // 何らかの処理 
+    }
+    
+    public function provideData(): array
+    {
+        return [
+            // 配列データは複数あっても良い，
+            // testMethod()の引数と同じ順番で，配列データの要素が並ぶ．
+            ["あ", "い", "う"],
+            ["1", "2", "3"]
+        ];
+    }
 }
 ```
 
