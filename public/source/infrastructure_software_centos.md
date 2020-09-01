@@ -850,20 +850,21 @@ Scala，Groovy，Kotlin，など．Java仮想マシンによって，中間言�
 
 ```PHP
 <?php
+
 use App\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 // まず最初に，bootstrap.phpを読み込む．
-require dirname(__DIR__).'/config/bootstrap.php';
+require dirname(__DIR__) . '/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
-
+    
     Debug::enable();
 }
 
-if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES']?? $_ENV['TRUSTED_PROXIES'] ?? false) {
     Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
 }
 
@@ -871,7 +872,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
@@ -889,12 +890,12 @@ public class Age
     {
         // 定数を定義．
         final int age = 20;
-		System.out.println("私の年齢は" + age);
+        System.out.println("私の年齢は" + age);
 
-		// 定数は再定義できないので，エラーになる．
-		age = 31;
-		System.out.println("…いや，本当の年齢は" + age);
-	}
+        // 定数は再定義できないので，エラーになる．
+        age = 31;
+        System.out.println("…いや，本当の年齢は" + age);
+    }
 }
 ```
 

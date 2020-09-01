@@ -51,8 +51,12 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 ```PHP
 <?php
+class DogToyEntity {
+// 中身は省略
+}
+
 // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
-public static function aggregateDogToyEntity(array $fetchedData)
+function aggregateDogToyEntity(array $fetchedData)
 {
     return new DogToyEntity
     (
@@ -70,7 +74,7 @@ public static function aggregateDogToyEntity(array $fetchedData)
 ```PHP
 <?php
 // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
-public static function computeExampleFee(Entity $order): Money
+function computeExampleFee(Entity $order): Money
 {
     $money = new Money($order->exampleFee);
     return $money;
@@ -159,6 +163,10 @@ Test01クラスインスタンスの```$property01```に値を設定するため
 
 ```PHP
 <?php
+class Test01 {
+// 中身は省略
+}
+
 $test01 = new Test01;
 
 $test01->setProperty01("データ01の値");
@@ -170,6 +178,10 @@ $test01->setProperty01("新しいデータ01の値");
 
 ```PHP
 <?php
+class Test02 {
+// 中身は省略
+}
+
 $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
@@ -199,14 +211,11 @@ class Example
     // 引数と返却値のデータ型を指定
     public function __get(string $name): string
     {
-        echo "{$name}データは存在しないため，データ値を取得できません．";
+        return "{$name}データは存在しないため，データ値を取得できません．";
     }
 
 }
-```
 
-```PHP
-<?php
 // 存在しないデータを取得．
 $example = new Example();
 $example->hoge;
@@ -250,7 +259,10 @@ class Example
 ```
 
 ```PHP
-<?php
+class Example {
+// 中身は省略
+}
+
 // 存在しないデータに値をセット．
 $example = new Example();
 $example->hoge = "HOGE";
@@ -491,10 +503,7 @@ function quickSort(array $array): array
     );
 
 }
-```
 
-```PHP
-<?php
 // 実際に使ってみる．
 $array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
 $result = quickSort($array);
@@ -526,10 +535,7 @@ function returnMethod()
     print "returnMethod()です。\n";
     return; // 何も返さない．
 }
-```
 
-```PHP
-<?php
 returnMethod(); // returnMethod()です。
 // 処理は続く．
 ```
@@ -544,10 +550,7 @@ function exitMethod()
     print "exitMethod()です。\n";
     exit;
 }
-```
 
-```PHP
-<?php
 exitMethod(); // exitMethod()です。
 // ここで，システム全体の処理が終了する．
 ```
@@ -575,10 +578,7 @@ function getOneToThree(): array
         yield $i;
     }
 }
-```
 
-```PHP
-<?php
 $oneToThree = getOneToThree();
 
 foreach ($oneToThree as $value) {
@@ -600,13 +600,22 @@ foreach ($oneToThree as $value) {
 
 ```PHP
 <?php
+class Dispatcher {
+// 中身は省略
+}
+
 $dispatcher = new Dispatcher;
 
+$name = "example";
+$listener = function() use ($param){
+// 何らかの処理
+};
+
 // 文字列とメソッドの登録.
-$dispatcher->addListener(string $name, callable $listener)
+$dispatcher->addListener($name, $listener);
 
 // 文字列からメソッドをコール.
-$dispatcher->dispatch(string $name, $param)
+$dispatcher->dispatch("example", "test");
 ```
 
 #### ・イベント名に紐づくメソッドをコールするオブジェクト
@@ -700,6 +709,10 @@ class ResultCacher
 
 ```PHP
 <?php
+class Item {
+// 中身は省略
+}
+
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -721,6 +734,10 @@ echo $optionName;
 
 ```PHP
 <?php
+class Item {
+// 中身は省略
+}
+
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -743,6 +760,14 @@ echo $optionName("BC");
 
 ```PHP
 <?php
+class Item {
+// 中身は省略
+}
+
+class Option {
+// 中身は省略
+}
+
 $item = new Item;
 
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
@@ -772,6 +797,10 @@ echo $option->name("BC");
 
 ```PHP
 <?php
+class Item {
+// 中身は省略
+}
+
 $item = new Item;
 $param = "BC";
 
@@ -1268,24 +1297,36 @@ $var = (string) $var; // $varはString型
 
 ```PHP
 <?php
+$var = "1";
+
 // Int型
 $var = (int) $var;
+
+// 1
 ```
 
 #### ・```(bool)```
 
 ```PHP
 <?php
+$var = 1;
+
 // Boolean型
 $var = (bool) $var;
+
+// true
 ```
 
 #### ・```(float)```
 
 ```PHP
 <?php
+$var = "1.0";
+
 // Float型
 $var = (float) $var;
+
+// 1.0
 ```
 
 #### ・```(array)```
@@ -1395,8 +1436,11 @@ class ExampleA
 
 ```PHP
 <?php
-$exampleA = new ExmapleA;
-$example->a(); // a が返却される．
+class ExampleA {
+public function a(){}
+}
+$exampleA = new ExampleA;
+$exampleA->a(); // a が返却される．
 ```
 
 #### ・```__METHOD__```
@@ -1572,6 +1616,9 @@ file_put_contents(
 
 ```PHP
 <?php
+// 何らかの文字列
+$x = "";
+
 // jpegの大文字小文字
 preg_match(
     '/jpeg$/i',

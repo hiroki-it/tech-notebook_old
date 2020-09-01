@@ -409,7 +409,7 @@ if (!$cacheItemObj->isHit()) {
   // キャッシュアイテムオブジェクトに，データを設定
   $cacheItemObj->set(777);
   // キャッシュアイテムオブジェクトを紐づける．
-  $cache->save($cacheItemObj)
+  $cache->save($cacheItemObj);
 }
 
 // キャッシュIDに紐づくデータがあった場合，キャッシュアイテムオブジェクトを取得．

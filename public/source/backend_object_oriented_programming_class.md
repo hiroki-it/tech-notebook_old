@@ -861,7 +861,7 @@ class Example
 // 継承先クラス
 class SubExample extends Example
 {
-    public subValue;
+    public $subValue;
   
     public function getSubValue()
     {
