@@ -19,23 +19,147 @@
 
 ## 02. メソッドとデータのカプセル化
 
+
+
 ### ```public```
 
+#### ・```public```とは
+
 どのオブジェクトでも呼び出せる．
+
+
+#### ・オブジェクト指向の場合
+
+```php
+<?php
+
+class Example
+{
+    public $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function example()
+    {
+        return $this->data;
+    }
+}
+```
+#### ・オブジェクト指向でない場合
+
+オブジェクトが全て```public```であるなら，オブジェクト指向のメリットは特にないかもしれない．
+
+```php
+<?php
+  
+function example($data){
+    return $data;
+}
+
+$data = "データ";
+example($data);
+```
 
 
 
 ### ```protected```
 
+・```protected```とは
+
 同じクラス内と，その子クラス，その親クラスでのみ呼び出せる．
 
 https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
+
+#### ・オブジェクト指向の場合
+
+親クラス次第ではあるが，処理において，```$data```の中身を隠蔽できる．
+
+```php
+<?php
+  
+class Example extends ParentExample
+{
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function example()
+    {
+        // dataプロパティは親で定義されている 
+        return $this->data;
+    }
+}
+```
+#### ・オブジェクト指向でない場合
+
+処理において，```$data```の中身を隠蔽できないため，危険である．
+
+```php
+<?php
+  
+function example($data){
+    return $data;
+}
+
+$data = "データ";
+example($data);
+```
 
 
 
 ### ```private```
 
-同じオブジェクト内でのみ呼び出せる．
+・```private```とは
+
+同じオブジェクト内でのみ呼び出せる．オブジェクト指向のメリットを最大限に得られる機能である．
+
+#### ・オブジェクト指向の場合
+
+処理において，```$data```の中身を隠蔽できる．カプセル化を参照．
+
+```php
+<?php
+  
+class Example
+{
+    private $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function example()
+    {
+        return $this->data.$this->Desu();
+    }
+  
+    // クラス内からしかアクセスできない
+    private function Desu()
+    {
+        return "です．";
+    }
+}
+```
+#### ・オブジェクト指向でない場合
+
+処理において，```$data```の中身を隠蔽できないため，危険である．
+
+```php
+<?php
+  
+function example($data){
+    return $data;
+}
+
+$data = "データ";
+example($data);
+```
+
 
 #### ・Encapsulation（カプセル化）
 
@@ -43,7 +167,11 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 ![カプセル化](https://user-images.githubusercontent.com/42175286/59212717-160def00-8bee-11e9-856c-fae97786ae6c.gif)
 
+
+
 ### ```static```
+
+#### ・```static```とは
 
 別ファイルでのメソッドの呼び出しにはインスタンス化が必要である．しかし，static修飾子をつけることで，インスタンス化しなくともコールできる．データ値は用いず（静的），引数の値のみを用いて処理を行うメソッドに対して用いる．
 
@@ -51,9 +179,10 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 ```PHP
 <?php
-class DogToyEntity {
-    
-    public function __construct(){
+class DogToyEntity
+{
+    public function __construct()
+    {
         // 中身は省略
     }
     
@@ -75,7 +204,8 @@ class DogToyEntity {
 
 ```PHP
 <?php
-class Example {
+class Example
+{
     // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
     public function computeExampleFee(Entity $order): Money
     {
