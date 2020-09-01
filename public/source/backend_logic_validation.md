@@ -120,8 +120,7 @@ switch ($weeks) {
 // マジックナンバーを使わずに，定数として定義
 const noOptionItem = 0;
 
-function ()
-{
+function (){
 // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
     if (!empty($routeEntity->options)) {
         foreach ($routeEntity->options as $option) {
@@ -203,9 +202,6 @@ const noOptionItem = 0;
 
 function ($result)
 {
-    // マジックナンバーを使わずに，定数として定義
-    const noOptionItem = 0;
-
     // 初期値0を設定
     $result['optionItemA'] = noOptionItem;
     $result['optionItemB'] = noOptionItem;
@@ -266,7 +262,7 @@ $year = N;
 
 ```PHP
 <?php
-public function leapYear(Int $year): String
+function leapYear(int $year): string
 { 
     // (5)
     if($year <= 0){
@@ -306,7 +302,7 @@ $year = N;
 
 ```PHP
 <?php
-public function leapYear(Int $year): String
+function leapYear(int $year): string
 {
     // (5)
     if($year <= 0){
@@ -342,7 +338,7 @@ public function leapYear(Int $year): String
 
 ```PHP
 <?php
-public function leapYear(Int $year): String
+function leapYear(int $year): string
 {   
     switch(true) {
     
@@ -366,7 +362,7 @@ public function leapYear(Int $year): String
     dafault:
         return "うるう年";
     }
-      
+
 }
 ```
 
@@ -378,7 +374,7 @@ public function leapYear(Int $year): String
 
 ```PHP
 <?php
-public function leapYear(Int $year): String
+public function leapYear(int $year): string
 {
     // (5)
     if($year <= 0) throw new Exception("負の数は検証できません．");
@@ -596,7 +592,7 @@ class HttpRequestException extends Exception
  * @return bool
  * @throws CouldNotSendMessageException
  */
-public function sendMessage(Message $message)
+function sendMessage(Message $message)
 {
     // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
 

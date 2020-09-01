@@ -429,9 +429,7 @@ class DogToyEntity
     // Getterを実装
     public function toyNameWithColor()
     {
-        if($this->toyName && $this->colorVO->colorName());
-        return sprintf
-        (
+        return sprintf(
             '%s（%s）',
             $this->toyName,
             $this->colorVO->colorName()
@@ -613,7 +611,7 @@ class NameVO
     private $firstName;
     
     // （6） メソッドによってオブジェクトの状態が変わらない
-    public function fullName(): String
+    public function fullName(): string
     {
         return $this->lastName . $this->firstName;
     }
@@ -691,14 +689,14 @@ class ColorVO extends Enum
     
     
     // constructによってセットされた色値を返すメソッド．
-    public function colorValue() :Int
+    public function colorValue() :int
     {
         return $this->colorValue;
     } 
 
 
     // constructによってセットされた色名を返すメソッド．
-    public function colorName() :String
+    public function colorName() :string
     {
         return $this->colorName;
     } 
