@@ -12,26 +12,32 @@
 
 ```PHP
 <?php
+
 class Example
 {
-    
-    // $options配列には，OptionA,B,Cエンティティのいずれかが格納されているものとします．
-    public function checkOption(Array $options)
+    // $options配列には，OptionA,B,Cエンティティのいずれかが格納されていると想定
+    public function checkOption(array $options)
     {
+        $result = "";
+        
         foreach ($options as $option) {
             
             if ($option->name() === 'オプションA') {
                 $result = 'オプションAが設定されています．';
+                return $result;
             }
             
             if ($option->name() === 'オプションB') {
                 $result = 'オプションBが設定されています．';
+                return $result;
             }
             
             if ($option->name() === 'オプションC') {
                 $result = 'オプションCが設定されています．';
+                return $result;
             }
             
+            return $result;
         }
         
         return $result;
@@ -63,20 +69,20 @@ $oneD = call_user_func_array(
 <?php
 $array = [
     [
-        "date" => "2015/11/1" ,
-        "score" => 100 ,
-        "color" => "red" ,
-    ] ,
+        "date"  => "2015/11/1",
+        "score" => 100,
+        "color" => "red",
+    ],
     [
-        "date" => "2015/11/2" ,
-        "score" => 75 ,
-        "color" => "blue" ,
-    ] ,
+        "date"  => "2015/11/2",
+        "score" => 75,
+        "color" => "blue",
+    ],
     [
-        "date" => "2015/11/3" ,
-        "score" => 90 ,
-        "color" => "green" ,
-    ] ,
+        "date"  => "2015/11/3",
+        "score" => 90,
+        "color" => "green",
+    ],
 ];
 
 // この配列の```score```キーから値を取り出し，一次元配列を生成する．
@@ -101,8 +107,8 @@ array_column($array, "score");
 ```PHP
 <?php
 // 初期化
-$i = 0; 
-while($i < 4){
+$i = 0;
+while ($i < 4) {
     
     echo $i;
     
