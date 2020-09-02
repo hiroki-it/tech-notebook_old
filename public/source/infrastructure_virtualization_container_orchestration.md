@@ -159,7 +159,7 @@ services:
 # --- 省略 --- #
     
 networks:
-  backend: # 作成したい外部ネットワーク
+  backend: # 作成したい外部ネットワーク名
     external: true  
 ```
 
