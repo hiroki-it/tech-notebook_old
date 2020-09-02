@@ -12,22 +12,22 @@
 
 ✕：```FALSE```
 
-|                | ```isset($var)```，```!is_null($var)``` |           ```if($var)```，```!empty($var)```            |
-| :------------- | :-------------------------------------: | :-----------------------------------------------------: |
-| **```null```** |                    ✕                    |                            ✕                            |
-| **```0```**    |                 **〇**                  |                            ✕                            |
-| **```1```**    |                 **〇**                  |                         **〇**                          |
-| **```""```**   |                 **〇**                  |                            ✕                            |
-| **```"あ"```** |                 **〇**                  |                         **〇**                          |
-| **array(0)**   |                 **〇**                  |                            ✕                            |
-| **array(1)**   |                 **〇**                  |                         **〇**                          |
-| **使いどころ** |     ```null```だけを検証したい場合      | ```null```，```0```，```""```，```[]```を検証したい場合 |
+|                    | ```isset($var)```，```!is_null($var)``` |           ```if($var)```，```!empty($var)```            |
+| :----------------- | :-------------------------------------: | :-----------------------------------------------------: |
+| **```null```**     |                    ✕                    |                            ✕                            |
+| **```0```**        |                 **〇**                  |                            ✕                            |
+| **```1```**        |                 **〇**                  |                         **〇**                          |
+| **```""```**       |                 **〇**                  |                            ✕                            |
+| **```"あ"```**     |                 **〇**                  |                         **〇**                          |
+| **```array(0)```** |                 **〇**                  |                            ✕                            |
+| **```array(1)```** |                 **〇**                  |                         **〇**                          |
+| **使いどころ**     |     ```null```だけを検証したい場合      | ```null```，```0```，```""```，```[]```を検証したい場合 |
 
 
 
 ## 02. 条件式
 
-### ・```if```-```elseif```-```else``` vs. ```switch```-```case```-```break```
+### ```if```-```elseif```-```else``` ，```switch```-```case```-```break```
 
 **【実装例】**
 
@@ -41,22 +41,22 @@
 <?php
 // 変数に Tue を格納
 $weeks = 'Tue';
- 
+
 // if文でTueに該当したら'火曜日'と表示する．
 if ($weeks == 'Mon') {
-  echo '月曜日';
-} else if($weeks == 'Tue'){
-  echo '火曜日';
-} else if($weeks == 'Wed'){
-  echo '水曜日';
-} else if($weeks == 'Thu'){
-  echo '木曜日';
-} else if($weeks == 'Fri'){
-  echo '金曜日';
-} else if($weeks == 'Sat'){
-  echo '土曜日';
+    echo '月曜日';
+} elseif ($weeks == 'Tue') {
+    echo '火曜日';
+} elseif ($weeks == 'Wed') {
+    echo '水曜日';
+} elseif ($weeks == 'Thu') {
+    echo '木曜日';
+} elseif ($weeks == 'Fri') {
+    echo '金曜日';
+} elseif ($weeks == 'Sat') {
+    echo '土曜日';
 } else {
-  echo '日曜日';
+    echo '日曜日';
 }
 
 // 実行結果
@@ -263,27 +263,26 @@ $year = N;
 ```PHP
 <?php
 function leapYear(int $year): string
-{ 
+{
     // (5)
-    if($year <= 0){
+    if ($year <= 0) {
         throw new Exception("負の数は検証できません．");
 
     // (4)
-    } elseif($year % 4 != 0 ) {
+    } elseif ($year % 4 != 0) {
         return "平年";
 
     // (3)
-    } elseif($year % 100 != 0) {
+    } elseif ($year % 100 != 0) {
         return "うるう年";
 
     // (2)
-    } elseif($year % 400 != 0) {
+    } elseif ($year % 400 != 0) {
         return "平年";
 
     // (1)
     } else {
         return "うるう年";
-        
     }
 }
 ```
@@ -428,9 +427,11 @@ if(new Example == new Example){
 <?php
 class Example {};
 
-if(new Example === new Example){
+if (new Example === new Example) {
     echo '同じです';
-} else { echo '異なります'; }
+} else {
+    echo '異なります';
+}
 
 // 実行結果
 // 異なります
@@ -446,9 +447,11 @@ class Example {};
 
 $a = $b = new Example;
 
-if($a === $b){
+if ($a === $b) {
     echo '同じです';
-} else { echo '異なります'; }
+} else {
+    echo '異なります';
+}
 
 // 実行結果
 // 同じです
@@ -466,6 +469,7 @@ if($a === $b){
 
 ```PHP
 <?php
+
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
