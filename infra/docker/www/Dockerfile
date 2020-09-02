@@ -35,6 +35,6 @@ LABEL mantainer=${LABEL}
 COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 
 # CircleCIコンテナのワークスペースに保存したデプロイソースをコピー
-COPY ./workspace/public/build /var/www/public/build
+COPY ./workspace/public/build /var/www/tech-notebook/public
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
