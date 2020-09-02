@@ -23,7 +23,8 @@
    :caption: PHP｜オブジェクト指向
 
    backend_object_oriented_analysis_and_design.md
-   backend_object_oriented_design_and_programming.md
+   backend_object_oriented_programming_class.md
+   backend_object_oriented_programming_method_data.md
 
 .. toctree::
    :maxdepth: 2
@@ -55,9 +56,15 @@
 
 .. toctree::
    :maxdepth: 2
+   :caption: JSON
+
+   backend_frontend_json.md
+
+.. toctree::
+   :maxdepth: 2
    :caption: JS｜オブジェクト指向
 
-   frontend_object_oriented_based_prototype.md
+   frontend_object_oriented_based_prototype_method_data.md
 
 .. toctree::
    :maxdepth: 2
