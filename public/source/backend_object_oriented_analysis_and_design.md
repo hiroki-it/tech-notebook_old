@@ -103,7 +103,7 @@
 
 ビジネスロジックや業務フローを手続き的に表記する方法．
 
-**【設計例】**
+**＊具体例＊**
 
 ![アクティビティ図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/アクティビティ図.png)
 
@@ -131,7 +131,9 @@
 
 ![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ストップウォッチ状態遷移表.jpg)
 
-**【例題】**12.2 という状態
+**＊例題＊**
+
+12.2 という状態
 
 1. 初期の状態を『a』として，最初が数字なので，a行の『b』へ移動．
 2. 現在の状態『b』から，次は数字なので，b行の『b』へ移動．
