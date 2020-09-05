@@ -272,7 +272,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 ![p492-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p492-2.jpg)
 
-**【実装例】**
+**＊実装例＊**
 
 ```
 if (A = 1 && B = 1) {

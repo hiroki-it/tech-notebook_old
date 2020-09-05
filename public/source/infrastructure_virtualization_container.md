@@ -114,7 +114,7 @@ $ docker push {Docker Hubユーザ名}/{イメージ名}:{バージョンタグ}
 
 任意のイメージをベースとして，新しいイメージをビルドするためには，以下の5つ順番で命令を用いて，イメージレイヤーを積み重ねていく．命令は，慣例的に大文字で記述する．
 
-**【実装例】**
+**＊実装例＊**
 
 NginxのイメージをビルドするためのDockerfileを示す．命令のパラメータの記述形式には，文字列形式，JSON形式がある．ここでは，JSON形式で記述する．
 
@@ -287,7 +287,7 @@ RUN yum -y install \
 
 #### ・コンパイルされたバイナリファイルを再利用
 
-**【実装例】**
+**＊実装例＊**
 
 ```dockerfile
 # 中間イメージ
@@ -319,7 +319,7 @@ CMD ["./app"]
 
 OSベンダーが提供するベースイメージを使用すると，不要なバイナリファイルが含まれてしまう．原則として，一つのコンテナで一つのプロセスしか実行せず，OS全体のシステムは不要なため，OSイメージをベースとしないようにする．
 
-**【実装例】**
+**＊実装例＊**
 
 ```dockerfile
 # CentOSイメージを，コンテナにインストール
@@ -350,7 +350,7 @@ RUN dnf upgrade -y \
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 ```
 
-**【実装例】**
+**＊実装例＊**
 
 ```dockerfile
 # CentOSイメージを，コンテナにインストール
@@ -522,6 +522,9 @@ $ docker attach {起動中コンテナ名}
 # デタッチドモードで起動中のコンテナに接続
 # i：interactive，t：tty（対話モード）
 $ docker exec -it {起動中コンテナ名} /bin/bash
+
+# イメージ内に/bin/bash がない場合
+$ docker exec -it {起動中コンテナ名} /bin/sh
 ```
 
 #### ・起動中のコンテナにホストOSのファイルをコピー
@@ -533,7 +536,7 @@ Dockerfileの```COPY```コマンドを使用してコンテナ内に配置して
 $ docker cp ./docker/www/nginx.conf {コンテナID}:/etc/nginx/nginx.conf
 
 # コンテナに接続後に，nginxの設定ファイルを再読み込み．
-$ docker exec -it {コンテナ名} bin/bash
+$ docker exec -it {コンテナ名} bin/bash # もしくはbin/sh
 $ nginx -s reload
 ```
 
@@ -570,7 +573,7 @@ $ docker container ps -a # ==> コンテナのSTATUSがEXITedになっている
 $ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名} /bin/bash
 
 # 対話モードで，デタッチドモードのコンテナに接続
-$ docker exec -it {起動中コンテナ名} /bin/bash
+$ docker exec -it {起動中コンテナ名} /bin/bash # もしくはbin/sh
 
 # PID=1,17で，2つの/bin/bashプロセスが稼働していることが確認できる
 [root@de17f4edf7d0 app] ps aux
@@ -725,7 +728,7 @@ $ curl --fail http://{nginxに登録したドメイン名}:80/
 
 NFSプラグインを使用することで，永続化データを```/var/lib/docker/volumes```ではなく，NFSストレージに保存する．
 
-**【実装例】**
+**＊実装例＊**
 
 以下にdocker-composeを使用した場合を示す．docker-composeについては，コンテナオーケストレーションのノートを参照．
 
