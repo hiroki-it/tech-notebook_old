@@ -91,7 +91,7 @@ var_dump($result);
 
 ### クイックソート
 
-**【実装例】**
+**＊実装例＊**
 
 1. 適当な値を基準値（Pivot）とする （※できれば中央値が望ましい）
 2. Pivotより小さい数を前方，大きい数を後方に分割する．
@@ -308,7 +308,7 @@ var_dump($result);
 
 ### ダイクストラ法による最良優先探索
 
-**【実装例】**
+**＊実装例＊**
 
 ![経路図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/経路図.png)
 

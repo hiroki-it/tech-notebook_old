@@ -37,7 +37,7 @@ $ php /usr/local/bin/composer require --no-dev
 
 ライブラリが，```vendor```ディレクトリ下に保存されていると仮定する．ライブラリを使用するたびに，各クラスでディレクトリを読み込むことは手間なので，エントリーポイント（```index.php```）あるいは```bootstrap.php```で，最初に読み込んでおき，クラスでは読み込まなくて良いようにする．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -62,7 +62,7 @@ https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-
 
 ```QueryBuilder```は，CRUD処理に必要なSQLを保持し，トランザクションによってSQLを実行する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -74,7 +74,7 @@ $queryBuilder = $this->createQueryBuilder();
 
 ```QueryBuilder```インスタンスにおける```insert()```に，値を設定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -86,7 +86,7 @@ $queryBuilder
 
 ```QueryBuilder```インスタンスにおける```select()```に，値を設定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -99,7 +99,7 @@ $queryBuilder
 
 ```QueryBuilder```インスタンスにおける```update()```に，値を設定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -111,7 +111,7 @@ $queryBuilder
 
 ```QueryBuilder```インスタンスにおける```delete()```に，値を設定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -123,7 +123,7 @@ $queryBuilder
 
 データベース接続に関わる```getConnection()```を起点として，返り値から繰り返しメソッドを取得し，```fetchAll()```で，テーブルのクエリ名をキーとした連想配列が返される．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -143,7 +143,7 @@ $queryBuilder->getConnection()
 
 プリペアードステートメントともいう．SQL中にパラメータを設定し，値をパラメータに渡した上で，SQLとして発行する方法．処理速度が速い．また，パラメータに誤ってSQLが渡されても，これを実行できなくなるため，SQLインジェクションの対策にもなる
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -233,7 +233,7 @@ https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transa
 
 ```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -286,7 +286,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 日時の文字列からCarbonインスタンスを作成する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -303,7 +303,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 #### ・日時数字から
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -315,7 +315,7 @@ echo $carbonFromeDate; // 2019-07-07
 
 #### ・時間数字から
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -329,7 +329,7 @@ echo $carbonFromTime; // 19:07:07
 
 第一引数でフォーマットを指定する必要がある．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -342,7 +342,7 @@ echo $carbonFromFormat; // 2019-07-07 19:07:07
 
 #### ・タイムスタンプフォーマットから
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -358,7 +358,7 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 
 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．```createFromFormat()```とは異なり，フォーマットを指定する必要がない．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -379,7 +379,7 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータの各要素に対して，処理を行える．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -419,7 +419,7 @@ class Example
 
 #### ・リクエストメッセージをGET送信
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -431,7 +431,7 @@ $response = $client->request("GET", {アクセスしたいURL});
 
 #### ・レスポンスメッセージからボディを取得
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -456,7 +456,7 @@ $body = json_decode($response->getBody(), true);
 
 htmlファイルを元にして，ローカルディレクトリにPDFファイルを作成する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php

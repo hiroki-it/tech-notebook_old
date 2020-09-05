@@ -156,7 +156,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 シェルスクリプト（```.sh```），またはバッチファイル（```.bat```）におけるコマンドの処理内容を定義できる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -211,7 +211,7 @@ for f in *txt do echo $f; done;
 
 #### ・Cronによるコマンドの自動実行
 
-**【具体例】**
+**＊具体例＊**
 
 10秒ごとに，コマンドを自動実行する．
 

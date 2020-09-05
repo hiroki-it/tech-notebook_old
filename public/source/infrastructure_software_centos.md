@@ -317,7 +317,7 @@ $ crontab {ファイルパス}
 | /etc/cron.weekly             | root   | 毎週実行される自動タスク設定ファイルを置くディレクトリ |
 
 
-**【実装例】**
+**＊実装例＊**
 
 1. あらかじめ，各ディレクトリにcronファイルを配置しておく．
 2. cronとして登録するファイルを作成する．```run-parts```コマンドで，指定した時間に，各cronディレクトリ内のcronファイルを一括で実行するように記述しておく．
@@ -350,7 +350,7 @@ CONTENT_TYPE=text/plain; charset=UTF-8
 @reboot make clean html # cron起動時に一度だけ
 ```
 
-**【実装例】**
+**＊実装例＊**
 
 ```bash
 # 毎時・1分
@@ -429,7 +429,7 @@ $ /usr/local/bin/supervisord
 
 以下に設定ファイルの例を示す．
 
-**【実装例】**
+**＊実装例＊**
 
 ```
 [supervisord]
@@ -1169,7 +1169,7 @@ Initiatorによって，ジョブはジョブステップに分解される．
 
 ![到着順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/到着順方式_1.png)
 
-**【具体例】**
+**＊具体例＊**
 
 以下の様に，タスクがCPUに割り当てられていく．
 
@@ -1181,7 +1181,7 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 ![ラウンドロビン方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ラウンドロビン方式.png)
 
-**【具体例】**
+**＊具体例＊**
 
 生成されたタスクの到着時刻と処理時間は以下のとおりである．強制的なディスパッチは，『20秒』ごとに起こるとする．
 

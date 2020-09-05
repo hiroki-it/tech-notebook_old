@@ -17,8 +17,6 @@ $ systemctl start nginx
 $ systemctl stop nginx
 ```
 
-
-
 #### ・設定ファイルのバリデーション
 
 ```bash
@@ -35,7 +33,7 @@ $ kill -s HUP NINGXPID
 
 ## 02-01. ```Main```モジュール
 
-**【実装例】**
+**＊実装例＊**
 
 ```nginx
 user                  www www;
@@ -119,7 +117,7 @@ include  /usr/share/nginx/modules/*.conf;
 
 ### ```events```ブロック
 
-**【実装例】**
+**＊実装例＊**
 
 ```nginx
 events {
@@ -168,117 +166,6 @@ http {
 
 
 ### ```server```ブロック
-
-#### ・WebサーバとしてのNginx
-
-![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Nginxの仕組み.png)
-
-**【実装例】**
-
-FastCGIを用いて，APサーバにリクエストを転送し，受信する．
-
-```nginx
-#-------------------------------------
-# HTTPリクエスト
-#-------------------------------------
-server {
-    listen 80;
-    server_name example.com;
-    root /var/www/example/public;
-    index index.php index.html;
-
-    include /etc/nginx/default/xxx.conf;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-    
-    #--------------------------------------
-    # FastCGIを用いたAPサーバへの転送，受信
-    #--------------------------------------
-    location ~ ^/index\.php(/|$) {
-        fastcgi_pass unix:/run/php-fpm/www.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_split_path_info ^(.+\.php)(/.*)$;
-
-        include fastcgi_params;
-    }
-}
-```
-
-#### ・ロードバランサ－として
-
-**【実装例】**
-
-HTTPプロトコルで受信したリクエストを，HTTPSプロトコルに変換して転送する．
-
-```nginx
-#-------------------------------------
-# HTTPリクエスト
-#-------------------------------------
-server {
-    server_name example.com;
-    listen 80;
-    return 301 https://$host$request_uri;
-}
-
-#-------------------------------------
-# HTTPSリクエスト
-#-------------------------------------
-server {
-    server_name example.com;
-    listen 443 ssl http2;
-    index index.php index.html;
-
-    #-------------------------------------
-    # SSL
-    #-------------------------------------
-    ssl on;
-    ssl_certificate /etc/nginx/ssl/server.crt;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
-    add_header Strict-Transport-Security 'max-age=86400';
-
-    location / {
-        proxy_pass http://app1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Port $remote_port;
-    }
-}
-```
-
-#### ・リバースProxyとして
-
-**【実装例】**
-
-前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスする．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
-
-```nginx
-#-------------------------------------
-# HTTPリクエスト
-#-------------------------------------
-server {
-    server_name example.com;
-    listen 80;
-    return 301 https://$host$request_uri;
-    
-    #-------------------------------------
-    # 静的ファイルであればNginxでレスポンス
-    #-------------------------------------
-    location ~ ^/(images|javascript|js|css|flash|media|static)/ {
-        root root /var/www/example/static;
-        expires 30d;
-    }
-
-    #-------------------------------------
-    # 動的ファイルであればWebサーバに転送
-    #-------------------------------------
-    location / {
-        proxy_pass http://127.0.0.1:8080;
-    }
-}
-```
 
 #### ・```listen```ディレクティブ
 
@@ -339,7 +226,7 @@ ssl_certificate_key /etc/nginx/ssl/server.key;
 
 リクエストメッセージのURLごとに，異なる処理を設定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```nginx
 # 1. ドキュメントルートを指定したリクエストの場合
@@ -353,6 +240,7 @@ location ^~ /images/ {
 }
 
 # 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合
+# バックスラッシュでドットをエスケープし，任意の文字ではなく「ドット文字」として認識できるようにする．
 location ~* \.(gif|jpg|jpeg)$ {
 
 }
@@ -384,7 +272,7 @@ location / {
 
 ### ```upstream```ブロック
 
-**【実装例】**
+**＊実装例＊**
 
 ```nginx
 upstream big_server_com {
