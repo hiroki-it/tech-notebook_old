@@ -529,15 +529,19 @@ $ docker exec -it {起動中コンテナ名} /bin/sh
 
 #### ・起動中のコンテナにホストOSのファイルをコピー
 
-Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．
+Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．ただし，コンテナを再構築すると元に戻ってしまうことに注意．
 
 ```bash
 # ホストのファイルをコンテナにコピー
 $ docker cp ./docker/www/nginx.conf {コンテナID}:/etc/nginx/nginx.conf
 
 # コンテナに接続後に，nginxの設定ファイルを再読み込み．
-$ docker exec -it {コンテナ名} bin/bash # もしくはbin/sh
-$ nginx -s reload
+root@xxxxx $ docker exec -it {コンテナ名} bin/bash # もしくはbin/sh
+root@xxxxx $ nginx -s reload
+root@xxxxx $ exit
+
+# アクセスログを確認
+$ docker logs {コンテナ名}
 ```
 
 
