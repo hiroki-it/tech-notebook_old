@@ -108,7 +108,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -137,7 +137,7 @@ class AcceptOrdersController
 
 Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -158,7 +158,7 @@ class SlackNotificationService
 
 デザインパターンの一つ．フロントエンドからサーバサイドに送信されてきたデータのフォーマットを検証する責務を持つ．例えば，UserInterface層からApplication層に送信されてきたJSON形式データのフォーマットを検証する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -190,7 +190,7 @@ class FormatValidator
 
 デザインパターンの一つ．データ構造を変換する責務を持つ．例えば，Application層からUserInterface層へのデータのレスポンス時に，送信するオブジェクトデータ（Route Entity）を連想配列に変換する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -217,7 +217,7 @@ class Converter
 
 リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -250,7 +250,7 @@ abstract class getDogToyEntityRepository
 
 ```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -267,7 +267,7 @@ class XxxSpecification
 
 リクエストのパスパラメータとクエリパラメータを引数として，検索条件のオブジェクトを生成する．ビジネスルールのValidationを行うSpecificationクラスと区別するために，Criteriaオブジェクトという名前としても用いられる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -347,7 +347,7 @@ class XxxCriteria
 
 オブジェクトにアイデンティティがあり，他のオブジェクトと同じ属性をもっていても，区別される．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -387,7 +387,7 @@ class ToyOrderEntity
 
   EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -449,7 +449,7 @@ class DogToyEntity
 
 ![ドメイン駆動設計_バリューオブジェクト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_バリューオブジェクト.jpg)
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -519,7 +519,7 @@ EntityとValue Objectのどちらとして，オブジェクトをモデリン�
 
 インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -547,7 +547,7 @@ class ExampleVO
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterを呼び出す．Setterは何度でも呼び出せ，その度にデータの値を上書きできてしまう．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -560,7 +560,7 @@ $test01->setProperty01("新しいデータ01の値");
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -594,7 +594,7 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### メソッドによってオブジェクトの状態が変わらない
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -626,7 +626,7 @@ class NameVO
 }
 ```
 
-**【実装例】**
+**＊実装例＊**
 
 同様に，Immutableトレイトを基に，VOを生成する．
 
@@ -651,7 +651,7 @@ Type Codeは概念的な呼び名で，実際は，標準的なライブラリ�
 
 ### Enumクラスを用いたType Codeの実装
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -731,7 +731,7 @@ DBに対する書き込み操作を行う．
 
    ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ更新.png)
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -785,7 +785,7 @@ DBに対する書き込み操作を行う．
 
 ![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -846,7 +846,7 @@ class getDogToyEntityRepository
 
 責務として，構成した集約関係を加工して新たな集約を再構成する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```PHP
 <?php
