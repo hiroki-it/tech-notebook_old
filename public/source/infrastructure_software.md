@@ -100,15 +100,23 @@ Nginxのノートを参照．
 
 
 
-### APサーバとしてのミドルウェア
+### Appサーバのミドルウェア
 
-#### ・Apache内蔵
+#### ・Apacheの拡張モジュール
+
+mod_phpという拡張モジュールを読み込むことによって，Apacheを，WebサーバだけでなくAppサーバのミドルウェアとしても機能させることができる．
 
 #### ・CGIプログラム：Common Gateway Interface
 
 ![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
 
+#### ・PHP-FPM：PHP FastCGI Process Manager
+
+WebサーバのNginxと組み合わせて使用できるミドルウェア．
+
 #### ・NGINX Unit
+
+WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
 
 
@@ -143,6 +151,15 @@ MS-DOSを源流として派生したOS．今では，全ての派生がWindows 1
 
 
 ### Unix ｜ Linux系統
+
+#### ・OSとバージョンの確認コマンド
+
+```/etc/issue```ファイルに，OSとバージョンが記載されている．
+
+```bash
+$ cat /etc/issue
+Debian GNU/Linux 10 \n \l
+```
 
 現在，Linux系統のOSは，さらに3つの系統に分けられる．
 
