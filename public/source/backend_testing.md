@@ -47,7 +47,7 @@ $mock = Phake::mock(Example::class);
 
 メソッドがn回以上コールされたかを検証できる．
 
-**【実装例1】**
+**＊実装例＊**
 
 ```PHP
 <?php
@@ -66,7 +66,7 @@ $mock->method("A");
 Phake::verify($mock, Phake::times($n))->method($param);
 ```
 
-**【実装例2】**
+**＊実装例＊**
 
 先に，以下のような，実体的なクラスがあるとする．
 
