@@ -14,7 +14,7 @@
 
 ![相関分析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/相関分析.png)
 
-**【分析例】**
+**＊実装例＊**
 
 ```R
 # データを読み込む．
@@ -237,7 +237,7 @@ fancyRpartPlot(tree)
 
 ![階層クラスタ解析](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/階層クラスタ解析.png)
 
-**【分析例】**
+**＊実装例＊**
 
 ```R
 # データを読み込む．

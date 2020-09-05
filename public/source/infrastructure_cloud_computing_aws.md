@@ -653,7 +653,7 @@ aws cloudwatch set-alarm-state --alarm-name "Alarm名" --state-value ALARM --sta
 
 #### ・CloudWatchエージェント
 
-**【設定例】**
+**＊実装例＊**
 
 confファイルを，EC2内の```etc```ディレクトリ下に設置する．
 
