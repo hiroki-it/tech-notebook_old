@@ -1,14 +1,6 @@
 # Apache
 
-## 01. Apacheの使い方
-
-### 種類
-
-#### ・Webサーバのミドルウェアとして
-
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
-
-
+## 01. Tips
 
 ### コマンド
 
@@ -39,7 +31,15 @@ $ apachectl -k graceful
 
 
 
-## 02. Coreにおける設定ディレクティブ
+## 02. Apacheの用途
+
+### Webサーバのミドルウェアとして
+
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+
+
+
+## 03. Coreにおける設定ディレクティブ
 
 ### ServerRoot
 
@@ -202,7 +202,7 @@ MaxKeepAliveRequests 1000
 
 
 
-## 03. mod_so
+## 04. mod_soにおける設定ディレクティブ
 
 ### LoadModule
 
@@ -222,7 +222,7 @@ LoadModule dir_module modules/mod_dir.so
 
 
 
-## 03-02. mod_dirにおける設定ディレクティブ
+## 04-02. mod_dirにおける設定ディレクティブ
 
 ### DirectoryIndex
 
@@ -293,7 +293,7 @@ AllowOverride Indexes
 
 
 
-## 03-03. mod_writeにおける設定ディレクティブ
+## 04-03. mod_writeにおける設定ディレクティブ
 
 ### RewriteCond
 
@@ -334,7 +334,7 @@ RewriteRule ^(.*)?$ https://%{HTTP_HOST}$1 [R=301,L]
 
 
 
-## 03-04. mod_setenvifにおける設定ディレクティブ
+## 04-04. mod_setenvifにおける設定ディレクティブ
 
 ### SetEnvIf
 
@@ -353,7 +353,7 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 
 
 
-## 03-05. mod_log_configにおける設定ディレクティブ
+## 04-05. mod_log_configにおける設定ディレクティブ
 
 ### LogFormat
 
@@ -440,7 +440,7 @@ ErrorLog /var/log/httpd/error_log
 
 
 
-## 03-06. mod_sslにおける設定ディレクティブ 
+## 04-06. mod_sslにおける設定ディレクティブ 
 
 ### SSLCertificateFile
 
@@ -468,7 +468,7 @@ SSLCertificateKeyFile /etc/httpd/conf.d/server.key
 
 
 
-## 04. htaccess
+## 05. htaccess
 
 ### 影響範囲
 
