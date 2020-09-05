@@ -32,7 +32,7 @@
 
 コンテナ名の命名．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 container_name: www
@@ -42,7 +42,7 @@ container_name: www
 
 Dockerfileの名前．パスごと指定する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 build:
@@ -53,7 +53,7 @@ build:
 
 ビルドするステージ名．主に，マルチステージビルドの時に使用する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 build:
@@ -64,7 +64,7 @@ build:
 
 指定したDockerfileのあるディレクトリをカレントディレクトリとして，Dockerデーモン（Dockerエンジン）に送信するディレクトリを指定する． 
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 build:
@@ -75,7 +75,7 @@ build:
 
 ```docker exec -it```に相当する．対話モードで接続することによって，```exit```の後もコンテナを起動させ続けられる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 tty: true
@@ -85,7 +85,7 @@ tty: true
 
 #### ・```image```
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 image: tech-notebook-www:{タグ名}
@@ -96,7 +96,7 @@ image: tech-notebook-www:{タグ名}
 
 ホストOSとコンテナの間のポートフォワーディングを設定．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 ports:
@@ -107,7 +107,7 @@ ports:
 
 ホストOSの```/var/lib/docker/volumes/```の下にDataVolumeのディレクトリを作成し，DataVolumeをマウントするコンテナ側のディレクトリをマッピング．
 
-**【実装例】**
+**＊実装例＊**
 
 
 ```yaml
@@ -119,7 +119,7 @@ volumes:
 
 DBコンテナに設定する環境変数．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 environment:
@@ -134,7 +134,7 @@ environment:
 
 コンテナが起動する順番．
 
-**【実装例】**
+**＊実装例＊**
 
 ```yaml
 # ここに実装例
@@ -146,7 +146,7 @@ environment:
 
 ![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
 
-**【実装例】**
+**＊実装例＊**
 
 バックエンドとフロントエンドが異なるdocker composeで管理されており，フロントエンドコンテナからバックエンドコンテナに接続する．
 

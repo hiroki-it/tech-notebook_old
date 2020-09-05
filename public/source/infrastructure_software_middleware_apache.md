@@ -1,8 +1,10 @@
 # Apache
 
-## 01. 概論
+## 01. Apacheの使い方
 
-### WebサーバのミドルウェアとしてのApache
+### 種類
+
+#### ・Webサーバのミドルウェアとして
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
@@ -45,7 +47,7 @@ $ apachectl -k graceful
 
 他の設定ディレクティブで，相対パスが設定されている場合に適用される．そのルートディレクトリを定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 通常であれば，etcディレクトリ以下にconfファイルが配置される．
 
@@ -67,7 +69,7 @@ ServerRoot /opt/rh/httpd24/root/etc/httpd
 
 ディレクティブを囲うディレクティブの一つ．特定のホスト名やIPアドレスにリクエストがあった時に実行するディレクティブを定義する．VirtualHostという名前の通り，1 つのサーバ上で，仮想的に複数のドメインを扱うような処理も定義できる．複数のVirtualHostを設定した場合，一つ目がデフォルト設定として認識される．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 Listen 80
@@ -99,7 +101,7 @@ NameVirtualHost *:80
 
 ドキュメントのルートディレクトリを定義する．ドキュメントルートに「index.html」というファイルを置くと，ファイル名を指定しなくとも，ルートディレクトリ内のindex.htmlが，エントリーポイントとして自動的に認識されて表示される．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <VirtualHost *:80>
@@ -110,7 +112,7 @@ NameVirtualHost *:80
 
 index.html以外の名前をエントリーポイントにする場合，ファイル名を指定する必要がある．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <VirtualHost *:80>
@@ -127,7 +129,7 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 ディレクティブを囲うディレクティブの一つ．指定したディレクトリ内にリクエストがあった時に実行するディレクティブを定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <Directory "/var/www/example">
@@ -144,7 +146,7 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 httpdプロセスのユーザ名を定義する．httpdプロセスによって作成されたファイルの所有者名は，このディレクティブで定義したものになる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 User apache
@@ -154,7 +156,7 @@ User apache
 
 httpdプロセスのグループ名を定義する．httpdプロセスによって作成されたファイルのグループ名は，このディレクティブで定義したものになる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 Group apache
@@ -168,7 +170,7 @@ Group apache
 
 HTTPプロトコルのリクエストのクライアントに対して，セッションIDを付与するかどうか，を定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 KeepAlive On
@@ -178,7 +180,7 @@ KeepAlive On
 
 セッションIDを付与中のクライアントにおいて，再びリクエストを送信するまでに何秒間空いたら，セッションIDを破棄するか，を定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 # KeepAliveがOnの時のみ
@@ -189,7 +191,7 @@ KeepAliveTimeout 5
 
 セッションIDを付与中のクライアントにおいて，リクエストのファイルの最大数を定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 # KeepAliveがOnの時のみ
@@ -208,7 +210,7 @@ MaxKeepAliveRequests 1000
 
 モジュールを読み込み，設定ディレクティブを宣言できるようにする．
 
-**【実装例】**
+**＊実装例＊**
 
 相対パスを指定し，ServerRootを適用させる．これにより，httpdディレクトリのmodulesディレクトリが参照される．
 
@@ -228,14 +230,14 @@ LoadModule dir_module modules/mod_dir.so
 
 Directoryディレクトリによってリクエストされたディレクトリのインデックスファイルをレスポンスする．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <Directory "/var/www/example">
     DirectoryIndex index.html index.php
 </Directory>
 ```
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <Directory "/var/www/example">
@@ -250,7 +252,7 @@ Directoryディレクトリによってリクエストされたディレクト�
 
 htaccessファイルで有効化するディレクティブを定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 <Directory "/var/www/example">
@@ -263,7 +265,7 @@ htaccessファイルで有効化するディレクティブを定義する．
 
 htaccessファイルで実装可能なディレクティブを全て有効化する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 AllowOverride All
@@ -273,7 +275,7 @@ AllowOverride All
 
 全て無効化する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 AllowOverride None
@@ -283,7 +285,7 @@ AllowOverride None
 
 htaccessファイルでDirectoryIndexを有効化する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 AllowOverride Indexes
@@ -299,13 +301,13 @@ AllowOverride Indexes
 
 条件分岐と，それによる処理を定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 RewriteCond %変数名 条件
 ```
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 RewriteCond %{HTTP:X-Forwarded-Port} !^443$
@@ -322,7 +324,7 @@ RewriteCond %{HTTP:X-Forwarded-Port} !^443$
 RewriteRule URL書換＆転送の記述
 ```
 
-**【実装例】**
+**＊実装例＊**
 
 リクエストをHTTPSプロトコルに変換して，リダイレクトする．
 
@@ -363,7 +365,7 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 
 アクセスログの出力先ログファイルとフォーマットを合わせて定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 # common形式
@@ -411,7 +413,7 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 
 エラーログの出力先を定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 ErrorLog /var/log/httpd/error_log
@@ -446,7 +448,7 @@ ErrorLog /var/log/httpd/error_log
 
 PKIにおける公開鍵の検証に必要なSSLサーバ証明書のディレクトリを定義する．本番環境ではAWSのACM証明書を用いることが多いため，基本的な用途としては，ローカル開発でのオレオレ証明書読み込みのために用いる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 SSLCertificateFile /etc/httpd/conf.d/server.crt
@@ -458,7 +460,7 @@ SSLCertificateFile /etc/httpd/conf.d/server.crt
 
 PKIにおける公開鍵の検証に必要な秘密鍵のディレクトリを定義する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```apacheconf
 SSLCertificateKeyFile /etc/httpd/conf.d/server.key

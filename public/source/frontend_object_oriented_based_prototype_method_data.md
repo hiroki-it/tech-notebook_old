@@ -13,7 +13,7 @@ JavaScriptの実行環境にあらかじめ組み込まれたオブジェクト�
 
 オブジェクトを生成するオブジェクト．他の全ての標準ビルトインオブジェクトの継承元になっているため，ほ９Objectが持つメソッドとデータを使うことができる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // new演算子を使ってインスタンスを生成
@@ -24,7 +24,7 @@ var obj = new Object();
 
 ### Function
 
-**【実装例】**
+**＊実装例＊**
 
 ```
 
@@ -38,7 +38,7 @@ var obj = new Object();
 
 配列からkeyとvalueを取得する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 var array = ['a', 'b', 'c'];
@@ -58,7 +58,7 @@ for (const value of iterator) {
 
 #### ・```Array.prototype.map()```
 
-**【実装例】**
+**＊実装例＊**
 
 
 ```javascript
@@ -67,7 +67,7 @@ for (const value of iterator) {
 
 #### ・```Array.prototype.filter()```
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // ここに実装例
@@ -77,7 +77,7 @@ for (const value of iterator) {
 
 要素数を出力する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 const clothing = ['shoes', 'shirts', 'socks', 'sweaters'];
@@ -97,7 +97,7 @@ console.log(
 
 JavaScriptからJSONにシリアライズする．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 console.log(
@@ -116,7 +116,7 @@ console.log(
 
 JSONからJavaScriptにデシリアライズする．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 console.log(
@@ -141,7 +141,7 @@ console.log(
 
 指定した```id```のhtml要素を取得する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```html
 <html>
@@ -166,7 +166,7 @@ console.log(
 
 第一引数で，```click```などのイベントを設定し，第二引数でメソッド（無名関数でも可）を渡す．
 
-**【実装例】**
+**＊実装例＊**
 
 ```html
 <button id="btn">表示</button>
@@ -191,7 +191,7 @@ btn.addEventListener('click', function() {
 
 #### ・非省略形
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // リテラル表記
@@ -240,7 +240,7 @@ const example = {
 
 キャメルケース（小文字から始める記法）を用いる．プロパティを生成するためには，値を格納する必要がある．関数宣言あるいは関数式で記述する．パスカルケース（大文字から始める記法）を用いる．ちなみに，オブジェクトのプロパティ値として生成された関数を，メソッドと呼ぶ．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 const example = new Object({
@@ -260,7 +260,7 @@ const example = new Object({
 
 #### ・```Function```コンストラクタ関数
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 const Example = new Function();
@@ -268,7 +268,7 @@ const Example = new Function();
 
 ただし，公式からこのような記法は，非推奨とされている．以下の関数宣言，関数式，アロー関数による関数式省略，の記法が推奨される．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 関数宣言
@@ -325,7 +325,7 @@ const Example = (value) => {
 
 リテラル表記と```Object```コンストラクタ関数による生成とは異なり，コンストラクタ関数によって宣言されたオブジェクトは，暗示的に```prototype```プロパティをもつ．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // リテラル表記による生成
@@ -351,7 +351,7 @@ console.log(
 
 ES6から，糖衣構文の```class```によって，オブジェクトを宣言できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // クラス宣言
@@ -404,7 +404,7 @@ const example = new Example(1)
 
 #### ・```new Obejct()```を用いた継承
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 大元となるオブジェクトは個別ファイルで管理しておくのがベター．
@@ -426,7 +426,7 @@ const Example = function(value) {
 
 別クラスで，以下のように継承する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
@@ -456,7 +456,7 @@ console.log(result);
 
 #### ・```Object.create()```を用いた継承とメンバ追加
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 継承元のオブジェクトのファイルを読み込むことも忘れずに．
@@ -486,7 +486,7 @@ console.log(result);
 
 また，```Object.create()```を用いる場合，継承だけでなく，メンバを新しく追加することもできる．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // Object.create()による継承．
@@ -515,7 +515,7 @@ console.log(result);
 
 メソッド内の```this```は，exampleオブジェクトを指す．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 const example = {
@@ -547,7 +547,7 @@ example.getValue(); // 1
 
 コンストラクタ関数内のthisは，自身がコールされたオブジェクトを指す．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 一番外側はWindowオブジェクト
@@ -585,7 +585,7 @@ object2.printParam; // object2 param
 
 アロー関数内の```this```の参照先には，十分な注意が必要である．今まで，JavaScriptでは，```this```の参照先が文脈によって変わることに批判が集まっていた．そこで，参照先が文脈によって変わらない機能が追加された．```this```は，自身が宣言されたオブジェクトを指す．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 一番外側はWindowオブジェクト
@@ -665,7 +665,7 @@ const mycar = new car("Eagle", "Talon TSi", 1993);
 
 オブジェクトではない関数である．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 定義（コールする場所が前後しても無関係）
@@ -683,7 +683,7 @@ function methodA();
 
 JavaScriptでよく見かけるドルマーク．これは，関数の名前としてドルマークを使用しているだけである．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 定義
@@ -694,7 +694,7 @@ function $(){
 
 jQueryでは，ライブラリの読み込み宣言時に，「Jquery」という名前の代わりにドルマークを使用する仕様になってる．これと混乱しないように注意する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // jQuery.get() と同じ
@@ -713,7 +713,7 @@ $.get() {
 
 データを代入しない時に適用されるデータ型である．
 
-**【実装例】**
+**＊実装例＊**
 
 
 ```javascript
@@ -729,7 +729,7 @@ console.log(b);  // undefied
 
 nullは，undefinedとは異なり，意図して代入しなければ適用されないデータ型である．
 
-**【実装例】**
+**＊実装例＊**
 
 ```javascript
 // 変数a: 意図をもってnullを入れている
@@ -742,7 +742,7 @@ console.log(a); // null
 
 ```undifined```を返却する場合，```return```のみを記述する．
 
-**【実装例】**
+**＊実装例＊**
 
 ```JavaScript
 function hoge(){
