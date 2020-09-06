@@ -26,7 +26,7 @@
 
 ## 02. Docker Compose
 
-### docker-compose.yml
+### オプション
 
 #### ・```container_name```
 
@@ -81,8 +81,6 @@ build:
 tty: true
 ```
 
-
-
 #### ・```image```
 
 **＊実装例＊**
@@ -94,7 +92,7 @@ image: tech-notebook-www:{タグ名}
 
 #### ・```ports```
 
-ホストOSとコンテナの間のポートフォワーディングを設定．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる．
+ホストOSとコンテナの間のポートフォワーディングを設定する．コンテナのみポート番号を指定した場合，ホストOS側のポート番号はランダムになる．
 
 **＊実装例＊**
 
@@ -103,9 +101,9 @@ ports:
   - "8080:80" # {ホストOS側のポート番号}:{コンテナのポート番号}
 ```
 
-#### ・```volumes```
+#### ・```volumes```（Bindマウント）
 
-ホストOSの```/var/lib/docker/volumes/```の下にDataVolumeのディレクトリを作成し，DataVolumeをマウントするコンテナ側のディレクトリをマッピング．
+最上層と```service```内で，異なるVolume名を記述した場合，Bindマウントを定義する．ホストOSにある```/Users```ディレクトリをコンテナ側にマウントする．
 
 **＊実装例＊**
 
@@ -113,6 +111,26 @@ ports:
 ```yaml
 volumes:
   - ./app:/var/www/app # {ホストOSのディレクトリ}:{コンテナのディレクトリ}
+```
+
+#### ・```volumes```（Volumeマウント）
+
+最上層と```service```内の両方に，同じVolume名を記述した場合，Volumeマウントを定義する．DockerエリアにVolumeが作成され，```service```オプション内に設定した```volumes```オプションでVolumeマウントを行う．
+
+**＊実装例＊**
+
+```yaml
+service:
+  db:
+    volumes:
+      # volumeマウント
+      - db_volume:/var/www/lib/mysql
+      
+volumes:
+  # volume名
+  db_volume:
+    # localで，ホストOSのDockerエリアを指定
+    driver: local   
 ```
 
 #### ・```environment```
@@ -182,6 +200,8 @@ networks:
 
 作成した内部／外部ネットワークは，以下のコマンドで確認できる．```xxx_default```という名前になる．
 
+**＊コマンド例＊**
+
 ```bash
 $ docker network ls
 
@@ -198,6 +218,8 @@ xxxxxxxxxxxx     {プロジェクト名}_default     bridge      local
 
 すでに起動中／停止中コンテナがある場合，それをデタッチドモードで再起動する．
 
+**＊コマンド例＊**
+
 ```bash
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動
 $ docker-compose up -d
@@ -206,6 +228,8 @@ $ docker-compose up -d
 #### ・```run```
 
 すでに起動中／停止中コンテナがあっても，それを残して新しいコンテナを構築し，デタッチドモードで起動する．古いコンテナが削除されずに残ってしまう．
+
+**＊コマンド例＊**
 
 ```bash
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動 
