@@ -50,6 +50,8 @@ Dockerクライアントは，接続によって，Dockerデーモンを操作�
 
 #### ・ベースイメージをインストール
 
+**＊コマンド例＊**
+
 ```bash
 # レジストリ側に保管されているイメージを検索
 $ docker search {イメージ名}
@@ -64,6 +66,8 @@ $ docker images
 ```
 
 #### ・イメージを削除するコマンド
+
+**＊コマンド例＊**
 
 ```bash
 # コンテナに使用されていないイメージを一括で削除
@@ -82,13 +86,21 @@ $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet
 
 #### ・イメージのビルド
 
+**＊コマンド例＊**
+
 ```bash
 # キャッシュ無しで，指定のDockerfileを基に，イメージをビルド
 # 失敗したときは削除する
-$ docker build --file Dockerfile --tag tech-notebook:latest --force-rm=true --no-cache .
+$ docker build --file Dockerfile \
+--tag tech-notebook:latest \
+--force-rm=true \
+--no-cache \
+.
 ```
 
 #### ・Docker Hubに登録
+
+**＊コマンド例＊**
 
 ```bash
 # コンテナからイメージを作成
@@ -224,6 +236,8 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 ### キャッシュの削除
 
 Unixユーティリティをインストールすると，キャッシュが残る．
+
+**＊実装例＊**
 
 
 ```dockerfile
@@ -414,6 +428,8 @@ EXPOSE 80
 
 代わりに，ミドルウェアベンダーが提供するベースイメージを使用するようにする．
 
+**＊実装例＊**
+
 ```dockerfile
 # Nginxイメージを，コンテナにインストール
 FROM nginx:1.19
@@ -457,12 +473,16 @@ COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 
 #### ・コンテナレイヤー生成，コンテナ構築
 
+**＊コマンド例＊**
+
 ```bash
 # コンテナレイヤーを生成し，コンテナを構築．起動はしない．
 $ docker create {コンテナ名} {使用イメージ名}
 ```
 
 #### ・構築に失敗した時のデバッグ
+
+**＊コマンド例＊**
 
 ```bash
 # 指定した行数だけ，ログを出力し続ける．
@@ -473,6 +493,8 @@ $ docker logs --follow=true --tail=500 {コンテナ名}
 
 ```start```コマンドでは，アタッチモードでしか起動できない．
 
+**＊コマンド例＊**
+
 ```bash
 # 停止中コンテナをアタッチモードで起動
 $ docker start -i {停止中コンテナ名}
@@ -480,17 +502,21 @@ $ docker start -i {停止中コンテナ名}
 
 ```run```コマンドでは，アタッチモードとデタッチモードを選ぶことができる．
 
+**＊コマンド例＊**
+
 ```bash
 # コンテナレイヤーを生成し，コンテナを構築，起動までを行う．
 
 # アタッチモードによる起動．フォアグラウンドで起動する．
-$ docker run -a -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+$ docker run -a -it --name {コンテナ名} {使用イメージ名} /bin/bash
 
 # デタッチドモードによる起動．バックグラウンドで起動する．
-$ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 ```
 
 #### ・構築されたコンテナの停止／削除
+
+**＊コマンド例＊**
 
 ```bash
 # 起動中コンテナを停止
@@ -517,19 +543,23 @@ $ docker rm --force $(docker ps --all --quiet)
 
 アタッチモードは，フォアグラウンド起動である．ターミナルにプロセスのログが表示されないため，同一ターミナルで他のコマンドを入力できる．
 
+**＊コマンド例＊**
+
 ```bash
 # -a：atattch mode
-$ docker run -a -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+$ docker run -a -it --name {コンテナ名} {使用イメージ名} /bin/bash
 ```
 
 #### ・デタッチドモード起動
 
 デタッチドモードは，バックグラウンド起動である．ターミナルにプロセスのログが表示され続けるため，同一ターミナルで他のコマンドを入力できない．プロセスのログを監視できるが，他のプロセスを入力するためには，そのターミナル上でコンテナを停止させる必要がある．
 
+**＊コマンド例＊**
+
 
 ```bash
 # -d；detached mode
-$ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --net {ネットワーク名}
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 ```
 
 
@@ -539,6 +569,8 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} -p {ホス�
 ### コマンド
 
 #### ・起動中のコンテナ情報を表示
+
+**＊コマンド例＊**
 
 ```bash
 # コンテナの起動と停止にかかわらず，IDなどを一覧で表示．
@@ -552,6 +584,8 @@ $ docker inspect {コンテナID} | grep IPAddress
 ```
 
 #### ・起動中のコンテナに接続
+
+**＊コマンド例＊**
 
 ```bash
 # デタッチドモードで起動中のコンテナに接続
@@ -569,6 +603,8 @@ $ docker exec -it {起動中コンテナ名} /bin/sh
 #### ・起動中のコンテナにホストOSのファイルをコピー
 
 Dockerfileの```COPY```コマンドを使用してコンテナ内に配置しているファイルに関して，変更のたびにイメージをビルドを行うことは面倒のため，ホストOSからコンテナにコピーし，再読み込みを行う．ただし，コンテナを再構築すると元に戻ってしまうことに注意．
+
+**＊コマンド例＊**
 
 ```bash
 # ホストのファイルをコンテナにコピー
@@ -589,9 +625,11 @@ $ docker logs {コンテナ名}
 
 #### ・attach
 
+**＊コマンド例＊**
+
 ```bash
 # デタッチドモードで起動
-$ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名}
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 
 # デタッチドモードのコンテナに接続
 $ docker attach {起動中コンテナ名}
@@ -611,9 +649,11 @@ $ docker container ps -a # ==> コンテナのSTATUSがEXITedになっている
 
 #### ・exe
 
+**＊コマンド例＊**
+
 ```bash
 # デタッチドモードで起動
-$ docker run -d -it -p {ホストポート}:{コンテナポート} -v {ホストDIR}:{コンテナDIR} --name {コンテナ名} {使用イメージ名} /bin/bash
+$ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 
 # 対話モードで，デタッチドモードのコンテナに接続
 $ docker exec -it {起動中コンテナ名} /bin/bash # もしくはbin/sh
@@ -634,9 +674,25 @@ $ docker container ps -a # ==> コンテナのSTATUSがUPになっている
 
 
 
-## 03. コンテナ側に対するファイルのマウント方法
+## 03. コンテナ側に対するマウント方法
 
-### ホストOSのマウント元のディレクトリの設定画面
+### Bindマウント
+
+#### ・Bindマウントとは
+
+ホストOSの```/Users```ディレクトリをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として，非推奨である．また，Dockerfileまたはdocker-composeファイルに記述する方法があるが，後者が推奨である．
+
+![bindマウント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/bindマウント.png)
+
+**＊コマンド例＊**
+
+```bash
+# ホストOSをコンテナ側にbindマウント
+$ docker run -d -it --name {コンテナ名} /bin/bash \
+--mount type=bind, src=home/projects/{ホストOS側のディレクトリ名}, dst=/var/www/{コンテナ側のディレクトリ名}
+```
+
+#### ・マウント元として指定できるディレクトリ
 
 以下の通り，ホストOSのマウント元のディレクトリにはいくつか選択肢がある．
 
@@ -644,27 +700,68 @@ $ docker container ps -a # ==> コンテナのSTATUSがUPになっている
 
 
 
-### Bindマウント
-
-#### ・Bindマウントとは
-
-ホストOSにある```/Users```ディレクトリをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として，非推奨である．
-
-
-
 ### Volumeマウント
 
-#### ・```/Volumes```とは
+#### ・Volume（Data Volume），Dockerエリアとは
 
-ホストOSの```/Volumes```（```/var/lib/docker/volumes```）ディレクトリには，開発途中にコンテナ側で作成されたデータのうち，ホストOSに永続化したいデータが保存される．Data Volumeともいう．
+ホストOSのDockerエリア（```/var/lib/docker/volumes```ディレクトリ）に保存される永続データのこと．Data Volumeともいう．Volumeへのパス（```/var/lib/docker/volumes/{Volume名}/_data```）は，マウントポイントという．
 
 #### ・Volumeマウントとは
 
-ホストOSにある```/Volumes```（```/var/lib/docker/volumes```）ディレクトリをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として，推奨である．Dockerfileまたはdocker-composeファイルに記述する方法があるが，後者が推奨である．
+ホストOSにあるDockerエリアのマウントポイントをコンテナ側にマウントする方法．コンテナで作成されたデータをホストOSに永続化する方法として推奨である．
+
+![volumeマウント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/volumeマウント.png)
+
+**＊コマンド例＊**
+
+Docker Composeで行うことが推奨されている．
+
+```bash
+# ホストOSのDockerエリアにVolumeを作成
+$ docker volume create {Volume名}
+
+# DockerエリアのVolumeの一覧を表示
+$ docker volume ls
+
+# DockerエリアのVolumeの詳細を表示
+$ docker volume inspect {Volume名}
+
+# DockerエリアのVolumeを削除
+$ docker volume rm {Volume名}
+```
+```bash
+# DockerエリアをVolumeマウントして起動
+# マウントポイントのVolume名を使用
+$ docker run -d -it --name {コンテナ名} /bin/bash \
+--mount type=volume, src={ホストOS側Volume名} volume-driver=local, dst={コンテナ側ディレクトリ}
+```
+
+**＊実装例＊**
+
+DockerfileでVolumeマウントを行う場合，マウント先のコンテナ側ディレクトリ名を指定する．Dockerエリアのマウントポイントは，自動的に作成される．Docker Composeで行うことが推奨されている．
+
+```dockerfile
+FROM ubuntu
+RUN mkdir /myvol
+RUN echo "hello world" > /myvol/greeting
+
+# マウント先のコンテナ側ディレクトリ名
+VOLUME /myvol
+```
 
 #### ・Data Volumeコンテナによる永続化データの提供
 
-一旦，Data Volumeをコンテナ （Data Volumeコンテナ）のディレクトリにマウントしておく．そして，他のコンテナでDataVolumeを使用したい時は，Data Volumeコンテナとディレクトリを共有することによって，データを要求する．
+Volumeを使用する場合のコンテナ配置手法の一つ．DockerエリアのVolumeをData Volumeをコンテナ （Data Volumeコンテナ）のディレクトリにマウントしておく．Volumeを使用する時は，Dockerエリアを参照するのではなく，Data Volumeコンテナを参照するようにする．
+
+![data-volumeコンテナ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/data-volumeコンテナ.png)
+
+**＊実装例＊**
+
+```yaml
+# ここに実装例
+```
+
+
 
 ### 一時ファイルシステムマウント
 
@@ -681,6 +778,10 @@ $ docker container ps -a # ==> コンテナのSTATUSがUPになっている
 
 複数のコンテナ間に対して，仮想ネットワークで接続させる．また，仮想ネットワークを物理ネットワークの間を，仮想ブリッジを用いてbridge接続する．ほとんどの場合，この方法を用いる．
 
+![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
+
+**＊コマンド例＊**
+
 ```bash
 $ docker network list
 
@@ -688,10 +789,6 @@ NETWORK ID          NAME                    DRIVER              SCOPE
 ae25b9b7740b        bridge                  bridge              local
 aeef782b227d        tech-notebook_default   bridge              local
 ```
-
-
-
-![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
 
 #### ・物理サーバへのリクエストメッセージがコンテナに届くまで
 
@@ -715,6 +812,8 @@ aeef782b227d        tech-notebook_default   bridge              local
 
 特定のコンテナを，ホストOSや他のコンテナとは，ネットワーク接続させない．
 
+**＊コマンド例＊**
+
 
 ```bash
 $ docker network list
@@ -732,6 +831,8 @@ NETWORK ID          NAME                    DRIVER              SCOPE
 
 特定のコンテナに対して，ホストOSと同じネットワーク情報をもたせる．
 
+**＊コマンド例＊**
+
 ```bash
 $ docker network list
 
@@ -747,6 +848,8 @@ ac017dda93d6        host                    host                local
 
 ホストOSから，自身のポート番号8080に対してリクエストメッセージを送信することによって，ホストOSとコンテナの間のネットワーク接続の成否を確認できる．
 
+**＊コマンド例＊**
+
 ```bash
 # ホストOSから，自身のポート番号8080に対してリクエスト
 $ curl --fail http://{nginxに登録したドメイン名}:8080/
@@ -755,6 +858,8 @@ $ curl --fail http://{nginxに登録したドメイン名}:8080/
 #### ・コンテナ内部 ---> アプリケーション
 
 bridge接続を経由してコンテナに接続し，コンテナ内部からアプリケーションにリクエストメッセージを送信することによって，アプリケーションの成否を確認することができる．
+
+**＊コマンド例＊**
 
 ```bash
 # コンテナの中で，ポート番号80のアプリケーションに対してリクエスト
@@ -765,7 +870,7 @@ $ curl --fail http://{nginxに登録したドメイン名}:80/
 
 ## 05. プラグイン
 
-### ボリュームプラグイン
+### Volumeプラグイン
 
 #### ・NFSストレージ
 
