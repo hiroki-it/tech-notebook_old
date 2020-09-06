@@ -1,12 +1,6 @@
 # Nginx
 
-## 01. 概論
-
-### WebサーバのミドルウェアとしてのNginx
-
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
-
-
+## 01. Tips
 
 ### コマンド
 
@@ -31,7 +25,171 @@ $ kill -s HUP NINGXPID
 
 
 
-## 02-01. ```Main```モジュール
+## 02. Nginxの用途
+
+### Webサーバのミドルウェアとして
+
+#### ・PHP-FPMとの組み合わせ
+
+静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを送信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
+
+![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
+
+**＊実装例＊**
+
+```nginx
+#-------------------------------------
+# HTTPリクエスト
+#-------------------------------------
+server {
+    listen 80;
+    server_name example.com;
+    root /var/www/example/public;
+    index index.php index.html;
+
+    include /etc/nginx/default/xxx.conf;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    #--------------------------------------------------
+    # FastCGIを用いたAppサーバへの転送，受信
+    # OSによって，fastcgi_paramsファイルの必要な設定が異なる
+    #--------------------------------------------------
+    location ~ \.php$ {
+        # リダイレクト先のTCPソケット
+        fastcgi_pass 127.0.0.1:9000;
+        # もしくは，Unixソケット
+        # fastcgi_pass unix:/run/php-fpm/php7.4-fpm.sock;
+        
+        # リダイレクト先のURL（rootディレクティブ値+パスパラメータ）
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        # 設定ファイルからデフォルト値を読み込む
+        include fastcgi_params;
+    }
+}
+```
+
+#### ・fastcgi_paramsファイルについて 
+
+```/etc/nginx/fastcgi_params```ファイルは，OSやそのバージョンによっては，変数のデフォルト値が書き換えられていることがある．実際にサーバ内に接続し，上書き設定が必要なものと不要なものを判断する必要がある．以下は，Debian 10のデフォルト値である．
+
+**＊実装例＊**
+
+```nginx
+#--------------------------------------
+# FastCGIを用いたAppサーバへの転送，受信
+# OSによって，fastcgi_paramsファイルの必要な設定が異なる
+#--------------------------------------
+fastcgi_param  QUERY_STRING       $query_string;
+fastcgi_param  REQUEST_METHOD     $request_method;
+fastcgi_param  CONTENT_TYPE       $content_type;
+fastcgi_param  CONTENT_LENGTH     $content_length;
+
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  REQUEST_URI        $request_uri;
+fastcgi_param  DOCUMENT_URI       $document_uri;
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+fastcgi_param  REQUEST_SCHEME     $scheme;
+fastcgi_param  HTTPS              $https if_not_empty;
+
+fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
+
+fastcgi_param  REMOTE_ADDR        $remote_addr;
+fastcgi_param  REMOTE_PORT        $remote_port;
+fastcgi_param  SERVER_ADDR        $server_addr;
+fastcgi_param  SERVER_PORT        $server_port;
+fastcgi_param  SERVER_NAME        $server_name;
+
+# PHPだけで必要な設定
+fastcgi_param  REDIRECT_STATUS    200;
+```
+
+
+
+### ロードバランサ－のミドルウェアとして
+
+HTTPプロトコルで受信したリクエストを，HTTPSプロトコルに変換して転送する．
+
+**＊実装例＊**
+
+```nginx
+#-------------------------------------
+# HTTPリクエスト
+#-------------------------------------
+server {
+    server_name example.com;
+    listen 80;
+    return 301 https://$host$request_uri;
+}
+
+#-------------------------------------
+# HTTPSリクエスト
+#-------------------------------------
+server {
+    server_name example.com;
+    listen 443 ssl http2;
+    index index.php index.html;
+
+    #-------------------------------------
+    # SSL
+    #-------------------------------------
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+    add_header Strict-Transport-Security 'max-age=86400';
+
+    location / {
+        proxy_pass http://app1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port $remote_port;
+    }
+}
+```
+
+
+
+### リバースProxyのミドルウェアとして
+
+前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスする．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
+
+**＊実装例＊**
+
+```nginx
+#-------------------------------------
+# HTTPリクエスト
+#-------------------------------------
+server {
+    server_name example.com;
+    listen 80;
+    return 301 https://$host$request_uri;
+    
+    #-------------------------------------
+    # 静的ファイルであればNginxでレスポンス
+    #-------------------------------------
+    location ~ ^/(images|javascript|js|css|flash|media|static)/ {
+        root /var/www/example/static;
+        expires 30d;
+    }
+
+    #-------------------------------------
+    # 動的ファイルであればWebサーバに転送
+    #-------------------------------------
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+```
+
+
+
+## 03-01. ```Main```モジュール
 
 **＊実装例＊**
 
@@ -87,7 +245,7 @@ worker_rlimit_nofile  8192;
 
 
 
-## 02-02. Configurationモジュール
+## 03-02. Configurationモジュール
 
 ### ```include```ディレクティブ
 
@@ -113,7 +271,7 @@ include  /usr/share/nginx/modules/*.conf;
 
 
 
-## 02-03. Eventsモジュール
+## 03-03. Eventsモジュール
 
 ### ```events```ブロック
 
@@ -135,7 +293,7 @@ worker_connections  1024;
 
 
 
-## 02-04. HTTPCoreモジュール
+## 03-04. HTTPCoreモジュール
 
 ### ```http```ブロック
 
@@ -172,7 +330,7 @@ http {
 開放するポート```80```を設定する．
 
 ```nginx
-listen 80
+listen 80;
 ```
 
 開放するポート```443```を設定する．
