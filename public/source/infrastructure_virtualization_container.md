@@ -719,15 +719,34 @@ Docker Composeで行うことが推奨されている．
 ```bash
 # ホストOSのDockerエリアにVolumeを作成
 $ docker volume create {Volume名}
-
+```
+```bash
 # DockerエリアのVolumeの一覧を表示
 $ docker volume ls
-
+```
+```bash
+# DockerエリアのVolumeを削除
+$ docker volume rm {Volume名}
+```
+```bash
 # DockerエリアのVolumeの詳細を表示
 $ docker volume inspect {Volume名}
 
-# DockerエリアのVolumeを削除
-$ docker volume rm {Volume名}
+[
+    {
+        "CreatedAt": "2020-09-06T15:04:02Z",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.project": "{プロジェクト名}",
+            "com.docker.compose.version": "1.26.2",
+            "com.docker.compose.volume": "xxx"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/{プロジェクト名}_xxx/_data",
+        "Name": "{プロジェクト名}_xxx",
+        "Options": null,
+        "Scope": "local"
+    }
+]
 ```
 ```bash
 # DockerエリアをVolumeマウントして起動
