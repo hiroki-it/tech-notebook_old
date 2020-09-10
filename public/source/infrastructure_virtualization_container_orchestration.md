@@ -38,6 +38,16 @@
 container_name: www
 ```
 
+#### ・```hostname```
+
+**＊実装例＊**
+
+他のコンテナからアクセスする時のホスト名を指定する．もし設定しなかった場合，サービス名またはコンテナ名が，ホスト名として設定される．
+
+```yaml
+hostname: www
+```
+
 #### ・```build: dockerfile```
 
 Dockerfileの名前．パスごと指定する．
@@ -212,9 +222,9 @@ xxxxxxxxxxxx     {プロジェクト名}_default     bridge      local
 
 
 
-### ```docker-compose```コマンド
+### docker-composeコマンド
 
-#### ・```up```
+#### ・up
 
 すでに起動中／停止中コンテナがある場合，それをデタッチドモードで再起動する．
 
@@ -225,7 +235,7 @@ xxxxxxxxxxxx     {プロジェクト名}_default     bridge      local
 $ docker-compose up -d
 ```
 
-#### ・```run```
+#### ・run
 
 すでに起動中／停止中コンテナがあっても，それを残して新しいコンテナを構築し，デタッチドモードで起動する．古いコンテナが削除されずに残ってしまう．
 
@@ -234,6 +244,18 @@ $ docker-compose up -d
 ```bash
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動 
 $ docker-compose run -d -it {イメージ名}
+```
+
+#### ・logs
+
+コンテナ内に入ることなく，起動プロセスから出力されるログを確認することできる．
+
+```bash
+# コンテナ名でなくサービス名であることに注意
+$ docker-compose logs {サービス名}
+
+# フォアグラウンドでログを表示
+$ docker-compose logs -f {サービス名}
 ```
 
 
