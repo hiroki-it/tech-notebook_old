@@ -121,6 +121,17 @@ $ ls -l -a
 $ cp -Rp /{ディレクトリ名1}/{ディレクトリ名2} /{ディレクトリ名1}/{ディレクトリ名2}
 ```
 
+```bash
+# 隠しファイルも含めて，ディレクトリの中身を他のディレクトリ内にコピー
+# 「アスタリスク」でなく「ドット」にする
+$ cp -Rp /{ディレクトリ名}/. /{ディレクトリ名} 
+```
+
+```bash
+# 『ファイル名.YYYYmmdd』の形式でバックアップファイルを作成
+cp -p {ファイル名} {ファイル名}.`date +'%Y%m%d'`
+```
+
 
 
 ### find
@@ -229,6 +240,22 @@ $ od -Ad -tx {ファイル名}
 
 
 
+### mount，umount
+
+#### ・よく使うオプション
+
+```bash
+$ mount -t {ファイルシステムタイプ} -o tls {ファイルシステムID}:/ {マウントポイント}
+```
+
+```bash
+# Amazon EFSで，マウントポイントを登録
+$ mount -t efs -o tls fs-xxxxx/ /var/www/app
+
+# マウントポイントを解除
+$ umount /var/www/app
+```
+
 
 
 ## 02-03. プロセス系
@@ -291,6 +318,17 @@ $ systemctl disable httpd.service
 | mount        | ファイルのマウントに関するデーモン．       |                    |
 | service      | プロセス起動停止に関するデーモン．         | httpd：http daemon |
 | socket       | ソケットとプロセスの紐づけに関するデーモン |                    |
+
+### kill
+
+#### ・よく使うオプション集
+
+```bash
+# プロセスを強制的に削除
+$ kill -9 {プロセスID（PID）}
+```
+
+
 
 
 
@@ -481,9 +519,43 @@ $ vim {ファイル名}
 #### ・よく使うオプション集
 
 ```bash
-# 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを登録．
+# 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを追加．
 # バイナリファイルを入力すると，絶対パス
 $ export PATH=$PATH:{シェルスクリプトへのあるディレクトリへの絶対パス}
+```
+
+```bash
+# 不要なパスを削除したい場合はこちら
+# 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを上書き
+$ export PATH={不要な絶対パス以外の羅列}
+
+# （例）初期状態に戻す
+# export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+```
+
+#### ・```.bashrc```への追記
+
+
+exportの結果は，OSの再起動で初期化されてしまう．そのため，再起動時に自動的に実行されるよう，```/home/centos/.bashrc```に追記しておく．
+
+```bash
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# xxxバイナリファイルのパスを追加 を追加 <--- ここに追加
+PATH=$PATH:/usr/local/sbin/xxxx
+
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
 ```
 
 
@@ -759,7 +831,7 @@ $ yum-config-manager --enable remi-php74
 
 
 # CentOS8の場合（dnf moduleコマンドを使用）
-$ dnf module enable php:remi-php74
+$ dnf module enable php:remi-7.4
 ```
 
 6. remiリポジトリを指定して，php，php-mbstring，php-mcryptをインストールする．Remiリポジトリを経由してインストールしたソフトウェアは```/opt/remi/*```に配置される．
@@ -1108,6 +1180,45 @@ Webサーバを仮想的に構築する時，PHPの言語プロセッサが同�
 ### 制御プログラム（カーネル）の例
 
   カーネル，マイクロカーネル，モノリシックカーネル
+
+
+
+### 通信管理
+
+#### ・SELinux：Security Enhanced Linux
+
+Linuxに標準で導入されているミドルウェア．ただし，アプリケーションと他のソフトウェアの通信を遮断してしまうことがあるため，基本的には無効にしておく．
+
+1. SELinuxの状態を確認
+
+```bash
+$ getenforce
+
+# 有効の場合
+Enforcing
+```
+
+2. ```/etc/sellnux/config```を修正する．
+
+```config
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+
+SELINUX=disabled <---- disabledに変更
+
+# SELINUXTYPE= can take one of these three values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted
+```
+
+3. OSを再起動
+
+OSを再起動しないと設定が反映されない．
 
 
 
