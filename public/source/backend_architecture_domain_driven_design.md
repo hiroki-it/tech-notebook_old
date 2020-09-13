@@ -523,23 +523,23 @@ EntityとValue Objectのどちらとして，オブジェクトをモデリン�
 
 ```PHP
 <?php
+
 class ExampleVO
 {
-
-        private $propertyA;
-  
-        private $propertyB;
-
-        private $propertyC;
-
-        // コンストラクタで$propertyに値を設定
-        public function __construct($param)
-        {
-            $this->propertyA = $param['a'];
-            $this->propertyB = $param['b'];
-            $this->propertyC = $param['c'];
-        }
     
+    private $propertyA;
+    
+    private $propertyB;
+    
+    private $propertyC;
+    
+    // コンストラクタで$propertyに値を設定
+    public function __construct($param)
+    {
+        $this->propertyA = $param['a'];
+        $this->propertyB = $param['b'];
+        $this->propertyC = $param['c'];
+    }   
 }
 ```
 
@@ -663,8 +663,8 @@ class ColorVO extends Enum
 
     // 『self::定数名』で，定義の値へアクセスする．
     private $defs = [
-        self::RED => ['colorname' => 'レッド'],
-        self::BLUE => ['colorname' => 'ブルー']
+        self::RED => ['color_name' => 'レッド'],
+        self::BLUE => ['color_name' => 'ブルー']
     ];
 
 
@@ -684,7 +684,7 @@ class ColorVO extends Enum
     {
         // $kbnValueに応じて，色名をcolornameデータにセットする．
         $this->colorValue = $value;
-        $this->colorname = $this->defs[$value]['colorName'];
+        $this->colorname = $this->defs[$value]['color_name'];
     }
     
     
@@ -856,15 +856,10 @@ class Factory
   
     private $factory;
 
-    
-    public function __construct
-    (
-        Factory $factory
-    )
+    public function __construct(Factory $factory)
     {
         $this->$factory = $factory;
     }
-    
   
     public function factoryToyOrderEntity()
     {
