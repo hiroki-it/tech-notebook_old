@@ -82,11 +82,7 @@ Google Drive，Dropbox
 
 ## 03. ミドルウェア
 
-### Webシステムを構成するサーバのミドルウェア
-
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
-
-### Webサーバのミドルウェアの種類
+### Webサーバのミドルウェア
 
 #### ・Apache
 
@@ -98,6 +94,8 @@ Nginxのノートを参照．
 
 #### ・Node.js
 
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+
 
 
 ### Appサーバのミドルウェア
@@ -106,21 +104,23 @@ Nginxのノートを参照．
 
 mod_phpという拡張モジュールを読み込むことによって，Apacheを，WebサーバだけでなくAppサーバのミドルウェアとしても機能させることができる．
 
-#### ・CGIプログラム：Common Gateway Interface
-
-![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
-
 #### ・PHP-FPM：PHP FastCGI Process Manager
 
 WebサーバのNginxと組み合わせて使用できるミドルウェア．
+
+![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
 #### ・NGINX Unit
 
 WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
+#### ・CGIプログラム：Common Gateway Interface
+
+![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
 
 
-### DBMS
+
+### DBサーバのミドルウェア
 
 #### ・MySQL
 
