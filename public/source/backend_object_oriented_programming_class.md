@@ -765,7 +765,7 @@ $container = new Container();
 // DIコンテナの読み込み
 require_once __DIR__ . '/autoload.php';
 
-// クラス名を宣言．
+// クラス名を宣言してインスタンスを生成．
 $sample = $container['sample'];
 ```
 

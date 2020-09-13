@@ -15,6 +15,9 @@ $ systemctl stop nginx
 
 ```bash
 $ service nginx configtest
+
+# もしくはこちら
+$ nginx -t
 ```
 
 #### ・設定ファイルの反映と安全な再起動
@@ -205,7 +208,7 @@ worker_rlimit_nofile  8192;
 
 ### ```user```ディレクティブ 
 
-本設定ファイルの実行ユーザとグループを設定する．
+本設定ファイルの実行ユーザとグループを設定する．グループ名を入力しなかった場合，ユーザ名と同じものが自動的に設定される．
 
 ```nginx
 user  www www;
