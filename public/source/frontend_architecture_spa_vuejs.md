@@ -850,8 +850,6 @@ module.exports = {
 
 
 
-
-
 ## 04. Ajaxによる非同期的なデータ送受信
 
 ### JQueryの```ajax()```を用いたAjaxの実装
