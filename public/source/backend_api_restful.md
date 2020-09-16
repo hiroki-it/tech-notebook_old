@@ -2,15 +2,24 @@
 
 ## 01. RESTとRESTfulとは
 
-### RESTとは
+### REST
+
+#### ・RESTとは
 
 分散型アプリケーションを構築する時に，それぞれアプリケーションを連携させるのに適したアーキテクチャスタイルをRESTという．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．RESTは，以下の特徴を持つ．
 
 ![REST](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/REST.jpg)
 
+#### ・RESTfulとRESTful APIとは
+
+RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURIを対応づけている．
+
+![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RESTfulAPIを用いたリクエスト.png)
+
+
+
 ### RESTの４原則
 
-#### ・Addressability
 #### ・Stateless
 
 クライアントに対してレスポンスを送信したら，クライアントの情報を保持せずに破棄する仕組みのこと．擬似的にStatefulな通信を行う時は，キャッシュ，Cookie，セッションIDを用いて，クライアントの情報を保持する．
@@ -24,27 +33,52 @@
 #### ・Connectability
 #### ・Uniform Interface
 
+HTTPプロトコルを使用したリクエストを，「リソースに対する操作」とらえ，リクエストにHTTPメソッドを対応づけるようにする．
 
+#### ・Addressability
 
-### RESTful
-
-#### ・RESTfulとRESTful APIとは
-
-RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWebAPIをRESTful APIという．例えば，RESTful APIの場合，DBにおけるUserInfoのCRUDに対して，一つの「/UserInfo」というURLを対応づけている．
-
-![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RESTfulAPIを用いたリクエスト.png)
+エンドポイントによって，特定のリソースを操作できること．
 
 
 
-## 02. RESTful APIへのリクエスト
 
-### RESTfulにおけるデータの送信方法
+## 02. Uniform Interface
+
+### リクエストとHTTPメソッドの対応関係
+
+#### ・各HTTPメソッドの特徴
+
+| **HTTPメソッド** | 操作                | 読み出し／書き込み | 特徴 |
+| :--------------- | ---------------- | --------------------------------------- | ---------------- |
+|     **GET**      | READ |   読み  |  |
+|     **POST**     | ・CREATE<br>・UPDATE<br>・PDF作成<br>・ファイルデータ送信<br>・ログイン |     書き     | 非冪等的 |
+|     **PUT**      | ・CREATE<br/>・UPDATE |   書き    | 冪等的 |
+|    **DELETE**    | DELETE |    書き    |  |
+
+
+#### ・POST送信 vs PUT送信
+
+POST送信とPUT送信の重要な違いについてまとめる．データを作成するときはPOST送信，データを更新するときは，PUT送信を使用するようにする．
+
+|                    | POST送信                                           | PUT送信                                           |
+| ------------------ | -------------------------------------------------- | ------------------------------------------------- |
+| データ作成の冪等性 | リクエスト1つにつき，1つのデータを作成（非冪等的） | リクエスト数に限らず，1つのデータを作成（冪等的） |
+| 更新内容           | リクエストボディに格納（隠蔽可能）                 | パスパラメータに表示（隠蔽不可）                  |
+
+
+
+## 03. Addressability
+
+### エンドポイント
 
 #### ・エンドポイントとは
 
-APIにリソースをリクエストするためのURLのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
+特定のリソースを操作するための固有のURIのこと．エンドポイント は，リソース1つごと，あるいはまとまりごとに割り振られる．
 
-#### ・各送信方法の特徴
+#### ・HTTPメソッドに対応するエンドポイント
+
+RESTfulAPIでは，全てのHTTPメソッドの内，主に以下の4つを使用して，データ処理の方法をリクエストする．
+
 
 ```http
 GET http://www.example.co.jp/users/{id}
@@ -62,22 +96,15 @@ PUT http://www.example.co.jp/users/{id}
 DELETE http://www.example.co.jp/users/{id}
 ```
 
-| **送信方法** | サーバ側の処理 | 使い分け                    | 特徴 | パスパラメータ |
-| :--------------- | --------------------------------------- | ---------------- | ---------------- | ---------------- |
-|     **GET**      |   読み  | Read |  | あり |
-|     **POST**     |     書き     | ・Create<br>・Update<br>・PDF作成<br>・ファイルデータ送信<br>・ログイン | 非冪等的 | なし |
-|     **PUT**      |   書き    | ・Create<br/>・Update | 冪等的 | あり |
-|    **DELETE**    |    書き    | Delete |  | あり |
+#### ・エンドポイントの違い
 
+| HTTPメソッド | エンドポイントの有無 |
+| ------------ | -------------------- |
+| GET          | あり／なし           |
+| POST         | なし                 |
+| PUT          | あり                 |
+| DELETE       | なし                 |
 
-#### ・POST送信 vs PUT送信
-
-POST送信とPUT送信の重要な違いについてまとめる．基本的には，POST送信とPUT送信の使い分けは，人によって線引きが異なり，保守性が悪い．基本的には，POST送信を使用すれば問題ない．
-
-|                    | POST送信                                           | PUT送信                                           |
-| ------------------ | -------------------------------------------------- | ------------------------------------------------- |
-| データ作成の冪等性 | リクエスト1つにつき，1つのデータを作成（非冪等的） | リクエスト数に限らず，1つのデータを作成（冪等的） |
-| 更新内容           | リクエストボディに格納（隠蔽可能）                 | パスパラメータに表示（隠蔽不可）                  |
 
 
 
@@ -85,7 +112,7 @@ POST送信とPUT送信の重要な違いについてまとめる．基本的に�
 
 #### ・パスパラメータ，クエリパラメータとは
 
-URLの構造のうち，以下の部分を指す．
+URIの構造のうち，以下の部分を指す．
 
 ```
 http://www.example.co.jp:80/users/777?text1=a&text2=b
@@ -106,7 +133,7 @@ http://www.example.co.jp:80/users/777?text1=a&text2=b
 
 
 
-### URLの作り方
+### エンドポイントの作り方
 
 #### ・短くすること
 
@@ -163,7 +190,7 @@ GET http://www.example.co.jp/users/id/12345
 GET http://www.example.co.jp/user/12345
 ```
 
-#### ・システムの設計方法がバレないURLにすること
+#### ・システムの設計方法がバレないURIにすること
 
 **＊悪い実装例＊**
 
@@ -171,6 +198,29 @@ GET http://www.example.co.jp/user/12345
 
 ```http
 GET http://www.example.co.jp/cgi-bin/get_users.php
+```
+
+#### ・HTTPメソッドの名前を使用しないこと
+
+**＊悪い実装例＊**
+
+メソッドから，処理の目的はわかるので，URIに対応する動詞名を実装する必要はない．
+
+```http
+GET http://www.example.co.jp/user/get/12345
+```
+
+```http
+POST http://www.example.co.jp/user/create/12345
+```
+
+
+```http
+PUT http://www.example.co.jp/user/update/12345
+```
+
+```http
+DELETE http://www.example.co.jp/user/delete/12345
 ```
 
 #### ・数字，バージョン番号を使用しないこと
@@ -191,11 +241,11 @@ X-Api-Version: 1
 
 
 
-#### ・異なる送信方法の間でルールを統一すること
+#### ・異なるHTTPメソッドの間でルールを統一すること
 
 **＊悪い実装例＊**
 
-GET送信とPOST送信の間で，IDパラメータの送信方法が統一されていない．
+GET送信とPOST送信の間で，IDパラメータのHTTPメソッドが統一されていない．
 
 ```http
 GET http://www.example.co.jp/users/?id=12345
@@ -207,7 +257,7 @@ POST http://www.example.co.jp/users/12345/messages
 
 **＊良い実装例＊**
 
-以下のように，異なる送信方法の間でも統一する．
+以下のように，異なるHTTPメソッドの間でも統一する．
 
 
 ```http
@@ -216,52 +266,6 @@ GET http://www.example.co.jp/users/12345
 
 ```http
 POST http://www.example.co.jp/users/12345/messages
-```
-
-
-
-## 02-02. RESTful APIからのレスポンス
-
-### スキーマ
-
-#### ・スキーマとは
-
-例えば，APIが，以下のようなJSON型データをレスポンスするとする．
-
-```json
-{
-    "name": "Taro Yamada",
-    "age": 10,
-    "sports":["soccer", "baseball"],
-    "subjects": "math"
-}
-```
-
-ここで，以下のように，レスポンスデータの各データ型をJSON型（あるいはYAML型）で記述しておく．これをスキーマという，スキーマは，レスポンスデータのバリデーションを行う時に用いる．
-
-```json
-{
-    "type": "object",
-    "properties": {
-        "name": {
-            "type": "string"
-        },
-        "age": {
-            "type": "integer",
-            "minimum": 0
-        },
-        "sports": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "subjects": {
-            "type": "string"
-        }
-    },
-    "required": ["name"]
-}
 ```
 
 
@@ -282,7 +286,7 @@ XML，JSON，JSONP
 Content-Type: application/json
 ```
 
-他に，URLでデータ型を記述する方法がある．
+他に，URIでデータ型を記述する方法がある．
 
 ```
 http://www.example.co.jp/users/12345?format=json
@@ -364,7 +368,53 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 
 
 
-## 03. RESTfulAPIではないAPI
+## 02-04. API仕様書
+
+### スキーマ
+
+#### ・スキーマとは
+
+例えば，APIが，以下のようなJSON型データをレスポンスするとする．
+
+```json
+{
+    "name": "Taro Yamada",
+    "age": 10,
+    "sports":["soccer", "baseball"],
+    "subjects": "math"
+}
+```
+
+ここで，以下のように，レスポンスデータの各データ型をJSON型（あるいはYAML型）で記述しておく．これをスキーマという，スキーマは，レスポンスデータのバリデーションを行う時に用いる．
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "sports": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "subjects": {
+            "type": "string"
+        }
+    },
+    "required": ["name"]
+}
+```
+
+
+
+## 
 
 
 
