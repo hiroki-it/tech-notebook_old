@@ -240,24 +240,6 @@ $ od -Ad -tx {ファイル名}
 
 
 
-### mount，umount
-
-#### ・よく使うオプション
-
-```bash
-$ mount -t {ファイルシステムタイプ} -o tls {ファイルシステムID}:/ {マウントポイント}
-```
-
-```bash
-# Amazon EFSで，マウントポイントを登録
-$ mount -t efs -o tls fs-xxxxx/ /var/www/app
-
-# マウントポイントを解除
-$ umount /var/www/app
-```
-
-
-
 ## 02-03. プロセス系
 
 ### ps： process status
