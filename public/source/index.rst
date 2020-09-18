@@ -45,6 +45,7 @@
 
    backend_library.md
    backend_framework_symfony.md
+   backend_framework_laravel.md
    backend_testing.md
 
 .. toctree::
