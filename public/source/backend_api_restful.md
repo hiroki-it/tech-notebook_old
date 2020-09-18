@@ -67,7 +67,7 @@ POST送信とPUT送信の重要な違いについてまとめる．データを�
 
 
 
-## 03. Addressability
+## 02-02. Addressability
 
 ### エンドポイント
 
@@ -270,7 +270,7 @@ POST http://www.example.co.jp/users/12345/messages
 
 
 
-## 02-03. オブジェクトデータの送受信
+## 03. オブジェクトデータの送受信
 
 ### オブジェクトデータ型
 
@@ -354,21 +354,21 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 
 
 
+### HTTPステータスの種類
+
+#### ・100番台：継続
+
+#### ・200番台：リクエスト成功
+
+#### ・300番台：リダイレクトに関するステータス
+
+#### ・400番台：リクエスト失敗
+
+#### ・500番台：サーバーエラー
 
 
-### ステータスコード
 
-#### ・```415``` Unsupported Media Type
-
-※使いどころを要勉強
-
-#### ・```422``` Unprocessable Entity
-
-※使いどころを要勉強
-
-
-
-## 02-04. API仕様書
+## 04. API仕様書
 
 ### スキーマ
 
@@ -414,7 +414,41 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 
 
 
-## 
+## 05. Statelessプロトコルにおける擬似Stateful化
+
+### Cookie
+
+#### ・Cookieとは
+
+クライアントからの次回のリクエスト時でも，Cookie情報を用いて，同一クライアントと認識できる仕組み．HTTPはStatelessプロトコルであるが，Cookie情報を用いると，擬似的にStatefulな通信を行える．Cookie情報は，Cookieプロトコルを用いて送受信される．
+
+#### ・Cookie情報の送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）にデータを格納する．
+2. サーバは，レスポンスヘッダ情報のCookieプロトコルにCookie情報を埋め込んで送信する．
+3. ブラウザは，そのCookie情報を保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
+
+![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
 
 
+
+### セッションID
+
+#### ・セッションIDとは
+
+クライアントからの次回のリクエスト時でも，セッションIDを用いて，同一クライアントと認識できる仕組み．HTTPはStatelessプロトコルであるが，セッションIDを用いると，擬似的にStatefulな通信を行える．セッションIDは，Cookieプロトコルによって送受信される．
+
+#### ・セッションIDの送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）に，セッションIDに紐づくデータを格納する．
+2. サーバは，レスポンスヘッダ情報のCookieプロトコルにセッションIDを埋め込んで送信する．
+3. ブラウザは，そのセッションIDを保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
+
+![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
+
+#### ・セッションID送受信とページ遷移
+
+![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
 
