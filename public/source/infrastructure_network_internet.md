@@ -143,7 +143,7 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 
 
-## 02-03. アプリケーション層におけるデータ（メッセージ）の作成
+## 03. アプリケーション層におけるデータ（メッセージ）の作成
 
 ### URLとメールアドレスの構造
 
@@ -247,32 +247,39 @@ https://github.com/postmanlabs/postman-app-support/issues/131
 
 
 
-### HTTPステータスの種類
+## 03-02. メールデータの作成
 
-#### ・100番台：継続
-#### ・200番台：リクエスト成功
-#### ・300番台：リダイレクトに関するステータス
-#### ・400番台：リクエスト失敗
-#### ・500番台：サーバーエラー
+### メールデータの送受信に関わるプロトコル
+
+![SMTP，POP3，IMAP4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP，POP3，IMAP4.png)
 
 
 
-### メール送信用プロトコル
+### SMTP：Simple Mail Transfer Protocol
 
-#### ・SMTP AUTH：Simple Mail Transfer Protocol AUTHentication**
+#### ・SMTPとは
 
-  メール送信にあたってユーザ認証の仕組みがないSMTPを拡張し，ユーザ認証機能を追加した仕様．
+メールデータを送信するためのプロトコルのこと．
+
+#### ・SMTP-AUTH：SMTP AUTHentication
+
+SMTPに認証を組み込んだ仕組みのこと．クライアントから送信側メールサーバにメールデータをSMTP送信する時，メールサーバがクライアントに対して認証を行う．
+
+![SMTP-AUTH](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP-AUTH.png)
 
 
 
+### POP3：Post Official Protocol version 3
 
-### メール受信用プロトコル
-
-#### ・POP3：Post Official Protocol version 3
+#### ・POP3とは
 
   メールサーバに届いたメールを，受信機器にダウンロードし，受信機器で閲覧するプロトコル．メールの既読未読状況は，他の受信機器と共有される．
 
-#### ・IMAP4：Internet Message Access Protocol version 3
+
+
+### IMAP4：Internet Message Access Protocol version 4
+
+#### ・IMAP4とは
 
   メールサーバに届いたメールを，受信機器にダウンロードせず，メールサーバに置いたまま閲覧するプロトコル．メールの既読未読状況は，他の受信機器と共有されない．
 
@@ -282,13 +289,17 @@ https://github.com/postmanlabs/postman-app-support/issues/131
 
 ![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GmailでPOPかIMAPを設定.jpg)
 
-#### ・APOP：Authenticated POP
+
+
+### APOP：Authenticated POP
+
+#### ・APOPとは
 
   メール受信の際に，チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
 
   
 
-## 02-04. トランスポート層
+## 04. トランスポート層
 
 ### TCPによるヘッダ情報の追加と識別の仕組み
 
@@ -346,7 +357,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 
 
-## 02-05. インターネット層
+## 05. インターネット層
 
 ### IPパケットのヘッダ情報を用いた宛先認識
 
@@ -524,7 +535,7 @@ http://www.example.co.jp:53/
 
 
 
-## 03. Webシステムを構成する主要な3層構造
+## 06. Webシステムを構成する主要な3層構造
 
 ### Webシステムとは
 
@@ -669,7 +680,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 
 
-## 03-02. Webシステムの構成方法
+## 06-02. Webシステムの構成方法
 
 ### Dualシステム
 
@@ -709,7 +720,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 
 
-## 03-03. Web API
+## 06-03. Web API
 
 ### RESTful API
 
@@ -725,7 +736,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 
 
-## 03-04. フォワード／リバースProxyサーバ
+## 06-04. フォワード／リバースProxyサーバ
 
 ### 役割
 
@@ -767,7 +778,7 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 
 
 
-## 03-05. フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
+## 06-05. フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
 
 ![IPアドレスと完全修飾ドメイン名のマッピング3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
 
@@ -797,59 +808,3 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 2. リバースProxyサーバは，Webページを，Webサーバに代理リクエスト．
 3. Webサーバは，Webページを，リバースProxyサーバにレスポンス．
 4. リバースProxyサーバは，Webページを，クライアントPCに代理レスポンス．
-
-
-
-## 03-06. Statelessプロトコルにおける擬似Stateful化
-
-### キャッシュ
-
-アプリケーションからレスポンスされるコンテンツ（値，HTML，CSS，画像など）は，以下の場所にキャッシュとして保存される．
-
-#### ・アプリケーションにおけるキャッシュ
-
-フレームワークのコンポーネント，ライブラリなどによって，オブジェクト内にデータとして保存される．Symfonyのキャッシュ機能については，別のノートを参照せよ．
-
-#### ・リバースProxyサーバにおけるキャッシュ
-
-リバースProxyサーバに，キャッシュとして保存される．リバースProxyサーバの説明を参照せよ．
-
-#### ・ブラウザにおけるキャッシュ
-
-クライアントのブラウザに，キャッシュとして保存される．
-
-![ブラウザのキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ブラウザのキャッシュ.png)
-
-
-
-### Cookie
-
-#### ・CookieプロトコルによるCookie情報の送受信
-
-1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）にデータを格納する．
-2. サーバは，レスポンスヘッダ情報のCookieプロトコルにCookie情報を埋め込んで送信する．
-3. ブラウザは，そのCookie情報を保存する．
-4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
-
-![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
-
-
-
-### セッションID
-
-#### ・CookieプロトコルによるセッションIDの送受信
-
-1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）に，セッションIDに紐づくデータを格納する．
-2. サーバは，レスポンスヘッダ情報のCookieプロトコルにセッションIDを埋め込んで送信する．
-3. ブラウザは，そのセッションIDを保存する．
-4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieプロトコルにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
-
-![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
-
-#### ・セッションID送受信とページ遷移
-
-![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
-
-
-
-
