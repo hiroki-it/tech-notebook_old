@@ -341,7 +341,7 @@ http://localhost:8080/
 
 IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号．Webサーバがリクエストを受信する時，またレスポンスを送信する時に使用される．ホストOSとゲスト（仮想サーバ）との通信では，80番（HTTP）の受信に関する様々な設定が必要になる．
 
-  ![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ポート番号とプロトコルの対応関係.png)
+![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ポート番号とプロトコルの対応関係.png)
 
 #### ・登録済みポート番号（1024 ～ 49151）
 
@@ -700,11 +700,11 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 #### ・ホットスタンバイ
 
-  ![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-1.png)
+![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-1.png)
 
 #### ・コールドスタンバイ
 
-  ![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-2.png)
+![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-2.png)
 
 
 
