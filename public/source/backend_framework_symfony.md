@@ -1,4 +1,4 @@
-# Symfonyフレームワーク
+# Symfony
 
 ## 01. Symfonyのディレクトリ構成
 
