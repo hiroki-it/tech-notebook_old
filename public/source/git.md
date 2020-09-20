@@ -82,7 +82,78 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 
 
-## 01-02. Gitのコマンドメモ
+## 02. Gitの準備
+
+### ```clone```：
+
+#### ・```clone {HTTPS接続}```
+
+一番，クローンの速度が速く，コマンドの引数も簡単．
+
+```bash
+$ git clone https://github.com/{組織名}/{リポジトリ名}.git
+```
+
+#### ・```clone {SSH接続}```
+
+サーバ接続名は，，SSH接続の設定ファイル（```~/.ssh/config```）に記載されている．デフォルトでは，Githubの接続名は，「```github.com```」になっている．
+
+```bash
+$ git clone git@{ssh-configファイルでのサーバ接続名}:{組織名}/{リポジトリ名}.git
+```
+
+
+
+### ```config```：
+
+#### ・ 設定の影響範囲の種類
+
+| 影響範囲 | 意味                           | 上書き順 | 設定ファイルの場所               |
+| :------- | :----------------------------- | -------- | :------------------------------- |
+| system   | 全PCユーザの全リポジトリ       | 1        | ```/etc/gitconfig```             |
+| global   | 現在のPCユーザーの全リポジトリ | 2        | ```~/.gitconfig```               |
+| local    | 現在のリポジトリ               | 3        | ```{リポジトリ名}/.git/config``` |
+
+#### ・```config --{影響範囲} --list```
+
+指定した影響範囲で適用されている設定値を表示する．```--local```で設定されていない項目は，```--global```の設定値が適用される．
+
+```bash
+$ git config --local --list
+```
+
+#### ・```config --{影響範囲} user.name```
+
+AuthorとCommitterの名前を設定する．```local```が一番最後に上書きされ，適用される．
+
+```bash
+$ git config --local user.name "Hiroki-IT"
+```
+
+
+#### ・```config --{影響範囲} user.email```
+
+AuthorとCommitterのメールアドレスを設定する．```local```が一番最後に上書きされ，適用される．
+
+```bash
+$ git config --local user.email "xxxxx@gmail.com"
+```
+
+Authorの情報は，コミット時に反映される．（Committerは表示されない）
+
+```bash
+$ git log
+
+commit ee299250a4741555eb5027ad3e56ce782fe90ccb
+Author: Hiroki-IT <xxxxx@gmail.com>
+Date:   Sat Sep 12 00:00:00 2020 +0900
+
+    add ◯◯を実装した．
+```
+
+
+
+## 03. Gitのコマンドメモ
 
 ### ```add```：
 
@@ -543,7 +614,7 @@ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head
 
 
 
-## 02. GitHubにおけるIssueとPullReqの書き方
+## 04. GitHubにおけるIssueとPullReqの書き方
 
 GitHubの個人的豆知識を以下に記す．
 
