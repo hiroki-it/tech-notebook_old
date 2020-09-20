@@ -22,7 +22,7 @@
 | ls                 | ps             | curl           | vim            | printenv   | free           | -                    |
 | cp                 | kill           | netstat        | grep           | -          | -              | -                    |
 | find               | systemctl      | route          | -              | -          | -              | -                    |
-| chmod              | -              | -              | -              | -          | -              | -                    |
+| chmod              | -              | ssh            | -              | -          | -              | -                    |
 | rm                 | -              | -              | -              | -          | -              | -                    |
 | chown              | -              | -              | -              | -          | -              | -                    |
 | ln                 | -              | -              | -              | -          | -              | -                    |
@@ -164,8 +164,13 @@ $ find /* -type f |xargs grep "{検索文字}" 2> /dev/null
 ファイルの権限を変更するためのユーティリティ．よく使用されるパーミッションのパターンは次の通り．
 
 ```bash
-# example.conf に「666」権限を付与
-$ chmod 666 example.conf
+# example.conf に「600」権限を付与
+$ chmod 600 example.conf
+```
+
+```bash
+# exampleディレクトリ内のファイルに対して，再帰的に権限を付与．
+$ chmod -R 600 example
 ```
 
 #### ・100番刻みの規則性
@@ -240,7 +245,55 @@ $ od -Ad -tx {ファイル名}
 
 
 
-## 02-03. プロセス系
+## 02-03. ネットワーク系
+
+### ssh：secure shell
+
+#### ・よく使うオプション
+
+事前に，秘密鍵の権限は「600」にしておく
+
+```bash
+# tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
+$ ssh -l {サーバのユーザ名}@{サーバのホスト名} -p 22 -i {秘密鍵のパス} -T
+```
+
+```bash
+# -vvvでログを出力する
+$ ssh -l {サーバのユーザ名}@{サーバのホスト名} -p 22 -i {秘密鍵のパス} -T -vvv
+```
+
+#### ・設定ファイル（```~/.ssh/config```）
+
+```ssh```コマンドのオプションの引数を，```~/.ssh/config```ファイルに記述しておく．
+
+```
+# サーバ１
+Host {接続名1}
+    User {サーバ１のユーザ名}
+    Port 22
+    HostName {サーバ１のホスト名}
+    IdentityFile {秘密鍵へのパス}
+
+# サーバ２
+Host {接続名２}
+    User {サーバ２のユーザ名}
+    Port 22
+    HostName {サーバ２のホスト名}
+    IdentityFile {秘密へのパス}
+```
+
+これにより，コマンド実行時の値渡しを省略できる．
+
+```bash
+# tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
+# 秘密鍵の権限は「600」にしておく
+$ ssh {接続名} -T
+```
+
+
+
+## 02-04. プロセス系
 
 ### ps： process status
 
@@ -312,9 +365,20 @@ $ kill -9 {プロセスID（PID）}
 
 
 
+## 02-05. テキスト処理系
+
+### vim：Vi Imitaion，Vi Improved  
+
+#### ・よく使うオプション集
+
+```bash
+# vim上でファイルを開く
+$ vim {ファイル名}
+```
 
 
-## 02-04. ジョブスケジュール系
+
+## 02-06. ジョブスケジュール系
 
 ### cron
 
@@ -442,6 +506,7 @@ $ crond -n
 # インストール
 $ pip3 install supervisor
 ```
+
 ```bash
 # /etc/supervisor/supervisord.conf に設定ファイルを置いて起動．
 $ /usr/local/bin/supervisord
@@ -480,20 +545,7 @@ directory=/var/www/tech-notebook
 
 
 
-## 02-05. テキスト処理系
-
-### vim：Vi Imitaion，Vi Improved  
-
-#### ・よく使うオプション集
-
-```bash
-# vim上でファイルを開く
-$ vim {ファイル名}
-```
-
-
-
-## 02-06. 環境変数系
+## 02-07. 環境変数系
 
 
 ### export
@@ -553,7 +605,7 @@ $ printenv
 
 
 
-## 02-07. ハードウェア系
+## 02-08. ハードウェア系
 
 ### df
 
