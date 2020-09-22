@@ -4,6 +4,7 @@ services:
 
   www:
     container_name: tech-notebook-www
+    hostname: tech-notebook-www
     build:
       dockerfile: ./infra/docker/www/Dockerfile
       target: develop
@@ -23,6 +24,7 @@ services:
       
   builder:
     container_name: tech-notebook-builder
+    hostname: tech-notebook-builder
     build:
       dockerfile: ./infra/docker/builder/Dockerfile
       target: develop
