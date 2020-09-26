@@ -2,7 +2,21 @@
 
 ## 01. ライブラリの管理
 
-#### ・composer
+### composer
+
+#### ・インストール
+
+```bash
+# composer.json にパッケージ名を書き込み，またインストール
+$ composer require {パッケージ名}
+```
+
+``` bash
+# 全てのパッケージを最新版に更新
+$ composer update
+```
+
+#### ・その他
 
 ```bash
 # キャッシュを削除．
@@ -28,6 +42,45 @@ $ php /usr/local/bin/composer require symfony/event-dispatcher
 # require-devタグ内のライブラリは除いてインストール．
 $ php /usr/local/bin/composer require --no-dev
 ```
+
+#### ・バージョンの表記方法
+
+```json
+// 個人的に一番おすすめ
+// キャレット表記
+{
+  "dependencies": {
+    "foo": "^1.1.1",  // >=1.1.1 and <2.0.0
+    "bar": "^0.1.1",  // >=0.1.1 and <0.2.0
+    "hoge": "^0.0.1"  // >=0.0.1 and <0.0.2
+  }
+}
+```
+
+```json
+// チルダ表記
+{
+  "dependencies": {
+    "foo": "~1.1.1",  // >=1.1.1 and <1.2.0
+    "bar": "~1.1",    // >=1.1.0 and <1.2.0
+    "hoge": "~1"      // >=1.1.0 and <2.0.0
+  }
+}
+```
+
+```json
+// エックス，アスタリスク表記
+{
+  "dependencies": {
+    "foo": "*",     // どんなバージョンでもOK
+    "bar": "1.1.x", // >=1.1.0 and <1.2.0 
+    "hoge": "1.X",  // >=1.0.0 and <2.0.0
+    "huga": ""      // "*"と同じことになる = どんなバージョンでもOK
+  }
+}
+```
+
+
 
 
 
