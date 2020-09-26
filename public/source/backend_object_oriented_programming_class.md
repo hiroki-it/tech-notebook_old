@@ -271,7 +271,7 @@ $car = new Car();
 
 
 
-## 03-02. クラス間の関係性
+## 04. クラス間の関係性
 
 ![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間の関係性のクラス図.png)
 
@@ -387,6 +387,9 @@ abstract class ShainManagement
     const TIME_TO_ARRIVE = strtotime('10:00:00');
     const TIME_TO_LEAVE = strtotime('19:00:00');
     
+    // 抽象メソッド．
+    // 処理内容を子クラスでOverrideしなければならない．
+    abstract function toWork();
 
     // 具象メソッド．出勤時刻を表示．もし遅刻していたら，代わりに差分を表示．
     // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
@@ -409,13 +412,7 @@ abstract class ShainManagement
         );
     
     }
-    
-    
-    // 抽象メソッド．
-    // 処理内容を子クラスでOverrideしなければならない．
-    abstract function toWork();
-    
-    
+  
     // 具象メソッド．退社時間と残業時間を表示．
     // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
     public function toLeave()
@@ -532,7 +529,236 @@ class Human implements Communication
 
 
 
-## 03-03. クラス間，インスタンス間，クラス／インスタンス間の関係性
+
+## 04-02. クラスの継承
+
+### クラスチェーンによる継承元の参照
+
+クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
+
+**＊実装例＊**
+
+```PHP
+<?php
+  
+// 継承元クラス
+class Example
+{
+    private $value1;
+  
+    public function getValue()
+    {
+        return $this->value1; 
+    }  
+}
+```
+
+```PHP
+<?php
+  
+// 継承先クラス
+class SubExample extends Example
+{
+    public $subValue;
+  
+    public function getSubValue()
+    {
+        return $this->subValue; 
+    }  
+}
+```
+
+```PHP
+<?php
+  
+$subExample = new SubExample;
+
+// SubExampleクラスにはgetValue()は無い．
+// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
+echo $subExample->getValue();
+```
+
+
+
+### 継承元の静的メソッドを参照
+
+**＊実装例＊**
+
+```PHP
+<?php
+  
+abstract class Example 
+{
+    public function example()
+    {
+        // 処理内容;
+    }
+}
+```
+
+```PHP
+<?php
+  
+class SubExample extends Example
+{
+    public function subExample()
+    {
+        // 継承元の静的メソッドを参照．
+        $example = parent::example();
+    } 
+}
+```
+
+
+
+## 04-03. 外部クラスとメソッドの読み込み
+
+### ```use```によるクラスとメソッドの読み込み
+
+PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
+
+**＊実装例＊**
+
+```PHP
+<?php
+  
+// 名前空間を定義．
+namespace Domain/Entity1;
+
+// 定数を定義．
+const VALUE = "これは定数です．";
+
+class Example1
+{
+    public function className()
+    {
+        return "example1メソッドです．";
+    }
+}
+```
+
+#### ・名前空間の読み込み
+
+```PHP
+<?php
+  
+// use文で名前空間を読み込む．
+use Domain/Entity2;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+    public function method()
+    {
+
+        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+        $e1 = new Entity1/E1:
+        echo $e1;
+    }
+}
+```
+
+#### ・クラスの読み込み
+
+```PHP
+<?php
+  
+// use文でクラス名を読み込む．
+use Domain/Entity1/Example1;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+    public function method()
+    {
+        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
+        $e1 = new E1;
+        echo $e1;
+    }
+}
+```
+
+#### ・メソッドの読み込み
+
+```PHP
+<?php
+  
+// use文でメソッドを読み込む．
+use Domain/Entity1/Example1;
+
+namespace Domain/Entity2;
+
+class Eeample2
+{
+    public function method()
+    {
+        // Example1クラスのclassName()をコール．
+        echo className();
+    }
+}
+```
+
+#### ・定数の読み込み
+
+```PHP
+<?php
+  
+// use文で定数を読み込む．
+use Domain/Entity1/Example1;
+
+namespace Domain/Entity2;
+
+class Example2
+{
+    // Example1クラスの定数を出力．
+    public function method()
+    {    
+        echo Example1::VALUE;
+    }
+}
+```
+
+
+
+### Trait
+
+#### ・Traitとは
+
+![Trait](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Trait.png)
+
+再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
+
+**＊実装例＊**
+
+```php
+<?php
+  
+trait ExampleTrait
+{
+    public function example()
+    {
+        return "Hello World";
+    }
+}
+```
+
+```php
+<?php
+
+class Example
+{
+    use ExampleTrait;
+}
+
+$exmaple = new Example();
+$example->example(); // Hello World
+```
+
+
+
+## 05. クラス間，インスタンス間，クラス／インスタンス間の関係性
 
 ###  Dependency（依存）
 
@@ -559,8 +785,6 @@ Generalizatoin，Realizationの関係性．
 https://stackoverflow.com/questions/1230889/difference-between-association-and-dependency
 
 https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-dependency-injection
-
-
 
 ### 結合度
 
@@ -794,7 +1018,7 @@ $sample = new Sample($container);
 
 
 
-## 03-04. Dependency Inversion Principle（依存性逆転の原則）
+## 05-02. Dependency Inversion Principle（依存性逆転の原則）
 
 ### DIPとは
 
@@ -831,369 +1055,4 @@ $sample = new Sample($container);
 
 ![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
-
-
-
-## 03-05. クラスの継承
-
-### クラスチェーンによる継承元の参照
-
-クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
-
-**＊実装例＊**
-
-```PHP
-<?php
-// 継承元クラス
-class Example
-{
-    private $value1;
-  
-    public function getValue()
-    {
-        return $this->value1; 
-    }  
-}
-```
-
-```PHP
-<?php
-// 継承先クラス
-class SubExample extends Example
-{
-    public $subValue;
-  
-    public function getSubValue()
-    {
-        return $this->subValue; 
-    }  
-}
-```
-
-```PHP
-<?php
-$subExample = new SubExample;
-
-// SubExampleクラスにはgetValue()は無い．
-// 継承元まで辿り，Exampleクラスからメソッドがコールされる（クラスチェーン）．
-echo $subExample->getValue();
-```
-
-
-
-### 継承元の静的メソッドを参照
-
-**＊実装例＊**
-
-```PHP
-<?php
-abstract class Example 
-{
-    public function example()
-    {
-        // 処理内容;
-    }
-}
-```
-
-```PHP
-<?php
-class SubExample extends Example
-{
-    public function subExample()
-    {
-        // 継承元の静的メソッドを参照．
-        $example = parent::example();
-    } 
-}
-```
-
-
-
-## 03-06. 外部クラスとメソッドの読み込み
-
-### ```use```によるクラスとメソッドの読み込み
-
-PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．しかし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
-
-**＊実装例＊**
-
-```PHP
-<?php
-// 名前空間を定義．
-namespace Domain/Entity1;
-
-// 定数を定義．
-const VALUE = "これは定数です．";
-
-class Example1
-{
-    public function className()
-    {
-        return "example1メソッドです．";
-    }
-}
-```
-
-#### ・名前空間の読み込み
-
-```PHP
-<?php
-// use文で名前空間を読み込む．
-use Domain/Entity2;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    public function method()
-    {
-
-        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-        $e1 = new Entity1/E1:
-        echo $e1;
-    }
-}
-```
-
-#### ・クラスの読み込み
-
-```PHP
-<?php
-// use文でクラス名を読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    public function method()
-    {
-        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-        $e1 = new E1;
-        echo $e1;
-    }
-}
-```
-
-#### ・メソッドの読み込み
-
-```PHP
-<?php
-// use文でメソッドを読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Eeample2
-{
-    public function method()
-    {
-        // Example1クラスのclassName()をコール．
-        echo className();
-    }
-}
-```
-
-#### ・定数の読み込み
-
-```PHP
-<?php
-// use文で定数を読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    // Example1クラスの定数を出力．
-    public function method()
-    {    
-        echo Example1::VALUE;
-    }
-}
-```
-
-
-
-## 03-07. 入れ子クラス
-
-### PHPの場合
-
-PHPには組み込まれていない．
-
-
-
-### Javaの場合
-
-クラスの中にクラスをカプセル化する機能．データやメソッドと同じ記法で，内部クラスでは，外部クラスのメンバを呼び出すことができる．
-
-#### ・非静的内部クラス
-
-PHPとは異なり，変数定義に『$』は用いないことに注意．
-
-**＊実装例＊**
-
-```java
-// 外部クラスを定義
-class OuterClass
-{
-    private int value;
-        
-    // Setterとして，コンストラクタを使用．
-    OuterClass(Int value)
-    {
-        this.value = value;
-    }
-    
-    // 外部クラスのデータを取得するメソッド．
-    public int value()
-    {
-        return this.value;
-    }
-    
-    
-    // 内部クラスを定義 
-    class InnerClass
-    {
-        // 外部クラスのデータを取得して2倍するメソッド．
-        public int valueTimesTwo()
-        {
-            return OuterClass.this.value*2;
-        }
-    
-    }
-        
-    // 内部クラスをインスタンス化するメソッド．
-    public InnerClass InnerClassInstance()
-    {
-        // 外部クラスのインスタンス化 
-        OuterClass outerCLS = new OuterClass();
-        
-        // 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
-        OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
-    }
-}
-```
-
-#### ・静的内部クラス
-
-呼び出すメソッドと呼び出されるメンバの両方をstaticとしなければならない．
-
-**＊実装例＊**
-
-```java
-// 外部クラスを定義
-class OuterClass
-{
-    // 静的データとする．
-    private int value;
-        
-    // Setterとして，コンストラクタを使用．
-    OuterClass(Int value)
-    {
-        this.value = value;
-    }
-    
-    // 静的内部クラスを定義 
-    static class InnerClass
-    {
-        // 外部クラスのデータを取得するメソッド．
-        public int value()
-        {
-            return OuterClass.this.value;
-        }
-    
-    }
-        
-    // 内部クラスをインスタンス化する静的メソッド．
-    public static InnerClass InnerClassInstance()
-    {
-        // 外部クラスのインスタンス化 
-        OuterClass outerCLS = new OuterClass();
-        
-        // 外部クラスのインスタンス内から内部クラスを呼び出し，データ型を内部クラス型に指定．
-        OuterClass.InnerClass innerCLS = new outerCLS.InnerClass;
-    }
-}
-```
-
-
-
-## 03-08. 総称型
-
-### PHPの場合
-
-PHPには組み込まれていない．
-
-
-
-### Javaの場合
-
-オブジェクトにデータ型を引数として渡すことで，データの型宣言を行える機能．型宣言を毎回行わなければならず，煩わしいJavaならではの機能．PHPとは異なり，変数定義に『$』は用いないことに注意．
-
-**＊実装例＊**
-
-```java
-class Example<T>{
-    
-    private T t;
-    
-    public Example(T t)
-    {
-        this.t = t;
-    }
-    
-    public T getT()
-    {
-        return t;
-    }
-}
-```
-
-#### ・総称型を用いない場合
-
-リスト内の要素は，Object型として取り出されるため，キャスト（明示的型変換）が必要．
-
-**＊実装例＊**
-
-```java
-List list = new ArrayList();
-l.add("Java");
-l.add("Scala");
-l.add("Ruby");
-
-// 文字列へのキャストが必要
-String str = (String)list.get(0);
-```
-
-#### ・総称型を用いる場合
-
-**＊実装例＊**
-
-```java
-List<String> list = new ArrayList<String>();
-list.add("Java");
-list.add("Scala");
-list.add("Ruby");
-String str = list.get(0);
-</string></string>
-
-List<String> list = new ArrayList<String>();
-list.add(10.1);    // String型でないのでコンパイルエラー
-</string></string>
-```
-
-
-
-## 02-09. Trait
-
-### PHPの場合
-
-再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
-
 ![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トレイト.png)
-
-### Javaの場合
-
-Javaには組み込まれていない．
