@@ -652,23 +652,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 
 
-## 06-03. Web API
-
-### RESTful API
-
-分散型システムにおける複数のソフトウェアを連携させるのに適したアーキテクチャスタイルをRESTという．また，これに基づいた設計をRESTfulという．RESTful APIについては，RESTfulAPIの概念と実装（PHP）のノートを参照せよ．また，アーキテクチャスタイルについては，オブジェクト指向分析・設計のノートを参照せよ．
-
-![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RESTfulAPIを用いたリクエスト.png)
-
-
-
-### SOAP API
-
-1999年にMicrosoft社などによって発表された．2000年前半には企業システムのWebサービス化とともに普及するかに思われたが，複雑な構造であったため次第に敬遠されるようになった．その後，簡単な構造のRESTが好まれるようになった．
-
-
-
-## 06-04. フォワード／リバースProxyサーバ
+## 06-03. フォワード／リバースProxyサーバ
 
 ### 役割
 
@@ -710,7 +694,7 @@ Webサーバとしてではなく，リバースProxyサーバとして使用し
 
 
 
-## 06-05. フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
+## 06-04. フォワード／リバースProxyサーバ，DNSサーバ，Webサーバによる名前解決
 
 ![IPアドレスと完全修飾ドメイン名のマッピング3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング3.png)
 
