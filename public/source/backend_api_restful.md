@@ -368,7 +368,117 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 
 
 
-## 04. API仕様書
+## 05. Statelessプロトコルにおける擬似Stateful化
+
+### Cookie，Cookie情報（キー名／値）
+
+#### ・Cookie，Cookie情報とは
+
+クライアントからの次回のリクエスト時でも，Cookie情報（キー名／値）を用いて，同一クライアントと認識できる仕組みCookieという．HTTPはStatelessプロトコルであるが，Cookie情報を用いると，擬似的にStatefulな通信を行える．
+
+#### ・Cookie情報に関わるヘッダー
+
+最初，サーバからのレスポンス時，Set-Cookieヘッダーを用いて送信される．反対に，クライアントからのリクエスト時，Cookie情報は，Cookieヘッダーを用いて送信される．
+
+
+| HTTPメッセージの種類 | ヘッダー名 | 属性     | 内容                                                         |
+| -------------------- | ---------- | -------- | ------------------------------------------------------------ |
+| レスポンスメッセージ | Set-Cookie | Name     | Cookie名と値                                                 |
+|                      |            | Expires  | Cookieの有効期限（日数）                                     |
+|                      |            | Max-Age  | Cookieの有効期限（秒数）                                     |
+|                      |            | Domain   | クライアントがリクエストする時のCookie送信先ドメイン名       |
+|                      |            | Path     | クライアントがリクエストする時のCookie送信先ディレクトリ     |
+|                      |            | Secure   | クライアントからのリクエストでSSLプロトコルが使用されている時のみ，リクエストを送信できるようにする． |
+|                      |            | HttpOnly | クライアント側で，JavaScriptがCookieを使用できないようにする．XSS攻撃の対策になる． |
+| リクエストメッセージ | Cookie     |          | セッションIDなどのCookie情報                                 |
+クライアントから送信されてきたリクエストメッセージのCookieヘッダーの内容は，グローバル変数に格納されている．
+
+```php
+<?php
+    
+$_COOKIE = ['Cookie名' => '値']
+```
+
+
+#### ・Cookie情報の送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．
+2. サーバは，レスポンスヘッダーのSet-CookieヘッダーにCookie情報を埋め込んで送信する．
+
+```php
+<?php
+
+setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続のみ, Javascript無効）
+```
+
+3. ブラウザは，そのCookie情報を保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダーのCookieヘッダーにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
+
+![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
+
+
+
+### セッションID
+
+#### ・セッション，セッションIDとは
+
+クライアントからの次回のリクエスト時でも，セッションIDを用いて，同一クライアントと認識できる仕組みをセッションという．セッションIDは，Cookie情報の一つとして，CookieヘッダーとSet-Cookieヘッダーによって送受信される．HTTPはStatelessプロトコルであるが，セッションIDを用いると，擬似的にStatefulな通信を行える．
+
+```
+# （例）Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
+```
+
+
+```
+# （例）Set-Cookie: sessionId={セッションID}
+```
+
+#### ・セッションIDの発行，セッションファイルの生成
+
+session_startメソッドを用いることで，セッションを開始し，クライアントにセッションIDを発行する．グローバル変数に値を代入することによって，セッションファイルを作成する．もしクライアントに既にセッションIDが発行されている場合，セッションファイルを参照する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+// セッションの開始．セッションIDを発行する．
+session_start();
+
+// セッションファイルを作成
+$_SESSION['名前'] = 値
+```
+
+#### ・セッションファイルの保存場所
+
+```/etc/php.ini```ファイルでセッションファイルの保存場所を定義できる．セッションファイルは，```sess_xxxxx```ファイルとして保存される．
+
+```ini
+session.save_path = "/tmp"
+```
+
+例えば，これをAmazonRedisのソケットとすれば，Redisに保存できる．
+
+```ini
+session.save_path = "tcp://xxxxx-redis.r9ecnn.ng.0001.apne1.cache.amazonaws.com:6379"
+```
+
+#### ・セッションIDの送受信の仕組み
+
+1. 最初，ブラウザはリクエストでデータを送信する．セッションIDを発行し，セッションIDごとに```sess_xxxxx```ファイルを生成．
+2. サーバは，レスポンスヘッダ情報のCookieヘッダーにセッションIDを埋め込んで送信する．
+3. ブラウザは，そのセッションIDを保存する．
+4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieヘッダーにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
+
+![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
+
+#### ・ページ遷移とセッションID引継ぎ
+
+![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
+
+
+
+## 06. API仕様書
 
 ### スキーマ
 
@@ -411,105 +521,3 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
     "required": ["name"]
 }
 ```
-
-
-
-## 05. Statelessプロトコルにおける擬似Stateful化
-
-### Cookie，Cookie情報
-
-#### ・Cookie，Cookie情報とは
-
-クライアントからの次回のリクエスト時でも，Cookie情報を用いて，同一クライアントと認識できる仕組み．HTTPはStatelessプロトコルであるが，Cookie情報を用いると，擬似的にStatefulな通信を行える．
-
-#### ・Cookie情報に関わるヘッダー
-
-最初，サーバからのレスポンス時，Set-Cookieヘッダーを用いて送信される．反対に，クライアントからのリクエスト時，Cookie情報は，Cookieヘッダーを用いて送信される．
-
-| HTTPメッセージの種類 | ヘッダー   | 属性     | 内容                                                         |
-| -------------------- | ---------- | -------- | ------------------------------------------------------------ |
-| レスポンスメッセージ | Set-Cookie | Name     | Cookie名と値                                                 |
-|                      |            | Expires  | Cookieの有効期限（日数）                                     |
-|                      |            | Max-Age  | Cookieの有効期限（秒数）                                     |
-|                      |            | Domain   | クライアントがリクエストする時のCookie送信先ドメイン名       |
-|                      |            | Path     | クライアントがリクエストする時のCookie送信先ディレクトリ     |
-|                      |            | Secure   | クライアントからのリクエストでSSLプロトコルが使用されている時のみ，リクエストを送信できるようにする． |
-|                      |            | HttpOnly | クライアント側で，JavaScriptがCookieを使用できないようにする．XSS攻撃の対策になる． |
-| リクエストメッセージ | Cookie     |          | セッションID                                                 |
-
-レスポンス時，setcookieメソッドを用いることで，レスポンスヘッダーにCookie情報を設定できるようになる．
-
-```php
-<?php
-
-setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続のみ, Javascript無効）
-```
-
-リクエストメッセージのCookieヘッダーの内容は，グローバル変数に格納されている．
-
-```php
-<?php
-    
-$_COOKIE = ['Cookie名' => '値']
-```
-
-#### ・Cookie情報の送受信の仕組み
-
-1. 最初，ブラウザはリクエストでデータを送信する．サーバはセッション変数（あるいはDB）にデータを格納する．
-2. サーバは，レスポンスヘッダ情報のCookieヘッダーにCookie情報を埋め込んで送信する．
-3. ブラウザは，そのCookie情報を保存する．
-4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieヘッダーにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
-
-![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
-
-
-
-### セッションID
-
-#### ・セッションIDとは
-
-クライアントからの次回のリクエスト時でも，セッションIDを用いて，同一クライアントと認識できる仕組み．HTTPはStatelessプロトコルであるが，セッションIDを用いると，擬似的にStatefulな通信を行える．セッションIDは，Cookieヘッダーによって送受信される．
-
-#### ・セッションIDの発行，セッションファイルの生成
-
-session_startメソッドを用いることで，セッションを開始し，クライアントにセッションIDを発行する．グローバル変数に値を代入することによって，セッションファイルを作成する．もしクライアントに既にセッションIDが発行されている場合，セッションファイルを参照する．
-
-**＊実装例＊**
-
-```php
-<?php
-
-// セッションの開始．セッションIDを発行する．
-session_start();
-
-// セッションファイルを作成
-$_SESSION['名前'] = 値
-```
-
-#### ・セッションファイルの保存場所
-
-```/etc/php.ini```ファイルでセッションファイルの保存場所を定義できる．セッションファイルは，```sess_xxxxx```ファイルとして保存される．
-
-```ini
-session.save_path = "/tmp"
-```
-
-例えば，これをAmazonRedisのソケットとすれば，Redisに保存できる．
-
-```ini
-session.save_path = "tcp://xxxxx-redis.r9ecnn.ng.0001.apne1.cache.amazonaws.com:6379"
-```
-
-#### ・セッションIDの送受信の仕組み
-
-1. 最初，ブラウザはリクエストでデータを送信する．セッションIDを発行し，セッションIDごとに```sess_xxxxx```ファイルを生成．
-2. サーバは，レスポンスヘッダ情報のCookieヘッダーにセッションIDを埋め込んで送信する．
-3. ブラウザは，そのセッションIDを保存する．
-4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieヘッダーにセッションIDを埋め込んでサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
-
-![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
-
-#### ・セッションID送受信とページ遷移
-
-![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
-
