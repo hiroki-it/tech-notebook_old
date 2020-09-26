@@ -605,6 +605,17 @@ $ printenv
 
 
 
+### timedatactl
+
+#### ・よく使うオプション集
+
+```bash
+タイムゾーンを日本時間に変更
+$ timedatectl set-timezone Asia/Tokyo
+```
+
+
+
 ## 02-08. ハードウェア系
 
 ### df
