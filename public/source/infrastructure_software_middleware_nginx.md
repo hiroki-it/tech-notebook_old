@@ -78,7 +78,7 @@ server {
 
 #### ・fastcgi_paramsファイルについて 
 
-```/etc/nginx/fastcgi_params```ファイルは，OSやそのバージョンによっては，変数のデフォルト値が書き換えられていることがある．実際にサーバ内に接続し，上書き設定が必要なものと不要なものを判断する必要がある．以下は，Debian 10のデフォルト値である．
+```/etc/nginx/fastcgi_params```ファイルは，PHP-FPMに関する変数が定義されたファイルであり，Nginxによって読み込まれる．OSやそのバージョンによっては，変数のデフォルト値が書き換えられていることがある．実際にサーバ内に接続し，上書き設定が必要なものと不要なものを判断する必要がある．以下は，Debian 10のデフォルト値である．
 
 **＊実装例＊**
 
@@ -111,6 +111,51 @@ fastcgi_param  SERVER_NAME        $server_name;
 
 # PHPだけで必要な設定
 fastcgi_param  REDIRECT_STATUS    200;
+```
+
+#### ・www.confについて
+
+```/etc/php-fpm.d/www.conf```は，PHP-FPMに関する設定が定義されたファイルであり，php.iniによって読み込まれる．php.iniよりも優先されるので，設定項目が重複している場合は，こちらを変更する．
+
+```ini
+[www]
+
+# プロセスのユーザ名，グループ名
+user = nginx
+group = nginx
+
+# Unixソケットのパス
+listen = /run/php-fpm/www.sock
+
+# PHP-FPMと組み合わせるミドルウェアを指定（apacheと組み合わせることも可能）
+listen.owner = nginx
+listen.group = nginx
+
+# コメントアウト推奨 
+;listen.acl_users = apache,nginx
+
+# TCPソケットのIPアドレス
+listen.allowed_clients = 127.0.0.1
+
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+
+# ログファイルの場所
+slowlog = /var/log/php-fpm/www-slow.log
+php_admin_value[error_log] = /var/log/php-fpm/www-error.log
+php_admin_flag[log_errors] = on
+
+# セッションの保存方法．ここではredisのキーとして保存（デフォルト値はfiles）
+php_value[session.save_handler] = redis
+# セッションの保存場所（デフォルト値は，/var/lib/php/session）
+php_value[session.save_path]    = "tcp://xxxxx.r9ecnn.ng.0001.apne1.cache.amazonaws.com:6379"
+
+# 
+php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
+
 ```
 
 
