@@ -235,11 +235,9 @@ GET http://www.example.co.jp/v2/users/12345
 
 リクエストヘッダーの```X-api-Version```にバージョン情報を格納する方法がより良い．
 
-```
+```http
 X-Api-Version: 1
 ```
-
-
 
 #### ・異なるHTTPメソッドの間でルールを統一すること
 
@@ -270,9 +268,156 @@ POST http://www.example.co.jp/users/12345/messages
 
 
 
-## 03. オブジェクトデータの送受信
+## 03. リクエスト／レスポンスメッセージ
 
-### オブジェクトデータ型
+### メッセージとは
+
+アプリケーション層で生成されるデータを，メッセージという．リクエスト時にクライアント側で生成されるメッセージをリクエストメッセージ，レスポンス時にサーバ側で生成されるメッセージをレスポンスメッセージという．
+
+
+
+### リクエストメッセージの構造
+
+#### ・GET送信の場合
+
+クエリパラメータに送信するデータを記述する方法．リクエストメッセージは，以下の要素に分類できる．以下では，Web APIのうち，特にRESTfulAPIに対して送信するためのリクエストメッセージの構造を説明する．
+
+```http
+# エンドポイント
+GET http://127.0.0.1/testform.php?text1=a&text2=b HTTP/1.1
+# ドメイン名
+HOST: 127.0.0.1
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+# ブラウザのバージョン情報等
+User-Agent: Mozzila/5.0 (Windows NT 10.0; Win64; x64) Ch
+# レスポンスで送信してほしいMIMEタイプ
+Accept: text/html, application/xhtml+xml, application/xml; q=0
+# 遷移元のページ
+Referer: http://127.0.0.1/
+# レスポンスしてほしいエンコーディング形式
+Accept-Encondig: gzip, deflate, br
+# レスポンスで送信してほしい言語
+Accept-Language: ja, en-US; q=0.9, en; q=0.8
+```
+
+#### ・POST送信の場合
+
+
+クエリパラメータを，URLに記述せず，メッセージボディに記述してリクエストメッセージを送る方法．以下では，Web APIのうち，特にRESTfulAPIに対して送信するためのリクエストメッセージの構造を説明する．メッセージボディに情報が記述されるため，履歴では確認できない．また，SSLによって暗号化されるため，傍受できない．リクエストメッセージは，以下の要素に分類できる．
+
+```http
+エンドポイント
+POST http://127.0.0.1/testform.php HTTP/1.1
+# ドメイン名
+HOST: 127.0.0.1
+Connection: keep-alive
+Content-Length: 15
+Cache-Control: max-age=0
+# オリジン（プロトコル＋ドメイン＋ポート番号）
+Origin: http://127.0.0.1
+Upgrade-Insecure-Requests: 1
+# リクエストで送信するMIMEタイプ
+Content-Type: application/x-www-firm-urlencoded
+# ブラウザのバージョン情報等
+User-Agent: Mozzila/5.0 (Windows NT 10.0; Win64; x64) Ap
+# レスポンスで送信してほしいMIMEタイプ
+Accept: text/html, application/xhtml+xml, application/xml; q=0
+# 遷移元のページ
+Referer: http://127.0.0.1/
+Accept-Encondig: gzip, deflate, br
+# レスポンスで送信してほしい言語
+Accept-Language: ja, en-US; q=0.9, en; q=0.8
+# 二回目のリクエスト時（name=value）
+Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
+
+# ボディ．（SSLによって暗号化されるため閲覧不可）
+text=a&text2=b 
+```
+
+#### ・例外として，ボディをもつGET送信の場合
+
+GET送信ではあるが，ボディにクエリパラメータを記述して送信する方法がある．
+
+POSTMANで，GET送信にメッセージボディを含めることについて：
+https://github.com/postmanlabs/postman-app-support/issues/131
+
+
+
+### レスポンスメッセージの構造
+
+**＊具体例＊**
+
+GoogleChromeにて，```https://www.amazon.co.jp```に送信した場合
+
+```http
+HTTP/1.1 200
+# レスポンスで送信するMIMEタイプ
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+# Webサーバ（Nginx，Apache），開発言語（PHP）など．セキュリティ上の理由で非表示推奨．
+Server: Server
+Date: Sat, 26 Sep 2020 04:25:08 GMT
+x-amz-rid:	xxxxx
+# セッションIDを含むCookie情報
+Set-Cookie: session-id={セッションID}; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
+Set-Cookie: session-id-time=xxxxx; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
+Set-Cookie: i18n-prefs=JPY; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
+Set-Cookie: skin=noskin; path=/; domain=.amazon.co.jp
+Accept-CH: ect,rtt,downlink
+Accept-CH-Lifetime:	86400
+X-UA-Compatible: IE=edge
+Content-Language: ja-JP
+Cache-Control: no-cache
+Pragma:	no-cache
+Expires: -1
+X-XSS-Protection: 1;
+X-Content-Type-Options:	nosniff
+Vary: Accept-Encoding,User-Agent,Content-Type,Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
+Strict-Transport-Security: max-age=xxxxx; includeSubDomains; preload
+X-Frame-Options: SAMEORIGIN
+# CloudFrontのキャッシュにヒットしたかどうか
+X-Cache: Miss from cloudfront
+Via: 1.1 xxxxx.cloudfront.net (CloudFront)
+X-Amz-Cf-Pop: SEA19-C2
+X-Amz-Cf-Id: xxxxx==
+
+# ボディ
+ここにサイトのHTMLのコード
+```
+
+
+
+## 04. データの送受信
+
+### MIME type（Content type）
+
+#### ・MIME type（Content type）とは
+
+HTTPプロトコルにおけるファイル形式の識別子のこと．リクエスト／レスポンスヘッダーのうち，Content-Typeヘッダーに設定される．
+
+#### ・種類
+
+よく使うMIME typeを以下に示す．
+
+| トップレベルタイプ | サブレベルタイプ      | 意味                                |
+| ------------------ | --------------------- | ----------------------------------- |
+| application        | octet-stream          | 任意のMIME type（指定なし）を示す． |
+|                    | javascript            |                                     |
+|                    | json                  |                                     |
+|                    | x-www-form-urlencoded | POST送信のデータ                    |
+|                    | zip                   |                                     |
+| text               | html                  | HTMLテキスト                        |
+|                    | css                   | CSSテキスト                         |
+|                    | plane                 | プレーンテキスト                    |
+| image              | png                   |                                     |
+|                    | jpeg                  |                                     |
+|                    | gif                   |                                     |
+
+
+
+### オブジェクトデータ
 
 #### ・データ型
 
@@ -282,7 +427,7 @@ XML，JSON，JSONP
 
 最も良い方法は，送信時にリクエストヘッダーの```Content-Type```に，```application/json```を格納することである．
 
-```
+```http
 Content-Type: application/json
 ```
 
