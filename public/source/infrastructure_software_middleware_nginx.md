@@ -45,13 +45,14 @@ $ kill -s HUP NINGXPID
 # HTTPリクエスト
 #-------------------------------------
 server {
-    listen 80;
+    listen      80;
     server_name example.com;
-    root /var/www/example/public;
-    index index.php index.html;
+    root        /var/www/example/public;
+    index       index.php index.html;
 
     include /etc/nginx/default/xxx.conf;
 
+    #『/』で始まる全てのリクエストの場合
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
@@ -62,15 +63,15 @@ server {
     #--------------------------------------------------
     location ~ \.php$ {
         # リダイレクト先のTCPソケット
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass   127.0.0.1:9000;
         # もしくは，Unixソケット
-        # fastcgi_pass unix:/run/php-fpm/php7.4-fpm.sock;
+        # fastcgi_pass unix:/run/php-fpm/www.sock;
         
         # リダイレクト先のURL（rootディレクティブ値+パスパラメータ）
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
         # 設定ファイルからデフォルト値を読み込む
-        include fastcgi_params;
+        include        fastcgi_params;
     }
 }
 ```
@@ -302,26 +303,65 @@ worker_connections  1024;
 
 ```nginx
 http {
-    server_names_hash_bucket_size 128;
-    
-    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
-    '$status $body_bytes_sent "$http_referer" '
-    '"$http_user_agent" "$http_x_forwarded_for"';
-    access_log /var/log/nginx/access.log main;
-    error_log /var/log/nginx/error.log warn;
-    
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-    default_type application/octet-stream;
-
-    include /etc/nginx/mime.types;
-    include /etc/nginx/conf.d/*.conf;
+    server_tokens      off;
+    include            /etc/nginx/mime.types;
+    default_type       application/octet-stream;
+    log_format         main  '$remote_addr - $remote_user [$time_local] "$request" '
+                             '$status $body_bytes_sent "$http_referer" '
+                             '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log         /var/log/nginx/access.log  main;
+    sendfile           on;
+    tcp_nopush         on;
+    keepalive_timeout  65;
+    default_type       application/octet-stream;
+    include            /etc/nginx/mime.types;
+    include            /etc/nginx/conf.d/*.conf;
         
     #----- 省略 -----#
 }
+```
+
+#### ・```sendfile```
+
+クライアントへのレスポンス時に，ファイル送信のためにLinuxのsendfileシステムコールを使用するかどうかを設定する．ファイル送信処理をOS内で行うため，処理が速くなる．使用しない場合，Nginxがレスポンス時に自身でファイル送信処理を行う．
+
+```nginx
+sendfile on;
+```
+
+#### ・```tcp_nopush```
+
+上述のLinuxの```sendfile```システムコールを使用する場合に，適用できる．クライアントへのレスポンス時，ヘッダーとファイルを，一つのパケットにまとめて送信するかどうかを設定する．
+
+```nginx
+tcp_nopush on;
+```
+
+#### ・```default_type```
+
+Content-Typeが，mime.typesファイルにないMIME typeであった場合に，適用するMIME type．
+
+```nginx
+# application/octet-stream：任意のMIME type（指定なし）と見なして送信
+default_type application/octet-stream
+```
+
+
+#### ・```/etc/nginx/mime.types```
+
+リクエストのContent-TypeのMIMEタイプと，ファイル拡張子の間の，対応関係が定義されているファイル．
+
+```nginx
+include /etc/nginx/mime.types;
+```
+
+
+#### ・```/etc/nginx/conf.d/*.conf```
+
+デフォルトの設定が定義されているいくつかのファイル．基本的には読み込むようにする．ただし，nginx.confファイルの設定が上書きされてしまわないかを注意する．
+
+```nginx
+include /etc/nginx/conf.d/*.conf;
 ```
 
 
