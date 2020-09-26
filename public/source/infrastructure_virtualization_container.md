@@ -611,9 +611,9 @@ Dockerfileの```COPY```コマンドを使用してコンテナ内に配置して
 $ docker cp ./docker/www/nginx.conf {コンテナID}:/etc/nginx/nginx.conf
 
 # コンテナに接続後に，nginxの設定ファイルを再読み込み．
-root@xxxxx $ docker exec -it {コンテナ名} bin/bash # もしくはbin/sh
-root@xxxxx $ nginx -s reload
-root@xxxxx $ exit
+$ docker exec -it {コンテナ名} bin/bash # もしくはbin/sh
+[root@{ホスト名}:~] $ nginx -s reload
+[root@{ホスト名}:~] $ exit
 
 # アクセスログを確認
 $ docker logs {コンテナ名}
@@ -635,13 +635,13 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 $ docker attach {起動中コンテナ名}
 
 # PID=1で，1つの/bin/bashプロセスが稼働していることが確認できる
-[root@de17f4edf7d0 app] ps aux
+[root@{ホスト名}:~] ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.1  16152  3872 pts/0    Ss+  18:06   0:00 /bin/bash
 root        33  0.0  0.1  45696  3732 pts/1    R+   18:22   0:00 ps aux
 
 # コンテナとの接続を切断
-[root@de17f4edf7d0 app] exit
+[root@{ホスト名}:~] exit
 
 # コンテナの状態を確認
 $ docker container ps -a # ==> コンテナのSTATUSがEXITedになっている
@@ -659,14 +659,14 @@ $ docker run -d -it --name {コンテナ名} {使用イメージ名} /bin/bash
 $ docker exec -it {起動中コンテナ名} /bin/bash # もしくはbin/sh
 
 # PID=1,17で，2つの/bin/bashプロセスが稼働していることが確認できる
-[root@de17f4edf7d0 app] ps aux
+[root@{ホスト名}:~] ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.1  16152  3872 pts/0    Ss+  18:06   0:00 /bin/bash
 root        17  0.0  0.1  16152  4032 pts/1    Ss   18:21   0:00 /bin/bash
 root        34  0.0  0.1  45696  3732 pts/1    R+   18:22   0:00 ps aux
 
 # コンテナとの接続を切断
-[root@de17f4edf7d0 app] exit
+[root@{ホスト名}:~] exit
 
 # コンテナの状態を確認
 $ docker container ps -a # ==> コンテナのSTATUSがUPになっている
@@ -799,6 +799,20 @@ Volumeを使用する場合のコンテナ配置手法の一つ．Dockerエリ�
 
 ![Dockerエンジン内の仮想ネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerエンジン内の仮想ネットワーク.jpg)
 
+物理サーバへのリクエストメッセージがコンテナに届くまでを以下に示す．ホストOSの```8080```番ポートと，WWWコンテナの```80```番ポートのアプリケーションの間で，ポートフォワーディングを行う．これにより，```http://{ホストOSのプライベートIPアドレス（localhost）}:8080```にリクエストを送信すると，WWWコンテナのポート番号のアプリケーションに転送されるようになる．
+
+| 順番  | リクエストメッセージの流れ | プライベートIPアドレス例                             | アプリケーションのポート番号例 |
+| :---: | :------------------------- | :--------------------------------------------------- | ------------------------------ |
+| **4** | WWWコンテナ                | ・```127.0.0.1```（localhost）<br>・hostnameの設定値 | ```:80```                      |
+|       | ↑                          |                                                      |                                |
+| **3** | 仮想ネットワーク           | ```172.XX.XX.XX```                                   |                                |
+|       | ↑                          |                                                      |                                |
+| **2** | 仮想ブリッジ               |                                                      |                                |
+|       | ↑                          |                                                      |                                |
+| **1** | ホストOS                   | ```127.0.0.1```（localhost）                         | ```:8080```                    |
+
+#### ・ネットワークの接続方法確認
+
 **＊コマンド例＊**
 
 ```bash
@@ -809,19 +823,26 @@ ae25b9b7740b        bridge                  bridge              local
 aeef782b227d        tech-notebook_default   bridge              local
 ```
 
-#### ・物理サーバへのリクエストメッセージがコンテナに届くまで
+#### ・コンテナへのホスト名割り当て
 
-ホストOSの```8080```番ポートと，WWWコンテナの```80```番ポートのアプリケーションの間で，ポートフォワーディングを行う．これにより，```http://{ホストOSのプライベートIPアドレス（localhost）}:8080```にリクエストを送信すると，WWWコンテナのポート番号のアプリケーションに転送されるようになる．
+コンテナ内の```etc/hosts```ファイルで，コンテナのプライベートIPアドレスを確認できる．```--hostname```オプションで命名していればその名前，指定していなければランダムな文字列が割り当てられる．
 
-| 順番  | リクエストメッセージの流れ | プライベートIPアドレス例       | アプリケーションのポート番号例 |
-| :---: | :------------------------- | :----------------------------- | ------------------------------ |
-| **4** | WWWコンテナ                | ```127.0.0.1```                | ```:80```                      |
-|       | ↑                          |                                |                                |
-| **3** | 仮想ネットワーク           | ```172.XX.XX.XX```             |                                |
-|       | ↑                          |                                |                                |
-| **2** | 仮想ブリッジ               |                                |                                |
-|       | ↑                          |                                |                                |
-| **1** | ホストOS                   | ```192.168.3.2```（localhost） | ```:8080```                    |
+**＊コマンド例＊**
+
+```bash
+$ docker run -d -it --hostname {ホスト名} --name {コンテナ名} {使用するイメージ名} /bin/bash
+$ docker exec -it {起動中コンテナ名} /bin/bash
+
+[root@{ホスト名}:/] cat /etc/hosts
+
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.18.0.2	{ホスト名}
+```
 
 
 
