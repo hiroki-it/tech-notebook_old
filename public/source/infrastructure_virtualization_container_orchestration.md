@@ -83,7 +83,7 @@ build:
 
 #### ・```tty```
 
-```docker exec -it```に相当する．対話モードで接続することによって，```exit```の後もコンテナを起動させ続けられる．
+```docker exec -it```に相当する．疑似ターミナルを割り当てるによって，```exit```の後もコンテナを起動させ続けられる．
 
 **＊実装例＊**
 
@@ -145,16 +145,16 @@ volumes:
 
 #### ・```environment```
 
-DBコンテナに設定する環境変数．
+mysqlイメージを使用した場合，環境変数を定義することによって，ルートユーザと一般ユーザを自動的に作成できる．ルートユーザ名は定義できず，「```root```」となる．
 
 **＊実装例＊**
 
 ```yaml
 environment:
-  MYSQL_ROOT_PASSWORD: xxxxx # Rootパス
+  MYSQL_ROOT_PASSWORD: xxxxx # rootユーザのパス
   MYSQL_DATABASE: example # データベース名
-  MYSQL_USER: example_user # ユーザ名
-  MYSQL_PASSWORD: xxxxx # ユーザパス
+  MYSQL_USER: example_user # 一般ユーザ名
+  MYSQL_PASSWORD: xxxxx # 一般ユーザのパス
 ```
 
 

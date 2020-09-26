@@ -2,6 +2,22 @@
 
 ## 01. データベース
 
+### MySQLの準備
+
+#### ・CentOSにインストール
+
+```bash
+# mysqlコマンドのみをインストールしたい場合はこちら
+$ dnf install -y mysql
+```
+
+```bash
+# mysqlコマンド，データベースサーバ機能，をインストールしたい場合はこちら
+$ dnf install -y mysql-server
+```
+
+
+
 ### パラメータ
 
 #### ・パラメータの表示
@@ -9,16 +25,18 @@
 データベースに登録されているグローバルパラメータとセッションパラメータを表示する．
 
 ```mysql
--- パラメータを全て表示
-SHOW variables;
+-- セッション／グローバルパラメータを表示
+SHOW SESSION VARIABLES;
+SHOW GLOBAL VARIABLES;
 
 -- OSとDBのタイムゾーンに関するパラメータを表示
-SHOW variables LIKE '%time_zone';
+SHOW SESSION VARIABLES LIKE '%time_zone';
+SHOW GLOBAL VARIABLES LIKE '%time_zone';
 ```
 
 #### ・パラメータの設定
 
-```mysql
+```sql
 -- グローバルパラメータの場合
 SET GLOBAL time_zone = 'Asia/Tokyo';
 
@@ -282,7 +300,7 @@ RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
 #### ・句の処理の順番
 
 ```
-FROM => JOIN => WHERE => GROUP BY => HAVING => SELECT => ORDER BY
+FROM ---> JOIN ---> WHERE ---> GROUP BY ---> HAVING ---> SELECT ---> ORDER BY
 ```
 
 
