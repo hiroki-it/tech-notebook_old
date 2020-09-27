@@ -425,7 +425,7 @@ XML，JSON，JSONP
 
 #### ・データ型の指定方法
 
-最も良い方法は，送信時にリクエストヘッダーの```Content-Type```に，```application/json```を格納することである．
+最も良い方法は，送信時にリクエストヘッダーの```Content-Type```に，```application/json```を設定することである．
 
 ```http
 Content-Type: application/json

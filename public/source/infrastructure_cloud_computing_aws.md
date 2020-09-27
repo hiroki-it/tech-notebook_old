@@ -375,7 +375,7 @@ EC2インスタンスの冗長化時，これらの間で共通のセッショ�
 
 #### ・クエリCache管理機能
 
-![ElastiCacheのクエリCache管理機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ElastiCacheのクエリCache管理機能.png)
+![ElastiCacheのクエリCache管理機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ElastiCacheのクエリキャッシュ管理機能.png)
 
 1. SQLの実行結果を管理する．最初，EC2インスタンスからRDSにSQLが実行される時，SQLの実行結果を保存しておく．
 
@@ -1087,9 +1087,13 @@ Resources:
 | Domain             | SESのドメイン名を設定．                                      | 設定したドメイン名には，「```10 inbound-smtp.us-east-1.amazonaws.com```」というMXレコードタイプの値が紐づく． |
 | Email Addresses    | 送信先として認証するメールアドレスを設定．設定するとAWSからメールが届くので，指定されたリンクをクリックする． | Sandboxモードの時だけ機能する．                              |
 | Sending Statistics | SESで収集されたデータをメトリクスで確認できる．              | ```Request Increased Sending Limits```のリンクにて，Sandboxモードの解除を申請できる． |
-| SMTP Settings      | SMTP-AUTHの接続情報を確認できる．                            |                                                              |
+| SMTP Settings      | SMTP-AUTHの接続情報を確認できる．                            | アプリケーションの25番ポートは送信制限があるため，465番を使用する．これに合わせて，SESも受信で465番ポートを使用するようにする． |
 | Rule Sets          | メールの受信したトリガーとして実行するアクションを設定できる． |                                                              |
 | IP Address Filters |                                                              |                                                              |
+
+#### ・構築リージョンの制約
+
+SESは連携するクラウドサービスと同じリージョンに構築しなければならない．
 
 #### ・Sandboxモードの解除
 
@@ -1100,9 +1104,9 @@ SESはデフォルトではSandboxモードになっている．Sandboxモード
 | 送信制限 | SESで認証したメールアドレスのみに送信できる． |
 | 受信制限 | 1日に200メールのみ受信できる．                |
 
-#### ・SMTP認証
+#### ・AWSにおけるSMTP-AUTHの仕組み
 
-送信元となるアプリケーションとSESの間で，SMTP認証を行うには，認証情報を持つIAMユーザを作成する必要がある．SMTP認証の仕組みについては，別ノートを参照せよ．
+一般的なSMTP-AUTHでは，クライアントユーザの認証が必要である．同様にして，AWSにおいてもこれが必要であり，IAMユーザを用いてこれを実現する．送信元となるアプリケーションにIAMユーザを紐付け，アプリケーションがSESを介してメールを送信する時，IAMユーザがもつユーザ名とパスワードを認証に用いる．ユーザ名とパスワードは後から確認できないため，メモしておくこと．SMTP-AUTHの仕組みについては，別ノートを参照せよ．
 
 #### ・Rule Sets
 
