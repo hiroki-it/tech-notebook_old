@@ -329,7 +329,7 @@ class XxxCriteria
 
 
 
-## 04-02. Domain \ Entity の責務
+## 04-02. Domain｜Entity の責務
 
 ### Entityの具体例
 
@@ -441,7 +441,7 @@ class DogToyEntity
 
 
 
-## 04-03. Domain \ Value Object の責務
+## 04-03. Domain｜Value Object の責務
 
 ### Value Objectの具体例
 
@@ -641,7 +641,7 @@ class Money
 
 
 
-## 04-04. Domain \ Type Code（標準型）の責務
+## 04-04. Domain｜Type Code（標準型）の責務
 
 ### 区分や種類のデータを保持する
 
