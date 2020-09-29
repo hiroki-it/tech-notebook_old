@@ -382,6 +382,7 @@ X-Cache: Miss from cloudfront
 Via: 1.1 xxxxx.cloudfront.net (CloudFront)
 X-Amz-Cf-Pop: SEA19-C2
 X-Amz-Cf-Id: xxxxx==
+X-Powered-By: PHP/7.3.22
 
 # ボディ
 ここにサイトのHTMLのコード
@@ -569,13 +570,15 @@ setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続�
 
 クライアントからの次回のリクエスト時でも，セッションIDを用いて，同一クライアントと認識できる仕組みをセッションという．セッションIDは，Cookie情報の一つとして，CookieヘッダーとSet-Cookieヘッダーによって送受信される．HTTPはStatelessプロトコルであるが，セッションIDを用いると，擬似的にStatefulな通信を行える．
 
-```
-# （例）Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
+```http
+# リクエストヘッダーの場合
+Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
 ```
 
 
-```
-# （例）Set-Cookie: sessionId={セッションID}
+```http
+# レスポンスヘッダーの場合
+Set-Cookie: sessionId={セッションID}
 ```
 
 #### ・セッションIDの発行，セッションファイルの生成
@@ -596,15 +599,16 @@ $_SESSION['名前'] = 値
 
 #### ・セッションファイルの保存場所
 
-```/etc/php.ini```ファイルでセッションファイルの保存場所を定義できる．セッションファイルは，```sess_xxxxx```ファイルとして保存される．
+```/etc/php.ini```ファイルでセッションファイルの保存場所を定義できる．セッションファイルは，サーバの指定のディレクトリ内に，```sess_xxxxx```ファイルとして保存される．
 
 ```ini
 session.save_path = "/tmp"
 ```
 
-例えば，これをAmazonRedisのソケットとすれば，Redisに保存できる．
+セッションファイルは，サーバ外に保存することもできる．
 
 ```ini
+# Amazon RedisのOriginを指定
 session.save_path = "tcp://xxxxx-redis.r9ecnn.ng.0001.apne1.cache.amazonaws.com:6379"
 ```
 
