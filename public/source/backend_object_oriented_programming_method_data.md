@@ -499,9 +499,38 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### マジックメソッド（その他）
 
-#### ・```__invoke()```
+#### ・```__invoke```メソッド
 
-#### ・```__clone()```
+```__invoke```メソッドが定義されたオブジェクトを，関数のように扱うことができる．```__invoke```メソッド自体は無名関数として扱われる．
+
+```php
+<?php
+
+class Example
+{
+    public function __invoke(array $array)
+    {
+        print_r($array);
+    }
+}
+
+$example = new Example();
+$example([1, 2, 3]);
+
+// 結果
+// Array
+// (
+//    [0] => 1
+//    [1] => 2
+//    [2] => 3
+// )
+```
+
+#### ・```__clone```メソッド
+
+```php
+// ここに実装例
+```
 
 
 
