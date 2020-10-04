@@ -14,11 +14,11 @@
 
 ### 静的プロキシ
 
-#### ・Facadeとは
+#### ・Facadeクラスとは
 
 Facadeに登録されたクラス（Facadeクラス）とServiceContainerを繋ぐ静的プロキシとして働く．メソッドをコールできるようになる．
 
-#### ・Facadeを使用しない場合
+#### ・Facadeクラスを使用しない場合
 
 new演算子でインスタンスを作成する．
 
@@ -41,7 +41,7 @@ $example = new Example();
 $example->method();
 ```
 
-#### ・ServiceContainerを通じてメソッドをコール
+#### ・ServiceContainerクラスを通じてメソッドをコール
 
 **＊実装例＊**
 
@@ -65,9 +65,9 @@ $result = Example::method();
 
 
 
-### 標準登録されたFacadeの種類
+### 標準登録されたFacadeクラスの種類
 
-| Facade名             | クラスの実体                                                 | サービスコンテナ結合キー |
+| Facade名             | クラス名                                                     | サービスコンテナ結合キー |
 | :------------------- | :----------------------------------------------------------- | :----------------------- |
 | App                  | [Illuminate\Foundation\Application](https://laravel.com/api/6.x/Illuminate/Foundation/Application.html) | `app`                    |
 | Artisan              | [Illuminate\Contracts\Console\Kernel](https://laravel.com/api/6.x/Illuminate/Contracts/Console/Kernel.html) | `artisan`                |
@@ -117,48 +117,21 @@ $result = Example::method();
 
 
 
-## App
-
-### インスタンス生成
-
-#### ・new演算子の省略
-
-new演算子の代わりとしてmakeメソッドでインスタンスを生成する．
-
-**＊実装例＊**
-
-```php
-<?php
-
-class Example
-{
-    public function method()
-    {
-        return "example";
-    }
-}
-
-// makeメソッド経由でメソッドチェーン
-$result = $app->make('Example')->method();
-
-// makeメソッドをnew演算子の代わりに使用
-$example = App::make('Example');
-$result = $example->method();
-```
-
-
-
 ## ServiceProvider
 
-### artisan
+### artisanによる操作
 
+#### ・クラスの自動生成
+
+```bash
+$ php artisan make:provider {クラス名}
 ```
 
-```
 
 
+### ServiceProvider
 
-### ServiceProviderの用途
+#### ・用途
 
 | ServiceProvider名                                  | 用途                                                   |
 | -------------------------------------------------- | ------------------------------------------------------ |
@@ -166,13 +139,30 @@ $result = $example->method();
 | EventServiceProvider                               | EventListenerとEventhandler関数の対応関係の定義        |
 | RouteServiceProvider<br>（app.php，web.phpも使用） | ルーティングとコントローラの対応関係の定義             |
 
+#### ・ServiceProviderクラスの自動コール
+
+```config/app.php```のproviders配列にクラスの名前空間を実装すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+'providers' => [
+    
+    // 複数のServiceProviderが実装されている
+
+    App\Providers\ComposerServiceProvider::class,
+],
+```
 
 
-### ServiceContainerへの登録（バインド）と生成（リゾルブ）
 
-#### ・ServiceContainerとは
+### ServiceContainerクラスへのバインド（登録）
 
-クラス名を登録（バインド）しただけで新しいインスタンスを生成（リゾルブ）してくれるオブジェクトを『ServiceContainer』という．
+#### ・ServiceContainerクラスとは
+
+クラスをバインド（登録）しただけで新しいインスタンスをリゾルブ（生成）してくれるオブジェクトを『ServiceContainer』という．
 
 ```php
 <?php
@@ -185,7 +175,7 @@ use Psr\Container\ContainerInterface;
 interface Container extends ContainerInterface
 {
     /**
-     * 通常のバインディングとして，自身に登録する．
+     * 通常のバインディングとして，自身にバインドする．
      * 第二引数は，クロージャー，もしくはクラス名前空間
      *
      * @param  string  $abstract
@@ -196,7 +186,7 @@ interface Container extends ContainerInterface
     public function bind($abstract, $concrete = null, $shared = false);
     
     /**
-     * singletonとして，自身に登録する．
+     * singletonとして，自身にバインドする．
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -206,9 +196,11 @@ interface Container extends ContainerInterface
 }
 ```
 
-#### ・具象クラス名とインスタンスの関係を登録
+#### ・具象クラスをバインド
 
-SeriveProviderにて，ServiceContainerへの登録を行うことによって，ServiceContainerがインスタンスを生成できるようになる．Laravelでは，具象クラス名とインスタンスの関係は，ServiceContainerに自動的に登録されており，以下の実装を行う必要はない．
+SeriveProviderにて，ServiceContainerにクラスをバインドすることによって，ServiceContainerがインスタンスを生成できるようになる．Laravelでは，具象クラスはServiceContainerに自動的にバインドされており，以下の実装を行う必要はない．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -221,20 +213,22 @@ use App\Domain\Entity\Example;
 class ExampleServiceProvider extends ServiceProvider
 {
     /**
-     * コンテナに登録
+     * コンテナにバインド
      *
      * @return void
      */
     public function register()
     {
         $this->app->bind(Example::class, function ($app) {
-            return new Example();
+            return new Example1(new Example2, new Example3);
         });
     }
 }
 ```
 
-#### ・複数の具象クラスとインスタンスの関係を登録
+#### ・複数の具象クラスをバインド
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -261,7 +255,7 @@ class ExamplesServiceProvider extends ServiceProvider
     }
     
     /**
-    * 一つ目のクラスを登録
+    * 一つ目のクラスをバインド
     */
     private function registerExample1()
     {
@@ -271,7 +265,7 @@ class ExamplesServiceProvider extends ServiceProvider
     }
     
     /**
-    * 二つ目のクラスを登録
+    * 二つ目のクラスをバインド
     */    
     private function registerExample2()
     {
@@ -281,7 +275,7 @@ class ExamplesServiceProvider extends ServiceProvider
     }
     
     /**
-    * 三つ目のクラスを登録
+    * 三つ目のクラスをバインド
     */
     private function registerExample3()
     {
@@ -292,9 +286,11 @@ class ExamplesServiceProvider extends ServiceProvider
 }
 ```
 
-#### ・インターフェース（抽象クラス）と実装インスタンスの関係を登録
+#### ・インターフェース（抽象クラス）名をバインド
 
-具象クラス名とインスタンスの関係は自動的に登録されるが，インターフェース（抽象クラス）と実装インスタンスの関係は，実装する必要がある．この登録によって，インターフェースをコールすると実装インスタンスを生成できるようになる．
+具象クラスは自動的にバインドされるが，インターフェース（抽象クラス）は，手動でバインドする必要がある．このバインドによって，インターフェースをコールすると実装インスタンスを生成できるようになる．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -308,37 +304,72 @@ use App\Infrastructure\ExampleRepository;
 class ExampleServiceProvider extends ServiceProvider
 {
     /**
-     * コンテナに登録
+     * コンテナにバインド
      *
      * @return void
      */
     public function register()
     {
-        // Domain層とInfrastructure層のリポジトリの結合を登録
-        $this->app->bind(ExampleRepositoryInterface::class, function ($app) {
-            return new App\Infrastructure\ExampleRepository();
-        });
+        // Domain層とInfrastructure層のリポジトリの結合をバインド
+        $this->app->bind(
+            'App\Domain\Repositories\ArticleRepository',
+            'App\Infrastructure\Repositories\ArticleRepository'
+        );
     }
 }
 ```
 
 
 
-### ServiceProviderのコール
+### ServiceContainerクラスからのリゾルブ（生成）
 
-```config/app.php```のproviders配列にクラスの名前空間を実装すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスの登録が自動的に完了する．
+#### ・Appファサードの使用
+
+コンストラクタの引数にクラスを渡しておく．Appクラスを経由してクラスを宣言することで，クラスのリゾルブを自動的に行う．
 
 **＊実装例＊**
 
 ```php
 <?php
 
-'providers' => [
-    
-    // 複数のServiceProviderが実装されている
+namespace App\Domain\Entity\Example;
 
-    App\Providers\ComposerServiceProvider::class,
-],
+class Example extends Entity
+{
+    /**
+     * サブクラス
+     */
+    protected $subExample;
+
+    /**
+     * コンストラクタインジェクション
+     *
+     * @param SubExmaple $subExample
+     */
+    public function __construct(SubExmaple $subExample)
+    {
+        $this->example = $subExample;
+    }
+}
+```
+
+```php
+<?php
+
+class Example
+{
+    public function method()
+    {
+        return "example";
+    }
+}
+
+// Exampleクラスをリゾルブし，そのままmethodをコール
+$result = app()->make(Example::class)->method();
+
+// Exampleクラスをリゾルブ
+$example = App::make(Example::class);
+$result = $example->method();
 ```
 
 
@@ -393,9 +424,9 @@ Route::options($uri, $callback);
 Route::get('/user', 'UserController@index');
 ```
 
-#### ・名前空間
+#### ・namespace
 
-コントローラをコールする時に，名前空間の部分を共通化できる．
+```group```メソッドと組み合わせて使用する．コントローラをコールする時に，グループ内で同じ名前空間を指定できる．
 
 **＊実装例＊**
 
@@ -403,13 +434,55 @@ Route::get('/user', 'UserController@index');
 <?php
 
 Route::namespace('Admin')->group(function () {
-    // "App\Http\Controllers\Admin"名前空間下のコントローラ
+    // "App\Http\Controllers\Admin\" 下にあるコントローラ
+    Route::get('/user', 'UserController@index');
+    Route::post('/user/{userId}', 'UserController@createUser');
 });
 ```
 
-#### ・middleware
+#### ・where
 
+パスパラメータの形式の制約を，正規表現で設定できる．
+
+**＊実装例＊**
+
+```php
+<?php
+
+Route::namespace('Admin')->group(function () {
+
+    Route::get('/user', 'UserController@index')
+    
+    // userIdの形式を「0〜9が一つ以上」に設定
+    Route::post('/user/{userId}', 'UserController@createUser')
+        ->where('id', '[0-9]+');
+});
 ```
+
+RouteServiceProviderの```boot```メソッドにて，```pattern```メソッドで制約を設定することによって，ルーティング時にwhereを使用する必要がなくなる．
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+
+class RouteServiceProvider extends ServiceProvider
+{
+    /**
+     * ルートモデル結合、パターンフィルタなどの定義
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Route::pattern('articleId', '[0-9]+');
+
+        parent::boot();
+    }
+}
 
 ```
 
@@ -485,7 +558,7 @@ $ php artisan migrate:fresh
 
 #### ・ファイル構造
 
-upメソッドでテーブル，カラム，インデックスのCREATEを行う．upメソッドでCREATEのロールバックを行う．
+```up```メソッドでテーブル，カラム，インデックスのCREATEを行う．```down```メソッドでCREATEのロールバックを行う．
 
 **＊実装例＊**
 
@@ -531,7 +604,7 @@ class CreateFlightsTable extends Migration
 
 ### artisanによる操作
 
-#### ・Factoryの生成
+#### ・Factoryクラスの生成
 
 ```bash
 # --model={モデル名}
@@ -557,7 +630,7 @@ $ php artisan db:seed --class=DatabaseSeeder
 
 ### テストデータ
 
-#### ・Factoryによるデータ定義
+#### ・Factoryクラスによるデータ定義
 
 **＊実装例＊**
 
@@ -584,7 +657,7 @@ $factory->define(User::class, function (Faker $faker) {
 });
 ```
 
-#### ・Seederによるデータ作成
+#### ・Seederクラスによるデータ作成
 
 Factoryクラスにおける定義を基にして，指定した数だけデータを作成する．
 
@@ -636,6 +709,79 @@ class DatabaseSeeder extends Seeder
 
 
 
+## HTTP｜Middleware
+
+### artisanによる操作
+
+#### ・クラスの自動生成
+
+```bash
+# Middlewareクラスを自動生成
+$ php artisan make:middleware {クラス名}
+```
+
+
+
+### Middlewareクラスの仕組み
+
+#### ・Middlewareクラスの種類
+
+ルーティング後にコントローラメソッドの前にコールされるBeforeMiddleと，レスポンスの実行時にコールされるAfterMiddlewareがある
+
+![Laravelのミドルウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LaravelのMiddlewareクラスの仕組み.png)
+
+#### ・BeforeMiddlewareクラス
+
+ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，```Illuminate\Http\Request```オブジェクトが代入されている．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class ExampleBeforeMiddleware
+{
+    public function handle($request, Closure $next)
+    {
+        // 何らかの処理
+
+        return $next($request);
+    }
+}
+```
+#### ・AfterMiddlewareクラス
+
+コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，```Illuminate\Http\Response```オブジェクトが代入されている．
+
+**＊実装例＊**
+
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class ExampleAfterMiddleware
+{
+    public function handle($request, Closure $next)
+    {
+        $response = $next($request);
+
+        // 何らかの処理
+
+        return $response;
+    }
+}
+```
+
+
+
 ## HTTP｜Request
 
 ### artisanによる操作
@@ -649,11 +795,11 @@ $ php artisan make:request {クラス名}
 
 
 
-### validationルールの定義
+### バリデーションルールの定義
 
-#### ・rulesメソッド，validatedメソッド
+#### ・```rules```メソッド，```validated```メソッド
 
-FormRequestクラスを継承したクラスにて，rulesメソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+FormRequestクラスを継承したクラスにて，```rules```メソッドを使用して，ルールを定義する．バリデーションルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -681,7 +827,7 @@ class ExampleRequest extends FormRequest
 }
 ```
 
-Controllerで，ExampleRequestクラスからvalidatedメソッドをコールし，バリデーションを終えたデータを取得できる．
+Controllerで，ExampleRequestクラスを型指定すると，コントローラのメソッドをコールする前にバリデーションが自動で行われる．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションが失敗した場合，メソッドのコール前に，ExampleRequestクラスが元々のページにリダイレクトする処理を自動で実行する．
 
 **＊実装例＊**
 
@@ -692,20 +838,19 @@ Controllerで，ExampleRequestクラスからvalidatedメソッドをコール�
  * @param  ExampleRequest $request
  * @return Response
  */
-public function store(ExampleRequest $request)
+// メソッドが実行される前にバリデーションが行われる．
+public function store(ExampleRequest $request) 
 {
-    // バリデーション済みデータの取得
+    // バリデーション済みデータをいきなり取得
     $validated = $request->validated();
   
     ExampleRepository::update($validated);
 }
 ```
 
+#### ・```validate```メソッド
 
-
-#### ・validateメソッド
-
-```Illuminate\Http\Request```インスタンスのvalidateメソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+```Illuminate\Http\Request```インスタンスの```validate```メソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -738,7 +883,7 @@ $validatedData = $request->validate([
 
 #### ・Validatorファサード
 
-```Illuminate\Support\Facades\Validator```ファサードのmakeメソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+```Illuminate\Support\Facades\Validator```ファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -783,7 +928,7 @@ class ExampleController extends Controller
 
 #### ・セッション変数の取得
 
-```Illuminate\Http\Request```インスタンスのsessionメソッドを使用して，セッション変数を取得する．
+```Illuminate\Http\Request```インスタンスの```session```メソッドを使用して，セッション変数を取得する．
 
 **＊実装例＊**
 
@@ -827,11 +972,9 @@ $request->session()->flash('status', 'Task was successful!');
 
 
 
-
-
 ### Requestの認証
 
-#### ・authorizeメソッド
+#### ・```authorize```メソッド
 
 ユーザがリソースに対してCRUD操作を行う権限を持っているかを，コントローラのメソッドを実行する前に，判定する．
 
@@ -868,11 +1011,11 @@ $ php artisan make:controller {クラス名}
 
 
 
-### Requestのコール
+### Requestクラスのコール
 
 ####  ・データの取得
 
-inputメソッドを用いて，リクエストボディに含まれるデータを取得できる．
+```input```メソッドを用いて，リクエストボディに含まれるデータを取得できる．
 
 **＊実装例＊**
 
@@ -928,7 +1071,7 @@ class UserController extends Controller
 
 
 
-### Responseのコール
+### Responseクラスのコール
 
 #### ・Json型データのレスポンス
 
@@ -1005,7 +1148,7 @@ $ php artisan passport:client --password
 
 ### AuthファサードによるDigest認証
 
-attemptメソッドを用いて，パスワードを自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．intendedメソッドで，ログイン後の初期ページにリダイレクトする．
+```attempt```メソッドを用いて，パスワードを自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
 
 ```php
 <?php
@@ -1086,6 +1229,8 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 1. API側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，auth.phpで，```driver```を```passport```に設定する．また，認証フェーズで使用するテーブル名を```provider```に設定する．
 
+**＊実装例＊**
+
 ```php
 <?php
 
@@ -1105,12 +1250,16 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 ],
 ```
 
-2. API側では，テーブルに対応するモデルのルーティングに対して，middlewareメソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+2. API側では，テーブルに対応するモデルのルーティングに対して，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+
+**＊実装例＊**
 
 ```php
 Route::get('user', 'UserController@index')->middleware('auth:api');
 ```
 3. API側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -1129,7 +1278,9 @@ class User extends Authenticatable
 }
 ```
 
-4. API側では，```Passport::routes()```をコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+4. API側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -1157,6 +1308,8 @@ $ php artisan passport:client --password
 
 6. ユーザ側のアプリケーションでは，『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
 
+**＊実装例＊**
+
 ```php
 <?php
 
@@ -1176,6 +1329,8 @@ $response = $http->post('http://your-app.com/oauth/token', [
 
 7. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
 
+**＊実装例＊**
+
 ```json
 {
   "token_type":"Bearer",
@@ -1185,6 +1340,8 @@ $response = $http->post('http://your-app.com/oauth/token', [
 ```
 
 8. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたAPI側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -1209,15 +1366,19 @@ return (string)$response->getBody();
 
 Responseインスタンスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
 
+**＊実装例＊**
+
 ```html
 <html>
     <body>
-        <h1>Hello, {{ $data }}</h1>
+        <h1>Hello!! {{ $data }}</h1>
     </body>
 </html>
 ```
 
 #### ・validationメッセージの出力
+
+**＊実装例＊**
 
 ```html
 <!-- /resources/views/example/create.blade.php -->
@@ -1227,13 +1388,240 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
+            
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
+            
         </ul>
     </div>
 @endif
 
 <!-- ポスト作成フォーム -->
+```
+
+
+
+## Blade
+
+### 要素の共通化
+
+#### ・@extends，@parent，@show
+
+三つセットで使うことが多いので，同時に説明する．テンプレート間が親子関係にある時，子テンプレートで親テンプレート全体を読み込む```@extends```を用いる．子テンプレートに```@section```を継承しつつ，要素を追加する場合，```@endsection```ではなく```@show```を使用する．
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<html>
+    <head>
+        <title>共通のタイトルとなる要素</title>
+    </head>
+    <body>
+        
+        @section('sidebar')
+            親テンプレートのサイドバーとなる要素
+        @show
+
+        <div class="container">
+            共通の要素
+        </div>
+    </body>
+</html>
+```
+
+```@parent```で親テンプレートの```@section```を継承する．
+
+```html
+<!-- 子テンプレート -->
+
+@extends('layouts.app')
+
+@section('sidebar')
+    @parent
+    <p>子テンレプートのサイドバーに追加される要素</p>
+@endsection
+```
+
+#### ・@include（サブビュー）
+
+読み込んだファイル全体を出力する．読み込むファイルに対して，変数を渡すこともできる．```@extentds```との使い分けとして，親子関係のないテンプレートの間で使用するのがよい．両者は，PHPでいう```extends```（クラスチェーン）と```require```（単なる読み込み）の関係に近い．
+
+```html
+<div>
+    @include('shared.errors')
+    <form><!-- フォームの内容 -->
+    </form>
+</div>
+```
+
+
+
+### 子テンプレートにおける動的な要素出力
+
+#### ・@yield，@section
+
+子テンプレートのレンダリング時に，HTMLの要素を動的に出力する場合に使用する．親テンプレートにて，```@yield('example')```を定義する．これを継承した子テンプレートのレンダリング時に，```@section('example')```-```@endsection```で定義した要素が，```@yieid()```部分に出力される．
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>アプリケーション</title>
+    </head>
+    <body>
+        <h2>タイトル</h2>        
+        @yield('content')
+    </body>
+</html>
+```
+
+```html
+<!-- 子テンプレート -->
+
+@extends('layouts.parent')
+
+@section('content')
+    <p>子テンプレートのレンダリング時に，yieldに出力される要素</p>
+@endsection
+```
+
+子テンプレートは，レンダリング時に以下のように出力される．
+
+```html
+<!-- 子テンプレート -->
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>アプリケーション</title>
+    </head>
+    <body>
+        <h2>タイトル</h2>
+        <p>子テンプレートのレンダリング時に，yieldに出力される要素</p>
+    </body>
+</html>
+```
+
+
+
+#### ・@stack，@push
+
+子テンプレートのレンダリング時に，CSSとJavaScriptのファイルを動的に出力する場合に使用する．親テンプレートにて，```@stack('example')```を定義する．これを継承した子テンプレートのレンダリング時に，```@push('example')```-```@endpush```で定義した要素が，```@stack()```部分に出力される．
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<head>
+    <!-- Headの内容 -->
+
+    @stack('scripts')
+</head>
+```
+
+```html
+<!-- 子テンプレート -->
+
+@push('scripts')
+    <script src="/example.js"></script>
+@endpush
+```
+
+
+
+### Twigとの互換
+
+#### ・Bladeで実装した場合
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<html>
+    <head>
+        <title>@yield('title')</title>
+    </head>
+    <body>
+
+        @section('sidebar')
+            親テンプレートのサイドバーとなる要素
+        @show
+
+        <div class="container">
+            @yield('content')
+        </div>
+    </body>
+</html>
+```
+
+```html
+<!-- 子テンプレート -->
+
+@extends('layouts.master')
+
+@section('title', '子テンプレートのタイトルになる要素')
+
+@section('sidebar')
+    @parent
+    <p>子テンレプートのサイドバーに追加される要素</p>
+@endsection
+
+@section('content')
+    <p>子テンプレートのコンテンツになる要素</p>
+@endsection
+```
+
+#### ・Twigで実装した場合
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+
+        {% block sidebar %} <!-- @section('sidebar') に相当 -->
+            親テンプレートのサイドバーとなる要素
+        {% endblock %}
+
+        <div class="container">
+            {% block content %}<!-- @yield('content') に相当 -->
+            {% endblock %}
+        </div>
+    </body>
+</html>
+```
+```html
+<!-- 子テンプレート -->
+
+{% extends "layouts.master" %} <!-- @extends('layouts.master') に相当 -->
+
+{% block title %} <!-- @section('title', 'Page Title') に相当 -->
+    子テンプレートのタイトルになる要素
+{% endblock %}
+
+{% block sidebar %} <!-- @section('sidebar') に相当 -->
+    {{ parent() }} <!-- @parent に相当 -->
+    <p>子テンレプートのサイドバーに追加される要素</p>
+{% endblock %}
+
+{% block content %} <!-- @section('content') に相当 -->
+    <p>子テンプレートのコンテンツになる要素</p>
+{% endblock %}
 ```
 
