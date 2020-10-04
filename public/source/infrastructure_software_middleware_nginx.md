@@ -433,7 +433,7 @@ listen 443 ssl;
 パブリックIPアドレスに紐づくドメイン名を設定する．
 
 ```nginx
-server_name hiroki-it.work;
+server_name example.com;
 ```
 
 パブリックIPアドレスを直接記述してもよい．

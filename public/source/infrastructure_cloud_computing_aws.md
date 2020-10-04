@@ -794,11 +794,11 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 
 
 
-### ネットワークACL
+### Network ACL：Network Access  Control List
 
 ![ネットワークACL](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネットワークACL.png)
 
-#### ・ネットワークACLとは
+#### ・Network ACLとは
 
 サブネットのクラウドパケットフィルタリング型ファイアウォールとして働く．ルートテーブルとサブネットの間に設置され，双方向のインバウンドルールとアウトバウンドルールを決定する．
 
@@ -1047,12 +1047,14 @@ log_group_name = /var/log/messages
 
 ```bash
 # CloudWatchエージェントの再起動
+# 注意: restartだとCloudWatchに反映されない時がある．
+$ service awslogs restart
+
+# もしくは
 $ service awslogs stop
 $ service awslogs start
 
-# もしくは
-# NOTE: restartだとCloudWatchに反映されない時がある．
-$ service awslogs restart
+# ログが新しく生成されないと変更が適用されないことがあるため，ログファイルに適当な文字列行を増やしてみる．
 ```
 
 

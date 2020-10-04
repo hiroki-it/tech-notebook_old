@@ -109,7 +109,7 @@ RDBの読み込み系／書き込み系の操作を行うライブラリ．他�
 
 ### SQLの定義
 
-#### 1. ```createQueryBuilder()```
+#### 1. ```createQueryBuilder```メソッド
 
 https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-builder.html
 
@@ -125,7 +125,7 @@ $queryBuilder = $this->createQueryBuilder();
 
 #### 2. CREATE処理
 
-```QueryBuilder```インスタンスにおける```insert()```に，値を設定する．
+```QueryBuilder```インスタンスにおける```insert```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -137,7 +137,7 @@ $queryBuilder
 
 #### 3. READ処理
 
-```QueryBuilder```インスタンスにおける```select()```に，値を設定する．
+```QueryBuilder```インスタンスにおける```select```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -150,7 +150,7 @@ $queryBuilder
 
 #### 4. UPDATE処理
 
-```QueryBuilder```インスタンスにおける```update()```に，値を設定する．
+```QueryBuilder```インスタンスにおける```update```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -162,7 +162,7 @@ $queryBuilder
 
 #### 5. DELETE処理
 
-```QueryBuilder```インスタンスにおける```delete()```に，値を設定する．
+```QueryBuilder```インスタンスにおける```delete```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -174,7 +174,7 @@ $queryBuilder
 
 #### 6. データベースへの接続，SQLの実行 
 
-データベース接続に関わる```getConnection()```を起点として，返り値から繰り返しメソッドを取得し，```fetchAll()```で，テーブルのクエリ名をキーとした連想配列が返される．
+データベース接続に関わる```getConnection```メソッドを起点として，返り値から繰り返しメソッドを取得し，```fetchAll```メソッドで，テーブルのクエリ名をキーとした連想配列が返される．
 
 **＊実装例＊**
 
@@ -284,7 +284,7 @@ class Example
 
 https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
 
-```beginTransaction()```，```commit()```，```rollBack()```を用いて，RDBを操作する．
+```beginTransaction```メソッド，```commit```メソッド，```rollBack```メソッドを用いて，RDBを操作する．
 
 **＊実装例＊**
 
@@ -321,7 +321,7 @@ try{
 
 
 
-### ```instance()``` 
+### ```instance```メソッド 
 
 DateTimeインスタンスを引数として，Carbonインスタンスを作成する．
 
@@ -335,7 +335,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 
 
-### ```create()```
+### ```create```メソッド
 
 日時の文字列からCarbonインスタンスを作成する．
 
@@ -350,7 +350,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 
 
-### ```createFromXXX()```
+### ```createFromXXX```メソッド
 
 指定の文字列から，Carbonインスタンスを作成する．
 
@@ -407,9 +407,9 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 
 
 
-### ```parse()```
+### ```parse```メソッド
 
-日付，時間，日時フォーマットから，Carbonインスタンスを作成する．```createFromFormat()```とは異なり，フォーマットを指定する必要がない．
+日付，時間，日時フォーマットから，Carbonインスタンスを作成する．```createFromFormat```メソッドとは異なり，フォーマットを指定する必要がない．
 
 **＊実装例＊**
 
@@ -428,9 +428,9 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 
 
-### ```Traversable::from()```
+### ```Traversable::from```メソッド
 
-SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach()```のように，配列データやオブジェクトデータの各要素に対して，処理を行える．
+SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach```のように，配列データやオブジェクトデータの各要素に対して，処理を行える．
 
 **＊実装例＊**
 
@@ -505,7 +505,7 @@ $body = json_decode($response->getBody(), true);
 
 ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するライブラリ．
 
-### ```generateFromHtml()```
+### ```generateFromHtml```メソッド
 
 htmlファイルを元にして，ローカルディレクトリにPDFファイルを作成する．
 

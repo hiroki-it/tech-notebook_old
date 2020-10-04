@@ -602,14 +602,34 @@ $_SESSION['名前'] = 値
 ```/etc/php.ini```ファイルでセッションファイルの保存場所を定義できる．セッションファイルは，サーバの指定のディレクトリ内に，```sess_xxxxx```ファイルとして保存される．
 
 ```ini
+# /etc/php.ini
+
+### ファイル形式
+session.save_handler = files
+### 保存場所
 session.save_path = "/tmp"
 ```
 
-セッションファイルは，サーバ外に保存することもできる．
+セッションファイルは，サーバ外に保存することもできる．PHP-FPMを使用している場合は，```/etc/php-fpm.d/www.conf```の変更が必要．
 
 ```ini
-# Amazon RedisのOriginを指定
-session.save_path = "tcp://xxxxx-redis.r9ecnn.ng.0001.apne1.cache.amazonaws.com:6379"
+# /etc/php-fpm.d/www.conf
+
+### Redis形式
+php_value[session.save_handler] = redis
+### Amazon RedisのOrigin
+php_value[session.save_path] = "tcp://xxxxx-redis.xxxxx.ng.0001.apne1.cache.amazonaws.com:6379"
+```
+
+PHP-FPMを使用していない場合は，```/etc/php.ini```の変更が必要．
+
+```ini
+# /etc/php.ini
+
+### Redis形式
+session.save_handler = redis
+### Amazon RedisのOrigin
+session.save_path = "tcp://xxxxx-redis.xxxxx.ng.0001.apne1.cache.amazonaws.com:6379"
 ```
 
 #### ・セッションIDの送受信の仕組み
