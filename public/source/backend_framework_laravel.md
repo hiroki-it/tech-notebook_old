@@ -385,6 +385,12 @@ $result = $example->method();
 $ php artisan route:list
 ```
 
+#### ・キャッシュ削除
+
+```bash
+$ php artisan route:clear
+```
+
 
 
 ### 種類
@@ -1187,9 +1193,11 @@ class LoginController extends Controller
 
 開発環境で使用するアクセストークン．
 
-1. ユーザを作成する．
+1. 暗号キーとユーザを作成する．
 
 ```bash
+$ php artisan passport:keys
+
 $ php artisan passport:client --personal
 ```
 
@@ -1300,9 +1308,11 @@ class AuthServiceProvider extends ServiceProvider
 }
 ```
 
-5. 以降，ユーザ側のアプリケーションにおける対応である．ユーザを作成する．
+5. 以降，ユーザ側のアプリケーションにおける対応である．暗号キーとユーザを作成する．
 
 ```bash
+$ php artisan passport:keys
+
 $ php artisan passport:client --password
 ```
 
@@ -1358,9 +1368,19 @@ return (string)$response->getBody();
 
 
 
-## Resources
+## Views
 
-### Views
+### arisanによる操作
+
+#### ・キャッシュの削除
+
+```bash
+$ php artisan view:clear
+```
+
+
+
+### データの出力
 
 #### ・データの出力
 
@@ -1401,8 +1421,6 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 ```
 
 
-
-## Blade
 
 ### 要素の共通化
 
@@ -1459,7 +1477,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 
 
-### 子テンプレートにおける動的な要素出力
+### 子テンプレートにおける要素の出力
 
 #### ・@yield，@section
 
