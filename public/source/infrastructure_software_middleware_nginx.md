@@ -115,7 +115,7 @@ fastcgi_param  REDIRECT_STATUS    200;
 
 #### ・www.confについて
 
-```/etc/php-fpm.d/www.conf```は，PHP-FPMに関する設定が定義されたファイルであり，php.iniによって読み込まれる．php.iniよりも優先されるので，設定項目が重複している場合は，こちらを変更する．
+```/etc/php-fpm.d/www.conf```ファイルは，PHP-FPMに関する設定が定義されたファイルであり，php.iniによって読み込まれる．php.iniよりも優先されるので，設定項目が重複している場合は，こちらを変更する．
 
 ```ini
 [www]

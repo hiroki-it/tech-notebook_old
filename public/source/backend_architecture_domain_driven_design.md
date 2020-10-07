@@ -123,7 +123,7 @@ class AcceptOrdersController
 }  
 ```
 
-**【Use caseの例】**
+**＊ユースケース例＊**
 
 オンラインショッピングにおけるUse case
 
@@ -703,6 +703,12 @@ class ColorVO extends Enum
     
 }
 ```
+
+
+
+## 04-05. Domain Service
+
+要勉強．
 
 
 
