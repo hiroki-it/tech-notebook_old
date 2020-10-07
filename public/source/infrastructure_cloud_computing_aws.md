@@ -1042,7 +1042,126 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 aws cloudwatch set-alarm-state --alarm-name "Alarm名" --state-value ALARM --state-reason "アラーム文言"
 ```
 
-#### ・CloudWatchLogsエージェント（CloudWatchエージェントではない）
+
+
+### CloudWatchエージェント
+
+#### ・CloudWatchエージェントとは
+
+EC2インスタンス内で発生したデータを収集し，CloudWatchに対してプッシュする常駐システムのこと．
+
+#### ・CloudWatchエージェントの設定
+
+CloudWatchエージェントは，```/opt/aws/amazon-cloudwatch-agent/bin/config.json```ファイルの定義を元に，実行される．設定ファイルは，分割できる．
+
+| セクションの種類        | 説明                                   | 備考                                                         |
+| ----------------------- | -------------------------------------- | ------------------------------------------------------------ |
+| ```agent```セクション   | CloudWatchエージェント全体を設定する． | ・ウィザードを使用した場合，このセクションの設定はスキップされる．<br>・実装しなかった場合，デフォルト値が適用される． |
+| ```metrics```セクション |                                        | ・ウィザードを使用した場合，このセクションの設定はスキップされる．<br>・実装しなかった場合，何も設定されない． |
+| ```logs```セクション    |                                        |                                                              |
+
+設定後，```amazon-cloudwatch-agent-ctl```コマンドで設定ファイルを読み込ませる．
+
+**＊コマンド例＊**
+
+```bash
+# EC2内にある設定ファイルを，CloudWatchエージェントに読み込ませる（再起動を含む）
+$ /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+# プロセスのステータスを確認
+$ /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
+```
+
+```bash
+# 設定ファイルが読み込まれたかを確認
+
+### CloudWatchエージェントのプロセスのログファイル
+$ tail -f /opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log
+
+### 設定ファイルの構文チェックのログファイル
+$ tail -f /opt/aws/amazon-cloudwatch-agent/logs/configuration-validation.log
+
+### OS起動時にデーモンが稼働するように設定されているかを確認
+$ systemctl list-unit-files --type=service
+```
+
+
+
+#### ・logセクションのみの場合
+
+CloudWatchエージェントを使用して，CloudWatchにログファイルをプッシュするだけであれば，```log```セッションのみの実装で良い．```run_as_user```には，プロセスのユーザ名（例：```cwagent```）を設定する．
+
+**＊実装例＊**
+
+```json
+{
+  "agent": {
+    "run_as_user": "cwagent"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/nginx/error.log",
+            "log_group_name": "/example-www/var/log/nginx/error_log",
+            "log_stream_name": "{instance_id}"
+          },
+          {
+            "file_path": "/var/log/php-fpm/error.log",
+            "log_group_name": "/example-www/var/log/php-fpm/error_log",
+            "log_stream_name": "{instance_id}"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+
+
+### CloudWatch Logs
+
+####  ・CloudWatch Logsとは
+
+クラウドログサーバとして働く．AWSの各種サービスで生成されたログファイルを収集できる．
+
+| 設定項目                     | 説明                                                   | 備考                                                         |
+| ---------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| ロググループ                 | ログストリームをグループ化して収集するかどうかを設定． | 基本的に，ログファイルはグループ化せずに，一つのロググループには一つのログストリームしか含まれないようにする．ただし，EC2インスタンスを冗長化しあばあ |
+| メトリクスフィルター         | 紐づくロググループで，出現を監視する文字列を設定する． |                                                              |
+| サブスクリプションフィルター |                                                        |                                                              |
+| Logs Insights                | クエリを使用してログを抽出できる．                     |                                                              |
+
+#### ・メトリクスフィルターの詳細項目
+
+| 設定項目           | 説明                                                         | 備考                                                       |
+| ------------------ | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| フィルターパターン | 紐づくロググループで，メトリクス値増加のトリガーとする文字列を設定する． | 大文字と小文字を区別するため，網羅的に設定する必要がある． |
+| 名前空間           | 紐づくロググループが属する名前空間を設定する．CloudWatchLogsが，設定した名前空間に対して，値を発行する． |                                                            |
+| メトリクス         | 紐づくロググループが属する名前空間内のメトリクスを設定する．CloudWatchLogsが，設定したメトリクスに対して，値を発行する． |                                                            |
+| メトリクス値       | フィルターパターンで文字列が検出された時に，メトリクスに対して発行する値のこと． | 例えば「検出数」を発行する場合は，「１」を設定する．       |
+
+#### ・フィルターパターンのテンプレート
+
+```
+# OR条件で大文字小文字を考慮し，「XXXXX:」を検出
+?"WARNING:" ?"Warning:" ?"ERROR:" ?"Error:" ?"CRITICAL:" ?"Critical:" ?"EMERGENCY:" ?"Emergency:" ?"ALERT:" ?"Alert:"
+```
+
+```
+# OR条件で大文字小文字を考慮し，「XXXXX message」を検出
+?"WARNING message" ?"Warning message" ?"ERROR message" ?"Error message" ?"CRITICAL message" ?"Critical message" ?"EMERGENCY message" ?"Emergency message" ?"ALERT message" ?"Alert message"
+```
+
+#### ・名前空間，メトリクス，ディメンションとは
+
+![名前空間，メトリクス，ディメンション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前空間，メトリクス，ディメンション.png)
+
+#### ・CloudWatchLogsエージェントの設定（非推奨）
+
+2020/10/05現在は非推奨で，CloudWatchエージェントへの設定の移行が推奨されている．
 
 **＊実装例＊**
 
