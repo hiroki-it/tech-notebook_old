@@ -4,21 +4,13 @@
 
 ## Facade
 
-### artisanによる操作
-
-```bash
-# ここにコマンド例
-```
-
-
-
 ### 静的プロキシ
 
-#### ・Facadeクラスとは
+#### ・Facadeとは
 
 Facadeに登録されたクラス（Facadeクラス）とServiceContainerを繋ぐ静的プロキシとして働く．メソッドをコールできるようになる．
 
-#### ・Facadeクラスを使用しない場合
+#### ・Facadeを使用しない場合
 
 new演算子でインスタンスを作成する．
 
@@ -26,6 +18,8 @@ new演算子でインスタンスを作成する．
 
 ```php
 <?php
+  
+namespace 
     
 class Example
 {
@@ -36,17 +30,25 @@ class Example
 }
 ```
 ```php
+<?php
+    
 // 通常
 $example = new Example();
 $example->method();
 ```
 
-#### ・ServiceContainerクラスを通じてメソッドをコール
+#### ・Facadeの静的プロキシ機能を使用する場合
+
+静的メソッドの記法でコールできる．ただし，自作クラスをFacadeの機能を使用してインスタンス化すると，スパゲッティな「Composition（合成）」の依存関係を生じさせてしまう．例えば，Facadeの中でも，```Route```のような，代替するよりもFacadeを使ったほうが断然便利である部分以外は，使用しないほうがよい．
 
 **＊実装例＊**
 
+Facadeとして使用したいクラスを定義する．
+
 ```php
 <?php
+
+namespace App\Domain\Entity;
 
 class Example
 {
@@ -56,18 +58,33 @@ class Example
     }
 }
 ```
+
+```config/app.php```の```aliases```配列に，エイリアス名とクラスの名前空間を登録すると，そのエイリアス名でインスタンス化とメソッドコールを行えるようになる．
+
 ```php
+<?php
+  
+'aliases' => [
+    'Example' => App\Domain\Entity\Example::class,
+]
+```
+
+インスタンス化とメソッドコールを行う．
+
+```php
+<?php
+
 use Illuminate\Support\Facades\ Example;
     
 // Facade利用
 $result = Example::method();
 ```
 
+#### ・標準登録されたFacadeクラスの種類
 
+以下のクラスは，デフォルトで登録されているFacadeである．
 
-### 標準登録されたFacadeクラスの種類
-
-| Facade名             | クラス名                                                     | サービスコンテナ結合キー |
+| エイリアス名         | クラス名                                                     | サービスコンテナ結合キー |
 | :------------------- | :----------------------------------------------------------- | :----------------------- |
 | App                  | [Illuminate\Foundation\Application](https://laravel.com/api/6.x/Illuminate/Foundation/Application.html) | `app`                    |
 | Artisan              | [Illuminate\Contracts\Console\Kernel](https://laravel.com/api/6.x/Illuminate/Contracts/Console/Kernel.html) | `artisan`                |
@@ -131,17 +148,18 @@ $ php artisan make:provider {クラス名}
 
 ### ServiceProvider
 
-#### ・用途
+#### ・ServiceProviderの用途
 
-| ServiceProvider名                                  | 用途                                                   |
-| -------------------------------------------------- | ------------------------------------------------------ |
-| AppServiceProvider                                 | ServiceContainerへの登録（バインド）と生成（リゾルブ） |
-| EventServiceProvider                               | EventListenerとEventhandler関数の対応関係の定義        |
-| RouteServiceProvider<br>（app.php，web.phpも使用） | ルーティングとコントローラの対応関係の定義             |
+| 用途の種類                                         | 説明                                                         |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| AppServiceProvider                                 | ・ServiceContainerへのクラスのバインド（登録）<br>・ServiceContainerからのインスタンスのリゾルブ（生成） |
+| MacroServiceProvider                               | ServiceContainerへのメソッドのバインド（登録）               |
+| RouteServiceProvider<br>（app.php，web.phpも使用） | ルーティングとコントローラの対応関係の定義                   |
+| EventServiceProvider                               | EventListenerとEventhandler関数の対応関係の定義              |
 
-#### ・ServiceProviderクラスの自動コール
+#### ・ServiceProviderのコール
 
-```config/app.php```のproviders配列にクラスの名前空間を実装すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
+```config/app.php```の```providers```配列に，クラスの名前空間を登録すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
 
 **＊実装例＊**
 
@@ -158,9 +176,9 @@ $ php artisan make:provider {クラス名}
 
 
 
-### ServiceContainerクラスへのバインド（登録）
+### AppServiceProvider
 
-#### ・ServiceContainerクラスとは
+#### ・ServiceContainer，バインド，リゾルブ
 
 クラスをバインド（登録）しただけで新しいインスタンスをリゾルブ（生成）してくれるオブジェクトを『ServiceContainer』という．
 
@@ -198,7 +216,7 @@ interface Container extends ContainerInterface
 
 #### ・具象クラスをバインド
 
-SeriveProviderにて，ServiceContainerにクラスをバインドすることによって，ServiceContainerがインスタンスを生成できるようになる．Laravelでは，具象クラスはServiceContainerに自動的にバインドされており，以下の実装を行う必要はない．
+AppSeriveProviderにて，ServiceContainerにクラスをバインドすることによって，ServiceContainerがインスタンスを生成できるようになる．Laravelでは，具象クラスはServiceContainerに自動的にバインドされており，以下の実装を行う必要はない．
 
 **＊実装例＊**
 
@@ -286,7 +304,7 @@ class ExamplesServiceProvider extends ServiceProvider
 }
 ```
 
-#### ・インターフェース（抽象クラス）名をバインド
+#### ・インターフェース（または抽象クラス）をバインド
 
 具象クラスは自動的にバインドされるが，インターフェース（抽象クラス）は，手動でバインドする必要がある．このバインドによって，インターフェースをコールすると実装インスタンスを生成できるようになる．
 
@@ -319,20 +337,16 @@ class ExampleServiceProvider extends ServiceProvider
 }
 ```
 
+#### ・ServiceContainerからのリゾルブ
 
-
-### ServiceContainerクラスからのリゾルブ（生成）
-
-#### ・Appファサードの使用
-
-コンストラクタの引数にクラスを渡しておく．Appクラスを経由してクラスを宣言することで，クラスのリゾルブを自動的に行う．
+コンストラクタの引数にクラスを渡しておく．Appファサードを使用してクラスを宣言することで，クラスのリゾルブを自動的に行う．
 
 **＊実装例＊**
 
 ```php
 <?php
 
-namespace App\Domain\Entity\Example;
+namespace App\Domain\Entity;
 
 class Example extends Entity
 {
@@ -374,6 +388,126 @@ $result = $example->method();
 
 
 
+### MacroServiceProvider
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Providers;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\ServiceProvider;
+
+/**
+ * マイグレーションマクロサービスプロバイダクラス
+ */
+class MigrationMacroServiceProvider extends ServiceProvider
+{
+    /**
+     * サービスコンテナにマイグレーションメソッドをバインドします．
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Blueprint::macro('systemColumns', function () {
+            $this->string('created_by')
+                ->comment('レコードの作成者')
+                ->nullable();
+            $this->string('updated_by')
+                ->comment('レコードの最終更新者')
+                ->nullable();;
+            $this->string('created_at')
+                ->comment('レコードの作成日')
+                ->nullable();;
+            $this->string('updated_at')
+                ->comment('レコードの最終更新日')
+                ->nullable();;
+        });
+    }
+}
+```
+
+
+
+### RouteServiceProvider
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+
+class RouteServiceProvider extends ServiceProvider
+{
+    /**
+     * コントローラの場所を定義します．
+     */
+    protected $namespace = 'App\Http\Controllers';
+
+    public const HOME = '/home';
+
+    /**
+     * パターンフィルタを定義します．
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Route::pattern('id', '[0-9]+');
+
+        parent::boot();
+    }
+
+    public function map()
+    {
+        $this->mapApiRoutes();
+
+        $this->mapWebRoutes();
+    }
+
+    /**
+     * Webルーティングファイルのパスを定義します
+     *
+     * @return void
+     */  
+    protected function mapWebRoutes()
+    {
+        Route::middleware('web')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Apiルーティングファイルのパスを定義します．
+     *
+     * @return void
+     */  
+    protected function mapApiRoutes()
+    {
+        Route::prefix('api')
+             ->middleware('api')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/api.php'));
+    }
+}
+
+```
+
+
+
+
+
+### EventServiceProvider
+
+
+
+
+
 ## Routes
 
 ### artisanによる操作
@@ -388,7 +522,11 @@ $ php artisan route:list
 #### ・キャッシュ削除
 
 ```bash
+# ルーティングのキャッシュを削除
 $ php artisan route:clear
+
+# 全てのキャッシュを削除
+$ php artisan optimize:clear
 ```
 
 
@@ -520,49 +658,62 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 ### artisanによる操作
 
-#### ・マイグレーションの準備
+#### ・マイグレーションファイルを作成
 
 ```bash
-# マイグレーションファイルを作成
 $ php artisan make:migrate create_{テーブル名}_table
 ```
 
 #### ・テーブル作成
 
+マイグレーションファイルを元にテーブルを作成する．
+
 ```bash
-# マイグレーションファイルを元にテーブを作成
 $ php artisan migrate
 ```
 
-
-#### ・テーブル削除
+#### ・マイグレーションの結果を確認
 
 ```bash
-# 指定した数だけ，マイグレーションのロールバックを行う
+$ php artisan migrate:status
+```
+
+#### ・指定した履歴数だけテーブルを元に戻す
+
+指定した履歴数だけ，ロールバックを行う
+
+```bash
 $ php artisan migrate:rollback --step={ロールバック数}
 ```
+
+#### ・初期の状態までテーブルを元に戻す
+
+初期の状態までロールバック
+
 ```bash
-# マイグレーションファイルを元に，全てのテーブルを削除
 $ php artisan migrate:reset
 ```
 
-#### ・テーブル削除＋作成
+#### ・テーブルを元に戻してから再作成
+
+```migrate:reset```と```migrate```を実行する．
 
 ```bash
-# migrate:reset + migrate を実行
 $ php artisan migrate:refresh
 ```
+#### ・テーブルを削除してから再作成
+
+全てのテーブルを削除と```migrate```を実行する．マイグレーションファイルの構文チェックを行わずに，強制的に実行される．
 
 ```bash
-# マイグレーションファイルに関係なく，全てのテーブルを削除 + migrate
 $ php artisan migrate:fresh
 ```
 
 
 
-### マイグレーションファイル
+### テーブルの作成と削除
 
-#### ・ファイル構造
+#### ・up，down
 
 ```up```メソッドでテーブル，カラム，インデックスのCREATEを行う．```down```メソッドでCREATEのロールバックを行う．
 
@@ -575,33 +726,38 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFlightsTable extends Migration
+class CreateExampleTable extends Migration
 {
     /**
-     * マイグレーション実行
+     * マイグレート
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('flights', function (Blueprint $table) {
+        Schema::create('example', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('airline');
             $table->timestamps();
         });
     }
 
     /**
-     * マイグレーションを元に戻す
+     * ロールバック
      *
      * @return void
      */
     public function down()
     {
-        Schema::drop('flights');
+        Schema::drop('example');
     }
 }
+```
+
+#### ・インデックスタイプ
+
+```
+
 ```
 
 
@@ -610,24 +766,24 @@ class CreateFlightsTable extends Migration
 
 ### artisanによる操作
 
-#### ・Factoryクラスの生成
+#### ・Factoryの生成
 
 ```bash
 # --model={モデル名}
 $ php artisan make:factory ExampleFactory --model=Example
 ```
-#### ・個別Seederクラスの生成
+#### ・個別Seederの生成
 ```bash
 $ php artisan make:seeder UserSeeder
 ```
 
-#### ・DatabaseSeederクラスの実行
+#### ・DatabaseSeederの実行
 
 ```bash
 # 事前に，Composerのオートローラを再生成
 $ composer dump-autoload
 
-# DatabaseSeederクラスを指定して実行
+# DatabaseSeederを指定して実行
 $ php artisan db:seed --class=DatabaseSeeder
 ```
 
@@ -636,7 +792,7 @@ $ php artisan db:seed --class=DatabaseSeeder
 
 ### テストデータ
 
-#### ・Factoryクラスによるデータ定義
+#### ・Factoryによるデータ定義
 
 **＊実装例＊**
 
@@ -663,9 +819,9 @@ $factory->define(User::class, function (Faker $faker) {
 });
 ```
 
-#### ・Seederクラスによるデータ作成
+#### ・Seederによるデータ作成
 
-Factoryクラスにおける定義を基にして，指定した数だけデータを作成する．
+Factoryにおける定義を基にして，指定した数だけデータを作成する．
 
 **＊実装例＊**
 
@@ -688,7 +844,7 @@ class UserSeeder extends Seeder
 }
 ```
 
-DatabaseSeederクラスにて，Seederクラスをまとめて実行する．
+DatabaseSeederにて，Seederをまとめて実行する．
 
 **＊実装例＊**
 
@@ -715,6 +871,285 @@ class DatabaseSeeder extends Seeder
 
 
 
+## Eloquent
+
+### artisanによる操作
+
+
+
+### CREATE
+
+#### ・insert文の実行
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    /**
+     * Exampleエンティティを作成
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Example $example)
+    {
+        // 内部でinsert文が実行される
+        $example->save();
+    }
+}
+```
+
+
+
+### READ
+
+#### ・select文の実行
+
+内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    private $example;
+    
+    public function __construct(Example $example)
+    {
+        $this->example = $example;
+    }
+  
+    /**
+     * 全てのExampleエンティティを読み出し
+     *
+     * @param Id $id
+     */
+    public function findAllEntity()
+    {
+        return $this->example->all()->toArray();
+    }
+  
+    /**
+     * 条件に合うExampleエンティティを読み出し
+     *
+     * @param Id $id
+     */
+    public function findEntityByCriteria($id)
+    {
+        return $this->example->find($id)->toArray();
+    }
+}
+```
+
+#### ・Collectionクラス
+
+List型で，データを保持できるオブジェクトのこと．データ型変換メソッドを持っている．
+
+```php
+<?php
+
+$collection = collect([
+    [
+        'id'  => '1',
+        'name' => '佐藤太郎',
+    ],
+    [
+        'id'  => '2',
+        'name' => '山田次郎',
+    ],
+]);
+
+// Array型に変換する
+$collection->toArray();
+```
+
+
+
+### UPDATE
+
+#### ・update文の実行
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    private $example;
+    
+    public function __construct(Example $example)
+    {
+        $this->example = $example;
+    }
+    
+    /**
+     * Exampleエンティティを更新
+     *
+     * @param Id $id
+     */
+    public function update(Id $id)
+    {
+        $example = $this->example->find($id);
+        
+        // エンティティのデータを更新
+        $example->name = $example->name;
+        $example->type = $example->type;
+        
+        // 内部でupdate文が実行される
+        $example->save();
+    }
+}
+```
+
+
+
+### DELETE
+
+#### ・delete文の実行（物理削除）
+
+```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    private $example;
+    
+    public function __construct(Example $example)
+    {
+        $this->example = $example;
+    }
+  
+    /**
+     * Exampleエンティティを削除
+     *
+     * @param Id $id
+     */
+    public function delete(Id $id)
+    {
+        $example = $this->example->find($id);
+        
+        // 内部でdelete文が実行され，物理削除される．
+        $example->delete();
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    private $example;
+    
+    public function __construct(Example $example)
+    {
+        $this->example = $example;
+    }  
+
+    /**
+     * Exampleエンティティを登録
+     *
+     * @param  Example $example
+     */
+    public function delete(Id $id)
+    {
+        $this->example->destroy($id);
+    }
+}
+```
+
+#### ・update文の実行（論理削除）
+
+論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．
+
+```php
+<?php
+
+namespace App\Domain\Entity;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Example extends Model
+{
+    /**
+    * トレイトの読み込み
+    */
+    use SoftDeletes;
+
+    /**
+     * 日付へキャストする属性
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+}
+```
+さらに，マイグレーションファイルにて```softDeletes```メソッドを使用し，```deleted_at```カラムが追加されるようにする．```deleted_at```カラムのデフォルト値は```NULL```である．
+
+```php
+Schema::table('example', function (Blueprint $table) {
+    $table->softDeletes();
+});
+```
+
+上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```が```NULL```でないデータを読み出さないため，論理削除を実現できる．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\Entity\Example;
+use App\Http\Controllers\Controller;
+
+class ExampleRepository extends Repository
+{
+    /**
+     * Exampleエンティティを登録
+     *
+     * @param Id $id
+     */
+    public function delete(Id $id)
+    {
+        $example = Example::find($id);
+        
+        // 内部でupdate文が実行され，論理削除される．
+        $example->delete();
+    }
+}
+```
+
+
+
 ## HTTP｜Middleware
 
 ### artisanによる操作
@@ -722,21 +1157,21 @@ class DatabaseSeeder extends Seeder
 #### ・クラスの自動生成
 
 ```bash
-# Middlewareクラスを自動生成
+# Middlewareを自動生成
 $ php artisan make:middleware {クラス名}
 ```
 
 
 
-### Middlewareクラスの仕組み
+### Middlewareの仕組み
 
-#### ・Middlewareクラスの種類
+#### ・Middlewareの種類
 
 ルーティング後にコントローラメソッドの前にコールされるBeforeMiddleと，レスポンスの実行時にコールされるAfterMiddlewareがある
 
 ![Laravelのミドルウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LaravelのMiddlewareクラスの仕組み.png)
 
-#### ・BeforeMiddlewareクラス
+#### ・BeforeMiddleware
 
 ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，```Illuminate\Http\Request```オブジェクトが代入されている．
 
@@ -759,7 +1194,7 @@ class ExampleBeforeMiddleware
     }
 }
 ```
-#### ・AfterMiddlewareクラス
+#### ・AfterMiddleware
 
 コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，```Illuminate\Http\Response```オブジェクトが代入されている．
 
@@ -805,7 +1240,7 @@ $ php artisan make:request {クラス名}
 
 #### ・```rules```メソッド，```validated```メソッド
 
-FormRequestクラスを継承したクラスにて，```rules```メソッドを使用して，ルールを定義する．バリデーションルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+FormRequestを継承したクラスにて，```rules```メソッドを使用して，ルールを定義する．バリデーションルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -833,7 +1268,7 @@ class ExampleRequest extends FormRequest
 }
 ```
 
-Controllerで，ExampleRequestクラスを型指定すると，コントローラのメソッドをコールする前にバリデーションが自動で行われる．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションが失敗した場合，メソッドのコール前に，ExampleRequestクラスが元々のページにリダイレクトする処理を自動で実行する．
+Controllerで，ExampleRequestを型指定すると，コントローラのメソッドをコールする前にバリデーションが自動で行われる．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションが失敗した場合，メソッドのコール前に，ExampleRequestが元々のページにリダイレクトする処理を自動で実行する．
 
 **＊実装例＊**
 
@@ -1017,7 +1452,7 @@ $ php artisan make:controller {クラス名}
 
 
 
-### Requestクラスのコール
+### Requestのコール
 
 ####  ・データの取得
 
@@ -1077,7 +1512,7 @@ class UserController extends Controller
 
 
 
-### Responseクラスのコール
+### Responseのコール
 
 #### ・Json型データのレスポンス
 
@@ -1272,7 +1707,7 @@ Route::get('user', 'UserController@index')->middleware('auth:api');
 ```php
 <?php
   
-namespace App\Models;
+namespace App\Domain\Entity;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -1308,7 +1743,7 @@ class AuthServiceProvider extends ServiceProvider
 }
 ```
 
-5. 以降，ユーザ側のアプリケーションにおける対応である．暗号キーとユーザを作成する．
+5. API側では，暗号キーとユーザを作成する．
 
 ```bash
 $ php artisan passport:keys
@@ -1316,7 +1751,7 @@ $ php artisan passport:keys
 $ php artisan passport:client --password
 ```
 
-6. ユーザ側のアプリケーションでは，『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
+6. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
 
 **＊実装例＊**
 
@@ -1375,7 +1810,11 @@ return (string)$response->getBody();
 #### ・キャッシュの削除
 
 ```bash
+# ビューのキャッシュを削除
 $ php artisan view:clear
+
+# 全てのキャッシュを削除
+$ php artisan optimize:clear
 ```
 
 
