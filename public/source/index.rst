@@ -35,9 +35,15 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: PHP｜RESTful-API
+   :caption: PHP｜API
 
    backend_api_restful.md
+
+.. toctree::
+   :maxdepth: 2
+   :caption: PHP｜認証と認可
+
+   backend_authentication_authorization.md
 
 .. toctree::
    :maxdepth: 2
