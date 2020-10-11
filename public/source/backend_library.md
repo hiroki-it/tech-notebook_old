@@ -1,49 +1,78 @@
 # ライブラリ
 
-## 01. ライブラリの管理
+## 01. composerによるライブラリの管理
 
-### composer
+### コマンド
+
+#### ・composer.jsonにライブラリを追加
+
+composer.json にパッケージ名を書き込む．インストールは行わない．
+
+```bash
+$ /usr/local/bin/composer require {パッケージ名}:^x.x
+```
 
 #### ・インストール
 
-```bash
-# composer.json にパッケージ名を書き込み，またインストール
-$ composer require {パッケージ名}
-```
-
-``` bash
-# 全てのパッケージを最新版に更新
-$ composer update
-```
-
-#### ・その他
+composer.json にパッケージ名を書き込み，さらにインストール
 
 ```bash
-# キャッシュを削除．
-$ php /usr/local/bin/composer clear-cache
+$ /usr/local/bin/composer install {パッケージ名}
 ```
 
+####  ・メモリ上限をなくしてインストール
+
+phpのメモリ上限を無しにしてcomposer updateを行う．phpバイナリファイルを使用する．
+
 ```bash
-# phpのメモリ上限を無しにしてcomposer updateを行う．
 $ php -d memory_limit=-1 /usr/local/bin/composer update
 ```
 
-```bash
-# プロセスを表示しながら，インストールする．
-$ php /usr/local/bin/composer update -vvv
-```
+####  ・ログを表示しつつインストール
+
+プロセスを表示しながら，インストールする．
 
 ```bash
-# requireタグ内の特定のライブラリ（コンポーネント）をインストール．
-$ php /usr/local/bin/composer require symfony/event-dispatcher
+$ /usr/local/bin/composer update -vvv
 ```
+
+####  ・特定のライブラリをインストール
+
+requireタグ内の特定のライブラリ（コンポーネント）をインストール．
 
 ```bash
-# require-devタグ内のライブラリは除いてインストール．
-$ php /usr/local/bin/composer require --no-dev
+$ /usr/local/bin/composer install symfony/event-dispatcher
 ```
 
-#### ・バージョンの表記方法
+####  ・--no-devを除いてインストール
+
+require-devタグ内のライブラリは除いてインストール
+
+```bash
+$ /usr/local/bin/composer install --no-dev
+```
+
+#### ・バージョン表記に合わせて，ライブラリをアップデート
+
+全てのパッケージを最新版に更新
+
+``` bash
+$ /usr/local/bin/composer update
+```
+
+#### ・キャッシュを削除
+
+インストール時に生成されたキャッシュを削除する．
+
+```bash
+$ /usr/local/bin/composer clear-cache
+```
+
+
+
+### composer.jsonの実装
+
+#### ・バージョンを定義
 
 ```json
 // 個人的に一番おすすめ
@@ -80,13 +109,35 @@ $ php /usr/local/bin/composer require --no-dev
 }
 ```
 
+####  ・autoloadの対象に登録した設定を反映
 
+```require```メソッドによる読み込みを不要とするファイルをcomposer.jsonに登録できる．
 
+```json
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ]
+    }
+}
+```
 
+その後，コマンドでこの登録を反映する．
 
-## 02. ライブラリの読み込み
+```bash
+$ /usr/local/bin/composer dump-autoload
+```
 
-### エントリポイントでの```autoload.php```の読み込み
+### 
+
+## 02. アプリケーションによるライブラリの読み込み
+
+### エントリポイントにおける```autoload.php```ファイルの読み込み
 
 ライブラリが，```vendor```ディレクトリ下に保存されていると仮定する．ライブラリを使用するたびに，各クラスでディレクトリを読み込むことは手間なので，エントリーポイント（```index.php```）あるいは```bootstrap.php```で，最初に読み込んでおき，クラスでは読み込まなくて良いようにする．
 
@@ -99,7 +150,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 
 
-## 02. Doctrineライブラリ
+## 03. Doctrineライブラリ
 
 ### Doctrineとは
 
