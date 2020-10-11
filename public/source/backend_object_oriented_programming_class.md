@@ -611,117 +611,6 @@ class SubExample extends Example
 
 
 
-## 04-03. 外部クラスとメソッドの読み込み
-
-### ```use```によるクラスとメソッドの読み込み
-
-PHPでは，```use```によって，外部ファイルの名前空間，クラス，メソッド，定数を読み込める．ただし，動的な値は持たず，静的に読み込むことに注意．ただし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
-
-**＊実装例＊**
-
-```PHP
-<?php
-  
-// 名前空間を定義．
-namespace Domain/Entity1;
-
-// 定数を定義．
-const VALUE = "これは定数です．";
-
-class Example1
-{
-    public function className()
-    {
-        return "example1メソッドです．";
-    }
-}
-```
-
-#### ・名前空間の読み込み
-
-```PHP
-<?php
-  
-// use文で名前空間を読み込む．
-use Domain/Entity2;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    public function method()
-    {
-
-        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-        $e1 = new Entity1/E1:
-        echo $e1;
-    }
-}
-```
-
-#### ・クラスの読み込み
-
-```PHP
-<?php
-  
-// use文でクラス名を読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    public function method()
-    {
-        // 名前空間を読み込み，クラスまで辿り，インスタンス作成．
-        $e1 = new E1;
-        echo $e1;
-    }
-}
-```
-
-#### ・メソッドの読み込み
-
-```PHP
-<?php
-  
-// use文でメソッドを読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Eeample2
-{
-    public function method()
-    {
-        // Example1クラスのclassName()をコール．
-        echo className();
-    }
-}
-```
-
-#### ・定数の読み込み
-
-```PHP
-<?php
-  
-// use文で定数を読み込む．
-use Domain/Entity1/Example1;
-
-namespace Domain/Entity2;
-
-class Example2
-{
-    // Example1クラスの定数を出力．
-    public function method()
-    {    
-        echo Example1::VALUE;
-    }
-}
-```
-
-
-
 ### Trait
 
 #### ・Traitとは
@@ -754,6 +643,158 @@ class Example
 
 $exmaple = new Example();
 $example->example(); // Hello World
+```
+
+
+
+## 04-03. 外部ファイルの読み込み
+
+### ```require_once```メソッドによる，クラス，非クラスのメソッドの読み込み
+
+#### ・```require_once```メソッドとは
+
+外部ファイルとして定義された，クラス，非クラスのメソッド，を一度だけ読み込める．動的な値は持たず，静的に読み込むことに注意．ただし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```require_once```メソッドで読み込んで良いものを決めておくと良い．
+
+
+#### ・クラスからメソッドをコール
+
+```php
+<?php
+  
+class Example1
+{
+    const VALUE = "これは定数です．";
+  
+    public function className()
+    {
+        return "example1メソッドです．";
+    }
+}
+```
+
+```php
+<?php
+
+// 外部ファイル名を指定して，クラスを読み込む．
+require_once('Example1.php');
+
+class Example2
+{
+    public function method()
+    {
+        $e1 = new Example1:
+        $e1->className();
+    }
+}
+```
+
+#### ・クラスから定数をコール
+
+```php
+<?php
+  
+// 外部ファイル名を指定して，クラスを読み込む．
+require_once('Example1.php');
+
+class Example2
+{
+    public function method()
+    {    
+        // Example1クラスの定数を出力．
+        return Example1::VALUE;
+    }
+}
+```
+
+#### ・非クラスからメソッドをコール
+
+```php
+<?php
+
+function printTest() {
+    return  'test';
+}
+```
+
+```php
+<?php
+
+// 外部ファイル名を指定して読み込む．
+require_once ('printTestFunction.php');
+
+printTest();
+```
+
+
+
+### ```use```によるクラスの読み込み
+
+#### ・```use```とは
+
+PHP```5.3```以降では，外部ファイルとして定義されたクラスの```namespace```を，```use```で指定することによって，そのクラスのみを読み込める．非クラスを読み込むことはできない．動的な値は持たず，静的に読み込むことに注意．ただし，チームの各エンジニアが好きな物を読み込んでいたら，スパゲッティコードになりかねない．そこで，チームでの開発では，記述ルールを設けて，```use```で読み込んで良いものを決めておくと良い．
+
+#### ・外部ファイルのクラスからメソッドをコール
+
+```use```文で```namespace```を指定して，外部ファイルのクラスを読み込める．
+
+**＊実装例＊**
+
+```PHP
+<?php
+  
+// 名前空間を定義．
+namespace Domain\Entity;
+
+class Example1
+{
+    // 定数を定義．
+    const VALUE = "これは定数です．";
+  
+    public function className()
+    {
+        return "example1メソッドです．";
+    }
+}
+```
+
+```PHP
+<?php
+
+namespace Domain\Entity;
+
+// namespaceを指定して，外部ファイルのクラスを読み込む．
+use Domain\Entity\Example1;
+
+class Example2
+{
+    public function method()
+    {
+        $e1 = new Example1:
+        $e1->className();
+    }
+}
+```
+
+#### ・外部ファイルのクラスから定数をコール
+
+**＊実装例＊**
+
+```PHP
+<?php
+
+namespace Domain\Entity;
+
+// namespaceを指定して，外部ファイルのクラスを読み込む．
+use Domain\Entity1\Example1;
+
+class Example2
+{
+    public function method()
+    {    
+        // Example1クラスの定数を出力．
+        echo Example1::VALUE;
+    }
+}
 ```
 
 
