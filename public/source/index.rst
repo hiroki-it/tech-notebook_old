@@ -41,12 +41,6 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: PHP｜認証と認可
-
-   backend_authentication_authorization.md
-
-.. toctree::
-   :maxdepth: 2
    :caption: PHP｜ライブラリ／フレームワーク
 
    backend_library.md
@@ -63,9 +57,10 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: JSON
+   :caption: フロントエンドとバックエンド間のデータ通信
 
-   backend_frontend_json.md
+   frontend_and_backend_authentication_authorization.md
+   frontend_and_backend_json.md
 
 .. toctree::
    :maxdepth: 2
