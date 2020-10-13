@@ -9,7 +9,7 @@
 composer.json にパッケージ名を書き込む．インストールは行わない．
 
 ```bash
-$ /usr/local/bin/composer require {パッケージ名}:^x.x
+$ /usr/local/bin/composer require <パッケージ名>:^x.x
 ```
 
 #### ・インストール
@@ -17,7 +17,7 @@ $ /usr/local/bin/composer require {パッケージ名}:^x.x
 composer.json にパッケージ名を書き込み，さらにインストール
 
 ```bash
-$ /usr/local/bin/composer install {パッケージ名}
+$ /usr/local/bin/composer install <パッケージ名>
 ```
 
 ####  ・メモリ上限をなくしてインストール
@@ -133,7 +133,7 @@ $ /usr/local/bin/composer clear-cache
 $ /usr/local/bin/composer dump-autoload
 ```
 
-### 
+
 
 ## 02. アプリケーションによるライブラリの読み込み
 
@@ -530,7 +530,7 @@ class Example
 $client = new Client();
 
 // GET送信
-$response = $client->request("GET", {アクセスしたいURL});
+$response = $client->request("GET", <アクセスしたいURL>);
 ```
 
 #### ・レスポンスメッセージからボディを取得
@@ -542,7 +542,7 @@ $response = $client->request("GET", {アクセスしたいURL});
 $client = new Client();
 
 // POST送信
-$response = $client->request("POST", {アクセスしたいURL});
+$response = $client->request("POST", <アクセスしたいURL>);
 
 // レスポンスメッセージからボディのみを取得
 $body = json_decode($response->getBody(), true);
