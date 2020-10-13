@@ -524,7 +524,7 @@ workflows:
 ECSのサービスのリビジョンを更新する．以下のaws-cliに対応している．
 
 ```bash
-$ aws ecs update-service {複数のオプション}
+$ aws ecs update-service <複数のオプション>
 ```
 
 **＊実装例＊**
@@ -567,7 +567,7 @@ workflows:
 サービスに内包されるタスクを指定して，設定したオプションで，現在起動中のタスクとは別のものを新しく起動する．以下のaws-cliを内部で実行している．
 
 ```bash
-$ aws ecs run-task {複数のオプション}
+$ aws ecs run-task <複数のオプション>
 ```
 
 **＊実装例＊**

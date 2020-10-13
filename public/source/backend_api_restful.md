@@ -329,7 +329,7 @@ Accept-Encondig: gzip, deflate, br
 # レスポンスで送信してほしい言語
 Accept-Language: ja, en-US; q=0.9, en; q=0.8
 # 二回目のリクエスト時（name=value）
-Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
+Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
 
 # ボディ．（SSLによって暗号化されるため閲覧不可）
 text=a&text2=b 
@@ -361,7 +361,7 @@ Server: Server
 Date: Sat, 26 Sep 2020 04:25:08 GMT
 x-amz-rid:	xxxxx
 # セッションIDを含むCookie情報
-Set-Cookie: session-id={セッションID}; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
+Set-Cookie: session-id=<セッションID>; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
 Set-Cookie: session-id-time=xxxxx; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
 Set-Cookie: i18n-prefs=JPY; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
 Set-Cookie: skin=noskin; path=/; domain=.amazon.co.jp
@@ -572,13 +572,13 @@ setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続�
 
 ```http
 # リクエストヘッダーの場合
-Cookie: PHPSESSID={セッションID}; csrftoken=u32t4o3tb3gg43; _gat=1
+Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
 ```
 
 
 ```http
 # レスポンスヘッダーの場合
-Set-Cookie: sessionId={セッションID}
+Set-Cookie: sessionId=<セッションID>
 ```
 
 #### ・セッションIDの発行，セッションファイルの生成

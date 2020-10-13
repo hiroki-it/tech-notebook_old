@@ -74,7 +74,7 @@ $ which python3
 
 ```bash
 # find ---> grep
-$ find /* -type f |xargs grep "{検索文字}"
+$ find /* -type f |xargs grep "<検索文字>"
 ```
 
 #### ・```kill```との組み合わせ
@@ -83,7 +83,7 @@ $ find /* -type f |xargs grep "{検索文字}"
 
 ```bash
 # pgrep ---> kill
-$ sudo pgrep -f {コマンド名} | sudo xargs kill -9
+$ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
 
@@ -96,7 +96,7 @@ $ sudo pgrep -f {コマンド名} | sudo xargs kill -9
 
 ```bash
 # 複数階層のディレクトリを作成
-$ mkdir -p /{ディレクトリ名1}/{ディレクトリ名2}
+$ mkdir -p /<ディレクトリ名1>/<ディレクトリ名2>
 ```
 
 
@@ -118,18 +118,18 @@ $ ls -l -a
 
 ```bash
 # ディレクトリの属性情報も含めて，ディレクトリ構造とファイルを再帰的にコピー．
-$ cp -Rp /{ディレクトリ名1}/{ディレクトリ名2} /{ディレクトリ名1}/{ディレクトリ名2}
+$ cp -Rp /<ディレクトリ名1>/<ディレクトリ名2> /<ディレクトリ名1>/<ディレクトリ名2>
 ```
 
 ```bash
 # 隠しファイルも含めて，ディレクトリの中身を他のディレクトリ内にコピー
 # 「アスタリスク」でなく「ドット」にする
-$ cp -Rp /{ディレクトリ名}/. /{ディレクトリ名} 
+$ cp -Rp /<ディレクトリ名>/. /<ディレクトリ名> 
 ```
 
 ```bash
 # 『ファイル名.YYYYmmdd』の形式でバックアップファイルを作成
-cp -p {ファイル名} {ファイル名}.`date +'%Y%m%d'`
+cp -p <ファイル名> <ファイル名>.`date +'%Y%m%d'`
 ```
 
 
@@ -142,17 +142,17 @@ cp -p {ファイル名} {ファイル名}.`date +'%Y%m%d'`
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもつファイルを全て検索．
-$ find /* -type f |xargs grep "{検索文字}"
+$ find /* -type f |xargs grep "<検索文字>"
 ```
 
 ```bash
 # ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
-$ find /* -name "*.conf" -type f | xargs grep "{検索文字}"
+$ find /* -name "*.conf" -type f | xargs grep "<検索文字>"
 ```
 
 ```bash
 # パーミッションエラーなどのログを破棄して検索．
-$ find /* -type f |xargs grep "{検索文字}" 2> /dev/null
+$ find /* -type f |xargs grep "<検索文字>" 2> /dev/null
 ```
 
 
@@ -208,12 +208,12 @@ $ chmod -R 600 example
 
 ```bash
 # カレントディレクトリに，シンボリックリンクを作成．
-$ ln -s {リンク先のファイル／ディレクトリまでのパス} {シンボリックリンク名} 
+$ ln -s <リンク先のファイル／ディレクトリまでのパス> <シンボリックリンク名> 
 ```
 
 ```bash
 # カレントディレクトリのシンボリックリンクを削除．
-$ unlink {シンボリックリンク名}
+$ unlink <シンボリックリンク名>
 ```
 
 
@@ -224,7 +224,7 @@ $ unlink {シンボリックリンク名}
 
 ```bash
 # ディレクトリ自体と中のファイルを再帰的に削除．
-$ rm -R {ディレクトリ名} 
+$ rm -R <ディレクトリ名> 
 ```
 
 
@@ -235,12 +235,12 @@ $ rm -R {ディレクトリ名}
 
 ```bash
 # ファイルを8進数の機械語で出力
-$ od {ファイル名}
+$ od <ファイル名>
 ```
 
 ```bash
 # ファイルを16進数の機械語で出力
-$ od -Ad -tx {ファイル名}
+$ od -Ad -tx <ファイル名>
 ```
 
 
@@ -255,12 +255,12 @@ $ od -Ad -tx {ファイル名}
 
 ```bash
 # tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
-$ ssh -l {サーバのユーザ名}@{サーバのホスト名} -p 22 -i {秘密鍵のパス} -T
+$ ssh -l <サーバのユーザ名>@<サーバのホスト名> -p 22 -i <秘密鍵のパス> -T
 ```
 
 ```bash
 # -vvvでログを出力する
-$ ssh -l {サーバのユーザ名}@{サーバのホスト名} -p 22 -i {秘密鍵のパス} -T -vvv
+$ ssh -l <サーバのユーザ名>@<サーバのホスト名> -p 22 -i <秘密鍵のパス> -T -vvv
 ```
 
 #### ・設定ファイル（```~/.ssh/config```）
@@ -269,18 +269,18 @@ $ ssh -l {サーバのユーザ名}@{サーバのホスト名} -p 22 -i {秘密�
 
 ```
 # サーバ１
-Host {接続名1}
-    User {サーバ１のユーザ名}
+Host <接続名1>
+    User <サーバ１のユーザ名>
     Port 22
-    HostName {サーバ１のホスト名}
-    IdentityFile {秘密鍵へのパス}
+    HostName <サーバ１のホスト名>
+    IdentityFile <秘密鍵へのパス>
 
 # サーバ２
-Host {接続名２}
-    User {サーバ２のユーザ名}
+Host <接続名２>
+    User <サーバ２のユーザ名>
     Port 22
-    HostName {サーバ２のホスト名}
-    IdentityFile {秘密へのパス}
+    HostName <サーバ２のホスト名>
+    IdentityFile <秘密へのパス>
 ```
 
 これにより，コマンド実行時の値渡しを省略できる．
@@ -288,7 +288,7 @@ Host {接続名２}
 ```bash
 # tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
 # 秘密鍵の権限は「600」にしておく
-$ ssh {接続名} -T
+$ ssh <接続名> -T
 ```
 
 
@@ -303,13 +303,13 @@ $ ssh {接続名} -T
 
 ```bash
 # 稼働しているプロセスのうち，詳細情報に「xxx」を含むものを表示する．
-$ ps aux | grep "{検索文字}"
+$ ps aux | grep "<検索文字>"
 ```
 
 指定したコマンドによるプロセスを全て削除する．
 
 ```bash
-$ sudo pgrep -f {コマンド名} | sudo xargs kill -9
+$ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
 
@@ -331,14 +331,14 @@ systemd-reboot.service  static   # enable：他サービス依存
 
 ```bash
 # マシン起動時にデーモンが自動起動するように設定．
-$ systemctl enable {プロセス名}
+$ systemctl enable <プロセス名>
 # 例：Cron，Apache
 $ systemctl enable crond.service
 $ systemctl enable httpd.service
 
 
 # マシン起動時にデーモンが自動起動しないように設定．
-$ systemctl disable {プロセス名}
+$ systemctl disable <プロセス名>
 # 例：Cron，Apache
 $ systemctl disable crond.service
 $ systemctl disable httpd.service
@@ -360,7 +360,7 @@ $ systemctl disable httpd.service
 
 ```bash
 # プロセスを強制的に削除
-$ kill -9 {プロセスID（PID）}
+$ kill -9 <プロセスID（PID）>
 ```
 
 
@@ -373,7 +373,7 @@ $ kill -9 {プロセスID（PID）}
 
 ```bash
 # vim上でファイルを開く
-$ vim {ファイル名}
+$ vim <ファイル名>
 ```
 
 
@@ -384,7 +384,7 @@ $ vim {ファイル名}
 
 ```bash
 # 履歴1000件の中からコマンドを検索
-$ history | grep {過去のコマンド}
+$ history | grep <過去のコマンド>
 ```
 
 
@@ -400,7 +400,7 @@ cronデーモンの動作が定義されたcrontabファイルを操作するた
 ```bash
 # crontab：command run on table
 # 作成したcronファイルを登録する．
-$ crontab {ファイルパス}
+$ crontab <ファイルパス>
 ```
 
 | ファイル名<br>ディレクトリ名 | 利用者 | 主な用途                                               |
@@ -475,7 +475,7 @@ CONTENT_TYPE=text/plain; charset=UTF-8
 3. このファイルをcrontabコマンドで登録する．cronファイルの実体はないことと，変更した場合は登録し直さなければいけないことに注意する．
 
 ```bash
-$ crontab {ファイルパス}
+$ crontab <ファイルパス>
 ```
 
 4. 登録されている処理を確認する．
@@ -566,13 +566,13 @@ directory=/var/www/tech-notebook
 ```bash
 # 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを追加．
 # バイナリファイルを入力すると，絶対パス
-$ export PATH=$PATH:{シェルスクリプトへのあるディレクトリへの絶対パス}
+$ export PATH=$PATH:<シェルスクリプトへのあるディレクトリへの絶対パス>
 ```
 
 ```bash
 # 不要なパスを削除したい場合はこちら
 # 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを上書き
-$ export PATH={不要な絶対パス以外の羅列}
+$ export PATH=<不要な絶対パス以外の羅列>
 
 # （例）初期状態に戻す
 # export PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -734,7 +734,7 @@ $ swapoff /swap_volume
 ```bash
 # 指定したライブラリをインストール
 # /usr/local 以下にインストール
-$ pip install --user {ライブラリ名}
+$ pip install --user <ライブラリ名>
 ```
 ```bash
 # requirements.txt を元にライブラリをインストール
@@ -781,31 +781,31 @@ Required-by: sphinxcontrib.sqltable, sphinx-rtd-theme, recommonmark
 ```bash
 # パッケージをインストール
 # -ivh：--install -v --hash 
-$ rpm -ivh {パッケージ名}
+$ rpm -ivh <パッケージ名>
 ```
 
 ```bash
 # パッケージを更新
 # -Uvh：--upgrade -v --hash 
-$ rpm -Uvh {パッケージ名}
+$ rpm -Uvh <パッケージ名>
 ```
 
 ```bash
 # インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
 # -qa：
-$ rpm -qa | grep {検索文字}
+$ rpm -qa | grep <検索文字>
 ```
 
 ```bash
 # 指定したパッケージ名で，関連する全てのファイルの場所を表示．
 # -ql：
-$ rpm -ql {パッケージ名}
+$ rpm -ql <パッケージ名>
 ```
 
 ```bash
 # 指定したパッケージ名で，インストール日などの情報を表示．
 # -qi：
-$ rpm -qi {パッケージ名}
+$ rpm -qi <パッケージ名>
 ```
 
 
@@ -818,15 +818,15 @@ rpmと同様の使い方ができる．また，インストール時にパッ�
 
 ```bash
 # パッケージをインストール
-$ yum install -y {パッケージ名}
+$ yum install -y <パッケージ名>
 
 # 再インストールする時は，reinstallとすること
-$ yum reinstall -y {パッケージ名}
+$ yum reinstall -y <パッケージ名>
 ```
 
 ```bash
 # インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
-$ yum list | grep {検索文字}
+$ yum list | grep <検索文字>
 ```
 
 #### ・EPELリポジトリ，Remiリポジトリ
@@ -1096,8 +1096,8 @@ public class Age
 
 ```bash
 # パッケージを公式からインストールと解答
-$ wget {パッケージのリンク}
-$ tar {パッケージのフォルダ名}
+$ wget <パッケージのリンク>
+$ tar <パッケージのフォルダ名>
 
 # ビルド用ディレクトリの作成．
 $ mkdir build
@@ -1110,7 +1110,7 @@ configureファイルを元に，ルールが定義されたMakefileを作成す
 
 ```bash
 # configureへのパスに注意．
-$ ../configure --prefix="{ソースコードのインストール先のパス}"
+$ ../configure --prefix="<ソースコードのインストール先のパス>"
 ```
 
 #### 3. ビルド （コンパイル＋リンク）
@@ -1163,7 +1163,7 @@ $ make clean
 #===========
 
 # PHPなので，処理終わりにセミコロンが必要
-$ php -r '{何らかの処理}'
+$ php -r '<何らかの処理>'
 
 # Hello Worldを出力
 $ php -r 'echo "Hello World";'

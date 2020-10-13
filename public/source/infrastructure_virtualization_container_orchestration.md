@@ -96,7 +96,7 @@ tty: true
 **＊実装例＊**
 
 ```yaml
-image: tech-notebook-www:{タグ名}
+image: tech-notebook-www:<タグ名>
 ```
 
 
@@ -108,7 +108,7 @@ image: tech-notebook-www:{タグ名}
 
 ```yaml
 ports:
-  - "8080:80" # {ホストOS側のポート番号}:{コンテナのポート番号}
+  - "8080:80" # <ホストOS側のポート番号>:<コンテナのポート番号>
 ```
 
 #### ・```volumes```（Bindマウント）
@@ -120,7 +120,7 @@ ports:
 
 ```yaml
 volumes:
-  - ./app:/var/www/app # {ホストOSのディレクトリ}:{コンテナのディレクトリ}
+  - ./app:/var/www/app # <ホストOSのディレクトリ>:<コンテナのディレクトリ>
 ```
 
 #### ・```volumes```（Volumeマウント）
@@ -217,7 +217,7 @@ $ docker network ls
 
 NETWORK ID       NAME                      DRIVER       SCOPE
 xxxxxxxxxxxx     backend_default           bridge       local
-xxxxxxxxxxxx     {プロジェクト名}_default     bridge      local
+xxxxxxxxxxxx     <プロジェクト名>_default     bridge      local
 ```
 
 
@@ -243,7 +243,7 @@ $ docker-compose up -d
 
 ```bash
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動 
-$ docker-compose run -d -it {イメージ名}
+$ docker-compose run -d -it <イメージ名>
 ```
 
 #### ・stop
@@ -264,10 +264,10 @@ $ docker-compose stop
 
 ```bash
 # コンテナ名でなくサービス名であることに注意
-$ docker-compose logs {サービス名}
+$ docker-compose logs <サービス名>
 
 # フォアグラウンドでログを表示
-$ docker-compose logs -f {サービス名}
+$ docker-compose logs -f <サービス名>
 ```
 
 
