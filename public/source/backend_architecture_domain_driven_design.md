@@ -65,9 +65,32 @@
 Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，以下の4層に再編成できる．
 
 #### ・User Interface層
+
 #### ・Application層
+
+| デザインパターン    | 説明 | 備考 |
+| ------------------- | ---- | ---- |
+| Controller          |      |      |
+| Application Service |      |      |
+| Validation          |      |      |
+| Converter           |      |      |
+
 #### ・Domain層（ビジネロジックをコード化）
+
+| デザインパターン | 説明 | 備考 |
+| ---------------- | ---- | ---- |
+| Entity           |      |      |
+| Specification    |      |      |
+| Value Object     |      |      |
+| Type Code        |      |      |
+| Domain Service   |      |      |
+
 #### ・Infrastructure層（DBとマッピング）
+
+| デザインパターン | 説明 | 備考 |
+| ---------------- | ---- | ---- |
+| Repository       |      |      |
+| Factory          |      |      |
 
 
 
@@ -135,7 +158,7 @@ class AcceptOrdersController
 
 #### ・責務
 
-Domain層のDomain Serviceとは異なる．ドメイン層のオブジェクトを使用する汎用的なメソッドをもち，Controllerにメソッドを提供する．
+Application層の中で，ドメイン層のオブジェクトを使用する汎用的なメソッドが切り分けられたもの．Controllerにメソッドを提供する．Domain層のDomain Serviceとは異なるので注意する．
 
 **＊実装例＊**
 
@@ -211,21 +234,21 @@ class Converter
 
 ## 04. Domain層
 
-### 抽象Repository
+### Repositoryパターン（インターフェース）
 
 #### ・責務
 
-リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryの抽象クラスを配置する．
+デザインパターンの一つ．データベースにアクセスする責務を持つ．リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryのインターフェースを配置する．
 
 **＊実装例＊**
 
 ```PHP
 <?php
-abstract class getDogToyEntityRepository
+interface GetDogToyEntityRepository
 {
 
     // 対応する具象メソッドはInfrastructure層のRepositoryに実装．
-    abstract public function arrayDogToyEntities();
+    function arrayDogToyEntities();
 
 }
 ```
@@ -329,7 +352,7 @@ class XxxCriteria
 
 
 
-## 04-02. Domain｜Entity の責務
+## 04-02. Domain層｜Entity の責務
 
 ### Entityの具体例
 
@@ -641,7 +664,7 @@ class Money
 
 
 
-## 04-04. Domain｜Type Code（標準型）の責務
+## 04-04. Domain層｜Type Code（標準型）の責務
 
 ### 区分や種類のデータを保持する
 
@@ -715,7 +738,7 @@ class ColorVO extends Enum
 
 ## 05. Infrastructure層
 
-### 具象Repository
+### Repositoryパターン（実装クラス）
 
 #### ・DBに対する書き込み責務（Create，Update，Delete）
 
