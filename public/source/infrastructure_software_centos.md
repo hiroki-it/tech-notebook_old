@@ -649,9 +649,21 @@ $ df -h --total
 #### ・コマンド例
 
 ```bash
-# 物理メモリ，スワップ領域，の使用状況を確認
+# 物理メモリ，スワップ領域，の使用状況をメガバイトで確認
+# m：Mega Bytes
+# t: -total
+$ free -m -total
+```
+
+### df
+
+#### ・コマンド例
+
+```bash
+# ストレージの使用状況をメガバイトで確認
 # h：--human-readable
-$ free -h --total
+# t: -total
+$ df -h -m -t
 ```
 
 

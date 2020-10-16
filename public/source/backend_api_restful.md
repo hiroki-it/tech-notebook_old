@@ -207,20 +207,20 @@ GET http://www.example.co.jp/cgi-bin/get_users.php
 メソッドから，処理の目的はわかるので，URIに対応する動詞名を実装する必要はない．
 
 ```http
-GET http://www.example.co.jp/user/get/12345
+GET http://www.example.co.jp/users/get/12345
 ```
 
 ```http
-POST http://www.example.co.jp/user/create/12345
+POST http://www.example.co.jp/users/create/12345
 ```
 
 
 ```http
-PUT http://www.example.co.jp/user/update/12345
+PUT http://www.example.co.jp/users/update/12345
 ```
 
 ```http
-DELETE http://www.example.co.jp/user/delete/12345
+DELETE http://www.example.co.jp/users/delete/12345
 ```
 
 #### ・数字，バージョン番号を使用しないこと
@@ -356,8 +356,8 @@ HTTP/1.1 200
 Content-Type: text/html;charset=UTF-8
 Transfer-Encoding: chunked
 Connection: close
-# Webサーバ（Nginx，Apache），開発言語（PHP）など．セキュリティ上の理由で非表示推奨．
-Server: Server
+# Webサーバ（nginx，apacheなど）
+Server: nginx
 Date: Sat, 26 Sep 2020 04:25:08 GMT
 x-amz-rid:	xxxxx
 # セッションIDを含むCookie情報
@@ -382,6 +382,7 @@ X-Cache: Miss from cloudfront
 Via: 1.1 xxxxx.cloudfront.net (CloudFront)
 X-Amz-Cf-Pop: SEA19-C2
 X-Amz-Cf-Id: xxxxx==
+# 言語のバージョン（※ php.ini にて，expose_php = Off と設定することで非表示にできる）
 X-Powered-By: PHP/7.3.22
 
 # ボディ
