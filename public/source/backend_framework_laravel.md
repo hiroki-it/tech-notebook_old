@@ -74,7 +74,7 @@ class Example
 ```php
 <?php
 
-use Illuminate\Support\Facades\ Example;
+use Illuminate\Support\Facades\Example;
     
 // Facade利用
 $result = Example::method();
