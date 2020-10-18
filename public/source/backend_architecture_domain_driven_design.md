@@ -236,6 +236,8 @@ class Converter
 
 ### Repositoryパターン（インターフェース）
 
+![Repository](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Repository.png)
+
 #### ・責務
 
 デザインパターンの一つ．データベースにアクセスする責務を持つ．リクエストによるデータ送信が行われる．Controllerは，Domain層の抽象メソッドをコールし，DBにおけるデータのCRUDを行う．DIPに基づくドメイン駆動設計の場合，Repositoryのインターフェースを配置する．
