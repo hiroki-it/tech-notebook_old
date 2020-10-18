@@ -267,6 +267,20 @@ class Example
 
 ## 02-02. メソッド
 
+### まず読むべき記事
+
+#### ・ゲッターとセッターをメソッド名のプレフィックスとすることは悪
+
+和訳：https://www.kaitoy.xyz/2015/07/22/getters-setters-evil/
+
+原典：https://www.yegor256.com/2014/09/16/getters-and-setters-are-evil.html
+
+#### ・セッターによる依存性注入は悪
+
+原典：https://www.yegor256.com/2014/10/03/di-containers-are-evil.html
+
+
+
 ### 値を取得するアクセサメソッドの実装
 
 #### ・Getter
