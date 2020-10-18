@@ -1,7 +1,5 @@
 # Laravel
 
-
-
 ## Facade
 
 ### 静的プロキシ
@@ -871,9 +869,210 @@ class DatabaseSeeder extends Seeder
 
 
 
-## Eloquent
+## Eloquent｜Model
 
 ### artisanによる操作
+
+#### ・クラスの自動生成
+
+```bash
+$ php artisan make:model Example
+```
+
+
+
+### Active Recordパターン
+
+#### ・Active Recordパターンとは
+
+![ActiveRecord](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ActiveRecord.png)
+
+
+
+#### ・他の類似するデザインパターンとの比較
+
+| デザインパターン | Modelとテーブルの関連度合い                                 | 採用ライブラリ例 |
+| ---------------- | ----------------------------------------------------------- | ---------------- |
+| Active Record    | 非常に強い．基本的には，Modelとテーブルが一対一対応になる． | Eloquent         |
+| Data Mapper      |                                                             | Doctrine         |
+| Repository       | 各エンティティの粒度次第で強くも弱くもなる．                |                  |
+| なし             | 非常に弱い                                                  | DBファサード     |
+
+#### ・メリットとデメリット
+
+| 項目   | メリット                                                     | デメリット                                                   |      |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- |
+| 保守性 |                                                              |                                                              |      |
+| 可読性 | ・複雑なデータアクセスロジックを実装する必要が無い．<br>・Modelにおけるデータアクセスロジックがどのテーブルに対して行われるのか推測しやすい．<br>・リレーションを理解する必要があまりなく，複数のテーブルに対して無秩序にSQLを発行するような設計実装になりにくい． | データアクセスロジックが複数のテーブルを跨ぐためには，関連付くテーブルを軸としたリレーションを行う必要がある．この時，カラムの不要な取得を行ってしまうことがある． |      |
+| 拡張性 |                                                              | Modelの構成がテーブル構造に強く依存してしまうため，Modelのドメインロジックを柔軟に実装できなくなってしまう．そのため，ドメイン駆動設計との相性は悪い． |      |
+
+
+
+### Modelとテーブルの対応
+
+#### ・Modelの継承
+
+Modelクラスを継承したクラスは，```INSERT```文や```UPDATE```文などのデータアクセスロジックを使用できるようになる．
+
+````php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    // クラスチェーンによって，データアクセスロジックをコール
+}
+````
+
+
+#### ・テーブルとの関連付け
+
+Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * モデルと関連しているテーブル
+     *
+     * @var string
+     */
+    protected $table = 'examples';
+}
+```
+
+#### ・主キーとの関連付け
+
+Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```で主キーのデータ型，また```$incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = 'id';
+    
+    /**
+     * 主キーのデータ型
+     * 
+     * @var string 
+     */
+    protected $keyType = 'int';
+    
+    /**
+     * 主キーのAutoIncrementの有効化
+     * 
+     * @var bool 
+     */
+    public $incrementing = true;
+}
+```
+
+#### ・タイムスタンプ型カラムとの関連付け
+
+Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```と```updated_at```を自動的に更新する．また，タイムスタンプ型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    const CREATED_AT = 'created_date_time';
+    const UPDATED_AT = 'updated_data_time';
+    
+    /**
+     * モデルのタイムスタンプを更新するかの指示
+     *
+     * @var bool
+     */
+    protected $timestamps = true; // falseで無効化
+}
+```
+
+
+#### ・読み出し時のDateTimeクラス自動変換
+
+データベースからタイムスタンプ型カラムを読み出すと同時に，CarbonのDateTimeクラスに変換したい場合，```data```プロパティにて，カラム名を設定する．
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * CarbonのDateTimeクラスに自動変換したいカラム名
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+}
+
+```
+
+
+#### ・デフォルト値の設定
+
+特定のカラムのデフォルト値を設定したい場合，```attributes```プロパティにて，カラム名と値を設定する．
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * 属性に対するモデルのデフォルト値
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'is_deleted' => false,
+    ];
+}
+```
+
+
+
+## Eloquent｜Data Access
+
+### artisanによる操作
+
+```bash
+
+```
 
 
 
@@ -1106,11 +1305,13 @@ class Example extends Model
     use SoftDeletes;
 
     /**
-     * 日付へキャストする属性
+     * 読み出し時にCarbonのDateTimeクラスへ自動変換するカラム
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at'
+    ];
 }
 ```
 さらに，マイグレーションファイルにて```softDeletes```メソッドを使用し，```deleted_at```カラムが追加されるようにする．```deleted_at```カラムのデフォルト値は```NULL```である．
