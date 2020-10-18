@@ -20,7 +20,7 @@ class Example
     // オブジェクトはデータを保持する．
     private $data;
   
-    public function example()
+    public function data()
     {
         return $this->data;
     }
@@ -46,7 +46,7 @@ class Example
   
   　// 自信が持つデータを操作する.
   
-    public function example()
+    public function data()
     {
         return $this->data;
     }
@@ -80,7 +80,7 @@ class Example
         $this->data = $data;
     }
 
-    public function example()
+    public function data()
     {
         return $this->data;
     }
@@ -281,7 +281,7 @@ class ABC {
 
     private $property; 
 
-    public function getEditProperty()
+    public function property()
     {
         // 単なるGetterではなく，例外処理も加える．
         if(!isset($this->property)){
@@ -589,7 +589,7 @@ class Obj_A{
     private $objB;
     
     // 返却値のデータ型を指定
-    public function getObjB(): ObjB
+    public function objB(): ObjB
     {
         return $this->objB;
     }
@@ -604,7 +604,7 @@ class Obj_B{
     private $objC;
  
     // 返却値のデータ型を指定
-    public function getObjC(): ObjC
+    public function objC(): ObjC
     {
         return $this->objC;
     }
@@ -619,7 +619,7 @@ class Obj_C{
     private $objD;
  
     // 返却値のデータ型を指定
-    public function getObjD(): ObjD
+    public function objD(): ObjD
     {
         return $this->objD;
     }
@@ -632,18 +632,18 @@ class Obj_C{
 <?php
 $ObjA = new Obj_A;
 
-$ObjB = $ObjA->getObjB();
+$ObjB = $ObjA->objB();
 
-$ObjC = $ObjB->getObjB();
+$ObjC = $ObjB->objB();
 
-$ObjD = $ObjC->getObjD();
+$ObjD = $ObjC->objD();
 ```
 
 以下のように，メソッドチェーンという書き方が可能．
 
 ```PHP
 <?php
-$D = getObjB()->getObjC()->getObjC();
+$D = objB()->objC()->objC();
 
 // $D には ObjD が格納されている．
 ```
@@ -801,7 +801,7 @@ $example->exitMethod(); // exitMethod()です。
 <?php
 class Example
 {
-    function getOneToThree(): array
+    function oneToThree(): array
     {
         for ($i = 1; $i <= 3; $i++) {
             // yield を返却した後、$i の値が維持される．
@@ -811,7 +811,7 @@ class Example
 }
 
 $example = new Example();
-$oneToThree = $example->getOneToThree();
+$oneToThree = $example->oneToThree();
 
 foreach ($oneToThree as $value) {
     echo "{$value}\n";
@@ -950,7 +950,7 @@ $item = new Item;
 // 最初の括弧を用いないことで，普段よくやっている値渡しのメソッドを定義しているのと同じになる．
 // use()に，親メソッド（$optionName）のスコープの$itemを渡す．
 $optionName = function () use ($item) {
-    $item->getOptionName();
+    $item->optionName();
 };
 
 // function()には引数が設定されていないので，コール時に引数は不要．
@@ -976,7 +976,7 @@ $item = new Item;
 // 親メソッド（$optionName）のスコープの$itemを，use()に渡す．
 // $paramは，コール時に使う変数．
 $optionName = function ($para) use ($item) {
-    $item->getOptionName() . $para;
+    $item->optionName() . $para;
 };
 
 // コール時に，$paramをfunction()に渡す．
@@ -1009,7 +1009,7 @@ $option = new Option;
 
 // データの値に無名関数を格納する．
 $option->name = function ($para) use ($item) {
-    $item->getOptionName() . $para;
+    $item->optionName() . $para;
 };
 
 // コール時に，$paramをfunction()に渡す．
@@ -1040,7 +1040,7 @@ $param = "BC";
 // 無名関数を定義し，同時にcall_user_func()で即コールする．
 // $paramは，コール時に使う変数．
 $optionName = call_user_func(function ($param) use ($item) {
-    $item->getOptionName() . $param;
+    $item->optionName() . $param;
 });
 
 // $paramはすでに即コール時に渡されている．
