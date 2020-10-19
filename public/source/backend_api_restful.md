@@ -135,6 +135,22 @@ http://www.example.co.jp:80/users/777?text1=a&text2=b
 
 ### エンドポイントの作り方
 
+#### ・見本
+
+```http
+GET http://www.example.co.jp/users/{id}
+```
+```http
+POST http://www.example.co.jp/users
+```
+```http
+PUT http://www.example.co.jp/users/{id}
+```
+```http
+DELETE http://www.example.co.jp/users/{id}
+```
+
+
 #### ・短くすること
 
 **＊悪い実装例＊**
