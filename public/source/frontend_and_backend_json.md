@@ -39,6 +39,63 @@
 
 
 
+### JSONの定義方法
+
+#### ・JavaScript
+
+**＊実装例＊**
+
+```javascript
+// どんなデータを含むJSONなのかわかりやすい方法
+const json = {
+    name: null,
+    age: null,
+    tel: null
+}
+
+json.name = "taro";
+json.age = 30;
+json.tel = "090-0123-4567";
+```
+
+**＊実装例＊**
+
+```javascript
+const json = {}
+
+// areaというキー名の値を追加
+json.prefecture = "Tokyo";
+
+// 以下は．undefined になる．二段階の定義はできない．
+//// json.prefecture.area = "Shibuya";
+```
+
+**＊実装例＊**
+
+```javascript
+const json = {
+    name: "taro",
+    age: 30,
+    tel: "090-0123-4567"
+}
+
+// areaというキー名の値を追加
+json.prefecture = "Tokyo";
+
+// もしくは，
+//// json["prefecture"] = "Tokyo";
+```
+
+
+
+#### ・PHP
+
+
+
+
+
+
+
 ## 02. 相互パース（シリアライズ＋デシリアライズ）
 
 ### シリアライズ，デシリアライズとは
