@@ -719,8 +719,8 @@ $ swapoff /swap_volume
 | ユーティリティ名                  | 対象プログラミング言語 |
 | --------------------------------- | ---------------------- |
 | composer.phar：Composer           | PHP                    |
-| npm：Node Package Manager         | Node.js                |
 | pip：Package Installer for Python | Python                 |
+| npm：Node Package Manager         | Node.js                |
 | maven：Apache Maven               | Java                   |
 | gem：Ruby Gems                    | Ruby                   |
 
@@ -785,6 +785,39 @@ Requires: sphinxcontrib-applehelp, imagesize, docutils, sphinxcontrib-serializin
 # このパッケージを依存対象としているパッケージ
 Required-by: sphinxcontrib.sqltable, sphinx-rtd-theme, recommonmark
 ```
+
+
+
+### npm
+
+#### ・入手方法
+
+```bash
+# リポジトリの作成
+$ curl -sL https://rpm.nodesource.com/setup_<バージョン>.x | bash -
+
+# nodejsのインストールにnpmも含まれる
+$ yum install nodejs
+```
+
+#### ・コマンド例
+
+```bash
+# package.jsonを生成
+$ npm init
+```
+
+```bash
+# 特定のディレクトリにインストール
+$ npm install <パッケージ名>
+```
+
+```bash
+# グローバルインストール（あまり使わない）
+$ npm install -g <パッケージ名>
+```
+
+
 
 
 
