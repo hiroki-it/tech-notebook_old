@@ -993,6 +993,8 @@ class ModuleB
 
 **＊実装例＊**
 
+Pimpleライブラリを使用した場合
+
 ```PHP
 <?php
 use Pimple\Container;
