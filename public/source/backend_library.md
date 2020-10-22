@@ -68,7 +68,7 @@ $ /usr/local/bin/composer update
 $ /usr/local/bin/composer clear-cache
 ```
 
-
+<br>
 
 ### composer.jsonの実装
 
@@ -133,7 +133,7 @@ $ /usr/local/bin/composer clear-cache
 $ /usr/local/bin/composer dump-autoload
 ```
 
-
+<br>
 
 ## 02. アプリケーションによるライブラリの読み込み
 
@@ -148,7 +148,7 @@ $ /usr/local/bin/composer dump-autoload
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 ```
 
-
+<br>
 
 ## 03. Doctrineライブラリ
 
@@ -156,7 +156,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 RDBの読み込み系／書き込み系の操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
 
-
+<br>
 
 ### SQLの定義
 
@@ -239,7 +239,7 @@ $queryBuilder->getConnection()
     )->fetchAll();
 ```
 
-
+<br>
 
 ### 読み出し系の操作
 
@@ -326,7 +326,7 @@ class Example
 }
 ```
 
-
+<br>
 
 
 ### 書き込み系の操作
@@ -356,6 +356,7 @@ try{
 }
 ```
 
+<br>
 
 ## 04. Carbonライブラリ
 
@@ -370,7 +371,7 @@ try{
 | 日時                 | 2019-07-07 19:07:07 | 同上                                                         |
 | タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
 
-
+<br>
 
 ### ```instance```メソッド 
 
@@ -384,7 +385,7 @@ $carbon = Carbon::instance($datetime);
 echo $carbon; // 2019-07-07 19:07:07
 ```
 
-
+<br>
 
 ### ```create```メソッド
 
@@ -399,7 +400,7 @@ $carbon = Carbon::create(2019, 07, 07, 19, 07, 07);
 echo $carbon; // 2019-07-07 19:07:07
 ```
 
-
+<br>
 
 ### ```createFromXXX```メソッド
 
@@ -456,7 +457,7 @@ $carbonFromTimestamp = Carbon::createFromTimestamp(1562494027);
 echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 ```
 
-
+<br>
 
 ### ```parse```メソッド
 
@@ -469,7 +470,7 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
-
+<br>
 
 ## 05. Pinqライブラリ
 
@@ -477,7 +478,7 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 配列データやオブジェクトデータに対して，クエリを実行できるようになる．他の同様ライブラリとして，Linqがある．
 
-
+<br>
 
 ### ```Traversable::from```メソッド
 
@@ -509,7 +510,7 @@ class Example
 }
 ```
 
-
+<br>
 
 ## 06. Guzzleライブラリ
 
@@ -517,7 +518,7 @@ class Example
 
 通常，リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う．しかし，GuzzleライブラリのClientを使えば，サーバから他サーバ（外部のAPIなど）に対して，リクエストメッセージの送受信ができる．
 
-
+<br>
 
 ### Clientインスタンス
 
@@ -548,7 +549,7 @@ $response = $client->request("POST", <アクセスしたいURL>);
 $body = json_decode($response->getBody(), true);
 ```
 
-
+<br>
 
 ## 07. Knp/Snappyライブラリ
 
@@ -569,7 +570,7 @@ $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
 $snappy->generateFromHtml('example.html', '.../example.pdf');
 ```
 
-
+<br>
 
 ## 08. Respect/Validationライブラリ
 

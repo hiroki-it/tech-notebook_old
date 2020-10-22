@@ -8,7 +8,7 @@ DBへのアクセス処理を書き込みと読み出しに分離する設計の
 
 ![DDDにCQRSを組み込む](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DDDにCQRSを組み込む.png)
 
-
+<br>
 
 ### Command（書き込み）
 
@@ -19,7 +19,7 @@ DBへのアクセス処理を書き込みと読み出しに分離する設計の
 3. レコードを格納した集約を構成し，これのレコードを更新する．
 4. 集約を分解し，DBへ新しいレコードを書き込む．
 
-
+<br>
 
 ### Query（読み出し）
 

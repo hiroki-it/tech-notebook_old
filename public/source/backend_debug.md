@@ -28,7 +28,7 @@ var_dump($var);
 throw new \Exception(var_dump($var););
 ```
 
-
+<br>
 
 ### ```var_dump()```の結果が表示されない
 
@@ -55,7 +55,7 @@ if ($x = 3){
 }
 ```
 
-
+<br>
 
 ### ```500```エラーの位置を特定できない
 
@@ -82,8 +82,6 @@ if ($x = 3){
 }
 ```
 
-
-
 #### ・文字コードの修正
 
 文字コードが異なっていることが原因．以下を，```var_dump()```よりも上流に追加する．
@@ -93,7 +91,7 @@ if ($x = 3){
 header('Content-Type: text/html; charset=UTF-8');
 ```
 
-
+<br>
 
 ## 02. Xdebugによるデバッグ
 
@@ -142,7 +140,7 @@ $ sudo service httpd restart
 
 #### 4. PhpStormビルトインサーバの設定
 
-
+<br>
 
 ### デバッグにおける通信の仕組み
 

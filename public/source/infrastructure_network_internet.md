@@ -8,7 +8,7 @@
 
 ![インターネットとWANとLAN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターネットとWANとLAN.png)
 
-
+<br>
 
 ### WAN，LANの具体例
 
@@ -16,13 +16,13 @@
 
 ![WAN，LANの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WAN，LANの具体例.png)
 
-
+<br>
 
 ### WANの種類と歴史
 
 ![WANの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WANの種類と歴史.png)
 
-
+<br>
 
 ### グローバルネットワークとプライベートネットワーク
 
@@ -30,7 +30,7 @@
 
 ![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルネットワークとプライベートネットワーク.PNG)
 
-
+<br>
 
 ### プライベートネットワークにおけるセグメント
 
@@ -46,7 +46,7 @@
 
 ![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部，DMZ，外部.png)
 
-
+<br>
 
 ### データ通信方法の種類
 
@@ -62,7 +62,7 @@
 
 ![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケット交換方式.png)
 
-
+<br>
 
 ### データの伝送
 
@@ -93,7 +93,7 @@
 
 ![トラフィックのグラフ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィックのグラフ.png)
 
-
+<br>
 
 ## 02. OSI参照モデルとTCP階層モデル
 
@@ -103,13 +103,13 @@
 
 ![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
 
-
+<br>
 
 ### OSI参照モデルにおいて各概念層で追加されるヘッダ情報の内容
 
 ![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデル.png)
 
-
+<br>
 
 ### プロトコルの分類と扱われる階層
 
@@ -117,7 +117,7 @@ TCP/IPモデルで用いられるプロトコルのうち，最も代表的な�
 
 ![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セキュアプロトコル.png)
 
-
+<br>
 
 ## 02-02. 通信機器におけるヘッダ情報認識
 
@@ -133,7 +133,7 @@ TCP/IPモデルで用いられるプロトコルのうち，最も代表的な�
 
 Network Interface Card（（例）LANアダプタ，LANボード，LANカード），リピータ，LANケーブル
 
-
+<br>
 
 ### 通信機器における各層のヘッダ情報の認識
 
@@ -141,7 +141,7 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 ![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器でのパケット認識.jpg)
 
-
+<br>
 
 ## 03. アプリケーション層におけるデータ（メッセージ）の作成
 
@@ -177,7 +177,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/サブドメイン.png)
 
-
+<br>
 
 ## 03-02. メールデータの作成
 
@@ -185,7 +185,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ![SMTP，POP3，IMAP4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP，POP3，IMAP4.png)
 
-
+<br>
 
 ### SMTP：Simple Mail Transfer Protocol
 
@@ -199,7 +199,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
 ![SMTP-AUTH](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP-AUTH.png)
 
-
+<br>
 
 ### POP3：Post Official Protocol version 3
 
@@ -207,7 +207,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
   メールサーバに届いたメールを，受信機器にダウンロードし，受信機器で閲覧するプロトコル．メールの既読未読状況は，他の受信機器と共有される．
 
-
+<br>
 
 ### IMAP4：Internet Message Access Protocol version 4
 
@@ -221,7 +221,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
 ![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GmailでPOPかIMAPを設定.jpg)
 
-
+<br>
 
 ### APOP：Authenticated POP
 
@@ -229,7 +229,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
   メール受信の際に，チャレンジレスポンス方式の認証を行うことで平文の認証情報がネットワークに流れるのを防止するプロトコル
 
-  
+  <br>
 
 ## 04. トランスポート層
 
@@ -257,7 +257,7 @@ http://localhost:8080/
 
 トランスポート層に存在し，受信した通信をアプリケーション層の各プロセスに振り分ける受け口をソケットという．送信元のサーバが送信先に対して，『192.168.1.1:50001（送信元IPアドレス:送信ポート）』『10.0.0.1:80（宛先IPアドレス:宛先ポート）』といったように，IPアドレスとポート番号の組合せで指定する．オリジンとは似て非なるものなので注意．サーバ間のソケット間のネットワーク接続をソケット接続という．
 
-
+<br>
 
 ### ポート番号
 
@@ -283,7 +283,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 サーバ内の特定のポート番号のアプリケーションに対して，パケットが送信されてきた時，これを異なるポート番号のアプリケーションに転送すること．SSHプロトコルと組み合わせたSSHポートフォワーディングについては，暗号化技術のノートを参照．
 
-
+<br>
 
 ### ポートスキャナ
 
@@ -291,7 +291,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 ポートスキャナを用いることによって，各ポート番号にアクセスし，応答があるかどうかや，どのようなソフトウェアが応答するかを調べ，一覧表示することができる．
 
-
+<br>
 
 ## 05. インターネット層
 
@@ -303,7 +303,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 ![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネットワークにおけるTCP_IPを用いたデータ通信.png)
 
-
+<br>
 
 ### IPv4アドレスの種類
 
@@ -317,7 +317,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
   プロバイダが提供するIPv4アドレスである．パブリックネットワーク内に同じIPv4アドレスは存在せず，Network Information Centerへの使用申請が必要．プライベートIPアドレスの番号でなければ，グローバルIPアドレスである．NATはグローバルIPアドレスを持っており，プライベートネットワークとプライベートネットワーク間の双方向への通信時に，プライベートIPアドレスと相互変換する．
 
-  
+  <br>
 
 ### プライベート／グローバルIPアドレスとbitとの関係
 
@@ -325,7 +325,7 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 ![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスとbitの関係.png)
 
-
+<br>
 
 ### プライベート／グローバルIPアドレスのネットワーク部とホスト部
 
@@ -373,7 +373,7 @@ IPアドレスをクラスとして分類し，各クラスでIPアドレスの�
 | 65536個                        | ```192.168.0.0/11111111.11111111.00000000.00000000``` |   ```192.168.0.0/255.255.0.0```   | ```192.168.0.0/16``` | ⇒    | ```192.168.0.1``` 〜  ```192.168.255.254``` |
 | 1個                            | ```192.168.0.0/11111111.11111111.11111111.11111111``` | ```192.168.0.0/255.255.255.255``` | ```192.168.0.0/32``` | ⇒    |              ```192.168.0.0```              |
 
-
+<br>
 
 ### DNSサーバとhostsファイルの役割
 
@@ -387,7 +387,7 @@ IPアドレスをクラスとして分類し，各クラスでIPアドレスの�
 
 DNSサーバよりも先に参照されるマッピングファイル．WebサーバのIPアドレスがDNSサーバに登録されていない時，またDNSサーバが不具合の時に，DNSサーバの代わりとして用いる．
 
-
+<br>
 
 
 ## 02-06. ルータの種類
@@ -440,7 +440,7 @@ http://www.example.co.jp:53/
 
 ![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルからプライベートへのnat変換.png)
 
-
+<br>
 
 ### NAPT（動的NAT）：Network Address Port TranslationによるIPアドレスとポート番号の変換
 
@@ -465,9 +465,7 @@ http://www.example.co.jp:53/
 
 ![napt変換_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/napt変換_2.png)
 
-
-
-
+<br>
 
 ## 06. Webシステムを構成する主要な3層構造
 
@@ -572,7 +570,7 @@ $request->headers->get('User-Agent');
 $request->get('hoge');
 ```
 
-
+<br>
 
 ### APサーバ
 
@@ -588,7 +586,7 @@ $request->get('hoge');
 
 Webサーバから動的コンテンツのリクエストがあった場合に，プログラミング言語を言語プロセッサで翻訳し，DBサーバにリクエストを行う．DBサーバからのレスポンスを受け取り，Webサーバに動的なコンテンツのレスポンスを行う．
 
-
+<br>
 
 ### データベース管理システムをもつDBサーバ
 
@@ -596,7 +594,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 データベース管理システムがインストールされている．データベースの情報が保存されている．
 
-
+<br>
 
 ### サーバの処理能力向上
 
@@ -612,7 +610,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 ![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スケールアウト.png)
 
-
+<br>
 
 ## 06-02. Webシステムの構成方法
 
@@ -622,7 +620,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 ![デュアルシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デュアルシステム.png)
 
-
+<br>
 
 ### Duplexシステム
 
@@ -640,7 +638,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 ![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-2.png)
 
-
+<br>
 
 ### システムの稼働率
 
@@ -652,7 +650,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 ![稼働率の計算](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/稼働率の計算.jpg)
 
-
+<br>
 
 ## 06-03. フォワード／リバースプロキシサーバ
 
@@ -670,7 +668,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 ![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロキシサーバのキャッシュ機能.png)
 
-
+<br>
 
 ### 設置場所
 
@@ -684,7 +682,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 クラウドの場合も，サーバが仮想的に構築される違いだけで，設置場所は同じである．
 
-
+<br>
 
 ### リバースプロキシサーバの実現方法
 
@@ -694,7 +692,7 @@ Webサーバとしてではなく，リバースプロキシサーバとして�
 
 ![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/リバースプロキシサーバとしてのNginx.png)
 
-
+<br>
 
 ## 06-04.  プロキシサーバ，DNSサーバによる名前解決
 
@@ -724,7 +722,7 @@ Webサーバとしてではなく，リバースプロキシサーバとして�
 
 ルートサーバは世界に13機しか存在しておらず，世界中の名前解決のリクエストを全て処理することは現実的に不可能である．そこで，IPアドレスとドメイン名の関係をキャッシュするプロキシサーバ（キャッシュDNSサーバ）が使用されている．基本的には，プロキシサーバとDNSサーバは区別される．ただし，Amazon Route53のように，プロキシサーバとDNSサーバの機能を両立しているものもある．
 
-
+<br>
 
 ### （2）IPアドレスに対応するWebページのレスポンス
 

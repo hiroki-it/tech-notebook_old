@@ -7,7 +7,7 @@
 1. 基点ブランチから，一つ目のブランチにマージし，これをpushする．ここでpushしないと，2番目のブランチが一つ目のブランチとの差分を検出してしまい，大量の差分コミットがgithubに表示されてしまう．
 2. 一つ目のブランチから二つ目のブランチにマージし．これをpushする．
 
-
+<br>
 
 ### Conflictの解決方法とマージコミットの作成
 
@@ -62,7 +62,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 参考：http://www-creators.com/archives/1938
 
-
+<br>
 
 ### Commitの粒度
 
@@ -72,7 +72,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 2. 関連性のある実装をまとめてCommit
 3. 一回のCommitがもつコード量が少なくなるようにCommit
 
-
+<br>
 
 ### 誤って作成したプルリクの削除
 
@@ -80,7 +80,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 犯した罪は背負って生きていかなければならない．
 参照：https://stackoverflow.com/questions/18318097/delete-a-closed-pull-request-from-github
 
-
+<br>
 
 ## 02. Gitの準備
 
@@ -102,7 +102,7 @@ $ git clone https://github.com/<組織名>/<リポジトリ名>.git
 $ git clone git@<ssh-configファイルでのサーバ接続名>:<組織名>/<リポジトリ名>.git
 ```
 
-
+<br>
 
 ### ```config```：
 
@@ -151,7 +151,7 @@ Date:   Sat Sep 12 00:00:00 2020 +0900
     add ◯◯を実装した．
 ```
 
-
+<br>
 
 ## 03. Gitのコマンドメモ
 
@@ -161,7 +161,7 @@ Date:   Sat Sep 12 00:00:00 2020 +0900
 
 変更した全てのファイルをaddする．
 
-
+<br>
 
 ### ```branch```：
 
@@ -208,7 +208,7 @@ git checkout -b feature/3 d7e49b04
 
 指定のコミットから新しいブランチを生やすことができる．
 
-
+<br>
 
 ### ```stash```：
 
@@ -314,7 +314,7 @@ Dropped refs/stash@{0} (1d0ddeb9e52a737dcdbff7296272080e9ff71815)
 $ git stash clear
 ```
 
-
+<br>
 
 ### ```revert```：
 
@@ -356,7 +356,7 @@ Date:   Thu Jul 13 09:00:00 2017 +0000
 $ git revert -m 1 xyz
 ```
 
-
+<br>
 
 ### ```reset```：
 
@@ -590,7 +590,7 @@ hasegawahiroki@Hiroki-Fujitsu MINGW64 /c/Projects/Symfony2_Nyumon (master)
 $
 ```
 
-
+<br>
 
 ### ```push ```
 
@@ -602,7 +602,7 @@ $
 
 トラウマコマンド
 
-
+<br>
 
 ### ```show-branch```：
 
@@ -612,7 +612,7 @@ $
 git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'
 ```
 
-
+<br>
 
 ## 04. GitHubにおけるIssueとPullReqの書き方
 
@@ -659,7 +659,7 @@ GitHubの個人的豆知識を以下に記す．
 〇〇すると，△△となること．
 ```
 
-
+<br>
 
 ### レビューの方法
 

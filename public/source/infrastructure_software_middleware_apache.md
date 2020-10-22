@@ -29,7 +29,7 @@ $ systemctl restart httpd
 $ apachectl -k graceful
 ```
 
-
+<br>
 
 ## 02. Apacheの用途
 
@@ -37,7 +37,7 @@ $ apachectl -k graceful
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
-
+<br>
 
 ## 03. Coreにおける設定ディレクティブ
 
@@ -61,7 +61,7 @@ CentOSのEPELリポジトリ経由でインストールした場合，Apacheの�
 ServerRoot /opt/rh/httpd24/root/etc/httpd
 ```
 
-
+<br>
 
 ### VirtualHost
 
@@ -93,7 +93,7 @@ NameVirtualHost *:80
 #### ・名前ベースVirtualHost
 全てのドメインに同じIPアドレスを割り振るバーチャルホスト．
 
-
+<br>
 
 ### DocumentRoot
 
@@ -138,7 +138,7 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 </Directory>
 ```
 
-
+<br>
 
 ### User，Group
 
@@ -162,7 +162,7 @@ httpdプロセスのグループ名を定義する．httpdプロセスによっ�
 Group apache
 ```
 
-
+<br>
 
 ### KeepAlive，MaxKeepAliveRequests，KeepAliveTimeout
 
@@ -198,9 +198,7 @@ KeepAliveTimeout 5
 MaxKeepAliveRequests 1000
 ```
 
-
-
-
+<br>
 
 ## 04. mod_soにおける設定ディレクティブ
 
@@ -220,7 +218,7 @@ MaxKeepAliveRequests 1000
 LoadModule dir_module modules/mod_dir.so
 ```
 
-
+<br>
 
 ## 04-02. mod_dirにおける設定ディレクティブ
 
@@ -291,7 +289,7 @@ htaccessファイルでDirectoryIndexを有効化する．
 AllowOverride Indexes
 ```
 
-
+<br>
 
 ## 04-03. mod_writeにおける設定ディレクティブ
 
@@ -332,7 +330,7 @@ RewriteRule URL書換＆転送の記述
 RewriteRule ^(.*)?$ https://%{HTTP_HOST}$1 [R=301,L]
 ```
 
-
+<br>
 
 ## 04-04. mod_setenvifにおける設定ディレクティブ
 
@@ -351,7 +349,7 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 
 ログを出力しない場合を設定できる．
 
-
+<br>
 
 ## 04-05. mod_log_configにおける設定ディレクティブ
 
@@ -401,7 +399,7 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 | %{Referer}i    | リファラ                            | http://naoberry.com/home/name/                               |
 | %{User-Agent}i | ユーザエージェント                  | Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1 |
 
-
+<br>
 
 ### ErrorLog
 
@@ -419,7 +417,7 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 ErrorLog /var/log/httpd/error_log
 ```
 
-
+<br>
 
 ### LogLevel
 
@@ -438,7 +436,7 @@ ErrorLog /var/log/httpd/error_log
 | info       | サーバ情報                             | ステージング環境 |
 | debug      | デバック用の情報                       |                  |
 
-
+<br>
 
 ## 04-06. mod_sslにおける設定ディレクティブ 
 
@@ -466,7 +464,7 @@ PKIにおける公開鍵の検証に必要な秘密鍵のディレクトリを�
 SSLCertificateKeyFile /etc/httpd/conf.d/server.key
 ```
 
-
+<br>
 
 ## 05. htaccess
 

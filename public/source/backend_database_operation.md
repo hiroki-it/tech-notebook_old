@@ -8,7 +8,7 @@ RDBは，データ同士がテーブル状に関係をもつデータ格納形�
 
 ![データベース管理システムの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/データベース管理システムの仕組み.png)
 
-
+<br>
 
 ### RDBMSとRDBの種類
 
@@ -26,7 +26,7 @@ RDBは，データ同士がテーブル状に関係をもつデータ格納形�
 
   PostgreSQLデータベースを管理できるRDBMS
 
-
+<br>
 
 
 ### RDBSにおけるデータベースエンジン
@@ -35,7 +35,7 @@ RDBMSがデータベースに対してデータのCRUDの処理を行うため�
 
 #### ・InnoDB
 
-
+<br>
 
 ## 01-02. NoSQL（非関係データベース）とは
 
@@ -45,7 +45,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 ![NoSQLの分類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NoSQLの種類.jpg)
 
-
+<br>
 
 
 ## 01-03. RDBの設計
@@ -54,13 +54,13 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 16章を参照．Squidの設計図では，UMLとER図を組み合わせている．
 
-
+<br>
 
 ### ER図による設計：Entity Relation Diagram
 
 16章を参照．Squidの設計図では，UMLとER図を組み合わせている．
 
-
+<br>
 
 ## 01-04. テーブルの作成
 
@@ -76,7 +76,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
 ![カラムの増減は✖，レコードの増減は〇-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/カラムの増減は✖，レコードの増減は〇-2.png)
 
-
+<br>
 
 ### 非正規形の正規化
 
@@ -136,7 +136,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
    ![第一正規形-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/第一正規形-2.png)
 
-
+<br>
 
 ## 02. RDBに必要な機能
 
@@ -160,7 +160,7 @@ NoSQLは，データ同士が関係を持たないデータ格納形式である
 
   障害回復制御によって実装される．
 
-
+<br>
 
 ## 02-02. コミットメント制御と障害回復制御
 
@@ -217,11 +217,11 @@ try{
 
 詳しくは，ライブラリのノートを参照せよ．
 
-
+<br>
 
 ### ログファイルへの更新前ログの書き込み
 
-
+<br>
 
 ### コミットによるログファイルへの更新前ログへの書き込み
 
@@ -236,7 +236,7 @@ try{
 1. 他のサイトに更新可能かどうかを確認．
 2. 全サイトからの合意が得られた場合に更新を確定．
 
-
+<br>
 
 ### チェックポイントにおけるデータファイルへの書き込み
 
@@ -248,7 +248,7 @@ try{
 
 ![トランザクション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トランザクション.jpg)
 
-
+<br>
 
 ### システム障害からの回復
 
@@ -270,7 +270,7 @@ try{
 
 『b』の値を更新するステートメントを含むトランザクションの途中に，システムが異常終了した場合，ログファイルの更新前ログ『b = 1』を用いて，障害発生前の状態に戻す．（ロールバック）
 
-
+<br>
 
 ### 媒体障害からの回復
 
@@ -324,7 +324,7 @@ INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
 
 ```
 
-
+<br>
 
 ## 02-03. 排他制御
 
@@ -336,7 +336,7 @@ INSERT INTO `mst_staff` (`code`, `name`, `password`) VALUES
 
   ![排他制御-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/排他制御-2.png)
 
-  
+  <br>
 
 ### 排他制御のためのロック操作
 
