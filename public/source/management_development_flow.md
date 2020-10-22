@@ -12,7 +12,7 @@
 
 ⇒ 15章と16章で解説していく．
 
-
+<br>
 
 ### ウォーターフォール型開発
 
@@ -24,7 +24,7 @@
 
 ![外部設計の詳細](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部設計の詳細.png)
 
-
+<br>
 
 ### プロトタイプ型開発
 
@@ -32,7 +32,7 @@
 
 ![p456](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p456.png)
 
-
+<br>
 
 ### レビュー
 
@@ -40,7 +40,7 @@
 
 ![p458](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p458.png)
 
-
+<br>
 
 ### RAD（Rapid Application Development）
 
@@ -50,7 +50,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![p462-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p462-2.png)
 
-
+<br>
 
 ### スパイラル型開発
 
@@ -58,7 +58,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![p457](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p457.png)
 
-
+<br>
 
 ### アジャイル型開発
 
@@ -66,7 +66,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![p463](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p463.png)
 
-
+<br>
 
 ### CASEツール：Computer Aided Software Enginnering
 
@@ -86,7 +86,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![p459](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p459.png)
 
-
+<br>
 
 ## 02. システム開発におけるプロジェクト管理
 
@@ -94,7 +94,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![ウォーターフォール型](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ウォーターフォール型.png)
 
-
+<br>
 
 ### システム開発における様々な指標
 
@@ -145,7 +145,7 @@ Visual Basicなどの開発支援ツールを用いて，短期間で設計～�
 
 ![進捗率](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/進捗率.png)
 
-
+<br>
 
 ### Arrow ダイアグラム
 

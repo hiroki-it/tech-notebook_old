@@ -16,7 +16,7 @@ $ dnf install -y mysql
 $ dnf install -y mysql-server
 ```
 
-
+<br>
 
 ### パラメータ
 
@@ -44,7 +44,7 @@ SET GLOBAL time_zone = 'Asia/Tokyo';
 SET time_zone = 'Asia/Tokyo';
 ```
 
-
+<br>
 
 ## 02. テーブル
 
@@ -75,7 +75,7 @@ CREATE TABLE order_data (
 )
 ```
 
-
+<br>
 
 ### ```CREATE VIEW```句
 
@@ -94,7 +94,7 @@ FROM
     { テーブル名 };
 ```
 
-
+<br>
 
 ### 制約
 
@@ -126,7 +126,7 @@ FROM
 
 ![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部キー.png)
 
-
+<br>
 
 ### stored procedure
 
@@ -156,7 +156,7 @@ FROM
 EXEC SelectContact
 ```
 
-
+<br>
 
 ### エクスポート，インポート
 
@@ -176,7 +176,7 @@ DBにテーブルをインポートする．forceオプションで，エラー�
  $ mysql --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' < table.sql
 ```
 
-
+<br>
 
 ### データ型
 
@@ -200,7 +200,7 @@ DBにテーブルをインポートする．forceオプションで，エラー�
 | TEXT       | 65535        |
 | MEDIUMTEXT | 16777215     |
 
-
+<br>
 
 ## 03. ユーザの管理
 
@@ -220,7 +220,7 @@ CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{パスワード}'
 SELECT * FROM mysql.user;
 ```
 
-
+<br>
 
 ### GRANT
 
@@ -253,7 +253,7 @@ GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
 GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';
 ```
 
-
+<br>
 
 #### ・ユーザ権限一覧
 
@@ -271,7 +271,7 @@ GRANT USAGE ON *.* TO '{ ユーザー名 }';
 
 特定のデータベースの操作権限を与えると，上記に加えて，付与したGRANT権限も表示されるようになる．
 
-
+<br>
 
 ### REVOKE
 
@@ -290,7 +290,7 @@ REVOKE ALL PRIVILEGES ON `%`.* FROM '{ ユーザ名 }';
 RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
 ```
 
-
+<br>
 
 ## 04. レコードの読み出し：READ
 
@@ -303,7 +303,7 @@ RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
 FROM ---> JOIN ---> WHERE ---> GROUP BY ---> HAVING ---> SELECT ---> ORDER BY
 ```
 
-
+<br>
 
 ### ```SELECT```句
 
@@ -404,7 +404,7 @@ FROM
     { テーブル名 } AS { エイリアス };
 ```
 
-
+<br>
 
 ### ```FROM```句
 
@@ -412,15 +412,13 @@ FROM
 
 ![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部結合のベン図.jpg)
 
-
-
 #### ・```left JOIN```（左外部結合）
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
 ![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LEFT_JOIN.png)
 
-
+<br>
 
 #### ・```INNER JOIN```（内部結合）
 
@@ -466,7 +464,7 @@ FROM
     ON { テーブル名1 }.{ カラム名1 } = { テーブル名3 }.{ カラム名3 }
 ```
 
-
+<br>
 
 ### ```ORDER BY```句
 
@@ -503,7 +501,7 @@ $sql = <<<SQL
         SQL;
 ```
 
-
+<br>
 
 ### ```IN```句，```ANY```句の違い
 
@@ -589,7 +587,7 @@ WHERE
     { カラム名 } = ANY(xxx, xxx, xxx);
 ```
 
-
+<br>
 
 ### ```GROUP BY```句
 
@@ -611,7 +609,7 @@ GROUP BY
     { カラム名1 };
 ```
 
-
+<br>
 
 ### ```HAVING```句
 
@@ -659,7 +657,7 @@ GROUP BY
     { カラム名 };
 ```
 
-
+<br>
 
 ### ```WILDCARD```句
 
@@ -685,7 +683,7 @@ WHERE
     { カラム名 } LIKE '_営業';
 ```
 
-
+<br>
 
 ### ```BETWEEN```句
 
@@ -704,7 +702,7 @@ FROM
     AND 10;
 ```
 
-
+<br>
 
 ### ```SET```句
 
@@ -727,7 +725,7 @@ WHERE
     { カラム名 } = @B;
 ```
 
-
+<br>
 
 ### サブクエリ
 
@@ -753,7 +751,7 @@ WHERE
     );
 ```
 
-
+<br>
 
 ### Tips
 
@@ -784,7 +782,7 @@ WHERE
     AND table_schema = { 検索対象のデータベース名 }
 ```
 
-
+<br>
 
 ## 04-02. 読み出されたレコードの取得
 
@@ -798,7 +796,7 @@ WHERE
 
 ```FETCH()```系のメソッドは，ベンダーによって名前が異なっていることがあるため，同じ名前でも同じ分だけレコードを取得するとは限らない．
 
-
+<br>
 
 ### PDOにおける```FETCH```
 
@@ -866,7 +864,7 @@ print_r($data);
 // 10 (件)
 ```
 
-
+<br>
 
 ### Javaの場合
 
@@ -893,7 +891,7 @@ while(result.next()){
 
 ```
 
-
+<br>
 
 ## 05. レコードの書き込み ：CREATE，UPDATE，DELETE
 
@@ -967,7 +965,7 @@ class ItemQuery
 }
 ```
 
-
+<br>
 
 ### ```UPDATE```
 
@@ -975,7 +973,7 @@ class ItemQuery
 
 ```
 
-
+<br>
 
 ### ```DELETE```
 
@@ -983,7 +981,7 @@ class ItemQuery
 
 ```
 
-
+<br>
 
 ## 06. その他
 

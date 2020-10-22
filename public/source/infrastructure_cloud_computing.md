@@ -12,13 +12,11 @@
 
 ![オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png)
 
-
+<br>
 
 ## 02. オンプレミスの具体例
 
-
-
-
+<br>
 
 ## 03. クラウドコンピューティングの具体例
 
@@ -33,7 +31,7 @@
 | Microsoft Azure       | Microsoft |
 | IBM Cloud             | IBM       |
 
-
+<br>
 
 ### PaaS：Platform as a Service
 
@@ -45,7 +43,7 @@
 | Windows Azure      | Microsoft |
 | GitHub Pages       | GitHub    |
 
-
+<br>
 
 ### FaaS：Platform as a Service
 
@@ -55,7 +53,7 @@
 
 Lambda
 
-
+<br>
 
 ### SaaS：Software as a Service
 

@@ -48,7 +48,7 @@ WWW-Authenticate: Basic realm="<認証領域>", charaset="UTF-8"
 Authorization: Basic <ユーザ名>:<パスワード>
 ```
 
-
+<br>
 
 
 ### Digest認証スキーム
@@ -67,7 +67,7 @@ WWW-Authenticate: Basic realm="<認証領域>", charaset="UTF-8"
 Authorization: Digest realm="<認証領域>" nonce="<サーバ側が生成した任意の文字列>" algorithm="<ハッシュ関数名>" qoq="auth"
 ```
 
-
+<br>
 
 ### Bearer認証スキーム
 
@@ -87,7 +87,7 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 Authorization: Bearer <Bearerトークン，JWT，など>
 ```
 
-
+<br>
 
 ## 02. 認可
 
@@ -106,7 +106,7 @@ Authorization: Bearer <Bearerトークン，JWT，など>
 | APIクライアント   | APIに対して，リクエストを送信したいサーバのこと．            | Ouath認証の仕組みにおけるクライアント．   |
 | APIサーバ         | クライアントに対して，リソースのレスポンスを送信するサーバのこと． | Ouath認証の仕組みにおけるリソースサーバ． |
 
-
+<br>
 
 ### Oauthプロトコル
 
@@ -137,7 +137,7 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 Authorization: Bearer <Bearerトークン，JWT，など>
 ```
 
-
+<br>
 
 ### OpenID Connect
 
@@ -149,7 +149,7 @@ Authorization: Bearer <Bearerトークン，JWT，など>
 
 要勉強
 
-
+<br>
 
 ## 02-02. アクセストークンの種類
 
@@ -172,7 +172,7 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 Authorization: Bearer <Bearerトークンの文字列>
 ```
 
-
+<br>
 
 ### JWT：JSON Web Token
 

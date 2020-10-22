@@ -6,7 +6,7 @@
 
 ![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UML-1.png)
 
-
+<br>
 
 ### オブジェクト指向設計での作業例
 
@@ -22,7 +22,7 @@
 
 クラス図に，フレームワークのコンポーネントを導入する．
 
-
+<br>
 
 ## 02. クラス図による設計
 
@@ -46,7 +46,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
-
+<br>
 
 ### クラスの多重度
 
@@ -103,7 +103,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 課エンティティから見て，対する部エンティティは0または1個である．
 
-
+<br>
 
 ## 02-02. シーケンス図による設計
 
@@ -123,7 +123,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ![シーケンス図_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シーケンス図_2.png)
 
-
+<br>
 
 ## 03. インスタンス間の関係性
 
@@ -131,7 +131,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
 
-
+<br>
 
 ### Association（関連）
 
@@ -139,7 +139,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 関係性の種類と問わず，インスタンスを他インスタンスのデータとして保持する関係性は，『関連』である．
 
-
+<br>
 
 ### Aggregation（集約）
 
@@ -227,7 +227,7 @@ $suv = new CarX($tire1, $tire2, $tire3, $tire4);
 $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 ```
 
-
+<br>
 
 ### Composition（合成）
 
@@ -447,7 +447,7 @@ class EnginnerShainManagement extends ShainManagement
 
 ![抽象クラス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/抽象クラス.png)
 
-
+<br>
 
 ### Realization（実現）
 
@@ -506,7 +506,7 @@ class Human implements Communication
 }
 ```
 
-
+<br>
 
 ### 通常クラス，抽象クラス，インターフェースの違い
 
@@ -527,7 +527,7 @@ class Human implements Communication
 
 ![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターフェースと抽象クラスの使い分け.png)
 
-
+<br>
 
 
 ## 04-02. クラスの継承
@@ -578,7 +578,7 @@ $subExample = new SubExample;
 echo $subExample->getValue();
 ```
 
-
+<br>
 
 ### 継承元の静的メソッドを参照
 
@@ -609,7 +609,7 @@ class SubExample extends Example
 }
 ```
 
-
+<br>
 
 ### Trait
 
@@ -645,7 +645,7 @@ $exmaple = new Example();
 $example->example(); // Hello World
 ```
 
-
+<br>
 
 ## 04-03. 外部ファイルの読み込み
 
@@ -725,7 +725,7 @@ require_once ('printTestFunction.php');
 printTest();
 ```
 
-
+<br>
 
 ### ```use```によるクラスの読み込み
 
@@ -797,7 +797,7 @@ class Example2
 }
 ```
 
-
+<br>
 
 ## 05. クラス間，インスタンス間，クラス／インスタンス間の関係性
 
@@ -944,7 +944,7 @@ class ModuleB
 }
 ```
 
-
+<br>
 
 ### 凝集度
 
@@ -956,7 +956,7 @@ class ModuleB
 
 最も理想的な凝集．クラスの責務が機能単位になるように，ロジックを振り分ける．
 
-
+<br>
 
 ### 低結合と高凝集
 
@@ -964,7 +964,7 @@ class ModuleB
 
 ![低結合度高凝集度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/低結合度高凝集度.png)
 
-
+<br>
 
 ### Dependency Injection（サプライヤーの注入）
 
@@ -1059,7 +1059,7 @@ class Sample
 $sample = new Sample($container);
 ```
 
-
+<br>
 
 ## 05-02. Dependency Inversion Principle（依存性逆転の原則）
 
@@ -1073,7 +1073,7 @@ $sample = new Sample($container);
 
 『抽象』は実装の詳細に依存してはならない．実装の詳細が「抽象」に依存すべきである．
 
-
+<br>
 
 ### DIPに基づかない設計 vs. 基づく設計
 

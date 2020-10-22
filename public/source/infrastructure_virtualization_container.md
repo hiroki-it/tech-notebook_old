@@ -16,7 +16,7 @@ Dockerクライアントは，接続によって，Dockerデーモンを操作�
 
 ![Dockerの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerの仕組み.png)
 
-
+<br>
 
 ## 02. コンテナに接続するまでの手順
 
@@ -30,7 +30,7 @@ Dockerクライアントは，接続によって，Dockerデーモンを操作�
 4. コマンドによって，構築されたコンテナを起動．
 5. コマンドによって，起動中のコンテナに接続．
 
-
+<br>
 
 ## 02-02. イメージのインストール
 
@@ -78,7 +78,7 @@ $ docker image prune
 $ docker rmi --force $(sudo docker images --filter "dangling=true" --all --quiet)
 ```
 
-
+<br>
 
 ## 02-03. イメージのビルド
 
@@ -111,7 +111,7 @@ $ docker commit -a <作成者名> <コンテナ名> <Docker Hubユーザ名>/<�
 $ docker push <Docker Hubユーザ名>/<イメージ名>:<バージョンタグ>
 ```
 
-
+<br>
 
 ### イメージレイヤーの積み重ね
 
@@ -231,7 +231,7 @@ Dockerfileを用いない場合，各イメージレイヤーのインストー�
 
 ![プロセス単位のコンテナ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロセス単位のコンテナ.png)
 
-
+<br>
 
 ### キャッシュの削除
 
@@ -252,7 +252,7 @@ RUN dnf upgrade -y \
   && rm -rf /var/cache/dnf
 ```
 
-
+<br>
 
 
 ### ```RUN```コマンドをまとめる
@@ -285,7 +285,7 @@ RUN yum -y install \
      php-pear
 ```
 
-
+<br>
 
 ### マルチステージビルド
 
@@ -364,7 +364,7 @@ CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
 ```
 
-
+<br>
 
 ### 可能な限りOSイメージをベースとしない
 
@@ -457,7 +457,7 @@ COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 # ここに実装例
 ```
 
-
+<br>
 
 ## 02-05. イメージ上でのコンテナレイヤーの生成，コンテナの構築
 
@@ -535,7 +535,7 @@ $ docker container prune
 $ docker rm --force $(docker ps --all --quiet)
 ```
 
-
+<br>
 
 ### 起動モードの違い
 
@@ -562,7 +562,7 @@ $ docker run -a -it --name <コンテナ名> <使用イメージ名> /bin/bash
 $ docker run -d -it --name <コンテナ名> <使用イメージ名> /bin/bash
 ```
 
-
+<br>
 
 ## 02-06. 起動中のコンテナの操作
 
@@ -619,7 +619,7 @@ $ docker exec -it <コンテナ名> bin/bash # もしくはbin/sh
 $ docker logs <コンテナ名>
 ```
 
-
+<br>
 
 ### 接続コマンドの違い
 
@@ -672,7 +672,7 @@ root        34  0.0  0.1  45696  3732 pts/1    R+   18:22   0:00 ps aux
 $ docker container ps -a # ==> コンテナのSTATUSがUPになっている
 ```
 
-
+<br>
 
 ## 03. コンテナ側に対するマウント方法
 
@@ -698,7 +698,7 @@ $ docker run -d -it --name <コンテナ名> /bin/bash \
 
 ![マウントされるホスト側のディレクトリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マウントされるホスト側のディレクトリ.png)
 
-
+<br>
 
 ### Volumeマウント
 
@@ -780,13 +780,11 @@ Volumeを使用する場合のコンテナ配置手法の一つ．Dockerエリ�
 # ここに実装例
 ```
 
-
+<br>
 
 ### 一時ファイルシステムマウント
 
-
-
-
+<br>
 
 
 ## 04. ホストとコンテナの間のネットワーク接続
@@ -844,7 +842,7 @@ ff02::2	ip6-allrouters
 172.18.0.2	<ホスト名>
 ```
 
-
+<br>
 
 ### noneネットワーク
 
@@ -862,7 +860,7 @@ NETWORK ID          NAME                    DRIVER              SCOPE
 7edf2be856d7        none                    null                local
 ```
 
-
+<br>
 
 
 ### hostネットワーク
@@ -880,7 +878,7 @@ NETWORK ID          NAME                    DRIVER              SCOPE
 ac017dda93d6        host                    host                local
 ```
 
-
+<br>
 
 ### ネットワーク接続成否の確認方法
 
@@ -906,7 +904,7 @@ bridge接続を経由してコンテナに接続し，コンテナ内部から�
 $ curl --fail http://<nginxに登録したドメイン名>:80/
 ```
 
-
+<br>
 
 ## 05. プラグイン
 

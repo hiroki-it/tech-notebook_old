@@ -15,7 +15,7 @@
 |   **データ通信領域**   | REST                   | RESTful                          |
 |  **ドメイン領域構成**  | ドメイン駆動           | ドメイン駆動設計                 |
 
-
+<br>
 
 ## 01-02. オブジェクト指向分析・設計
 
@@ -23,7 +23,7 @@
 
 ![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プログラミング言語と設計手法の歴史.png)
 
-
+<br>
 
 ## 02. オブジェクト指向分析
 
@@ -41,7 +41,7 @@
 
 オブジェクトモデリングの方法として，実体の『状態』と『動作』を考える．  しかし，これは厳密ではない．  なぜなら，ビジネス領域を実装する時には，ほとんどの場合で，動作を持たない実体を表現することになるからである．  より厳密に理解するために，実体の『状態』と『状態の変更と表示』と考えるべき．  
 
-
+<br>
 
 ### オブジェクト指向分析で用いるダイアグラム図の種類
 
@@ -63,7 +63,7 @@
 
 ![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/複数視点のモデル化とUML.jpg)
 
-
+<br>
 
 ### UML：Unified Modeling Language（統一モデリング言語）
 
@@ -77,7 +77,7 @@
 
 ![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UML-2.png)
 
-
+<br>
 
 ## 02-02. 機能の視点
 
@@ -85,7 +85,7 @@
 
 ![データフロー図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/データフロー図.jpg)
 
-
+<br>
 
 ### Use case 図（使用事例図）
 
@@ -97,7 +97,7 @@
 
 ![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ユースケース図.png)
 
-
+<br>
 
 ###  アクティビティ図
 
@@ -115,7 +115,7 @@
 
 アクターからアクターへの振舞の流れを，時間軸に沿って表記する方法．Alfortのオブジェクト指向分析ではこれが用いられた．
 
-
+<br>
 
 ### 状態遷移図
 
@@ -142,7 +142,7 @@
 
 ![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/状態遷移表.png)
 
-
+<br>
 
 ## 02-04. 構造の視点
 
@@ -178,7 +178,7 @@
 
 ![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/1対1以上.png)
 
-
+<br>
 
 ## 03. オブジェクト指向設計
 

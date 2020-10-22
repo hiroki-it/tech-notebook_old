@@ -37,7 +37,7 @@
 
 データ解析の入力ファイルとしてよく使うやつ．
 
-
+<br>
 
 ### JSONの定義方法
 
@@ -86,15 +86,9 @@ json.prefecture = "Tokyo";
 //// json["prefecture"] = "Tokyo";
 ```
 
-
-
 #### ・PHP
 
-
-
-
-
-
+<br>
 
 ## 02. 相互パース（シリアライズ＋デシリアライズ）
 
@@ -104,7 +98,7 @@ json.prefecture = "Tokyo";
 
 ![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
 
-
+<br>
 
 ### 各形式のオブジェクトの比較
 
@@ -155,7 +149,7 @@ class Example
 }    
 ```
 
-
+<br>
 
 ### JavaScriptとJSONの相互パース
 
@@ -214,7 +208,7 @@ class StaffParser {
 }     
 ```
 
-
+<br>
 
 ### PHPとJSONの相互パース
 
@@ -230,7 +224,7 @@ class StaffParser {
 // ここに実装例
 ```
 
-
+<br>
 
 ## 03. JSONのクエリ言語
 

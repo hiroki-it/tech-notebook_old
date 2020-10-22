@@ -8,7 +8,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 ![cicdツールの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/cicdツールの種類.png)
 
-
+<br>
 
 ## 02. CircleCI
 
@@ -16,7 +16,7 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 https://circleci.com/docs/ja/2.0/configuration-reference/
 
-
+<br>
 
 ### 各種コマンド
 
@@ -39,7 +39,7 @@ $ circleci config validate
 $ circleci build .circleci/config.yml
 ```
 
-
+<br>
 
 ### PHPUnitの自動実行
 
@@ -59,9 +59,7 @@ $ circleci build .circleci/config.yml
 
 #### ・仕組み
 
-
-
-
+<br>
 
 ## 03-02. version
 
@@ -75,7 +73,7 @@ CircleCIのバージョンを宣言．
 version: 2.1
 ```
 
-
+<br>
 
 ## 03-03. jobs
 
@@ -83,7 +81,7 @@ version: 2.1
 
 ```Job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
-
+<br>
 
 ### docker，machine
 
@@ -144,7 +142,7 @@ jobs:
      - run: docker push company/app:$CIRCLE_BRANCH
 ```
 
-
+<br>
 
 ### parameters
 
@@ -203,7 +201,7 @@ jobs:
       - run: echo << parameters.text >> # parametersから渡されたtextを渡す
 ```
 
-
+<br>
 
 ### steps
 
@@ -373,7 +371,7 @@ workflows:
           tag: xxx
 ```
 
-
+<br>
 
 ## 03-04. command
 
@@ -405,7 +403,7 @@ jobs:
           text: "Lev" # 引数名: 値
 ```
 
-
+<br>
 
 ## 03-05. executors
 
@@ -429,7 +427,7 @@ jobs:
       - run: echo "Executor の外で定義しました"
 ```
 
-
+<br>
 
 ## 03-06. CircleCIライブラリ
 
@@ -475,7 +473,7 @@ workflows:
           region: ${AWS_REGION_ENV_VAR_NAME}
 ```
 
-
+<br>
 
 ### aws-ecr
 
@@ -515,7 +513,7 @@ workflows:
           workspace-root: ./workspace
 ```
 
-
+<br>
 
 ### aws-ecs
 
@@ -599,7 +597,7 @@ workflows:
           overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"app\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
 ```
 
-
+<br>
 
 
 ### aws-code-deploy
@@ -638,7 +636,7 @@ workflows:
           service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
 ```
 
-
+<br>
 
 ### slack
 
@@ -668,7 +666,7 @@ jobs:
           webhook: webhook
 ```
 
-
+<br>
 
 ## 04. Capistrano
 
