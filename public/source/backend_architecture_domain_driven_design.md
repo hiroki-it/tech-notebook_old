@@ -8,7 +8,7 @@
 
 ![MVCモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/MVCモデル.png)
 
-
+<br>
 
 ### MVCからドメイン駆動設計への発展
 
@@ -20,7 +20,7 @@
 
 ドメイン駆動設計が登場したことによって，MVCは発展し，M・V・Cそれぞれの役割がより具体的で精密になった．Modelの肥大化は，ModelがもつビジネスロジックをDomain層，またCRUD処理をInfrastructure層として分割することによって，対処された．
 
-
+<br>
 
 ## 02. ドメイン駆動設計とは
 
@@ -42,7 +42,7 @@
 
 ![DDDの概念](https://user-images.githubusercontent.com/42175286/61179612-d305c800-a640-11e9-8c4a-3d31225af633.jpg)
 
-
+<br>
 
 ### ドメイン駆動設計の派生型
 
@@ -54,7 +54,7 @@
 
 #### ・Onionアーキテクチャ
 
-  
+  <br>
 
 ## 02-02. Layeredアーキテクチャ型ドメイン駆動設計
 
@@ -92,7 +92,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 | Repository       |      |      |
 | Factory          |      |      |
 
-
+<br>
 
 ### DIPに基づくドメイン駆動設計
 
@@ -112,7 +112,7 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 // ここに実装例
 ```
 
-
+<br>
 
 
 ## 03. Application層（UseCase層）
@@ -152,7 +152,7 @@ class AcceptOrdersController
 
 ![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ユースケース図.png)
 
-
+<br>
 
 ### Application Service
 
@@ -173,7 +173,7 @@ class SlackNotificationService
 }
 ```
 
-
+<br>
 
 ### 入力データに対するフォーマットのValidationパターン
 
@@ -205,7 +205,7 @@ class FormatValidator
 }  
 ```
 
-
+<br>
 
 ### Converterパターン
 
@@ -229,7 +229,7 @@ class Converter
 }  
 ```
 
-
+<br>
 
 
 ## 04. Domain層
@@ -255,7 +255,7 @@ interface GetDogToyEntityRepository
 }
 ```
 
-
+<br>
 
 ### Entity
 
@@ -263,7 +263,7 @@ interface GetDogToyEntityRepository
 
 以降の説明を参照．
 
-
+<br>
 
 ### Specificationパターン
 
@@ -328,7 +328,7 @@ class XxxCriteria
 }
 ```
 
-
+<br>
 
 ### Value Object
 
@@ -336,7 +336,7 @@ class XxxCriteria
 
 以降の説明を参照．
 
-
+<br>
 
 ### Type Code（標準型）
 
@@ -344,7 +344,7 @@ class XxxCriteria
 
 以降の説明を参照．
 
-
+<br>
 
 ### Domain Service
 
@@ -352,7 +352,7 @@ class XxxCriteria
 
 以降の説明を参照．
 
-
+<br>
 
 ## 04-02. Domain層｜Entity の責務
 
@@ -360,13 +360,13 @@ class XxxCriteria
 
 ![ドメイン駆動設計_エンティティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_エンティティ.jpg)
 
-
+<br>
 
 ### 保持するデータの値が一定でない
 
 状態を変化させる必要があるデータをもつ
 
-
+<br>
 
 ### データの値が同じでも区別できる
 
@@ -404,7 +404,7 @@ class ToyOrderEntity
 }
 ```
 
-
+<br>
 
 ### Route Entityとは
 
@@ -464,7 +464,7 @@ class DogToyEntity
 }
 ```
 
-
+<br>
 
 ## 04-03. Domain｜Value Object の責務
 
@@ -516,7 +516,7 @@ class PaymentInfoVO
 }
 ```
 
-
+<br>
 
 ### 一意に識別できるデータをもたず，対象のユビキタス言語に関するデータをメソッドを持つ
 
@@ -532,7 +532,7 @@ class PaymentInfoVO
 
 郵便番号データとその処理をValue Objectとして分割する．
 
-
+<br>
 
 ### オブジェクトの持つデータの不変性
 
@@ -594,7 +594,7 @@ $test02 = new Test02("データ02の値");
 $test02 = new Test02("新しいデータ02の値");
 ```
 
-
+<br>
 
 ### 概念的な統一体
 
@@ -603,19 +603,19 @@ $test02 = new Test02("新しいデータ02の値");
 // ここに実装例
 ```
 
-
+<br>
 
 ### オブジェクトの交換可能性
 
 オブジェクトが新しくインスタンス化された場合，以前に同一オブジェクトから生成されたインスタンスから新しく置き換える必要がある．
 
-
+<br>
 
 ### オブジェクト間の等価性
 
 全てのデータの値が他のVOと同じ場合，同一のVOと見なされる．
 
- 
+ <br>
 
 ### メソッドによってオブジェクトの状態が変わらない
 
@@ -664,7 +664,7 @@ class Money
 }
 ```
 
-
+<br>
 
 ## 04-04. Domain層｜Type Code（標準型）の責務
 
@@ -672,7 +672,7 @@ class Money
 
 Type Codeは概念的な呼び名で，実際は，標準的なライブラリとして利用できるEnumクラスに相当する．一意に識別する必要がないユビキタス言語の中でも，特に『区分』や『種類』などは，Value Objectとしてではなく，Enumクラスとしてモデリング／実装する．
 
-
+<br>
 
 ### Enumクラスを用いたType Codeの実装
 
@@ -729,13 +729,13 @@ class ColorVO extends Enum
 }
 ```
 
-
+<br>
 
 ## 04-05. Domain Service
 
 要勉強．
 
-
+<br>
 
 
 ## 05. Infrastructure層
@@ -869,7 +869,7 @@ class getDogToyEntityRepository
 }
 ```
 
-
+<br>
 
 ### Factory
 

@@ -16,7 +16,7 @@ RESTに基づいた設計をRESTfulという．RESTful設計が用いられたWe
 
 ![RESTfulAPIを用いたリクエスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RESTfulAPIを用いたリクエスト.png)
 
-
+<br>
 
 ### RESTの４原則
 
@@ -39,7 +39,7 @@ HTTPプロトコルを使用したリクエストを，「リソースに対す�
 
 エンドポイントによって，特定のリソースを操作できること．
 
-
+<br>
 
 
 ## 02. Uniform Interface
@@ -65,7 +65,7 @@ POST送信とPUT送信の重要な違いについてまとめる．データを�
 | データ作成の冪等性 | リクエスト1つにつき，1つのデータを作成（非冪等的） | リクエスト数に限らず，1つのデータを作成（冪等的） |
 | 更新内容           | リクエストボディに格納（隠蔽可能）                 | パスパラメータに表示（隠蔽不可）                  |
 
-
+<br>
 
 ## 02-02. Addressability
 
@@ -105,7 +105,7 @@ DELETE http://www.example.co.jp/users/{id}
 | PUT          | あり                 |
 | DELETE       | なし                 |
 
-
+<br>
 
 
 ### パスパラメータとクエリパラメータ
@@ -131,7 +131,7 @@ http://www.example.co.jp:80/users/777?text1=a&text2=b
 | フィルタリング処理       |       ✕        |        ◯         |
 | ソーティング処理         |       ✕        |        ◯         |
 
-
+<br>
 
 ### エンドポイントの作り方
 
@@ -282,7 +282,7 @@ GET http://www.example.co.jp/users/12345
 POST http://www.example.co.jp/users/12345/messages
 ```
 
-
+<br>
 
 ## 03. リクエスト／レスポンスメッセージ
 
@@ -290,7 +290,7 @@ POST http://www.example.co.jp/users/12345/messages
 
 アプリケーション層で生成されるデータを，メッセージという．リクエスト時にクライアント側で生成されるメッセージをリクエストメッセージ，レスポンス時にサーバ側で生成されるメッセージをレスポンスメッセージという．
 
-
+<br>
 
 ### リクエストメッセージの構造
 
@@ -358,7 +358,7 @@ GET送信ではあるが，ボディにクエリパラメータを記述して�
 POSTMANで，GET送信にメッセージボディを含めることについて：
 https://github.com/postmanlabs/postman-app-support/issues/131
 
-
+<br>
 
 ### レスポンスメッセージの構造
 
@@ -405,7 +405,7 @@ X-Powered-By: PHP/7.3.22
 ここにサイトのHTMLのコード
 ```
 
-
+<br>
 
 ## 04. データの送受信
 
@@ -433,7 +433,7 @@ HTTPプロトコルにおけるファイル形式の識別子のこと．リク�
 |                    | jpeg                  |                                     |
 |                    | gif                   |                                     |
 
-
+<br>
 
 ### オブジェクトデータ
 
@@ -515,7 +515,7 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 }
 ```
 
-
+<br>
 
 ### HTTPステータスの種類
 
@@ -529,7 +529,7 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
 
 #### ・500番台：サーバーエラー
 
-
+<br>
 
 ## 05. Statelessプロトコルにおける擬似Stateful化
 
@@ -579,7 +579,7 @@ setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続�
 
 ![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
 
-
+<br>
 
 ### セッションID
 
@@ -662,7 +662,7 @@ session.save_path = "tcp://xxxxx-redis.xxxxx.ng.0001.apne1.cache.amazonaws.com:6
 
 ![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
 
-
+<br>
 
 ## 06. API仕様書
 

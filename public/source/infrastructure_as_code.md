@@ -23,7 +23,7 @@ Ansibleでは，ymlの文法を用いて関数処理を実行できる．
 | group_vars/* | 複数のサーバへの設定                   |
 | host_vars/*  | 単一のサーバへの設定                   |
 
-
+<br>
 
 ## 02. コンテナのコード化
 
@@ -36,7 +36,7 @@ Ansibleでは，ymlの文法を用いて関数処理を実行できる．
 | Dockerfile        | Docker         |
 | Ansible Container | 要勉強         |
 
-
+<br>
 
 
 ## 03. クラウドインフラストラクチャのコード化

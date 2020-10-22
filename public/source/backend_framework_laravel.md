@@ -130,7 +130,7 @@ $result = Example::method();
 | View                 | [Illuminate\View\Factory](https://laravel.com/api/6.x/Illuminate/View/Factory.html) | `view`                   |
 | View (Instance)      | [Illuminate\View\View](https://laravel.com/api/6.x/Illuminate/View/View.html) |                          |
 
-
+<br>
 
 ## ServiceProvider
 
@@ -142,7 +142,7 @@ $result = Example::method();
 $ php artisan make:provider {クラス名}
 ```
 
-
+<br>
 
 ### ServiceProvider
 
@@ -172,7 +172,7 @@ $ php artisan make:provider {クラス名}
 ],
 ```
 
-
+<br>
 
 ### AppServiceProvider
 
@@ -384,7 +384,7 @@ $example = App::make(Example::class);
 $result = $example->method();
 ```
 
-
+<br>
 
 ### MacroServiceProvider
 
@@ -428,7 +428,7 @@ class MigrationMacroServiceProvider extends ServiceProvider
 }
 ```
 
-
+<br>
 
 ### RouteServiceProvider
 
@@ -496,15 +496,11 @@ class RouteServiceProvider extends ServiceProvider
 
 ```
 
-
-
-
+<br>
 
 ### EventServiceProvider
 
-
-
-
+<br>
 
 ## Routes
 
@@ -527,7 +523,7 @@ $ php artisan route:clear
 $ php artisan optimize:clear
 ```
 
-
+<br>
 
 ### 種類
 
@@ -539,7 +535,7 @@ RESTfulAPIとして扱うエンドポイントを実装する
 
 API以外の場合，こちらにルーティング処理を実装する．第一引数にURL，第二引数に実行するメソッドを定義する．
 
-
+<br>
 
 ### ルーティング
 
@@ -628,7 +624,7 @@ class RouteServiceProvider extends ServiceProvider
 
 ```
 
-
+<br>
 
 ### セキュリティ
 
@@ -649,7 +645,7 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 #### ・常時HTTPS化
 
-
+<br>
 
 
 ## Migration
@@ -707,7 +703,7 @@ $ php artisan migrate:refresh
 $ php artisan migrate:fresh
 ```
 
-
+<br>
 
 ### テーブルの作成と削除
 
@@ -758,7 +754,7 @@ class CreateExampleTable extends Migration
 
 ```
 
-
+<br>
 
 ## Factory，Seeder
 
@@ -785,7 +781,7 @@ $ composer dump-autoload
 $ php artisan db:seed --class=DatabaseSeeder
 ```
 
-
+<br>
 
 
 ### テストデータ
@@ -879,15 +875,13 @@ class DatabaseSeeder extends Seeder
 $ php artisan make:model Example
 ```
 
-
+<br>
 
 ### Active Recordパターン
 
 #### ・Active Recordパターンとは
 
 ![ActiveRecord](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ActiveRecord.png)
-
-
 
 #### ・他の類似するデザインパターンとの比較
 
@@ -906,7 +900,7 @@ $ php artisan make:model Example
 | 可読性 | ・複雑なデータアクセスロジックを実装する必要が無い．<br>・Modelにおけるデータアクセスロジックがどのテーブルに対して行われるのか推測しやすい．<br>・リレーションを理解する必要があまりなく，複数のテーブルに対して無秩序にSQLを発行するような設計実装になりにくい． | データアクセスロジックが複数のテーブルを跨ぐためには，関連付くテーブルを軸としたリレーションを行う必要がある．この時，カラムの不要な取得を行ってしまうことがある． |      |
 | 拡張性 |                                                              | Modelの構成がテーブル構造に強く依存してしまうため，Modelのドメインロジックを柔軟に実装できなくなってしまう．そのため，ドメイン駆動設計との相性は悪い． |      |
 
-
+<br>
 
 ### Modelとテーブルの対応
 
@@ -1064,7 +1058,7 @@ class Example extends Model
 }
 ```
 
-
+<br>
 
 ## Eloquent｜Data Access
 
@@ -1074,7 +1068,7 @@ class Example extends Model
 
 ```
 
-
+<br>
 
 ### CREATE
 
@@ -1105,7 +1099,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-
+<br>
 
 ### READ
 
@@ -1174,7 +1168,7 @@ $collection = collect([
 $collection->toArray();
 ```
 
-
+<br>
 
 ### UPDATE
 
@@ -1216,7 +1210,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-
+<br>
 
 ### DELETE
 
@@ -1349,7 +1343,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-
+<br>
 
 ## HTTP｜Middleware
 
@@ -1362,7 +1356,7 @@ class ExampleRepository extends Repository
 $ php artisan make:middleware {クラス名}
 ```
 
-
+<br>
 
 ### Middlewareの仕組み
 
@@ -1422,7 +1416,7 @@ class ExampleAfterMiddleware
 }
 ```
 
-
+<br>
 
 ## HTTP｜Request
 
@@ -1435,7 +1429,7 @@ class ExampleAfterMiddleware
 $ php artisan make:request {クラス名}
 ```
 
-
+<br>
 
 ### バリデーションルールの定義
 
@@ -1564,7 +1558,7 @@ class ExampleController extends Controller
 }
 ```
 
-
+<br>
 
 ### セッション
 
@@ -1612,7 +1606,7 @@ $data = $request->session()->all();
 $request->session()->flash('status', 'Task was successful!');
 ```
 
-
+<br>
 
 ### Requestの認証
 
@@ -1636,9 +1630,7 @@ public function authorize()
 }
 ```
 
-
-
-
+<br>
 
 ## HTTP｜Controller
 
@@ -1651,7 +1643,7 @@ public function authorize()
 $ php artisan make:controller {クラス名}
 ```
 
-
+<br>
 
 ### Requestのコール
 
@@ -1711,7 +1703,7 @@ class UserController extends Controller
     }
 ```
 
-
+<br>
 
 ### Responseのコール
 
@@ -1746,7 +1738,7 @@ return response()
   ->setStatusCode(200);
 ```
 
-
+<br>
 
 ## HTTP｜Auth
 
@@ -1786,7 +1778,7 @@ $ php artisan passport:client --personal
 $ php artisan passport:client --password
 ```
 
-
+<br>
 
 ### AuthファサードによるDigest認証
 
@@ -1821,7 +1813,7 @@ class LoginController extends Controller
 }
 ```
 
-
+<br>
 
 ### PassportによるAPIのOauth認証
 
@@ -2002,7 +1994,7 @@ $response = $client->request('GET', '/api/user', [
 return (string)$response->getBody();
 ```
 
-
+<br>
 
 ## Views
 
@@ -2018,7 +2010,7 @@ $ php artisan view:clear
 $ php artisan optimize:clear
 ```
 
-
+<br>
 
 ### データの出力
 
@@ -2060,7 +2052,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 <!-- ポスト作成フォーム -->
 ```
 
-
+<br>
 
 ### 要素の共通化
 
@@ -2115,7 +2107,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 </div>
 ```
 
-
+<br>
 
 ### 子テンプレートにおける要素の出力
 
@@ -2169,7 +2161,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 </html>
 ```
 
-
+<br>
 
 #### ・@stack，@push
 
@@ -2195,7 +2187,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 @endpush
 ```
 
-
+<br>
 
 ### Twigとの互換
 

@@ -10,7 +10,7 @@
 
 ![組み込みシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/組み込みシステム.png)
 
-
+<br>
 
 ### マイクロコンピュータとは
 
@@ -18,7 +18,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 ![マイコン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マイコン.png)
 
-
+<br>
 
 ### センサによるアナログ情報の入力
 
@@ -28,19 +28,19 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 ![p119-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p119-2.png)
 
-
+<br>
 
 ### A/D変換器によるアナログ情報からデジタル情報への変換
 
 ![AD変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AD変換.png)
 
-
+<br>
 
 ### D/A変換器によるデジタル情報からアナログ情報への変換
 
 ![DA変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DA変換.png)
 
-
+<br>
 
 ### Actuater
 
@@ -48,7 +48,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 ![p119-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p119-3.png)
 
-
+<br>
 
 ### 組み込みシステムの制御方式の種類
 
@@ -72,7 +72,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 ![p120-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p120-2.png)
 
-
+<br>
 
 ## 02. 入出力機器
 
@@ -81,7 +81,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 #### ・ジョイスティック
 
-  
+  <br>
 
 
 ### 読み取り機器
@@ -102,7 +102,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 #### ・デジタルカメラ
 
-
+<br>
 
 
 ### ディスプレイ 
@@ -137,7 +137,7 @@ CPUとして、『マイクロプロセッサ』を用いたコンピュータ�
 
 2018年1月に開催された「CES 2018」でサムスンが発表した“マイクロLEDテレビ”「The Wall」は、従来の「液晶」や「有機EL」とは異なる新たな表示方式を採用したテレビとして、大きな話題となった．
 
-
+<br>
 
 
 ### プリンタ
@@ -174,7 +174,7 @@ dpiが大きくなるにつれて、解像度は大きくなる．
 
 ![CPS と PPM](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CPS と PPM.jpg)
 
-
+<br>
 
 
 ## 02-02. 入出力インターフェイス
@@ -187,7 +187,7 @@ dpiが大きくなるにつれて、解像度は大きくなる．
 
 ![シリアルvs パラレル の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアルvs パラレル の違い.jpeg)
 
-
+<br>
 
 ### Serial interface が用いられている例
 
@@ -201,7 +201,7 @@ dpiが大きくなるにつれて、解像度は大きくなる．
 
 ![ieeeケーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ieeeインターフェイス.jpg)
 
-
+<br>
 
 ### Parallel interface が用いられている例
 
@@ -217,7 +217,7 @@ dpiが大きくなるにつれて、解像度は大きくなる．
 
 ![scsiケーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/scsiインターフェイス.jpg)
 
-
+<br>
 
 ### 無線インターフェイス
 

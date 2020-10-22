@@ -8,7 +8,7 @@
 
 ![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_1.png)
 
-
+<br>
 
 ### 改竄（通信データの書き換え）を防ぐため
 
@@ -16,7 +16,7 @@
 
 ![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_2.png)
 
-
+<br>
 
 ### 成りすましを防ぐため
 
@@ -24,13 +24,13 @@
 
 ![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_3.png)
 
-
+<br>
 
 ## 01-02. 暗号アルゴリズム
 
 通信データの暗号化のほとんどは，『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．それらの方式は，以下のアルゴリズムによって実装される．
 
-
+<br>
 
 ### 共通鍵暗号アルゴリズム
 
@@ -40,7 +40,7 @@
 
 #### ・AES 暗号：Advanced Encryption Standard
 
-
+<br>
 
 ### 公開鍵暗号アルゴリズム
 
@@ -48,7 +48,7 @@
 
 #### ・RSA 暗号：Rivest-Shamir-Adleman cryptosystem
 
-
+<br>
 
 ## 01-03. 暗号アルゴリズムに基づく暗号方式
 
@@ -63,7 +63,7 @@
 | **鍵の配布方法**       | メール（盗聴に気を付ける） |      メール、PKI       |
 | **鍵の再利用**         |   再利用するべきではない   |    再利用してもよい    |
 
-
+<br>
 
 ### 共通鍵暗号方式
 
@@ -87,7 +87,7 @@
 
 ![共通鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/共通鍵の再利用.png)
 
-
+<br>
 
 ### 公開鍵暗号方式
 
@@ -112,7 +112,7 @@
 
 ![公開鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/公開鍵の再利用.png)
 
-
+<br>
 
 ### ハイブリッド暗号方式
 
@@ -120,7 +120,7 @@
 
  ![ハイブリッド暗号](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハイブリッド暗号.png)
 
-
+<br>
 
 ## 02. 暗号化方式に基づくセキュアプロトコル
 
@@ -130,7 +130,7 @@
 
 ![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セキュアプロトコル.png)
 
-
+<br>
 
 ### セキュアプロトコルで扱われる通信データ
 
@@ -144,7 +144,7 @@ Webコンテンツデータ，メールデータ，その他
 
 ![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
 
-
+<br>
 
 ## 02-02. アプリケーション層におけるメールデータの暗号化技術
 
@@ -154,13 +154,13 @@ Webコンテンツデータ，メールデータ，その他
 
 暗号化ダイジェスト（デジタル署名）を含むデジタル証明書をメールに添付することによって，公開鍵の成りすましを防ぐセキュリティ技術．
 
- ![S_MIME](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/S_MIME.png)
+![S_MIME](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/S_MIME.png)
 
 #### ・S/MIMEにおけるデジタル証明書
 
 デジタル証明書をS/MIMEに用いる場合，特にS/MIME証明書という．詳しくは，暗号ダイジェスト（デジタル署名）を参照．
 
-
+<br>
 
 ## 02-03. アプリケーション層におけるリモート接続／操作やファイル転送の暗号化技術
 
@@ -201,7 +201,7 @@ Webコンテンツデータ，メールデータ，その他
 
 ![Dockerにおけるポートフォワーディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerにおけるポートフォワーディング.png)
 
-
+<br>
 
 ### SCP：Secure Copy Protocol
 
@@ -220,7 +220,7 @@ SSHを介して，ファイル転送を行う．SSHの機能をより拡張し�
 
 #### ・ファイルを送信する側に必要なソフトウェア
 
-
+<br>
 
 ### SFTP：SSH File Transfer Protocol
 
@@ -234,7 +234,7 @@ SSHを介して，ファイル転送を行う．SSHとFTPを組み合わせた�
 
 #### ・ファイル送信側のクライアントソフトウェア
 
-
+<br>
 
 ## 02-04. トランスポート層におけるヘッダ情報の暗号化技術
 
@@ -256,7 +256,7 @@ Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例
 
 デジタル証明書をSSLに用いる場合，特にSSLサーバ証明書という．提供される秘密鍵と組み合わせて，ドメインの認証に用いられる．詳しくは，暗号ダイジェスト（デジタル署名）を参照．
 
-
+<br>
 
 ### VPN：Virtual Private Network（仮想プライベートネットワーク）
 
@@ -272,7 +272,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![SSLによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSLによるインターネットVPN.jpg)
 
-
+<br>
 
 ## 02-05. 暗号ダイジェスト（デジタル署名）について
 
@@ -321,7 +321,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![デジタル署名と暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デジタル署名と暗号化.png)
 
-
+<br>
 
 ### ハッシュ関数によるハッシュ化
 
@@ -329,7 +329,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![ハッシュ関数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハッシュ関数.png)
 
-
+<br>
 
 ### PKI：Public Key Infrastructure（公開鍵基盤）による公開鍵の検証
 
@@ -367,7 +367,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![認証局自体の成りすまし防止](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/認証局自体の成りすまし防止.png)
 
-
+<br>
 
 ## 02-06. ネットワーク層におけるヘッダ情報の暗号化技術
 
@@ -383,7 +383,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![IPsecによるカプセル化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPsecによるカプセル化.jpg)
 
-
+<br>
 
 ### VPN：Virtual Private Network（仮想プライベートネットワーク）
 
@@ -405,7 +405,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 『L2TP/IPSec』
 
-
+<br>
 
 ## 03. その他のセキュリティ技術
 
@@ -415,7 +415,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 #### ・SPF（Sender Policy Framework）
 
-
+<br>
 
 ### パスワードの保存方法
 
@@ -423,23 +423,21 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 ![ハッシュ値で保存](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハッシュ値で保存.png)
 
-
+<br>
 
 ### 生体認証
 
 ![生体認証-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/生体認証-1.png)
 
-
-
 ![生体認証-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/生体認証-2.png)
 
-
+<br>
 
 ### Web beacon
 
 webページに，サーバに対してHTTPリクエストを送信するプログラムを設置し，送信されたリクエストを集計するアクセス解析方法．例えば，1x1の小さなGif「画像」などを設置する．
 
-
+<br>
 
 ### Penetration テスト
 

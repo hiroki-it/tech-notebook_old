@@ -20,7 +20,7 @@
 
 #### 5. デバイスドライバ
 
-
+<br>
 
 ## 02. 応用ソフトウェア
 
@@ -30,7 +30,7 @@
 | :--------------------: | :--------------: | :-----------------------: | :----------------: |
 | **利用可能な通信状況** |     On／Off      |            On             |      On／Off       |
 
-
+<br>
 
 ### ネイティブアプリケーション
 
@@ -42,7 +42,7 @@
 
 Office，BookLiveのアプリ版
 
-
+<br>
 
 ### Webアプリケーションとクラウドアプリケーション
 
@@ -64,7 +64,7 @@ Webサーバ上のシステムによって稼働するアプリのうち，ク�
 
 Google Drive，Dropbox
 
-
+<br>
 
 ### ハイブリッドアプリケーション
 
@@ -78,7 +78,7 @@ Google Drive，Dropbox
 
 クックパッド
 
-
+<br>
 
 ## 03. ミドルウェア
 
@@ -96,7 +96,7 @@ Nginxのノートを参照．
 
 ![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
-
+<br>
 
 ### Appサーバのミドルウェア
 
@@ -118,7 +118,7 @@ WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
 ![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
 
-
+<br>
 
 ### DBサーバのミドルウェア
 
@@ -128,7 +128,7 @@ WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
 ※詳しくは，データベースのノートを参照せよ．
 
-
+<br>
 
 ## 04. 基本ソフトウェア（広義のOS）
 
@@ -148,7 +148,7 @@ MS-DOSを源流として派生したOS．今では，全ての派生がWindows 1
 
 ![WindowsOSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WindowsOSの歴史.png)
 
-
+<br>
 
 ### Unix ｜ Linux系統
 
@@ -177,7 +177,7 @@ Slackware
 
 ![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LinuxDistribution.png)
 
-
+<br>
 
 ### 基本ソフトウェア
 
@@ -197,7 +197,7 @@ Slackware
 
 基本ソフトウェアのノートを参照．
 
-
+<br>
 
 ## 05. デバイスドライバ
 
@@ -205,7 +205,7 @@ Slackware
 
 要勉強
 
-
+<br>
 
 ## 06. Firmware
 
@@ -217,7 +217,7 @@ Slackware
 
 ![BIOS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/BIOS.jpg)
 
-
+<br>
 
 ### UEFI：United Extensible Firmware Interface
 
@@ -225,7 +225,7 @@ Windows 8以降で採用されている新しいFirmware
 
 ![UEFIとセキュアブート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UEFIとセキュアブート.jpg)
 
-
+<br>
 
 ## 07. OSS：Open Source Software
 

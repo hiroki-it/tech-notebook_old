@@ -13,7 +13,7 @@
 
 2. グラフによるテストの可視化
 
-   
+<br>
 
 ## 03.  PHPUnitによるUnit／Functionalテストの要素
 
@@ -94,7 +94,6 @@ class Aggregation
         return $param.'B';
     }
 }
-
 ```
 
 実体的なオブジェクトに対して，モックオブジェクトを設定していく．
@@ -120,7 +119,7 @@ $aggregation->aggMethod("A");
 Phake::verify($mock, Phake::times(1))->exaMethod("AB");
 ```
 
-
+<br>
 
 ### テストの事前準備と後片付け
 
@@ -200,13 +199,13 @@ class xxxTest
 }
 ```
 
-
+<br>
 
 ### 実際値と期待値の比較
 
 https://phpunit.readthedocs.io/ja/latest/assertions.html
 
-
+<br>
 
 ## 03-02. PHPUnitによるUnit／Functionalテストの実装まとめ
 
@@ -221,7 +220,7 @@ https://phpunit.readthedocs.io/ja/latest/assertions.html
 // ここに実装例
 ```
 
-
+<br>
 
 ### Functionalテスト
 
@@ -252,7 +251,7 @@ Controllerに対してリクエストを行い，正しくレスポンスが行�
 // ここに実装例
 ```
 
-
+<br>
 
 ## 03-03. テスト仕様書に基づくUnit テスト
 
@@ -264,7 +263,7 @@ PHPUnitでのUnitテストとは意味合いが異なるので注意．
 
 ![p492-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p492-1.jpg)
 
-
+<br>
 
 ### ホワイトボックステスト
 
@@ -332,7 +331,7 @@ A = 1，B = 0 の時，```return X``` が実行されないこと．
 A = 0，B = 1 の時，```return X``` が実行されないこと．
 A = 0，B = 0 の時，```return X``` が実行されないこと．
 
- 
+ <br>
 
 ## 03-04. テスト仕様書に基づくIntegration テスト（結合テスト）
 
@@ -346,7 +345,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ![トップダウンテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トップダウンテスト.jpg)
 
-
+<br>
 
 ### Bottom-up テスト
 
@@ -354,13 +353,13 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ![ボトムアップテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ボトムアップテスト.jpg)
 
-
+<br>
 
 ### Scenario テスト
 
 実際の業務フローを参考にし，ユーザが操作する順にテストを行う．
 
-
+<br>
 
 
 ## 04. テスト仕様書に基づくSystemテスト（User Acceptanceテスト，総合テスト）
@@ -369,13 +368,13 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 結合テストの次に行うテスト．システム全体が適切に動いているかをテストする．User Acceptanceテスト，また総合テストともいう．
 
-
+<br>
 
 ### Functional テスト
 
 機能要件を満たせているかをテストする．PHPUnitでのFunctionalテストとは意味合いが異なるので注意．
 
-
+<br>
 
 ### Perfomance テスト
 
@@ -391,11 +390,11 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
   コンピュータが処理を終えるまでに要する時間のこと．
 
-
+<br>
 
 ### Stress テスト
 
-
+<br>
 
 ## 04-02. Regression テスト（退行テスト）
 
@@ -403,7 +402,7 @@ A = 0，B = 0 の時，```return X``` が実行されないこと．
 
 ![p496](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p496.jpg)
 
-
+<br>
 
 ## 05. グラフによるテストの可視化
 

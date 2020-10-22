@@ -26,7 +26,7 @@ $ nginx -t
 $ kill -s HUP NINGXPID
 ```
 
-
+<br>
 
 ## 02. Nginxの用途
 
@@ -165,7 +165,7 @@ php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
 
 ```
 
-
+<br>
 
 ### ロードバランサ－のミドルウェアとして
 
@@ -209,7 +209,7 @@ server {
 }
 ```
 
-
+<br>
 
 ### リバースProxyのミドルウェアとして
 
@@ -243,7 +243,7 @@ server {
 }
 ```
 
-
+<br>
 
 ## 03-01. Mainモジュール
 
@@ -257,7 +257,7 @@ pid                   logs/nginx.pid;
 worker_rlimit_nofile  8192;
 ```
 
-
+<br>
 
 ### ```user```ディレクティブ 
 
@@ -267,7 +267,7 @@ worker_rlimit_nofile  8192;
 user  www www;
 ```
 
-
+<br>
 
 ### ```worker_processes```ディレクティブ 
 
@@ -275,7 +275,7 @@ user  www www;
 worker_processes  5;
 ```
 
-
+<br>
 
 ### ```error_log```ディレクティブ 
 
@@ -283,7 +283,7 @@ worker_processes  5;
 error_log  logs/error.log;
 ```
 
-
+<br>
 
 ### ```pid```ディレクティブ 
 
@@ -291,7 +291,7 @@ error_log  logs/error.log;
 pid  logs/nginx.pid;
 ```
 
-
+<br>
 
 ### ```worker_rlimit_nofile```ディレクティブ 
 
@@ -299,7 +299,7 @@ pid  logs/nginx.pid;
 worker_rlimit_nofile  8192;
 ```
 
-
+<br>
 
 ## 03-02. Configurationモジュール
 
@@ -325,7 +325,7 @@ include  /etc/nginx/*.types;
 include  /usr/share/nginx/modules/*.conf;
 ```
 
-
+<br>
 
 ## 03-03. Eventsモジュール
 
@@ -347,7 +347,7 @@ workerプロセスが同時に処理可能なコネクションの最大数を�
 worker_connections  1024;
 ```
 
-
+<br>
 
 ## 03-04. HTTPCoreモジュール
 
@@ -416,7 +416,7 @@ include /etc/nginx/mime.types;
 include /etc/nginx/conf.d/*.conf;
 ```
 
-
+<br>
 
 ### ```server```ブロック
 
@@ -473,7 +473,7 @@ PEM秘密鍵のパスを設定する．
 ssl_certificate_key /etc/nginx/ssl/server.key;
 ```
 
-
+<br>
 
 ### ```location```ブロック
 
@@ -521,7 +521,7 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
-
+<br>
 
 ### ```upstream```ブロック
 
