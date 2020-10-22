@@ -10,7 +10,7 @@
 | -------------- | -------- |
 | Docker Compose | Docker   |
 
-
+<br>
 
 ### 複数ホストOSに渡るコンテナオーケストレーション
 
@@ -22,7 +22,7 @@
 | Google Kubernetes             | Google   |
 | AWS Elastic Container Service | Amazon   |
 
-
+<br>
 
 ## 02. Docker Compose
 
@@ -220,7 +220,7 @@ xxxxxxxxxxxx     backend_default           bridge       local
 xxxxxxxxxxxx     <プロジェクト名>_default     bridge      local
 ```
 
-
+<br>
 
 ### docker-composeコマンド
 
@@ -270,13 +270,13 @@ $ docker-compose logs <サービス名>
 $ docker-compose logs -f <サービス名>
 ```
 
-
+<br>
 
 ## 03. Docker Swarm
 
 ![DockerSwarmの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerSwarmの仕組み.png)
 
-
+<br>
 
 ## 04. Google Kubernetes
 
@@ -292,7 +292,7 @@ Kubernetesが実行される物理サーバを指す．
 
 Dockerが実行される仮想サーバを指す．
 
-
+<br>
 
 ### Pod
 

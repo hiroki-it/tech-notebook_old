@@ -8,7 +8,7 @@
 
 ![二進法とCPU](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/二進法とCPU.jpg)
 
-
+<br>
 
 ### 様々な進数とbitの関係
 
@@ -18,7 +18,7 @@
 
 ![進数表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/進数表.png)
 
-
+<br>
 
 ### なぜ８bitを1Byteとするのか？（半角英数字とbitの関係）
 
@@ -26,7 +26,7 @@
 
 ![半角英数字一文字で1バイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/半角英数字一文字で1バイト.png)
 
-
+<br>
 
 ### Byte単位
 
@@ -34,13 +34,13 @@
 
 ![p106](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p106.png)
 
-
+<br>
 
 ### 一般的なCPUが扱える情報の種数
 
 CPUでは，各データは2進法によって区別されている．CPUは4 ，8，16，32-bitバージョンと進歩し，2008年の後半からは 64-bitバージョンのCPUが普及し始めた．1-bitは2種類の情報を表すことができるため，32-bitのCPUでは2^32，64-bitでは2^64の種類の情報を扱う事ができる．
 
-
+<br>
 
 ## 01-02. 機械語命令の種類
 
@@ -58,21 +58,21 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 ![レジスタの内容を実行アドレスに格納する場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/レジスタの内容を実行アドレスに格納する場合.JPG)
 
-
+<br>
 
 ### シフト命令（※別節を参照せよ）
 
-
+<br>
 
 ### 計算命令
 
 レジスタから取り出した値を別の値と足し，その結果を元のレジスタに設定すること．
 
-
+<br>
 
 ### 論理演算命令（※3章を参照せよ）
 
-
+<br>
 
 ## 01-03. シフト命令
 
@@ -111,7 +111,7 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 ![負の論理左シフト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/負の論理左シフト.png)
 
-
+<br>
 
 ### 論理右シフト
 
@@ -181,7 +181,7 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 ![負の算術左シフト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/負の算術左シフト.png)
 
-
+<br>
 
 ### 算術右シフト
 
@@ -207,7 +207,7 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 ![負の算術右シフト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/負の算術右シフト.png)
 
-
+<br>
 
 ## 01-04. 機械語命令の実行手順
 
@@ -219,7 +219,7 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 2. 記号の値を基に，実行アドレスの計算方法が選択され，実行される．（実行アドレスの計算）
 3. 実行アドレスを基に，機械語命令が実行され，値がレジスタやメモリに書き留められる．（機械語命令のトレース）
 
-
+<br>
 
 ### （１）ビット分割
 
@@ -235,7 +235,7 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 ![機械語命令の構造_具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/機械語命令の読み取り.gif)
 
-
+<br>
 
 ### （２）実効アドレスの計算
 
@@ -259,13 +259,11 @@ CPUでは，各データは2進法によって区別されている．CPUは4 �
 
 = 1003h
 
-
+<br>
 
 ### （３）機械語命令のトレース
 
-
-
-
+<br>
 
 ## 01-05. 構文解析における数式の認識方法
 
@@ -297,7 +295,7 @@ Y = ( A + B ) × ( C － ( D ÷ E ) )
 
 　　Y = AB+CDE÷－× ⇒ YAB+CDE÷－×=
 
-
+<br>
 
 ## 01-06. CPUにおける小数の処理方法
 
@@ -325,7 +323,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![浮動小数点数から正規化した数式への変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/浮動小数点数から正規化した数式への変換.png)
 
-
+<br>
 
 ## 01-07. 誤差
 
@@ -335,7 +333,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![p067-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p067-1.png)
 
-
+<br>
 
 ### 桁溢れ誤差
 
@@ -347,13 +345,13 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![p068](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p068.png)
 
-
+<br>
 
 ### 情報落ち
 
 ![p069](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p069.png)
 
-
+<br>
 
 ### 打切り誤差
 
@@ -361,19 +359,19 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![p070-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p070-1.png)
 
-
+<br>
 
 ### 桁落ち
 
 ![p070-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p070-2.png)
 
-
+<br>
 
 ### 丸め誤差
 
 ![p071](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p071.png)
 
-
+<br>
 
 ## 02. N 進数 ➔ 10進数（重み掛けを行う）
 
@@ -388,7 +386,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 #### ・少数
 
-
+<br>
 
 ### 2進数 ➔ 10進数
 
@@ -400,7 +398,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 #### ・少数
 
-
+<br>
 
 ## 02-02. 10進数 ➔ N 進数（Nで割り続ける）
 
@@ -426,7 +424,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
   3．少数部分が0になったので，取り出した数を順に並べ，答えは『0.1A』
 
-
+<br>
 
 ### 10進数 ➔ 2進数
 
@@ -438,9 +436,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 #### ・少数
 
-  
-
-
+  <br>
 
 ## 02-03. X 進数 ➔ 10進数 ➔ Y 進数
 
@@ -458,7 +454,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 3. よって，AFは10進法に変換して『0010000010110011』
 
-   
+<br>
 
 ## 02-04. X 進数 ➔ 10 進数 ➔ Y 進数 ➔ 10 進数
 
@@ -490,9 +486,8 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 6. したがって，『2^5＋2^3＋2^1＋2^－2＋2^－5＋2^－6』
 
-   
 
-
+<br>
 
 ## 03. 論理回路
 
@@ -502,7 +497,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 以下のベン図では，集合Aと集合Bは入力が『1』の場合，外側は入力が『0』の場合を表している．演算方法を思い出すときには，ベン図を思い出せ．
 
-
+<br>
 
 ### 否定回路（NOT回路），NOT演算，ベン図
 
@@ -512,7 +507,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![NOT回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NOT回路.png)
 
-
+<br>
 
 ### 論理積回路（AND回路），AND演算，ベン図
 
@@ -522,7 +517,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![AND回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AND回路.png)
 
-
+<br>
 
 ### 否定論理積回路（NAND回路），NAND演算，ベン図
 
@@ -532,7 +527,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![NAND回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NAND回路.png)
 
-
+<br>
 
 ### 論理和回路（OR回路），OR演算，ベン図
 
@@ -542,7 +537,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![OR回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OR回路.png)
 
-
+<br>
 
 ### 排他的論理和回路（EOR回路／XOR回路），EOR演算，ベン図
 
@@ -552,7 +547,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![EOR回路またはXOR回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/EOR回路またはXOR回路.png)
 
-
+<br>
 
 ### 否定論理和回路（NOR回路），NOR演算，ベン図
 
@@ -562,7 +557,7 @@ CPUは，数値に対し，特定の位置に小数点を打つ．
 
 ![NOR回路](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NOR回路.png)
 
-
+<br>
 
 ### フリップフロップ回路
 
@@ -572,13 +567,11 @@ SRAMの電子回路に用いられている（6章を参照）．Set側に初期
 
 ![フリップフロップ回路-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/フリップフロップ回路-2.png)
 
-
-
 Reset側に『1』を入力すると，両方の出力結果は変化する．
 
 ![フリップフロップ回路-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/フリップフロップ回路-3.png)
 
-
+<br>
 
 ## 03-02. 論理演算命令
 
@@ -608,23 +601,23 @@ Reset側に『1』を入力すると，両方の出力結果は変化する．
 
 ![論理積](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/論理積.JPG)
 
-
+<br>
 
 ### 否定論理積
 
-
+<br>
 
 ### 論理和
 
 ![論理和](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/論理和.JPG)
 
-
+<br>
 
 ### 排他的論理和
 
 ![排他的論理和](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/排他的論理和.JPG)
 
-
+<br>
 
 ### 否定論理和
 

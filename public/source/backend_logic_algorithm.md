@@ -6,7 +6,7 @@
 
 ![ソートの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソートの仕組み.gif)
 
-
+<br>
 
 ### 基本選択法（選択ソート）
 
@@ -86,7 +86,7 @@ var_dump($result);
 
 ![選択ソート4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/選択ソート4.gif)
 
-
+<br>
 
 ### クイックソート
 
@@ -241,23 +241,21 @@ var_dump($result);
 
 ![バブルソート6](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/バブルソート6.gif)
 
-
+<br>
 
 ### 基本挿入法（挿入ソート）
 
 既に整列済みのデータ列の正しい位置に，データを追加する操作を繰り返していく方法．
 
-
+<br>
 
 ### ヒープソート
 
-
+<br>
 
 ### シェルソート
 
-
-
-
+<br>
 
 ## 02. 配列内探索のアルゴリズム
 
@@ -301,7 +299,7 @@ var_dump($result);
 
 ![二分探索法6](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/二分探索法6.gif)
 
-
+<br>
 
 ## 03. グラフ探索のアルゴリズム（難し過ぎで記入途中）
 
@@ -489,7 +487,7 @@ $goalPoint = 6
 
 ![ダイクストラ法_20](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ダイクストラ法_20.png)
 
-
+<br>
 
 ## 04. 誤り検出と訂正のアルゴリズム
 
@@ -502,11 +500,11 @@ $goalPoint = 6
 
 ![チェックディジット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/チェックディジット.gif)
 
-
+<br>
 
 ### Parity Check
 
-
+<br>
 
 ### CRC：Cyclic Redundancy Check（巡回冗長検査）
 

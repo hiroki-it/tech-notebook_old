@@ -8,7 +8,7 @@
 
 ![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SPアプリにおけるデータ通信の仕組み.png)
 
-
+<br>
 
 ### 従来WebアプリとSPAの処理速度の違い
 
@@ -16,7 +16,7 @@
 
 ![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/従来WebアプリとSPアプリの処理速度の違い.png)
 
-
+<br>
 
 ### SPAにおける，JavaScript + JSON型データ + PHP  + マークアップ言語
 
@@ -34,7 +34,7 @@
 10. オブジェクトがマークアップ言語に出力される．
 11. DOMを用いて，Webページを再び構成する．
 
-
+<br>
 
 ## 02. Vueを用いたMVVMアーキテクチャ
 
@@ -83,7 +83,7 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 
 ![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
 
-
+<br>
 
 ### ViewModel層におけるルートVueインスタンスの実装方法
 
@@ -143,7 +143,7 @@ var vm = new Vue({
 })
 ```
 
-
+<br>
 
 ### MVVMアーキテクチャの実装例
 
@@ -414,7 +414,7 @@ class Example {
 }
 ```
 
-
+<br>
 
 ## 02-02. View層とViewModel層の間での双方向データバインディングの方法
 
@@ -530,7 +530,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 ```
 
-
+<br>
 
 ### 条件付きレンダリング
 
@@ -543,7 +543,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 | v-if   | 単発の切り替えがメインの場合    |
 | v-show | 表示/非表示の切替回数が多い場合 |
 
-
+<br>
 
 ### 属性データバインディング
 
@@ -551,7 +551,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 ※要勉強
 
-
+<br>
 
 ### フォーム入力データバインディング
 
@@ -574,7 +574,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 </input>
 ```
 
-
+<br>
 
 ###  その他のディレクティブ
 
@@ -582,7 +582,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 ※要勉強
 
-
+<br>
 
 
 ## 02-03. Vue-Routerライブラリによるルーティング
@@ -654,13 +654,13 @@ Webアプリケーション全体に1つ存在し，全体的なRouter機能を�
 | ```query```    | ```Object``` | クエリパラメータのキー名と値を保持するオブジェクト．```/foo?user=1```というクエリパラメータの場合，```$route.query.user==1```となる． | もしクエリーがない場合は，空オブジェクト |
 | ```fullPath``` | ```string``` | URL全体の文字列．                                            |                                          |
 
-
+<br>
 
 ### その他のRouterライブラリ
 
 JQueryにはJQueryRouter，ReactにはReact-Routerがある．
 
-
+<br>
 
 ## 02-04. Vuexライブラリによるデータの状態変化の管理
 
@@ -672,7 +672,7 @@ Vuejsでライブラリの一つで，MVVMアーキテクチャのモデルに�
 
 ![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VueコンポーネントツリーとVuexの関係.png)
 
-
+<br>
 
 ### ```Vuex.Store()```によるVuexストアの実装
 
@@ -762,7 +762,7 @@ module.exports = new Vuex.Store({
 })
 ```
 
-
+<br>
 
 ### コンポーネントからVuexへのアクセス
 
@@ -842,13 +842,13 @@ module.exports = {
 </script>
 ```
 
-
+<br>
 
 ## 03. JavaScriptとJSONの相互パース
 
 サーバとのデータ送受信の前後に，データ型のパースを行う必要がある，これについては，JSONのノートを参照．
 
-
+<br>
 
 ## 04. Ajaxによる非同期的なデータ送受信
 
@@ -935,6 +935,8 @@ static find(query) {
     });
 } 
 ```
+
+<br>
 
 ### Deferredモジュール
 

@@ -23,7 +23,7 @@
 | **```array(1)```** |                 **〇**                  |                         **〇**                          |
 | **使いどころ**     |     ```null```だけを検証したい場合      | ```null```，```0```，```""```，```[]```を検証したい場合 |
 
-
+<br>
 
 ## 02. 条件式
 
@@ -105,7 +105,7 @@ switch ($weeks) {
 // 火曜日
 ```
 
-
+<br>
 
 ### ```if```-```else```の回避方法
 
@@ -149,7 +149,6 @@ function (){
     
     return $result;
 }
-
 ```
 
 #### ・三項演算子を用いた場合
@@ -232,7 +231,7 @@ function ($result)
 
 ```
 
-
+<br>
 
 ### ```if```-```elseif```-```else```の回避方法
 
@@ -393,7 +392,7 @@ public function leapYear(int $year): string
 }
 ```
 
-
+<br>
 
 ## 02-02. インスタンスの検証
 
@@ -457,7 +456,7 @@ if ($a === $b) {
 // 同じです
 ```
 
-
+<br>
 
 ## 03. 例外処理とロギング
 
@@ -502,7 +501,7 @@ if (empty($value)) {
 return $value;
 ```
 
-
+<br>
 
 ### ```try```-```catch```文
 
@@ -579,7 +578,7 @@ class HttpRequestException extends Exception
 }
 ```
 
-
+<br>
 
 ### ロギング
 

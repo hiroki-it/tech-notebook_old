@@ -7,7 +7,7 @@
 
 JavaScriptの実行環境にあらかじめ組み込まれたオブジェクト．
 
-
+<br>
 
 ### Object
 
@@ -20,7 +20,7 @@ JavaScriptの実行環境にあらかじめ組み込まれたオブジェクト�
 var obj = new Object();
 ```
 
-
+<br>
 
 ### Function
 
@@ -30,7 +30,7 @@ var obj = new Object();
 
 ```
 
-
+<br>
 
 ### Array
 
@@ -89,7 +89,7 @@ console.log(
 // 4
 ```
 
-
+<br>
 
 ### JSON
 
@@ -131,7 +131,7 @@ console.log(
 // {x:5, y:5 z:"test"}
 ```
 
-
+<br>
 
 ## 01-02. DOMオブジェクト
 
@@ -158,7 +158,7 @@ console.log(
 // <p id="myid">Hello world!</p>
 ```
 
-
+<br>
 
 ### EventTarget
 
@@ -181,7 +181,7 @@ btn.addEventListener('click', function() {
 </script>
 ```
 
-
+<br>
 
 ## 02. オブジェクトの生成，初期化
 
@@ -232,7 +232,7 @@ const example = {
 }
 ```
 
-
+<br>
 
 ### コンストラクタ関数の使用
 
@@ -345,7 +345,7 @@ console.log(
 );
 ```
 
-
+<br>
 
 ### 糖衣構文の```class```の使用
 
@@ -392,7 +392,7 @@ const Example = class {
 const example = new Example(1)
 ```
 
-
+<br>
 
 ## 02-02. オブジェクトの操作
 
@@ -507,7 +507,7 @@ const result = SubExample.printSubValue();
 console.log(result);
 ```
 
-
+<br>
 
 ## 02-03. ```this```の参照先
 
@@ -539,7 +539,7 @@ example.setValue(1);
 example.getValue(); // 1
 ```
 
-
+<br>
 
 ### コンストラクタ関数としてコールする場合
 
@@ -622,7 +622,7 @@ object2.printParam; // global param
 
 また，アロー関数がコールバック関数の引数となっている場合…（要勉強）
 
-
+<br>
 
 ## 03. 関数
 
@@ -659,6 +659,8 @@ function car(make, model, year) {
 const mycar = new car("Eagle", "Talon TSi", 1993);
 ```
 
+<br>
+
 ### function命令
 
 #### ・function命令とは
@@ -669,7 +671,7 @@ const mycar = new car("Eagle", "Talon TSi", 1993);
 
 ```javascript
 // 定義（コールする場所が前後しても無関係）
-function metthodA(){
+function methodA(){
     return "A";
 }
 ```
@@ -754,7 +756,7 @@ const x = hoge(); // 変数『x』には関数『hoge』から返ってきた『
 console.log(x); // 『undefined』が出力されます。
 ```
 
-
+<br>
 
 ## 05. 変数
 
@@ -828,7 +830,7 @@ if (true) {
 console.log(x); // fuga
 ```
 
-
+<br>
 
 ### 変数の巻き上げ
 

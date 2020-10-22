@@ -17,7 +17,7 @@
 
 ![BrowserRenderingプロセス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/BrowserRenderingプロセス.png)
 
-
+<br>
 
 ## 01-02. マークアップ言語
 
@@ -31,7 +31,7 @@ Webページをテキストによって構成するための言語をマーク�
 
 ![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マークアップ言語の歴史.png)
 
-
+<br>
 
 ### XML形式：Extensible Markup Language
 
@@ -58,7 +58,7 @@ Webページをテキストによって構成するための言語をマーク�
     ]>
 ```
 
-
+<br>
 
 ### HTML形式：HyperText Markup Language
 
@@ -66,7 +66,7 @@ Webページをテキストによって構成するための言語をマーク�
 
 テキストファイルのうち，Webページの構造を表現することに特化している．
 
-
+<br>
 
 ## 01-03. JavaScript
 
@@ -177,7 +177,7 @@ var hoge = true;
 </script>
 ```
 
-
+<br>
 
 ## 01-04. イベント駆動
 
@@ -213,7 +213,7 @@ function methodA(){
 </script>
 ```
 
-
+<br>
 
 ### JSファイル上でイベントハンドラ関数をコールする記述方法
 
@@ -253,7 +253,7 @@ document.getElementById('btn').addEventListener('click', function(){
 }, false);
 ```
 
-
+<br>
 
 ## 01-05. ブラウザのバージョン
 
@@ -263,7 +263,7 @@ document.getElementById('btn').addEventListener('click', function(){
 
 JavaScriptやHTMLの更新にブラウザが追いついていない場合に，それを補完するように実装されたライブラリのこと．「Polyfilla」に由来している．
 
-
+<br>
 
 ## 02. Downloading処理
 
@@ -302,7 +302,7 @@ Downloading処理の優先順位を上げるように宣言する方法．優先
 </body>
 ```
 
-
+<br>
 
 ### Lazy Loading（遅延読み込み）
 
@@ -320,13 +320,13 @@ Intersection Observerによる要素の交差率を監視し，指定の交差�
 
 ![IntersectionObserverとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IntersectionObserverとは.png)
 
-
+<br>
 
 ### Eager Loading
 
 #### ・Eager Loadingとは
 
-
+<br>
 
 ## 02-02. Parse処理
 
@@ -334,7 +334,7 @@ Intersection Observerによる要素の交差率を監視し，指定の交差�
 
 Downloading処理によって読み込まれたリソースを翻訳するプロセス
 
-
+<br>
 
 ### HTML形式テキストファイルの構造解析
 
@@ -387,7 +387,7 @@ img { float: right }
 
 ![CSSOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CSSOMツリー.png)
 
-
+<br>
 
 
 ### XML形式テキストファイルの構造解析
@@ -402,7 +402,7 @@ img { float: right }
 
 引用：Real-time Generalization of Geodata in the WEB，https://www.researchgate.net/publication/228930844_Real-time_Generalization_of_Geodata_in_the_WEB
 
-
+<br>
 
 ## 03. Scripting処理
 
@@ -424,7 +424,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
-
+<br>
 
 
 ## 04. Rendering処理
@@ -433,7 +433,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 レンダリングツリーが生成され，ブラウザ上のどこに何を描画するのかを計算する．CalculateStyle処理とLayout処理に分けられる．
 
-
+<br>
 
 ## 04-02. CalculateStyle処理
 
@@ -443,7 +443,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ![Renderツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Renderツリー.png)
 
-
+<br>
 
 ## 04-03. Layout処理
 
@@ -453,7 +453,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 ![Layout処理](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Layout処理.png)
 
-
+<br>
 
 ## 05. Paint処理
 
@@ -461,19 +461,19 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 DOMツリーの各ノードを，ブラウザ上に描画する．
 
-
+<br>
 
 ## 05-02. Rasterize処理
 
 ### Rasterize処理とは
 
-
+<br>
 
 ## 05-03. CompositeLayers処理
 
 ### CompositeLaysers処理とは
 
-
+<br>
 
 ## 06. キャッシュ
 
@@ -481,7 +481,7 @@ DOMツリーの各ノードを，ブラウザ上に描画する．
 
 一時的にデータを保存しておき，再利用することによって，処理速度を高める仕組みのこと．データとしては，メソッド処理結果，静的コンテンツ（HTML，CSS，JS，画像など）がある．
 
-
+<br>
 
 ### キャッシュの保存場所の種類
 
