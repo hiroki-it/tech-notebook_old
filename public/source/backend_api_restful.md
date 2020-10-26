@@ -407,7 +407,45 @@ X-Powered-By: PHP/7.3.22
 
 <br>
 
-## 04. データの送受信
+### リクエストメッセージの送信方法
+
+#### ・PHP
+
+```php
+<?php
+
+define('URL', 'https://example.com');
+
+// curlセッションを初期化する
+$curl = curl_init();
+
+// オプションの設定
+curl_setopt_array(
+    $curl,
+    [
+        // URL
+        CURLOPT_URL            => URL,
+        // HTTPメソッド
+        CURLOPT_CUSTOMREQUEST  => 'GET',
+        // SSL証明書の検証
+        CURLOPT_SSL_VERIFYPEER => false,
+        // 文字列型で受信
+        CURLOPT_RETURNTRANSFER => true
+    ]
+);
+
+// リクエストの実行
+$messageBody = (curl_exec($curl))
+    ? curl_exec($curl)
+    : [];
+
+// curlセッションを閉じる
+curl_close($curl);
+```
+
+
+
+## 04. 送受信されるデータ
 
 ### MIME type（Content type）
 
@@ -514,20 +552,6 @@ http://www.example.co.jp/users/12345?date=2020-07-07T12:00:00%2B09:00
   "message": "エラー：入力に不備があります。"
 }
 ```
-
-<br>
-
-### HTTPステータスの種類
-
-#### ・100番台：継続
-
-#### ・200番台：リクエスト成功
-
-#### ・300番台：リダイレクトに関するステータス
-
-#### ・400番台：リクエスト失敗
-
-#### ・500番台：サーバーエラー
 
 <br>
 
