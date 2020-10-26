@@ -507,43 +507,45 @@ return $value;
 
 #### ・単なる```if```-```throw```文との違い
 
-何らかの処理の合間全てに```if```-```throw```を行うと，様々な可能性を考慮しなければいけなくなる．そこで，特定の処理の中で起こる想定できない例外を捉え，エラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．
+何らかの処理の合間全てに```if```-```throw```を行うと，様々な可能性を考慮しなければいけなくなる．
+
+```php
+<?php
+
+// WebAPIの接続に失敗した場合
+if (...){
+    throw new WebAPIException();
+}
+
+if (...){
+    throw new HttpRequestException();
+}
+```
+
+そこで，特定の処理の中で起こる想定できない例外を捉え，エラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．
 
 **＊実装例＊**
 
 ```PHP
 <?php
-// Exceptionを投げる
-try{
-    // WebAPIの接続に失敗した場合
-    if(...){
-        throw new WebAPIException();
-    }
     
-    if(...){
-        throw new HttpRequestException();
-    }
-
 // try文で指定のExceptionが投げられた時に，指定のcatch文に入る
-// あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）
-}catch(WebAPIException $e){
-    // エラー文を出力．
-    print $e->getMessage();
+try {
 
+
+// あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）
+} catch (WebAPIException $exception) {
     
-}catch(HttpRequestException $e){
-    // エラー文を出力．
-    print $e->getMessage();
+    
+} catch (HttpRequestException $exception) {
 
     
 // Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため，最後に記述するべき．
-}catch(Exception $e){
-    // 特定できなかったことを示すエラーを出力
-    throw new Exception("なんらかの例外が発生しました．");
+} catch (Exception $exception) {
 
-        
+
 // 正常と例外にかかわらず，必ず実行される．
-}finally{
+} finally {
     // 正常と例外にかかわらず，必ずファイルを閉じるための処理
 }
 ```
@@ -554,6 +556,7 @@ try{
 
 ```PHP
 <?php
+    
 // HttpRequestに対処する例外クラス
 class HttpRequestException extends Exception
 {
@@ -582,7 +585,7 @@ class HttpRequestException extends Exception
 
 ### ロギング
 
-#### ・外部APIとの接続時に必要なロギング
+#### ・ロギングの出力分け
 
 例えば，メッセージアプリのAPIに対してメッセージ生成のリクエストを送信する時，例外処理に合わせて，外部APIとの接続失敗によるエラーログを生成と，自社システムなどその他原因によるエラーログを生成を行う必要がある．
 
@@ -590,35 +593,48 @@ class HttpRequestException extends Exception
 
 ```PHP
 <?php
-/**
- * @param message $message
- * @return bool
- * @throws CouldNotSendMessageException
- */
-function sendMessage(Message $message)
+
+use \Exception\ExternalApiException;
+use \Exception\CouldNotSendNotificationException;
+
+class Example
 {
-    // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
-
-    try {
+    /**
+     * @param message $message
+     * @return bool
+     * @throws ExternalApiException|CouldNotSendMessageException
+     */
+    public function sendMessage(Message $message)
+    {
+        // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
+        
+        try {
             
-        // 外部APIのためのリクエストメッセージを生成．
-        // 外部APIのURL，送信方法，トークンなどのパラメータを設定．
-
-    } catch (ClientException $e) {
+            // 外部APIのためのリクエストメッセージを生成．
+            // 外部APIのURL，送信方法，トークンなどのパラメータを設定．
             
-        // 外部APIとの接続失敗によるエラーログを生成
-
-        throw new CouldNotSendNotificationException();
+        } catch (\ExternalApiException $exception) {
             
-    } catch (\Exception $e) {
+            // 外部APIとの接続失敗によるエラーログを生成
+            error_log(
+                $exception->getMessage(),
+                3,
+                __DIR__ . '/external_api_error.log'
+            );
             
-        // 自社システムなどその他原因によるエラーログを生成
+        } catch (\Exception $exception) {
             
-        throw new CouldNotSendNotMessageException();
-     }
-    
-    // 問題なければTRUEを返却．
-    return true;
+            // 自社システムなどその他原因によるエラーログを生成
+            error_log(
+                $exception->getMessage(),
+                3,
+                __DIR__ . '/app_error.log'
+            );
+        }
+        
+        // 問題なければTRUEを返却．
+        return true;
+    }
 }
 ```
 
