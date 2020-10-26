@@ -2275,3 +2275,118 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 {% endblock %}
 ```
 
+<br>
+
+## Config
+
+### 環境変数
+
+#### ・envメソッド
+
+```.env```ファイルに定義された値を，環境変数として出力することができる．
+
+```php
+<?php
+
+env('<環境変数名>', '<デフォルト値>');
+```
+
+#### ・app.php
+
+```.env```ファイルのアプリケーションに関する値が出力される．
+
+```php
+<?php
+
+return [
+    // アプリケーション名
+    'name'            => env('APP_NAME', 'Laravel'),
+
+    // 実行環境名
+    'env'             => env('APP_ENV', 'production'),
+
+    // エラー時のデバッグ画面の有効化
+    'debug'           => (bool)env('APP_DEBUG', false),
+
+    // アプリケーションのURL
+    'url'             => env('APP_URL', 'http://localhost'),
+
+    // assetヘルパーで付与するURL
+    'asset_url'       => env('ASSET_URL', null),
+
+    // タイムゾーン
+    'timezone'        => 'UTC',
+
+    // 言語設定
+    'locale'          => 'en',
+    'fallback_locale' => 'en',
+    'faker_locale'    => 'en_US',
+
+    // APIキー
+    'key'             => env('APP_KEY'),
+
+    // 暗号化アルゴリズム
+    'cipher'          => 'AES-256-CBC',
+
+    // サービスプロバイダー
+    'providers'       => [
+
+    ],
+
+    // クラス名のエイリアス
+    'aliases'         => [
+
+    ],
+];
+
+
+
+```
+
+#### ・database.php
+
+```.env```ファイルのデータベースに関する値が出力される．
+
+```php
+<?php
+
+use Illuminate\Support\Str;
+
+return [
+
+    // 使用するDBMSを設定
+    'default'     => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // データベース接続情報（SQLite）
+        'sqlite' => [
+
+        ],
+
+        // データベース接続情報（MySQL）
+        'mysql'  => [
+
+        ],
+
+        // データベース接続情報（pgSQL）
+        'pgsql'  => [
+
+        ],
+
+        // データベース接続情報（SQLSRV）
+        'sqlsrv' => [
+
+        ],
+    ],
+
+    // マイグレーションファイルのあるディレクトリ
+    'migrations'  => 'migrations',
+
+    // Redis接続情報
+    'redis'       => [
+
+    ],
+];
+```
+
