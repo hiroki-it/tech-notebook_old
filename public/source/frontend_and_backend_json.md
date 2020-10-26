@@ -48,9 +48,9 @@
 ```javascript
 // どんなデータを含むJSONなのかわかりやすい方法
 const json = {
-    name: null,
-    age: null,
-    tel: null
+    "name": null,
+    "age": null,
+    "tel": null
 }
 
 json.name = "taro";
@@ -74,9 +74,9 @@ json.prefecture = "Tokyo";
 
 ```javascript
 const json = {
-    name: "taro",
-    age: 30,
-    tel: "090-0123-4567"
+    "name": "taro",
+    "age": 30,
+    "tel": "090-0123-4567"
 }
 
 // areaというキー名の値を追加
@@ -109,14 +109,19 @@ PHPでいう連想配列と同じような形をしている．キー名はク�
 **＊実装例＊**
 
 ```javascript
-// クラス宣言．
-class Example {
+const object = {
     fruit: ["ばなな", "りんご"];
     account: 200;
 }
+```
 
-// 外部ファイルから読み込めるようにする．  
-module.exports = Example;  
+```javascript
+class Example {
+    constructor(x, y) {
+        this.fruit = x
+        this.account = y    
+    }
+}
 ```
 
 #### ・JSON型オブジェクト
@@ -125,9 +130,8 @@ module.exports = Example;
 
 文字列のみ，シングルクオーテーションかダブルクオーテーションで囲う．キー名も値も，クオーテーションで囲う必要が無い．
 
-```json
-// 一番外側を波括弧で囲う．
-{
+```javascript
+const json = {
   "Example": {
     "fruit": ["ばなな", "りんご"],
     "account": 200
@@ -141,6 +145,7 @@ module.exports = Example;
 
 ```PHP
 <?php
+    
 class Example
 {
     private $fruit;
