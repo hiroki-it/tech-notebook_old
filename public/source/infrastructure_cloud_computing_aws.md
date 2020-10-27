@@ -1788,6 +1788,25 @@ AWSの使用上，ACM証明書を設置できないサービスに対しては�
 
 特定の権限をもったアカウントのこと．
 
+#### ・AWS-CLIのための機密情報ファイル
+
+AWS-CLIでクラウドインフラを操作するためには，機密情報ファイルに定義されたプロファイルが必要である．
+
+```
+// Linux，Unixの場合：$HOME/.aws/<機密情報ファイル名>
+// Windowsの場合：%USERPROFILE%\.aws\<機密情報ファイル名>
+
+[default]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+
+[user1]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+```
+
+<br>
+
 ### IAMグループ
 
 #### ・IAMグループとは
