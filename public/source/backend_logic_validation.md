@@ -27,13 +27,13 @@
 
 ## 02. 条件式
 
-### ```if```-```elseif```-```else``` ，```switch```-```case```-```break```
+### if-elseif-else ，switch-case-break
 
 **＊実装例＊**
 
 曜日を検証し，文字列を出力する．
 
-#### ・```if```-```elseif```-```else```
+#### ・if-elseif-else
 
 **＊実装例＊**
 
@@ -63,7 +63,7 @@ if ($weeks == 'Mon') {
 // 火曜日
 ```
 
-#### ・```switch```-```case```-```break```
+#### ・switch-case-break
 
 定数ごとに処理が変わる時，こちらの方が可読性が高い．
 
@@ -107,9 +107,9 @@ switch ($weeks) {
 
 <br>
 
-### ```if```-```else```の回避方法
+### if-elseの回避方法
 
-#### ・```if```-```else```を用いた場合
+#### ・if-elseを用いた場合
 
 可読性が悪いため，避けるべき．
 
@@ -117,38 +117,52 @@ switch ($weeks) {
 
 ```PHP
 <?php
-// マジックナンバーを使わずに，定数として定義
-const noOptionItem = 0;
 
-function (){
-// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-    if (!empty($routeEntity->options)) {
-        foreach ($routeEntity->options as $option) {
-            
-            // if文を通過した場合，メソッドの返却値が格納される．
-            // 通過しない場合，定数が格納される．
-            if ($option->isOptionItemA()) {
-                $result['optionItemA'] = $option->optionItemA();
-            } else {
-                $result['optionItemA'] = noOptionItem;
+class Example
+{
+    /**
+     * マジックナンバー
+     */
+    const noOptionItem = 0;
+
+    /**
+     * @var Entity
+     */
+    private $routeEntity;
+
+    public function example($result)
+    {
+
+        // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+        if (!empty($this->routeEntity->options)) {
+            foreach ($this->routeEntity->options as $option) {
+
+                // if文を通過した場合，メソッドの返却値が格納される．
+                // 通過しない場合，定数が格納される．
+                if ($option->isOptionItemA()) {
+                    $result['optionItemA'] = $option->optionItemA();
+                } else {
+                    $result['optionItemA'] = self::noOptionItem;
+                }
+
+                if ($option->isOptionItemB()) {
+                    $result['optionItemB'] = $option->optionItemB();
+                } else {
+                    $result['optionItemB'] = self::noOptionItem;
+                }
+
+                if ($option->isOptionItemC()) {
+                    $result['optionItemC'] = $option->optionItemC();
+                } else {
+                    $result['optionItemC'] = self::noOptionItem;
+                }
             }
-            
-            if ($option->isOptionItemB()) {
-                $result['optionItemB'] = $option->optionItemB();
-            } else {
-                $result['optionItemB'] = noOptionItem;
-            }
-            
-            if ($option->isOptionItemC()) {
-                $result['optionItemC'] = $option->optionItemC();
-            } else {
-                $result['optionItemC'] = noOptionItem;
-            }
-        };
+        }
+
+        return $result;
     }
-    
-    return $result;
 }
+
 ```
 
 #### ・三項演算子を用いた場合
@@ -159,33 +173,45 @@ function (){
 
 ```PHP
 <?php
-// マジックナンバーを使わずに，定数として定義
-const noOptionItem = 0;
 
-function ($result)
+class Example
 {
-// RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-    if (!empty($routeEntity->options)) {
-        foreach ($routeEntity->options as $option) {
+    /**
+     * マジックナンバー
+     */
+    const noOptionItem = 0;
     
-            // if文を通過した場合，メソッドの返却値が格納される．
-            // 通過しない場合，定数が格納される．
-            $result['optionItemA'] = ($option->isOptionItemA()) 
-              ? $option->optionItemA() 
-              : noOptionItem;
+    /**
+     * @var Entity
+     */
+    private $routeEntity;
     
-            $result['optionItemB'] = ($option->isOptionItemB()) 
-              ? $option->optionItemB() 
-              : noOptionItem;
-    
-            $result['optionItemC'] = ($option->isOptionItemC()) 
-              ? $option->optionItemC() 
-              : noOptionItem;
-        };
+    public function example($result)
+    {
+        // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+        if (!empty($this->routeEntity->options)) {
+            foreach ($this->routeEntity->options as $option) {
+                
+                // if文を通過した場合，メソッドの返却値が格納される．
+                // 通過しない場合，定数が格納される．
+                $result['optionItemA'] = ($option->isOptionItemA())
+                    ? $option->optionItemA()
+                    : self::noOptionItem;
+                
+                $result['optionItemB'] = ($option->isOptionItemB())
+                    ? $option->optionItemB()
+                    : self::noOptionItem;
+                
+                $result['optionItemC'] = ($option->isOptionItemC())
+                    ? $option->optionItemC()
+                    : self::noOptionItem;
+            };
+        }
+        
+        return $result;
     }
-    
-    return $result;
 }
+
 ```
 
 #### ・初期値と上書きのロジックを用いた場合
@@ -196,44 +222,55 @@ function ($result)
 
 ```PHP
 <?php
-// マジックナンバーを使わずに，定数として定義
-const noOptionItem = 0;
 
-function ($result)
+class Example
 {
-    // 初期値0を設定
-    $result['optionItemA'] = noOptionItem;
-    $result['optionItemB'] = noOptionItem;
-    $result['optionItemC'] = noOptionItem;
+    /**
+     * マジックナンバー
+     */
+    const noOptionItem = 0;
 
-    // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
-    if(!empty($routeEntity->options)) {
-        foreach ($routeEntity->options as $option) {
-            
-            // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
-            // 通過しない場合，初期値0が用いられる．
-            if ($option->isOptionItemA()) {
-                $result['optionItemA'] = $option->optionItemA();
-            }
-            
-            if ($option->isOptionItemB()) {
-                $result['optionItemB'] = $option->optionItemB();
-            }
-            
-            if ($option->isOptionItemC()) {
-                $result['optionItemC'] = $option->optionItemC();
-            }
-        };
-    }
+    /**
+     * @var Entity
+     */
+    private $routeEntity;
+
+    public function example($result)
+    {
+        // 初期値0を設定
+        $result['optionItemA'] = self::noOptionItem;
+        $result['optionItemB'] = self::noOptionItem;
+        $result['optionItemC'] = self::noOptionItem;
     
-    return $result;
+        // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
+        if(!empty($this->routeEntity->options)) {
+            foreach ($this->routeEntity->options as $option) {
+            
+                // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
+                // 通過しない場合，初期値0が用いられる．
+                if ($option->isOptionItemA()) {
+                    $result['optionItemA'] = $option->optionItemA();
+                }
+            
+                if ($option->isOptionItemB()) {
+                    $result['optionItemB'] = $option->optionItemB();
+                }
+            
+                if ($option->isOptionItemC()) {
+                    $result['optionItemC'] = $option->optionItemC();
+                }
+            };
+        }
+    
+        return $result;
+    }
 }
 
 ```
 
 <br>
 
-### ```if```-```elseif```-```else```の回避方法
+### if-elseif-elseの回避方法
 
 #### ・決定表を用いた条件分岐の整理
 
@@ -247,7 +284,7 @@ function ($result)
 
 ![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/決定表.png)
 
-#### ・```if```-```elseif```-```else```は用いない
+#### ・if-elseif-elseは用いない
 
 可読性が悪いため，避けるべき．
 
@@ -261,6 +298,7 @@ $year = N;
 
 ```PHP
 <?php
+    
 function leapYear(int $year): string
 {
     // (5)
@@ -286,7 +324,7 @@ function leapYear(int $year): string
 }
 ```
 
-#### ・```if```と```return```を用いた早期リターン
+#### ・ifとreturnを用いた早期リターン
 
 ```return```を用いることで，```if```が入れ子状になることを防ぐことができる．これを，早期リターンともいう．
 
@@ -294,12 +332,10 @@ function leapYear(int $year): string
 
 ```PHP
 <?php
+    
 // 西暦を格納する．
 $year = N;
-```
-
-```PHP
-<?php
+    
 function leapYear(int $year): string
 {
     // (5)
@@ -328,14 +364,15 @@ function leapYear(int $year): string
 }
 ```
 
-#### ・```switch```-```case```-```break```を用いた早期リターン
+#### ・switch-case-breakを用いた早期リターン
 
-```switch```-```case```-```break```によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，```break```ではなく```return```を用いている．
+```switch-case-break```によって，実装に，『◯◯の場合に切り換える』という意味合いを持たせられる．ここでは，メソッドに実装することを想定して，```break```ではなく```return```を用いている．
 
 **＊実装例＊**
 
 ```PHP
 <?php
+    
 function leapYear(int $year): string
 {   
     switch(true) {
@@ -372,7 +409,8 @@ function leapYear(int $year): string
 
 ```PHP
 <?php
-public function leapYear(int $year): string
+    
+function leapYear(int $year): string
 {
     // (5)
     if($year <= 0) throw new Exception("負の数は検証できません．");
@@ -406,6 +444,7 @@ public function leapYear(int $year): string
 
 ```PHP
 <?php
+    
 class Example {};
 
 if(new Example == new Example){
@@ -424,6 +463,7 @@ if(new Example == new Example){
 
 ```PHP
 <?php
+    
 class Example {};
 
 if (new Example === new Example) {
@@ -442,6 +482,7 @@ if (new Example === new Example) {
 
 ```PHP
 <?php
+    
 class Example {};
 
 $a = $b = new Example;
@@ -462,130 +503,203 @@ if ($a === $b) {
 
 ### 例外クラスと例外スロー
 
+#### ・if-throw文
+
+特定の処理の中に，想定できる例外があり，それを例外クラスとしてするために用いる．ここでは，全ての例外クラスの親クラスである```Exception```クラスのインスタンスを投げている．
+
+**＊実装例＊**
+
+```PHP
+<?php
+
+function value(int $value) {
+    
+    if (empty($value)) {
+        // 例外クラスを返却
+        throw new Exception('Value is empty');
+    }
+    
+    return "これは ${value} です．";
+}
+```
 #### ・Exceptionクラスを継承した独自例外クラス
 
 **＊実装例＊**
 
+例外の種類に合わせて，```Exception```クラスを継承した独自例外クラスを実装し，使い分けるとよい．
+
 ```PHP
 <?php
 
-// HttpRequestに対処する例外クラス
-class HttpRequestException extends Exception
+// 独自例外クラス
+class ExampleNotFoundException extends Exception
 {
-    // インスタンスが作成された時に実行される処理
-    public function __construct()
-    {
-        parent::__construct("HTTPリクエストに失敗しました", 400);
-    }
-    
-    // 新しいメソッドを定義
-    public function example()
-    {
-        // なんらかの処理;
-    }
+    // 基本的に何も実装しない．
 }
 ```
-
-#### ・```if```-```throw```文
-
-特定の処理の中に，想定できる例外があり，それをエラー文として出力するために用いる．ここでは，全ての例外クラスの親クラスであるExceptionクラスのインスタンスを投げている．
-
-**＊実装例＊**
-
-```PHP
-<?php
-if (empty($value)) {
-    throw new Exception('Variable is empty');
-}
-
-return $value;
-```
-
-<br>
-
-### ```try```-```catch```文
-
-#### ・単なる```if```-```throw```文との違い
-
-何らかの処理の合間全てに```if```-```throw```を行うと，様々な可能性を考慮しなければいけなくなる．
 
 ```php
 <?php
 
-// WebAPIの接続に失敗した場合
-if (...){
-    throw new WebAPIException();
+use Exception\ExampleNotFound;
+
+function example(string $example) {
+    
+    if (empty($exmaple)) {
+        throw new ExampleNotFoundException('Example is not found.');;
+    }
+    
+    return "これは ${example} です．";
+}
+```
+<br>
+
+### try-catch-finally文
+
+#### ・単なるif-throw文
+
+if-throwでは，都度例外を検証するがあり，様々な可能性を考慮しなければいけなくなる．
+
+```php
+<?php
+
+if (empty($){
+    throw new ExternalApiException();
 }
 
-if (...){
-    throw new HttpRequestException();
+if (example){
+    throw new ExampleInvalidArgumentException();
 }
 ```
 
-そこで，特定の処理の中で起こる想定できない例外を捉え，エラー文として出力するために用いる．定義されたエラー文は，デバック画面に表示される．
+#### ・try-catch-finally文とは
+
+try-catch-finallyでは，特定の処理の中で起こる想定できない例外を捉えることができる．定義されたエラー文は，デバック画面に表示される．
 
 **＊実装例＊**
 
 ```PHP
 <?php
-    
-// try文で指定のExceptionが投げられた時に，指定のcatch文に入る
-try {
 
+use \Exception\ExternalApiErrorException;
+use \Exception\HttpRequestErrorException;
 
-// あらかじめ出力するエラーが設定されている独自例外クラス（以下参照）
-} catch (WebAPIException $exception) {
-    
-    
-} catch (HttpRequestException $exception) {
+class Example
+{
+    /**
+     * @param message $message
+     * @return bool
+     */
+    public function sendMessage(Message $message)
+    {
+        try {
+            
+            // ExternalApiErrorException，HttpRequestErrorException，Exceptionが起こる
 
-    
-// Exceptionクラスはtry文で生じた全ての例外をキャッチしてしまうため，最後に記述するべき．
-} catch (Exception $exception) {
+        } catch (ExternalApiErrorException $exception) {
 
+            // ExternalApiErrorExceptionが起こったときの処理
 
-// 正常と例外にかかわらず，必ず実行される．
-} finally {
-    // 正常と例外にかかわらず，必ずファイルを閉じるための処理
+        } catch (HttpRequestErrorException $exception) {
+
+            // HttpRequestErrorExceptionが起こったときの処理
+
+        } catch (Exception $exception) {
+
+            // その他（自社システムなど）のExceptionが起こっときの処理
+
+        } finally {
+
+            // どの例外をcatchした場合でも必ず行われる
+            // try句やcatch句の返却処理や終了処理が行われる直前に実行される．
+
+        }
+    }
 }
+
 ```
 
-以下，上記で使用した独自の例外クラス．
+#### ・finally句の仕様
 
-**＊実装例＊**
+finally句は，try句やcatch句の返却処理が行われる直前に実行されるため，finally句では，```return```や```continue```を使用しないようにする．
 
-```PHP
+```php
 <?php
-    
-// HttpRequestに対処する例外クラス
-class HttpRequestException extends Exception
+
+use \Exception\ExternalApiErrorException;
+use \Exception\HttpRequestErrorException;
+
+class Example
 {
-    // インスタンスが作成された時に実行される処理
-    public function __construct()
+    /**
+     * @param message $message
+     * @return bool
+     */
+    public function sendMessage(Message $message)
     {
-        parent::__construct("HTTPリクエストに失敗しました", 400);
+        try {
+            
+            // （１）
+            echo "Aの直前です"
+            return "Aです．";
+            
+        } catch (ExternalApiErrorException $exception) {
+  
+            // （２）
+            echo "Bの直前です"
+            return "Bです．";
+            
+        } catch (HttpRequestErrorException $exception) {
+            
+            // （３）
+            echo "Cの直前です"
+            return "Cです．";
+            
+        } catch (Exception $exception) {
+            
+            // （４）
+            echo "Dの直前です"
+            return "Dです．";
+            
+        } finally {
+            
+            // returnやcontinueを使用しない
+            echo "Eです．";
+            
+        }
     }
 }
 ```
 
-```PHP
-<?php
-// HttpRequestに対処する例外クラス
-class HttpRequestException extends Exception
-{
-    // インスタンスが作成された時に実行される処理
-    public function __construct()
-    {
-        parent::__construct("HTTPリクエストに失敗しました", 400);
-    }
-}
+
+（１）～（４）のいずれかで返却される時，返却の直前にfinally句が実行されることがわかる．
+```php
+// （１）の場合
+// Aの直前です．
+// Eです．
+// Aです．
+
+// （２）の場合
+// Bの直前です．
+// Eです．
+// Bです．
+
+// （３）の場合
+// Cの直前です．
+// Eです．
+// Cです．
+
+// （４）の場合
+// Dの直前です．
+// Eです．
+// Dです．
 ```
 
 <br>
 
 ### ロギング
 
-#### ・ロギングの出力分け
+#### ・例外ごとのロギング分け
 
 例えば，メッセージアプリのAPIに対してメッセージ生成のリクエストを送信する時，例外処理に合わせて，外部APIとの接続失敗によるエラーログを生成と，自社システムなどその他原因によるエラーログを生成を行う必要がある．
 
@@ -594,28 +708,35 @@ class HttpRequestException extends Exception
 ```PHP
 <?php
 
-use \Exception\ExternalApiException;
-use \Exception\CouldNotSendNotificationException;
+use \Exception\ExternalApiErrorException;
+use \Exception\HttpRequestErrorException;
 
 class Example
 {
     /**
      * @param message $message
      * @return bool
-     * @throws ExternalApiException|CouldNotSendMessageException
      */
     public function sendMessage(Message $message)
     {
-        // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
-        
         try {
             
+            // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
             // 外部APIのためのリクエストメッセージを生成．
             // 外部APIのURL，送信方法，トークンなどのパラメータを設定．
+
+        } catch (\HttpRequestErrorException $exception) {
+             
+            // 外部APIとの接続失敗によるエラーをロギング
+            error_log(
+                $exception->getMessage(),
+                3,
+                __DIR__ . '/http_request_error.log'
+            );
             
-        } catch (\ExternalApiException $exception) {
-            
-            // 外部APIとの接続失敗によるエラーログを生成
+        } catch (\ExternalApiErrorException $exception) {
+
+            // 外部APIのシステムエラーをロギング
             error_log(
                 $exception->getMessage(),
                 3,
@@ -624,7 +745,7 @@ class Example
             
         } catch (\Exception $exception) {
             
-            // 自社システムなどその他原因によるエラーログを生成
+            // その他（自社システムなど）によるエラーをロギング
             error_log(
                 $exception->getMessage(),
                 3,
