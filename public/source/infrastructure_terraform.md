@@ -4,24 +4,49 @@
 
 ### init
 
-#### ・よく使うオプション
+#### ・-backend
 
+ローカルもしくはバックエンドにstateファイルを作成する．リモートの場合は，```-backend-config```オプションも必要．
+
+```bash
+$ terraform init -backend=false
 ```
+
+#### ・-reconfigure
+
+指定されたバックエンドのstateファイルがある場合，これを削除し，新しくstateファイルを作成する．
+
+```bash
+$ terraform init -reconfigure
+```
+
+#### ・-backend-config
+
+初期化時に，バックエンドを明示的に指定し，これにstateファイルを作成する．
+
+```bash
 terraform init \
--upgrade \
+-backend=true \
 -reconfigure \
--backend=true \ 
 -backend-config="bucket=<バケット名>" \
 -backend-config="key=terraform.tfstate" \
 -backend-config="region=ap-northeast-1" \
--backend-config="profile=<プロファイル名>"
+-backend-config="profile=<プロファイル名>" ./<ディレクトリ名>
+```
+
+#### ・-upgrade
+
+モジュールとプラグインを更新する．
+
+```bash
+$ terraform init -upgrade
 ```
 
 <br>
 
 ### validate
 
-#### ・よく使うオプション
+#### ・オプション無し
 
 設定ファイルの検証を行う．
 
@@ -35,7 +60,7 @@ Success! The configuration is valid.
 
 ### fmt
 
-#### ・よく使うオプション
+#### ・-recursive
 
 設定ファイルのインデントを揃える．処理を行ったファイルが表示される．
 
@@ -50,7 +75,7 @@ main.tf
 
 ### import
 
-#### ・よく使うオプション
+#### ・-var-file
 
 terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．
 
@@ -88,7 +113,7 @@ Error: error creating ECR repository: RepositoryAlreadyExistsException: The repo
 
 ### refresh
 
-#### ・よく使うオプション
+#### ・-var-file
 
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルに反映する．
 
@@ -100,7 +125,7 @@ $ terraform refresh -var-file=config.tfvars
 
 ### plan
 
-#### ・よく使うオプション
+#### ・-var-file
 
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルには反映せずに，設定ファイルの記述との差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
 
@@ -118,7 +143,9 @@ configuration and real physical resources that exist. As a result, no
 actions need to be performed.
 ```
 
-ちなみに，```-refresh=true```オプションをつければ，```refresh```コマンドを同時に実行してくれる．
+#### ・-refresh
+
+```-refresh=true```オプションをつければ，```refresh```コマンドを同時に実行してくれる．
 
 ```bash
 $ terraform plan -var-file=XXX.tfvars -refresh=true 
@@ -128,7 +155,7 @@ $ terraform plan -var-file=XXX.tfvars -refresh=true
 
 ### apply
 
-#### ・よく使うオプション
+#### ・-var-file
 
 AWS上にクラウドインフラストラクチャを構築する．
 
@@ -146,7 +173,7 @@ Apply complete! Resources: X added, 0 changed, 0 destroyed.
 
 ### state list
 
-#### ・よく使うオプション
+#### ・オプション無し
 
 ファイル内で定義しているリソースの一覧を表示する．
 
@@ -213,7 +240,9 @@ variable "credential" {
 
 ##  03. Rootモジュールにおける実装
 
-### provider
+### terraform
+
+#### ・required_providers
 
 AWSの他，GCPなどのプロバイダの認証を行う．
 
@@ -262,7 +291,7 @@ module "alb_module" {
 }
 ```
 
-
+<br>
 
 ## 04. 各モジュールにおける実装
 
@@ -453,12 +482,17 @@ resource "aws_instance" "server" {
 ```
 
 
+<br>
 
-### ```for_each```
+### lifecycle
 
-### ```lifecycle```
+#### ・lifecycleとは
 
-#### ・```create_before_destroy```
+```tf
+// ここに実装例
+```
+
+#### ・create_before_destroy
 
 ```tf
 resource "azurerm_resource_group" "example" {
