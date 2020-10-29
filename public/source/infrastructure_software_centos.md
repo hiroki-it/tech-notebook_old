@@ -92,7 +92,7 @@ $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 
 ### mkdir
 
-#### ・コマンド例
+#### ・-p
 
 ```bash
 # 複数階層のディレクトリを作成
@@ -103,7 +103,7 @@ $ mkdir -p /<ディレクトリ名1>/<ディレクトリ名2>
 
 ### ls
 
-#### ・コマンド例
+#### ・-l，-a
 
 ```bash
 # 隠しファイルや隠しディレクトリも含めて，全ての詳細を表示．
@@ -114,7 +114,7 @@ $ ls -l -a
 
 ### cp
 
-#### ・コマンド例
+#### ・-Rp
 
 ```bash
 # ディレクトリの属性情報も含めて，ディレクトリ構造とファイルを再帰的にコピー．
@@ -127,6 +127,8 @@ $ cp -Rp /<ディレクトリ名1>/<ディレクトリ名2> /<ディレクトリ
 $ cp -Rp /<ディレクトリ名>/. /<ディレクトリ名> 
 ```
 
+#### ・-p
+
 ```bash
 # 『ファイル名.YYYYmmdd』の形式でバックアップファイルを作成
 cp -p <ファイル名> <ファイル名>.`date +'%Y%m%d'`
@@ -136,7 +138,7 @@ cp -p <ファイル名> <ファイル名>.`date +'%Y%m%d'`
 
 ### find
 
-#### ・コマンド例
+#### ・-type
 
 ファイルを検索するためのユーティリティ．アスタリスクを付けなくとも，自動的にワイルドカードが働く．
 
@@ -146,20 +148,22 @@ $ find /* -type f |xargs grep "<検索文字>"
 ```
 
 ```bash
-# ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
-$ find /* -name "*.conf" -type f | xargs grep "<検索文字>"
-```
-
-```bash
 # パーミッションエラーなどのログを破棄して検索．
 $ find /* -type f |xargs grep "<検索文字>" 2> /dev/null
+```
+
+#### ・-name，-type
+
+```bash
+# ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索．
+$ find /* -name "*.conf" -type f | xargs grep "<検索文字>"
 ```
 
 <br>
 
 ### chmod：change mode
 
-#### ・コマンド例
+#### ・<数字>
 
 ファイルの権限を変更するためのユーティリティ．よく使用されるパーミッションのパターンは次の通り．
 
@@ -167,6 +171,10 @@ $ find /* -type f |xargs grep "<検索文字>" 2> /dev/null
 # example.conf に「600」権限を付与
 $ chmod 600 example.conf
 ```
+
+#### ・-R <数字>
+
+ディレクトリ内のファイルに対して，再帰的に権限を付与する．
 
 ```bash
 # exampleディレクトリ内のファイルに対して，再帰的に権限を付与．
@@ -202,14 +210,20 @@ $ chmod -R 600 example
 
 <br>
 
-### ln，unlink
+### ln
 
-#### ・コマンド例
+#### ・-s
 
 ```bash
 # カレントディレクトリに，シンボリックリンクを作成．
 $ ln -s <リンク先のファイル／ディレクトリまでのパス> <シンボリックリンク名> 
 ```
+
+<br>
+
+### unlink
+
+#### ・オプション無し
 
 ```bash
 # カレントディレクトリのシンボリックリンクを削除．
@@ -220,7 +234,7 @@ $ unlink <シンボリックリンク名>
 
 ### rm
 
-#### ・コマンド例
+#### ・-R
 
 ```bash
 # ディレクトリ自体と中のファイルを再帰的に削除．
@@ -231,12 +245,14 @@ $ rm -R <ディレクトリ名>
 
 ### od：octal dump
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # ファイルを8進数の機械語で出力
 $ od <ファイル名>
 ```
+
+#### ・-Ad，-tx
 
 ```bash
 # ファイルを16進数の機械語で出力
@@ -249,7 +265,7 @@ $ od -Ad -tx <ファイル名>
 
 ### ssh：secure shell
 
-#### ・コマンド例
+#### ・-l，-p，<ポート>，-i，-T
 
 事前に，秘密鍵の権限は「600」にしておく
 
@@ -257,6 +273,8 @@ $ od -Ad -tx <ファイル名>
 # tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
 $ ssh -l <サーバのユーザ名>@<サーバのホスト名> -p 22 -i <秘密鍵のパス> -T
 ```
+
+#### ・-l，-p，<ポート>，-i，-T，-vvv
 
 ```bash
 # -vvvでログを出力する
@@ -297,7 +315,7 @@ $ ssh <接続名> -T
 
 ### ps： process status
 
-#### ・コマンド例
+#### ・aux
 
 稼働しているプロセスの詳細情報を表示するためのユーティリティa．
 
@@ -306,17 +324,11 @@ $ ssh <接続名> -T
 $ ps aux | grep "<検索文字>"
 ```
 
-指定したコマンドによるプロセスを全て削除する．
-
-```bash
-$ sudo pgrep -f <コマンド名> | sudo xargs kill -9
-```
-
 <br>
 
 ### systemctl：system control（旧service）
 
-#### ・コマンド例
+#### ・list-unit-files
 
 デーモンを起動するsystemdを制御するためのユーティリティ．
 
@@ -329,14 +341,18 @@ supervisord.service     disabled # disable：自動起動しない
 systemd-reboot.service  static   # enable：他サービス依存
 ```
 
+#### ・enable
+
 ```bash
 # マシン起動時にデーモンが自動起動するように設定．
 $ systemctl enable <プロセス名>
 # 例：Cron，Apache
 $ systemctl enable crond.service
 $ systemctl enable httpd.service
+```
+#### ・disable
 
-
+```bash
 # マシン起動時にデーモンが自動起動しないように設定．
 $ systemctl disable <プロセス名>
 # 例：Cron，Apache
@@ -356,11 +372,19 @@ $ systemctl disable httpd.service
 
 ### kill
 
-#### ・コマンド例
+#### ・-9
+
+指定したPIDのプロセスを削除する．
 
 ```bash
 # プロセスを強制的に削除
 $ kill -9 <プロセスID（PID）>
+```
+
+指定したコマンドによるプロセスを全て削除する．
+
+```bash
+$ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
 <br>
@@ -369,7 +393,7 @@ $ kill -9 <プロセスID（PID）>
 
 ### vim：Vi Imitaion，Vi Improved  
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # vim上でファイルを開く
@@ -380,7 +404,7 @@ $ vim <ファイル名>
 
 ### history
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # 履歴1000件の中からコマンドを検索
@@ -393,7 +417,7 @@ $ history | grep <過去のコマンド>
 
 ### cron
 
-#### ・コマンド例
+#### ・オプション無し
 
 cronデーモンの動作が定義されたcrontabファイルを操作するためのユーティリティ．cron.dファイルは操作できない．
 
@@ -561,7 +585,7 @@ directory=/var/www/tech-notebook
 
 ### export
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを追加．
@@ -607,7 +631,7 @@ export PATH
 
 ### printenv
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # 全ての環境変数を表示．
@@ -618,7 +642,7 @@ $ printenv
 
 ### timedatactl
 
-#### ・コマンド例
+#### ・set-timezone
 
 ```bash
 # タイムゾーンを日本時間に変更
@@ -635,13 +659,15 @@ $ date
 
 ### top
 
-#### ・コマンド例
+#### ・オプション無し
 
 ```bash
 # 各プロセスの稼働情報（ユーザ名，CPU，メモリ）を確認
 # CPU使用率昇順に並べる
 $ top
 ```
+
+#### -a
 
 ```bash
 # メモリ使用率昇順に並べる
@@ -652,7 +678,7 @@ $ top -a
 
 ### free
 
-#### ・コマンド例
+#### ・-m，-total
 
 ```bash
 # 物理メモリ，スワップ領域，の使用状況をメガバイトで確認
@@ -665,7 +691,7 @@ $ free -m -total
 
 ### df
 
-#### ・コマンド例
+#### ・-h，-m，-t
 
 ```bash
 # ストレージの使用状況をメガバイトで確認
@@ -684,7 +710,7 @@ $ df -h -m -t
 
 ![スワッピング方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スワッピング方式.png)
 
-#### ・コマンド例
+#### ・スワップ領域の作成方法
 
 ```bash
 # 指定したディレクトリをスワップ領域として使用
@@ -749,7 +775,7 @@ $ swapoff /swap_volume
 
 ### pip
 
-#### ・コマンド例
+#### ・install
 
 ```bash
 # 指定したライブラリをインストール
@@ -764,10 +790,14 @@ $ pip install -r requirements.txt
 pip install -r requirements.txt　--prefix=/usr/local
 ```
 
+#### ・freeze
+
 ```bash
 # pipでインストールされたパッケージを元に，requirement.txtを作成
 $ pip freeze > requirements.txt
 ```
+
+#### ・show
 
 ```bash
 # pipでインストールしたパッケージ情報を表示
@@ -802,12 +832,14 @@ $ curl -sL https://rpm.nodesource.com/setup_<バージョン>.x | bash -
 $ yum install nodejs
 ```
 
-#### ・コマンド例
+#### ・init
 
 ```bash
 # package.jsonを生成
 $ npm init
 ```
+
+#### ・install
 
 ```bash
 # 特定のディレクトリにインストール
@@ -825,7 +857,7 @@ $ npm install -g <パッケージ名>
 
 ### rpm
 
-#### ・コマンド例
+#### ・-ivh
 
 一度に複数のオプションを組み合わせて記述する．インストール時にパッケージ間の依存関係を解決できないので注意．
 
@@ -841,17 +873,23 @@ $ rpm -ivh <パッケージ名>
 $ rpm -Uvh <パッケージ名>
 ```
 
+#### ・-qa
+
 ```bash
 # インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
 # -qa：
 $ rpm -qa | grep <検索文字>
 ```
 
+#### ・-ql
+
 ```bash
 # 指定したパッケージ名で，関連する全てのファイルの場所を表示．
 # -ql：
 $ rpm -ql <パッケージ名>
 ```
+
+#### ・-qi
 
 ```bash
 # 指定したパッケージ名で，インストール日などの情報を表示．
@@ -863,7 +901,7 @@ $ rpm -qi <パッケージ名>
 
 ### yum，dnf
 
-#### ・コマンド例
+#### ・install，reinstall
 
 rpmと同様の使い方ができる．また，インストール時にパッケージ間の依存関係を解決できる．
 
@@ -874,6 +912,8 @@ $ yum install -y <パッケージ名>
 # 再インストールする時は，reinstallとすること
 $ yum reinstall -y <パッケージ名>
 ```
+
+#### ・list
 
 ```bash
 # インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示．
@@ -982,7 +1022,7 @@ $ dnf reinstall -y php php-mbstring php-mcrypt
 
 ### pyenv
 
-#### ・コマンド例
+#### ・which
 
 ```bash
 # pythonのインストールディレクトリを確認
