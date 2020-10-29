@@ -651,6 +651,55 @@ workflows:
 
 <br>
 
+### terraform
+
+#### ・Jobs：deploy_infrastructure
+
+```yaml
+version: 2.1
+orbs:
+  terraform: circleci/terraform@x.y.z
+workflows:
+  deploy_infrastructure:
+    jobs:
+      - terraform/init:
+          # job内にて，最初にcheckoutステップを実行．
+          checkout: true
+          # Job内にて，persist_workspaceステップを実行．
+          persist-workspace: true
+          # persist_workspaceステップ実行時のrootディレクトリ
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          filters:
+            branches:
+              only: master
+      - terraform/validate:
+          # job内にて，attach_workspaceステップを実行．
+          attach-workspace: true
+          # attach_workspaceステップ実行時のrootディレクトリ
+          workspace-root-dir: <ディレクトリ名>
+          persist-workspace: true
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          requires:
+            - terraform/init
+      - terraform/plan:
+          attach-workspace: true
+          workspace-root-dir: <ディレクトリ名>
+          persist-workspace: true
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          requires:
+            - terraform/validate
+      - terraform/apply:
+          attach-workspace: true
+          workspace-root-dir: <ディレクトリ名>
+          requires:
+            - terraform/plan
+```
+
+<br>
+
 ### slack
 
 #### ・Commands：status
