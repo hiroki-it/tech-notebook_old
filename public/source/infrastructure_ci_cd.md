@@ -61,7 +61,7 @@ $ circleci build .circleci/config.yml
 
 <br>
 
-## 03-02. version
+## 02-02. version
 
 ### versionとは
 
@@ -75,7 +75,7 @@ version: 2.1
 
 <br>
 
-## 03-03. jobs
+## 02-03. jobs
 
 ### jobsとは
 
@@ -100,6 +100,7 @@ Jobを実行する仮想環境を選択できる．
 
 ```yaml
 version: 2.1
+
 jobs:
  build:
    docker:
@@ -126,6 +127,7 @@ jobs:
 
 ```yaml
 version: 2.1
+
 jobs:
  build:
    machine: true
@@ -298,8 +300,10 @@ CircleCIでは，Jobごとに異なる仮想環境が構築されるため，他
 
 ```yaml
 # JobA
+
+# Workspaceにファイルをアップロード
 - persist_to_workspace:
-    # JobAにて，Workspaceを割り当てるパスのroot
+    # JobAにて，Workspaceとするディレクトリのroot
     root: /tmp/workspace
     # Rootディレクトリを基準とした相対パス
     paths:
@@ -309,9 +313,10 @@ CircleCIでは，Jobごとに異なる仮想環境が構築されるため，他
 
 ```yaml
 # JobB
+
+# persist_to_workspaceで作成されたWorkspaceからファイルをダウンロード
 - attach_workspace:
-    # JobBにて，Workspaceを割り当てる
-    # JobAとは異なるディレクトリに，Workspaceを割り当てても良い．
+    # JobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
     at: /tmp/workspace
 ```
 
@@ -323,6 +328,7 @@ Workspaceで，Jobの前に実行する処理を定義する．
 
 ```yaml
 version: 2.1
+
 jobs:
   bar:
     machine: true
@@ -373,7 +379,7 @@ workflows:
 
 <br>
 
-## 03-04. command
+## 02-04. command
 
 ### commandとは
 
@@ -405,7 +411,7 @@ jobs:
 
 <br>
 
-## 03-05. executors
+## 02-05. executors
 
 ### executorsとは
 
@@ -415,6 +421,7 @@ jobs:
 
 ```yaml
 version: 2.1
+
 executors:
   my-executor: # ホストOS環境名
     docker: # ホストOS環境
@@ -429,7 +436,7 @@ jobs:
 
 <br>
 
-## 03-06. CircleCIライブラリ
+## 02-06. CircleCIライブラリ
 
 ### orbs
 
@@ -441,6 +448,7 @@ CircleCIから提供される汎用的なパッケージの使用を読み込む
 
 ```yaml
 version: 2.1
+
 orbs:
     hello: circleci/hello-build@0.0.5
     
@@ -458,6 +466,7 @@ AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登
 
 ```yaml
 version: 2.1
+
 orbs:
   aws-ecr: circleci/aws-xxx@x.y.z
 
@@ -477,7 +486,7 @@ workflows:
 
 ### aws-ecr
 
-#### ・Job：build-and-push-image
+#### ・Jobs：build-and-push-image
 
 CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイできる．
 
@@ -485,6 +494,7 @@ CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイで
 
 ```yaml
 version: 2.1
+
 orbs:
   aws-ecr: circleci/aws-ecr@x.y.z
 
@@ -507,17 +517,17 @@ workflows:
           repo: '${APP_NAME}-repository'
           # CircleCIのハッシュ値によるバージョニング
           tag: ${CIRCLE_SHA1}
-          # attach_workspaceコマンドを宣言
+          # job内にて，attach_workspaceステップを実行．
           attach-workspace: true
-          # attach_workspaceコマンド時のrootディレクトリ
-          workspace-root: ./workspace
+          # attach_workspaceステップ実行時のrootディレクトリ
+          workspace-root: <ディレクトリ名>
 ```
 
 <br>
 
 ### aws-ecs
 
-#### ・Job：deploy-service-update
+#### ・Jobs：deploy-service-update
 
 ECSのサービスのリビジョンを更新する．以下のaws-cliに対応している．
 
@@ -529,6 +539,7 @@ $ aws ecs update-service <複数のオプション>
 
 ```yaml
 version: 2.1
+
 orbs:
   aws-ecr: circleci/aws-ecr@x.y.z
   aws-ecs: circleci/aws-ecs@x.y.z
@@ -560,7 +571,7 @@ workflows:
           container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
 ```
 
-#### ・Job：run-task
+#### ・Jobs：run-task
 
 サービスに内包されるタスクを指定して，設定したオプションで，現在起動中のタスクとは別のものを新しく起動する．以下のaws-cliを内部で実行している．
 
@@ -574,6 +585,7 @@ $ aws ecs run-task <複数のオプション>
 
 ```yaml
 version: 2.1
+
 orbs:
   aws-ecs: circleci/aws-ecs@x.y.z
 
@@ -602,7 +614,7 @@ workflows:
 
 ### aws-code-deploy
 
-#### ・Job：deploy
+#### ・Jobs：deploy
 
 S3にソースコードとappspecファイルをデプロイできる．また，CodeDeployを用いて，これをEC2にデプロイできる．
 
@@ -610,6 +622,7 @@ S3にソースコードとappspecファイルをデプロイできる．また�
 
 ```yaml
 version: 2.1
+
 orbs:
   aws-code-deploy: circleci/aws-ecs@x.y.z
 
@@ -638,16 +651,66 @@ workflows:
 
 <br>
 
+### terraform
+
+#### ・Jobs：deploy_infrastructure
+
+```yaml
+version: 2.1
+orbs:
+  terraform: circleci/terraform@x.y.z
+workflows:
+  deploy_infrastructure:
+    jobs:
+      - terraform/init:
+          # job内にて，最初にcheckoutステップを実行．
+          checkout: true
+          # Job内にて，persist_workspaceステップを実行．
+          persist-workspace: true
+          # persist_workspaceステップ実行時のrootディレクトリ
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          filters:
+            branches:
+              only: master
+      - terraform/validate:
+          # job内にて，attach_workspaceステップを実行．
+          attach-workspace: true
+          # attach_workspaceステップ実行時のrootディレクトリ
+          workspace-root-dir: <ディレクトリ名>
+          persist-workspace: true
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          requires:
+            - terraform/init
+      - terraform/plan:
+          attach-workspace: true
+          workspace-root-dir: <ディレクトリ名>
+          persist-workspace: true
+          workspace-root: <ルートのディレクトリ名>
+          workspace-path: <ルート以下のディレクトリ名>
+          requires:
+            - terraform/validate
+      - terraform/apply:
+          attach-workspace: true
+          workspace-root-dir: <ディレクトリ名>
+          requires:
+            - terraform/plan
+```
+
+<br>
+
 ### slack
 
-#### ・Command：status
+#### ・Commands：status
 
 ジョブの終了時に，成功または失敗に基づいて，ステータスを通知する．ジョブの最後のステップとして設定しなければならない．
 
 ```yaml
+version: 2.1
+
 orbs:
   slack: circleci/slack@x.y.z
-version: 2.1
 
 jobs:
   build:
@@ -668,7 +731,26 @@ jobs:
 
 <br>
 
-## 04. Capistrano
+## 02-07. 環境変数
+
+### Environment Variables
+
+#### ・Environment Variablesとは
+
+プロジェクト内のみで使用できる環境変数を設定できる．
+
+<br>
+
+### context
+
+#### ・contextとは
+
+異なるプロジェクト間，すなわちリポジトリ間で共有できる環境変数を設定できる．
+
+<br>
+
+
+## 03. Capistrano
 
 ### デプロイ処理の自動実行
 
