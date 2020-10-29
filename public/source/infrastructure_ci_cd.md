@@ -682,7 +682,26 @@ jobs:
 
 <br>
 
-## 04. Capistrano
+## 02-07. 環境変数
+
+### Environment Variables
+
+#### ・Environment Variablesとは
+
+プロジェクト内のみで使用できる環境変数を設定できる．
+
+<br>
+
+### context
+
+#### ・contextとは
+
+異なるプロジェクト間，すなわちリポジトリ間で共有できる環境変数を設定できる．
+
+<br>
+
+
+## 03. Capistrano
 
 ### デプロイ処理の自動実行
 
