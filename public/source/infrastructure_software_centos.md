@@ -16,17 +16,17 @@
 
 今回，以下に紹介するものをまとめる．
 
-| ファイルシステム系 | プロセス管理系 | ネットワーク系 | テキスト処理系 | 環境変数系  | ハードウェア系 | ジョブスケジュール系 |
-| ------------------ | -------------- | -------------- | -------------- | :---------- | -------------- | -------------------- |
-| mkdir              | batch          | nslookup       | tail           | export      | df             | cron                 |
-| ls                 | ps             | curl           | vim            | printenv    | free           | -                    |
-| cp                 | kill           | netstat        | grep           | timedatectl | -              | -                    |
-| find               | systemctl      | route          | history        | -           | -              | -                    |
-| chmod              | -              | ssh            | -              | -           | -              | -                    |
-| rm                 | -              | -              | -              | -           | -              | -                    |
-| chown              | -              | -              | -              | -           | -              | -                    |
-| ln                 | -              | -              | -              | -           | -              | -                    |
-| od                 | -              | -              | -              | -           | -              | -                    |
+| ファイルシステム系 | プロセス管理系 | ネットワーク系 | テキスト処理系 | 環境変数系  | ハードウェア系 |
+| ------------------ | -------------- | -------------- | -------------- | :---------- | -------------- |
+| mkdir              | batch          | nslookup       | tail           | export      | df             |
+| ls                 | ps             | curl           | vim            | printenv    | free           |
+| cp                 | kill           | netstat        | grep           | timedatectl | -              |
+| find               | systemctl      | route          | history        | -           | -              |
+| chmod              | cron           | ssh            | -              | -           | -              |
+| rm                 | -              | -              | -              | -           | -              |
+| chown              | -              | -              | -              | -           | -              |
+| ln                 | -              | -              | -              | -           | -              |
+| od                 | -              | -              | -              | -           | -              |
 
 #### ・Windowsの場合
 
@@ -87,6 +87,18 @@ $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
 
+```bash
+# ドット
+$ . hello.sh
+```
+
+```bash
+# 相対パスもしくは絶対パスでシェルスクリプトを指定
+# カレントディレクトリにあるhello.shを実行することはできない
+$ ./hello.sh
+```
+
+<br>
 
 ## 02-02. ファイルシステム系
 
@@ -389,32 +401,6 @@ $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 
 <br>
 
-## 02-05. テキスト処理系
-
-### vim：Vi Imitaion，Vi Improved  
-
-#### ・オプション無し
-
-```bash
-# vim上でファイルを開く
-$ vim <ファイル名>
-```
-
-<br>
-
-### history
-
-#### ・オプション無し
-
-```bash
-# 履歴1000件の中からコマンドを検索
-$ history | grep <過去のコマンド>
-```
-
-<br>
-
-## 02-06. ジョブスケジュール系
-
 ### cron
 
 #### ・オプション無し
@@ -580,7 +566,33 @@ directory=/var/www/tech-notebook
 
 <br>
 
-## 02-07. 環境変数系
+## 02-05. テキスト処理系
+
+### vim：Vi Imitaion，Vi Improved  
+
+#### ・オプション無し
+
+```bash
+# vim上でファイルを開く
+$ vim <ファイル名>
+```
+
+<br>
+
+### history
+
+#### ・オプション無し
+
+```bash
+# 履歴1000件の中からコマンドを検索
+$ history | grep <過去のコマンド>
+```
+
+<br>
+
+
+
+## 02-06. 環境変数系
 
 
 ### export
@@ -662,7 +674,7 @@ $ date
 
 <br>
 
-## 02-08. ハードウェア系
+## 02-07. ハードウェア系
 
 
 ### top
@@ -675,7 +687,7 @@ $ date
 $ top
 ```
 
-#### -a
+#### ・-a
 
 ```bash
 # メモリ使用率昇順に並べる
