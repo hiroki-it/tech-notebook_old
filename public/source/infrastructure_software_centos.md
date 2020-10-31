@@ -86,6 +86,38 @@ $ find /* -type f |xargs grep "<検索文字>"
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
+<br>
+
+### シェルスクリプト
+
+#### ・シェルスクリプトとは
+
+ユーティリティの処理を手続き的に実装したファイル
+
+**＊実装例＊**
+
+```bash
+# shebangの記述
+#!/bin/bash
+
+echo "Hello World!"
+echo "Hello Japan!"
+echo "Hello Tokyo!"
+```
+
+#### ・シェルスクリプトの実行方法
+
+以下のいずれかの方法で実行する．
+
+```bash
+# sourceコマンド
+$ source hello.sh
+```
+
+```bash
+# bashコマンド
+$ bash hello.sh
+```
 
 ```bash
 # ドット
