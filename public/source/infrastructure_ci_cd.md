@@ -14,13 +14,13 @@ Code > Build > Test > Code > Build > Test ・・・ のサイクルを高速に�
 
 ### 設定ファイルの参考ドキュメント
 
-https://circleci.com/docs/ja/2.0/configuration-reference/
+https://circleci.com/docs/reference-2-1/#circleci-2-1-reference
 
 <br>
 
 ### 各種コマンド
 
-#### ・設定ファイルの静的解析
+#### ・設定ファイルのデバッグとコツ
 
 ホストOS側で，以下のコマンドを実行する．
 
@@ -29,6 +29,27 @@ $ circleci config validate
 
 # 以下の文章が表示されれば問題ない．
 # Config file at .circleci/config.yml is valid.
+```
+
+デバッグでは行数がわからない仕様になっている．そこで，Workflowのjobのどこで失敗しているのかを特定するために，検証しないjobをコメントアウトしておく．
+
+```yaml
+
+workflows:
+  version: 2
+  # build以外を実行しないようにすることで，buildのみを検証できる．
+  build-test-and-deploy:
+    jobs:
+      - build
+#      - test1:
+#          requires:
+#            - build
+#      - test2:
+#          requires:
+#            - test1
+#      - deploy:
+#          requires:
+#            - test2
 ```
 
 #### ・ビルド
@@ -79,7 +100,7 @@ version: 2.1
 
 ### jobsとは
 
-```Job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
+```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
 <br>
 
@@ -87,13 +108,13 @@ version: 2.1
 
 #### ・仮想環境の選択
 
-Jobを実行する仮想環境を選択できる．
+jobを実行する仮想環境を選択できる．
 
-#### ・docker
+#### ・dockerとは
 
 ![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/docker_executor.png)
 
-コンテナ環境でJobを行う．JobにDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外でJobを行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
+コンテナ環境でjobを行う．jobにDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外でjobを行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
 
 **＊実装例＊**
 
@@ -119,7 +140,7 @@ jobs:
      - run: docker push company/app:$CIRCLE_BRANCH
 ```
 
-#### ・machine
+#### ・machineとは
 
 ![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/machine_executor.png)
 
@@ -148,66 +169,19 @@ jobs:
 
 ### parameters
 
-引数を与えなかった場合の値を設定できる．再利用する時，「```引数名: 値```」で引数を渡す．
 
-#### ・Bool型
-
-**＊実装例＊**
-
-引数がTrueの場合のみstepsを実行したい時に用いる．Jobで呼び出した時にBool値を渡す．
-
-```yaml
-jobs:
-  deploy:
-    parameters:
-      production: # 引数名
-         type: boolean
-         default: false
-    steps: # 以下で何らかの処理
-```
-
-#### ・Enum型
-
-特定の文字列や整数のみを引数として許可したいときに用いる．Jobで呼び出した時に，Enumのいずれかを引数として渡す．
-
-**＊実装例＊**
-
-``` yaml
-jobs:
-  deploy:
-    parameters:
-      environment: # 引数名
-        default: "staging"
-        type: enum
-        enum: ["staging", "production"]
-    steps:
-      - run:
-        name: Deploy to << parameters.environment >>
-        command: # 何らかの処理
-```
-
-#### ・string型
-
-文字列をパラメータとして渡す．引数が与えられなかった場合に適用される```default```を設定できる．```default```を設定しない場合，引数が必須と見なされる．
-
-**＊実装例＊**
-
-```yaml
-jobs:
-  deploy:    
-    parameters:
-      text:
-        type: string
-        default: "Hello World"
-    steps:
-      - run: echo << parameters.text >> # parametersから渡されたtextを渡す
-```
 
 <br>
 
 ### steps
 
-#### ・when
+#### ・stepsとは
+
+処理をMap型で定義する．
+
+#### ・when，unless
+
+if文を定義する．```when```では条件がtrueの場合，また```unless```ではfalseの場合に実行する```step```を定義する．
 
 **＊実装例＊**
 
@@ -219,14 +193,17 @@ jobs:
     parameters:
       custom_checkout_parameters:
         type: bool
+        # デフォルト値はfalse
         default: false
     machine: true
     steps:
-      - when: # 引数がtrueの場合
+      # 引数がtrueの場合
+      - when:
           condition: <<parameters.custom_checkout_parameters>>
           steps:
             - run: echo "独自のチェックアウト処理"
-      - unless: # 引数がfalseの場合
+      # 引数がfalseの場合
+      - unless:
           condition: <<parameters.custom_checkout_parameters>>
           steps:
             - checkout
@@ -236,9 +213,8 @@ workflows:
   build-test-deploy:
     jobs:
       - custom_checkout:
+          # 引数を設定
           custom_checkout_parameters: true
-      - custom_checkout:
-          custom_checkout_parameters: false
 ```
 
 
@@ -294,16 +270,16 @@ commands:
 
 ![workflow_workspace_cache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/workflow_workspace_cache.png)
 
-CircleCIでは，Jobごとに異なる仮想環境が構築されるため，他のJobで使用された一時ファイルを再利用したい場合に，これを使う．
+CircleCIでは，jobごとに異なる仮想環境が構築されるため，他の```job```で使用された一時ファイルを再利用したい場合に，これを使う．
 
 **＊実装例＊**
 
 ```yaml
-# JobA
+# jobA
 
 # Workspaceにファイルをアップロード
 - persist_to_workspace:
-    # JobAにて，Workspaceとするディレクトリのroot
+    # jobAにて，Workspaceとするディレクトリのroot
     root: /tmp/workspace
     # Rootディレクトリを基準とした相対パス
     paths:
@@ -312,17 +288,17 @@ CircleCIでは，Jobごとに異なる仮想環境が構築されるため，他
 ```
 
 ```yaml
-# JobB
+# jobB
 
 # persist_to_workspaceで作成されたWorkspaceからファイルをダウンロード
 - attach_workspace:
-    # JobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
+    # jobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
     at: /tmp/workspace
 ```
 
 #### ・pre-steps，post-steps
 
-Workspaceで，Jobの前に実行する処理を定義する．
+```workspace```で，```job```の前に実行する処理を定義する．
 
 **＊実装例＊**
 
@@ -379,13 +355,15 @@ workflows:
 
 <br>
 
-## 02-04. command
+## 02-04. commands
 
-### commandとは
+### commandsとは
 
-設定を部品化し，異なる```Job```で繰り返し利用できる．
+設定を部品化し，異なる```job```で```step```として繰り返し利用できる．
 
-#### ・再利用と引数渡し
+<br>
+
+### 部品化と再利用
 
 **＊実装例＊**
 
@@ -415,7 +393,11 @@ jobs:
 
 ### executorsとは
 
-ホストOS環境に関する設定を部品化し，異なる```Job```で繰り返し利用できる．
+ホストOS環境に関する設定を部品化し，異なる```job```で繰り返し利用できる．
+
+<br>
+
+### 部品化と再利用
 
 **＊実装例＊**
 
@@ -436,7 +418,260 @@ jobs:
 
 <br>
 
-## 02-06. CircleCIライブラリ
+
+## 02-06. parameters
+
+### parametersとは
+
+#### ・各定義方法の参照範囲
+
+| 方法                |                                                              |
+| ------------------- | ------------------------------------------------------------ |
+| job parameters      | ```job```内で定義する．```parameter```が定義されたコンテナにて，そこで実行される```job```内のみで参照できる． |
+| pipeline parameters | トップレベルで定義する．リポジトリ内でのみ参照できる．       |
+
+<br>
+
+### job parameters
+
+#### ・値の出力方法
+
+引数名を使用して，```parameters```から値を出力する．
+
+```
+<< parameters.xxxxx >>
+```
+
+#### ・boolean型
+
+多くの場合，引数がTrueの場合のみ，特定の```step```を実行したい時に用いる．```workflows```で呼び出した時にBool値を渡す．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+jobs:
+  job_with_optional_custom_checkout:
+    # 引数の定義
+    parameters:
+      custom_checkout:
+        type: boolean
+        # デフォルト値はfalse
+        default: false
+    machine: true
+    steps:
+      - when:
+          # 引数がtrueの場合
+          condition: <<parameters.custom_checkout>>
+          steps:
+            - run: echo "my custom checkout"
+      - unless:
+          # 引数のfalseの場合
+          condition: <<parameters.custom_checkout>>
+          steps:
+            - checkout
+            
+workflows:
+  build-test-deploy:
+    jobs:
+      - job_with_optional_custom_checkout:
+          # 引数を設定
+          custom_checkout: true
+```
+
+#### ・enum型
+
+特定の文字列や整数のみを引数として許可したいときに用いる．```job```で呼び出した時に，Enumのいずれかを引数として渡す．
+
+**＊実装例＊**
+
+``` yaml
+jobs:
+  deploy:
+    parameters:
+      # 引数を定義
+      environment:
+        default: "test"
+        type: enum
+        enum: ["test", "staging", "production"]
+    steps:
+      - run:
+        # デフォルト値testを与えるときは何も設定しない
+        name: Deploy to << parameters.environment >>
+        command:
+        # 何らかの処理
+    
+workflows:
+  deploy:
+    jobs:
+      - deploy:
+          # 引数を設定
+          environment: "staging"
+```
+
+#### ・string型
+
+文字列をパラメータとして渡す．引数が与えられなかった場合に適用される```default```を設定できる．```default```を設定しない場合，引数が必須と見なされる．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+commands:
+  print:
+    # 引数を定義
+    parameters:
+      message:
+        # デフォルト値が無い場合は必須
+        type: string
+    steps:
+      - run: echo << parameters.message >>
+
+jobs:
+  cat-file:
+    parameters:
+      file:
+        type: string
+    steps:
+      - print:
+          message: Printing << parameters.file >>
+      - run: cat << parameters.file >>
+
+workflows:
+  my-workflow:
+    jobs:
+      - cat-file:
+          # 引数を設定 
+          file: test.txt
+```
+
+<br>
+
+### pipeline parameters
+
+#### ・値の出力方法
+
+引数名を使用して，```pipeline.parameters```から値を出力する．
+
+```
+<< pipeline.parameters.xxxxx >>
+```
+
+#### ・job parameters と同じ
+
+```yaml
+version: 2.1
+
+parameters:
+  image-tag:
+    type: string
+    default: "latest"
+  workingdir:
+    type: string
+    default: "~/main"
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:<< pipeline.parameters.image-tag >>
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    environment:
+      IMAGETAG: << pipeline.parameters.image-tag >>
+    working_directory: << pipeline.parameters.workingdir >>
+    steps:
+      - run: echo "Image tag used was ${IMAGETAG}"
+      - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
+```
+<br>
+
+## 02-07. 環境変数
+
+### CircleCIにおける環境変数とは
+
+#### ・環境変数の種類と参照範囲
+
+| 参照レベル | 方法                                        | 説明                                               |
+| ---------- | ------------------------------------------- | -------------------------------------------------- |
+| Bash       | ```export```，```source```，```$BASH_ENV``` | ```run```における```command```内のみで参照できる． |
+| Container  | ```environment```                           | ```job```内の特定のコンテナのみで参照できる．      |
+| Job        | ```environment```                           | ```job```内のみで参照できる．                      |
+| Project    | Environment Variables機能                   | リポジトリ内のみ参照できる．                       |
+| Global     | Contexts機能                                | 異なるリポジトリ間で参照できる．                   |
+
+<br>
+
+### 定義方法の違い
+
+#### ・値の出力方法
+
+```$```マークを使用して，値を出力する．
+
+```yaml
+# 出力
+echo $XXXXX
+```
+
+文字列の中に値を出力する場合，```${}```を使用する．
+
+```yaml
+# 変数展開
+echo "This is ${XXXXX}"
+```
+
+#### ・Bashレベル
+
+一番参照範囲が小さく，```run```における```command```内のみで参照できる．```export```，```source```，```$BASH_ENV```，を使用する．
+
+```yaml
+version: 2.1 
+
+jobs:
+  build:
+    docker:
+      - image: smaant/lein-flyway:2.7.1-4.0.3
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export PATH=/path/to/foo/bin:$PATH' >> $BASH_ENV
+            echo 'export VERY_IMPORTANT=$(cat important_value)' >> $BASH_ENV
+            source $BASH_ENV
+```
+
+#### ・Containerレベル
+
+Bashレベルより参照範囲が大きく，```job```内のみで参照できる．```environment```を```image```と同じ階層で定義する．
+
+```yaml
+jobs:
+  build:
+    docker:
+      - image: postgres:9.4.1
+        # imageと同じ階層で定義（）
+        environment:
+          POSTGRES_USER: root
+```
+
+#### ・Projectレベル
+
+Containerレベルより参照範囲が大きく，プロジェクト内，すなわちリポジトリ内のみで参照できる．Environment Variables機能を使用する．
+
+
+#### ・Grobalレベル
+
+Projectレベルより参照範囲が大きく，異なるプロジェクト間，すなわちリポジトリ間で参照できる．Contexts機能を使用する．
+
+<br>
+
+
+## 02-08. CircleCIライブラリ
 
 ### orbs
 
@@ -457,6 +692,13 @@ workflows:
         jobs:
           - hello/hello-build
 ```
+#### ・jobs，commands，executors
+
+| 構造      | 説明                                                         |
+| --------- | ------------------------------------------------------------ |
+| jobs      | workflowsにて，Orbsから```job```として使用できる．           |
+| commands  | ```job```にて，``step```として使用できる．                   |
+| executors | ```exexutor```にて，事前定義されたexecutorsとして使用できる． |
 
 #### ・オプションへの引数の渡し方
 
@@ -476,17 +718,17 @@ workflows:
     jobs:
       - aws-xxx/yyy-yyy-yyy:
           # デフォルト名であれば，記述しなくても自動的に入力してくれる．
-          account-url: ${AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME}
-          aws-access-key-id: ${ACCESS_KEY_ID_ENV_VAR_NAME}
-          aws-secret-access-key: ${SECRET_ACCESS_KEY_ENV_VAR_NAME}
-          region: ${AWS_REGION_ENV_VAR_NAME}
+          account-url: $AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
+          aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
+          aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
+          region: $AWS_REGION_ENV_VAR_NAME
 ```
 
 <br>
 
 ### aws-ecr
 
-#### ・Jobs：build-and-push-image
+#### ・jobs：build-and-push-image
 
 CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイできる．
 
@@ -503,10 +745,10 @@ workflows:
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
-          account-url: ${AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME}
-          aws-access-key-id: ${ACCESS_KEY_ID_ENV_VAR_NAME}
-          aws-secret-access-key: ${SECRET_ACCESS_KEY_ENV_VAR_NAME}
-          region: ${AWS_REGION_ENV_VAR_NAME}
+          account-url: $AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
+          aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
+          aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
+          region: $AWS_REGION_ENV_VAR_NAME
           # リポジトリがない時に作成するかどうか．
           create-repo: true
           no-output-timeout: 20m
@@ -514,9 +756,9 @@ workflows:
           dockerfile: ./infra/docker/Dockerfile
           path: '.'
           profile-name: myProfileName
-          repo: '${APP_NAME}-repository'
+          repo: '{$APP_NAME}-repository'
           # CircleCIのハッシュ値によるバージョニング
-          tag: ${CIRCLE_SHA1}
+          tag: $CIRCLE_SHA1
           # job内にて，attach_workspaceステップを実行．
           attach-workspace: true
           # attach_workspaceステップ実行時のrootディレクトリ
@@ -527,7 +769,7 @@ workflows:
 
 ### aws-ecs
 
-#### ・Jobs：deploy-service-update
+#### ・jobs：deploy-service-update
 
 ECSのサービスのリビジョンを更新する．以下のaws-cliに対応している．
 
@@ -563,7 +805,7 @@ workflows:
           service-name: '${APP_NAME}-service'
           # CodeDeployにおけるデプロイの作成を設定
           deployment-controller: CODE_DEPLOY
-          codedeploy-application-name: ${APP_NAME}
+          codedeploy-application-name: $APP_NAME}
           codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
           codedeploy-load-balanced-container-name: www-container
           codedeploy-load-balanced-container-port: 80
@@ -571,7 +813,7 @@ workflows:
           container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
 ```
 
-#### ・Jobs：run-task
+#### ・jobs：run-task
 
 サービスに内包されるタスクを指定して，設定したオプションで，現在起動中のタスクとは別のものを新しく起動する．以下のaws-cliを内部で実行している．
 
@@ -614,7 +856,7 @@ workflows:
 
 ### aws-code-deploy
 
-#### ・Jobs：deploy
+#### ・jobs：deploy
 
 S3にソースコードとappspecファイルをデプロイできる．また，CodeDeployを用いて，これをEC2にデプロイできる．
 
@@ -634,7 +876,7 @@ workflows:
           requires:
             - build-and-push-image-www
           name: deploy-source-code
-          application-name: ${APP_NAME}
+          application-name: $APP_NAME}
           # appspecファイルを保存するバケット名
           bundle-bucket: "${APP_NAME}-bucket"
           # appspecファイルのあるフォルダ
@@ -646,54 +888,77 @@ workflows:
           deployment-config: CodeDeployDefault.ECSAllAtOnce
           deployment-group: "${APP_NAME}-deployment-group"
           # ECSにアクセスできるCodeDeployサービスロール
-          service-role-arn: ${TECH_NOTEBOOK_CODE_DEPLOY_ROLE_FOR_ECS}
+          service-role-arn: $CODE_DEPLOY_ROLE_FOR_ECS
 ```
 
 <br>
 
 ### terraform
 
-#### ・Jobs：deploy_infrastructure
+#### ・commands：deploy_infrastructure
 
 ```yaml
-version: 2.1
+version: '2.1'
+
 orbs:
   terraform: circleci/terraform@x.y.z
+  
+jobs:
+  single-job-lifecycle:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/init:
+          path: .
+      - terraform/validate:
+          path: .
+      - terraform/fmt:
+          path: .
+      - terraform/plan:
+          path: .
+      - terraform/apply:
+          path: .
+      - terraform/destroy:
+          path: .
+    working_directory: ~/src
+    
+workflows:
+  single-job-lifecycle:
+    jobs:
+      - single-job-lifecycle
+```
+
+#### ・jobs：deploy_infrastructure_job
+
+```yaml
+version: '2.1'
+
+orbs:
+  terraform: 'circleci/terraform@dev:alpha'
+  
 workflows:
   deploy_infrastructure:
     jobs:
-      - terraform/init:
-          # job内にて，最初にcheckoutステップを実行．
+      - terraform/fmt:
           checkout: true
-          # Job内にて，persist_workspaceステップを実行．
-          persist-workspace: true
-          # persist_workspaceステップ実行時のrootディレクトリ
-          workspace-root: <ルートのディレクトリ名>
-          workspace-path: <ルート以下のディレクトリ名>
-          filters:
-            branches:
-              only: master
+          context: terraform
       - terraform/validate:
-          # job内にて，attach_workspaceステップを実行．
-          attach-workspace: true
-          # attach_workspaceステップ実行時のrootディレクトリ
-          workspace-root-dir: <ディレクトリ名>
-          persist-workspace: true
-          workspace-root: <ルートのディレクトリ名>
-          workspace-path: <ルート以下のディレクトリ名>
+          checkout: true
+          context: terraform
           requires:
-            - terraform/init
+            - terraform/fmt
       - terraform/plan:
-          attach-workspace: true
-          workspace-root-dir: <ディレクトリ名>
+          checkout: true
+          context: terraform
           persist-workspace: true
-          workspace-root: <ルートのディレクトリ名>
-          workspace-path: <ルート以下のディレクトリ名>
           requires:
             - terraform/validate
       - terraform/apply:
           attach-workspace: true
-          workspace-root-dir: <ディレクトリ名>
+          context: terraform
+          filters:
+            branches:
+              only: master
           requires:
             - terraform/plan
 ```
@@ -702,7 +967,7 @@ workflows:
 
 ### slack
 
-#### ・Commands：status
+#### ・commands：status
 
 ジョブの終了時に，成功または失敗に基づいて，ステータスを通知する．ジョブの最後のステップとして設定しなければならない．
 
@@ -720,32 +985,14 @@ jobs:
       - run: exit 0
       - slack/status:
           # 成功した場合
-          success_message: ':tada: A $CIRCLE_JOB job has succeeded!'
+          success_message: ':tada: A $CIRCLE_job job has succeeded!'
           # 失敗した場合
-          failure_message: ':red_circle: A $CIRCLE_JOB job has failed!'
+          failure_message: ':red_circle: A $CIRCLE_job job has failed!'
           # 通知先のUSERIDをカンマ区切りで指定
           mentions: 'USERID1,USERID2'
           # SlackチャンネルのWebhookURL（CircleCI環境変数として登録していれば設定不要）
           webhook: webhook
 ```
-
-<br>
-
-## 02-07. 環境変数
-
-### Environment Variables
-
-#### ・Environment Variablesとは
-
-プロジェクト内のみで使用できる環境変数を設定できる．
-
-<br>
-
-### context
-
-#### ・contextとは
-
-異なるプロジェクト間，すなわちリポジトリ間で共有できる環境変数を設定できる．
 
 <br>
 
