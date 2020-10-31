@@ -390,6 +390,24 @@ SELECT
     { カラム名 } COUNT(*);
 ```
 
+#### ・```LAST_INSERT_ID()```
+
+最後に挿入されたIDを読み出す．
+
+```mysql
+SELECT LAST_INSERT_ID();
+```
+
+#### ・```MD5()```
+
+文字列をハッシュ化
+
+```mysql
+SELECT MD5('xxxxx');
+```
+
+<br>
+
 ### ```CASE```句
 
  カラム1が```true```だったら，カラム2を取得する．```false```であったら，カラム3を取得する．
