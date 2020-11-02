@@ -34,9 +34,8 @@ $ circleci config validate
 デバッグでは行数がわからない仕様になっている．そこで，Workflowのjobのどこで失敗しているのかを特定するために，検証しないjobをコメントアウトしておく．
 
 ```yaml
-
 workflows:
-  version: 2
+  version: 2.1
   # build以外を実行しないようにすることで，buildのみを検証できる．
   build-test-and-deploy:
     jobs:
@@ -167,12 +166,6 @@ jobs:
 
 <br>
 
-### parameters
-
-
-
-<br>
-
 ### steps
 
 #### ・stepsとは
@@ -199,12 +192,12 @@ jobs:
     steps:
       # 引数がtrueの場合
       - when:
-          condition: <<parameters.custom_checkout_parameters>>
+          condition: << parameters.custom_checkout_parameters >>
           steps:
             - run: echo "独自のチェックアウト処理"
       # 引数がfalseの場合
       - unless:
-          condition: <<parameters.custom_checkout_parameters>>
+          condition: << parameters.custom_checkout_parameters >>
           steps:
             - checkout
             
@@ -213,7 +206,7 @@ workflows:
   build-test-deploy:
     jobs:
       - custom_checkout:
-          # 引数を設定
+          # 引数名: 渡す値
           custom_checkout_parameters: true
 ```
 
@@ -227,18 +220,22 @@ workflows:
 **＊実装例＊**
 
 ```yaml
-steps:
-   # composer.jsonが変更されている場合は処理をスキップ．
-   - restore_cache:
-     key:
-       - v1-dependecies-{{ checksum composer.json }}
-   # 取得したcomposer.jsonを元に，差分のvendorをインストール
-   - run: composer install
-   # 最新のvendorを保存
-   - save_cache:
-     key: v1-dependecies-{{ checksum composer.json }}
-     paths:
-       - /vendor
+version: 2.1
+
+jobs:
+  build:
+    steps:
+    # composer.jsonが変更されている場合は処理をスキップ．
+      - restore_cache:
+          key:
+            - v1-dependecies-{{ checksum composer.json }}
+      # 取得したcomposer.jsonを元に，差分のvendorをインストール
+      - run: composer install
+      # 最新のvendorを保存
+      - save_cache:
+          key: v1-dependecies-{{ checksum composer.json }}
+          paths:
+            - /vendor
 ```
 
 ただ，この機能はcommandsで共通化した方が可読性が良い．
@@ -246,6 +243,8 @@ steps:
 **＊実装例＊**
 
 ```yaml
+version: 2.1
+
 commands:
   restore_vendor:
     steps:
@@ -275,30 +274,30 @@ CircleCIでは，jobごとに異なる仮想環境が構築されるため，他
 **＊実装例＊**
 
 ```yaml
-# jobA
+version: 2.1
 
-# Workspaceにファイルをアップロード
-- persist_to_workspace:
-    # jobAにて，Workspaceとするディレクトリのroot
-    root: /tmp/workspace
-    # Rootディレクトリを基準とした相対パス
-    paths:
-      - target/application.jar
-      - build/*
-```
-
-```yaml
-# jobB
-
-# persist_to_workspaceで作成されたWorkspaceからファイルをダウンロード
-- attach_workspace:
-    # jobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
-    at: /tmp/workspace
+jobs:
+  jobA:
+    steps:
+    # Workspaceにファイルをアップロード
+      - persist_to_workspace:
+          # jobAにて，Workspaceとするディレクトリのroot
+          root: /tmp/workspace
+          # Rootディレクトリを基準とした相対パス
+          paths:
+            - target/application.jar
+            - build/*
+  jobB:
+    steps:
+      # persist_to_workspaceで作成されたWorkspaceからファイルをダウンロード
+      - attach_workspace:
+        # jobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
+        at: /tmp/workspace
 ```
 
 #### ・pre-steps，post-steps
 
-```workspace```で，```job```の前に実行する処理を定義する．
+事前に```job```に定義するのではなく，```workspace```で，コールする```job```の前で定義する．
 
 **＊実装例＊**
 
@@ -336,6 +335,7 @@ Orbsを使う場合は，オプションに引数を渡す前に定義する．
 
 ```yaml
 workflows:
+  version: 2.1
   build:
     jobs:
       - aws-xxx/build-push-yyy:
@@ -368,6 +368,8 @@ workflows:
 **＊実装例＊**
 
 ```yaml
+version: 2.1
+
 commands:
   sayhello:
     description: "デモ用のごく簡単なコマンドです"
@@ -376,15 +378,18 @@ commands:
         type: string
         default: "Hello World"
     steps:
-      - run: echo << parameters.text >> # parametersから渡されたtextを渡す
+      # parametersの値を渡す
+      - run: echo << parameters.text >>
       
 jobs:
   myjob:
     docker:
       - image: "circleci/node:9.6.1"
     steps:
-      - sayhello: # command名
-          text: "Lev" # 引数名: 値
+      # command名
+      - sayhello:
+          # 引数名: 渡す値
+          text: "Lev"
 ```
 
 <br>
@@ -405,8 +410,10 @@ jobs:
 version: 2.1
 
 executors:
-  my-executor: # ホストOS環境名
-    docker: # ホストOS環境
+  # ホストOS環境名
+  my-executor:
+    # ホストOS環境
+    docker:
       - image: circleci/ruby:2.5.1-node-browsers
 
 jobs:
@@ -463,12 +470,12 @@ jobs:
     steps:
       - when:
           # 引数がtrueの場合
-          condition: <<parameters.custom_checkout>>
+          condition: << parameters.custom_checkout >>
           steps:
             - run: echo "my custom checkout"
       - unless:
           # 引数のfalseの場合
-          condition: <<parameters.custom_checkout>>
+          condition: << parameters.custom_checkout >>
           steps:
             - checkout
             
@@ -476,7 +483,7 @@ workflows:
   build-test-deploy:
     jobs:
       - job_with_optional_custom_checkout:
-          # 引数を設定
+          # 引数名: 渡す値
           custom_checkout: true
 ```
 
@@ -487,6 +494,8 @@ workflows:
 **＊実装例＊**
 
 ``` yaml
+version: 2.1
+
 jobs:
   deploy:
     parameters:
@@ -506,7 +515,7 @@ workflows:
   deploy:
     jobs:
       - deploy:
-          # 引数を設定
+          # 引数名: 渡す値
           environment: "staging"
 ```
 
@@ -527,6 +536,7 @@ commands:
         # デフォルト値が無い場合は必須
         type: string
     steps:
+      # parametersの値を渡す
       - run: echo << parameters.message >>
 
 jobs:
@@ -536,6 +546,7 @@ jobs:
         type: string
     steps:
       - print:
+          # parametersの値を渡す
           message: Printing << parameters.file >>
       - run: cat << parameters.file >>
 
@@ -543,7 +554,7 @@ workflows:
   my-workflow:
     jobs:
       - cat-file:
-          # 引数を設定 
+          # 引数名: 渡す値 
           file: test.txt
 ```
 
@@ -565,6 +576,7 @@ workflows:
 version: 2.1
 
 parameters:
+  # 引数を定義
   image-tag:
     type: string
     default: "latest"
@@ -575,16 +587,25 @@ parameters:
 jobs:
   build:
     docker:
+      # pipeline.parametersの値を渡す
       - image: circleci/node:<< pipeline.parameters.image-tag >>
         auth:
           username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          password: $DOCKERHUB_PASSWORD
     environment:
       IMAGETAG: << pipeline.parameters.image-tag >>
     working_directory: << pipeline.parameters.workingdir >>
     steps:
       - run: echo "Image tag used was ${IMAGETAG}"
       - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
+      
+workflows:
+  my-workflow:
+    jobs:
+      - build:
+          # 引数名: 渡す値 
+          image-tag: "1.0"
+          workdir: "/tmp"
 ```
 <br>
 
@@ -608,7 +629,7 @@ jobs:
 
 #### ・値の出力方法
 
-```$```マークを使用して，値を出力する．
+オプションや```echo```の引数にて，```$```マークを使用して，値を出力する．
 
 ```yaml
 # 出力
@@ -650,6 +671,8 @@ jobs:
 Bashレベルより参照範囲が大きく，```job```内のみで参照できる．```environment```を```image```と同じ階層で定義する．
 
 ```yaml
+version: 2.1
+
 jobs:
   build:
     docker:
@@ -898,7 +921,7 @@ workflows:
 #### ・commands：deploy_infrastructure
 
 ```yaml
-version: '2.1'
+version: 2.1
 
 orbs:
   terraform: circleci/terraform@x.y.z
@@ -931,7 +954,7 @@ workflows:
 #### ・jobs：deploy_infrastructure_job
 
 ```yaml
-version: '2.1'
+version: 2.1
 
 orbs:
   terraform: 'circleci/terraform@dev:alpha'
