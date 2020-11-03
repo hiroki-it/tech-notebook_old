@@ -18,18 +18,9 @@ https://circleci.com/docs/reference-2-1/#circleci-2-1-reference
 
 <br>
 
-### 各種コマンド
+### 設定ファイルのデバッグ
 
-#### ・設定ファイルのデバッグとコツ
-
-ホストOS側で，以下のコマンドを実行する．
-
-```bash
-$ circleci config validate
-
-# 以下の文章が表示されれば問題ない．
-# Config file at .circleci/config.yml is valid.
-```
+#### ・デバッグの事前準備
 
 デバッグでは行数がわからない仕様になっている．そこで，Workflowのjobのどこで失敗しているのかを特定するために，検証しないjobをコメントアウトしておく．
 
@@ -51,12 +42,36 @@ workflows:
 #            - test2
 ```
 
-#### ・ビルド
 
-ローカルでビルドを行う．
+#### ・バリデーション
+
+ホストOS側で，以下のコマンドを実行する．
 
 ```bash
-$ circleci build .circleci/config.yml
+$ circleci config validate
+
+# 以下の文章が表示されれば問題ない．
+# Config file at .circleci/config.yml is valid.
+```
+
+#### ・処理の展開
+
+設定ファイルを実行した時の処理を展開し，ファイルに出力できる
+
+```bash
+$ circleci config process .circleci/config.yml > .circleci/process.yml
+```
+
+#### ・ローカルテスト
+
+コマンドにより，テストに必要なDockerイメージをpullし，コンテナを構築する．続いて，コンテナ内でCircleCIを実行する．バージョン2.1以降では，事前に，設定ファイルの処理を展開しておく必要がある．
+
+```bash
+# バージョン2.1の設定ファイルの処理を展開
+$ circleci config process .circleci/config.yml > .circleci/process.yml
+
+# 専用のDockerコンテナを構築し，展開ファイルを元にテストを実行
+$ circleci local execute -c .circleci/process.yml --job <job名>
 ```
 
 <br>
