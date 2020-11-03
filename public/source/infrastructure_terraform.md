@@ -249,15 +249,109 @@ AWSの他，GCPなどのプロバイダの認証を行う．
 **＊実装例＊**
 
 ```tf
-provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region     = var.region
-  version    = "~2.7" // プロバイダーのバージョン変更時は initを実行
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      
+      // プロバイダーのバージョン変更時は initを実行
+      version = "~> 3.0" 
+    }
+  }
 }
 ```
 
+#### ・backend
 
+```tfstate```ファイルを管理する場所を設定する．
+
+```tf
+terraform {
+  // S3で管理するように設定
+  backend "s3" {
+    bucket = "<バケット名>"
+    key    = "<バケット内のディレクトリ>"
+    region = "ap-northeast-1"
+  }
+}
+```
+
+```tf
+terraform {
+  // ローカルPCで管理するように設定
+  backend "local" {
+    path = "<バケット内のディレクトリ>"
+  }
+}
+```
+
+<br>
+
+### provider
+
+#### ・providerとは
+
+使用するプロバイダで認証を行う．
+
+**＊実装例＊**
+
+リージョンの他，アクセスキーとシークレットキーを設定する．
+
+```tf
+provider "aws" {
+  region = "ap-northeast-1"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+```
+
+アクセスキーとシークレットキーの代わりに，プロファイルを設定しても良い．
+
+```
+provider "aws" {
+  region = "ap-northeast-1"
+  
+  // Linux，Unixの場合
+  shared_credentials_file = "$HOME/.aws/<機密情報ファイル名>"
+  
+  // Windowsの場合
+  // shared_credentials_file = "%USERPROFILE%\.aws\<機密情報ファイル名>"
+  
+  // defaultプロファイル
+  profile = default
+}
+```
+
+機密情報ファイルと各プロファイルは以下の様になっている．
+
+```
+[default]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+
+[user1]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+```
+
+#### ・一時的な環境変数を利用した認証
+
+事前に，```export```を使用して，必要な情報を設定しておく．
+
+```bash
+$ export AWS_DEFAULT_REGION="ap-northeast-1"
+$ export AWS_ACCESS_KEY_ID="<アクセスキー>"
+$ export AWS_SECRET_ACCESS_KEY="<シークレットキー>"
+```
+
+サーバ（ローカルPC）を再起動するまでの間だけ，設定値が```aws{}```に自動的に出力される．CircleCIのような，一時的に環境変数が必要になるような状況で，有効な方法．
+
+```tf
+// 何も設定しなくてよい．
+provider "aws" {}
+```
+
+<br>
 
 ### module
 
