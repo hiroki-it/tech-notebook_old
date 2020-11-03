@@ -575,6 +575,32 @@ resource "aws_instance" "server" {
 }
 ```
 
+<br>
+
+### for_each
+
+#### ・for_eachとは
+
+```for_each```が持つ```key```または```value```の数だけ，リソースを繰り返し実行する．
+
+**＊実装例＊**
+
+```for_each```ブロックが定義された```aws_iam_user```リソースが，```for_each```の持つ```value```の数だけ生成される．
+
+```tf
+locals {
+  users = [
+    "yamada",
+    "tanaka",
+    "suzuki"
+  ]
+}
+
+resource "aws_iam_user" "users" {
+  for_each = local.users
+  name     = each.value
+}
+```
 
 <br>
 
