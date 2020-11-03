@@ -440,7 +440,7 @@ workflows:
 
 ### jobsとは
 
-```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
+複数の```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
 <br>
 
@@ -454,7 +454,7 @@ jobを実行する仮想環境を選択できる．
 
 ![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/docker_executor.png)
 
-コンテナ環境でjobを行う．jobにDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外でjobを行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
+コンテナ環境で```job```を行う．```job```にDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外で```job```を行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
 
 **＊実装例＊**
 
@@ -713,7 +713,7 @@ version: 2.1
 
 commands:
   sayhello:
-    description: "デモ用のごく簡単なコマンドです"
+    description: "Echo hello world"
     parameters:
       text:
         type: string
@@ -766,191 +766,9 @@ jobs:
 
 <br>
 
-
-## 02-06. parameters
-
-### parametersとは
-
-#### ・各定義方法の参照範囲
-
-| 方法                |                                                              |
-| ------------------- | ------------------------------------------------------------ |
-| job parameters      | ```job```内で定義する．```parameter```が定義されたコンテナにて，そこで実行される```job```内のみで参照できる． |
-| pipeline parameters | トップレベルで定義する．リポジトリ内でのみ参照できる．       |
-
 <br>
 
-### job parameters
-
-#### ・値の出力方法
-
-引数名を使用して，```parameters```から値を出力する．
-
-```
-<< parameters.xxxxx >>
-```
-
-#### ・boolean型
-
-多くの場合，引数がTrueの場合のみ，特定の```step```を実行したい時に用いる．```workflows```で呼び出した時にBool値を渡す．
-
-**＊実装例＊**
-
-```yaml
-version: 2.1
-
-jobs:
-  job_with_optional_custom_checkout:
-    # 引数の定義
-    parameters:
-      custom_checkout:
-        type: boolean
-        # デフォルト値はfalse
-        default: false
-    machine: true
-    steps:
-      - when:
-          # 引数がtrueの場合
-          condition: << parameters.custom_checkout >>
-          steps:
-            - run: echo "my custom checkout"
-      - unless:
-          # 引数のfalseの場合
-          condition: << parameters.custom_checkout >>
-          steps:
-            - checkout
-            
-workflows:
-  build-test-deploy:
-    jobs:
-      - job_with_optional_custom_checkout:
-          # 引数名: 渡す値
-          custom_checkout: true
-```
-
-#### ・enum型
-
-特定の文字列や整数のみを引数として許可したいときに用いる．```job```で呼び出した時に，Enumのいずれかを引数として渡す．
-
-**＊実装例＊**
-
-``` yaml
-version: 2.1
-
-jobs:
-  deploy:
-    parameters:
-      # 引数を定義
-      environment:
-        default: "test"
-        type: enum
-        enum: ["test", "staging", "production"]
-    steps:
-      - run:
-        # デフォルト値testを与えるときは何も設定しない
-        name: Deploy to << parameters.environment >>
-        command:
-        # 何らかの処理
-    
-workflows:
-  deploy:
-    jobs:
-      - deploy:
-          # 引数名: 渡す値
-          environment: "staging"
-```
-
-#### ・string型
-
-文字列をパラメータとして渡す．引数が与えられなかった場合に適用される```default```を設定できる．```default```を設定しない場合，引数が必須と見なされる．
-
-**＊実装例＊**
-
-```yaml
-version: 2.1
-
-commands:
-  print:
-    # 引数を定義
-    parameters:
-      message:
-        # デフォルト値が無い場合は必須
-        type: string
-    steps:
-      # parametersの値を渡す
-      - run: echo << parameters.message >>
-
-jobs:
-  cat-file:
-    parameters:
-      file:
-        type: string
-    steps:
-      - print:
-          # parametersの値を渡す
-          message: Printing << parameters.file >>
-      - run: cat << parameters.file >>
-
-workflows:
-  my-workflow:
-    jobs:
-      - cat-file:
-          # 引数名: 渡す値 
-          file: test.txt
-```
-
-<br>
-
-### pipeline parameters
-
-#### ・値の出力方法
-
-引数名を使用して，```pipeline.parameters```から値を出力する．
-
-```
-<< pipeline.parameters.xxxxx >>
-```
-
-#### ・job parameters と同じ
-
-```yaml
-version: 2.1
-
-parameters:
-  # 引数を定義
-  image-tag:
-    type: string
-    default: "latest"
-  workingdir:
-    type: string
-    default: "~/main"
-
-jobs:
-  build:
-    docker:
-      # pipeline.parametersの値を渡す
-      - image: circleci/node:<< pipeline.parameters.image-tag >>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
-    environment:
-      IMAGETAG: << pipeline.parameters.image-tag >>
-    working_directory: << pipeline.parameters.workingdir >>
-    steps:
-      - run: echo "Image tag used was ${IMAGETAG}"
-      - run: echo "$(pwd) == << pipeline.parameters.workingdir >>"
-      
-workflows:
-  my-workflow:
-    jobs:
-      - build:
-          # 引数名: 渡す値 
-          image-tag: "1.0"
-          workdir: "/tmp"
-```
-<br>
-
-## 02-07. 環境変数
+## 02-06. 環境変数
 
 ### CircleCIにおける環境変数とは
 
@@ -1035,7 +853,7 @@ Projectレベルより参照範囲が大きく，異なるプロジェクト間�
 <br>
 
 
-## 02-08. CircleCIライブラリ
+## 02-07. CircleCIライブラリ
 
 ### orbs
 
