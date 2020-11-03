@@ -249,15 +249,109 @@ AWSの他，GCPなどのプロバイダの認証を行う．
 **＊実装例＊**
 
 ```tf
-provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region     = var.region
-  version    = "~2.7" // プロバイダーのバージョン変更時は initを実行
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      
+      // プロバイダーのバージョン変更時は initを実行
+      version = "~> 3.0" 
+    }
+  }
 }
 ```
 
+#### ・backend
 
+```tfstate```ファイルを管理する場所を設定する．
+
+```tf
+terraform {
+  // S3で管理するように設定
+  backend "s3" {
+    bucket = "<バケット名>"
+    key    = "<バケット内のディレクトリ>"
+    region = "ap-northeast-1"
+  }
+}
+```
+
+```tf
+terraform {
+  // ローカルPCで管理するように設定
+  backend "local" {
+    path = "<バケット内のディレクトリ>"
+  }
+}
+```
+
+<br>
+
+### provider
+
+#### ・providerとは
+
+使用するプロバイダで認証を行う．
+
+**＊実装例＊**
+
+リージョンの他，アクセスキーとシークレットキーを設定する．
+
+```tf
+provider "aws" {
+  region = "ap-northeast-1"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+```
+
+アクセスキーとシークレットキーの代わりに，プロファイルを設定しても良い．
+
+```
+provider "aws" {
+  region = "ap-northeast-1"
+  
+  // Linux，Unixの場合
+  shared_credentials_file = "$HOME/.aws/<機密情報ファイル名>"
+  
+  // Windowsの場合
+  // shared_credentials_file = "%USERPROFILE%\.aws\<機密情報ファイル名>"
+  
+  // defaultプロファイル
+  profile = default
+}
+```
+
+機密情報ファイルと各プロファイルは以下の様になっている．
+
+```
+[default]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+
+[user1]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+```
+
+#### ・一時的な環境変数を利用した認証
+
+事前に，```export```を使用して，必要な情報を設定しておく．
+
+```bash
+$ export AWS_DEFAULT_REGION="ap-northeast-1"
+$ export AWS_ACCESS_KEY_ID="<アクセスキー>"
+$ export AWS_SECRET_ACCESS_KEY="<シークレットキー>"
+```
+
+サーバ（ローカルPC）を再起動するまでの間だけ，設定値が```aws{}```に自動的に出力される．CircleCIのような，一時的に環境変数が必要になるような状況で，有効な方法．
+
+```tf
+// 何も設定しなくてよい．
+provider "aws" {}
+```
+
+<br>
 
 ### module
 
@@ -481,6 +575,32 @@ resource "aws_instance" "server" {
 }
 ```
 
+<br>
+
+### for_each
+
+#### ・for_eachとは
+
+```for_each```が持つ```key```または```value```の数だけ，リソースを繰り返し実行する．
+
+**＊実装例＊**
+
+```for_each```ブロックが定義された```aws_iam_user```リソースが，```for_each```の持つ```value```の数だけ生成される．
+
+```tf
+locals {
+  users = [
+    "yamada",
+    "tanaka",
+    "suzuki"
+  ]
+}
+
+resource "aws_iam_user" "users" {
+  for_each = local.users
+  name     = each.value
+}
+```
 
 <br>
 
@@ -555,3 +675,164 @@ resource "aws_instance" "example" {
 // ここに実装例
 ```
 
+<br>
+
+## 07. ベストプラクティス
+
+### ディレクトリ構成
+
+#### ・モジュールを使用する場合
+
+```
+terraform_project/
+├── dev
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
+├── modules
+│   ├── ec2
+│   │ ├── ec2.tf
+│   │ └── main.tf
+│   └── vpc
+│   ├── main.tf
+│   └── vpc.tf
+├── prod
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
+└── stg
+├── main.tf
+├── outputs.tf
+└── variables.tf
+```
+
+
+
+### リソースとデータリソースの命名規則
+
+#### ・リソースタイプを繰り返さない
+
+リソース名において，リソースタイプを繰り返さないようにする．
+
+**＊実装例＊**
+
+```tf
+// 良い例
+resource "aws_route_table" "public" {}
+```
+```tf
+// 悪い例
+//// リソースでリソースタイプを繰り返さないようにする
+resource "aws_route_table" "public_route_table" {}
+resource "aws_route_table" "public_aws_route_table" {}
+```
+
+#### ・this
+
+一つのリソースタイプに，一つのリソースしか種類が存在していない場合，```this```で命名する．
+
+**＊実装例＊**
+
+```tf
+resource "aws_internet_gateway" "this" {}
+```
+
+一方で，種類がある場合，リソースタイプを繰り返さないようにしつつ，種類名で命名する．
+
+```tf
+// パブリックサブネットのルートテーブル
+resource "aws_route_table" "public" {}
+
+// プライベートサブネットのルートテーブル
+resource "aws_route_table" "private" {}
+```
+
+#### ・記述順序，行間の空け方
+
+最初に```count```を設定し改行する．その後，各設定を行間を空けずに記述する．最後に，```depends_on```と```lifecycle```をそれぞれ行間を空けて配置する．
+
+**＊実装例＊**
+
+```tf
+resource "aws_nat_gateway" "this" {
+  count         = "1"
+
+  allocation_id = "..."
+  subnet_id     = "..."
+
+  tags = {
+    Name = "..."
+  }
+
+  depends_on = ["aws_internet_gateway.this"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+```
+
+#### ・outputの命名
+
+返却値が分かりやすいように命名する．この時，リソース名の，```this```,```public```，```private```を名前に入れる．
+
+**＊実装例＊**
+
+```tf
+output "this_nat_gateway_id" {
+  // NATGatewayのIDを返す 
+}
+```
+```tf
+output "public_subnet_id" {
+  // パブリックSubnetのIDを返す 
+}
+
+output "private_subnet_id" {
+  // プライベートSubnetのIDを返す 
+}
+```
+
+<br>
+
+### IAM
+
+#### ・認証情報の管理方法
+
+例え，```.gitignore```ファイルで機密情報を管理していたとしても，誤ってコミットしてしまう可能性があるため，以下の様に，ハードコーディングしないようにする．
+
+**＊実装例＊**
+
+```
+provider "aws" {
+  region     = "<リージョン>"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+```
+
+推奨の方法として，AWSにアクセスするための認証情報は，ローカルディレクトリで管理するようにするように，これを読み込むようにする．
+
+**＊実装例＊**
+
+```tf
+provider "aws" {
+ region = "<リージョン>"
+ shared_credentials_file = "<認証情報ファイルのパス>"
+ profile = "customprofile"
+}
+```
+
+```
+[default]
+aws_access_key_id = <アクセスキー>
+aws_secret_access_key = <シークレットキー>
+```
+
+<br>
+
+### ECS
+
+#### ・タスク定義の更新
+
+Terraformでタスク定義を更新すると，現在動いているECSで稼働しているタスクはそのままに，新しいリビジョン番号のタスク定義が作成される．コンソール画面の「新しいリビジョンの作成」と同じ挙動である．実際にタスクが増えていることは，サービスに紐づくタスク定義一覧から確認できる．次のデプロイ時に，このタスクが用いられる．
