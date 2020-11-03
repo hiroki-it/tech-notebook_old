@@ -10,10 +10,8 @@
 
 ```json
 {
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200
-  }
+  "fruit": ["banana", "apple"],
+  "account": 200
 }
 ```
 
@@ -21,11 +19,10 @@
 
 ```yaml
 {
-  Example:
-    fruit:
-      - "ばなな"
-      - "りんご"
-    account: 200
+  fruit:
+    - "banana"
+    - "apple"
+  account: 200
 }  
 ```
 
@@ -39,18 +36,59 @@
 
 <br>
 
-### JSONの定義方法
+## 02-01. JS型オブジェクト，JSON，PHP型オブジェクト
 
-#### ・JavaScript
+### JS型オブジェクト
+
+#### ・定義方法
+
+キーはクオーテーションで囲う必要が無い．
+
+**＊実装例＊**
+
+```javascript
+const object = {
+  fruit: ["banana", "apple"],
+  account: 200
+};
+```
+
+```javascript
+class Example {
+  constructor(fruit, account) {
+    this.fruit = fruit;
+    this.account = account;
+  }
+}
+```
+
+<br>
+
+### JSON
+
+#### ・定義方法
+
+キーを，シングルクオーテーションではなく，クオーテーションで囲う必要がある．
+
+**＊実装例＊**
+
+```javascript
+const json = {
+  "fruit": ["banana", "apple"],
+  "account": 200
+};
+```
+
+#### ・キーと値の変更方法
 
 **＊実装例＊**
 
 ```javascript
 // どんなデータを含むJSONなのかわかりやすい方法
 const json = {
-    "name": null,
-    "age": null,
-    "tel": null
+  "name": null,
+  "age": null,
+  "tel": null
 }
 
 json.name = "taro";
@@ -63,8 +101,11 @@ json.tel = "090-0123-4567";
 ```javascript
 const json = {}
 
-// areaというキー名の値を追加
+// areaというキーの値を追加
 json.prefecture = "Tokyo";
+
+// もしくは，
+json["prefecture"] = "Tokyo";
 
 // 以下は．undefined になる．二段階の定義はできない．
 //// json.prefecture.area = "Shibuya";
@@ -74,103 +115,93 @@ json.prefecture = "Tokyo";
 
 ```javascript
 const json = {
-    "name": "taro",
-    "age": 30,
-    "tel": "090-0123-4567"
+  "name": "taro",
+  "age": 30,
+  "tel": "090-0123-4567"
 }
 
-// areaというキー名の値を追加
+// areaというキーの値を追加
 json.prefecture = "Tokyo";
 
 // もしくは，
-//// json["prefecture"] = "Tokyo";
+json["prefecture"] = "Tokyo";
 ```
 
-#### ・PHP
+### PHP型オブジェクト
 
-<br>
-
-## 02. 相互パース（シリアライズ＋デシリアライズ）
-
-### シリアライズ，デシリアライズとは
-
-クライアントサイドとサーバサイドの間で，JSON型オブジェクトデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
-
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
-
-<br>
-
-### 各形式のオブジェクトの比較
-
-#### ・JavaScript型オブジェクト
-
-PHPでいう連想配列と同じような形をしている．キー名はクオーテーションで囲う必要が無い．
-
-**＊実装例＊**
-
-```javascript
-const object = {
-    fruit: ["ばなな", "りんご"];
-    account: 200;
-}
-```
-
-```javascript
-class Example {
-    constructor(x, y) {
-        this.fruit = x
-        this.account = y    
-    }
-}
-```
-
-#### ・JSON型オブジェクト
-
-**＊実装例＊**
-
-文字列のみ，シングルクオーテーションかダブルクオーテーションで囲う．キー名も値も，クオーテーションで囲う必要が無い．
-
-```javascript
-const json = {
-  "Example": {
-    "fruit": ["ばなな", "りんご"],
-    "account": 200
-  }
-}
-```
-
-#### ・PHP型オブジェクト
+#### ・定義方法
 
 **＊実装例＊**
 
 ```PHP
 <?php
     
-class Example
+class Example 
 {
     private $fruit;
-    
     private $account;
+    
+    public function __construct($fruit, $account)
+    {
+        $this->fruit = $fruit;
+        $this->account = $account;
+    }
 }    
 ```
 
 <br>
 
-### JavaScriptとJSONの相互パース
+## 02-02. 相互パース（シリアライズ＋デシリアライズ）
 
-#### ・JavaScriptからJSONへのシリアライズの場合
+### シリアライズ，デシリアライズとは
+
+クライアントサイドとサーバサイドの間で，JSONデータを送受信できるように解析（パース）することを，シリアライズまたはデシリアライズという．
+
+![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
+
+<br>
+
+### JS型オブジェクトと，JSONの相互パース
+
+#### ・シリアライズ：JS型からJSON
+
+JS型オブジェクトからJSONへの変換には，```JSON.stringfy```メソッドを使用する．
+
+**＊実装例＊**
 
 ```javascript
-// ここに実装例
+const object = {
+  fruit: ["banana", "apple"],
+  account: 200
+};
+
+// シリアライズ
+const json = JSON.stringify(object);
+
+console.log(json);
+// '{ "fruit": ["banana", "apple"], "account": 200 }'
 ```
 
-#### ・JSONからJavaScriptへのデシリアライズの場合
+#### ・デシリアライズ：JSONからJS型
+
+JSONからJS型オブジェクトへの変換には，```JSON.parse```メソッドを使用する．
+
+**＊実装例＊**
 
 ```javascript
-// ここに実装例
+const json = {
+  "fruit": ["banana", "apple"],
+  "account": 200
+};
+
+// デシリアライズ
+const object = JSON.parse(json);
+
+console.log(object);
+// { fruit: ["banana", "apple"], account: 200 }
 ```
 
-#### ・相互パース可能なクラスの場合
+#### ・相互パースメソッドをもつクラス
 
 **＊実装例＊**
 
@@ -179,54 +210,116 @@ class Example
 ```javascript
 class StaffParser {
 
-    // デシリアライズによるJavaScript型データを自身に設定
-    constructor(properties) {
-        this.id   = properties.id;
-        this.name = properties.name;
+  // デシリアライズによるJS型データを自身に設定
+  constructor(properties) {
+    this.id   = properties.id;
+    this.name = properties.name;
+  }
+
+
+  //-- デシリアライズ（JSONからJavaScriptへ） --//
+  static deserializeStaff(json) {
+
+    // JS型オブジェクトの定義方法
+    return new StaffParser({
+      id: json.id,
+      name: json.name
+    });
+  }
+
+
+  //-- シリアライズ（JavaScriptからJSONへ） --//
+  static serializeCriteria(criteria) {
+
+    // JSONの定義
+    const json = {
+      "id" : null,
+      "name" : null
     }
-  
-  
-    //-- デシリアライズ（JSONからJavaScriptへ） --//
-    static deserializeStaff(data) {
-       // JSON型オブジェクトから値を，JavaScript型オブジェクトに取り出す
-       return new StaffParser({
-            id: data.id,
-            name: data.name
-       });
+
+    // ID
+    if (criteria.id) {
+      // JSONが生成される．
+      json.id = _.trim(criteria.id);
     }
-  
-  
-    //-- シリアライズ（JavaScriptからJSONへ） --//
-    static serializeCriteria(criteria) {
-        // JavaScript上でのJSON型変数の定義方法
-        const query = {}
-        // ID
-        if (criteria.id) {
-          // JSON型オブジェクトが生成される．
-          query.id = _.trim(criteria.id);
-        }
-        // 氏名
-        if (criteria.name) {
-          query.name = _.trim(criteria.name);
-        }
+
+    // 氏名
+    if (criteria.name) {
+      json.name = _.trim(criteria.name);
     }
+  }
 }     
 ```
 
 <br>
 
-### PHPとJSONの相互パース
+### JSON，PHP型オブジェクトの相互パース
 
-#### ・PHPからJSONへのシリアライズの場合
+#### ・デシリアライズ：JSONからPHP型
+
+JSONからPHP型オブジェクトの変換には．```json_decode```メソッドを使用する．第二引数が```false```の場合，object形式オブジェクトに変換する．
 
 ```php
-// ここに実装例
+<?php
+
+// リクエストで取得したJSON
+$json = '{ "fruit": ["banana", "apple"], "account": 200 }';
+
+// object形式オブジェクトに変換
+$object = json_decode($json, false);
+
+var_dump($object);
+//  object(stdClass)#1 (2) {
+//    ["fruit"]=>
+//    array(2) {
+//      [0]=>
+//      string(9) "banana"
+//      [1]=>
+//      string(9) "apple"
+//    }
+//    ["account"]=>
+//    int(200)
+//  }
 ```
 
-#### ・JSONからPHPへのデシリアライズの場合
+第二引数が```true```の場合，連想配列形式に変換する．
 
 ```php
-// ここに実装例
+<?php
+
+// リクエストで取得したJSON
+$json = '{ "fruit": ["banana", "apple"], "account": 200 }';
+
+// 連想配列形式オブジェクトに変換
+$array = json_decode($json, true);
+
+var_dump($array);
+//  array(2) {
+//    ["fruit"]=>
+//    array(2) {
+//      [0]=>
+//      string(9) "banana"
+//      [1]=>
+//      string(9) "apple"
+//    }
+//    ["account"]=>
+//    int(200)
+//  }
+```
+
+#### ・シリアライズ：PHP型からJSON
+
+```php
+<?php
+
+$json = '{ "fruit": ["banana", "apple"], "account": 200 }';
+$object = json_decode($json, false);
+
+// JSONに変換
+$json = json_encode($object);
+
+var_dump($json);
+// '{"fruit":["banana","apple"],"account":200}'
 ```
 
 <br>
