@@ -1192,7 +1192,19 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 | ECS                | Elastic Network Interface 数と同じ個数  |
 | Lambda             | Elastic Network Interface 数と同じ個数  |
 
+#### ・Subnetの種類
 
+Subnetには，役割ごとにいくつか種類がある．
+
+| 名前                            | 役割                                    |
+| ------------------------------- | --------------------------------------- |
+| Public subnet (Frontend Subnet) | NATGatewayを配置する．                  |
+| Private app subnet              | アプリケーション，Nginxなどを配置する． |
+| Private datastore subnet        | RDS，Redisなどを配置する                |
+
+![Subnetの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Subnetの種類.png)
+
+<br>
 
 ### VPCエンドポイント（Private Link）
 
