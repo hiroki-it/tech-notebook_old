@@ -1914,3 +1914,40 @@ IAMポリシーのセットを持つ
 まず，IAMグループに対して，IAMロールを紐づける．そのIAMグループに対して，IAMロールを付与したいIAMユーザを追加していく．
 
 ![グループに所属するユーザにロールを付与](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グループに所属するユーザにロールを付与.png)
+
+<br>
+
+## 12-03. セキュリティ｜STS：Security Token Service
+
+### STS
+
+#### ・STSとは
+
+<br>
+
+### STSの仕組み
+
+#### ・ロールに付与するポリシー
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::<アカウントID>:user/<ユーザ名>"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<適当な文字列>"
+        }
+      }
+    }
+  ]
+}
+```
+
+<br>
+
