@@ -130,7 +130,7 @@ $ terraform refresh -var-file=config.tfvars
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルには反映せずに，設定ファイルの記述との差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
 
 ```bash
-$ terraform plan -var-file=XXX.tfvars
+$ terraform plan -var-file=config.tfvars
 ```
 
 差分がなければ，以下の通りになる．
@@ -148,7 +148,7 @@ actions need to be performed.
 ```-refresh=true```オプションをつければ，```refresh```コマンドを同時に実行してくれる．
 
 ```bash
-$ terraform plan -var-file=XXX.tfvars -refresh=true 
+$ terraform plan -var-file=config.tfvars -refresh=true 
 ```
 
 <br>
@@ -160,7 +160,7 @@ $ terraform plan -var-file=XXX.tfvars -refresh=true
 AWS上にクラウドインフラストラクチャを構築する．
 
 ```bash
-$ terraform apply -var-file XXX.tfvars
+$ terraform apply -var-file config.tfvars
 ```
 
 成功すると，以下のメッセージが表示される．
@@ -658,9 +658,9 @@ resource "aws_instance" "example" {
 
 <br>
 
-## 06. 外部ファイルとしての切り出し
+## 06. JSONの実装
 
-### IAMポリシーJSON
+### IAMポリシー
 
 ```
 // ここに実装例
@@ -668,7 +668,7 @@ resource "aws_instance" "example" {
 
 
 
-### コンテナ定義JSON
+### コンテナ定義
 
 
 ```
@@ -706,7 +706,23 @@ terraform_project/
 └── variables.tf
 ```
 
+<br>
 
+### 変数の命名規則
+
+#### ・単数形と複数形の命名分け
+
+複数の値をもつlist型の変数であれば複数形で命名する．一方で，string型など値が一つしかなければ単数形とする．
+
+```tf
+vpc_availability_zones             = ["a", "c"]
+vpc_cidr                           = "n.n.n.n/23"
+vpc_subnet_private_datastore_cidrs = ["n.n.n.n/27", "n.n.n.n/27"]
+vpc_subnet_private_app_cidrs       = ["n.n.n.n/25", "n.n.n.n/25"]
+vpc_subnet_public_cidrs            = ["n.n.n.n/27", "n.n.n.n/27"]
+```
+
+<br>
 
 ### リソースとデータリソースの命名規則
 
@@ -772,17 +788,16 @@ resource "aws_nat_gateway" "this" {
 }
 ```
 
-#### ・outputの命名
+<br>
 
-返却値が分かりやすいように命名する．この時，リソース名の，```this```,```public```，```private```を名前に入れる．
+### アウトプットの命名規則
+
+#### ・返却値がわかりやすいように
+
+返却値が分かりやすいように命名する．この時，リソース名に```public```，```private```を名前に入れる．
 
 **＊実装例＊**
 
-```tf
-output "this_nat_gateway_id" {
-  // NATGatewayのIDを返す 
-}
-```
 ```tf
 output "public_subnet_id" {
   // パブリックSubnetのIDを返す 
@@ -790,6 +805,22 @@ output "public_subnet_id" {
 
 output "private_subnet_id" {
   // プライベートSubnetのIDを返す 
+}
+```
+
+#### ・this
+
+```this```は省略してもよい．
+
+**＊実装例＊**
+
+```tf
+output "this_nat_gateway_id" {
+  // thisというNATGatewayのIDを返す 
+}
+
+output "nat_gateway_id" {
+  // thisというNATGatewayのIDを返す 
 }
 ```
 
@@ -803,7 +834,7 @@ output "private_subnet_id" {
 
 **＊実装例＊**
 
-```
+```tf
 provider "aws" {
   region     = "<リージョン>"
   access_key = "<アクセスキー>"
