@@ -706,7 +706,23 @@ terraform_project/
 └── variables.tf
 ```
 
+<br>
 
+### 変数の命名規則
+
+#### ・単数形と複数形の命名分け
+
+複数の値をもつlist型の変数であれば複数形で命名する．一方で，string型など値が一つしかなければ単数形とする．
+
+```tf
+vpc_availability_zones             = ["a", "c"]
+vpc_cidr                           = "n.n.n.n/23"
+vpc_subnet_private_datastore_cidrs = ["n.n.n.n/27", "n.n.n.n/27"]
+vpc_subnet_private_app_cidrs       = ["n.n.n.n/25", "n.n.n.n/25"]
+vpc_subnet_public_cidrs            = ["n.n.n.n/27", "n.n.n.n/27"]
+```
+
+<br>
 
 ### リソースとデータリソースの命名規則
 
