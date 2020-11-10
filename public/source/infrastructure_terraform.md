@@ -244,7 +244,7 @@ variable "credential" {
 
 #### ・required_providers
 
-AWSの他，GCPなどのプロバイダの認証を行う．
+AWSの他，GCPなどのプロバイダの認証を行う．一番最初に読みこまれるファイルのため，変数やモジュール化などが行えない．
 
 **＊実装例＊**
 
@@ -255,7 +255,7 @@ terraform {
       source  = "hashicorp/aws"
       
       // プロバイダーのバージョン変更時は initを実行
-      version = "~> 3.0" 
+      version = "3.0" 
     }
   }
 }
@@ -293,17 +293,32 @@ terraform {
 
 使用するプロバイダで認証を行う．
 
+#### ・ハードコーディング
+
 **＊実装例＊**
 
 リージョンの他，アクセスキーとシークレットキーを設定する．
 
 ```tf
+terraform {
+  required_version = "0.13.5"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.0"
+    }
+  }
+}
+
 provider "aws" {
   region = "ap-northeast-1"
   access_key = "<アクセスキー>"
   secret_key = "<シークレットキー>"
 }
 ```
+
+#### ・profileの利用
 
 アクセスキーとシークレットキーの代わりに，プロファイルを設定しても良い．
 
@@ -334,7 +349,7 @@ aws_access_key_id=<アクセスキー>
 aws_secret_access_key=<シークレットキー>
 ```
 
-#### ・一時的な環境変数を利用した認証
+#### ・環境変数の利用
 
 事前に，```export```を使用して，必要な情報を設定しておく．
 
@@ -347,8 +362,55 @@ $ export AWS_SECRET_ACCESS_KEY="<シークレットキー>"
 サーバ（ローカルPC）を再起動するまでの間だけ，設定値が```aws{}```に自動的に出力される．CircleCIのような，一時的に環境変数が必要になるような状況で，有効な方法．
 
 ```tf
-// 何も設定しなくてよい．
+// リージョン，アクセスキー，シークレットアクセスキーは不要
 provider "aws" {}
+```
+
+#### ・multiple providers
+
+複数の```provider```を実装し，エイリアスを使用して，これらを動的に切り替える方法．
+
+**＊実装例＊**
+
+```
+terraform {
+  required_version = "0.13.5"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.0"
+    }
+  }
+}
+
+provider "aws" {
+  # デフォルト値とするリージョン
+  region = "ap-northeast-1"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+
+provider "aws" {
+  # 別リージョン
+  alias = "ue1"
+  region = "us-east-1"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+```
+
+リソースまたはデータリソースにおいて，```provider```のエイリアスを指定する．
+
+```tf
+data "example" "this" {
+  # エイリアスを設定していないprovier
+}
+
+data "example" "this" {
+  # エイリアスを設定しているprovier
+  provider = aws.ue1
+}
 ```
 
 <br>
@@ -736,6 +798,7 @@ vpc_subnet_public_cidrs            = ["n.n.n.n/27", "n.n.n.n/27"]
 // 良い例
 resource "aws_route_table" "public" {}
 ```
+
 ```tf
 // 悪い例
 //// リソースでリソースタイプを繰り返さないようにする
