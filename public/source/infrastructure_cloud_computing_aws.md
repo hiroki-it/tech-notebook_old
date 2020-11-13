@@ -378,7 +378,21 @@ FargateからECRに対するDockerイメージのプルは，アウトバウン�
 
 ![PrivateLinkを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/PrivateLinkを介したFargateからECRECSへのアウトバウンド通信.png)
 
+<br>
+
 ### ECR
+
+#### ・ライフサイクルポリシー
+
+ECRのイメージの有効期間を定義できる．
+
+| 設定項目             | 説明                                                         | 備考                                                         |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ルールの優先順位     | 順位の大きさで，ルールの優先度を設定できる．                 | 数字は連続している必要はなく，例えば，10，20，90，のように設定しても良い． |
+| イメージのステータス | ルールを適用するイメージの条件として，タグの有無や文字列を設定できる． |                                                              |
+| 一致条件             | イメージの                                                   |                                                              |
+
+
 
 #### ・タグの変性／不変性
 
@@ -1931,6 +1945,44 @@ IAMユーザ，IAMグループ，IAMロールは，全てのAWSのリソース�
 #### ・バケットポリシー
 
 S3へのアクセスを制御するためのインラインポリシーのこと．
+
+#### ・ライフサイクルポリシー
+
+ECRのイメージの有効期間を定義するポリシー．コンソール画面から入力できるため，基本的にポリシーの実装は不要であるが，TerraformなどのIaCツールでは必要になる．
+
+**＊実装例＊**
+
+```json
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep last 10 images untagged",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Keep last 10 images any",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+
+```
 
 #### ・信頼ポリシー
 
