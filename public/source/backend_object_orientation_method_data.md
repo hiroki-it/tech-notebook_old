@@ -58,7 +58,7 @@ class Example
 
 ## 02. メソッドとデータのカプセル化
 
-### ```public```
+### public
 
 #### ・```public```とは
 
@@ -103,9 +103,9 @@ $data = "データ";
 example($data);
 ```
 
+<br>
 
-
-### ```protected```
+### protected
 
 ・```protected```とは
 
@@ -153,9 +153,9 @@ $data = "データ";
 example($data);
 ```
 
+<br>
 
-
-### ```private```
+### private
 
 ・```private```とは
 
@@ -217,7 +217,7 @@ example($data);
 
 <br>
 
-### ```static```
+### static
 
 #### ・```static```とは
 
