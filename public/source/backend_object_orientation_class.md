@@ -30,19 +30,19 @@
 
 #### ・インスタンス間の関係性を表す図
 
-Association（関連），Aggregation（集約），Composition（合成）が用いられる．詳しくは，以降の説明を参照．
+Association（関連），Aggregation（集約），Composition（合成）が用いられる．詳しくは，以降の説明を参照せよ．
 
 ![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
 
 #### ・クラス間の関係性を表す図
 
-Generalization（汎化），Realization（実現）が用いられる．詳しくは，以降の説明を参照．
+Generalization（汎化），Realization（実現）が用いられる．詳しくは，以降の説明を参照せよ．
 
 ![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間の関係性のクラス図.png)
 
 #### ・クラス間，インスタンス間，クラス／インスタンス間の関係性を表す図
 
-Dependency（依存）が用いられる．詳しくは，以降の説明を参照．
+Dependency（依存）が用いられる．詳しくは，以降の説明を参照せよ．
 
 ![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
@@ -534,7 +534,7 @@ class Human implements Communication
 
 ### クラスチェーンによる継承元の参照
 
-クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．プロトタイプベースのオブジェクト指向で用いられるプロトタイプチェーンについては，別ノートを参照せよ．
+クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．類似するものとして，プロトタイプチェーンについては，プロトタイプベースのオブジェクト指向に関するノートを参照せよ．
 
 **＊実装例＊**
 
