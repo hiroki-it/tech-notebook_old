@@ -74,6 +74,14 @@ $ circleci config process .circleci/config.yml > .circleci/process.yml
 $ circleci local execute -c .circleci/process.yml --job <job名>
 ```
 
+#### ・CircleCIコンテナにssh接続
+
+CircleCIコンテナにssh接続し，コンテナ内で生成されたファイルを確認することができる．
+
+```bash
+$ <CircleCIから提示されたコマンドをコピペ> -i ~/.ssh/<秘密鍵名>
+```
+
 <br>
 
 ### PHPUnitの自動実行
