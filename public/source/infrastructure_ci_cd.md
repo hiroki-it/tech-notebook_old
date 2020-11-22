@@ -74,6 +74,14 @@ $ circleci config process .circleci/config.yml > .circleci/process.yml
 $ circleci local execute -c .circleci/process.yml --job <job名>
 ```
 
+#### ・CircleCIコンテナにssh接続
+
+CircleCIコンテナにssh接続し，コンテナ内で生成されたファイルを確認することができる．
+
+```bash
+$ <CircleCIから提示されたコマンドをコピペ> -i ~/.ssh/<秘密鍵名>
+```
+
 <br>
 
 ### PHPUnitの自動実行
@@ -624,7 +632,8 @@ jobs:
       - persist_to_workspace:
           # jobAにて，Workspaceとするディレクトリのroot
           root: /tmp/workspace
-          # Rootディレクトリを基準とした相対パス
+          # Rootディレクトリを基準とした相対パス（"./"以外の場合は，ディレクトリの作成が必要）
+          # パラメータは環境変数として出力できないので注意
           paths:
             - target/application.jar
             - build/*
@@ -634,6 +643,26 @@ jobs:
       - attach_workspace:
         # jobAとは異なるディレクトリに，ファイルをダウンロードしてもよい
         at: /tmp/workspace
+```
+
+全てのディレクトリを保持するような場合がほとんどと思われるため，カレントディレクトリ以下（```.```）を指定するのがよい．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+jobs:
+  jobA:
+    steps:
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  jobB:
+    steps:
+      - attach_workspace:
+        at: .
 ```
 
 #### ・pre-steps，post-steps
