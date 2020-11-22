@@ -624,7 +624,8 @@ jobs:
       - persist_to_workspace:
           # jobAにて，Workspaceとするディレクトリのroot
           root: /tmp/workspace
-          # Rootディレクトリを基準とした相対パス
+          # Rootディレクトリを基準とした相対パス（"./"以外の場合は，ディレクトリの作成が必要）
+          # パラメータは環境変数として出力できないので注意
           paths:
             - target/application.jar
             - build/*
