@@ -972,7 +972,7 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 
 | 設定項目               | 説明                                                         | 備考                                                         |
 | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Origin Domain Name     | CloudFrontを経由してコンテンツを提供するAWSリソースのDNS名を設定する． | 別アカウントのAWSリソースのDNS名であってもよい．             |
+| Origin Domain Name     | CloudFrontを経由してコンテンツを提供するAWSリソースのエンドポイントやDNS名を設定する． | ・例えば，S3のエンドポイント，ALBのDNS名を設定する．<br>・別アカウントのAWSリソースのDNS名であってもよい． |
 | Origin Access Identity | リクエストの転送先となるAWSリソースでアクセス権限の付与が必要な場合に設定する．転送先のAWSリソースでは，アクセスポリシーを付与する． | CloudFrontがS3に対して読み出しを行うために必要．             |
 | Origin Protocol Policy | リクエストの転送先となるAWSリソースに対して，HTTPとHTTPSのいずれのプロトコルで転送するかを設定する． | ・ALBで必要．ALBのリスナーのプロトコルに合わせて設定する．<br>・```HTTP Only```：HTTPで転送<br/>・```HTTPS Only```：HTTPSで転送<br/>・```Match Viewer```：両方で転送 |
 | HTTPポート             | 転送時に指定するオリジンのHTTPのポート番号                   |                                                              |
@@ -2177,7 +2177,7 @@ aws sts assume-role \
   --output "json"
 ```
 
-STSへのリクエストの結果，ロールがアタッチされた新しいIAMユーザ情報を取得できる．この情報には有効期限が存在し，期限が過ぎると新しいIAMユーザになる．
+STSへのリクエストの結果，ロールがアタッチされた新しいIAMユーザ情報を取得できる．この情報には有効秒数が存在し，期限が過ぎると新しいIAMユーザになる．秒数の最大値は，該当するIAMロールの概要の最大セッション時間から変更できる．
 
 ![AssumeRole](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AssumeRole.png)
 
