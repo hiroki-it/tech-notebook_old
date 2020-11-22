@@ -645,6 +645,26 @@ jobs:
         at: /tmp/workspace
 ```
 
+全てのディレクトリを保持するような場合がほとんどと思われるため，カレントディレクトリ以下（```.```）を指定するのがよい．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+jobs:
+  jobA:
+    steps:
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  jobB:
+    steps:
+      - attach_workspace:
+        at: .
+```
+
 #### ・pre-steps，post-steps
 
 事前に```job```に定義するのではなく，```workspace```で，コールする```job```の前で定義する．
