@@ -4,12 +4,32 @@
 
 ### init
 
-#### ・-backend
+#### ・-backend=false
 
-ローカルもしくはバックエンドにstateファイルを作成する．リモートの場合は，```-backend-config```オプションも必要．
+ローカルにstateファイルを作成する．
 
 ```bash
 $ terraform init -backend=false
+```
+
+```bash
+# ディレクトリを指定することも可能
+$ terraform init -backend=false <ルートモジュールのディレクトリへの相対パス>
+```
+
+#### ・-backend=true, -backend-config
+
+リモートにstateファイルを作成する．代わりに，```terraform settings```ブロック内の```backend```で指定しても良い．
+
+```bash
+$ terraform init \
+    -backend=true \
+    -reconfigure \
+    -backend-config="bucket=<バケット名>" \
+    -backend-config="key=terraform.tfstate" \
+    -backend-config="region=ap-northeast-1" \
+    -backend-config="profile=<プロファイル名>" \
+    <ルートモジュールのディレクトリへの相対パス>
 ```
 
 #### ・-reconfigure
@@ -18,20 +38,6 @@ $ terraform init -backend=false
 
 ```bash
 $ terraform init -reconfigure
-```
-
-#### ・-backend-config
-
-初期化時に，バックエンドを明示的に指定し，これにstateファイルを作成する．
-
-```bash
-terraform init \
--backend=true \
--reconfigure \
--backend-config="bucket=<バケット名>" \
--backend-config="key=terraform.tfstate" \
--backend-config="region=ap-northeast-1" \
--backend-config="profile=<プロファイル名>" ./<ディレクトリ名>
 ```
 
 #### ・-upgrade
@@ -56,9 +62,22 @@ $ terraform validate
 Success! The configuration is valid.
 ```
 
+```bash
+# ディレクトリを指定することも可能
+$ terraform validate <ルートモジュールのディレクトリへの相対パス>
+```
+
 <br>
 
 ### fmt
+
+#### ・-check
+
+インデントを揃えるべき箇所が存在するかどうかを判定する．もし存在する場合「```1```」，存在しない場合は「```0```」を返却する．
+
+```bash
+$ terraform fmt -check
+```
 
 #### ・-recursive
 
@@ -75,30 +94,36 @@ main.tf
 
 ### import
 
-#### ・-var-file <リソース>
+#### ・-var-file
 
-terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．リソースタイプとリソース名を指定し，stateファイルにリモートの状態を書き込む．現状，全てのリソースを一括して```import```する方法は無い．
+terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．リソースタイプとリソース名を指定し，stateファイルにリモートの状態を書き込む．現状，全てのリソースを一括して```import```する方法は無い．リソースIDは，リソースによって異なるため，リファレンスの「Import」または「Attributes Referenceの```id```」を確認すること（例えば，ACMにとってのIDはARNだが，S3バケットにとってのIDはバケット名である）．
 
 ```bash
-$ terraform import -var-file=config.tfvars <リソースタイプ>.<リソース名> <AWS上リソース名>
+$ terraform import \
+    -var-file=config.tfvars \
+    <リソースタイプ>.<リソース名> <AWS上リソースID>
 ```
 
-モジュール化されている場合，指定の方法が異なる．
+モジュールを使用している場合，指定の方法が異なる．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.<モジュール名>.<リソースタイプ>.<リソース名> <AWS上リソースID>
+$ terraform import \
+    -var-file=config.tfvars \
+    module.<モジュール名>.<リソースタイプ>.<リソース名> <AWS上リソースID>
 ```
 
 例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
 
 ```bash
-$ terraform import -var-file=config.tfvars module.ecr_module.aws_ecr_repository.ecr_repository_www xxxxxxxxx
+$ terraform import \
+    -var-file=config.tfvars \
+    module.ecr.aws_ecr_repository.www xxxxxxxxx
 ```
 
 そして，ローカルのstateファイルとリモートの差分が無くなるまで，```import```を繰り返す．
 
 ````bash
-$ terraform plan
+$ terraform plan -var-file=config.tfvars
 
 No changes. Infrastructure is up-to-date.
 ````
@@ -135,12 +160,30 @@ $ terraform refresh -var-file=config.tfvars
 
 ### plan
 
+#### ・シンボルの見方
+
+構築（```+```），更新（```~```），削除（```-```）で表現される．
+
+```
++ create
+~ update in-place
+- destroy
+```
+
 #### ・-var-file
 
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルには反映せずに，設定ファイルの記述との差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
 
 ```bash
 $ terraform plan -var-file=config.tfvars
+```
+
+```bash
+# ディレクトリを指定することも可能
+# 第一引数で変数ファイルの相対パス，第二引数でをルートモジュールの相対パス
+$ terraform plan \
+    -var-file=<ルートモジュールのディレクトリへの相対パス>/config.tfvars \
+    <ルートモジュールのディレクトリへの相対パス>
 ```
 
 差分がなければ，以下の通りになる．
@@ -153,12 +196,54 @@ configuration and real physical resources that exist. As a result, no
 actions need to be performed.
 ```
 
-#### ・-refresh
+#### ・-target
 
-```-refresh=true```オプションをつければ，```refresh```コマンドを同時に実行してくれる．
+特定のリソースに対して，```plan```コマンドを実行する．
 
 ```bash
-$ terraform plan -var-file=config.tfvars -refresh=true 
+$ terraform plan \
+    -var-file=config.tfvars \
+    -target=<リソースタイプ>.<リソース名>
+```
+
+モジュールを使用している場合，指定の方法が異なる．
+
+```bash
+$ terraform plan \
+    -var-file=config.tfvars \
+    -target=module.<モジュール名>.<リソースタイプ>.<リソース名>
+```
+
+#### ・-refresh
+
+このオプションをつければ，```refresh```コマンドを同時に実行してくれる．ただ，デフォルトで```true```なので，不要である．
+
+```bash
+$ terraform plan \
+    -var-file=config.tfvars \
+    -refresh=true
+```
+
+https://github.com/hashicorp/terraform/issues/17311
+
+#### ・-parallelism
+
+並列処理数を設定できる．デフォルト値は```10```である．
+
+```bash
+$ terraform plan \
+    -var-file=config.tfvars \
+    -parallelism=30
+```
+
+#### ・-out
+
+実行プランファイルを生成する．```apply```コマンドのために使用できる．
+
+```bash
+$ terraform plan \
+    -var-file=config.tfvars \
+    -out=<実行プランファイル名>.tfplan
 ```
 
 <br>
@@ -173,10 +258,54 @@ AWS上にクラウドインフラストラクチャを構築する．
 $ terraform apply -var-file config.tfvars
 ```
 
+```bash
+# ディレクトリを指定することも可能
+# 第一引数で変数ファイルの相対パス，第二引数でをルートモジュールの相対パス
+$ terraform apply \
+    -var-file=<ルートモジュールのディレクトリへの相対パス>/config.tfvars \
+    <ルートモジュールのディレクトリへの相対パス>
+```
+
 成功すると，以下のメッセージが表示される．
 
 ```bash
 Apply complete! Resources: X added, 0 changed, 0 destroyed.
+```
+
+#### ・-target
+
+特定のリソースに対して，```apply```コマンドを実行する．
+
+```bash
+$ terraform apply \
+    -var-file=config.tfvars \
+    -target=<リソースタイプ>.<リソース名>
+```
+
+モジュールを使用している場合，指定の方法が異なる．
+
+```bash
+$ terraform apply \
+    -var-file=config.tfvars \
+    -target=module.<モジュール名>.<リソースタイプ>.<リソース名>
+```
+
+#### ・-parallelism
+
+並列処理数を設定できる．デフォルト値は```10```である．
+
+```bash
+$ terraform apply \
+    -var-file=config.tfvars \
+    -parallelism=30
+```
+
+#### ・実行プランファイル
+
+事前に，```plan```コマンドによって生成された実行プランファイルを元に，```apply```コマンドを実行する．実行プランを渡す場合は，変数をオプションに設定する必要はない．
+
+```bash
+$ terraform apply <実行プランファイル名>.tfplan
 ```
 
 <br>
@@ -188,13 +317,15 @@ Apply complete! Resources: X added, 0 changed, 0 destroyed.
 stateファイルにおける指定されたリソースの```tainted```フラグを立てる．例えば，```apply```したが，途中でエラーが発生してしまい，リモートに中途半端はリソースが構築されてしまうことがある．ここで，```tainted```を立てておくと，リモートのリソースを削除したと想定した```plan```を実行できる．
 
 ```bash
-$ terraform taint -var-file=config.tfvars module.<モジュール名>.<リソースタイプ>.<リソース名>
+$ terraform taint \
+    -var-file=config.tfvars \
+    module.<モジュール名>.<リソースタイプ>.<リソース名>
 ```
 
 この後の```plan```コマンドのログからも，```-/+```で削除が行われる想定で，差分を比較していることがわかる．
 
 ```bash
-$ terraform plan
+$ terraform plan -var-file=config.tfvars
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -245,40 +376,7 @@ module.vpc_module.aws_vpc.vpc
 
 <br>
 
-## 02. 環境変数
-
-実行ファイルに入力したい値を定義する．各サービスの間で実装方法が同じため，VPCのみ例を示す．
-
-**＊実装例＊**
-
-```tf
-###############################
-# VPC
-###############################
-vpc_cidr_block = "n.n.n.n/n" // IPv4アドレス範囲
-```
-
-<br>
-
-### variable 
-
-宣言することで，リソースに変数を与えることができるようになる．
-
-**＊実装例＊**
-
-```tf
-###############################
-# Input Value
-###############################
-// AWSCredentials
-variable "credential" {
-  type = map(string)
-}
-```
-
-<br>
-
-##  03. ルートモジュールにおける実装
+##  02. ルートモジュールにおける実装
 
 ### ディレクトリ構成
 
@@ -291,23 +389,37 @@ terraform_project/
 │   │   ├── main.tf
 │   │   ├── output.tf
 │   │   └── variables.tf
-│   └── ec2
+│   └── ami
 │       ├── main.tf
 │       ├── output.tf
 │       └── variables.tf
 ├── dev
+│   ├── config.tfvars
 │   ├── main.tf
 │   ├── outputs.tf
+│   ├── provider.tf
 │   └── variables.tf
 ├── prod
+│   ├── config.tfvars
 │   ├── main.tf
 │   ├── outputs.tf
+│   ├── provider.tf
 │   └── variables.tf
 └── stg
+    ├── config.tfvars
     ├── main.tf
     ├── outputs.tf
+    ├── provider.tf
     └── variables.tf
 ```
+
+<br>
+
+### tfstateファイル
+
+#### ・tfstateファイルとは
+
+リモートのインフラの状態が定義されたjsonファイルのこと．初回時，```apply```コマンドを実行し，成功もしくは失敗したタイミングで生成される．
 
 <br>
 
@@ -319,14 +431,17 @@ terraformの実行時に，エントリポイントとして機能するファ�
 
 #### ・required_providers
 
-AWSの他，GCPなどのプロバイダの認証を行う．一番最初に読みこまれるファイルのため，変数やモジュール化などが行えない．
+AWSやGCPなど，使用するプロバイダを定義する．プロバイダによって，異なるリソースタイプが提供される．一番最初に読みこまれるファイルのため，変数やモジュール化などが行えない．
 
 **＊実装例＊**
 
 ```tf
 terraform {
+
   required_providers {
+    # awsプロバイダを定義
     aws = {
+      # グローバルソースアドレスを指定
       source  = "hashicorp/aws"
       
       // プロバイダーのバージョン変更時は initを実行
@@ -338,25 +453,49 @@ terraform {
 
 #### ・backend
 
-```tfstate```ファイルを管理する場所を設定する．
+stateファイルを管理する場所を設定する．S3などのリモートで管理する場合，アカウント情報を設定する必要がある．代わりに，```init```コマンド実行時に指定しても良い．デフォルト値は```local```である．
+
+**＊実装例＊**
 
 ```tf
 terraform {
-  // S3で管理するように設定
-  backend "s3" {
-    bucket = "<バケット名>"
-    key    = "<バケット内のディレクトリ>"
-    region = "ap-northeast-1"
+
+  // ローカルPCで管理するように設定
+  backend "local" {
+    path = "${path.module}/terraform.tfstate"
   }
 }
 ```
 
 ```tf
 terraform {
-  // ローカルPCで管理するように設定
-  backend "local" {
-    path = "<バケット内のディレクトリ>"
+
+  // S3で管理するように設定
+  backend "s3" {
+    bucket                  = "<バケット名>"
+    key                     = "<バケット内のディレクトリ>"
+    region                  = "ap-northeast-1"
+    profile                 = "example"
+    shared_credentials_file = "$HOME/.aws/<Credentialsファイル名>"
   }
+}
+```
+
+バケットは，どのユーザも削除できないように，ポリシーを設定しておくとよい．
+
+**＊実装例＊**
+
+```json
+{
+  "Statement": [
+    {
+      "Sid": "DenyDeleteBucket",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:DeleteBucket",
+      "Resource": "arn:aws:s3:::<tfstateのバケット名>"
+    }
+  ]
 }
 ```
 
@@ -366,28 +505,7 @@ terraform {
 
 #### ・providerとは
 
-プロバイダにおけるアカウント認証を行う．
-
-```tf
-terraform {
-  required_version = "0.13.5"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.0"
-    }
-  }
-}
-
-provider "aws" {
-  # AWSアカウント情報の設定  
-}
-```
-
-#### ・ハードコーディングによる認証
-
-リージョンの他，アクセスキーとシークレットキーをハードコーディングで設定する．誤ってコミットしてしまう可能性があるため，ハードコーディングしないようにする．
+プロバイダにおけるアカウント認証を行う．```terraform settings```で定義したプロバイダ名を指定する必要がある．
 
 **＊実装例＊**
 
@@ -396,90 +514,21 @@ terraform {
   required_version = "0.13.5"
 
   required_providers {
+    # awsプロバイダを定義
     aws = {
-      source  = "hashicorp/aws"
-      version = "3.0"
+      # 何らかの設定
     }
+  }
+  
+  backend "s3" {
+    # 何らかの設定
   }
 }
 
+# awsプロバイダを指定
 provider "aws" {
-  region = "ap-northeast-1"
-  access_key = "<アクセスキー>"
-  secret_key = "<シークレットキー>"
+  # アカウント認証の設定
 }
-```
-
-#### ・Credentialsファイルによる認証
-
-　AWSアカウント情報は，```~/.aws/credentials```ファイルに記載されている．
-
-```
-[default]
-aws_access_key_id=<アクセスキー>
-aws_secret_access_key=<シークレットキー>
-
-[user1]
-aws_access_key_id=<アクセスキー>
-aws_secret_access_key=<シークレットキー>
-```
-
-Credentialsファイルを読み出し，プロファイル名を設定することにより，アカウント情報を参照できる．
-
-**＊実装例＊**
-
-```tf
-terraform {
-  required_version = "0.13.5"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "ap-northeast-1"
-  
-  // Linux，Unixの場合
-  shared_credentials_file = "$HOME/.aws/<Credentialsファイル名>"
-  
-  // Windowsの場合
-  // shared_credentials_file = "%USERPROFILE%\.aws\<Credentialsファイル名>"
-  
-  // defaultプロファイルを指定
-  profile = default
-}
-```
-
-#### ・環境変数による認証
-
-Credentialsファイルではなく，```export```を使用して，必要な情報を設定しておくことも可能である．
-
-```bash
-$ export AWS_DEFAULT_REGION="ap-northeast-1"
-$ export AWS_ACCESS_KEY_ID="<アクセスキー>"
-$ export AWS_SECRET_ACCESS_KEY="<シークレットキー>"
-```
-
-環境変数を設定した上でteraformを実行すると，値が```provider```に自動的に出力される．CircleCIのような，一時的に環境変数が必要になるような状況では有効な方法である．
-
-```tf
-terraform {
-  required_version = "0.13.5"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.0"
-    }
-  }
-}
-
-// リージョン，アクセスキー，シークレットアクセスキーは不要
-provider "aws" {}
 ```
 
 <br>
@@ -507,22 +556,20 @@ terraform {
 provider "aws" {
   # デフォルト値とするリージョン
   region = "ap-northeast-1"
-  access_key = "<アクセスキー>"
-  secret_key = "<シークレットキー>"
 }
 
 provider "aws" {
   # 別リージョン
-  alias = "ue1"
+  alias  = "ue1"
   region = "us-east-1"
-  access_key = "<アクセスキー>"
-  secret_key = "<シークレットキー>"
 }
 ```
 
 #### ・子モジュールでproviderを切り替える
 
 子モジュールで```provider```を切り替えるには，ルートモジュールで```provider```の値を明示的に渡す必要がある．
+
+**＊実装例＊**
 
 ```tf
 module "route53" {
@@ -537,6 +584,8 @@ module "route53" {
 ```
 
 さらに子モジュールで，```provider```の値を設定する必要がある．
+
+**＊実装例＊**
 
 ```tf
 ###############################################
@@ -558,6 +607,136 @@ resource "aws_acm_certificate" "example" {
     create_before_destroy = true
   }
 }
+```
+
+<br>
+
+### アカウント情報の設定方法
+
+#### ・ハードコーディングによる設定
+
+リージョンの他，アクセスキーとシークレットキーをハードコーディングで設定する．誤ってコミットしてしまう可能性があるため，ハードコーディングしないようにする．
+
+**＊実装例＊**
+
+```tf
+terraform {
+  required_version = "0.13.5"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.0"
+    }
+  }
+  
+  backend "s3" {
+    bucket     = "<バケット名>"
+    key        = "<バケット内のディレクトリ>"
+    region     = "ap-northeast-1"
+    access_key = "<アクセスキー>"
+    secret_key = "<シークレットキー>"
+  }
+}
+
+provider "aws" {
+  region     = "ap-northeast-1"
+  access_key = "<アクセスキー>"
+  secret_key = "<シークレットキー>"
+}
+```
+
+#### ・credentialsファイルによる設定
+
+　AWSアカウント情報は，```~/.aws/credentials```ファイルに記載されている．
+
+```
+[default]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+
+[user1]
+aws_access_key_id=<アクセスキー>
+aws_secret_access_key=<シークレットキー>
+```
+
+credentialsファイルを読み出し，プロファイル名を設定することにより，アカウント情報を参照できる．
+
+**＊実装例＊**
+
+```tf
+terraform {
+  required_version = "0.13.5"
+
+  required_providers {
+  
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.0"
+    }
+  }
+  
+  // credentialsファイルから，アクセスキー，シークレットアクセスキーを読み込む
+  backend "s3" {
+    bucket                  = "<バケット名>"
+    key                     = "<バケット内のディレクトリ>"
+    region                  = "ap-northeast-1"
+    profile                 = "example"
+    shared_credentials_file = "$HOME/.aws/<Credentialsファイル名>"
+  }
+}
+
+// credentialsファイルから，アクセスキー，シークレットアクセスキーを読み込む
+provider "aws" {
+  region                  = "ap-northeast-1"
+  profile                 = "example"
+  shared_credentials_file = "$HOME/.aws/<Credentialsファイル名>"
+}
+```
+
+#### ・環境変数による設定
+
+Credentialsファイルではなく，```export```を使用して，必要な情報を設定しておくことも可能である．参照できる環境変数名は決まっている．
+
+```bash
+# regionの代わり
+$ export AWS_DEFAULT_REGION="ap-northeast-1"
+
+# access_keyの代わり
+$ export AWS_ACCESS_KEY_ID="<アクセスキー>"
+
+# secret_keyの代わり
+$ export AWS_SECRET_ACCESS_KEY="<シークレットキー>"
+
+# profileの代わり
+$ export AWS_PROFILE="<プロファイル名>"
+
+#tokenの代わり（AmazonSTSを使用する場合）
+$ export AWS_SESSION_TOKEN="<トークン>"
+```
+
+環境変数を設定した上でteraformを実行すると，値が```provider```に自動的に出力される．CircleCIのような，一時的に環境変数が必要になるような状況では有効な方法である．
+
+```tf
+terraform {
+  required_version = "0.13.5"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.0"
+    }
+  }
+  
+  // リージョン，アクセスキー，シークレットアクセスキーは不要
+  backend "s3" {
+    bucket  = "<バケット名>"
+    key     = "<バケット内のディレクトリ>"
+  }
+}
+
+// リージョン，アクセスキー，シークレットアクセスキーは不要
+provider "aws" {}
 ```
 
 <br>
@@ -587,11 +766,50 @@ module "alb" {
 
 <br>
 
+## 03. 変数
+
+### tfvarsファイル
+
+#### ・tfvarsファイルの用途
+
+実行ファイルに入力したい値を定義する．各サービスの間で実装方法が同じため，VPCのみ例を示す．
+
+**＊実装例＊**
+
+```tf
+###############################
+# VPC
+###############################
+vpc_cidr_block = "n.n.n.n/n" // IPv4アドレス範囲
+```
+
+<br>
+
+### variable 
+
+#### ・variableとは
+
+リソースで使用する変数を定義する．
+
+**＊実装例＊**
+
+```tf
+###############################
+# Input Value
+###############################
+// AWSCredentials
+variable "credential" {
+  type = map(string)
+}
+```
+
+<br>
+
 ## 04. 子モジュールにおける実装
 
 ### resource
 
-#### ・resource
+#### ・resourceとは
 
 AWSのAPIに対してリクエストを送信し，クラウドインフラの構築を行う．
 
@@ -699,6 +917,38 @@ output "elb_service_account_arn" {
   value = data.aws_elb_service_account.this.arn
 }
 ```
+#### ・map型でアウトプット
+
+```tf
+###############################################
+# Output VPC
+###############################################
+output "public_subnet_ids" {
+  value = {
+    a = aws_subnet.public[var.vpc_availability_zones.a].id,
+    c = aws_subnet.public[var.vpc_availability_zones.c].id
+  }
+}
+
+output "private_app_subnet_ids" {
+  value = {
+    a = aws_subnet.private_app[var.vpc_availability_zones.a].id,
+    c = aws_subnet.private_app[var.vpc_availability_zones.c].id
+  }
+}
+
+output "private_datastore_subnet_ids" {
+  value = {
+    a = aws_subnet.private_datastore[var.vpc_availability_zones.a].id,
+    c = aws_subnet.private_datastore[var.vpc_availability_zones.c].id
+  }
+}
+```
+
+```tf
+example = values(private_app_subnet_ids)
+```
+
 <br>
 
 ## 05. メタ引数
@@ -785,8 +1035,8 @@ resource "aws_nat_gateway" "this" {
 
 ```tf
 resource "aws_instance" "server" {
-  count = 4 # create four similar EC2 instances
-
+  count = 4
+  
   ami           = "ami-a1b2c3d4"
   instance_type = "t2.micro"
 
@@ -802,24 +1052,38 @@ resource "aws_instance" "server" {
 
 #### ・for_eachとは
 
-```for_each```が持つ```key```または```value```の数だけ，リソースを繰り返し実行する．
+```for_each```が持つ```key```または```value```の数だけ，リソースを繰り返し実行する．繰り返し処理を行う時に，countとは違い，要素名を指定して出力することができる．
 
 **＊実装例＊**
 
-例として，```for_each```ブロックが定義された```aws_iam_user```リソースが，```for_each```の持つ```value```の数だけ実行される．
+例として，```for_each```ブロックが定義された```aws_subnet```リソースが，```for_each```の持つ```value```の数だけ実行される．
 
 ```tf
 locals {
-  users = [
-    "yamada",
-    "tanaka",
-    "suzuki"
-  ]
+  vpc_availability_zones = {
+    a = "a",
+    c = "c"
+  }
 }
 
-resource "aws_iam_user" "users" {
-  for_each = local.users
-  name     = each.value
+###############################################
+# Public subnet
+###############################################
+resource "aws_subnet" "public" {
+  for_each = var.vpc_availability_zones
+
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.vpc_subnet_public_cidrs[each.key]
+  availability_zone       = "${var.region}${each.value}"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = format(
+      "${var.environment}-${var.service}-pub-%s-subnet",
+      each.value
+    )
+    Environment = var.environment
+  }
 }
 ```
 
@@ -829,9 +1093,16 @@ resource "aws_iam_user" "users" {
 
 #### ・lifecycleとは
 
+リソースの構築，更新，そして削除のプロセスをカスタマイズできる．
+
 #### ・create_before_destroy
 
+リソースを新しく構築した後に削除するように，変更できる．通常時，Terraformの処理順序として，リソースの削除後に構築が行われる．しかし，他のリソースと依存関係が存在する場合，先に削除が行われることによって，他のリソースに影響が出てしまう．これに対処するために，先に新しいリソースを構築し，紐づけし直してから，削除する必要がある．
+
 ```tf
+###############################################
+# For example domain
+###############################################
 resource "aws_acm_certificate" "example" {
   domain_name               = var.route53_domain_example
   subject_alternative_names = ["*.${var.route53_domain_example}"]
@@ -841,6 +1112,7 @@ resource "aws_acm_certificate" "example" {
     Name = "${var.environment}-${var.service}-example-cert"
   }
 
+  # 新しい証明書を構築した後に削除する．
   lifecycle {
     create_before_destroy = true
   }
@@ -849,7 +1121,7 @@ resource "aws_acm_certificate" "example" {
 
 #### ・ignore_changes
 
-リモート側のリソースの値が変更した場合に，これを無視し，```tfstate```ファイルに反映しないようにする．基本的に使用することはないが，リモート側のリソースが動的に変更される可能性があるリソースでは，設定が必要である．
+リモートのみで起こったリソースの構築・更新・削除を無視し，```tfstate```ファイルに反映しないようにする．基本的に使用することはないが，リモート側のリソースが動的に変更される可能性があるリソースでは，設定が必要である．
 
 **＊実装例＊**
 
@@ -916,7 +1188,7 @@ resource "aws_example" "example" {
 
 #### ・templatefile関数とは
 
-第一引数でポリシーが定義されたjsonファイルを読み出し，第二引数でファイルに変数を渡す．ファイルの拡張子はjson
+第一引数でポリシーが定義されたファイルを読み出し，第二引数でファイルに変数を渡す．ファイルの拡張子はtplとするのがよい．
 
 **＊実装例＊**
 
@@ -929,7 +1201,7 @@ resource "aws_example" "example" {
 resource "aws_s3_bucket_policy" "alb" {
   bucket = aws_s3_bucket.alb_logs.id
   policy = templatefile(
-    "${path.module}/policies/alb_bucket_policy.json",
+    "${path.module}/policies/alb_bucket_policy.tpl",
     {
       aws_elb_service_account_arn = var.aws_elb_service_account_arn
       aws_s3_bucket_alb_logs_arn  = aws_s3_bucket.alb_logs.arn
@@ -938,7 +1210,7 @@ resource "aws_s3_bucket_policy" "alb" {
 }
 ```
 
-バケットポリシーを定義するJSONファイルでは，```${}```で変数を出力する．
+バケットポリシーを定義するtplファイルでは，string型で出力する場合は```"${}"```で，int型で出力する場合は```${}```で出力する．拡張子をjsonにしてしまうと，int型の出力をjsonの構文エラーとして扱われてしまう．
 
 ```json
 {
@@ -997,7 +1269,7 @@ jsonファイルで定義したインポリシーは，```aws_iam_role_policy```
 resource "aws_iam_role_policy" "ecs_task_execution" {
   role = aws_iam_role.ecs_task_execution
   policy = templatefile(
-    "${path.module}/policies/ssm_access_inline_policy.json",
+    "${path.module}/policies/ssm_access_inline_policy.tpl",
     {}
   )
 }
@@ -1036,7 +1308,7 @@ resource "aws_iam_role_policy" "ecs_task_execution" {
 resource "aws_iam_role" "ecs_task_execution" {
   name = "${var.environment}-${var.service}-ecs-task-execution-role"
   assume_role_policy = templatefile(
-    "${path.module}/policies/ecs_task_execution_role_trust_policy.json",
+    "${path.module}/policies/ecs_task_execution_role_trust_policy.tpl",
     {}
   )
 }
@@ -1071,7 +1343,7 @@ resource "aws_iam_role" "ecs_task_execution" {
 resource "aws_iam_role" "lambda_execute" {
   name = "${var.environment}-${var.service}-lambda-execute-role"
   assume_role_policy = templatefile(
-    "${path.module}/policies/lambda_execute_role_trust_policy.json",
+    "${path.module}/policies/lambda_execute_role_trust_policy.tpl",
     {}
   )
 }
@@ -1111,7 +1383,7 @@ S3アタッチされる，自身へのアクセスを制御するためにイン
 resource "aws_s3_bucket_policy" "alb" {
   bucket = aws_s3_bucket.alb_logs.id
   policy = templatefile(
-    "${path.module}/policies/alb_bucket_policy.json",
+    "${path.module}/policies/alb_bucket_policy.tpl",
     {}
   )
 }
@@ -1128,6 +1400,41 @@ resource "aws_s3_bucket_policy" "alb" {
       },
       "Action": "s3:PutObject",
       "Resource": "arn:aws:s3:::<バケット名>/*"
+    }
+  ]
+}
+```
+
+#### ・ライフサイクルポリシー
+
+ECRにアタッチされる，イメージの有効期間を定義するポリシー．コンソール画面から入力できるため，基本的にポリシーの実装は不要であるが，TerraformなどのIaCツールでは必要になる．
+
+```json
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep last 10 images untagged",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Keep last 10 images any",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
     }
   ]
 }
@@ -1160,7 +1467,7 @@ resource "aws_s3_bucket_policy" "alb" {
 
 **＊実装例＊**
 
-例として，SSMのパラメータストアの値を参照できるように，```secrets```を設定している．
+例として，SSMのパラメータストアの値を参照できるように，```secrets```を設定している．int型を変数として渡せるように，拡張子をjsonではなくtplとするのが良い．
 
 ```tf
 resource "aws_ecs_task_definition" "this" {
@@ -1174,7 +1481,7 @@ resource "aws_ecs_task_definition" "this" {
   
   # コンテナ定義を読み出します．
   container_definitions = templatefile(
-    "${path.module}/container_defeinitions.json",
+    "${path.module}/container_defeinitions.tpl",
     {}
   )
 }
@@ -1189,8 +1496,8 @@ resource "aws_ecs_task_definition" "this" {
     "essential": true,
     "portMappings": [
       {
-        "containerPort": "80",
-        "hostPort": "80",
+        "containerPort": 80,
+        "hostPort": 80,
         "protocol": "tcp"
       }
     ],
@@ -1383,7 +1690,7 @@ output "rds_enhanced_monitoring_iam_role_arn" {
 
 #### ・list型アウトプット値は複数形
 
-ループで構築したリソースは，list型でアウトプットする必要がある．この時，アウトプットの変数名は複数形にする．
+countでループで構築したリソースは，list型でアウトプットすることができる．この時，アウトプットの変数名は複数形にする．ちなみに，for_eachで構築したリソースはアスタリスクでインデックス名を指定できないので，注意．
 
 **＊実装例＊**
 
@@ -1448,11 +1755,101 @@ output "nginx_ecr_repository_url" {
 
 <br>
 
-## 08. その他
+## 08. その他の仕様
 
 ### ECS
 
 #### ・タスク定義の更新
 
 Terraformでタスク定義を更新すると，現在動いているECSで稼働しているタスクはそのままに，新しいリビジョン番号のタスク定義が作成される．コンソール画面の「新しいリビジョンの作成」と同じ挙動である．実際にタスクが増えていることは，サービスに紐づくタスク定義一覧から確認できる．次のデプロイ時に，このタスクが用いられる．
+
+<br>
+
+### RDS
+
+#### ・インスタンスを配置するAZ
+
+事前にインスタンスにAZを表す識別子を入れたとしても，Terraformはインスタンスを配置するAZを選べない．そのため，AZと識別子の関係が逆になってしまうことがある．その場合は，デプロイ後に手動で名前を変更すればよい．この変更は，Terraformが差分として認識しないので問題ない．
+
+```tf
+###############################################
+# RDS Cluster Instance
+###############################################
+resource "aws_rds_cluster_instance" "this" {
+  for_each = var.vpc_availability_zones
+
+  engine                       = "aurora-mysql"
+  engine_version               = "5.7.mysql_aurora.2.09.1"
+  # Terraformはインスタンスを配置するAZを選択できない
+  identifier                   = "${var.environment}-${var.service}-rds-instance-${each.key}"
+  cluster_identifier           = aws_rds_cluster.rds_cluster.id
+  instance_class               = var.rds_instance_class
+  db_subnet_group_name         = aws_db_subnet_group.this.id
+  db_parameter_group_name      = aws_db_parameter_group.this.id
+  preferred_backup_window      = "19:00-19:30"
+  monitoring_interval          = 60
+  monitoring_role_arn          = var.rds_iam_role_arn
+  auto_minor_version_upgrade   = false
+  preferred_maintenance_window = "sun:17:00-sun:17:30"
+  apply_immediately            = true
+}
+```
+
+
+
+
+
+<br>
+
+### tfnotify
+
+#### ・コマンド
+
+tfnotifyの設定ファイルで，以下のコマンドが実行されるようにする．環境別にtfnotifyを配置しておくとよい．
+
+```bash
+$ terraform plan | tfnotify --config ./${ENV}/tfnotify.yml plan
+```
+
+#### ・設定ファイル
+
+```yaml
+# https://github.com/mercari/tfnotify
+# https://github.com/mercari/tfnotify/releases/tag/v0.7.0
+---
+ci: circleci
+
+notifier:
+  github:
+    token: <環境変数に登録したGitHubToken>
+    repository:
+      owner: "<ユーザ名もしくは組織名>"
+      name: "<リポジトリ名>"
+
+terraform:
+  plan:
+    template: |
+      {{ .Title }} for staging <sup>[CI link]( {{ .Link }} )</sup>
+      {{ .Message }}
+      {{if .Result}}
+      <pre><code> {{ .Result }}
+      </pre></code>
+      {{end}}
+      <details><summary>Details (Click me)</summary>
+
+      <pre><code> {{ .Body }}
+      </pre></code></details>
+  apply:
+    template: |
+      {{ .Title }}
+      {{ .Message }}
+      {{if .Result}}
+      <pre><code>{{ .Result }}
+      </pre></code>
+      {{end}}
+      <details><summary>Details (Click me)</summary>
+
+      <pre><code>{{ .Body }}
+      </pre></code></details>
+```
 
