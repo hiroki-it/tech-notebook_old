@@ -665,9 +665,89 @@ jobs:
         at: .
 ```
 
+<br>
+
+## 02-04. commands
+
+### commandsとは
+
+設定を部品化し，異なる```job```で```step```として繰り返し利用できる．
+
+<br>
+
+### 部品化と再利用
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+commands:
+  sayhello:
+    description: "Echo hello world"
+    parameters:
+      text:
+        type: string
+        default: "Hello World"
+    steps:
+      # parametersの値を渡す
+      - run: echo << parameters.text >>
+      
+jobs:
+  myjob:
+    docker:
+      - image: "circleci/node:9.6.1"
+    steps:
+      # command名
+      - sayhello:
+          # 引数名: 渡す値
+          text: "Lev"
+```
+
+<br>
+
+## 02-05. executors
+
+### executorsとは
+
+実行環境に関する設定を部品化し，異なる```job```で繰り返し利用できる．
+
+<br>
+
+### 部品化と再利用
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+executors:
+  # ホストOS環境名
+  my-executor:
+    # ホストOS環境
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+    working_directory: ~/example_project
+    environment:
+      XX: xx
+      YY: yy
+
+jobs:
+  my-job:
+    executor: my-executor
+    steps:
+      - run: echo "${XX}と${YY}です"
+```
+
+<br>
+
+## 02-06. Workflow
+
+### 特殊なsteps
+
 #### ・pre-steps，post-steps
 
-事前に```job```に定義するのではなく，```workspace```で，コールする```job```の前で定義する．
+事前に```job```に定義する必要はない．```workspace```で，コールされる```job```の引数として設定することで，その```job```内の最初と最後に，```steps```を追加できる．
 
 **＊実装例＊**
 
@@ -725,79 +805,44 @@ workflows:
 
 <br>
 
-## 02-04. commands
+### branches
 
-### commandsとは
+#### ・branchesとは
 
-設定を部品化し，異なる```job```で```step```として繰り返し利用できる．
+コミットされた時に```job```が発火するブランチ名，あるいは発火しないブランチ名，を設定する．正規表現で実装する必要がある．
 
-<br>
-
-### 部品化と再利用
+| よくあるパターン  | 説明                                    |
+| ----------------- | --------------------------------------- |
+| ```/.*/```        | 全てのブランチを明示的に指定            |
+| ```/feature.*/``` | 「feature」と名前のついたブランチを指定 |
 
 **＊実装例＊**
 
-```yaml
-version: 2.1
+``` yaml
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - example:
+          branches:
+            only:
+              - /.*/
+```
 
-commands:
-  sayhello:
-    description: "Echo hello world"
-    parameters:
-      text:
-        type: string
-        default: "Hello World"
-    steps:
-      # parametersの値を渡す
-      - run: echo << parameters.text >>
-      
-jobs:
-  myjob:
-    docker:
-      - image: "circleci/node:9.6.1"
-    steps:
-      # command名
-      - sayhello:
-          # 引数名: 渡す値
-          text: "Lev"
+```yaml
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - example:
+          branches:
+            ignore:
+              - /feature.*/
 ```
 
 <br>
 
-## 02-05. executors
-
-### executorsとは
-
-ホストOS環境に関する設定を部品化し，異なる```job```で繰り返し利用できる．
-
-<br>
-
-### 部品化と再利用
-
-**＊実装例＊**
-
-```yaml
-version: 2.1
-
-executors:
-  # ホストOS環境名
-  my-executor:
-    # ホストOS環境
-    docker:
-      - image: circleci/ruby:2.5.1-node-browsers
-
-jobs:
-  my-job:
-    executor: my-executor
-    steps:
-      - run: echo "Executor の外で定義しました"
-```
-
-<br>
-
-<br>
-
-## 02-06. 環境変数
+## 02-07. 環境変数
 
 ### CircleCIにおける環境変数とは
 
@@ -882,7 +927,7 @@ Projectレベルより参照範囲が大きく，異なるプロジェクト間�
 <br>
 
 
-## 02-07. CircleCIライブラリ
+## 02-08. CircleCIライブラリ
 
 ### orbs
 

@@ -119,30 +119,7 @@ exports.handler = (event, context, callback) => {
 }
 ```
 
-また，LambdaがS3に対してアクションを実行できるように，事前に```AWSLambdaExecute```ロールをLambdaにアタッチしておく必要がある．
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:*"
-            ],
-            "Resource": "arn:aws:logs:*:*:*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject"
-            ],
-            "Resource": "arn:aws:s3:::*"
-        }
-    ]
-}
-```
+また，LambdaがS3に対してアクションを実行できるように，事前に，AWS管理ポリシーの「```AWSLambdaExecute```」が付与されたロールをLambdaにアタッチしておく必要がある．
 
 <br>
 
@@ -152,7 +129,7 @@ exports.handler = (event, context, callback) => {
 
 #### ・Lambda@Edgeとは
 
-CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとするLambdaのこと．
+CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとするLambdaのこと．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
 
 | トリガーの種類       | 発火のタイミング                                             |
 | -------------------- | ------------------------------------------------------------ |
@@ -161,7 +138,40 @@ CloudFrontのビューワーリクエスト，オリジンリクエスト，オ�
 | オリジンレスポンス   | CloudFrontが，オリジンからレスポンスを受信した後（キャッシュを確認する前）． |
 | ビューワーレスポンス | CloudFrontが，ビューワーにレスポンスを転送する前（キャッシュを確認した後）． |
 
-#### ・ユーザーエージェントごとの振り分け
+#### ・必要なポリシー
+
+Lambda@Edgeを実行するためには，以下のポリシーが必要である．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetFunction",
+        "lambda:EnableReplication*"
+      ],
+      "Resource": "arn:aws:lambda:<リージョン名>:<アカウントID>:function:<関数名>:<バージョン>"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:UpdateDistribution"
+      ],
+      "Resource": "arn:aws:cloudfront::<アカウントID>:distribution/<DistributionID>"
+    }
+  ]
+}
+
+```
 
 <br>
 
@@ -182,6 +192,10 @@ CloudFrontのビューワーリクエスト，オリジンリクエスト，オ�
 <br>
 
 ### インバウンドルール
+
+#### ・セキュリティグループIDの紐づけ
+
+ソースに対して，セキュリティグループIDを設定した場合，そのセキュリティグループがアタッチされているリソース（ネットワークインターフェースを含む）を許可することになる．リソースのIPアドレスが動的に変化する場合，有効な方法である．
 
 #### ・アプリケーションEC2の例
 
@@ -259,7 +273,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 <br>
 
-## 02. コンテナ｜ECS x Fargate
+## 02. コンテナ｜ECS on Fargate
 
 ![NatGatewayを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateからECRECSへのアウトバウンド通信.png)
 
@@ -284,7 +298,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 #### ・サービスとは
 
-タスク定義に基づいたタスクを，どのように自動的に配置するかを設定できる，タスク定義一つに対して，サービスを一つ定義する．
+タスク数の維持管理を行う機能のこと．
 
 | 設定項目       | 説明                                               | 備考                                                         |
 | -------------- | -------------------------------------------------- | ------------------------------------------------------------ |
@@ -309,13 +323,43 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 <br>
 
-### タスク，タスク定義
+### タスク
 
 ![タスクとタスク定義](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/タスクとタスク定義.png)
 
-#### ・タスクとは
+#### ・タスク
 
-タスク（コンテナの集合）をどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．
+グルーピングされたコンテナ群のこと
+
+#### ・タスク定義とは
+
+各タスクをどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．
+
+#### ・タスク実行ロール
+
+タスク上に存在するコンテナエージェントが，タスクを起動するために必要なロールのこと．AWS管理ポリシーである「```AmazonECSTaskExecutionRolePolicy```」が付与されたロールを，タスクにアタッチする必要がある．このポリシーには，ECRへのアクセス権限の他，CloudWatch Logsにログを生成するための権限が設定されている．タスク内のコンテナに必要なタスクロールとは区別すること．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+#### ・コンテナエージェントとは
 
 #### ・割り当てられるプライベートIPアドレス
 
@@ -341,24 +385,29 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 タスク内のコンテナ一つに対して，環境を設定する．
 
-| 設定項目         | 対応するdockerコマンドオプション             | 説明                                                         |
-| ---------------- | -------------------------------------------- | ------------------------------------------------------------ |
-| メモリ制限       | ```--memory```<br>```--memory-reservation``` | プロセスが使用できるメモリの閾値を設定する．                 |
-| ポートマッピング | ```--publish```                              | ホストマシンとFargateのアプリケーションのポート番号をマッピングし，ポートフォワーディングを行う． |
-| ヘルスチェック   | ```--health-cmd```                           | ホストマシンからFargateに対して，```curl```コマンドによるリクエストを送信し，レスポンス内容を確認． |
-| 間隔             | ```--health-interval```                      | ヘルスチェックの間隔を設定する．                             |
-| 再試行           | ```--health-retries```                       | ヘルスチェックを成功と見なす回数を設定する．                 |
-| CPUユニット数    | ```--cpus```                                 | 仮想cpu数                                                    |
-| ホスト名         | ```--hostname```                             | コンテナにホスト名を設定する．                               |
-| DNSサーバ        | ```--dns```                                  | コンテナが名前解決に使用するDNSサーバのIPアドレスを設定      |
-| マウントポイント |                                              |                                                              |
-| ボリュームソース | ```--volumes-from```                         | Volumeマウントを行う．                                       |
-| ulimit           | Linuxコマンドの<br>```--ulimit```に相当      |                                                              |
-| 制約             |                                              | タスク（コンテナの集合）の配置の割り振り方を設定する．<br>・Spread：タスクを各場所にバランスよく配置<br>・Binpack：タスクを一つの場所にできるだけ多く配置． |
+https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/userguide/task_definition_parameters.html
+
+| 設定項目                                    | 対応するdockerコマンドオプション             | 説明                                                         | 備考                                                         |
+| ------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| cpu                                         | ```--cpus```                                 | 仮想cpu数を設定する．                                        |                                                              |
+| dnsServers                                  | ```--dns```                                  | コンテナが名前解決に使用するDNSサーバのIPアドレスを設定する． |                                                              |
+| essential                                   |                                              | コンテナが必須か否かを設定する．                             | ・```true```の場合，コンテナが停止すると，タスクに含まれる全コンテナが停止する．<br>```false```の場合，コンテナが停止しても，その他のコンテナは停止しない． |
+| healthCheck<br>(command)                    | ```--health-cmd```                           | ホストマシンからFargateに対して，```curl```コマンドによるリクエストを送信し，レスポンス内容を確認． |                                                              |
+| healthCheck<br>(interval)                   | ```--health-interval```                      | ヘルスチェックの間隔を設定する．                             |                                                              |
+| healthCheck<br>(retries)                    | ```--health-retries```                       | ヘルスチェックを成功と見なす回数を設定する．                 |                                                              |
+| hostName                                    | ```--hostname```                             | コンテナにホスト名を設定する．                               |                                                              |
+| image                                       |                                              | ECRのURLを設定する．                                         |                                                              |
+| logConfiguration<br/>(awslogs-group)        |                                              | ログを送信するロググループを設定する．                       |                                                              |
+| logConfiguration<br>(awslogs-stream-prefix) |                                              | ログストリームのプレフィックス名を設定する．                 | ログストリームには，「```<プレフィックス名>/<コンテナ名>/<タスクID>```」の形式で送信される． |
+| portMapping                                 | ```--publish```                              | ホストマシンとFargateのアプリケーションのポート番号をマッピングし，ポートフォワーディングを行う． |                                                              |
+| secrets<br>(volumesFrom)                    |                                              | SSMパラメータストアから参照する変数を設定する．              |                                                              |
+| memory                                      | ```--memory```<br>```--memory-reservation``` | プロセスが使用できるメモリの閾値を設定する．                 |                                                              |
+| mountPoints                                 |                                              |                                                              |                                                              |
+| ulimit                                      | Linuxコマンドの<br>```--ulimit```に相当      |                                                              |                                                              |
 
 <br>
 
-### Fargate
+### Fargate起動タイプ
 
 #### ・割り当てられるパブリックIPアドレス，FargateのIPアドレス問題
 
@@ -393,6 +442,22 @@ ECRのイメージの有効期間を定義できる．
 | 一致条件             | イメージの有効期間として，同条件に当てはまるイメージが削除される閾値を設定できる． | 個数，プッシュされてからの期間，などを閾値として設定できる． |
 
 #### ・タグの変性／不変性
+
+<br>
+
+## 02-02. コンテナ｜ECS on EC2
+
+### EC2起動タイプ
+
+#### ・タスク配置戦略
+
+タスクをインスタンスに配置する時のアルゴリズムを選択できる．
+
+| 戦略    | 説明                                         |
+| ------- | -------------------------------------------- |
+| Spread  | タスクを各場所にバランスよく配置する         |
+| Binpack | タスクを一つの場所にできるだけ多く配置する． |
+| Random  | タスクをランダムに配置する．                 |
 
 <br>
 
@@ -558,6 +623,33 @@ $ aws s3 ls s3://<バケット名>
 
 ```json
 // ポリシーは不要
+```
+
+#### ・Lambdaからのアクセスを許可
+
+バケットポリシーは不要である．代わりに，AWS管理ポリシーの「```AWSLambdaExecute```」が付与されたロールをLambdaにアタッチする必要がある．このポリシーには，S3へのアクセス権限の他，CloudWatch Logsにログを生成するための権限が設定されている．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:*"
+      ],
+      "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
 ```
 
 #### ・特定のIPアドレスからのアクセスを許可
@@ -1001,7 +1093,7 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 | Cache Based on Selected Request Headers | オリジンへの転送を許可するリクエストヘッダーを設定する．     | ・各ヘッダー転送の全拒否，一部許可，全許可を設定できる．<br>・全許可の場合，コンテンツのCacheを生成しない． |
 | Whitelist Header                        | オリジンへの転送を許可するリクエストヘッダーを設定する．     | ・```Accept-xxxxx```：アプリケーションにレスポンスして欲しいデータの種類（データ型など）を指定．<br/>・ ```CloudFront-Is-xxxxx-Viewer```：デバイスタイプのBool値が格納されている．<br>・レスポンスのヘッダーに含まれる「```X-Cache:```」が「```Hit from cloudfront```」，「```Miss from cloudfront```」のどちらで，Cacheの使用の有無を判断できる．<br/> |
 | Object Caching                          | CloudFrontにコンテンツのCacheを保存しておく秒数を設定する．  | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
-| TTL                                     | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・リクエストヘッダーにCache-Control Max-Ageが指定されている場合はMinとMaxが適用され，設定されていない場合はDefault TTLが適用される． |
+| TTL                                     | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・リクエストヘッダーにCache-Control Max-Ageが指定されている場合はMinとMaxが適用され，設定されていない場合はDefault TTLが適用される．<br>・「Cache Based on Selected Request Headers = All」としている場合，最小TTLはゼロでなければならない． |
 | Farward Cookies                         | オリジンへの転送を許可するCookie情報のキー名を設定する．     | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，CloudFrontに保存されたCacheがHITしない．CloudFrontはキー名／値を保持するため，変化しやすいキー名／値はWhitelistで許可しないようにする．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
 | Query String Forwarding and Caching     | オリジンへの転送とCacheを許可するクエリパラメータ名を設定    | ・クエリストリング転送とCacheの，全拒否，一部許可，全許可を選択できる．全拒否にすると，Webサイトにクエリストリングをリクエストできなくなるので注意．<br>・異なるクエリパラメータを，別々のCacheとして保存するかどうかを設定できる． |
 | Restrict Viewer Access                  | リクエストの送信元を制限するかどうかを設定できる．           | セキュリティグループで制御できるため，ここでは設定しなくてよい． |
@@ -1444,11 +1536,9 @@ $ tail -f /opt/aws/amazon-cloudwatch-agent/logs/configuration-validation.log
 $ systemctl list-unit-files --type=service
 ```
 
-
-
 #### ・logセクションのみの場合
 
-CloudWatchエージェントを使用して，CloudWatchにログファイルをプッシュするだけであれば，```log```セッションのみの実装で良い．```run_as_user```には，プロセスのユーザ名（例：```cwagent```）を設定する．
+CloudWatchエージェントを使用して，CloudWatchにログファイルをプッシュするだけであれば，設定ファイル（```/opt/aws/amazon-cloudwatch-agent/bin/config.json```）には```log```セッションのみの実装で良い．```run_as_user```には，プロセスのユーザ名（例：```cwagent```）を設定する．
 
 **＊実装例＊**
 
@@ -1830,45 +1920,45 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 #### ・IAMポリシーの種類
 
-| IAMポリシーの種類    | 説明 |
-| -------------------- | ---- |
-| アクセス許可ポリシー |      |
-| 信頼関係ポリシー     |      |
+| IAMポリシーの種類                  | 説明                                                         |
+| ---------------------------------- | ------------------------------------------------------------ |
+| アイデンティティベースのポリシー   | IAMユーザ，IAMグループ，IAMロール，に付与するためのポリシーのこと． |
+| リソースベースのインラインポリシー | 単一のAWSリソースにインポリシーのこと．                      |
+| アクセスコントロールポリシー       | json形式で定義する必要が無いポリシーのこと．                 |
 
 **＊具体例＊**
 
 以下に，EC2の読み出しのみ権限（```AmazonEC2ReadOnlyAccess```）を付与できるポリシーを示す．このIAMポリシーには，他のAWSリソースに対する権限も含まれている．
 
 ```yaml
-# AmazonEC2ReadOnlyAccess
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "ec2:Describe*",
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "elasticloadbalancing:Describe*",
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "cloudwatch:ListMetrics",
-                "cloudwatch:GetMetricStatistics",
-                "cloudwatch:Describe*"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "autoscaling:Describe*",
-            "Resource": "*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:Describe*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "elasticloadbalancing:Describe*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:ListMetrics",
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:Describe*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "autoscaling:Describe*",
+      "Resource": "*"
+    }
+  ]
 }
 ```
 
@@ -1878,30 +1968,42 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 **＊具体例＊**
 
-以下に，```AmazonEC2ReadOnlyAccess```に含まれるIAMステートメントの一つを示す．```elasticloadbalancing:XXX```を用いて，ELBに対する実行権限を定義できる．ここでは，```Describe```の文字から始まるアクションの権限が与えられている．
+以下のポリシーを付与されたAWSリソースは，任意のSSMパラメータを取得できるようになる．
 
 ```yaml
 {
-# ~~~ 省略 ~~~
-    "Statement": [    
-        {
-            "Effect": "Allow",
-            "Action": "elasticloadbalancing:Describe*",
-            "Resource": "*"
-        },
-    ]
-# ~~~ 省略 ~~~
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "*"
+    }
+  ]
 }
+
 ```
 
-以下に，```Describe```の文字から始まるアクションをいくつか示す．
+| Statementの項目 | 説明                                             |
+| --------------- | ------------------------------------------------ |
+| Sid             | 任意の一意な文字列を設定する．空文字でもよい．   |
+| Effect          | 許可または拒否を設定する．                       |
+| Action          | リソースに対して実行できるアクションを設定する． |
+| Resource        | アクションの実行対象に選べるリソースを設定する． |
 
 
-| アクション名                | 権限                                                         | アクセスレベル |
-| --------------------------- | ------------------------------------------------------------ | -------------- |
-| ```DescribeLoadBalancers``` | 指定されたロードバランサーの説明を表示できる．               | 読み出し       |
-| ```DescribeRules```         | 指定されたルール，または指定されたリスナーのルールの説明を表示できる． | 読み出し       |
-| ```DescribeTargetGroups```  | 指定されたターゲットグループまたはすべてのターゲットグループの説明を表示できる． | 読み出し       |
+以下に主要なアクションを示す．
+
+| アクション名 | 説明                   |
+| ------------ | ---------------------- |
+| Create       | リソースを構築する．   |
+| Describe     | リソースを表示する．   |
+| Delete       | リソースを削除する．   |
+| Get          | リソースを取得する．   |
+| Put          | リソースを上書きする． |
 
 <br>
 
@@ -1929,14 +2031,14 @@ IAMユーザ，IAMグループ，IAMロールは，ユーザーアカウント�
 
 ```json
 {
-   "Version":"2012-10-17",
-   "Statement":[
-      {
-         "Effect":"Allow",
-         "Action":"acm:ListCertificates",
-         "Resource":"*"
-      }
-   ]
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Effect":"Allow",
+      "Action":"acm:ListCertificates",
+      "Resource":"*"
+    }
+  ]
 }
 ```
 
@@ -1946,14 +2048,14 @@ IAMユーザ，IAMグループ，IAMロールは，全てのAWSリソースに�
 
 ```json
 {
-   "Version":"2012-10-17",
-   "Statement":[
-      {
-         "Effect":"Allow",
-         "Action":"*",
-         "Resource":"*"
-      }
-   ]
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Effect":"Allow",
+      "Action":"*",
+      "Resource":"*"
+    }
+  ]
 }
 ```
 
@@ -2077,6 +2179,13 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 
 ### ルートユーザ，IAMユーザ
 
+#### ・AWS-CLI
+
+```bash
+# ユーザ名を変更する．
+$ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
+```
+
 #### ・ルートユーザとは
 
 全ての権限をもったアカウントのこと．
@@ -2122,11 +2231,11 @@ IAMポリシーのセットを持つ
 
 #### ・IAMロールの種類
 
-| IAMロールの種類                  | 説明                                      |
-| -------------------------------- | ----------------------------------------- |
-| サービスロール                   | AWSリソースに対して付与するためのロール． |
-| クロスアカウントのアクセスロール |                                           |
-| プロバイダのアクセスロール       |                                           |
+| IAMロールの種類                  | 説明                                              | 例                                   |
+| -------------------------------- | ------------------------------------------------- | ------------------------------------ |
+| サービスリンクロール             | AWSリソースを構築した時に自動的に作成されるロール | Lambdaの構築時に構築される実行ロール |
+| クロスアカウントのアクセスロール |                                                   |                                      |
+| プロバイダのアクセスロール       |                                                   |                                      |
 
 #### ・IAMロールを付与する方法
 
