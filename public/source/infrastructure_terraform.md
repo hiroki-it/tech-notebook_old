@@ -1780,9 +1780,156 @@ output "nginx_ecr_repository_url" {
 
 <br>
 
-## 08. その他の仕様
+## 08. 各リソースタイプ独自の仕様
+
+### CloudFront
+
+#### ・実装例
+
+```tf
+resource "aws_cloudfront_distribution" "this" {
+
+  price_class      = "PriceClass_200"
+  web_acl_id       = var.cloudfront_wafv2_web_acl_arn
+  aliases          = [var.route53_domain_example]
+  comment          = "${var.environment}-${var.service}-cf-distribution"
+  enabled          = true
+  retain_on_delete = true
+
+  viewer_certificate {
+    acm_certificate_arn      = var.example_acm_certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2019"
+  }
+
+  logging_config {
+    bucket          = var.cloudfront_s3_bucket_regional_domain_name
+    include_cookies = true
+  }
+
+  restrictions {
+
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  # S3をオリジンに設定します．
+  origin {
+    domain_name = var.s3_bucket_regional_domain_name
+    origin_id   = "S3-${var.s3_bucket_id}"
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.s3_pc.cloudfront_access_identity_path
+    }
+  }
+
+  # ALBをオリジンに設定します．
+  origin {
+    domain_name = var.alb_dns_name
+    origin_id   = "ELB-${var.alb_name}"
+
+    custom_origin_config {
+      origin_ssl_protocols     = ["TLSv1.2"]
+      origin_protocol_policy   = "match-viewer"
+      origin_read_timeout      = 30
+      origin_keepalive_timeout = 5
+      http_port                = var.alb_listener_port_http
+      https_port               = var.alb_listener_port_https
+    }
+  }
+
+  ordered_cache_behavior {
+    path_pattern           = "/images/*"
+    target_origin_id       = "S3-${var.s3_bucket_id}"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods         = ["GET", "HEAD"]
+    min_ttl                = 0
+    max_ttl                = 31536000
+    default_ttl            = 86400
+    compress               = true
+
+    forwarded_values {
+      query_string = true
+
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  default_cache_behavior {
+    target_origin_id       = "ELB-${var.alb_name}"
+    viewer_protocol_policy = "allow-all"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods         = ["GET", "HEAD"]
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
+
+    forwarded_values {
+      headers      = ["*"]
+      query_string = true
+
+      cookies {
+        forward = "all"
+      }
+    }
+  }
+}
+```
+
+#### ・削除保持機能
+
+Terraformでは，```retain_on_delete```で設定できる．固有の設定で，AWSに対応するものは無い．
+
+<br>
 
 ### ECS
+
+#### ・リモートのリビジョン番号の追跡
+
+
+
+```
+###############################################
+# ECS Service
+###############################################
+resource "aws_ecs_service" "this" {
+  name                               = "${var.environment}-${var.service}-ecs-service"
+  cluster                            = aws_ecs_cluster.this.id
+  launch_type                        = "FARGATE"
+  platform_version                   = "1.4.0"
+  desired_count                      = var.ecs_service_desired_count
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
+  health_check_grace_period_seconds  = 300
+
+  # アプリケーションのデプロイによって，リモートのタスク定義のリビジョン番号が増加するため，これを追跡できるようにします．
+  task_definition = "${aws_ecs_task_definition.this.family}:${max(aws_ecs_task_definition.this.revision, data.aws_ecs_task_definition.this.revision)}"
+
+  network_configuration {
+    security_groups  = [var.ecs_security_group_id]
+    subnets          = [var.private_a_app_subnet_id, var.private_c_app_subnet_id]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = var.alb_target_group_arn
+    container_name   = "nginx"
+    container_port   = var.ecs_container_nginx_port_http
+  }
+
+  lifecycle {
+    ignore_changes = [
+      desired_count,
+      task_definition,
+    ]
+  }
+}
+```
 
 #### ・タスク定義の更新
 
@@ -1790,13 +1937,83 @@ Terraformでタスク定義を更新すると，現在動いているECSで稼�
 
 <br>
 
+### EC2
+
+#### ・実装例
+
+```
+###############################################
+# For bastion
+###############################################
+resource "aws_instance" "bastion" {
+  ami                         = var.bastion_ami_amazon_id
+  instance_type               = "t2.micro"
+  vpc_security_group_ids      = [var.ec2_bastion_security_group_id]
+  subnet_id                   = var.public_a_subnet_id
+  key_name                    = "${var.environment}-${var.service}-bastion"
+  associate_public_ip_address = true
+  disable_api_termination     = true
+
+  tags = {
+    Name        = "${var.environment}-${var.service}-bastion"
+    Environment = var.environment
+  }
+
+  depends_on = [var.internet_gateway]
+}
+
+```
+
+#### ・キーペアはコンソール上で設定
+
+誤って削除しないように，またソースコードに機密情報をハードコーディングしないように，キーペアはコンソール画面で作成した後，```key_name```でキー名を指定するようにする．
+
+<br>
+
 ### RDS
 
-#### ・インスタンスを配置するAZ
+#### ・実装例
 
-事前にインスタンスにAZを表す識別子を入れたとしても，Terraformはインスタンスを配置するAZを選べない．そのため，AZと識別子の関係が逆になってしまうことがある．その場合は，デプロイ後に手動で名前を変更すればよい．この変更は，Terraformが差分として認識しないので問題ない．
+```
+#########################################
+# RDS Cluster
+#########################################
+resource "aws_rds_cluster" "rds_cluster" {
+  engine                          = "aurora-mysql"
+  engine_version                  = "5.7.mysql_aurora.2.08.3"
+  cluster_identifier              = "${var.environment}-${var.service}-rds-cluster"
+  master_username                 = var.rds_db_username_ssm_parameter_value
+  master_password                 = var.rds_db_password_ssm_parameter_value
+  availability_zones              = ["${var.region}${var.vpc_availability_zones.a}", "${var.region}${var.vpc_availability_zones.c}"]
+  vpc_security_group_ids          = [var.rds_security_group_id]
+  db_subnet_group_name            = aws_db_subnet_group.this.name
+  port                            = var.rds_db_port_ssm_parameter_value
+  database_name                   = var.rds_db_name_ssm_parameter_value
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.this.id
+  storage_encrypted               = true
+  backup_retention_period         = 7
+  preferred_backup_window         = "19:00-19:30"
+  copy_tags_to_snapshot           = true
+  final_snapshot_identifier       = "final-db-snapshot"
+  skip_final_snapshot             = false
+  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
+  preferred_maintenance_window    = "sun:17:30-sun:18:00"
+  apply_immediately               = true
+  deletion_protection             = true
 
-```tf
+  tags = {
+    Environment = var.environment
+  }
+
+  lifecycle {
+    ignore_changes = [
+      availability_zones
+    ]
+  }
+}
+```
+
+```
 ###############################################
 # RDS Cluster Instance
 ###############################################
@@ -1804,14 +2021,12 @@ resource "aws_rds_cluster_instance" "this" {
   for_each = var.vpc_availability_zones
 
   engine                       = "aurora-mysql"
-  engine_version               = "5.7.mysql_aurora.2.09.1"
-  # Terraformはインスタンスを配置するAZを選択できない
+  engine_version               = "5.7.mysql_aurora.2.08.3"
   identifier                   = "${var.environment}-${var.service}-rds-instance-${each.key}"
   cluster_identifier           = aws_rds_cluster.rds_cluster.id
   instance_class               = var.rds_instance_class
   db_subnet_group_name         = aws_db_subnet_group.this.id
   db_parameter_group_name      = aws_db_parameter_group.this.id
-  preferred_backup_window      = "19:00-19:30"
   monitoring_interval          = 60
   monitoring_role_arn          = var.rds_iam_role_arn
   auto_minor_version_upgrade   = false
@@ -1820,11 +2035,35 @@ resource "aws_rds_cluster_instance" "this" {
 }
 ```
 
+#### ・クラスターにはAZが３つ必要
 
+クラスターでは，レプリケーションのために，３つのAZが必要である．そのため，指定したAZが２つであっても，３つのAZが設定される．```ignore_changes```でAZを指定しておく必要がある．
 
+https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457441633
 
+#### ・インスタンスを配置するAZは選べない
+
+事前にインスタンスにAZを表す識別子を入れたとしても，Terraformはインスタンスを配置するAZを選べない．そのため，AZと識別子の関係が逆になってしまうことがある．その場合は，デプロイ後に手動で名前を変更すればよい．この変更は，Terraformが差分として認識しないので問題ない．
+
+#### ・インスタンスにバックアップウインドウは設定しない
+
+クラスターとインスタンスの両方に，```preferred_backup_window```を設定できるが，RDSインスタンスに設定してはいけない．
 
 <br>
+
+### 削除保護機能
+
+既存のインフラを```destroy```で削除する時，削除保護機能は無効に変更されないため，削除処理が終わらなくなる．そのため，コンソール画面上で無効にした後，```destroy```を実行する必要がある．
+
+| AWSリソース名 | Terraform上での設定名            |
+| ------------- | -------------------------------- |
+| ALB           | ```enable_deletion_protection``` |
+| EC2           | ```disable_api_termination```    |
+| RDS           | ```deletion_protection```        |
+
+<br>
+
+## 09. CircleCIとの組み合わせ
 
 ### tfnotify
 
