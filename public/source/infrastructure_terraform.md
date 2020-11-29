@@ -1031,6 +1031,8 @@ resource "aws_nat_gateway" "this" {
 
 #### ・countとは
 
+指定した数だけ，リソースの構築を繰り返す．```count.index```でインデックス数を出力する．
+
 **＊実装例＊**
 
 ```tf
@@ -1041,7 +1043,7 @@ resource "aws_instance" "server" {
   instance_type = "t2.micro"
 
   tags = {
-    Name = "Server ${count.index}"
+    Name = "ec2-${count.index}"
   }
 }
 ```
@@ -1052,20 +1054,22 @@ resource "aws_instance" "server" {
 
 #### ・for_eachとは
 
-```for_each```が持つ```key```または```value```の数だけ，リソースを繰り返し実行する．繰り返し処理を行う時に，countとは違い，要素名を指定して出力することができる．
+事前に```for_each```に格納したmap型の```key```の数だけ，リソースを繰り返し実行する．繰り返し処理を行う時に，```count```とは違い，要素名を指定して出力することができる．
 
 **＊実装例＊**
 
 例として，```for_each```ブロックが定義された```aws_subnet```リソースが，```for_each```の持つ```value```の数だけ実行される．
 
 ```tf
-locals {
-  vpc_availability_zones = {
-    a = "a",
-    c = "c"
-  }
-}
+# map型変数
+vpc_availability_zones             = { a = "a", c = "c" }
+vpc_cidr                           = "n.n.n.n/23"
+vpc_subnet_private_datastore_cidrs = { a = "n.n.n.n/27", c = "n.n.n.n/27" }
+vpc_subnet_private_app_cidrs       = { a = "n.n.n.n/25", c = "n.n.n.n/25" }
+vpc_subnet_public_cidrs            = { a = "n.n.n.n/27", c = "n.n.n.n/27" }
+```
 
+```tf
 ###############################################
 # Public subnet
 ###############################################
@@ -1089,11 +1093,19 @@ resource "aws_subnet" "public" {
 
 <br>
 
+### dynamic
+
+#### ・dynamicとは
+
+指定したブロックを繰り返し構築する．
+
+<br>
+
 ### lifecycle
 
 #### ・lifecycleとは
 
-リソースの構築，更新，そして削除のプロセスをカスタマイズできる．
+リソースの構築，更新，そして削除のプロセスをカスタマイズする．
 
 #### ・create_before_destroy
 
@@ -1137,7 +1149,7 @@ resource "aws_ecs_service" "this" {
   launch_type                        = "Fargate"
   platform_version                   = "1.4.0"
   task_definition                    = "${aws_ecs_task_definition.this.family}:${max(aws_ecs_task_definition.this.revision, data.aws_ecs_task_definition.this.revision)}"
-  desired_count                      = 2
+  desired_count                      = var.ecs_service_desired_count
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
   health_check_grace_period_seconds  = 300
@@ -1151,7 +1163,7 @@ resource "aws_ecs_service" "this" {
   load_balancer {
     target_group_arn = var.aws_lb_target_group_arn
     container_name   = "${var.environment}-${var.service}-nginx"
-    container_port   = var.ecs_nginx_port_http
+    container_port   = var.ecs_container_nginx_port_http
   }
 
   lifecycle {
@@ -1266,10 +1278,11 @@ jsonファイルで定義したインポリシーは，```aws_iam_role_policy```
 ###############################################
 
 # ロールにインラインポリシーをアタッチします．
-resource "aws_iam_role_policy" "ecs_task_execution" {
-  role = aws_iam_role.ecs_task_execution
+resource "aws_iam_role_policy" "ecs_task" {
+  name = "${var.environment}-${var.service}-ssm-read-only-access-policy"
+  role = aws_iam_role.ecs_task_execution.id
   policy = templatefile(
-    "${path.module}/policies/ssm_access_inline_policy.tpl",
+    "${path.module}/policies/inline_policies/ecs_task_role_policy.tpl",
     {}
   )
 }
@@ -1280,7 +1293,6 @@ resource "aws_iam_role_policy" "ecs_task_execution" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"
@@ -1289,6 +1301,7 @@ resource "aws_iam_role_policy" "ecs_task_execution" {
     }
   ]
 }
+
 ```
 
 #### ・信頼ポリシー
@@ -1306,9 +1319,10 @@ resource "aws_iam_role_policy" "ecs_task_execution" {
 
 # ロールに信頼ポリシーをアタッチします．
 resource "aws_iam_role" "ecs_task_execution" {
-  name = "${var.environment}-${var.service}-ecs-task-execution-role"
+  name        = "${var.environment}-${var.service}-ecs-task-execution-role"
+  description = "The role for ${var.environment}-${var.service}-ecs-task"
   assume_role_policy = templatefile(
-    "${path.module}/policies/ecs_task_execution_role_trust_policy.tpl",
+    "${path.module}/policies/trust_policies/ecs_task_role_policy.tpl",
     {}
   )
 }
@@ -1470,19 +1484,30 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 例として，SSMのパラメータストアの値を参照できるように，```secrets```を設定している．int型を変数として渡せるように，拡張子をjsonではなくtplとするのが良い．
 
 ```tf
+###############################################
+# ECS Task Definition
+###############################################
 resource "aws_ecs_task_definition" "this" {
-  family                   = "${var.service}-${var.environment}-ecs-task"
-  memory                   = "2048"
-  cpu                      = "1024"
+  family                   = "${var.environment}-${var.service}-ecs-task-definition"
+  task_role_arn            = var.ecs_task_iam_role_arn
   network_mode             = "awsvpc"
-  task_role_arn            = var.iam_role_ecs_task_execution_arn
-  execution_role_arn       = var.iam_role_ecs_task_execution_arn
-  requires_compatibilities = "FARGATE"
-  
-  # コンテナ定義を読み出します．
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = var.ecs_task_execution_iam_role_arn
+  memory                   = var.ecs_task_memory
+  cpu                      = var.ecs_task_cpu
   container_definitions = templatefile(
-    "${path.module}/container_defeinitions.tpl",
-    {}
+    "${path.module}/container_definitions.tpl",
+    {
+      environment                                     = var.environment
+      region                                          = var.region
+      service                                         = var.service
+      ecs_container_laravel_cloudwatch_log_group_name = var.ecs_container_laravel_cloudwatch_log_group_name
+      ecs_container_nginx_cloudwatch_log_group_name   = var.ecs_container_nginx_cloudwatch_log_group_name
+      laravel_ecr_repository_url                      = var.laravel_ecr_repository_url
+      nginx_ecr_repository_url                        = var.nginx_ecr_repository_url
+      ecs_container_laravel_port_http                 = var.ecs_container_laravel_port_http
+      ecs_container_nginx_port_http                   = var.ecs_container_nginx_port_http
+    }
   )
 }
 ```
