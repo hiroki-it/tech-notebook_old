@@ -393,23 +393,23 @@ terraform_project/
 │       ├── main.tf
 │       ├── output.tf
 │       └── variables.tf
-├── dev
+├── feat
 │   ├── config.tfvars
 │   ├── main.tf
-│   ├── outputs.tf
-│   ├── provider.tf
+│   ├── providers.tf
+│   ├── tfnotify.yml
 │   └── variables.tf
 ├── prod
 │   ├── config.tfvars
 │   ├── main.tf
-│   ├── outputs.tf
-│   ├── provider.tf
+│   ├── providers.tf
+│   ├── tfnotify.yml
 │   └── variables.tf
 └── stg
     ├── config.tfvars
     ├── main.tf
-    ├── outputs.tf
-    ├── provider.tf
+    ├── providers.tf
+    ├── tfnotify.yml
     └── variables.tf
 ```
 
@@ -1058,10 +1058,12 @@ resource "aws_instance" "server" {
 
 **＊実装例＊**
 
-例として，```for_each```ブロックが定義された```aws_subnet```リソースが，```for_each```の持つ```value```の数だけ実行される．
+例として，subnetを繰り返し構築する．
 
 ```tf
-# map型変数
+###############################################
+# Variables
+###############################################
 vpc_availability_zones             = { a = "a", c = "c" }
 vpc_cidr                           = "n.n.n.n/23"
 vpc_subnet_private_datastore_cidrs = { a = "n.n.n.n/27", c = "n.n.n.n/27" }
@@ -1098,6 +1100,88 @@ resource "aws_subnet" "public" {
 #### ・dynamicとは
 
 指定したブロックを繰り返し構築する．
+
+**＊実装例＊**
+
+例として，RDSパラメータグループの```parameter```ブロックを，map型変数を使用して繰り返し構築する．
+
+```tf
+###############################################
+# RDS Cluster Parameter Group
+###############################################
+resource "aws_rds_cluster_parameter_group" "this" {
+  name        = "${var.environment}-${var.service}-cluster-pg"
+  description = "The cluster parameter group for ${var.environment}-${var.service}-rds"
+  family      = "aurora-mysql5.7"
+
+  dynamic "parameter" {
+    for_each = var.rds_parameter_group_values
+
+    content {
+      name  = parameter.key
+      value = parameter.value
+    }
+  }
+
+  tags = {
+    Environment = var.environment
+  }
+}
+```
+
+```tf
+###############################################
+# Variables
+###############################################
+rds_parameter_group_values = {
+  time_zone                = "asia/tokyo"
+  character_set_client     = "utf8mb4"
+  character_set_connection = "utf8mb4"
+  character_set_database   = "utf8mb4"
+  character_set_results    = "utf8mb4"
+  character_set_server     = "utf8mb4"
+  server_audit_events      = "connect,query,query_dcl,query_ddl,query_dml,table"
+  server_audit_logging     = 1
+  server_audit_logs_upload = 1
+  general_log              = 1
+  slow_query_log           = 1
+  long_query_time          = 3
+}
+```
+
+**＊実装例＊**
+
+例として，WAFの正規表現パターンセットの```regular_expression```ブロックを，list型変数を使用して繰り返し構築する．
+
+```tf
+###############################################
+# WAF Regex Pattern Sets
+###############################################
+resource "aws_wafv2_regex_pattern_set" "cloudfront" {
+  name        = "blocked-user-agents"
+  description = "Blocked user agents"
+  scope       = "CLOUDFRONT"
+
+  dynamic "regular_expression" {
+    for_each = var.waf_blocked_user_agents
+
+    content {
+      regex_string = regular_expression.value
+    }
+  }
+}
+```
+
+```tf
+###############################################
+# Variables
+###############################################
+waf_blocked_user_agents = [
+  "ExampleCrawler",
+  "EXampleSpider",
+  "ExampleBot",
+]
+```
 
 <br>
 
@@ -1782,6 +1866,49 @@ output "nginx_ecr_repository_url" {
 
 ## 08. 各リソースタイプ独自の仕様
 
+### ALB
+
+```
+###############################################
+# ALB target group
+###############################################
+resource "random_integer" "suffix" {	
+  min = 1	
+  max = 10000	
+}
+
+resource "aws_lb_target_group" "this" {
+  name                 = "${var.environment}-${var.service}-alb-tg-${random_integer.suffix.result}"
+  port                 = var.ecs_container_nginx_port_http
+  protocol             = "HTTP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = "60"
+  target_type          = "ip"
+  slow_start           = "60"
+
+  health_check {
+    interval            = 30
+    path                = "/healthcheck"
+    protocol            = "HTTP"
+    timeout             = 5
+    unhealthy_threshold = 2
+    matcher             = 200
+  }
+
+  tags = {
+    Environment = var.environment
+  }
+
+  depends_on = [aws_lb.this]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+```
+
+<br>
+
 ### CloudFront
 
 #### ・実装例
@@ -1890,8 +2017,6 @@ Terraformでは，```retain_on_delete```で設定できる．固有の設定で�
 ### ECS
 
 #### ・リモートのリビジョン番号の追跡
-
-
 
 ```
 ###############################################
@@ -2067,19 +2192,32 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 
 ### tfnotify
 
+#### ・tfnotifyとは
+
+terraformの```plan```または```apply```の処理結果を，POSTで送信するバイナリファイルのこと．URLや送信内容を設定ファイルで定義する．
+
 #### ・コマンド
 
-tfnotifyの設定ファイルで，以下のコマンドが実行されるようにする．環境別にtfnotifyを配置しておくとよい．
+CircleCIで利用する場合は，commandの中で，以下からダウンロードしたtfnotifyのバイナリファイルを実行する．環境別にtfnotifyを配置しておくとよい．
+
+https://github.com/mercari/tfnotify/releases/tag/v0.7.0
 
 ```bash
-$ terraform plan | tfnotify --config ./${ENV}/tfnotify.yml plan
+#!/bin/bash
+
+set -xeuo pipefail
+
+terraform plan | ./bin/tfnotify --config ./${ENV}/tfnotify.yml plan
 ```
 
 #### ・設定ファイル
 
+**＊実装例＊**
+
+例として，GitHubの特定のリポジトリのプルリクエストにPOSTで送信する．
+
 ```yaml
 # https://github.com/mercari/tfnotify
-# https://github.com/mercari/tfnotify/releases/tag/v0.7.0
 ---
 ci: circleci
 
@@ -2087,8 +2225,8 @@ notifier:
   github:
     token: <環境変数に登録したGitHubToken>
     repository:
-      owner: "<ユーザ名もしくは組織名>"
-      name: "<リポジトリ名>"
+      owner: "<送信先のユーザ名もしくは組織名>"
+      name: "<送信先のリポジトリ名>"
 
 terraform:
   plan:
