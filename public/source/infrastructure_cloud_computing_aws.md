@@ -300,10 +300,39 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 タスク数の維持管理を行う機能のこと．
 
-| 設定項目       | 説明                                               | 備考                                                         |
-| -------------- | -------------------------------------------------- | ------------------------------------------------------------ |
-| タスクの数     | タスクの構築数をいくつに維持するかを設定する．     | タスクが何らかの原因で停止した場合，空いているAWSサービスを使用して，タスクが自動的に補填される． |
-| デプロイメント | ローリングアップデート，Blue/Greenデプロイがある． |                                                              |
+| 設定項目                     | 説明                                                         | 備考                                                         |
+| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| タスク定義                   | サービスで維持管理するタスクの定義ファミリー名とリビジョン番号を設定する． |                                                              |
+| 起動タイプ                   | タスク内のコンテナの起動タイプを設定する．                   |                                                              |
+| プラットフォームのバージョン | タスクの実行環境のバージョンを設定する．                     | バージョンによって，連携できるAWSリソースが異なる．          |
+| サービスタイプ               |                                                              |                                                              |
+| 最小ヘルス率                 |                                                              |                                                              |
+| 最大率                       |                                                              |                                                              |
+| ヘルスチェックの猶予期間     |                                                              |                                                              |
+| タスクの最小数               | スケーリング時のタスク数の最小数を設定する．                 |                                                              |
+| タスクの必要数               | 平常時のタスク数を設定する．                                 |                                                              |
+| タスクの最大数               | スケーリング時のタスク数の最大数を設定する．                 |                                                              |
+| ロードバランシング           | ALBでルーティングするコンテナを設定する．                    |                                                              |
+| タスクの数                   | タスクの構築数をいくつに維持するかを設定する．               | タスクが何らかの原因で停止した場合，空いているAWSサービスを使用して，タスクが自動的に補填される． |
+| デプロイメント               | ローリングアップデート，Blue/Greenデプロイがある．           |                                                              |
+
+#### ・自動タスクスケーリングポリシー
+
+| 設定項目（ターゲットの追跡を選んだ場合） | 説明                                                         | 備考                                                         |
+| ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ターゲット追跡スケーリングポリシー       | 監視対象のメトリクスがターゲット値を超過しているか否かに基づいて，タスク数のスケーリングが実行される． |                                                              |
+| ECSサービスメトリクス                    | 監視対象のメトリクスを設定する．                             | 「平均CPU」，「平均メモリ」，「タスク当たりのALBからのリクエスト数」を監視できる． |
+| ターゲット値                             | タスク数のスケーリングが実行される閾値を設定する．           | ターゲット値を超過している場合に，タスク数がスケールアウトされる． |
+| スケールアウトクールダウン期間           | ターゲット値の超過時からスケールアウトが発生するまでの時間を設定する． | ターゲット値を超過する状態が断続的に続くと，スケールアウトが連続して実行されてしまうため，これを防ぐことができる． |
+| スケールインクールダウン期間             | ターゲット値の未満時からスケールアウトが発生するまでのスケールイン後の時間を設定する． |                                                              |
+| スケールインの無効化                     |                                                              |                                                              |
+
+1. 最小タスク数を2，必要タスク数を4，最大数を6，CPU平均使用率を40%に設定するとする．
+2. 平常時，CPU使用率40%に維持される．
+3. リクエストが増加し，CPU使用率55%に上昇する．
+4. タスク数が6つにスケールアウトし，CPU使用率40%に維持される．
+5. リクエスト数が減少し，CPU使用率が20%に低下する．
+6. タスク数が2つにスケールインし，CPU使用率40%に維持される．
 
 #### ・ローリングアップデート
 
@@ -333,7 +362,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 #### ・タスク定義とは
 
-各タスクをどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．
+各タスクをどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．タスク定義を削除するには，全てのリビジョン番号のタスク定義を登録解除する必要がある．
 
 #### ・タスク実行ロール
 
@@ -477,6 +506,15 @@ ECRのイメージの有効期間を定義できる．
 | SSD              | プロビジョンド IOPS SSD |
 | HDD              | スループット最適化 HDD  |
 | HDD              | Cold HDD                |
+
+#### ・最小ボリューム
+
+踏み台サーバを構築する時，できるだけ最小限のボリュームを選択し，ストレージ合計を抑える必要がある．
+
+| OS           | 仮想メモリ | ボリュームサイズ |
+| ------------ | ---------- | ---------------- |
+| Amazon Linux | t2.micro   | 8                |
+| CentOS       | t2.micro   | 10               |
 
 <br>
 
@@ -1068,7 +1106,7 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 | AWS WAF             | CloudFrontに紐づけるWAFを設定する．                          |                                                              |
 | CNAME               | CloudFrontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）に紐づけるRoute53レコード名を設定する． | ・Route53からルーティングする場合は必須．<br>・複数のレコード名を設定できる． |
 | SSL Certificate     | HTTPSプロトコルでオリジンに転送する場合に設定する．          | 上述のCNAMEを設定した場合，SSL証明書が別途必要になる．また，Certificate Managerを使用する場合，この証明書は『バージニア北部』で申請する必要がある． |
-| Default Root Object | クライアントからのリクエストがドキュメントルートの場合に，オリジンの他のパスに転送するかどうかを設定 | Webサーバで制御できるので，基本的には不要．                  |
+| Default Root Object | クライアントからのリクエストがドキュメントルートの場合に，オリジンの他のパスに転送するかどうかを設定． | Webサーバで制御できるので，基本的には不要．                  |
 | Standard Logging    | CloudFrontのアクセスログをS3に生成するかどうかを設定する．   |                                                              |
 
 #### ・Origin and Origin Groupsの詳細項目
@@ -1700,6 +1738,10 @@ $ service awslogs start
 
 <br>
 
+### CloudWatch Alarm
+
+<br>
+
 ## 08. 開発者用ツール
 
 ### CodeDeploy
@@ -2179,13 +2221,6 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 
 ### ルートユーザ，IAMユーザ
 
-#### ・AWS-CLI
-
-```bash
-# ユーザ名を変更する．
-$ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
-```
-
 #### ・ルートユーザとは
 
 全ての権限をもったアカウントのこと．
@@ -2194,9 +2229,22 @@ $ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新�
 
 特定の権限をもったアカウントのこと．
 
+#### ・AWS-CLI
+
+```bash
+# ユーザ名を変更する．
+$ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
+```
+
 #### ・AWS-CLIのための機密情報ファイル
 
 AWS-CLIでクラウドインフラを操作するためには，機密情報ファイルに定義されたプロファイルが必要である．
+
+```bash
+$ aws configure set aws_access_key_id "XXXXX"
+$ aws configure set aws_secret_access_key "XXXXX"
+$ aws configure set aws_default_region "ap-northeast-1"
+```
 
 ```
 // Linux，Unixの場合：$HOME/.aws/<機密情報ファイル名>
@@ -2255,8 +2303,7 @@ IAMポリシーのセットを持つ
 
 ### STSの仕組み
 
-
-#### ・IAMロールに付与する信頼ポリシー
+#### 1. IAMロールに信頼ポリシーを付与
 
 IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
 
@@ -2280,28 +2327,59 @@ IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼�
 }
 ```
 
-
-#### ・AssumeRoleのリクエスト
+#### 2. ロールを引き受けたアカウント情報をリクエスト
 
 信頼されたエンティティ（ユーザ）から，STS（```https://sts.amazonaws.com```）に対して，ロールのアタッチをリクエストする．
 
 ```bash
-# https://sts.amazonaws.com にリクエスト
+#!/bin/bash
 
-aws sts assume-role \
-  --role-arn "arn:aws:iam::<アカウントID>:role/<IAMロール名>" \
+# 事前に環境変数にインフラ環境名を代入する．
+case $ENV in
+    "feat")
+        aws_account_id="<作業環境アカウントID>"
+        aws_access_key_id="<作業環境アクセスキーID>"
+        aws_secret_access_key="<作業環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    "stg")
+        aws_account_id="<ステージング環境アカウントID>"
+        aws_access_key_id="<ステージング環境アクセスキーID>"
+        aws_secret_access_key="<ステージング環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    "prd")
+        aws_account_id="<本番環境アカウントID>"
+        aws_access_key_id="<本番環境アクセスキーID>"
+        aws_secret_access_key="<本番環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    *)
+        echo "The parameter ${ENV} is invalid."
+        exit 1
+    ;;
+esac
+
+# 信頼されたエンティティのアカウント情報を設定する．
+aws configure set aws_access_key_id "$aws_account_id"
+aws configure set aws_secret_access_key "$aws_secret_access_key"
+aws configure set aws_default_region "ap-northeast-1"
+
+# https://sts.amazonaws.com に，ロールのアタッチをリクエストする．
+aws_sts_credentials="$(aws sts assume-role \
+  --role-arn "arn:aws:iam::${aws_access_key_id}:role/${ENV}-<アタッチしたいIAMロール名>" \
   --role-session-name "<任意のセッション名>" \
-  --external-id "<信頼ポリシーに設定した外部ID>" \
+  --external-id "$aws_iam_role_external_id" \
   --duration-seconds "<セッションの有効秒数>" \
   --query "Credentials" \
-  --output "json"
+  --output "json")"
 ```
 
 STSへのリクエストの結果，ロールがアタッチされた新しいIAMユーザ情報を取得できる．この情報には有効秒数が存在し，期限が過ぎると新しいIAMユーザになる．秒数の最大値は，該当するIAMロールの概要の最大セッション時間から変更できる．
 
 ![AssumeRole](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AssumeRole.png)
 
-取得されるJSONは以下の通り．
+レスポンスされるデータは以下の通り．
 
 ```json
 {
@@ -2318,8 +2396,33 @@ STSへのリクエストの結果，ロールがアタッチされた新しいIA
 }
 ```
 
+#### 3. レスポンスされたデータからアカウント情報を抽出
+
+jqを使用して，JSONデータからアカウント情報を抽出する．
+
+jq：https://stedolan.github.io/jq/
+
+
 ```bash
-$ aws s3 ls --profile <プロファイル名>
+#!/bin/bash
+
+cat << EOF > assumed_user.sh
+export AWS_ACCESS_KEY_ID="$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')"
+export AWS_SECRET_ACCESS_KEY="$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')"
+export AWS_SESSION_TOKEN="$(echo "$aws_sts_credentials" | jq -r '.SessionToken')"
+export AWS_ACCOUNT_ID="<アカウントID>"
+export AWS_DEFAULT_REGION="ap-northeast-1"
+EOF
+```
+
+#### 4. 接続確認
+
+AssumeRole
+
+```bash
+#!/bin/bash
+
+aws s3 ls --profile <プロファイル名>
 2020-xx-xx xx:xx:xx <tfstateファイルが管理されるバケット名>
 ```
 
