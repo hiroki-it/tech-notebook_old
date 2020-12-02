@@ -2255,8 +2255,7 @@ IAMポリシーのセットを持つ
 
 ### STSの仕組み
 
-
-#### ・IAMロールに付与する信頼ポリシー
+#### 1. IAMロールに信頼ポリシーを付与
 
 IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
 
@@ -2280,28 +2279,59 @@ IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼�
 }
 ```
 
-
-#### ・AssumeRoleのリクエスト
+#### 2. ロールを引き受けたアカウント情報をリクエスト
 
 信頼されたエンティティ（ユーザ）から，STS（```https://sts.amazonaws.com```）に対して，ロールのアタッチをリクエストする．
 
 ```bash
-# https://sts.amazonaws.com にリクエスト
+#!/bin/bash
 
-aws sts assume-role \
-  --role-arn "arn:aws:iam::<アカウントID>:role/<IAMロール名>" \
+# 事前に環境変数にインフラ環境名を代入する．
+case $ENV in
+    "feat")
+        aws_account_id="<作業環境アカウントID>"
+        aws_access_key_id="<作業環境アクセスキーID>"
+        aws_secret_access_key="<作業環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    "stg")
+        aws_account_id="<ステージング環境アカウントID>"
+        aws_access_key_id="<ステージング環境アクセスキーID>"
+        aws_secret_access_key="<ステージング環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    "prd")
+        aws_account_id="<本番環境アカウントID>"
+        aws_access_key_id="<本番環境アクセスキーID>"
+        aws_secret_access_key="<本番環境シークレットアクセスキー>"
+        aws_iam_role_external_id="<信頼ポリシーに設定した外部ID>"
+    ;;
+    *)
+        echo "The parameter ${ENV} is invalid."
+        exit 1
+    ;;
+esac
+
+# 信頼されたエンティティのアカウント情報を設定する．
+aws configure set aws_access_key_id "$aws_account_id"
+aws configure set aws_secret_access_key "$aws_secret_access_key"
+aws configure set aws_default_region "ap-northeast-1"
+
+# https://sts.amazonaws.com に，ロールのアタッチをリクエストする．
+aws_sts_credentials="$(aws sts assume-role \
+  --role-arn "arn:aws:iam::${aws_access_key_id}:role/${ENV}-<アタッチしたいIAMロール名>" \
   --role-session-name "<任意のセッション名>" \
-  --external-id "<信頼ポリシーに設定した外部ID>" \
+  --external-id "$aws_iam_role_external_id" \
   --duration-seconds "<セッションの有効秒数>" \
   --query "Credentials" \
-  --output "json"
+  --output "json")"
 ```
 
 STSへのリクエストの結果，ロールがアタッチされた新しいIAMユーザ情報を取得できる．この情報には有効秒数が存在し，期限が過ぎると新しいIAMユーザになる．秒数の最大値は，該当するIAMロールの概要の最大セッション時間から変更できる．
 
 ![AssumeRole](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AssumeRole.png)
 
-取得されるJSONは以下の通り．
+レスポンスされるデータは以下の通り．
 
 ```json
 {
@@ -2318,8 +2348,33 @@ STSへのリクエストの結果，ロールがアタッチされた新しいIA
 }
 ```
 
+#### 3. レスポンスされたデータからアカウント情報を抽出
+
+jqを使用して，JSONデータからアカウント情報を抽出する．
+
+jq：https://stedolan.github.io/jq/
+
+
 ```bash
-$ aws s3 ls --profile <プロファイル名>
+#!/bin/bash
+
+cat << EOF > assumed_user.sh
+export AWS_ACCESS_KEY_ID="$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')"
+export AWS_SECRET_ACCESS_KEY="$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')"
+export AWS_SESSION_TOKEN="$(echo "$aws_sts_credentials" | jq -r '.SessionToken')"
+export AWS_ACCOUNT_ID="<アカウントID>"
+export AWS_DEFAULT_REGION="ap-northeast-1"
+EOF
+```
+
+#### 4. 接続確認
+
+AssumeRole
+
+```bash
+#!/bin/bash
+
+aws s3 ls --profile <プロファイル名>
 2020-xx-xx xx:xx:xx <tfstateファイルが管理されるバケット名>
 ```
 
