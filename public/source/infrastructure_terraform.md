@@ -903,7 +903,7 @@ data "aws_ami" "bastion" {
 
 **＊実装例＊**
 
-例として，ALBの場合を示す．```resource```ブロックと```data```ブロックでアウトプットの方法が異なる．
+例として，ALBを示す．```resource```ブロックと```data```ブロックでアウトプットの方法が異なる．
 
 ```tf
 ###############################################
@@ -946,7 +946,26 @@ output "private_datastore_subnet_ids" {
 ```
 
 ```tf
-example = values(private_app_subnet_ids)
+###############################################
+# ALB
+###############################################
+resource "aws_lb" "this" {
+  name                       = "${var.environment}-${var.service}-alb"
+  subnets                    = values(private_app_subnet_ids)
+  security_groups            = [var.alb_security_group_id]
+  internal                   = false
+  idle_timeout               = 120
+  enable_deletion_protection = true
+
+  access_logs {
+    enabled = true
+    bucket  = var.alb_s3_bucket_id
+  }
+
+  tags = {
+    Environment = var.environment
+  }
+}
 ```
 
 <br>
@@ -965,9 +984,9 @@ example = values(private_app_subnet_ids)
 
 リソース間の依存関係を明示的に定義する．Terraformでは，基本的にリソース間の依存関係が暗黙的に定義されている．しかし，複数のリソースが関わると，リソースを適切な順番で構築できない場合があるため，そういったときに使用する．
 
-#### ・ECS，ALB，ALB target group
+#### ・ALB target group vs. ALB，ECS
 
-例として，ECSを構築する場合，ECS，ALB，ALB target group，のリソースを適切な順番で構築できない可能性がある．そのため，ALBの構築後に，ALB target groupを構築するように定義する必要がある．
+例として，ALB target groupを示す．ALB Target groupとALBのリソースを適切な順番で構築できないため，ECSの構築時にエラーが起こる．ALBの後にALB target groupを構築する必要がある．
 
 **＊実装例＊**
 
@@ -1001,20 +1020,44 @@ resource "aws_lb_target_group" "this" {
 }
 ```
 
-#### ・Internet Gateway，NAT Gateway
+#### ・Internet Gateway vs. EC2，Elastic IP，NAT Gateway
 
-例として，NAT Gatewayを構築する場合，NAT Gateway，Internet Gateway，のリソースを適切な順番で構築できない可能性がある．そのため，Internet Gatewayの構築後に，NAT Gatewayを構築するように定義する必要がある．
+例として，NAT Gatewayを示す．NAT Gateway，Internet Gateway，のリソースを適切な順番で構築できないため，Internet Gatewayの構築後に，NAT Gatewayを構築するように定義する必要がある．
 
 ```tf
-resource "aws_nat_gateway" "this" {
+###############################################
+# EC2
+###############################################
+resource "aws_instance" "bastion" {
+  ami                         = var.bastion_ami_amazon_id
+  instance_type               = "t2.micro"
+  vpc_security_group_ids      = [var.ec2_bastion_security_group_id]
+  subnet_id                   = var.public_a_subnet_id
+  key_name                    = "${var.environment}-${var.service}-bastion"
+  associate_public_ip_address = true
+  disable_api_termination     = true
+
+  tags = {
+    Name        = "${var.environment}-${var.service}-bastion"
+    Environment = var.environment
+  }
+
+  depends_on = [var.internet_gateway]
+}
+```
+
+```tf
+###############################################
+# Elastic IP
+###############################################
+resource "aws_eip" "nat_gateway" {
   for_each = var.vpc_availability_zones
 
-  subnet_id     = aws_subnet.public[*].id
-  allocation_id = aws_eip.nat_gateway[*].id
+  vpc = true
 
   tags = {
     Name = format(
-      "${var.environment}-${var.service}-%d-ngw",
+      "${var.environment}-${var.service}-ngw-%s-eip",
       each.value
     )
     Environment = var.environment
@@ -1022,7 +1065,47 @@ resource "aws_nat_gateway" "this" {
 
   depends_on = [aws_internet_gateway.this]
 }
+```
 
+```tf
+###############################################
+# NAT Gateway
+###############################################
+resource "aws_nat_gateway" "this" {
+  for_each = var.vpc_availability_zones
+
+  subnet_id     = aws_subnet.public[each.key].id
+  allocation_id = aws_eip.nat_gateway[each.key].id
+
+  tags = {
+    Name = format(
+      "${var.environment}-${var.service}-%s-ngw",
+      each.value
+    )
+    Environment = var.environment
+  }
+
+  depends_on = [aws_internet_gateway.this]
+}
+```
+
+#### ・S3バケットポリシー vs. パブリックアクセスブロックポリシー
+
+例として，S3を示す．バケットポリシーとパブリックアクセスブロックポリシーを同時に構築できないため，構築のタイミングが重ならないようにする必要がある．
+
+```tf
+resource "aws_s3_bucket_policy" "example" {
+  bucket = aws_s3_bucket.example.id
+  policy = templatefile(
+    "${path.module}/policies/example_bucket_policy.tpl",
+    {
+      example_s3_bucket_arn                                = aws_s3_bucket.example.arn
+      s3_example_cloudfront_origin_access_identity_iam_arn = var.s3_example_cloudfront_origin_access_identity_iam_arn
+    }
+  )
+
+  depends_on = [aws_s3_bucket_public_access_block.example]
+}
 ```
 
 <br>
@@ -1107,6 +1190,24 @@ resource "aws_subnet" "public" {
 
 ```tf
 ###############################################
+# Variables
+###############################################
+rds_parameter_group_values = {
+  time_zone                = "asia/tokyo"
+  character_set_client     = "utf8mb4"
+  character_set_connection = "utf8mb4"
+  character_set_database   = "utf8mb4"
+  character_set_results    = "utf8mb4"
+  character_set_server     = "utf8mb4"
+  server_audit_events      = "connect,query,query_dcl,query_ddl,query_dml,table"
+  server_audit_logging     = 1
+  server_audit_logs_upload = 1
+  general_log              = 1
+  slow_query_log           = 1
+  long_query_time          = 3
+}
+
+###############################################
 # RDS Cluster Parameter Group
 ###############################################
 resource "aws_rds_cluster_parameter_group" "this" {
@@ -1129,31 +1230,20 @@ resource "aws_rds_cluster_parameter_group" "this" {
 }
 ```
 
-```tf
-###############################################
-# Variables
-###############################################
-rds_parameter_group_values = {
-  time_zone                = "asia/tokyo"
-  character_set_client     = "utf8mb4"
-  character_set_connection = "utf8mb4"
-  character_set_database   = "utf8mb4"
-  character_set_results    = "utf8mb4"
-  character_set_server     = "utf8mb4"
-  server_audit_events      = "connect,query,query_dcl,query_ddl,query_dml,table"
-  server_audit_logging     = 1
-  server_audit_logs_upload = 1
-  general_log              = 1
-  slow_query_log           = 1
-  long_query_time          = 3
-}
-```
-
 **＊実装例＊**
 
 例として，WAFの正規表現パターンセットの```regular_expression```ブロックを，list型変数を使用して繰り返し構築する．
 
 ```tf
+###############################################
+# Variables
+###############################################
+waf_blocked_user_agents = [
+  "ExampleCrawler",
+  "EXampleSpider",
+  "ExampleBot",
+]
+
 ###############################################
 # WAF Regex Pattern Sets
 ###############################################
@@ -1172,17 +1262,6 @@ resource "aws_wafv2_regex_pattern_set" "cloudfront" {
 }
 ```
 
-```tf
-###############################################
-# Variables
-###############################################
-waf_blocked_user_agents = [
-  "ExampleCrawler",
-  "EXampleSpider",
-  "ExampleBot",
-]
-```
-
 <br>
 
 ### lifecycle
@@ -1194,6 +1273,10 @@ waf_blocked_user_agents = [
 #### ・create_before_destroy
 
 リソースを新しく構築した後に削除するように，変更できる．通常時，Terraformの処理順序として，リソースの削除後に構築が行われる．しかし，他のリソースと依存関係が存在する場合，先に削除が行われることによって，他のリソースに影響が出てしまう．これに対処するために，先に新しいリソースを構築し，紐づけし直してから，削除する必要がある．
+
+**＊実装例＊**
+
+例として，ACM証明書を示す．ACM証明書は，ALBやCloudFrontに関連付いており，新しい証明書に関連付け直した後に，既存のものを削除する必要がある．
 
 ```tf
 ###############################################
@@ -1221,7 +1304,7 @@ resource "aws_acm_certificate" "example" {
 
 **＊実装例＊**
 
-例として，ECSでは，AutoScalingによってタスク数が増減し，またアプリケーションのデプロイでリビジョン番号が増加する．そのため，これらを無視する必要がある．
+例として，ECSを示す．ECSでは，AutoScalingによってタスク数が増減し，またアプリケーションのデプロイでリビジョン番号が増加する．そのため，これらを無視する必要がある．
 
 ```tf
 ###############################################
@@ -1288,7 +1371,7 @@ resource "aws_example" "example" {
 
 **＊実装例＊**
 
-例として，S3の場合を示す．
+例として，S3を示す．
 
 ```tf
 ###############################################
@@ -1551,10 +1634,10 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 ```json
 {
   "ipcMode": null,
-  "executionRoleArn": "<ecsTaskExecutionRoleのARN>"
+  "executionRoleArn": "<ecsTaskExecutionRoleのARN>",
   "containerDefinitions": [
     
-  ]
+  ],
 
    ~ ~ ~ その他の設定 ~ ~ ~
 
@@ -1668,7 +1751,7 @@ resource "aws_ecs_task_definition" "this" {
 
 **＊実装例＊**
 
-例として，VPCの場合を示す．
+例として，VPCを示す．
 
 ```tf
 ###############################################
@@ -1691,7 +1774,7 @@ vpc_subnet_public_cidrs            = { a = "n.n.n.n/27", c = "n.n.n.n/27" }
 
 **＊実装例＊**
 
-例として，VPCの場合を示す．
+例として，VPCを示す．
 
 ```tf
 ###############################################
@@ -1778,7 +1861,7 @@ resource "aws_example" "this" {
 
 **＊実装例＊**
 
-例として，IAM Roleの場合
+例として，IAM Roleを示す．
 
 ```tf
 ###############################################
@@ -1803,7 +1886,7 @@ countでループで構築したリソースは，list型でアウトプット�
 
 **＊実装例＊**
 
-例として，VPCの場合
+例として，VPCを示す．
 
 ```tf
 ###############################################
@@ -1828,7 +1911,7 @@ output "private_datastore_subnet_ids" {
 
 **＊実装例＊**
 
-例として，ALBの場合
+例として，ALBを示す．
 
 ```tf
 ###############################################
@@ -1847,7 +1930,7 @@ output "alb_dns_name" {
 
 **＊実装例＊**
 
-例として，ECRの場合
+例として，ECRを示す．
 
 ```tf
 ###############################################
@@ -1947,7 +2030,7 @@ resource "aws_cloudfront_distribution" "this" {
     origin_id   = "S3-${var.s3_bucket_id}"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.s3_pc.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.s3_example.cloudfront_access_identity_path
     }
   }
 
@@ -2176,7 +2259,27 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 
 <br>
 
+### Network Interface
+
+#### ・Network Interfaceをデタッチできない
+
+Network Interfaceは特定のリソースの構築時に，自動で構築されるため，Terraformの管理外にある．また，このリソースを削除しない限り，デタッチできない．Network Interfaceをデタッチできないと，セキュリティグループを削除できないため，Terraformは永遠にリクエストを繰り返すことになる．
+
+| 関連付くリソース            | 備考                                          |
+| --------------------------- | --------------------------------------------- |
+| GlobalAccelerator           |                                               |
+| EC2                         | EC2のパブリックIPアドレスを決定する．         |
+| ECSタスク定義（Active状態） |                                               |
+| ALB                         | ALBのパブリックIPアドレスを決定する．         |
+| NAT Gateway                 | NAT GatewayのパブリックIPアドレスを決定する． |
+| RDS                         |                                               |
+| VPC Endpoint                |                                               |
+
+<br>
+
 ### 削除保護機能
+
+#### ・削除保護機能は事前に無効化すべき
 
 既存のインフラを```destroy```で削除する時，削除保護機能は無効に変更されないため，削除処理が終わらなくなる．そのため，コンソール画面上で無効にした後，```destroy```を実行する必要がある．
 
