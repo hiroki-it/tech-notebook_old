@@ -1871,9 +1871,36 @@ echo $b; // 2
 
 <br>
 
-## 06. その他の組み込み関数
+## 07. 組み込みラッパー関数
 
-### ファイルシステム
+### 入出力ストリームへのアクセス
+
+#### ・入出力ストリームとは
+
+一度に全てのデータを入出力するのではなく，少しずつ入出力する処理のこと．
+
+#### ・php://stdin
+
+stdin：standard in（標準入力）を意味する．入出力ストリームによる読み出しを行う．
+
+```
+<?php
+
+// 読み出す
+$stdin = fopen('php://stdin', 'r');
+```
+
+#### ・php://stderr，php://stdout
+
+stderr：standard error（標準エラー）とstdout：standard out（標準出力）を意味する．入出力ストリームによる書き込みを行う．
+
+```
+<?php
+
+// 書き込む
+$stderr = fopen('php://stderr', 'w');
+fwrite($stderr, 'エラー');
+```
 
 <br>
 
