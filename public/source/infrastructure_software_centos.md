@@ -84,7 +84,7 @@ echo "Hello Tokyo!"
 
 #### ・シェルスクリプトの実行方法
 
-以下のいずれかの方法で実行する．
+いずれかの方法で実行する．
 
 ```bash
 # sourceコマンド
@@ -105,6 +105,45 @@ $ . hello.sh
 # 相対パスもしくは絶対パスでシェルスクリプトを指定
 # カレントディレクトリにあるhello.shを実行することはできない
 $ ./hello.sh
+```
+
+#### ・for
+
+**＊実装例＊**
+
+```bash
+#!/bin/bash
+ 
+for i in 1 2 3 4 5
+do
+   echo $i
+done
+```
+
+#### ・switch-case
+
+変数に代入された値によって，処理を分ける．全ての場合以外をアスタリスクで定義する．
+
+**＊実装例＊**
+
+```bash
+#!/bin/bash
+
+case $ENV in
+    "test")
+        value="XXXXX"
+    ;;
+    "stg")
+        value="YYYYY"
+    ;;
+    "prd")
+        value="ZZZZZ"
+    ;;
+    *)
+        echo "The parameter ${ENV} is invalid."
+        exit 1
+    ;;
+esac
 ```
 
 <br>
@@ -135,11 +174,32 @@ $ find /* -type f |xargs grep "<検索文字>"
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
+#### ・sortとの組み合わせ
+
+出力結果に対して，並び順を変更する．
+
+```bash
+# 表示された環境変数をAZ昇順に並び替える．
+$ printenv | sort -f
+```
+
+<br>
+
+### 標準入出力
+
+#### ・標準入出力とは
+
+| 種類           | 説明                                                         |
+| -------------- | ------------------------------------------------------------ |
+| 標準入力       | キーボードからのコマンドに対して，データを入力する処理のこと． |
+| 標準出力       | コマンドからターミナルに対して，エラー以外のデータを出力する処理のこと． |
+| 標準エラー出力 | コマンドからターミナルに対して，エラーデータを出力する処理のこと． |
+
+![標準入力，標準出力，標準出力エラー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/標準入力，標準出力，標準出力エラー.jpg)
+
 <br>
 
 ## 02-02. ファイルシステム系
-
-
 
 ### chmod：change mode
 
@@ -720,7 +780,17 @@ $ history | grep <過去のコマンド>
 
 <br>
 
+### tr
 
+```bash
+#!/bin/bash
+
+cat ./src.txt | tr '\n' ',' > ./dst.txt
+```
+
+#### 
+
+<br>
 
 ## 02-06. 環境変数系
 
@@ -1213,7 +1283,7 @@ $ pyenv which python
 
 以降の説明を参照．
 
-
+<br>
 
 ### 言語の種類
 
