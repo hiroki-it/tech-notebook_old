@@ -107,6 +107,45 @@ $ . hello.sh
 $ ./hello.sh
 ```
 
+#### ・for
+
+**＊実装例＊**
+
+```bash
+#!/bin/bash
+ 
+for i in 1 2 3 4 5
+do
+   echo $i
+done
+```
+
+#### ・switch-case
+
+変数に代入された値によって，処理を分ける．全ての場合以外をアスタリスクで定義する．
+
+**＊実装例＊**
+
+```bash
+#!/bin/bash
+
+case $ENV in
+    "test")
+        value="XXXXX"
+    ;;
+    "stg")
+        value="YYYYY"
+    ;;
+    "prd")
+        value="ZZZZZ"
+    ;;
+    *)
+        echo "The parameter ${ENV} is invalid."
+        exit 1
+    ;;
+esac
+```
+
 <br>
 
 ### pipeline
