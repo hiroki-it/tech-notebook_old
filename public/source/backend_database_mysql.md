@@ -224,6 +224,15 @@ SELECT * FROM mysql.user;
 
 ### GRANT
 
+#### ・権限の振り方
+
+| ユーザの種類             | 権限                                                       |
+| ------------------------ | ---------------------------------------------------------- |
+| admin                    |                                                            |
+| アプリケーション         | ```GRANT ALL PRIVILEGES ON `%`.* TO '{ ユーザー名 }'```    |
+| 読み出し／書き込みユーザ | ```GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザー名 }'``` |
+| 読み出しユーザ           | ```GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';```          |
+
 #### ・ユーザ権限付与
 
 | SQLでの表記          | 意味             |
@@ -244,6 +253,7 @@ GRANT ALL PRIVILEGES ON `%`.* TO '{ ユーザー名 }';
 ```
 
 ```mysql
+-- Amazon Auroraも同じく
 -- 特定のデータベースに関する全権限を付与
 GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
 ```
@@ -282,6 +292,8 @@ GRANT USAGE ON *.* TO '{ ユーザー名 }';
 ```mysql
 -- Amazon AuroraまたはRDSの場合
 REVOKE ALL PRIVILEGES ON `%`.* FROM '{ ユーザ名 }';
+
+REVOKE ALL PRIVILEGES ON {DB名}.* FROM '{ ユーザ名 }';
 ```
 
 #### ・ユーザ名変更
