@@ -647,6 +647,81 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 <br>
 
+## Logging
+
+### Log  Channels
+
+#### ・stack
+
+```php
+return [
+    'default' => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stack' => [
+            'driver'            => 'stack',
+            'channels'          => ['single'],
+            'ignore_exceptions' => false,
+        ],
+]
+```
+
+#### ・single
+
+全てのログを```/storage/logs/laravel.log```ファイルに対して出力する．
+
+```php
+return [
+    'default' => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'daily' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/laravel.log'),
+            'level'  => env('LOG_LEVEL', 'debug'),
+            'days'   => 14,
+        ],
+]
+```
+
+#### ・daily
+
+全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
+
+```
+return [
+    'default' => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stderr' => [
+            'driver'    => 'monolog',
+            'handler'   => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with'      => [
+                'stream' => 'php://stderr',
+            ],
+        ],
+]
+```
+
+#### ・stderr
+
+全てのログを標準エラー出力に対して出力する．Docker上でLaravelを稼働させる場合は，これを選択する．
+
+```php
+return [
+    'default' => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stderr' => [
+            'driver'    => 'monolog',
+            'handler'   => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with'      => [
+                'stream' => 'php://stderr',
+            ],
+        ],
+]
+```
+
+<br>
+
 
 ## Migration
 
