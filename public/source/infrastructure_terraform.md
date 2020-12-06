@@ -961,10 +961,6 @@ resource "aws_lb" "this" {
     enabled = true
     bucket  = var.alb_s3_bucket_id
   }
-
-  tags = {
-    Environment = var.environment
-  }
 }
 ```
 
@@ -1012,10 +1008,6 @@ resource "aws_lb_target_group" "this" {
     matcher             = 200
   }
 
-  tags = {
-    Environment = var.environment
-  }
-
   depends_on = [aws_lb.this]
 }
 ```
@@ -1038,8 +1030,7 @@ resource "aws_instance" "bastion" {
   disable_api_termination     = true
 
   tags = {
-    Name        = "${var.environment}-${var.service}-bastion"
-    Environment = var.environment
+    Name = "${var.environment}-${var.service}-bastion"
   }
 
   depends_on = [var.internet_gateway]
@@ -1060,7 +1051,6 @@ resource "aws_eip" "nat_gateway" {
       "${var.environment}-${var.service}-ngw-%s-eip",
       each.value
     )
-    Environment = var.environment
   }
 
   depends_on = [aws_internet_gateway.this]
@@ -1082,7 +1072,6 @@ resource "aws_nat_gateway" "this" {
       "${var.environment}-${var.service}-%s-ngw",
       each.value
     )
-    Environment = var.environment
   }
 
   depends_on = [aws_internet_gateway.this]
@@ -1171,7 +1160,6 @@ resource "aws_subnet" "public" {
       "${var.environment}-${var.service}-pub-%s-subnet",
       each.value
     )
-    Environment = var.environment
   }
 }
 ```
@@ -1222,10 +1210,6 @@ resource "aws_rds_cluster_parameter_group" "this" {
       name  = parameter.key
       value = parameter.value
     }
-  }
-
-  tags = {
-    Environment = var.environment
   }
 }
 ```
@@ -1840,7 +1824,6 @@ resource "aws_example" "this" {
       "${var.environment}-${var.service}-%d-example",
       each.value
     )
-    Environment = var.environment
   }
   
   depends_on = []
@@ -2164,7 +2147,6 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name        = "${var.environment}-${var.service}-bastion"
-    Environment = var.environment
   }
 
   depends_on = [var.internet_gateway]
@@ -2208,10 +2190,6 @@ resource "aws_rds_cluster" "rds_cluster" {
   preferred_maintenance_window    = "sun:17:30-sun:18:00"
   apply_immediately               = true
   deletion_protection             = true
-
-  tags = {
-    Environment = var.environment
-  }
 
   lifecycle {
     ignore_changes = [
@@ -2277,7 +2255,7 @@ Network Interfaceは特定のリソースの構築時に，自動で構築され
 
 <br>
 
-### 削除保護機能
+### 共通の設定
 
 #### ・削除保護機能は事前に無効化すべき
 
@@ -2288,6 +2266,10 @@ Network Interfaceは特定のリソースの構築時に，自動で構築され
 | ALB           | ```enable_deletion_protection``` |
 | EC2           | ```disable_api_termination```    |
 | RDS           | ```deletion_protection```        |
+
+#### ・タグ付け
+
+Terraformの管理外のリソースには，コンソール画面上から，「```Not managed by = Terraform```」というタグをつけた方が良い．
 
 <br>
 
