@@ -1881,25 +1881,37 @@ echo $b; // 2
 
 #### ・php://stdin
 
-stdin：standard in（標準入力）を意味する．入出力ストリームによる読み出しを行う．
+stdin：standard in（標準入力）を意味する．PHPのプロセスが，標準入力に対して，読み出し処理を送信できるようになる．
 
-```
+```php
 <?php
 
-// 読み出す
+// ログを読み出す
 $stdin = fopen('php://stdin', 'r');
 ```
 
-#### ・php://stderr，php://stdout
+#### ・php://stdout
 
-stderr：standard error（標準エラー）とstdout：standard out（標準出力）を意味する．入出力ストリームによる書き込みを行う．
+stdout：standard out（標準出力）を意味する．PHPのプロセスが，標準出力に対して，書き込み処理を送信できるようになる．
 
-```
+```php
 <?php
 
-// 書き込む
+// ログを書き込む
+$stderr = fopen('php://stdout', 'w');
+fwrite($stderr, 'ログです．');
+```
+
+#### ・php://stderr
+
+stderr：standard error（標準出力エラー）を意味する．PHPのプロセスが，標準エラー出力に対して，書き込み処理を送信できるようになる．
+
+```php
+<?php
+
+// エラーログを書き込む
 $stderr = fopen('php://stderr', 'w');
-fwrite($stderr, 'エラー');
+fwrite($stderr, 'エラーログです．');
 ```
 
 <br>
