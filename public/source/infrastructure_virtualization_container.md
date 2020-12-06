@@ -480,15 +480,6 @@ COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 $ docker create <コンテナ名> <使用イメージ名>
 ```
 
-#### ・構築に失敗した時のデバッグ
-
-**＊コマンド例＊**
-
-```bash
-# 指定した行数だけ，ログを出力し続ける．
-$ docker logs --follow=true --tail=500 <コンテナ名>
-```
-
 #### ・構築されたコンテナの起動
 
 コンテナを起動する．```start```コマンドでは，アタッチモードでしか起動できない．
@@ -936,4 +927,50 @@ volumes:
       o: "addr=10.40.0.199,nolock,soft,rw"
       device: ":/nfs/example"
 ```
+
+<br>
+
+## 06. ロギング
+
+### 各ベンダーのイメージのログ出力先
+
+#### ・nginxイメージ
+
+公式のnginxイメージは，```/dev/stdout```というシンボリックリンクを，```/var/log/nginx/access.log```に作成している．また，```/dev/stderr```というシンボリックリンクを，```/var/log/nginx/error.log```に作成している．これにより，これらのファイルに対するログの出力は，```/dev/stdout```と```/dev/stderr```に転送される．
+
+#### ・php-fpmイメージ
+
+要勉強．
+
+<br>
+
+### コマンド
+
+#### ・docker logsの参照先ディレクトリ
+
+コンテナ内の```/dev/stdout```と```/dev/stderr```に出力されたログをまとめて表示する．
+
+#### ・指定したコンテナのログを確認
+
+**＊コマンド例＊**
+
+```bash
+# 指定した行数だけ，ログを表示する．
+$ docker logs --follow=true --tail=500 <コンテナ名>
+```
+
+<br>
+
+### ロギングドライバー
+
+#### ・ロギングドライバーとは
+
+コンテナ内の```/dev/stdout```と```/dev/stderr```に出力されたログを，ファイルやAPIに対して出力する．
+
+| ロギングドライバー名 | ログの出力先                                                 | 備考                                      |
+| -------------------- | ------------------------------------------------------------ | ----------------------------------------- |
+| json-file            | ```/var/lib/docker/containers/＜コンテナID＞/＜コンテナID＞-json.log```ファイル | デフォルトの設定．                        |
+| none                 | ログを記録しない．                                           |                                           |
+| awslogs              | CloudWatch LogsのAPI                                         | ```docker logs```コマンドで確認できない． |
+| gcplogs              | Google Cloud LoggingのAPI                                    | ```docker logs```コマンドで確認できない． |
 
