@@ -2005,49 +2005,6 @@ output "nginx_ecr_repository_url" {
 
 ## 08. 各リソースタイプ独自の仕様
 
-### ALB
-
-```
-###############################################
-# ALB target group
-###############################################
-resource "random_integer" "suffix" {	
-  min = 1	
-  max = 10000	
-}
-
-resource "aws_lb_target_group" "this" {
-  name                 = "${var.environment}-${var.service}-alb-tg-${random_integer.suffix.result}"
-  port                 = var.ecs_container_nginx_port_http
-  protocol             = "HTTP"
-  vpc_id               = var.vpc_id
-  deregistration_delay = "60"
-  target_type          = "ip"
-  slow_start           = "60"
-
-  health_check {
-    interval            = 30
-    path                = "/healthcheck"
-    protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 2
-    matcher             = 200
-  }
-
-  tags = {
-    Environment = var.environment
-  }
-
-  depends_on = [aws_lb.this]
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-```
-
-<br>
-
 ### CloudFront
 
 #### ・実装例
