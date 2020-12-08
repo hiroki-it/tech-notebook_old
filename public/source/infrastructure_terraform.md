@@ -2233,6 +2233,55 @@ resource "aws_instance" "bastion" {
 
 <br>
 
+### Network Interface
+
+#### ・Network Interfaceをデタッチできない
+
+Network Interfaceは特定のリソースの構築時に，自動で構築されるため，Terraformの管理外にある．また，このリソースを削除しない限り，デタッチできない．Network Interfaceをデタッチできないと，セキュリティグループを削除できないため，Terraformは永遠にリクエストを繰り返すことになる．
+
+| 関連付くリソース            | 備考                                          |
+| --------------------------- | --------------------------------------------- |
+| GlobalAccelerator           |                                               |
+| EC2                         | EC2のパブリックIPアドレスを決定する．         |
+| ECSタスク定義（Active状態） |                                               |
+| ALB                         | ALBのパブリックIPアドレスを決定する．         |
+| NAT Gateway                 | NAT GatewayのパブリックIPアドレスを決定する． |
+| RDS                         |                                               |
+| VPC Endpoint                |                                               |
+
+<br>
+
+### Route53
+
+#### ・実装例
+
+```tf
+###############################################
+# For api domain
+###############################################
+resource "aws_route53_zone" "example" {
+  name = var.route53_domain_example
+}
+
+resource "aws_route53_record" "example" {
+  zone_id = aws_route53_zone.example.id
+  name    = var.route53_domain_example
+  type    = "A"
+
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = true
+  }
+}
+```
+
+#### ・ネームサーバレコードは管理外
+
+ホストゾーンを作成すると，レコードとして，ネームサーバの情報が自動的に設定される．これは，Terraformの管理外である．
+
+<br>
+
 ### RDS
 
 #### ・実装例
