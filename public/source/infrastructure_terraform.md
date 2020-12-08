@@ -1787,6 +1787,7 @@ resource "aws_ecs_task_definition" "this" {
       "logDriver": "awslogs",
       "options": {
         "awslogs-group": "<ロググループ名>",
+        "awslogs-datetime-format": "\\[%Y-%m-%d %H:%M:%S\\]",
         "awslogs-region": "<リージョン>",
         "awslogs-stream-prefix": "<ログストリーム名のプレフィクス>"
       }
