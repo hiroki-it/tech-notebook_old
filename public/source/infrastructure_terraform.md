@@ -1282,6 +1282,78 @@ resource "aws_acm_certificate" "example" {
 }
 ```
 
+**＊実装例＊**
+
+例として，RDSのクラスターパラメータグループとサブネットグループを示す．クラスターパラメータグループとサブネットグループは，RDSに関連付いており，新しいクラスターパラメータグループに関連付け直した後に，既存のものを削除する必要がある．
+
+```tf
+###############################################
+# RDS Cluster Parameter Group
+###############################################
+resource "aws_rds_cluster_parameter_group" "this" {
+  name        = "${var.environment}-${var.service}-rds-cluster-param-gp"
+  description = "The cluster parameter group for ${var.environment}-${var.service}-rds"
+  family      = "aurora-mysql5.7"
+
+  dynamic "parameter" {
+    for_each = var.rds_parameter_group_values
+
+    content {
+      name  = parameter.key
+      value = parameter.value
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+###############################################
+# RDS Subnet Group
+###############################################
+resource "aws_db_subnet_group" "this" {
+  name        = "${var.service}-${var.environment}-rds-subnet-gp"
+  description = "The subnet group for ${var.environment}-${var.service}-rds"
+  subnet_ids  = [var.private_a_datastore_subnet_id, var.private_c_datastore_subnet_id]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+```
+
+**＊実装例＊**
+
+例として，Redisのパラメータグループとサブネットグループを示す．ラメータグループとサブネットグループは，RDSに関連付いており，新しいパラメータグループとサブネットグループに関連付け直した後に，既存のものを削除する必要がある．
+
+```tf
+###############################################
+# Redis Parameter Group
+###############################################
+resource "aws_elasticache_parameter_group" "redis" {
+  name        = "${var.environment}-${var.service}-redis-v5-param-gp"
+  description = "The parameter group for ${var.environment}-${var.service}-redis 5.0"
+  family      = "redis5.0"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+###############################################
+# Redis Subnet Group
+###############################################
+resource "aws_elasticache_subnet_group" "redis" {
+  name        = "${var.environment}-${var.service}-redis-subnet-gp"
+  description = "The redis subnet group for ${var.environment}-${var.service}-rds"
+  subnet_ids  = [var.private_a_app_subnet_id, var.private_c_app_subnet_id]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+```
+
 #### ・ignore_changes
 
 リモートのみで起こったリソースの構築・更新・削除を無視し，```tfstate```ファイルに反映しないようにする．基本的に使用することはないが，リモート側のリソースが動的に変更される可能性があるリソースでは，設定が必要である．
