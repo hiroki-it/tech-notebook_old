@@ -2237,21 +2237,52 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 
 <br>
 
-### Network Interface
+### VPC  ルートテーブル
 
-#### ・Network Interfaceをデタッチできない
+#### ・実装例
 
-Network Interfaceは特定のリソースの構築時に，自動で構築されるため，Terraformの管理外にある．また，このリソースを削除しない限り，デタッチできない．Network Interfaceをデタッチできないと，セキュリティグループを削除できないため，Terraformは永遠にリクエストを繰り返すことになる．
+```
+###############################################
+# Route table (public)
+###############################################
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
 
-| 関連付くリソース            | 備考                                          |
-| --------------------------- | --------------------------------------------- |
-| GlobalAccelerator           |                                               |
-| EC2                         | EC2のパブリックIPアドレスを決定する．         |
-| ECSタスク定義（Active状態） |                                               |
-| ALB                         | ALBのパブリックIPアドレスを決定する．         |
-| NAT Gateway                 | NAT GatewayのパブリックIPアドレスを決定する． |
-| RDS                         |                                               |
-| VPC Endpoint                |                                               |
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.this.id
+  }
+
+  tags = {
+    Name = "${var.environment}-${var.service}-pub-rtb"
+  }
+}
+
+###############################################
+# Route table (private)
+###############################################
+resource "aws_route_table" "private_app" {
+  for_each = var.vpc_availability_zones
+
+  vpc_id = aws_vpc.this.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.this[each.key].id
+  }
+
+  tags = {
+    Name = format(
+      "${var.environment}-${var.service}-pvt-%s-app-rtb",
+      each.value
+    )
+  }
+}
+```
+
+#### ・メインルートテーブルは自動構築
+
+Terraformを用いてVPCを構築した時，メインルートテーブルが自動的に構築される．そのため，これはTerraformの管理外である．
 
 <br>
 
