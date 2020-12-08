@@ -868,7 +868,7 @@ echo "This is ${XXXXX}"
 
 #### ・Bashレベル
 
-一番参照範囲が小さく，```run```における```command```内のみで参照できる．```export```，```source```，```$BASH_ENV```，を使用する．
+一番参照範囲が小さく，```run```における同じ```command```内のみで参照できる．```export```，```source```，```$BASH_ENV```，を使用する．
 
 ```yaml
 version: 2.1 
