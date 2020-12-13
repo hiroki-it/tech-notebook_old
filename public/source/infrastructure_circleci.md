@@ -16,7 +16,6 @@ https://circleci.com/docs/reference-2-1/#circleci-2-1-reference
 
 ```yaml
 workflows:
-  version: 2.1
   # build以外を実行しないようにすることで，buildのみを検証できる．
   build-test-and-deploy:
     jobs:
@@ -110,11 +109,11 @@ version: 2.1
 
 ## 02-03. parameters
 
-### parametersとは
+### parameters
 
-#### ・各定義方法の参照範囲
+#### ・parametersとは
 
-| 方法                | 参照範囲                                                     | 値を設定する場所 |
+| 種類                | 参照範囲                                                     | 値を設定する場所 |
 | ------------------- | ------------------------------------------------------------ | ---------------- |
 | command parameters  | ```command```内で定義する．定義された```command```内のみで定義できる． | ```workflows```  |
 | job parameters      | ```job```内で定義する．定義された```job```内のみで参照できる． | ```workflows```  |
@@ -139,6 +138,7 @@ version: 2.1
 
 ```yaml
 version: 2.1
+
 commands:
   sayhello:
     description: "Echo hello world"
@@ -170,6 +170,7 @@ commands:
 
 ```yaml
 version: 2.1
+
 commands:
   sayhello:
     description: "Echo hello world"
@@ -436,7 +437,9 @@ workflows:
 
 ## 02-04. jobs
 
-### jobsとは
+### jobs
+
+#### ・jobsとは
 
 複数の```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
@@ -698,7 +701,9 @@ jobs:
 
 ## 02-05. executors
 
-### executorsとは
+### executors
+
+#### ・executorsとは
 
 実行環境に関する設定を部品化し，異なる```job```で繰り返し利用できる．
 
@@ -755,7 +760,6 @@ jobs:
           command: echo "testing"
           
 workflows:
-  version: 2.1
   build:
     jobs:
       - bar:
@@ -775,7 +779,6 @@ Orbsを使う場合は，オプションに引数を渡す前に定義する．
 
 ```yaml
 workflows:
-  version: 2.1
   build:
     jobs:
       - aws-xxx/build-push-yyy:
@@ -960,7 +963,6 @@ orbs:
   aws-ecr: circleci/aws-xxx@x.y.z
 
 workflows:
-  version: 2.1
   build_and_push_image:
     jobs:
       - aws-xxx/yyy-yyy-yyy:
@@ -988,7 +990,6 @@ orbs:
   aws-ecr: circleci/aws-ecr@x.y.z
 
 workflows:
-  version: 2.1
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -1034,7 +1035,6 @@ orbs:
   aws-ecs: circleci/aws-ecs@x.y.z
   
 workflows:
-  version: 2.1
   build-and-deploy:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -1116,7 +1116,6 @@ orbs:
   aws-code-deploy: circleci/aws-ecs@x.y.z
 
 workflows:
-  version: 2.1
   run-task:
     jobs:
       - aws-code-deploy/deploy:
@@ -1136,78 +1135,6 @@ workflows:
           deployment-group: "${APP_NAME}-deployment-group"
           # ECSにアクセスできるCodeDeployサービスロール
           service-role-arn: $CODE_DEPLOY_ROLE_FOR_ECS
-```
-
-<br>
-
-### terraform
-
-#### ・commands：deploy_infrastructure
-
-```yaml
-version: 2.1
-
-orbs:
-  terraform: circleci/terraform@x.y.z
-  
-jobs:
-  single-job-lifecycle:
-    executor: terraform/default
-    steps:
-      - checkout
-      - terraform/init:
-          path: .
-      - terraform/validate:
-          path: .
-      - terraform/fmt:
-          path: .
-      - terraform/plan:
-          path: .
-      - terraform/apply:
-          path: .
-      - terraform/destroy:
-          path: .
-    working_directory: ~/src
-    
-workflows:
-  single-job-lifecycle:
-    jobs:
-      - single-job-lifecycle
-```
-
-#### ・jobs：deploy_infrastructure_job
-
-```yaml
-version: 2.1
-
-orbs:
-  terraform: 'circleci/terraform@dev:alpha'
-  
-workflows:
-  deploy_infrastructure:
-    jobs:
-      - terraform/fmt:
-          checkout: true
-          context: terraform
-      - terraform/validate:
-          checkout: true
-          context: terraform
-          requires:
-            - terraform/fmt
-      - terraform/plan:
-          checkout: true
-          context: terraform
-          persist-workspace: true
-          requires:
-            - terraform/validate
-      - terraform/apply:
-          attach-workspace: true
-          context: terraform
-          filters:
-            branches:
-              only: master
-          requires:
-            - terraform/plan
 ```
 
 <br>
