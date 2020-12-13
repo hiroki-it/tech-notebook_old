@@ -1046,6 +1046,84 @@ workflows:
 
 <br>
 
+### docker
+
+#### ・commands: install-dockerize
+
+CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
+
+参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
+
+**＊実装例＊**
+
+LaravelコンテナとMySQLコンテナの場合を示す．
+
+```yaml
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/docker@x.y.z
+
+commands:
+  restore_vendor:
+    steps:
+      - restore_cache:
+          key:
+            - v1-dependecies-{{ checksum composer.json }}
+  install_vendor:
+     steps:
+       - run: composer install -n --prefer-dist
+  save_vendor:
+    steps:
+      - save_cache:
+          key: v1-dependecies-{{ checksum composer.json }}
+          paths:
+            - /vendor
+            
+jobs:
+  build_and_test:
+    docker:
+      - image: <docker image>
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: echo $ENV_TESTING | base64 -di > .env
+      - run:
+          name: Make env docker file
+          command: cp .env.docker.example .env.docker
+      - run:
+          name: Docker Compose
+          command: |
+            set -xe
+            docker network create example-network
+            docker-compose up --build -d
+      - restore_vendor
+      - install_vendor
+      - save_vendor
+      - docker/install-dockerize:
+          version: v0.6.1   
+      - run:
+          name: Wait for MySQL startup
+          command: |
+            dockerize -wait tcp://localhost:3306 -timeout 1m
+            sleep 30
+      - run:
+          name: Execute Migration Test
+          command: |
+            docker exec -it laravel-container php artisan migrate --force
+      - run:
+          name: Execute Unit Test
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpunit
+      - run:
+          name: Execute Static Test
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
+```
+
+<br>
+
 ### aws-ecr
 
 #### ・jobs：build-and-push-image
