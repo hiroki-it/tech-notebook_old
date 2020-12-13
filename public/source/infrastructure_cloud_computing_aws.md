@@ -12,7 +12,7 @@
 | ------------------------- | ------------------------------------------------- | ------------------------------------------------------------ |
 | AMI：Amazonマシンイメージ | OSを選択する．                                    | ベンダー公式のものを選択すること．（例：CentOSのAMI一覧 https://wiki.centos.org/Cloud/AWS） |
 | インスタンスの詳細設定    | EC2インスタンスの設定する．                       | ・インスタンス自動割り当てパブリックにて，EC2に動的パブリックIPを割り当てる．EC2インスタンス構築後に有効にできない．<br/>・終了保護は必ず有効にすること． |
-| ストレージの追加          | EBSボリュームを設定する．                         | 一般的なアプリケーションであれば，20～30GiBでよい．踏み台サーバの場合，最低限で良いため，OSの下限までサイズを下げる．（例：CentOSの下限は10GiB） |
+| ストレージの追加          | EBSボリュームを設定する．                         | 一般的なアプリケーションであれば，20～30GiBでよい．踏み台サーバの場合，最低限で良いため，OSの下限までサイズを下げる．（例：AmazonLinuxの下限は8GiB，CentOSは10GiB） |
 | キーペア                  | EC2の秘密鍵に対応した公開鍵をインストールできる． | キーペアに割り当てられるフィンガープリント値を調べることで，公開鍵と秘密鍵の対応関係を調べることができる． |
 
 
@@ -40,9 +40,9 @@ $ openssl pkcs8 -in <秘密鍵>.pem -inform PEM -outform DER -topk8 -nocrypt | o
 
 #### ・Lambdaとは
 
-Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
+サーバレスでスクリプトを実行できる．Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
 
-| 設定項目                   | 説明                                                         | 備考 |
+| 用語                       | 説明                                                         | 備考 |
 | -------------------------- | ------------------------------------------------------------ | ---- |
 | 関数                       | 与えられた引数を元に何らかの計算や処理を行い、結果を呼び出し元に返すもののこと． |      |
 | サーバレスアプリケーション | 関数、イベントソース、およびその他のAWSリソースを組み合わせたもののこと． |      |
@@ -51,23 +51,136 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 ### 関数
 
-#### ・関数の詳細項目
+#### ・デザイナーの詳細項目
+
+| 設定項目      | 説明                                         | 備考 |
+| ------------- | -------------------------------------------- | ---- |
+| Lambda Layers | 異なる関数の間で，特定の処理を共通化できる． |      |
+| トリガー      |                                              |      |
+| 送信先        |                                              |      |
+
+#### ・ランタイム設定の詳細項目
 
 | 設定項目     | 説明                                                         | 備考                                                         |
 | ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ランタイム   | 関数の実装に使用する言語を設定する．                         |                                                              |
 | ハンドラ     | 関数の実行時にコールしたい具体的メソッド名を設定する．       | ・Node.js：```index.js``` というファイル名で ```exports.handler``` メソッドを呼び出したい場合，ハンドラ名を```index.handler```とする |
-| メモリ       |                                                              |                                                              |
+
+#### ・基本設定の詳細項目
+
+| 設定項目     | 説明                                                         | 備考                                                         |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| メモリ       | Lambdaに割り当てるメモリ量を設定する．                       | 最大10240MBまで増設でき，増設するほどパフォーマンスが上がる．インターネットで向上率グラフを検索せよ． |
 | タイムアウト |                                                              |                                                              |
 | 実行ロール   | Lambda内のメソッドが実行される時に必要なポリシーをもつロールを設定する． |                                                              |
+| 既存ロール   | Lambdaにロールを設定する．                                 |
+
+#### ・同時実行数の詳細項目
+
+| 設定項目                       | 説明                                                         | 備考               |
+| ------------------------------ | ------------------------------------------------------------ | ------------------ |
+| エイリアス                     |                                                              |                    |
+| バージョン                     |                                                              |                    |
+| プロビジョニングされた同時実行 | Lambdaは，関数の実行中に再びリクエストが送信されると，関数のインスタンスを新しく作成する．そして，各関数インスタンスを用いて，同時並行的にリクエストに応じる． | 各主要リージョンの |
+
+#### ・最低限必要なポリシー
+
+Lambdaを実行するためには，デプロイされた関数を使用する権限が必要である．そのため，関数を取得するためのステートメントを設定する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "arn:aws:lambda:<リージョン>:<アカウントID>:function:<関数名>*"
+    }
+  ]
+}
+```
 
 #### ・テストとデバッグ
 
-lambdaで関数を作成すると，CloudWatchLogsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
+Lambdaで関数を作成すると，CloudWatchLogsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
 
 <br>
 
-### Node.jsによる関数
+### ハンドラ関数
+
+#### ・ハンドラ関数は
+
+Lambdaはハンドラ関数をコールし，引数のオブジェクト（event，context，callback）に値をわたす．このオブジェクトにはメソッドとプロパティを持つ．ハンドラ関数の初期名は```handler```であるが別名でもよい．
+
+**＊実装例＊**
+
+基本的に，どの言語でもハンドラ関数の引数は共通している．実装例として，Node.jsの場合を示す．
+
+```javascript
+exports.MyHandler = (event, context, callback) => {
+  // なんらかの処理
+}
+```
+
+| 引数                 | 説明                                                         | 備考                                                         |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| eventオブジェクト    | HTTPリクエストに関するデータが格納されている．               | Lambdaにリクエストを送信するAWSリソースごとに，オブジェクトの構造が異なる．構造は以下の通り．<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-services.html |
+| contextオブジェクト  | Lambdaに関するデータ（名前，バージョンなど）を取得できるメソッドとプロパティが格納されている． | オブジェクトの構造は以下の通り<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/nodejs-context.html |
+| callbackオブジェクト |                                                              |                                                              |
+
+<br>
+
+### Lambdaプロキシ統合
+
+#### ・Lambdaプロキシ統合とは
+
+LambdaとAPI Gatewayの間で，リクエストまたはレスポンスのJSONを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
+
+#### ・リクエスト時のマッピング
+
+API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONにマッピングされる．
+
+```json
+{
+  "resource": "Resource path",
+  "path": "Path parameter",
+  "httpMethod": "Incoming request's method name",
+  "headers": {String containing incoming request headers},
+  "multiValueHeaders": {List of strings containing incoming request headers},
+  "queryStringParameters": {query string parameters },
+  "multiValueQueryStringParameters": {List of query string parameters},
+  "pathParameters":  {path parameters},
+  "stageVariables": {Applicable stage variables},
+  "requestContext": {Request context, including authorizer-returned key-value pairs},
+  "body": "A JSON string of the request payload.",
+  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
+}
+
+```
+
+#### ・レスポンス時のマッピング
+
+API GAtewayは，Lambdaからのレスポンスを，以下のJSONにマッピングする．これ以外の構造のJSONを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
+
+```json
+{
+  "isBase64Encoded": true|false,
+  "statusCode": httpStatusCode,
+  "headers": { "headerName": "headerValue", ... },
+  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
+  "body": "Hello Lambda"
+}
+```
+
+API Gatewayは上記のJSONを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
+
+```h
+"Hello Lambda"
+```
+
+<br>
+
+### Node.jsを用いた関数例
 
 #### ・AWS-SDKの読み込み
 
@@ -78,32 +191,25 @@ lambdaで関数を作成すると，CloudWatchLogsのロググループに，「
 const aws = require('aws-sdk');
 ```
 
-#### ・メソッド
-
-```event```，```context```，```callback```の引数にもつメソッドを定義する．初期名は```handler```であるが別名でもよい．
-
-```javascript
-exports.MyHandler = (event, context, callback) => {
-  // なんらかの処理
-}
-```
-
-| 引数     | 説明                                       | 備考 |
-| -------- | ------------------------------------------ | ---- |
-| event    | HTTPリクエストのヘッダーが格納されている． |      |
-| context  |                                            |      |
-| callback |                                            |      |
-
-#### ・S3へのファイルの保存
+#### ・API Gateway & Lambda & S3
 
 **＊実装例＊**
 
 ```javascript
+"use strict";
+
 const aws = require('aws-sdk');
 
 const s3 = new aws.S3();
 
 exports.handler = (event, context, callback) => {
+    
+  // API Gatewayとのプロキシ統合を意識したJSON構造にする
+  // レスポンスメッセージの初期値
+  const response = {
+      "statusCode": null,
+      "body" : null
+  };
   
   s3.putObject({
       Bucket: '<バケット名>',
@@ -112,9 +218,13 @@ exports.handler = (event, context, callback) => {
     },
     (err, data) => {
       if (err) {
-          // エラーだった時の処理
-    }
-      // エラー出なかった時の処理
+          response.statusCode = 500;
+          response.body = "[ERROR] " + err;
+          return callback(null, response);
+      }
+      response.statusCode = 200;
+      response.body = "OK";
+      return callback(null, response);
     });
 }
 ```
@@ -123,13 +233,15 @@ exports.handler = (event, context, callback) => {
 
 <br>
 
+## 01-03. コンピューティング｜Lambda@Edge
+
 ### Lambda@Edge
 
-![Lambda@edge](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@edge.png)
+![Lambda@Edge](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@Edge.png)
 
 #### ・Lambda@Edgeとは
 
-CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとするLambdaのこと．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
+CloudFrontに統合されたLambdaを，特別にLambda@Edgeという．CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとする．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
 
 | トリガーの種類       | 発火のタイミング                                             |
 | -------------------- | ------------------------------------------------------------ |
@@ -138,9 +250,9 @@ CloudFrontのビューワーリクエスト，オリジンリクエスト，オ�
 | オリジンレスポンス   | CloudFrontが，オリジンからレスポンスを受信した後（キャッシュを確認する前）． |
 | ビューワーレスポンス | CloudFrontが，ビューワーにレスポンスを転送する前（キャッシュを確認した後）． |
 
-#### ・必要なポリシー
+#### ・最低限必要なポリシー
 
-Lambda@Edgeを実行するためには，以下のポリシーが必要である．
+Lambda@Edgeを実行するためには，最低限，以下の権限が必要である．
 
 ```json
 {
@@ -149,17 +261,17 @@ Lambda@Edgeを実行するためには，以下のポリシーが必要である
     {
       "Effect": "Allow",
       "Action": [
-        "lambda:GetFunction",
-        "lambda:EnableReplication*"
+        "iam:CreateServiceLinkedRole"
       ],
-      "Resource": "arn:aws:lambda:<リージョン名>:<アカウントID>:function:<関数名>:<バージョン>"
+      "Resource": "*"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "iam:CreateServiceLinkedRole"
+        "lambda:GetFunction",
+        "lambda:EnableReplication*"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:lambda:<リージョン名>:<アカウントID>:function:<関数名>:<バージョン>"
     },
     {
       "Effect": "Allow",
@@ -173,9 +285,148 @@ Lambda@Edgeを実行するためには，以下のポリシーが必要である
 
 ```
 
+#### ・各トリガーのeventオブジェクトへのマッピング
+
+各トリガーのeventオブジェクトへのマッピングは，以下を参照せよ．
+
+参考：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html
+
 <br>
 
-## 01-03. コンピューティング｜Security Group
+### Node.jsを用いた関数例
+
+#### ・オリジンの動的な切り替え
+
+![Lambda@Edge_動的オリジン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@Edge_動的オリジン.png)
+
+**＊実装例＊**
+
+eventオブジェクトの```domainName```と```host.value```に格納されたバケットのドメイン名によって，ルーティング先のバケットが決まる．そのため，この値を切り替えれば，動的オリジンを実現できる．なお，各バケットには同じOAIを設定する必要がある．
+
+```javascript
+'use strict';
+
+exports.handler = (event, context, callback) => {
+
+    const request = event.Records[0].cf.request;
+    // ログストリームに変数を出力する．
+    console.dir({request});
+
+    const headers = request.headers;
+    // ログストリームに変数を出力する．
+    console.dir({headers});
+
+    const s3Backet = getBacketBasedOnUserAgent(headers);
+
+    request.origin.s3.domainName = s3Backet
+    request.headers.host[0].value = s3Backet
+    // ログストリームに変数を出力する．
+    console.dir({request});
+
+    return callback(null, request);
+};
+
+/**
+ * デバイスタイプに基づいて、オリジンを切り替える．
+ * 
+ * @param   headers
+ * @returns string
+ */
+const getBacketBasedOnDeviceType = (headers) => {
+
+    const pcBucket = 'pc-bucket.s3.amazonaws.com';
+    const spBucket = 'sp-bucket.s3.amazonaws.com';
+
+    if (headers['cloudfront-is-desktop-viewer']
+        && headers['cloudfront-is-desktop-viewer'][0].value === 'true') {
+        return pcBucket;
+    }
+
+    if (headers['cloudfront-is-tablet-viewer']
+        && headers['cloudfront-is-tablet-viewer'][0].value === 'true') {
+        return pcBucket;
+    }
+
+    if (headers['cloudfront-is-mobile-viewer']
+        && headers['cloudfront-is-mobile-viewer'][0].value === 'true') {
+        return spBucket;
+    }
+
+    return spBucket;
+};
+```
+
+オリジンリクエストは，以下のeventオブジェクトのJSONにマッピングされている．なお，一部のキーは省略している．
+
+```json
+{
+  "Records": [
+    {
+      "cf": {
+        "request": {
+          "clientIp": "203.0.113.178",
+          "headers": {
+            "cloudfront-is-mobile-viewer": [
+              {
+                "key": "CloudFront-Is-Mobile-Viewer",
+                "value": true
+              }
+            ],
+            "cloudfront-is-tablet-viewer": [
+              {
+                "key": "loudFront-Is-Tablet-Viewer",
+                "value": false
+              }
+            ],
+            "cloudfront-is-smarttv-viewer": [
+              {
+                "key": "CloudFront-Is-SmartTV-Viewer",
+                "value": false
+              }
+            ],
+            "cloudfront-is-desktop-viewer": [
+              {
+                "key": "CloudFront-Is-Desktop-Viewer",
+                "value": false
+              }
+            ],
+            "user-agent": [
+              {
+                "key": "User-Agent",
+                "value": "Amazon CloudFront"
+              }
+            ],
+            "host": [
+              {
+                "key": "Host",
+                "value": "example.org"
+              }
+            ]
+          },
+          "method": "GET",
+          "origin": {
+            "s3": {
+              "customHeaders": {},
+              "domainName": "pc-bucket.s3.amazonaws.com",
+              "path": "/images/12345",
+              "port": 443,
+              "protocol": "https",
+              "authMethod": "origin-access-identity",
+              "region": "ap-northeast-1",
+            }
+          },
+          "querystring": "",
+          "uri": "/"
+        }
+      }
+    }
+  ]
+}
+```
+
+<br>
+
+## 01-04. コンピューティング｜Security Group
 
 ### Security Group
 
@@ -257,7 +508,7 @@ CloudFrontと連携する場合，CloudFrontに割り振られる可能性のあ
 
 <br>
 
-## 01-03. コンピューティングに付随する設定
+## 01-05. コンピューティングに付随する設定
 
 ### Region，Availability Zone
 
@@ -316,16 +567,16 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 | タスクの数                   | タスクの構築数をいくつに維持するかを設定する．               | タスクが何らかの原因で停止した場合，空いているAWSサービスを使用して，タスクが自動的に補填される． |
 | デプロイメント               | ローリングアップデート，Blue/Greenデプロイがある．           |                                                              |
 
-#### ・自動タスクスケーリングポリシー
+#### ・ターゲット追跡スケーリングポリシー
 
-| 設定項目（ターゲットの追跡を選んだ場合） | 説明                                                         | 備考                                                         |
-| ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ターゲット追跡スケーリングポリシー       | 監視対象のメトリクスがターゲット値を超過しているか否かに基づいて，タスク数のスケーリングが実行される． |                                                              |
-| ECSサービスメトリクス                    | 監視対象のメトリクスを設定する．                             | 「平均CPU」，「平均メモリ」，「タスク当たりのALBからのリクエスト数」を監視できる． |
-| ターゲット値                             | タスク数のスケーリングが実行される閾値を設定する．           | ターゲット値を超過している場合に，タスク数がスケールアウトされる． |
-| スケールアウトクールダウン期間           | スケールアウトを発動してから，次回のスケールアウトを発動できるまでの時間を設定する． | ターゲット値を超過する状態が断続的に続くと，スケールアウトが連続して実行されてしまうため，これを防ぐことができる． |
-| スケールインクールダウン期間             | スケールインを発動してから，次回のスケールインを発動できるまでの時間を設定する． |                                                              |
-| スケールインの無効化                     |                                                              |                                                              |
+| 設定項目                           | 説明                                                         | 備考                                                         |
+| ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ターゲット追跡スケーリングポリシー | 監視対象のメトリクスがターゲット値を超過しているか否かに基づいて，タスク数のスケーリングが実行される． |                                                              |
+| ECSサービスメトリクス              | 監視対象のメトリクスを設定する．                             | 「平均CPU」，「平均メモリ」，「タスク当たりのALBからのリクエスト数」を監視できる． |
+| ターゲット値                       | タスク数のスケーリングが実行される閾値を設定する．           | ターゲット値を超過している場合に，タスク数がスケールアウトされる． |
+| スケールアウトクールダウン期間     | スケールアウトを発動してから，次回のスケールアウトを発動できるまでの時間を設定する． | ターゲット値を超過する状態が断続的に続くと，スケールアウトが連続して実行されてしまうため，これを防ぐことができる． |
+| スケールインクールダウン期間       | スケールインを発動してから，次回のスケールインを発動できるまでの時間を設定する． |                                                              |
+| スケールインの無効化               |                                                              |                                                              |
 
 1. 最小タスク数を2，必要タスク数を4，最大数を6，CPU平均使用率を40%に設定するとする．
 2. 平常時，CPU使用率40%に維持される．
@@ -364,9 +615,31 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 各タスクをどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．タスク定義を削除するには，全てのリビジョン番号のタスク定義を登録解除する必要がある．
 
+#### ・タスクロール
+
+タスク内のコンテナが，他のリソースにアクセスするために必要なロールのこと．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*"
+      ]
+    }
+  ]
+}
+```
+
 #### ・タスク実行ロール
 
-タスク上に存在するコンテナエージェントが，タスクを起動するために必要なロールのこと．AWS管理ポリシーである「```AmazonECSTaskExecutionRolePolicy```」が付与されたロールを，タスクにアタッチする必要がある．このポリシーには，ECRへのアクセス権限の他，CloudWatch Logsにログを生成するための権限が設定されている．タスク内のコンテナに必要なタスクロールとは区別すること．
+タスク上に存在するコンテナエージェントが，他のリソースにアクセスするために必要なロールのこと．AWS管理ポリシーである「```AmazonECSTaskExecutionRolePolicy```」が付与されたロールを，タスクにアタッチする必要がある．このポリシーには，ECRへのアクセス権限の他，CloudWatch Logsにログを生成するための権限が設定されている．タスク内のコンテナに必要なタスクロールとは区別すること．
 
 ```json
 {
@@ -420,56 +693,34 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 タスク内のコンテナ一つに対して，環境を設定する．
 
-https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/userguide/task_definition_parameters.html
+参考：https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/userguide/task_definition_parameters.html
 
-| 設定項目                                    | 対応するdockerコマンドオプション             | 説明                                                         | 備考                                                         |
-| ------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| cpu                                         | ```--cpus```                                 | 仮想cpu数を設定する．                                        |                                                              |
-| dnsServers                                  | ```--dns```                                  | コンテナが名前解決に使用するDNSサーバのIPアドレスを設定する． |                                                              |
-| essential                                   |                                              | コンテナが必須か否かを設定する．                             | ・```true```の場合，コンテナが停止すると，タスクに含まれる全コンテナが停止する．<br>```false```の場合，コンテナが停止しても，その他のコンテナは停止しない． |
-| healthCheck<br>(command)                    | ```--health-cmd```                           | ホストマシンからFargateに対して，```curl```コマンドによるリクエストを送信し，レスポンス内容を確認． |                                                              |
-| healthCheck<br>(interval)                   | ```--health-interval```                      | ヘルスチェックの間隔を設定する．                             |                                                              |
-| healthCheck<br>(retries)                    | ```--health-retries```                       | ヘルスチェックを成功と見なす回数を設定する．                 |                                                              |
-| hostName                                    | ```--hostname```                             | コンテナにホスト名を設定する．                               |                                                              |
-| image                                       |                                              | ECRのURLを設定する．                                         |                                                              |
-| logConfiguration<br/>(awslogs-group)        |                                              | ログを送信するロググループを設定する．                       |                                                              |
-| logConfiguration<br>(awslogs-stream-prefix) |                                              | ログストリームのプレフィックス名を設定する．                 | ログストリームには，「```<プレフィックス名>/<コンテナ名>/<タスクID>```」の形式で送信される． |
-| portMapping                                 | ```--publish```                              | ホストマシンとFargateのアプリケーションのポート番号をマッピングし，ポートフォワーディングを行う． |                                                              |
-| secrets<br>(volumesFrom)                    |                                              | SSMパラメータストアから参照する変数を設定する．              |                                                              |
-| memory                                      | ```--memory```<br>```--memory-reservation``` | プロセスが使用できるメモリの閾値を設定する．                 |                                                              |
-| mountPoints                                 |                                              |                                                              |                                                              |
-| ulimit                                      | Linuxコマンドの<br>```--ulimit```に相当      |                                                              |                                                              |
+| 設定項目                         | 対応するdockerコマンドオプション             | 説明                                                         | 備考                                                         |
+| -------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| cpu                              | ```--cpus```                                 | 仮想cpu数を設定する．                                        |                                                              |
+| dnsServers                       | ```--dns```                                  | コンテナが名前解決に使用するDNSサーバのIPアドレスを設定する． |                                                              |
+| essential                        |                                              | コンテナが必須か否かを設定する．                             | ・```true```の場合，コンテナが停止すると，タスクに含まれる全コンテナが停止する．<br>```false```の場合，コンテナが停止しても，その他のコンテナは停止しない． |
+| healthCheck<br>(command)         | ```--health-cmd```                           | ホストマシンからFargateに対して，```curl```コマンドによるリクエストを送信し，レスポンス内容を確認． |                                                              |
+| healthCheck<br>(interval)        | ```--health-interval```                      | ヘルスチェックの間隔を設定する．                             |                                                              |
+| healthCheck<br>(retries)         | ```--health-retries```                       | ヘルスチェックを成功と見なす回数を設定する．                 |                                                              |
+| hostName                         | ```--hostname```                             | コンテナにホスト名を設定する．                               |                                                              |
+| image                            |                                              | ECRのURLを設定する．                                         |                                                              |
+| logConfiguration<br/>(logDriver) | ```--log-driver```                           | ログドライバーを指定することにより，ログの出力先を設定する． | Dockerのログドライバーにおおよそ対応しており，Fargateであれば「awslogs，awsfirelens，splunk」に設定できる．EC2であれば「awslogs，json-file，syslog，journald，fluentd，gelf，logentries」を設定できる． |
+| logConfiguration<br/>(options)   | ```--log-opt```                              | ログドライバーに応じて，詳細な設定を行う．                   |                                                              |
+| portMapping                      | ```--publish```                              | ホストマシンとFargateのアプリケーションのポート番号をマッピングし，ポートフォワーディングを行う． |                                                              |
+| secrets<br>(volumesFrom)         |                                              | SSMパラメータストアから参照する変数を設定する．              |                                                              |
+| memory                           | ```--memory```<br>```--memory-reservation``` | プロセスが使用できるメモリの閾値を設定する．                 |                                                              |
+| mountPoints                      |                                              |                                                              |                                                              |
+| ulimit                           | Linuxコマンドの<br>```--ulimit```に相当      |                                                              |                                                              |
 
-<br>
+#### ・awslogsドライバー
 
-### Fargate起動タイプ
-
-#### ・割り当てられるパブリックIPアドレス，FargateのIPアドレス問題
-
-FargateにパブリックIPアドレスを持たせたい場合，Elastic IPアドレスの設定項目がなく，動的パブリックIPアドレスしか設定できない（Fargateの再構築後に変化する）．アウトバウンド通信の先にある外部サービスが，セキュリティ上で静的なIPアドレスを要求する場合，アウトバウンド通信（グローバルネットワーク向き通信）時に送信元パケットに付加されるIPアドレスが動的になり，リクエストができなくなってしまう．
-
-![NatGatewayを介したFargateから外部サービスへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateから外部サービスへのアウトバウンド通信.png)
-
-そこで，Fargateのアウトバウンド通信が，Elastic IPアドレスを持つNAT Gatewayを経由するようにする（Fargateは，パブリックサブネットとプライベートサブネットのどちらに置いても良い）．これによって，Nat GatewayのElastic IPアドレスが送信元パケットに付加されるため，Fargateの送信元IPアドレスを見かけ上静的に扱うことができるようになる．
-
-#### ・ECRに対するDockerイメージのプル
-
-FargateからECRに対するDockerイメージのプルは，アウトバウンド通信（グローバルネットワーク向き通信）である．以下の通り，NAT Gatewayを設置したとする．この場合，ECSやECRとのアウトバウンド通信がNAT Gatewayを通過するため，高額料金を請求されてしまう．
-
-![NatGatewayを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateからECRECSへのアウトバウンド通信.png)
-
-そこで，一つの方法として，ECR用のVPCエンドポイントを設け，これに対してアウトバウンド通信を行う設計方法がある．
-
-![PrivateLinkを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/PrivateLinkを介したFargateからECRECSへのアウトバウンド通信.png)
-
-同様に，リクエストを送信するために，VPCエンドポイントを設ける必要があるサービスが以下の通り．
-
-| リソース        | VPCエンドポイントのサービス名        | 説明                                       |
-| --------------- | ------------------------------------ | ------------------------------------------ |
-| ECR             | com.amazonaws.ap-northeast-1.ecr.api | イメージのGETリクエストを行うため          |
-| ECR             | com.amazonaws.ap-northeast-1.ecr.dkr | イメージのGETリクエストを行うため          |
-| CloudWatch Logs | com.amazonaws.ap-northeast-1.logs    | ECSコンテナのログをPOSTリクエストするため  |
-| S3              | com.amazonaws.ap-northeast-1.s3      | イメージのレイヤーをPOSTリクエストするため |
+| 設定項目                | 説明                                                         | 備考                                                         |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| awslogs-group           | ログ送信先のCloudWatch Logsのロググループを設定する．        |                                                              |
+| awslogs-datetime-format | 日時フォーマットを定義し，またこれをログの区切り単位としてログストリームに出力する． | 正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．例えば「```\\[%Y-%m-%d %H:%M:%S\\]```」となる． |
+| awslogs-region          | ログ送信先のCloudWatch Logsのリージョンを設定する．          |                                                              |
+| awslogs-stream-prefix   | ログ送信先のCloudWatch Logsのログストリームのプレフィックス名を設定する． | ログストリームには，「```<プレフィックス名>/<コンテナ名>/<タスクID>```」の形式で送信される． |
 
 <br>
 
@@ -486,6 +737,37 @@ ECRのイメージの有効期間を定義できる．
 | 一致条件             | イメージの有効期間として，同条件に当てはまるイメージが削除される閾値を設定できる． | 個数，プッシュされてからの期間，などを閾値として設定できる． |
 
 #### ・タグの変性／不変性
+
+<br>
+
+### Tips
+
+#### ・割り当てられるパブリックIPアドレス，FargateのIPアドレス問題
+
+FargateにパブリックIPアドレスを持たせたい場合，Elastic IPアドレスの設定項目がなく，動的パブリックIPアドレスしか設定できない（Fargateの再構築後に変化する）．アウトバウンド通信の先にある外部サービスが，セキュリティ上で静的なIPアドレスを要求する場合，アウトバウンド通信（グローバルネットワーク向き通信）時に送信元パケットに付加されるIPアドレスが動的になり，リクエストができなくなってしまう．
+
+![NatGatewayを介したFargateから外部サービスへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateから外部サービスへのアウトバウンド通信.png)
+
+そこで，Fargateのアウトバウンド通信が，Elastic IPアドレスを持つNAT Gatewayを経由するようにする（Fargateは，パブリックサブネットとプライベートサブネットのどちらに置いても良い）．これによって，Nat GatewayのElastic IPアドレスが送信元パケットに付加されるため，Fargateの送信元IPアドレスを見かけ上静的に扱うことができるようになる．
+
+#### ・VPCの外側に対するアウトバウト通信問題
+
+タスク内のFargateは，VPCの外側にあるサービスに対して，アウトバウンド通信を送信するために，NATGatewayまたはVPCエンドポイントが必要である．料金的な観点から，VPCエンドポイントを使用した方がよい．
+
+| VPCエンドポイントの接続先 | プライベートDNS名                                            | 説明                                               |
+| ------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
+| CloudWatch Logs           | ```logs.ap-northeast-1.amazonaws.com```                      | ECSコンテナのログをPOSTリクエストを送信するため．  |
+| ECR                       | ```api.ecr.ap-northeast-1.amazonaws.com```<br>```*.dkr.ecr.ap-northeast-1.amazonaws.com``` | イメージのGETリクエストを送信するため．            |
+| S3                        | なし                                                         | イメージのレイヤーをPOSTリクエストを送信するため   |
+| SSM                       | ```ssm.ap-northeast-1.amazonaws.com```                       | SSMパラメータストアにGETリクエストを送信するため． |
+
+例えば，FargateからECRに対するDockerイメージのプルは，VPCの外側に対するアウトバウンド通信（グローバルネットワーク向き通信）である．以下の通り，NAT Gatewayを設置したとする．この場合，ECSやECRとのアウトバウンド通信がNAT Gatewayを通過するため，高額料金を請求されてしまう．
+
+![NatGatewayを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NatGatewayを介したFargateからECRECSへのアウトバウンド通信.png)
+
+そこで，ECR用のVPCエンドポイントを設け，これに対してアウトバウンド通信を行うようにするとよい．なお，NAT GatewayとVPCエンドポイントの両方を構築している場合，ルートテーブルでは，VPCエンドポイントへのアウトバウンド通信の方が優先される．
+
+![PrivateLinkを介したFargateからECRECSへのアウトバウンド通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/PrivateLinkを介したFargateからECRECSへのアウトバウンド通信.png)
 
 <br>
 
@@ -949,16 +1231,16 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 #### ・統合リクエストの詳細項目
 
-| 設定項目                     | 説明                                                         | 備考                                                         |
-| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 統合タイプ                   | リクエストの転送先を設定する．                               |                                                              |
-| VPCリンク                    |                                                              |                                                              |
-| プロキシ統合                 | HTTPリクエストの各種ヘッダーデータをメタデータでラッピングするかどうかを設定する． | ・基本的には有効化が推奨される．<br>・Lambdaプロキシ統合の場合，Lamba関数が各種ヘッダーデータを取り出して使用できるようになる． |
-| エンドポイントURL            | エンドポイントで受信したリクエストのルーティング先URLを設定する． |                                                              |
-| デフォルトタイムアウトの使用 |                                                              |                                                              |
-| URLパスパラメータ            |                                                              |                                                              |
-| URLクエリ文字列パラメータ    |                                                              |                                                              |
-| HTTPヘッダー                 |                                                              |                                                              |
+| 設定項目                     | 説明                                                         | 備考                                                   |
+| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
+| 統合タイプ                   | リクエストの転送先を設定する．                               |                                                        |
+| VPCリンク                    |                                                              |                                                        |
+| プロキシ統合                 | HTTPリクエストのデータをAWS側が用意したJSONにマッピングするかどうかを設定する． | Lambdaプロキシ統合については，Lambdaの説明を参照せよ． |
+| エンドポイントURL            | エンドポイントで受信したリクエストのルーティング先URLを設定する． |                                                        |
+| デフォルトタイムアウトの使用 |                                                              |                                                        |
+| URLパスパラメータ            |                                                              |                                                        |
+| URLクエリ文字列パラメータ    |                                                              |                                                        |
+| HTTPヘッダー                 |                                                              |                                                        |
 
 #### ・テスト
 
@@ -1121,7 +1403,7 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 | AWS WAF             | CloudFrontに紐づけるWAFを設定する．                          |                                                              |
 | CNAME               | CloudFrontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）に紐づけるRoute53レコード名を設定する． | ・Route53からルーティングする場合は必須．<br>・複数のレコード名を設定できる． |
 | SSL Certificate     | HTTPSプロトコルでオリジンに転送する場合に設定する．          | 上述のCNAMEを設定した場合，SSL証明書が別途必要になる．また，Certificate Managerを使用する場合，この証明書は『バージニア北部』で申請する必要がある． |
-| Default Root Object | クライアントからのリクエストがドキュメントルートの場合に，オリジンの他のパスに転送するかどうかを設定． | Webサーバで制御できるので，基本的には不要．                  |
+| Default Root Object | クライアントからのリクエストがドキュメントルートの場合に，どのファイルやディレクトリにルーティングするかを設定する． | Webサーバで制御できるので，基本的には不要．                  |
 | Standard Logging    | CloudFrontのアクセスログをS3に生成するかどうかを設定する．   |                                                              |
 
 #### ・Origin and Origin Groupsの詳細項目
@@ -1136,21 +1418,25 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 
 #### ・Behaviorの詳細項目
 
-| 設定項目                                | 説明                                                         | 備考                                                         |
-| --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Precedence                              | 処理の優先順位．                                             | 最初に作成したBehaviorが「```Default (*)```」となり，これは後から変更できないため，主要なBehaviorをまず最初に設定する． |
-| Path Pattern                            | Behaviorを行うファイルパスを設定する．                       |                                                              |
-| Origin or Origin Group                  | Behaviorを行うオリジンを設定する．                           |                                                              |
-| Viewer Protocol Policy                  | HTTP／HTTPSのどちらを受信するか，またどのように変換して転送するかを設定 | ・```HTTP and HTTPS```：両方受信し，そのまま転送<br/>・```Redirect HTTP to HTTPS```：両方受信し，HTTPSで転送<br/>・```HTTPS Only```：HTTPSのみ受信し，HTTPSで転送 |
-| Allowed HTTP Methods                    | リクエストのHTTPメソッドのうち，オリジンへの転送を許可するものを設定 | ・パスパターンが静的ファイルへのリクエストの場合，GETのみ許可．<br>・パスパターンが動的ファイルへのリクエストの場合，全てのメソッドを許可． |
-| Cache Based on Selected Request Headers | オリジンへの転送を許可するリクエストヘッダーを設定する．     | ・各ヘッダー転送の全拒否，一部許可，全許可を設定できる．<br>・全許可の場合，コンテンツのCacheを生成しない． |
-| Whitelist Header                        | オリジンへの転送を許可するリクエストヘッダーを設定する．     | ・```Accept-xxxxx```：アプリケーションにレスポンスして欲しいデータの種類（データ型など）を指定．<br/>・ ```CloudFront-Is-xxxxx-Viewer```：デバイスタイプのBool値が格納されている．<br>・レスポンスのヘッダーに含まれる「```X-Cache:```」が「```Hit from cloudfront```」，「```Miss from cloudfront```」のどちらで，Cacheの使用の有無を判断できる．<br/> |
-| Object Caching                          | CloudFrontにコンテンツのCacheを保存しておく秒数を設定する．  | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
-| TTL                                     | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・リクエストヘッダーにCache-Control Max-Ageが指定されている場合はMinとMaxが適用され，設定されていない場合はDefault TTLが適用される．<br>・「Cache Based on Selected Request Headers = All」としている場合，最小TTLはゼロでなければならない． |
-| Farward Cookies                         | オリジンへの転送を許可するCookie情報のキー名を設定する．     | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，CloudFrontに保存されたCacheがHITしない．CloudFrontはキー名／値を保持するため，変化しやすいキー名／値はWhitelistで許可しないようにする．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
-| Query String Forwarding and Caching     | オリジンへの転送とCacheを許可するクエリパラメータ名を設定    | ・クエリストリング転送とCacheの，全拒否，一部許可，全許可を選択できる．全拒否にすると，Webサイトにクエリストリングをリクエストできなくなるので注意．<br>・異なるクエリパラメータを，別々のCacheとして保存するかどうかを設定できる． |
-| Restrict Viewer Access                  | リクエストの送信元を制限するかどうかを設定できる．           | セキュリティグループで制御できるため，ここでは設定しなくてよい． |
-| Compress Objects Automatically          | レスポンス時にgzipを圧縮するかどうかを設定                   | ・クライアントからのリクエストヘッダーのAccept-Encodingにgzipが設定されている場合，レスポンス時に，gzip形式で圧縮して送信するかどうかを設定する．設定しない場合，圧縮せずにレスポンスを送信する．<br>・クライアント側のダウンロード速度向上のため，基本的には有効化する． |
+何に基づいたCacheを行うかについては，★マークの項目で制御できる．★マークで，各項目の全て値が，過去のリクエストに合致した時のみ，そのリクエストと過去のものが同一であると見なす仕組みになっている．HIT率改善の方法は以下リンクを参照せよ．
+
+https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/cache-hit-ratio.html#cache-hit-ratio-query-string-parameters
+
+| 設定項目                                                     | 説明                                                         | 備考                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Precedence                                                   | 処理の優先順位．                                             | 最初に作成したBehaviorが「```Default (*)```」となり，これは後から変更できないため，主要なBehaviorをまず最初に設定する． |
+| Path Pattern                                                 | Behaviorを行うファイルパスを設定する．                       |                                                              |
+| Origin or Origin Group                                       | Behaviorを行うオリジンを設定する．                           |                                                              |
+| Viewer Protocol Policy                                       | HTTP／HTTPSのどちらを受信するか，またどのように変換して転送するかを設定 | ・```HTTP and HTTPS```：両方受信し，そのまま転送<br/>・```Redirect HTTP to HTTPS```：両方受信し，HTTPSで転送<br/>・```HTTPS Only```：HTTPSのみ受信し，HTTPSで転送 |
+| Allowed HTTP Methods                                         | リクエストのHTTPメソッドのうち，オリジンへの転送を許可するものを設定 | ・パスパターンが静的ファイルへのリクエストの場合，GETのみ許可．<br>・パスパターンが動的ファイルへのリクエストの場合，全てのメソッドを許可． |
+| ★Cache Based on Selected Request Headers<br>（★については表上部参照） | リクエストヘッダーのうち，オリジンへの転送を許可し，またCacheの対象とするものを設定する． | ・各ヘッダー転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのヘッダーの転送を拒否し，Cacheの対象としない．動的になりやすい値をもつヘッダー（Accept-Datetimeなど）を一切使用せずに，それ以外のクエリ文字やCookieでCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br>・一部転送：指定したヘッダーのみ転送を許可し，Cacheの対象とする．<br>・全許可：全てのヘッダーがCacheの対象となる．しかし，日付に関するヘッダーなどの動的な値をCacheの対象としてしまうと．同一と見なすリクエストがほとんどなくなり，HITしなくなる．そのため，この設定でCacheは実質無効となり，「対象としない」に等しい． |
+| Whitelist Header                                             | Cache Based on Selected Request Headers を参照せよ．         | ・```Accept-xxxxx```：アプリケーションにレスポンスして欲しいデータの種類（データ型など）を指定．<br/>・ ```CloudFront-Is-xxxxx-Viewer```：デバイスタイプのBool値が格納されている．<br>・レスポンスのヘッダーに含まれる「```X-Cache:```」が「```Hit from cloudfront```」，「```Miss from cloudfront```」のどちらで，Cacheの使用の有無を判断できる．<br/> |
+| Object Caching                                               | CloudFrontにコンテンツのCacheを保存しておく秒数を設定する．  | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
+| TTL                                                          | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・リクエストヘッダーにCache-Control Max-Ageが指定されている場合はMinとMaxが適用され，設定されていない場合はDefault TTLが適用される．<br>・「Cache Based on Selected Request Headers = All」としている場合，Cacheが実質無効となるため，最小TTLはゼロでなければならない． |
+| ★Farward Cookies<br/>（★については表上部参照）               | Cookie情報のキー名のうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのCookieの転送を拒否し，Cacheの対象としない．Cookieはユーザごとに一意になることが多く，動的であるが，それ以外のヘッダーやクエリ文字でCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br/>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，CloudFrontに保存されたCacheがHITしない．CloudFrontはキー名／値を保持するため，変化しやすいキー名／値は，オリジンに転送しないように設定する．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．そのため，ユーザを一意に判定することが難しくなってしまう．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
+| ★Query String Forwarding and Caching<br/>（★については表上部参照） | クエリストリングのうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・クエリストリング転送とCacheの，全拒否，一部許可，全許可を選択できる．全拒否にすると，Webサイトにクエリストリングをリクエストできなくなるので注意．<br>・異なるクエリパラメータを，別々のCacheとして保存するかどうかを設定できる． |
+| Restrict Viewer Access                                       | リクエストの送信元を制限するかどうかを設定できる．           | セキュリティグループで制御できるため，ここでは設定しなくてよい． |
+| Compress Objects Automatically                               | レスポンス時にgzipを圧縮するかどうかを設定                   | ・クライアントからのリクエストヘッダーのAccept-Encodingにgzipが設定されている場合，レスポンス時に，gzip形式で圧縮して送信するかどうかを設定する．設定しない場合，圧縮せずにレスポンスを送信する．<br>・クライアント側のダウンロード速度向上のため，基本的には有効化する． |
 
 #### ・Invalidation
 
@@ -1312,9 +1598,10 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 
 #### ・ルートテーブルの種類
 
-|          | メインルートテーブル | カスタムルートテーブル |
-| -------- | -------------------- | ---------------------- |
-| **機能** |                      |                        |
+| 種類                   | 説明                                                         |
+| ---------------------- | ------------------------------------------------------------ |
+| メインルートテーブル   | VPCの構築時に自動で構築される．どのルートテーブルにも関連付けられていないサブネットのルーティングを設定する． |
+| カスタムルートテーブル | 特定のサブネットのルーティングを設定する．                   |
 
 #### ・具体例1
 
@@ -1492,17 +1779,31 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 ## 07. 管理，ガバナンス
 
-### Auto Scaling
+### オートスケーリング
 
-#### ・Auto Scalingとは
+#### ・オートスケーリングとは
 
-ユーザが指定した条件で，EC2の自動水平スケーリングを行うAWSリソース．他のスケーリングについては，ネットワークのノートを参照．
-
-| スケールアウト      | スケールイン        |
-| ------------------- | ------------------- |
-| ・起動するEC2の個数 | ・終了するEC2の条件 |
+AWSリソースの自動水平スケーリングを自動的に実行する．
 
 ![Auto-scaling](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Auto-scaling.png)
+
+#### ・起動設定
+
+スケーリングの対象となるAWSリソースを定義する．
+
+#### ・スケーリンググループ
+
+スケーリングのグループ構成を定義する．各グループで最大最小必要数を設定できる．
+
+#### ・スケーリングポリシー
+
+スケーリングの方法を定義する．
+
+| 種類                       | 説明                                                         | 備考                                                         |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| シンプルスケーリング       | 特定のメトリクスに単一の閾値を設定し，それに応じてスケーリングを行う． |                                                              |
+| ステップスケーリング       | 特定のメトリクスに段階的な閾値を設定し，それに応じて段階的にスケーリングを実行する． | （例）CPU平均使用率に段階的な閾値を設定する．<br>・40%の時にインスタンスが１つスケールアウト<br>・70%の時にインスタンスを２つスケールアウト<br>・90%の時にインスタンスを３つスケールアウト |
+| ターゲット追跡スケーリング | 特定のメトリクス（CPU平均使用率やMemory平均使用率）にターゲット値を設定し，それに収束するように自動的にスケールインとスケールアウトを実行する． | ターゲット値を設定できるリソースの例<br>・ECSサービスのタスク数<br>・RDSクラスターのAuroraのリードレプリカ数<br>・Lambdaのスクリプト同時実行数 |
 
 <br>
 
@@ -1705,8 +2006,10 @@ file = /var/log/messages
 
 # 要勉強
 buffer_duration = 5000
-log_stream_name = {instance_id}
 initial_position = start_of_file
+
+# インスタンスID
+log_stream_name = {instance_id}
 
 # AWS上で管理するロググループ名
 log_group_name = /var/log/messages
@@ -1714,12 +2017,22 @@ log_group_name = /var/log/messages
 # ------------------------------------------
 # Nginx CloudWatch Logs
 # ------------------------------------------
-
+[/var/log/nginx/error.log]
+file             = /var/log/nginx/error.log
+buffer_duration  = 5000
+log_stream_name  = {instance_id}
+initial_position = start_of_file
+log_group_name   = /var/log/nginx/error_log.production
 
 # ------------------------------------------
 # Application CloudWatch Logs
 # ------------------------------------------
-
+[/var/www/project/app/storage/logs/laravel.log]
+file             = /var/www/project/app/storage/logs/laravel.log
+buffer_duration  = 5000
+log_stream_name  = {instance_id}
+initial_position = start_of_file
+log_group_name   = /var/www/project/app/storage/logs/laravel_log.production
 ```
 
 設定後，```awslogs```コマンドでプロセスを起動する．
@@ -2297,11 +2610,11 @@ IAMポリシーのセットを持つ
 
 #### ・IAMロールの種類
 
-| IAMロールの種類                  | 説明                                              | 例                                   |
-| -------------------------------- | ------------------------------------------------- | ------------------------------------ |
-| サービスリンクロール             | AWSリソースを構築した時に自動的に作成されるロール | Lambdaの構築時に構築される実行ロール |
-| クロスアカウントのアクセスロール |                                                   |                                      |
-| プロバイダのアクセスロール       |                                                   |                                      |
+| IAMロールの種類                  | 説明                                                         | 備考                                                         |
+| -------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| サービスリンクロール             | AWSリソースを構築した時に自動的に作成されるロール．他にはアタッチできない専用のポリシーがアタッチされている． | ・「AWSServiceRoleForXxxxxx」という名前で自動的に構築される．特に設定せずとも，自動的にリソースにアタッチされる．<br>・関連するリソースを削除するまで，ロール自体できない． |
+| クロスアカウントのアクセスロール |                                                              |                                                              |
+| プロバイダのアクセスロール       |                                                              |                                                              |
 
 #### ・IAMロールを付与する方法
 
@@ -2317,13 +2630,17 @@ IAMポリシーのセットを持つ
 
 #### ・STSとは
 
+AWSリソースに一時的にアクセスできる認証情報（アクセスキー，シークレットアクセスキー，セッショントークン）を発行する．この認証情報は，一時的なアカウント情報として使用できる．
+
+![STS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/STS.jpg)
+
 <br>
 
-### STSの仕組み
+### STSの手順
 
 #### 1. IAMロールに信頼ポリシーを付与
 
-IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
+必要なポリシーが設定されたIAMロールを構築する．その時，信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
 
 ```json
 {
@@ -2352,9 +2669,12 @@ IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼�
 ```bash
 #!/bin/bash
 
+set -xeuo pipefail
+set -u
+
 # 事前に環境変数にインフラ環境名を代入する．
 case $ENV in
-    "feat")
+    "test")
         aws_account_id="<作業環境アカウントID>"
         aws_access_key_id="<作業環境アクセスキーID>"
         aws_secret_access_key="<作業環境シークレットアクセスキー>"
@@ -2428,14 +2748,31 @@ cat << EOF > assumed_user.sh
 export AWS_ACCESS_KEY_ID="$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')"
 export AWS_SECRET_ACCESS_KEY="$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')"
 export AWS_SESSION_TOKEN="$(echo "$aws_sts_credentials" | jq -r '.SessionToken')"
-export AWS_ACCOUNT_ID="<アカウントID>"
+export AWS_ACCOUNT_ID="$aws_account_id"
 export AWS_DEFAULT_REGION="ap-northeast-1"
 EOF
 ```
 
-#### 4. 接続確認
+#### 4. credentialsを作成
 
-AssumeRole
+ロールを引き受けた新しいアカウントの情報を，credentialsに書き込む．
+
+```shell
+#!/bin/bash
+
+aws configure --profile ${ENV}-lumonde << EOF
+$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')
+$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')
+ap-northeast-1
+json
+EOF
+
+echo aws_session_token = $(echo "$aws_sts_credentials" | jq -r '.SessionToken') >> ~/.aws/credentials
+```
+
+#### 5. 接続確認
+
+ロールを引き受けた新しいアカウントを使用して，AWSリソースに接続できるかを確認する．
 
 ```bash
 #!/bin/bash
