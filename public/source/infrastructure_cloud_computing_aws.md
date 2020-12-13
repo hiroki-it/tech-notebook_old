@@ -2613,13 +2613,17 @@ IAMポリシーのセットを持つ
 
 #### ・STSとは
 
+AWSリソースに一時的にアクセスできる認証情報（アクセスキー，シークレットアクセスキー，セッショントークン）を発行する．この認証情報は，一時的なアカウント情報として使用できる．
+
+![STS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/STS.jpg)
+
 <br>
 
-### STSの仕組み
+### STSの手順
 
 #### 1. IAMロールに信頼ポリシーを付与
 
-IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
+必要なポリシーが設定されたIAMロールを構築する．その時，信頼ポリシーにおいて，ユーザの```ARN```を信頼されたエンティティとして設定しておく．これにより，そのユーザに対して，ロールをアタッチできるようになる．
 
 ```json
 {
@@ -2648,9 +2652,12 @@ IAMロールの信頼ポリシーにおいて，ユーザの```ARN```を信頼�
 ```bash
 #!/bin/bash
 
+set -xeuo pipefail
+set -u
+
 # 事前に環境変数にインフラ環境名を代入する．
 case $ENV in
-    "feat")
+    "test")
         aws_account_id="<作業環境アカウントID>"
         aws_access_key_id="<作業環境アクセスキーID>"
         aws_secret_access_key="<作業環境シークレットアクセスキー>"
@@ -2724,14 +2731,31 @@ cat << EOF > assumed_user.sh
 export AWS_ACCESS_KEY_ID="$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')"
 export AWS_SECRET_ACCESS_KEY="$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')"
 export AWS_SESSION_TOKEN="$(echo "$aws_sts_credentials" | jq -r '.SessionToken')"
-export AWS_ACCOUNT_ID="<アカウントID>"
+export AWS_ACCOUNT_ID="$aws_account_id"
 export AWS_DEFAULT_REGION="ap-northeast-1"
 EOF
 ```
 
-#### 4. 接続確認
+#### 4. credentialsを作成
 
-AssumeRole
+ロールを引き受けた新しいアカウントの情報を，credentialsに書き込む．
+
+```shell
+#!/bin/bash
+
+aws configure --profile ${ENV}-lumonde << EOF
+$(echo "$aws_sts_credentials" | jq -r '.AccessKeyId')
+$(echo "$aws_sts_credentials" | jq -r '.SecretAccessKey')
+ap-northeast-1
+json
+EOF
+
+echo aws_session_token = $(echo "$aws_sts_credentials" | jq -r '.SessionToken') >> ~/.aws/credentials
+```
+
+#### 5. 接続確認
+
+ロールを引き受けた新しいアカウントを使用して，AWSリソースに接続できるかを確認する．
 
 ```bash
 #!/bin/bash
