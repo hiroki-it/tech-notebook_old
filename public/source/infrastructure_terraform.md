@@ -2223,6 +2223,135 @@ resource "aws_instance" "bastion" {
 
 <br>
 
+### IAM Role
+
+#### ・信頼ポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task Execution
+###############################################
+resource "aws_iam_role" "ecs_task_execution" {
+  name        = "${var.environment}-${var.service}-ecs-task-execution-role"
+  description = "The role for ${var.environment}-${var.service}-ecs-task"
+  assume_role_policy = templatefile(
+    "${path.module}/policies/trust_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role" "ecs_task" {
+  name        = "${var.environment}-${var.service}-ecs-task-role"
+  description = "The role for ${var.environment}-${var.service}-ecs-task"
+  assume_role_policy = templatefile(
+    "${path.module}/policies/trust_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・インラインポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role_policy" "ecs_task" {
+  name = "${var.environment}-${var.service}-ssm-read-only-access-policy"
+  role = aws_iam_role.ecs_task_execution.id
+  policy = templatefile(
+    "${path.module}/policies/inline_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・AWS管理ポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task Execution
+###############################################
+resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+```
+
+#### ・カスタマー管理ポリシー
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role_policy_attachment" "ecs_task" {
+  role       = aws_iam_role.ecs_task.name
+  policy_arn = aws_iam_policy.ecs_task.arn
+}
+
+resource "aws_iam_policy" "ecs_task" {
+  name        = "${var.environment}-${var.service}-cloudwatch-logs-access-policy"
+  description = "Provides access to CloudWatch Logs"
+  policy = templatefile(
+    "${path.module}/policies/customer_managed_policies/cloudwatch_logs_access_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・サービスリンクロールを手動で構築
+
+サービスリンクロールは，AWSリソースの構築時に自動的に作成され，アタッチされるロールである．そのため，Terraformの管理外である．```aws_iam_service_linked_role```を使用して，手動で構築することが可能であるが，数が多く実装の負担にもなるため，あえて管理外としても問題ない．
+
+**＊実装例＊**
+
+```tf
+###############################################
+# IAM Role For ECS Service
+###############################################
+# Service Linked Role
+resource "aws_iam_service_linked_role" "ecs_service_auto_scaling" {
+  aws_service_name = "ecs.application-autoscaling.amazonaws.com"
+}
+```
+
+```tf
+###############################################
+# Output IAM Role
+###############################################
+output "ecs_service_auto_scaling_iam_service_linked_role_arn" {
+  value = aws_iam_service_linked_role.ecs_service_auto_scaling.arn
+}
+```
+
+```tf
+#########################################
+# Application Auto Scaling For ECS
+#########################################
+resource "aws_appautoscaling_target" "ecs" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.ecs_cluster_name}/${var.ecs_service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  max_capacity       = var.auto_scaling_ecs_task_max_capacity
+  min_capacity       = var.auto_scaling_ecs_task_min_capacity
+  # この設定がなくとも，サービスリンクロールが自動的に構築され，AutoScalingにアタッチされる．
+  role_arn           = var.ecs_service_auto_scaling_iam_service_linked_role_arn
+}
+```
+
+<br>
+
 ### Network Interface
 
 #### ・Network Interfaceをデタッチできない
