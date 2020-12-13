@@ -443,6 +443,16 @@ workflows:
 
 複数の```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
 
+#### ・jobの粒度
+
+![CICDパイプライン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CICDパイプライン.png)
+
+| 粒度   | 説明                                                         | 備考                                                       |
+| ------ | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| build  | プログラムの実行環境を構築する．                             | buildとtestを分割しにくい場合は，同じjobで定義してもよい． |
+| test   | 種々のテスト（Unitテスト，Functionalテスト，など）を実行する． |                                                            |
+| deploy | ステージング環境または本番環境へのデプロイを実行する．       |                                                            |
+
 <br>
 
 ### docker，machine
@@ -737,6 +747,67 @@ jobs:
 <br>
 
 ## 02-06. Workflow
+
+### Workflowの粒度
+
+#### ・ブランチ別
+
+**＊実装例＊**
+
+```yaml
+workflows:
+  # Review feature
+  feature:
+    jobs:
+      - build:
+          name: build_feat
+          filters:
+            branches:
+              only:
+                - /feature.*/
+      - test:
+          name: test_feat
+          requires:
+            - build_feat
+            
+  # Deploy staging env
+  develop:
+    jobs:
+      - build:
+          name: build_stg
+          filters:
+            branches:
+              only:
+                - develop
+      - test:
+          name: test_stg
+          requires:
+            - build_stg
+      - deploy:
+          name: deploy_stg
+          requires:
+            - test_stg
+        
+  # Deploy production env
+  main:
+    jobs:
+      - build:
+          name: build_prd
+          filters:
+            branches:
+              only:
+                - main
+      - test:
+          name: test_prd
+          requires:
+            - build_prd
+      - deploy:
+          name: deploy_prd
+          requires:
+            - test_prd
+```
+
+<br>
 
 ### 特殊なsteps
 
