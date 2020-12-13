@@ -384,6 +384,7 @@ module.vpc_module.aws_vpc.vpc
 
 ```
 terraform_project/
+│
 ├── modules
 │   ├── ec2
 │   │   ├── main.tf
@@ -393,7 +394,17 @@ terraform_project/
 │       ├── main.tf
 │       ├── output.tf
 │       └── variables.tf
-├── feat
+│
+├── ops (GitHubからデプロイする場合)
+│   ├── assume.sh
+│   ├── terraform_apply.sh
+│   ├── terraform_destroy_test.sh
+│   ├── terraform_fmt.sh
+│   ├── terraform_init.sh
+│   ├── terraform_plan.sh
+│   └── terraform_validate.sh
+│
+├── prd
 │   ├── config.tfvars
 │   ├── main.tf
 │   ├── providers.tf
@@ -1083,6 +1094,26 @@ resource "aws_nat_gateway" "this" {
 例として，S3を示す．バケットポリシーとパブリックアクセスブロックポリシーを同時に構築できないため，構築のタイミングが重ならないようにする必要がある．
 
 ```tf
+###############################################
+# S3
+###############################################
+
+# Example bucket
+resource "aws_s3_bucket" "example" {
+  bucket = "${var.environment}-${var.service}-example-bucket"
+  acl    = "private"
+}
+
+# Public access block
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket                  = aws_s3_bucket.example.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Bucket policy attachment
 resource "aws_s3_bucket_policy" "example" {
   bucket = aws_s3_bucket.example.id
   policy = templatefile(
@@ -2007,7 +2038,7 @@ output "nginx_ecr_repository_url" {
 
 ### CloudFront
 
-#### ・実装例
+#### ・全体の実装例
 
 ```tf
 resource "aws_cloudfront_distribution" "this" {
@@ -2160,7 +2191,7 @@ Terraformでタスク定義を更新すると，現在動いているECSで稼�
 
 ### EC2
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 ###############################################
@@ -2210,7 +2241,7 @@ Network Interfaceは特定のリソースの構築時に，自動で構築され
 
 ### Route53
 
-#### ・実装例
+#### ・全体の実装例
 
 ```tf
 ###############################################
@@ -2241,7 +2272,7 @@ resource "aws_route53_record" "example" {
 
 ### RDS
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 #########################################
