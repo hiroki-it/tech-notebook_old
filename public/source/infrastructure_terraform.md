@@ -2547,6 +2547,331 @@ Terraformの管理外のリソースには，コンソール画面上から，�
 
 ## 09. CircleCIとの組み合わせ
 
+### circleci
+
+#### ・設定ファイル
+
+| jobs                   |                                                              |
+| ---------------------- | ------------------------------------------------------------ |
+| plan                   | aws-cliのインストールから```terraform plan -out```コマンドまでの一連の処理を実行する． |
+| 承認ジョブ             |                                                              |
+| apply                  | developブランチからステージング環境にデプロイ                |
+| terraform_destroy_test | mainブランチから本番環境にデプロイ                           |
+
+| workflows |                                               |
+| --------- | --------------------------------------------- |
+| feature   | featureブランチからテスト開発環境にデプロイ   |
+| develop   | developブランチからステージング環境にデプロイ |
+| main      | mainブランチから本番環境にデプロイ            |
+
+```yaml
+version: 2.1
+
+executors:
+  primary_container:
+    parameters:
+      env:
+        type: enum
+        enum: [ "dev", "stg", "prd" ]
+    docker:
+      - image: hashicorp/terraform:x.xx.x
+    working_directory: ~/example_infrastructure
+    environment:
+      ENV: << parameters.env >>
+
+commands:
+  # AWSにデプロイするための環境を構築します．
+  aws_setup:
+    steps:
+      - run:
+          name: Install jq
+          command: |
+            apk add curl
+            curl -o /usr/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+            chmod +x /usr/bin/jq
+      - run:
+          name: Install aws-cli
+          command: |
+            apk add python3
+            apk add py-pip
+            pip3 install awscli
+            aws --version
+      - run:
+          name: Assume role
+          command: |
+            set -x
+            source ./ops/assume.sh
+
+  # terraform initを行います．
+  terraform_init:
+    steps:
+      - run:
+          name: Terraform init
+          command: |
+            set -x
+            source ./ops/terraform_init.sh
+
+  # terraform fmtを行います．
+  terraform_fmt:
+    steps:
+      - run:
+          name: Terraform fmt
+          command: |
+            set -x
+            source ./ops/terraform_fmt.sh
+
+  # terraform planを行います．
+  terraform_plan:
+    steps:
+      - run:
+          name: Terraform plan
+          command: |
+            set -x
+            source ./ops/terraform_plan.sh
+            ls -la
+
+  # terraform applyを行います．
+  terraform_apply:
+    steps:
+      - run:
+          name: Terraform apply
+          command: |
+            set -x
+            ls -la
+            source ./ops/terraform_apply.sh
+
+  # test環境に対して，terraform destroyを行います．
+  terraform_destroy_test:
+    steps:
+      - run:
+          name: Terraform destroy test
+          command: |
+            set -x
+            source ./ops/terraform_destroy_test.sh
+
+jobs:
+  plan:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - checkout
+      - aws_setup
+      - terraform_init
+      - terraform_fmt
+      - terraform_plan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  apply:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - attach_workspace:
+          at: .
+      - terraform_apply
+
+  destroy_test:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - checkout
+      - aws_setup
+      - terraform_init
+      - terraform_destroy_test
+
+workflows:
+  # Test env
+  feature:
+    jobs:
+      - plan:
+          name: plan_test
+          exr:
+            name: primary_container
+            env: test
+          filters:
+            branches:
+              only:
+                - /feature.*/
+      - apply:
+          name: apply_test
+          exr:
+            name: primary_container
+            env: test
+          requires:
+            - plan_test
+
+  # Staging env
+  develop:
+    jobs:
+      - plan:
+          name: plan_stg
+          exr:
+            name: primary_container
+            env: stg
+          filters:
+            branches:
+              only:
+                - develop
+      - hold_apply:
+          name: hold_apply_stg
+          type: approval
+          requires:
+            - plan_stg
+      - apply:
+          name: apply_stg
+          exr:
+            name: primary_container
+            env: stg
+          requires:
+            - hold_apply_stg
+      - hold_destroy_test:
+          type: approval
+          requires:
+            - apply_stg
+      - destroy_test:
+          exr:
+            name: primary_container
+            env: test
+          requires:
+            - hold_destroy_test
+
+  # Production env
+  main:
+    jobs:
+      - plan:
+          name: plan_prd
+          exr:
+            name: primary_container
+            env: prd
+          filters:
+            branches:
+              only:
+                - main
+      - hold_apply:
+          name: hold_apply_prd
+          type: approval
+          requires:
+            - plan_prd
+      - apply:
+          name: apply_prd
+          exr:
+            name: primary_container
+            env: prd
+          requires:
+            - hold_apply_prd
+```
+
+<br>
+
+### シェルスクリプト
+
+#### ・assume_role.sh
+
+AWSのノートを参照せよ．
+
+#### ・terraform_apply.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform apply \
+  -parallelism=30 \
+  ${ENV}.tfplan | ./ops/tfnotify --config ./${ENV}/tfnotify.yml apply
+```
+
+#### ・terraform_destroy_test.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+if [ $ENV = "test" ]; then
+    # credentialsの情報を出力します．
+    source ./aws_envs.sh
+    terraform destroy -var-file=./test/config.tfvars ./test
+else
+    echo "The parameter ${ENV} is invalid."
+    exit 1
+fi
+
+```
+
+#### ・terraform_fmt.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+terraform fmt \
+  -recursive \
+  -check
+```
+
+#### ・terraform_init.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform init \
+  -upgrade \
+  -reconfigure \
+  -backend=true \
+  -backend-config="bucket=${ENV}-lumonde-tfstate-bucket" \
+  -backend-config="key=terraform.tfstate" \
+  -backend-config="encrypt=true" \
+  ./${ENV}
+```
+
+#### ・terraform_plan.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform plan \
+  -var-file=./${ENV}/config.tfvars \
+  -out=${ENV}.tfplan \
+  -parallelism=30 \
+  ./${ENV} | ./ops/tfnotify --config ./${ENV}/tfnotify.yml plan
+```
+
+#### ・terraform_validate.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+terraform validate $ENV
+
+```
+
+<br>
+
 ### tfnotify
 
 #### ・tfnotifyとは
