@@ -410,13 +410,15 @@ terraform_project/
 │   ├── providers.tf
 │   ├── tfnotify.yml
 │   └── variables.tf
-├── prod
+│
+├── stg
 │   ├── config.tfvars
 │   ├── main.tf
 │   ├── providers.tf
 │   ├── tfnotify.yml
 │   └── variables.tf
-└── stg
+│
+└── test
     ├── config.tfvars
     ├── main.tf
     ├── providers.tf
@@ -1119,8 +1121,8 @@ resource "aws_s3_bucket_policy" "example" {
   policy = templatefile(
     "${path.module}/policies/example_bucket_policy.tpl",
     {
-      example_s3_bucket_arn                                = aws_s3_bucket.example.arn
-      s3_example_cloudfront_origin_access_identity_iam_arn = var.s3_example_cloudfront_origin_access_identity_iam_arn
+      example_s3_bucket_arn                        = aws_s3_bucket.example.arn
+      s3_cloudfront_origin_access_identity_iam_arn = var.s3_cloudfront_origin_access_identity_iam_arn
     }
   )
 
@@ -2349,7 +2351,7 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 
 ### VPC  ルートテーブル
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 ###############################################
