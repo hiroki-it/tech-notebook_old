@@ -40,9 +40,9 @@ $ openssl pkcs8 -in <秘密鍵>.pem -inform PEM -outform DER -topk8 -nocrypt | o
 
 #### ・Lambdaとは
 
-Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
+サーバレスでスクリプトを実行できる．Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は関数プログラムを作成しさえすれば，これを実行することができる．この方法を，『サーバレスアーキテクチャ』という．
 
-| 設定項目                   | 説明                                                         | 備考 |
+| 用語                       | 説明                                                         | 備考 |
 | -------------------------- | ------------------------------------------------------------ | ---- |
 | 関数                       | 与えられた引数を元に何らかの計算や処理を行い、結果を呼び出し元に返すもののこと． |      |
 | サーバレスアプリケーション | 関数、イベントソース、およびその他のAWSリソースを組み合わせたもののこと． |      |
@@ -51,23 +51,136 @@ Lambdaを軸に他のFaaSと連携させることによって，ユーザ側は�
 
 ### 関数
 
-#### ・関数の詳細項目
+#### ・デザイナーの詳細項目
+
+| 設定項目      | 説明                                         | 備考 |
+| ------------- | -------------------------------------------- | ---- |
+| Lambda Layers | 異なる関数の間で，特定の処理を共通化できる． |      |
+| トリガー      |                                              |      |
+| 送信先        |                                              |      |
+
+#### ・ランタイム設定の詳細項目
 
 | 設定項目     | 説明                                                         | 備考                                                         |
 | ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ランタイム   | 関数の実装に使用する言語を設定する．                         |                                                              |
 | ハンドラ     | 関数の実行時にコールしたい具体的メソッド名を設定する．       | ・Node.js：```index.js``` というファイル名で ```exports.handler``` メソッドを呼び出したい場合，ハンドラ名を```index.handler```とする |
-| メモリ       |                                                              |                                                              |
+
+#### ・基本設定の詳細項目
+
+| 設定項目     | 説明                                                         | 備考                                                         |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| メモリ       | Lambdaに割り当てるメモリ量を設定する．                       | 最大10240MBまで増設でき，増設するほどパフォーマンスが上がる．インターネットで向上率グラフを検索せよ． |
 | タイムアウト |                                                              |                                                              |
 | 実行ロール   | Lambda内のメソッドが実行される時に必要なポリシーをもつロールを設定する． |                                                              |
+| 既存ロール   | Lambdaにロールを設定する．                                 |
+
+#### ・同時実行数の詳細項目
+
+| 設定項目                       | 説明                                                         | 備考               |
+| ------------------------------ | ------------------------------------------------------------ | ------------------ |
+| エイリアス                     |                                                              |                    |
+| バージョン                     |                                                              |                    |
+| プロビジョニングされた同時実行 | Lambdaは，関数の実行中に再びリクエストが送信されると，関数のインスタンスを新しく作成する．そして，各関数インスタンスを用いて，同時並行的にリクエストに応じる． | 各主要リージョンの |
+
+#### ・最低限必要なポリシー
+
+Lambdaを実行するためには，デプロイされた関数を使用する権限が必要である．そのため，関数を取得するためのステートメントを設定する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": "arn:aws:lambda:<リージョン>:<アカウントID>:function:<関数名>*"
+    }
+  ]
+}
+```
 
 #### ・テストとデバッグ
 
-lambdaで関数を作成すると，CloudWatchLogsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
+Lambdaで関数を作成すると，CloudWatchLogsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
 
 <br>
 
-### Node.jsによる関数
+### ハンドラ関数
+
+#### ・ハンドラ関数は
+
+Lambdaはハンドラ関数をコールし，引数のオブジェクト（event，context，callback）に値をわたす．このオブジェクトにはメソッドとプロパティを持つ．ハンドラ関数の初期名は```handler```であるが別名でもよい．
+
+**＊実装例＊**
+
+基本的に，どの言語でもハンドラ関数の引数は共通している．実装例として，Node.jsの場合を示す．
+
+```javascript
+exports.MyHandler = (event, context, callback) => {
+  // なんらかの処理
+}
+```
+
+| 引数                 | 説明                                                         | 備考                                                         |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| eventオブジェクト    | HTTPリクエストに関するデータが格納されている．               | Lambdaにリクエストを送信するAWSリソースごとに，オブジェクトの構造が異なる．構造は以下の通り．<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-services.html |
+| contextオブジェクト  | Lambdaに関するデータ（名前，バージョンなど）を取得できるメソッドとプロパティが格納されている． | オブジェクトの構造は以下の通り<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/nodejs-context.html |
+| callbackオブジェクト |                                                              |                                                              |
+
+<br>
+
+### Lambdaプロキシ統合
+
+#### ・Lambdaプロキシ統合とは
+
+LambdaとAPI Gatewayの間で，リクエストまたはレスポンスのJSONを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
+
+#### ・リクエスト時のマッピング
+
+API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONにマッピングされる．
+
+```json
+{
+  "resource": "Resource path",
+  "path": "Path parameter",
+  "httpMethod": "Incoming request's method name",
+  "headers": {String containing incoming request headers},
+  "multiValueHeaders": {List of strings containing incoming request headers},
+  "queryStringParameters": {query string parameters },
+  "multiValueQueryStringParameters": {List of query string parameters},
+  "pathParameters":  {path parameters},
+  "stageVariables": {Applicable stage variables},
+  "requestContext": {Request context, including authorizer-returned key-value pairs},
+  "body": "A JSON string of the request payload.",
+  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
+}
+
+```
+
+#### ・レスポンス時のマッピング
+
+API GAtewayは，Lambdaからのレスポンスを，以下のJSONにマッピングする．これ以外の構造のJSONを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
+
+```json
+{
+  "isBase64Encoded": true|false,
+  "statusCode": httpStatusCode,
+  "headers": { "headerName": "headerValue", ... },
+  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
+  "body": "Hello Lambda"
+}
+```
+
+API Gatewayは上記のJSONを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
+
+```h
+"Hello Lambda"
+```
+
+<br>
+
+### Node.jsを用いた関数例
 
 #### ・AWS-SDKの読み込み
 
@@ -78,32 +191,25 @@ lambdaで関数を作成すると，CloudWatchLogsのロググループに，「
 const aws = require('aws-sdk');
 ```
 
-#### ・メソッド
-
-```event```，```context```，```callback```の引数にもつメソッドを定義する．初期名は```handler```であるが別名でもよい．
-
-```javascript
-exports.MyHandler = (event, context, callback) => {
-  // なんらかの処理
-}
-```
-
-| 引数     | 説明                                       | 備考 |
-| -------- | ------------------------------------------ | ---- |
-| event    | HTTPリクエストのヘッダーが格納されている． |      |
-| context  |                                            |      |
-| callback |                                            |      |
-
-#### ・S3へのファイルの保存
+#### ・API Gateway & Lambda & S3
 
 **＊実装例＊**
 
 ```javascript
+"use strict";
+
 const aws = require('aws-sdk');
 
 const s3 = new aws.S3();
 
 exports.handler = (event, context, callback) => {
+    
+  // API Gatewayとのプロキシ統合を意識したJSON構造にする
+  // レスポンスメッセージの初期値
+  const response = {
+      "statusCode": null,
+      "body" : null
+  };
   
   s3.putObject({
       Bucket: '<バケット名>',
@@ -112,9 +218,13 @@ exports.handler = (event, context, callback) => {
     },
     (err, data) => {
       if (err) {
-          // エラーだった時の処理
-    }
-      // エラー出なかった時の処理
+          response.statusCode = 500;
+          response.body = "[ERROR] " + err;
+          return callback(null, response);
+      }
+      response.statusCode = 200;
+      response.body = "OK";
+      return callback(null, response);
     });
 }
 ```
@@ -123,13 +233,15 @@ exports.handler = (event, context, callback) => {
 
 <br>
 
+## 01-03. コンピューティング｜Lambda@Edge
+
 ### Lambda@Edge
 
-![Lambda@edge](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@edge.png)
+![Lambda@Edge](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@Edge.png)
 
 #### ・Lambda@Edgeとは
 
-CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとするLambdaのこと．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
+CloudFrontに統合されたLambdaを，特別にLambda@Edgeという．CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとする．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
 
 | トリガーの種類       | 発火のタイミング                                             |
 | -------------------- | ------------------------------------------------------------ |
@@ -138,9 +250,9 @@ CloudFrontのビューワーリクエスト，オリジンリクエスト，オ�
 | オリジンレスポンス   | CloudFrontが，オリジンからレスポンスを受信した後（キャッシュを確認する前）． |
 | ビューワーレスポンス | CloudFrontが，ビューワーにレスポンスを転送する前（キャッシュを確認した後）． |
 
-#### ・必要なポリシー
+#### ・最低限必要なポリシー
 
-Lambda@Edgeを実行するためには，以下のポリシーが必要である．
+Lambda@Edgeを実行するためには，最低限，以下の権限が必要である．
 
 ```json
 {
@@ -149,17 +261,17 @@ Lambda@Edgeを実行するためには，以下のポリシーが必要である
     {
       "Effect": "Allow",
       "Action": [
-        "lambda:GetFunction",
-        "lambda:EnableReplication*"
+        "iam:CreateServiceLinkedRole"
       ],
-      "Resource": "arn:aws:lambda:<リージョン名>:<アカウントID>:function:<関数名>:<バージョン>"
+      "Resource": "*"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "iam:CreateServiceLinkedRole"
+        "lambda:GetFunction",
+        "lambda:EnableReplication*"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:lambda:<リージョン名>:<アカウントID>:function:<関数名>:<バージョン>"
     },
     {
       "Effect": "Allow",
@@ -173,9 +285,148 @@ Lambda@Edgeを実行するためには，以下のポリシーが必要である
 
 ```
 
+#### ・各トリガーのeventオブジェクトへのマッピング
+
+各トリガーのeventオブジェクトへのマッピングは，以下を参照せよ．
+
+参考：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html
+
 <br>
 
-## 01-03. コンピューティング｜Security Group
+### Node.jsを用いた関数例
+
+#### ・オリジンの動的な切り替え
+
+![Lambda@Edge_動的オリジン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Lambda@Edge_動的オリジン.png)
+
+**＊実装例＊**
+
+eventオブジェクトの```domainName```と```host.value```に格納されたバケットのドメイン名によって，ルーティング先のバケットが決まる．そのため，この値を切り替えれば，動的オリジンを実現できる．なお，各バケットには同じOAIを設定する必要がある．
+
+```javascript
+'use strict';
+
+exports.handler = (event, context, callback) => {
+
+    const request = event.Records[0].cf.request;
+    // ログストリームに変数を出力する．
+    console.dir({request});
+
+    const headers = request.headers;
+    // ログストリームに変数を出力する．
+    console.dir({headers});
+
+    const s3Backet = getBacketBasedOnUserAgent(headers);
+
+    request.origin.s3.domainName = s3Backet
+    request.headers.host[0].value = s3Backet
+    // ログストリームに変数を出力する．
+    console.dir({request});
+
+    return callback(null, request);
+};
+
+/**
+ * デバイスタイプに基づいて、オリジンを切り替える．
+ * 
+ * @param   headers
+ * @returns string
+ */
+const getBacketBasedOnDeviceType = (headers) => {
+
+    const pcBucket = 'pc-bucket.s3.amazonaws.com';
+    const spBucket = 'sp-bucket.s3.amazonaws.com';
+
+    if (headers['cloudfront-is-desktop-viewer']
+        && headers['cloudfront-is-desktop-viewer'][0].value === 'true') {
+        return pcBucket;
+    }
+
+    if (headers['cloudfront-is-tablet-viewer']
+        && headers['cloudfront-is-tablet-viewer'][0].value === 'true') {
+        return pcBucket;
+    }
+
+    if (headers['cloudfront-is-mobile-viewer']
+        && headers['cloudfront-is-mobile-viewer'][0].value === 'true') {
+        return spBucket;
+    }
+
+    return spBucket;
+};
+```
+
+オリジンリクエストは，以下のeventオブジェクトのJSONにマッピングされている．なお，一部のキーは省略している．
+
+```json
+{
+  "Records": [
+    {
+      "cf": {
+        "request": {
+          "clientIp": "203.0.113.178",
+          "headers": {
+            "cloudfront-is-mobile-viewer": [
+              {
+                "key": "CloudFront-Is-Mobile-Viewer",
+                "value": true
+              }
+            ],
+            "cloudfront-is-tablet-viewer": [
+              {
+                "key": "loudFront-Is-Tablet-Viewer",
+                "value": false
+              }
+            ],
+            "cloudfront-is-smarttv-viewer": [
+              {
+                "key": "CloudFront-Is-SmartTV-Viewer",
+                "value": false
+              }
+            ],
+            "cloudfront-is-desktop-viewer": [
+              {
+                "key": "CloudFront-Is-Desktop-Viewer",
+                "value": false
+              }
+            ],
+            "user-agent": [
+              {
+                "key": "User-Agent",
+                "value": "Amazon CloudFront"
+              }
+            ],
+            "host": [
+              {
+                "key": "Host",
+                "value": "example.org"
+              }
+            ]
+          },
+          "method": "GET",
+          "origin": {
+            "s3": {
+              "customHeaders": {},
+              "domainName": "pc-bucket.s3.amazonaws.com",
+              "path": "/images/12345",
+              "port": 443,
+              "protocol": "https",
+              "authMethod": "origin-access-identity",
+              "region": "ap-northeast-1",
+            }
+          },
+          "querystring": "",
+          "uri": "/"
+        }
+      }
+    }
+  ]
+}
+```
+
+<br>
+
+## 01-04. コンピューティング｜Security Group
 
 ### Security Group
 
