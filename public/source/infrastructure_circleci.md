@@ -16,7 +16,6 @@ https://circleci.com/docs/reference-2-1/#circleci-2-1-reference
 
 ```yaml
 workflows:
-  version: 2.1
   # build以外を実行しないようにすることで，buildのみを検証できる．
   build-test-and-deploy:
     jobs:
@@ -110,11 +109,11 @@ version: 2.1
 
 ## 02-03. parameters
 
-### parametersとは
+### parameters
 
-#### ・各定義方法の参照範囲
+#### ・parametersとは
 
-| 方法                | 参照範囲                                                     | 値を設定する場所 |
+| 種類                | 参照範囲                                                     | 値を設定する場所 |
 | ------------------- | ------------------------------------------------------------ | ---------------- |
 | command parameters  | ```command```内で定義する．定義された```command```内のみで定義できる． | ```workflows```  |
 | job parameters      | ```job```内で定義する．定義された```job```内のみで参照できる． | ```workflows```  |
@@ -139,6 +138,7 @@ version: 2.1
 
 ```yaml
 version: 2.1
+
 commands:
   sayhello:
     description: "Echo hello world"
@@ -170,6 +170,7 @@ commands:
 
 ```yaml
 version: 2.1
+
 commands:
   sayhello:
     description: "Echo hello world"
@@ -436,9 +437,21 @@ workflows:
 
 ## 02-04. jobs
 
-### jobsとは
+### jobs
+
+#### ・jobsとは
 
 複数の```job```を定義する．Workflowsを使わない場合は，少なくとも一つの```job```には```build```という名前を使用しなければならない．
+
+#### ・jobの粒度
+
+![CICDパイプライン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CICDパイプライン.png)
+
+| 粒度   | 説明                                                         | 備考                                                       |
+| ------ | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| build  | プログラムの実行環境を構築する．                             | buildとtestを分割しにくい場合は，同じjobで定義してもよい． |
+| test   | 種々のテスト（Unitテスト，Functionalテスト，など）を実行する． |                                                            |
+| deploy | ステージング環境または本番環境へのデプロイを実行する．       |                                                            |
 
 <br>
 
@@ -698,7 +711,9 @@ jobs:
 
 ## 02-05. executors
 
-### executorsとは
+### executors
+
+#### ・executorsとは
 
 実行環境に関する設定を部品化し，異なる```job```で繰り返し利用できる．
 
@@ -733,6 +748,67 @@ jobs:
 
 ## 02-06. Workflow
 
+### Workflowの粒度
+
+#### ・ブランチ別
+
+**＊実装例＊**
+
+```yaml
+workflows:
+  # Review feature
+  feature:
+    jobs:
+      - build:
+          name: build_feat
+          filters:
+            branches:
+              only:
+                - /feature.*/
+      - test:
+          name: test_feat
+          requires:
+            - build_feat
+            
+  # Deploy staging env
+  develop:
+    jobs:
+      - build:
+          name: build_stg
+          filters:
+            branches:
+              only:
+                - develop
+      - test:
+          name: test_stg
+          requires:
+            - build_stg
+      - deploy:
+          name: deploy_stg
+          requires:
+            - test_stg
+        
+  # Deploy production env
+  main:
+    jobs:
+      - build:
+          name: build_prd
+          filters:
+            branches:
+              only:
+                - main
+      - test:
+          name: test_prd
+          requires:
+            - build_prd
+      - deploy:
+          name: deploy_prd
+          requires:
+            - test_prd
+```
+
+<br>
+
 ### 特殊なsteps
 
 #### ・pre-steps，post-steps
@@ -755,7 +831,6 @@ jobs:
           command: echo "testing"
           
 workflows:
-  version: 2.1
   build:
     jobs:
       - bar:
@@ -775,7 +850,6 @@ Orbsを使う場合は，オプションに引数を渡す前に定義する．
 
 ```yaml
 workflows:
-  version: 2.1
   build:
     jobs:
       - aws-xxx/build-push-yyy:
@@ -960,7 +1034,6 @@ orbs:
   aws-ecr: circleci/aws-xxx@x.y.z
 
 workflows:
-  version: 2.1
   build_and_push_image:
     jobs:
       - aws-xxx/yyy-yyy-yyy:
@@ -969,6 +1042,84 @@ workflows:
           aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
           aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
           region: $AWS_REGION_ENV_VAR_NAME
+```
+
+<br>
+
+### docker
+
+#### ・commands: install-dockerize
+
+CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
+
+参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
+
+**＊実装例＊**
+
+LaravelコンテナとMySQLコンテナの場合を示す．
+
+```yaml
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/docker@x.y.z
+
+commands:
+  restore_vendor:
+    steps:
+      - restore_cache:
+          key:
+            - v1-dependecies-{{ checksum composer.json }}
+  install_vendor:
+     steps:
+       - run: composer install -n --prefer-dist
+  save_vendor:
+    steps:
+      - save_cache:
+          key: v1-dependecies-{{ checksum composer.json }}
+          paths:
+            - /vendor
+            
+jobs:
+  build_and_test:
+    docker:
+      - image: <docker image>
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: echo $ENV_TESTING | base64 -di > .env
+      - run:
+          name: Make env docker file
+          command: cp .env.docker.example .env.docker
+      - run:
+          name: Docker Compose
+          command: |
+            set -xe
+            docker network create example-network
+            docker-compose up --build -d
+      - restore_vendor
+      - install_vendor
+      - save_vendor
+      - docker/install-dockerize:
+          version: v0.6.1   
+      - run:
+          name: Wait for MySQL startup
+          command: |
+            dockerize -wait tcp://localhost:3306 -timeout 1m
+            sleep 30
+      - run:
+          name: Execute Migration Test
+          command: |
+            docker exec -it laravel-container php artisan migrate --force
+      - run:
+          name: Execute Unit Test
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpunit
+      - run:
+          name: Execute Static Test
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
 ```
 
 <br>
@@ -988,7 +1139,6 @@ orbs:
   aws-ecr: circleci/aws-ecr@x.y.z
 
 workflows:
-  version: 2.1
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -1034,7 +1184,6 @@ orbs:
   aws-ecs: circleci/aws-ecs@x.y.z
   
 workflows:
-  version: 2.1
   build-and-deploy:
     jobs:
       - aws-ecr/build-and-push-image:
@@ -1116,7 +1265,6 @@ orbs:
   aws-code-deploy: circleci/aws-ecs@x.y.z
 
 workflows:
-  version: 2.1
   run-task:
     jobs:
       - aws-code-deploy/deploy:
@@ -1136,78 +1284,6 @@ workflows:
           deployment-group: "${APP_NAME}-deployment-group"
           # ECSにアクセスできるCodeDeployサービスロール
           service-role-arn: $CODE_DEPLOY_ROLE_FOR_ECS
-```
-
-<br>
-
-### terraform
-
-#### ・commands：deploy_infrastructure
-
-```yaml
-version: 2.1
-
-orbs:
-  terraform: circleci/terraform@x.y.z
-  
-jobs:
-  single-job-lifecycle:
-    executor: terraform/default
-    steps:
-      - checkout
-      - terraform/init:
-          path: .
-      - terraform/validate:
-          path: .
-      - terraform/fmt:
-          path: .
-      - terraform/plan:
-          path: .
-      - terraform/apply:
-          path: .
-      - terraform/destroy:
-          path: .
-    working_directory: ~/src
-    
-workflows:
-  single-job-lifecycle:
-    jobs:
-      - single-job-lifecycle
-```
-
-#### ・jobs：deploy_infrastructure_job
-
-```yaml
-version: 2.1
-
-orbs:
-  terraform: 'circleci/terraform@dev:alpha'
-  
-workflows:
-  deploy_infrastructure:
-    jobs:
-      - terraform/fmt:
-          checkout: true
-          context: terraform
-      - terraform/validate:
-          checkout: true
-          context: terraform
-          requires:
-            - terraform/fmt
-      - terraform/plan:
-          checkout: true
-          context: terraform
-          persist-workspace: true
-          requires:
-            - terraform/validate
-      - terraform/apply:
-          attach-workspace: true
-          context: terraform
-          filters:
-            branches:
-              only: master
-          requires:
-            - terraform/plan
 ```
 
 <br>
