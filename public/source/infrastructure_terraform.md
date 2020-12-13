@@ -384,6 +384,7 @@ module.vpc_module.aws_vpc.vpc
 
 ```
 terraform_project/
+│
 ├── modules
 │   ├── ec2
 │   │   ├── main.tf
@@ -393,19 +394,31 @@ terraform_project/
 │       ├── main.tf
 │       ├── output.tf
 │       └── variables.tf
-├── feat
+│
+├── ops (GitHubからデプロイする場合)
+│   ├── assume.sh
+│   ├── terraform_apply.sh
+│   ├── terraform_destroy_test.sh
+│   ├── terraform_fmt.sh
+│   ├── terraform_init.sh
+│   ├── terraform_plan.sh
+│   └── terraform_validate.sh
+│
+├── prd
 │   ├── config.tfvars
 │   ├── main.tf
 │   ├── providers.tf
 │   ├── tfnotify.yml
 │   └── variables.tf
-├── prod
+│
+├── stg
 │   ├── config.tfvars
 │   ├── main.tf
 │   ├── providers.tf
 │   ├── tfnotify.yml
 │   └── variables.tf
-└── stg
+│
+└── test
     ├── config.tfvars
     ├── main.tf
     ├── providers.tf
@@ -1083,13 +1096,33 @@ resource "aws_nat_gateway" "this" {
 例として，S3を示す．バケットポリシーとパブリックアクセスブロックポリシーを同時に構築できないため，構築のタイミングが重ならないようにする必要がある．
 
 ```tf
+###############################################
+# S3
+###############################################
+
+# Example bucket
+resource "aws_s3_bucket" "example" {
+  bucket = "${var.environment}-${var.service}-example-bucket"
+  acl    = "private"
+}
+
+# Public access block
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket                  = aws_s3_bucket.example.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Bucket policy attachment
 resource "aws_s3_bucket_policy" "example" {
   bucket = aws_s3_bucket.example.id
   policy = templatefile(
     "${path.module}/policies/example_bucket_policy.tpl",
     {
-      example_s3_bucket_arn                                = aws_s3_bucket.example.arn
-      s3_example_cloudfront_origin_access_identity_iam_arn = var.s3_example_cloudfront_origin_access_identity_iam_arn
+      example_s3_bucket_arn                        = aws_s3_bucket.example.arn
+      s3_cloudfront_origin_access_identity_iam_arn = var.s3_cloudfront_origin_access_identity_iam_arn
     }
   )
 
@@ -2007,7 +2040,7 @@ output "nginx_ecr_repository_url" {
 
 ### CloudFront
 
-#### ・実装例
+#### ・全体の実装例
 
 ```tf
 resource "aws_cloudfront_distribution" "this" {
@@ -2160,7 +2193,7 @@ Terraformでタスク定義を更新すると，現在動いているECSで稼�
 
 ### EC2
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 ###############################################
@@ -2190,6 +2223,135 @@ resource "aws_instance" "bastion" {
 
 <br>
 
+### IAM Role
+
+#### ・信頼ポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task Execution
+###############################################
+resource "aws_iam_role" "ecs_task_execution" {
+  name        = "${var.environment}-${var.service}-ecs-task-execution-role"
+  description = "The role for ${var.environment}-${var.service}-ecs-task"
+  assume_role_policy = templatefile(
+    "${path.module}/policies/trust_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role" "ecs_task" {
+  name        = "${var.environment}-${var.service}-ecs-task-role"
+  description = "The role for ${var.environment}-${var.service}-ecs-task"
+  assume_role_policy = templatefile(
+    "${path.module}/policies/trust_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・インラインポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role_policy" "ecs_task" {
+  name = "${var.environment}-${var.service}-ssm-read-only-access-policy"
+  role = aws_iam_role.ecs_task_execution.id
+  policy = templatefile(
+    "${path.module}/policies/inline_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・AWS管理ポリシーのアタッチ方法
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task Execution
+###############################################
+resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+```
+
+#### ・カスタマー管理ポリシー
+
+**＊実装例＊**
+
+```
+###############################################
+# IAM Role For ECS Task
+###############################################
+resource "aws_iam_role_policy_attachment" "ecs_task" {
+  role       = aws_iam_role.ecs_task.name
+  policy_arn = aws_iam_policy.ecs_task.arn
+}
+
+resource "aws_iam_policy" "ecs_task" {
+  name        = "${var.environment}-${var.service}-cloudwatch-logs-access-policy"
+  description = "Provides access to CloudWatch Logs"
+  policy = templatefile(
+    "${path.module}/policies/customer_managed_policies/cloudwatch_logs_access_policy.tpl",
+    {}
+  )
+}
+```
+
+#### ・サービスリンクロールを手動で構築
+
+サービスリンクロールは，AWSリソースの構築時に自動的に作成され，アタッチされるロールである．そのため，Terraformの管理外である．```aws_iam_service_linked_role```を使用して，手動で構築することが可能であるが，数が多く実装の負担にもなるため，あえて管理外としても問題ない．
+
+**＊実装例＊**
+
+```tf
+###############################################
+# IAM Role For ECS Service
+###############################################
+# Service Linked Role
+resource "aws_iam_service_linked_role" "ecs_service_auto_scaling" {
+  aws_service_name = "ecs.application-autoscaling.amazonaws.com"
+}
+```
+
+```tf
+###############################################
+# Output IAM Role
+###############################################
+output "ecs_service_auto_scaling_iam_service_linked_role_arn" {
+  value = aws_iam_service_linked_role.ecs_service_auto_scaling.arn
+}
+```
+
+```tf
+#########################################
+# Application Auto Scaling For ECS
+#########################################
+resource "aws_appautoscaling_target" "ecs" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.ecs_cluster_name}/${var.ecs_service_name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  max_capacity       = var.auto_scaling_ecs_task_max_capacity
+  min_capacity       = var.auto_scaling_ecs_task_min_capacity
+  # この設定がなくとも，サービスリンクロールが自動的に構築され，AutoScalingにアタッチされる．
+  role_arn           = var.ecs_service_auto_scaling_iam_service_linked_role_arn
+}
+```
+
+<br>
+
 ### Network Interface
 
 #### ・Network Interfaceをデタッチできない
@@ -2210,7 +2372,7 @@ Network Interfaceは特定のリソースの構築時に，自動で構築され
 
 ### Route53
 
-#### ・実装例
+#### ・全体の実装例
 
 ```tf
 ###############################################
@@ -2241,7 +2403,7 @@ resource "aws_route53_record" "example" {
 
 ### RDS
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 #########################################
@@ -2318,7 +2480,7 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 
 ### VPC  ルートテーブル
 
-#### ・実装例
+#### ・全体の実装例
 
 ```
 ###############################################
@@ -2384,6 +2546,331 @@ Terraformの管理外のリソースには，コンソール画面上から，�
 <br>
 
 ## 09. CircleCIとの組み合わせ
+
+### circleci
+
+#### ・設定ファイル
+
+| jobs                   |                                                              |
+| ---------------------- | ------------------------------------------------------------ |
+| plan                   | aws-cliのインストールから```terraform plan -out```コマンドまでの一連の処理を実行する． |
+| 承認ジョブ             |                                                              |
+| apply                  | developブランチからステージング環境にデプロイ                |
+| terraform_destroy_test | mainブランチから本番環境にデプロイ                           |
+
+| workflows |                                               |
+| --------- | --------------------------------------------- |
+| feature   | featureブランチからテスト開発環境にデプロイ   |
+| develop   | developブランチからステージング環境にデプロイ |
+| main      | mainブランチから本番環境にデプロイ            |
+
+```yaml
+version: 2.1
+
+executors:
+  primary_container:
+    parameters:
+      env:
+        type: enum
+        enum: [ "dev", "stg", "prd" ]
+    docker:
+      - image: hashicorp/terraform:x.xx.x
+    working_directory: ~/example_infrastructure
+    environment:
+      ENV: << parameters.env >>
+
+commands:
+  # AWSにデプロイするための環境を構築します．
+  aws_setup:
+    steps:
+      - run:
+          name: Install jq
+          command: |
+            apk add curl
+            curl -o /usr/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+            chmod +x /usr/bin/jq
+      - run:
+          name: Install aws-cli
+          command: |
+            apk add python3
+            apk add py-pip
+            pip3 install awscli
+            aws --version
+      - run:
+          name: Assume role
+          command: |
+            set -x
+            source ./ops/assume.sh
+
+  # terraform initを行います．
+  terraform_init:
+    steps:
+      - run:
+          name: Terraform init
+          command: |
+            set -x
+            source ./ops/terraform_init.sh
+
+  # terraform fmtを行います．
+  terraform_fmt:
+    steps:
+      - run:
+          name: Terraform fmt
+          command: |
+            set -x
+            source ./ops/terraform_fmt.sh
+
+  # terraform planを行います．
+  terraform_plan:
+    steps:
+      - run:
+          name: Terraform plan
+          command: |
+            set -x
+            source ./ops/terraform_plan.sh
+            ls -la
+
+  # terraform applyを行います．
+  terraform_apply:
+    steps:
+      - run:
+          name: Terraform apply
+          command: |
+            set -x
+            ls -la
+            source ./ops/terraform_apply.sh
+
+  # test環境に対して，terraform destroyを行います．
+  terraform_destroy_test:
+    steps:
+      - run:
+          name: Terraform destroy test
+          command: |
+            set -x
+            source ./ops/terraform_destroy_test.sh
+
+jobs:
+  plan:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - checkout
+      - aws_setup
+      - terraform_init
+      - terraform_fmt
+      - terraform_plan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  apply:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - attach_workspace:
+          at: .
+      - terraform_apply
+
+  destroy_test:
+    parameters:
+      exr:
+        type: executor
+    executor: << parameters.exr >>
+    steps:
+      - checkout
+      - aws_setup
+      - terraform_init
+      - terraform_destroy_test
+
+workflows:
+  # Test env
+  feature:
+    jobs:
+      - plan:
+          name: plan_test
+          exr:
+            name: primary_container
+            env: test
+          filters:
+            branches:
+              only:
+                - /feature.*/
+      - apply:
+          name: apply_test
+          exr:
+            name: primary_container
+            env: test
+          requires:
+            - plan_test
+
+  # Staging env
+  develop:
+    jobs:
+      - plan:
+          name: plan_stg
+          exr:
+            name: primary_container
+            env: stg
+          filters:
+            branches:
+              only:
+                - develop
+      - hold_apply:
+          name: hold_apply_stg
+          type: approval
+          requires:
+            - plan_stg
+      - apply:
+          name: apply_stg
+          exr:
+            name: primary_container
+            env: stg
+          requires:
+            - hold_apply_stg
+      - hold_destroy_test:
+          type: approval
+          requires:
+            - apply_stg
+      - destroy_test:
+          exr:
+            name: primary_container
+            env: test
+          requires:
+            - hold_destroy_test
+
+  # Production env
+  main:
+    jobs:
+      - plan:
+          name: plan_prd
+          exr:
+            name: primary_container
+            env: prd
+          filters:
+            branches:
+              only:
+                - main
+      - hold_apply:
+          name: hold_apply_prd
+          type: approval
+          requires:
+            - plan_prd
+      - apply:
+          name: apply_prd
+          exr:
+            name: primary_container
+            env: prd
+          requires:
+            - hold_apply_prd
+```
+
+<br>
+
+### シェルスクリプト
+
+#### ・assume_role.sh
+
+AWSのノートを参照せよ．
+
+#### ・terraform_apply.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform apply \
+  -parallelism=30 \
+  ${ENV}.tfplan | ./ops/tfnotify --config ./${ENV}/tfnotify.yml apply
+```
+
+#### ・terraform_destroy_test.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+if [ $ENV = "test" ]; then
+    # credentialsの情報を出力します．
+    source ./aws_envs.sh
+    terraform destroy -var-file=./test/config.tfvars ./test
+else
+    echo "The parameter ${ENV} is invalid."
+    exit 1
+fi
+
+```
+
+#### ・terraform_fmt.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+terraform fmt \
+  -recursive \
+  -check
+```
+
+#### ・terraform_init.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform init \
+  -upgrade \
+  -reconfigure \
+  -backend=true \
+  -backend-config="bucket=${ENV}-lumonde-tfstate-bucket" \
+  -backend-config="key=terraform.tfstate" \
+  -backend-config="encrypt=true" \
+  ./${ENV}
+```
+
+#### ・terraform_plan.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+# credentialsの情報を出力します．
+source ./aws_envs.sh
+
+terraform plan \
+  -var-file=./${ENV}/config.tfvars \
+  -out=${ENV}.tfplan \
+  -parallelism=30 \
+  ./${ENV} | ./ops/tfnotify --config ./${ENV}/tfnotify.yml plan
+```
+
+#### ・terraform_validate.sh
+
+```bash
+#!/bin/bash
+
+set -xeuo pipefail
+
+terraform validate $ENV
+
+```
+
+<br>
 
 ### tfnotify
 

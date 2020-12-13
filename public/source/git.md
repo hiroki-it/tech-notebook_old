@@ -505,13 +505,13 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 ```bash
 $git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
 ```
-とすると，タブが表示され，
+とすると，タブが表示され，指定のコミットIDの履歴が表示される
 
 ```bash
 pick b1b5c0f add #0 xxxxxxxxxx
 ```
 
-指定のコミットIDの履歴が表示されるので，『挿入モード』に変更し，この一行の```pick```を```edit```に変更．その後，
+『挿入モード』に変更し，この一行の```pick```を```edit```に変更．その後，
 
 ```bash
 :w
