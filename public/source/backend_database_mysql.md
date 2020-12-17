@@ -222,6 +222,20 @@ SELECT * FROM mysql.user;
 
 <br>
 
+### DROP
+
+#### ・ユーザ削除
+
+```mysql
+-- ユーザ別のホスト名の確認
+SELECT * FROM mysql.user;
+
+-- ホストが「%」だった場合
+DROP USER { ユーザ名 }@`%`;
+```
+
+<br>
+
 ### GRANT
 
 #### ・全ての操作権限を付与
