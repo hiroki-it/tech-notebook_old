@@ -494,21 +494,21 @@ terraform {
 }
 ```
 
-バケットは，どのユーザも削除できないように，ポリシーを設定しておくとよい．
+どのユーザもバケット内のオブジェクトを削除できないように，ポリシーを設定しておくとよい．
 
 **＊実装例＊**
 
 ```json
 {
-  "Statement": [
-    {
-      "Sid": "DenyDeleteBucket",
-      "Effect": "Deny",
-      "Principal": "*",
-      "Action": "s3:DeleteBucket",
-      "Resource": "arn:aws:s3:::<tfstateのバケット名>"
-    }
-  ]
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:DeleteObject",
+            "Resource": "arn:aws:s3:::<tfstateのバケット名>/*"
+        }
+    ]
 }
 ```
 
@@ -1430,6 +1430,42 @@ resource "aws_ecs_service" "this" {
       task_definition,
     ]
   }
+}
+```
+
+**＊実装例＊**
+
+例として，Redisを示す．Redisでは，AutoScalingによってプライマリ数とレプリカ数が増減する．そのため，これらを無視する必要がある．
+
+
+```tf
+###############################################
+# Redis Cluster
+###############################################
+resource "aws_elasticache_replication_group" "redis" {
+  replication_group_id          = "${var.environment}-${var.service}-redis-cluster"
+  replication_group_description = "The cluster of ${var.environment}-${var.service}-redis"
+  engine_version                = "5.0.6"
+  port                          = var.redis_port_ssm_parameter_value
+  parameter_group_name          = aws_elasticache_parameter_group.redis.name
+  node_type                     = var.redis_node_type
+  number_cache_clusters         = 2
+  availability_zones            = ["${var.region}${var.vpc_availability_zones.a}", "${var.region}${var.vpc_availability_zones.c}"]
+  subnet_group_name             = aws_elasticache_subnet_group.redis.id
+  security_group_ids            = [var.redis_security_group_id]
+  automatic_failover_enabled    = true
+  maintenance_window            = "sun:17:00-sun:18:00"
+  snapshot_retention_limit      = 0
+  snapshot_window               = "19:00-20:00"
+  apply_immediately             = true
+
+  lifecycle {
+    ignore_changes = [
+      # プライマリ数とレプリカ数の増減を無視します．
+      number_cache_clusters
+    ]
+  }
+}
 }
 ```
 
@@ -2531,7 +2567,7 @@ Terraformを用いてVPCを構築した時，メインルートテーブルが�
 
 #### ・削除保護機能は事前に無効化すべき
 
-既存のインフラを```destroy```で削除する時，削除保護機能は無効に変更されないため，削除処理が終わらなくなる．そのため，コンソール画面上で無効にした後，```destroy```を実行する必要がある．
+既存のインフラを```destroy```で削除する時，削除保護機能は無効に変更されないため，削除処理が終わらなくなる．そのため，事前に```false```に変更した後，```destroy```を実行する必要がある．
 
 | AWSリソース名 | Terraform上での設定名            |
 | ------------- | -------------------------------- |

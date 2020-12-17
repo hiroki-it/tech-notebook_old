@@ -461,11 +461,11 @@ workflows:
 
 jobを実行する仮想環境を選択できる．
 
-#### ・dockerとは
+#### ・dockerタイプとは
+
+Dockerコンテナを実行環境として設定する．これを選択したうえで，Dockerイメージのビルド（Docker composeを含む）を実行する場合，実行環境Dockerコンテナの中でDockerコンテナを構築するという入れ子構造になる．これは非推奨のため，```setup_remote_docker```を使用して，実行環境Dockerコンテナとは別の環境で```job```を行う必要がある．```machine```タイプを選んだ場合，```setup_remote_docker```は不要である．ただし，ボリュームマウントを使用できなくなるので注意する．また，DockerfileのCOPYコマンドが機能しなくなる．
 
 ![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/docker_executor.png)
-
-コンテナ環境で```job```を行う．```job```にDockerイメージのビルドが含まれる場合，これは，包含するCircleCI環境の外で```job```を行う必要がある．コンテナ環境の場合，DockerfileのCOPYコマンドが機能しないので注意．
 
 **＊実装例＊**
 
@@ -479,6 +479,7 @@ jobs:
      - image: circleci/xxx
    steps:
      - checkout
+     # コンテナが入れ子にならないようにする．
      - setup_remote_docker
      - run: | # DockerHubへのログイン
          echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
@@ -491,7 +492,9 @@ jobs:
      - run: docker push company/app:$CIRCLE_BRANCH
 ```
 
-#### ・machineとは
+#### ・machineタイプとは
+
+Linuxサーバを実行環境として設定する．
 
 ![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/machine_executor.png)
 
@@ -990,8 +993,127 @@ Projectレベルより参照範囲が大きく，異なるプロジェクト間�
 
 <br>
 
+## 02-08. Docker Compose in CircleCI
 
-## 02-08. CircleCIライブラリ
+### docker-composeのインストール
+
+#### ・dockerタイプの場合
+
+自分でdocker-composeをインストールする必要がある．実行環境としてのDockerコンテナと，ビルドしたDockerコンテナが入れ子にならないように，```setup_remote_docker```を実行する必要がある．ただし，ボリュームマウントを使用できなくなるので注意する．
+
+```yaml
+version: 2.1
+
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Docker Compose
+          command: |
+            set -x
+            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+      - run:
+          name: docker-compose up
+          command: |
+            set -x
+            docker-compose up --build -d
+```
+
+#### ・machineタイプの場合（推奨）
+
+実行環境にmachineタイプを選択した場合，すでにdocker-composeがインストールされている．
+
+参考：https://circleci.com/docs/ja/2.0/configuration-reference/#%E4%BD%BF%E7%94%A8%E5%8F%AF%E8%83%BD%E3%81%AA-machine-%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8
+
+<br>
+
+### dockerizeのインストール
+
+#### ・docker/install-dockerize
+
+CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
+
+参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
+
+**＊実装例＊**
+
+LaravelコンテナとMySQLコンテナの場合を示す．
+
+```yaml
+version: 2.1
+
+orbs:
+  docker: circleci/docker@x.y.z
+
+commands:
+  restore_vendor:
+    steps:
+      - restore_cache:
+          key:
+            - v1-dependecies-{{ checksum composer.json }}
+  install_vendor:
+     steps:
+       - run: composer install -n --prefer-dist
+  save_vendor:
+    steps:
+      - save_cache:
+          key: v1-dependecies-{{ checksum composer.json }}
+          paths:
+            - /vendor
+            
+jobs:
+  build_and_test:
+    # Docker Composeの時はmachineタイプを使用する
+    machine:
+      - image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: echo $ENV_TESTING | base64 -di > .env
+      - run:
+          name: Make env docker file
+          command: cp .env.docker.example .env.docker
+      - run:
+          name: Docker Compose
+          command: |
+            set -xe
+            docker network create example-network
+            docker-compose up --build -d
+      - restore_vendor
+      - install_vendor
+      - save_vendor
+      # Dockerizeをインストール
+      - docker/install-dockerize:
+          version: v0.6.1   
+      - run:
+          name: Wait for MySQL to be ready
+          command: |
+            dockerize -wait tcp://localhost:3306 -timeout 1m
+            sleep 30
+      - run:
+          name: Run migration test
+          command: |
+            docker exec -it laravel-container php artisan migrate --force
+      - run:
+          name: Run unit teest
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpunit
+      - run:
+          name: Run static test
+          command: |
+            docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
+```
+
+<br>
+
+
+## 02-09. CircleCIライブラリ
 
 ### orbs
 
@@ -1042,84 +1164,6 @@ workflows:
           aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
           aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
           region: $AWS_REGION_ENV_VAR_NAME
-```
-
-<br>
-
-### docker
-
-#### ・commands: install-dockerize
-
-CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
-
-参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
-
-**＊実装例＊**
-
-LaravelコンテナとMySQLコンテナの場合を示す．
-
-```yaml
-version: 2.1
-
-orbs:
-  aws-ecr: circleci/docker@x.y.z
-
-commands:
-  restore_vendor:
-    steps:
-      - restore_cache:
-          key:
-            - v1-dependecies-{{ checksum composer.json }}
-  install_vendor:
-     steps:
-       - run: composer install -n --prefer-dist
-  save_vendor:
-    steps:
-      - save_cache:
-          key: v1-dependecies-{{ checksum composer.json }}
-          paths:
-            - /vendor
-            
-jobs:
-  build_and_test:
-    docker:
-      - image: <docker image>
-    steps:
-      - checkout
-      - run:
-          name: Make env file
-          command: echo $ENV_TESTING | base64 -di > .env
-      - run:
-          name: Make env docker file
-          command: cp .env.docker.example .env.docker
-      - run:
-          name: Docker Compose
-          command: |
-            set -xe
-            docker network create example-network
-            docker-compose up --build -d
-      - restore_vendor
-      - install_vendor
-      - save_vendor
-      - docker/install-dockerize:
-          version: v0.6.1   
-      - run:
-          name: Wait for MySQL startup
-          command: |
-            dockerize -wait tcp://localhost:3306 -timeout 1m
-            sleep 30
-      - run:
-          name: Execute Migration Test
-          command: |
-            docker exec -it laravel-container php artisan migrate --force
-      - run:
-          name: Execute Unit Test
-          command: |
-            docker exec -it laravel-container ./vendor/bin/phpunit
-      - run:
-          name: Execute Static Test
-          command: |
-            docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
 ```
 
 <br>
