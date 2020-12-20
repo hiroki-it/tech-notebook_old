@@ -275,7 +275,7 @@ jobs:
         # デフォルト値
         default: "test"
         type: enum
-        enum: ["test", "staging", "production"]
+        enum: ["test", "stg", "prd"]
     steps:
       - run:
         # デフォルト値testを与えるときは何も設定しない
@@ -288,7 +288,7 @@ workflows:
     jobs:
       - deploy:
           # workflowにてenum型の値を設定
-          environment: "staging"
+          environment: stg
 ```
 
 <br>
@@ -570,9 +570,11 @@ workflows:
 
 ![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CircleCIキャッシュ.png)
 
-生成したファイルをキャッシュとして保存する．使い所として，例えば，ライブラリはcomposer.jsonの設定が変更されない限り，同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
+生成したファイルをキャッシュとして保存する．使い所として，例えば，Composerにおいて，ライブラリはcomposer.jsonの設定が変更されない限り，毎回のWorkflowで同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
 
 **＊実装例＊**
+
+composerを使用してライブラリをインストールする時に，前回の結果を再利用する．
 
 ```yaml
 version: 2.1
@@ -580,17 +582,56 @@ version: 2.1
 jobs:
   build:
     steps:
-    # composer.jsonが変更されている場合は処理をスキップ．
+      # composer.jsonが変更されている場合は処理をスキップ．
       - restore_cache:
           key:
-            - v1-dependecies-{{ checksum composer.json }}
+            - v1-dependecies-{{ checksum "composer.json" }}
+            - v1-dependencies-
       # 取得したcomposer.jsonを元に，差分のvendorをインストール
-      - run: composer install
+      - run: 
+          name: Run composer install
+          commands: |
+            composer install -n --prefer-dist
       # 最新のvendorを保存
       - save_cache:
-          key: v1-dependecies-{{ checksum composer.json }}
+          key: v1-dependecies-{{ checksum "composer.json" }}
           paths:
-            - /vendor
+            - ./vendor
+```
+
+**＊実装例＊**
+
+yarnを使用してライブラリをインストールする時に，前回の結果を再利用する．
+
+```yaml
+version: 2.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: circleci/python:3.8-node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Run yarn install
+          commands: |
+            yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run yarn build
+          commands : |
+            yarn build
+      - run:
+          name: Run yarn test
+          commands : |
+            yarn test
 ```
 
 ただ，この機能はcommandsで共通化した方が可読性が良い．
@@ -606,18 +647,27 @@ commands:
       # composer.jsonが変更されている場合は処理をスキップ．
       - restore_cache:
           key:
-            - v1-dependecies-{{ checksum composer.json }}
-  # 取得したcomposer.jsonを元に，差分のvendorをインストール．
-  install_vendor:
-     steps:
-       - run: composer install
+            - v1-dependecies-{{ checksum "composer.json" }}
+            - v1-dependencies-
+       
   save_vendor:
     steps:
       # 最新のvendorを保存．
       - save_cache:
-          key: v1-dependecies-{{ checksum composer.json }}
+          key: v1-dependecies-{{ checksum "composer.json" }}
           paths:
-            - /vendor
+            - ./vendor
+            
+jobs:
+  build:
+    steps:
+      - restore_vendor
+      # 取得したcomposer.jsonを元に，差分のvendorをインストール
+      - run: 
+          name: Run composer install
+          commands: |
+            composer install -n --prefer-dist
+      - save_vendor
 ```
 
 #### ・persist_to_workspace，attach_workspace
@@ -759,7 +809,7 @@ jobs:
 
 ```yaml
 workflows:
-  # Review feature
+  # Featureブランチをレビュー
   feature:
     jobs:
       - build:
@@ -773,7 +823,7 @@ workflows:
           requires:
             - build_feat
             
-  # Deploy staging env
+  # ステージング環境にデプロイ
   develop:
     jobs:
       - build:
@@ -791,7 +841,7 @@ workflows:
           requires:
             - test_stg
         
-  # Deploy production env
+  # 本番環境にデプロイ
   main:
     jobs:
       - build:
