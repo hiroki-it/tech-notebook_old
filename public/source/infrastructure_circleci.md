@@ -275,7 +275,7 @@ jobs:
         # デフォルト値
         default: "test"
         type: enum
-        enum: ["test", "staging", "production"]
+        enum: ["test", "stg", "prd"]
     steps:
       - run:
         # デフォルト値testを与えるときは何も設定しない
@@ -288,7 +288,7 @@ workflows:
     jobs:
       - deploy:
           # workflowにてenum型の値を設定
-          environment: "staging"
+          environment: stg
 ```
 
 <br>
@@ -570,9 +570,11 @@ workflows:
 
 ![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CircleCIキャッシュ.png)
 
-生成したファイルをキャッシュとして保存する．使い所として，例えば，ライブラリはcomposer.jsonの設定が変更されない限り，同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
+生成したファイルをキャッシュとして保存する．使い所として，例えば，Composerにおいて，ライブラリはcomposer.jsonの設定が変更されない限り，毎回のWorkflowで同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
 
 **＊実装例＊**
+
+composerを使用してライブラリをインストールする時に，前回の結果を再利用する．
 
 ```yaml
 version: 2.1
@@ -580,17 +582,56 @@ version: 2.1
 jobs:
   build:
     steps:
-    # composer.jsonが変更されている場合は処理をスキップ．
+      # composer.jsonが変更されている場合は処理をスキップ．
       - restore_cache:
           key:
-            - v1-dependecies-{{ checksum composer.json }}
+            - v1-dependecies-{{ checksum "composer.json" }}
+            - v1-dependencies-
       # 取得したcomposer.jsonを元に，差分のvendorをインストール
-      - run: composer install
+      - run: 
+          name: Run composer install
+          commands: |
+            composer install -n --prefer-dist
       # 最新のvendorを保存
       - save_cache:
-          key: v1-dependecies-{{ checksum composer.json }}
+          key: v1-dependecies-{{ checksum "composer.json" }}
           paths:
-            - /vendor
+            - ./vendor
+```
+
+**＊実装例＊**
+
+yarnを使用してライブラリをインストールする時に，前回の結果を再利用する．
+
+```yaml
+version: 2.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: circleci/python:3.8-node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Run yarn install
+          commands: |
+            yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run yarn build
+          commands : |
+            yarn build
+      - run:
+          name: Run yarn test
+          commands : |
+            yarn test
 ```
 
 ただ，この機能はcommandsで共通化した方が可読性が良い．
@@ -606,18 +647,27 @@ commands:
       # composer.jsonが変更されている場合は処理をスキップ．
       - restore_cache:
           key:
-            - v1-dependecies-{{ checksum composer.json }}
-  # 取得したcomposer.jsonを元に，差分のvendorをインストール．
-  install_vendor:
-     steps:
-       - run: composer install
+            - v1-dependecies-{{ checksum "composer.json" }}
+            - v1-dependencies-
+       
   save_vendor:
     steps:
       # 最新のvendorを保存．
       - save_cache:
-          key: v1-dependecies-{{ checksum composer.json }}
+          key: v1-dependecies-{{ checksum "composer.json" }}
           paths:
-            - /vendor
+            - ./vendor
+            
+jobs:
+  build:
+    steps:
+      - restore_vendor
+      # 取得したcomposer.jsonを元に，差分のvendorをインストール
+      - run: 
+          name: Run composer install
+          commands: |
+            composer install -n --prefer-dist
+      - save_vendor
 ```
 
 #### ・persist_to_workspace，attach_workspace
@@ -759,7 +809,7 @@ jobs:
 
 ```yaml
 workflows:
-  # Review feature
+  # Featureブランチをレビュー
   feature:
     jobs:
       - build:
@@ -773,7 +823,7 @@ workflows:
           requires:
             - build_feat
             
-  # Deploy staging env
+  # ステージング環境にデプロイ
   develop:
     jobs:
       - build:
@@ -791,7 +841,7 @@ workflows:
           requires:
             - test_stg
         
-  # Deploy production env
+  # 本番環境にデプロイ
   main:
     jobs:
       - build:
@@ -923,25 +973,50 @@ workflows:
 | Project    | Environment Variables機能                   | リポジトリ内のみ参照できる．                                 |
 | Global     | Contexts機能                                | 異なるリポジトリ間で参照できる．                             |
 
+#### ・commandsにおける環境変数の出力方法
+
+環境変数を```echo```の引数に指定する．パイプラインで```base64 --decode```を実行することにより，暗号化した状態で環境変数を渡すことができる．
+
+```yaml
+jobs:
+  build_and_
+    docker:
+      - image: circleci/python:3.8-node
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: |
+            echo $API_URL_BROWSER | base64 --decode > .env
+            echo $API_URL | base64 --decode >> .env
+            echo $OAUTH_CLIENT_ID | base64 --decode >> .env
+            echo $OAUTH_CLIENT_SECRET | base64 --decode >> .env
+            echo $GOOGLE_MAP_QUERY_URL | base64 --decode >> .env
+       - run:
+           name: Install node module
+           commands: |
+             yarn install
+       - run: 
+           name: Generate nuxt-ts
+           commands: |
+             yarn nuxt-ts generate
+```
+
+なお，文字列の中に値を出力する変数展開の場合，```${}```を使用する．
+
+```yaml
+# 変数展開の場合
+steps:
+  - checkout
+  - run:
+      name: XXXXX
+      commands: |
+        echo "This is ${XXXXX}"
+```
+
 <br>
 
 ### 定義方法の違い
-
-#### ・値の出力方法
-
-オプションや```echo```の引数にて，```$```マークを使用して，値を出力する．
-
-```yaml
-# 出力
-echo $XXXXX
-```
-
-文字列の中に値を出力する場合，```${}```を使用する．
-
-```yaml
-# 変数展開
-echo "This is ${XXXXX}"
-```
 
 #### ・Bashレベル
 
@@ -1032,11 +1107,11 @@ jobs:
 
 <br>
 
-### dockerizeのインストール
+### docker-compose & dockerize
 
 #### ・docker/install-dockerize
 
-CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
+CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．dockerizeの代わりの方法として，sleepコマンドを使用してもよい．
 
 参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
 
@@ -1056,9 +1131,8 @@ commands:
       - restore_cache:
           key:
             - v1-dependecies-{{ checksum composer.json }}
-  install_vendor:
-     steps:
-       - run: composer install -n --prefer-dist
+            - v1-dependencies-
+            
   save_vendor:
     steps:
       - save_cache:
@@ -1070,23 +1144,29 @@ jobs:
   build_and_test:
     # Docker Composeの時はmachineタイプを使用する
     machine:
-      - image: ubuntu-1604:201903-01
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - run:
           name: Make env file
-          command: echo $ENV_TESTING | base64 -di > .env
+          command: |
+            echo $ENV | base64 --decode > .env
       - run:
           name: Make env docker file
-          command: cp .env.docker.example .env.docker
+          command: |
+            cp .env.docker.example .env.docker
       - run:
-          name: Docker Compose
+          name: Docker compose up
           command: |
             set -xe
             docker network create example-network
             docker-compose up --build -d
       - restore_vendor
-      - install_vendor
+      # Dockerコンテナに対してcomspoerコマンドを送信
+      - run:
+          name: Composer install
+          command: |
+            docker exec -it laravel-container composer install -n --prefer-dist
       - save_vendor
       # Dockerizeをインストール
       - docker/install-dockerize:
@@ -1094,20 +1174,92 @@ jobs:
       - run:
           name: Wait for MySQL to be ready
           command: |
+            # 代わりにsleepコマンドでもよい．
             dockerize -wait tcp://localhost:3306 -timeout 1m
-            sleep 30
+      # Dockerコンテナに対してマイグレーションコマンドを送信
       - run:
-          name: Run migration test
+          name: Run artisan migration
           command: |
             docker exec -it laravel-container php artisan migrate --force
+      # Dockerコンテナに対してPHP-Unitコマンドを送信
       - run:
-          name: Run unit teest
+          name: Run unit test
           command: |
             docker exec -it laravel-container ./vendor/bin/phpunit
+      # Dockerコンテナに対してPHP-Stanコマンドを送信  
       - run:
           name: Run static test
           command: |
             docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
+```
+
+<br>
+
+### DLC：Docker Layer Cache
+
+#### ・DLCとは
+
+CircleCIでDockerイメージをビルドした後，各イメージレイヤーをDLCボリュームにキャッシュする．そして，次回以降のビルド時に，差分がないイメージレイヤーをDLCボリュームからプルして再利用する．これにより，Dockerイメージのビルド時間を短縮できる．
+
+![DockerLayerCache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerLayerCache.png)
+
+#### ・使用例
+
+machineタイプで使用する場合，machineキーの下で```docker_layer_caching```を使う．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+orbs:
+  docker: circleci/docker@x.y.z
+            
+jobs:
+  build_and_test:
+    # Docker Composeの時はmachineタイプを使用する
+    machine:
+      image: ubuntu-1604:201903-01
+      # DLCを有効化
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: |
+            echo $ENV_TESTING | base64 --decode > .env
+      - run:
+          name: Make env docker file
+          command: |
+            cp .env.docker.example .env.docker
+      - run:
+          name: Docker compose up
+          command: |
+            set -xe
+            docker network create example-network
+            docker-compose up --build -d
+```
+
+dockerタイプで使用する場合，dockerキーの下で```docker_layer_caching```を使う．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+jobs:
+  build_and_push:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+          # DLCを有効化
+          docker_layer_caching: true
+      - checkout
+      - docker/check
+      - docker/build:
+          image: <ユーザ名>/<リポジトリ名>
+      - docker/push:
+          image: <ユーザ名>/<リポジトリ名>
 ```
 
 <br>
@@ -1171,6 +1323,71 @@ jobs:
           aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
           aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
           region: $AWS_REGION_ENV_VAR_NAME
+```
+
+<br>
+
+### aws-cli
+
+#### ・commands: install / setup
+
+aws-cliコマンドのインストールやCredentials情報の設定を行う．AWSリソースを操作するために使用する．
+
+#### ・使用例：Cloudfrontのキャッシュを削除
+
+CloudFrontに保存されているCacheを削除する．フロントエンドをデプロイしたとしても，CloudFrontに保存されているCacheを削除しない限り，CacheがHitしたユーザには過去のファイルがレスポンスされてしまう．そのため，S3へのデプロイ後に，Cacheを削除する必要がある．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.3.1
+
+jobs:
+  cloudfront_create_invalidation:
+    docker:
+      - image: cimg/python:3.9-node
+    steps:
+      - checkout
+      - aws-cli/install
+      - aws-cli/setup
+      - run:
+          name: Run create invalidation
+          command: |
+            echo $AWS_CLOUDFRONT_ID |
+            base64 --decode |
+            aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_ID --paths "/*"
+            
+workflows:
+  # ステージング環境にデプロイ
+  develop:
+    jobs:
+      # 直前に承認ジョブを挿入する
+      - hold:
+          name: hold_create_invalidation_stg
+          type: approval
+      - cloudfront_create_invalidation:
+          name: cloudfront_create_invalidation_stg
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      # 直前に承認ジョブを挿入する
+      - hold:
+          name: hold_create_invalidation_prd
+          type: approval    
+      - cloudfront_create_invalidation:
+          name: cloudfront_create_invalidation_prd
+          filters:
+            branches:
+              only:
+                - main   
 ```
 
 <br>
@@ -1247,7 +1464,7 @@ workflows:
   develop:
     jobs:
       - ecs_update_service_by_rolling_update:
-          name: ecs_update_service_by_rolling_update_staging
+          name: ecs_update_service_by_rolling_update_stg
           filters:
             branches:
               only:
@@ -1303,7 +1520,7 @@ workflows:
   develop:
     jobs:
       - ecs_update_service_by_code_deploy:
-          name: ecs_update_service_by_code_deploy_staging
+          name: ecs_update_service_by_code_deploy_stg
           filters:
             branches:
               only:
@@ -1355,7 +1572,7 @@ workflows:
   develop:
     jobs:
       - ecs_run_task_for_migration:
-          name: ecs_run_task_for_migration_staging
+          name: ecs_run_task_for_migration_stg
           filters:
             branches:
               only:
@@ -1411,7 +1628,7 @@ workflows:
   develop:
     jobs:
       - code_deploy:
-          name: code_deploy_staging
+          name: code_deploy_stg
           filters:
             branches:
               only:
@@ -1460,7 +1677,7 @@ workflows:
   develop:
     jobs:
       - deploy:
-          name: deploy_staging
+          name: deploy_stg
           filters:
             branches:
               only:

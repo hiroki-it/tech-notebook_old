@@ -14,10 +14,34 @@ $ /usr/local/bin/composer require <パッケージ名>:^x.x
 
 #### ・インストール
 
-composer.json にパッケージ名を書き込み，さらにインストール
+composer.json に書き込まれているパッケージを全てインストールする．
+
+```bash
+$ /usr/local/bin/composer install 
+```
+
+####  ・特定のライブラリをインストール
+
+requireタグ内の特定のライブラリ（コンポーネント）をインストール．
 
 ```bash
 $ /usr/local/bin/composer install <パッケージ名>
+```
+
+#### ・高速インストール
+
+Composerの配布サイトからインストールする．```prefer-source```オプションを使用するよりも高速でインストールできる．デフォルトでdistを使用するため，実際は宣言しなくても問題ない．
+
+```bash
+$ /usr/local/bin/composer install --prefer-dist
+```
+
+#### ・開発者用インストール
+
+GitHubのComposerリポジトリからインストールする．Composerの開発者用である．
+
+```bash
+$ /usr/local/bin/composer install --prefer-source
 ```
 
 ####  ・メモリ上限をなくしてインストール
@@ -34,14 +58,6 @@ $ php -d memory_limit=-1 /usr/local/bin/composer update
 
 ```bash
 $ /usr/local/bin/composer update -vvv
-```
-
-####  ・特定のライブラリをインストール
-
-requireタグ内の特定のライブラリ（コンポーネント）をインストール．
-
-```bash
-$ /usr/local/bin/composer install symfony/event-dispatcher
 ```
 
 ####  ・--no-devを除いてインストール
