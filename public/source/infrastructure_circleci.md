@@ -1112,6 +1112,75 @@ jobs:
 
 <br>
 
+### DLC：Docker Layer Cache
+
+#### ・DLCとは
+
+CircleCIでDockerイメージをビルドした後，各イメージレイヤーをDLCボリュームにキャッシュする．そして，次回以降のビルド時に，差分がないイメージレイヤーをDLCボリュームからプルして再利用する．これにより，Dockerイメージのビルド時間を短縮できる．
+
+![DockerLayerCache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerLayerCache.png)
+
+#### ・使用例
+
+machineタイプで使用する場合，machineキーの下で```docker_layer_caching```を使う．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+orbs:
+  docker: circleci/docker@x.y.z
+            
+jobs:
+  build_and_test:
+    # Docker Composeの時はmachineタイプを使用する
+    machine:
+      image: ubuntu-1604:201903-01
+      # DLCを有効化
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: |
+            echo $ENV_TESTING | base64 --decode > .env
+      - run:
+          name: Make env docker file
+          command: |
+            cp .env.docker.example .env.docker
+      - run:
+          name: Docker compose up
+          command: |
+            set -xe
+            docker network create example-network
+            docker-compose up --build -d
+```
+
+dockerタイプで使用する場合，dockerキーの下で```docker_layer_caching```を使う．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+jobs:
+  build_and_push:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+          # DLCを有効化
+          docker_layer_caching: true
+      - checkout
+      - docker/check
+      - docker/build:
+          image: <ユーザ名>/<リポジトリ名>
+      - docker/push:
+          image: <ユーザ名>/<リポジトリ名>
+```
+
+<br>
+
 
 ## 02-09. CircleCIライブラリ
 
