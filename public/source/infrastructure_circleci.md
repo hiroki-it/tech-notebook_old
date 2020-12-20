@@ -1175,6 +1175,71 @@ jobs:
 
 <br>
 
+### aws-cli
+
+#### ・commands: install / setup
+
+aws-cliコマンドのインストールやCredentials情報の設定を行う．AWSリソースを操作するために使用する．
+
+#### ・使用例：Cloudfrontのキャッシュを削除
+
+CloudFrontに保存されているCacheを削除する．フロントエンドをデプロイしたとしても，CloudFrontに保存されているCacheを削除しない限り，CacheがHitしたユーザには過去のファイルがレスポンスされてしまう．そのため，S3へのデプロイ後に，Cacheを削除する必要がある．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.3.1
+
+jobs:
+  cloudfront_create_invalidation:
+    docker:
+      - image: cimg/python:3.9-node
+    steps:
+      - checkout
+      - aws-cli/install
+      - aws-cli/setup
+      - run:
+          name: Run create invalidation
+          command: |
+            echo $AWS_CLOUDFRONT_ID |
+            base64 --decode |
+            aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_ID --paths "/*"
+            
+workflows:
+  # ステージング環境にデプロイ
+  develop:
+    jobs:
+      # 直前に承認ジョブを挿入する
+      - hold:
+          name: hold_create_invalidation_stg
+          type: approval
+      - cloudfront_create_invalidation:
+          name: cloudfront_create_invalidation_stg
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      # 直前に承認ジョブを挿入する
+      - hold:
+          name: hold_create_invalidation_prd
+          type: approval    
+      - cloudfront_create_invalidation:
+          name: cloudfront_create_invalidation_prd
+          filters:
+            branches:
+              only:
+                - main   
+```
+
+<br>
+
 ### aws-ecr
 
 #### ・jobs：build-and-push-image
@@ -1247,7 +1312,7 @@ workflows:
   develop:
     jobs:
       - ecs_update_service_by_rolling_update:
-          name: ecs_update_service_by_rolling_update_staging
+          name: ecs_update_service_by_rolling_update_stg
           filters:
             branches:
               only:
@@ -1303,7 +1368,7 @@ workflows:
   develop:
     jobs:
       - ecs_update_service_by_code_deploy:
-          name: ecs_update_service_by_code_deploy_staging
+          name: ecs_update_service_by_code_deploy_stg
           filters:
             branches:
               only:
@@ -1355,7 +1420,7 @@ workflows:
   develop:
     jobs:
       - ecs_run_task_for_migration:
-          name: ecs_run_task_for_migration_staging
+          name: ecs_run_task_for_migration_stg
           filters:
             branches:
               only:
@@ -1411,7 +1476,7 @@ workflows:
   develop:
     jobs:
       - code_deploy:
-          name: code_deploy_staging
+          name: code_deploy_stg
           filters:
             branches:
               only:
@@ -1460,7 +1525,7 @@ workflows:
   develop:
     jobs:
       - deploy:
-          name: deploy_staging
+          name: deploy_stg
           filters:
             branches:
               only:
