@@ -1032,11 +1032,11 @@ jobs:
 
 <br>
 
-### dockerizeのインストール
+### docker-compose & dockerize
 
 #### ・docker/install-dockerize
 
-CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．
+CircleCIでDocker Composeを使用する場合に必要である．Docker Composeは，コンテナの構築の順番を制御できるものの，コンテナ内のプロセスの状態を気にしない．そのため，コンテナの構築後に，プロセスが完全に起動していないのにもかかわらず，次のコンテナの構築を開始してしまう．これにより，プロセスが完全に起動していないコンテナに対して，次に構築されたコンテナが接続処理を行ってしまうことがある．これを防ぐために，プロセスの起動を待機してから，接続処理を行うようにする．dockerizeの代わりの方法として，sleepコマンドを使用してもよい．
 
 参考：https://github.com/docker/compose/issues/374#issuecomment-126312313
 
@@ -1056,9 +1056,8 @@ commands:
       - restore_cache:
           key:
             - v1-dependecies-{{ checksum composer.json }}
-  install_vendor:
-     steps:
-       - run: composer install -n --prefer-dist
+            - v1-dependencies-
+            
   save_vendor:
     steps:
       - save_cache:
@@ -1070,23 +1069,29 @@ jobs:
   build_and_test:
     # Docker Composeの時はmachineタイプを使用する
     machine:
-      - image: ubuntu-1604:201903-01
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - run:
           name: Make env file
-          command: echo $ENV_TESTING | base64 -di > .env
+          command: |
+            echo $ENV | base64 --decode > .env
       - run:
           name: Make env docker file
-          command: cp .env.docker.example .env.docker
+          command: |
+            cp .env.docker.example .env.docker
       - run:
-          name: Docker Compose
+          name: Docker compose up
           command: |
             set -xe
             docker network create example-network
             docker-compose up --build -d
       - restore_vendor
-      - install_vendor
+      # Dockerコンテナに対してcomspoerコマンドを送信
+      - run:
+          name: Composer install
+          command: |
+            docker exec -it laravel-container composer install -n --prefer-dist
       - save_vendor
       # Dockerizeをインストール
       - docker/install-dockerize:
@@ -1094,16 +1099,19 @@ jobs:
       - run:
           name: Wait for MySQL to be ready
           command: |
+            # 代わりにsleepコマンドでもよい．
             dockerize -wait tcp://localhost:3306 -timeout 1m
-            sleep 30
+      # Dockerコンテナに対してマイグレーションコマンドを送信
       - run:
-          name: Run migration test
+          name: Run artisan migration
           command: |
             docker exec -it laravel-container php artisan migrate --force
+      # Dockerコンテナに対してPHP-Unitコマンドを送信
       - run:
-          name: Run unit teest
+          name: Run unit test
           command: |
             docker exec -it laravel-container ./vendor/bin/phpunit
+      # Dockerコンテナに対してPHP-Stanコマンドを送信  
       - run:
           name: Run static test
           command: |
