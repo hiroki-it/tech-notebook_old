@@ -334,8 +334,20 @@ const getBacketBasedOnDeviceType = (headers) => {
     {
       "cf": {
         "request": {
+          "body": {
+            "action": "read-only",
+            "data": "",
+            "encoding": "base64",
+            "inputTruncated": false
+          },
           "clientIp": "203.0.113.178",
           "headers": {
+            "host": [
+              {
+                "key": "Host",
+                "value": "example-bucket.s3.ap-northeast-1.amazonaws.com"
+              }
+            ],
             "cloudfront-is-mobile-viewer": [
               {
                 "key": "CloudFront-Is-Mobile-Viewer",
@@ -365,12 +377,6 @@ const getBacketBasedOnDeviceType = (headers) => {
                 "key": "User-Agent",
                 "value": "Amazon CloudFront"
               }
-            ],
-            "host": [
-              {
-                "key": "Host",
-                "value": "example.org"
-              }
             ]
           },
           "method": "GET",
@@ -382,7 +388,7 @@ const getBacketBasedOnDeviceType = (headers) => {
               "port": 443,
               "protocol": "https",
               "authMethod": "origin-access-identity",
-              "region": "ap-northeast-1",
+              "region": "ap-northeast-1"
             }
           },
           "querystring": "",
@@ -1446,6 +1452,37 @@ https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/cache-h
 #### ・Invalidation
 
 CloudFrontに保存してあるCacheを削除できる．全てのファイルのCacheを削除したい場合は「```/*```」，特定のファイルのCacheを削除したい場合は「```/<ファイルへのパス>```」，を指定する．CloudFrontに関するエラーページが表示された場合，不具合を修正した後でもCacheが残っていると，エラーページが表示されてしまうため，作業後には必ずCacheを削除する．
+
+#### ・オリジンに対するリクエストメッセージの構造
+
+CloudFrontからオリジンに送信されるリクエストメッセージの構造例を以下に示す．
+
+```http
+GET /example/
+Host: stg.osohshiki.jp
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1
+Authorization: Bearer XXXXX
+X-Amz-Cf-Id: XXXXX
+Via: 2.0 77c20654dd474081d033f27ad1b56e1e.cloudfront.net (CloudFront)
+Cookie: PHPSESSID=xxxxx; ___ua=1787709890.1608200633; __ulfpc=202012171924472692; _fbp=fb.1.1608200694475.952015011; _ga=GA1.1.859191015.1558955663; _ga_68HTFJXME5=GS1.1.1608200317.1.1.1608201840.60; _gid=GA1.2.1864559874.1608200687; _td=cfeba1dc-be70-454d-a749-a5f6112fab39; _ts_yjad=1608200694057; accessId=24941993; bookmark=27
+X-Forwarded-For: nn.nnn.nnn.nnn
+Accept-Language: ja,en;q=0.9
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate, br
+pragma: no-cache
+cache-control: no-cache
+upgrade-insecure-requests: 1
+sec-fetch-site: none
+sec-fetch-mode: navigate
+sec-fetch-user: ?1
+sec-fetch-dest: document
+CloudFront-Is-Mobile-Viewer: true
+CloudFront-Is-Tablet-Viewer: false
+CloudFront-Is-SmartTV-Viewer: false
+CloudFront-Is-Desktop-Viewer: false
+CloudFront-Viewer-Country: JP
+CloudFront-Forwarded-Proto: https
+```
 
 <br>
 
