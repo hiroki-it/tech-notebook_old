@@ -923,25 +923,50 @@ workflows:
 | Project    | Environment Variables機能                   | リポジトリ内のみ参照できる．                                 |
 | Global     | Contexts機能                                | 異なるリポジトリ間で参照できる．                             |
 
+#### ・commandsにおける環境変数の出力方法
+
+環境変数を```echo```の引数に指定する．パイプラインで```base64 --decode```を実行することにより，暗号化した状態で環境変数を渡すことができる．
+
+```yaml
+jobs:
+  build_and_
+    docker:
+      - image: circleci/python:3.8-node
+    steps:
+      - checkout
+      - run:
+          name: Make env file
+          command: |
+            echo $API_URL_BROWSER | base64 --decode > .env
+            echo $API_URL | base64 --decode >> .env
+            echo $OAUTH_CLIENT_ID | base64 --decode >> .env
+            echo $OAUTH_CLIENT_SECRET | base64 --decode >> .env
+            echo $GOOGLE_MAP_QUERY_URL | base64 --decode >> .env
+       - run:
+           name: Install node module
+           commands: |
+             yarn install
+       - run: 
+           name: Generate nuxt-ts
+           commands: |
+             yarn nuxt-ts generate
+```
+
+なお，文字列の中に値を出力する変数展開の場合，```${}```を使用する．
+
+```yaml
+# 変数展開の場合
+steps:
+  - checkout
+  - run:
+      name: XXXXX
+      commands: |
+        echo "This is ${XXXXX}"
+```
+
 <br>
 
 ### 定義方法の違い
-
-#### ・値の出力方法
-
-オプションや```echo```の引数にて，```$```マークを使用して，値を出力する．
-
-```yaml
-# 出力
-echo $XXXXX
-```
-
-文字列の中に値を出力する場合，```${}```を使用する．
-
-```yaml
-# 変数展開
-echo "This is ${XXXXX}"
-```
 
 #### ・Bashレベル
 
