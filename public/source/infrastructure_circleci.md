@@ -1140,7 +1140,7 @@ workflows:
 | 構造      | 説明                                                         |
 | --------- | ------------------------------------------------------------ |
 | jobs      | workflowsにて，Orbsから```job```として使用できる．           |
-| commands  | ```job```にて，``step```として使用できる．                   |
+| commands  | ```job```にて，```step```として使用できる．                  |
 | executors | ```exexutor```にて，事前定義されたexecutorsとして使用できる． |
 
 #### ・オプションへの引数の渡し方
@@ -1153,12 +1153,19 @@ AWS認証情報は，CircleCIのデフォルト名と同じ環境変数名で登
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-xxx@x.y.z
+  aws-xxx: circleci/aws-xxx@x.y.z
 
-workflows:
-  build_and_push_image:
-    jobs:
-      - aws-xxx/yyy-yyy-yyy:
+jobs:
+  xxx_xxx_xxx:
+    docker:
+      - image: circleci/python:x.y.z
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+      - aws-cli/install
+      - aws-cli/setup
+      - aws-xxx/xxx-xxx-xxx:
           # デフォルト名であれば，記述しなくても自動的に入力してくれる．
           account-url: $AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
           aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
@@ -1172,7 +1179,7 @@ workflows:
 
 #### ・jobs：build-and-push-image
 
-CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイできる．
+CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイする．```remote-docker-layer-caching```を使用して，Docker Layer Cacheを有効化できる．
 
 **＊実装例＊**
 
@@ -1180,43 +1187,37 @@ CircleCIコンテナでDockerイメージをビルドし，ECRにデプロイで
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@x.y.z
+  aws-cli: circleci/aws-cli@1.3.1
+  aws-ecr: circleci/aws-ecr@6.15.2
 
-workflows:
-  build_and_push_image:
-    jobs:
-      - aws-ecr/build-and-push-image:
-          account-url: $AWS_ECR_ACCOUNT_URL_ENV_VAR_NAME
-          aws-access-key-id: $ACCESS_KEY_ID_ENV_VAR_NAME
-          aws-secret-access-key: $SECRET_ACCESS_KEY_ENV_VAR_NAME
-          region: $AWS_REGION_ENV_VAR_NAME
-          # リポジトリがない時に作成するかどうか．
-          create-repo: true
-          no-output-timeout: 20m
-          # projectを作業ディレクトリとした時の相対パス
-          dockerfile: ./infra/docker/Dockerfile
-          path: '.'
-          profile-name: myProfileName
-          repo: '{$APP_NAME}-repository'
-          # CircleCIのハッシュ値によるバージョニング
-          tag: $CIRCLE_SHA1
-          # job内にて，attach_workspaceステップを実行．
-          attach-workspace: true
-          # attach_workspaceステップ実行時のrootディレクトリ
-          workspace-root: <ディレクトリ名>
+jobs:
+  aws-ecr/build-and-push-image:
+    name: ecr_build_and_push_image
+    # Docker Layer Cacheを使用するかどうか（有料）
+    remote-docker-layer-caching: true
+    # リポジトリがない時に作成するかどうか．
+    create-repo: true
+    no-output-timeout: 20m
+    # projectを作業ディレクトリとした時の相対パス
+    dockerfile: ./infra/docker/Dockerfile
+    path: '.'
+    profile-name: myProfileName
+    repo: '{$SERVICE}-repository'
+    # CircleCIのハッシュ値によるバージョニング
+    tag: $CIRCLE_SHA1
+    # job内にて，attach_workspaceステップを実行．
+    attach-workspace: true
+    # attach_workspaceステップ実行時のrootディレクトリ
+    workspace-root: <ディレクトリ名>
 ```
 
 <br>
 
 ### aws-ecs
 
-#### ・jobs：deploy-service-update
+#### ・jobs：update-service（ローリングアップデート使用時）
 
-ECSのサービスのリビジョンを更新する．以下のaws-cliに対応している．
-
-```bash
-$ aws ecs update-service <複数のオプション>
-```
+ECSタスク定義を更新する．さらに，ローリングアップデートがそのタスク定義を指定し，ECSサービスを更新する．``` verify-revision-is-deployed```オプションを使用して，ECSサービスが更新された後，実行されているタスクがタスク定義に合致しているかを監視する．例えば，タスクが「Runnning」にならずに「Stopped」になってしまう場合や，既存のタスクが「Stopped」にならずに「Running」のままになってしまう場合，この状態はタスク定義に合致しないので，検知できる．
 
 **＊実装例＊**
 
@@ -1224,71 +1225,151 @@ $ aws ecs update-service <複数のオプション>
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@x.y.z
-  aws-ecs: circleci/aws-ecs@x.y.z
+  aws-cli: circleci/aws-cli@1.3.1
+  aws-ecs: circleci/aws-ecs@1.4.0
   
+jobs:
+  aws-ecs/update-service:
+    name: ecs_update_service_by_rolling_update
+    # タスク定義名を指定
+    family: '${SERVICE}-ecs-task-definition'
+    # クラスター名を指定
+    cluster-name: '${SERVICE}-cluster'
+    # サービス名を指定
+    service-name: '${SERVICE}-service'
+    # コンテナ名とイメージタグを指定．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
+    container-image-name-updates: 'container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}'
+    # サービス更新後のタスク監視
+    verify-revision-is-deployed: true
+          
 workflows:
-  build-and-deploy:
+  # ステージング環境にデプロイ
+  develop:
     jobs:
-      - aws-ecr/build-and-push-image:
-      
-      # ~~~ 省略 ~~~ #
-      
-      - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build-and-push-image
-          # タスク定義名を指定
-          family: '${APP_NAME}-ecs-task-definition'
-          # クラスター名を指定
-          cluster-name: '${APP_NAME}-cluster'
-          # サービス名を指定
-          service-name: '${APP_NAME}-service'
-          # CodeDeployにおけるデプロイの作成を設定
-          deployment-controller: CODE_DEPLOY
-          codedeploy-application-name: $APP_NAME}
-          codedeploy-deployment-group-name: "${APP_NAME}-deployment-group"
-          codedeploy-load-balanced-container-name: www-container
-          codedeploy-load-balanced-container-port: 80
-          # コンテナ名とイメージタグを上書き．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
-          container-image-name-updates: 'container=${APP_NAME}-container,tag=${CIRCLE_SHA1}'
+      - ecs_update_service_by_rolling_update:
+          name: ecs_update_service_by_rolling_update_staging
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      - ecs_update_service_by_rolling_update:
+          name: ecs_update_service_by_rolling_update_production
+          filters:
+            branches:
+              only:
+                - main               
+          
+```
+
+#### ・jobs：update-service（B/Gデプロイメント使用時）
+
+ECSタスク定義を更新する．さらに，Blue/Greenデプロイメントがそのタスク定義を指定し，ECSサービスを更新する．ローリングアップデートと同様にして，``` verify-revision-is-deployed```オプションを使用できる．
+
+**＊実装例＊**
+
+```yaml
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.3.1
+  aws-ecs: circleci/aws-ecs@1.4.0
+  
+jobs:
+  aws-ecs/update-service:
+    name: ecs_update_service_by_code_deploy
+    # タスク定義名を指定
+    family: '${SERVICE}-ecs-task-definition'
+    # クラスター名を指定
+    cluster-name: '${SERVICE}-cluster'
+    # サービス名を指定
+    service-name: '${SERVICE}-service'
+    # CodeDeployにおけるデプロイの作成を設定
+    deployment-controller: CODE_DEPLOY
+    codedeploy-application-name: $SERVICE
+    codedeploy-deployment-group-name: "${SERVICE}-deployment-group"
+    codedeploy-load-balanced-container-name: www-container
+    codedeploy-load-balanced-container-port: 80
+    # コンテナ名とイメージタグを指定．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
+    container-image-name-updates: 'container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}'
+    # サービス更新後のタスク監視
+    verify-revision-is-deployed: true
+          
+workflows:
+  # ステージング環境にデプロイ
+  develop:
+    jobs:
+      - ecs_update_service_by_code_deploy:
+          name: ecs_update_service_by_code_deploy_staging
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      - ecs_update_service_by_code_deploy:
+          name: ecs_update_service_by_code_deploy_production
+          filters:
+            branches:
+              only:
+                - main       
 ```
 
 #### ・jobs：run-task
 
-サービスに内包されるタスクを指定して，設定したオプションで，現在起動中のタスクとは別のものを新しく起動する．以下のaws-cliを内部で実行している．
-
-```bash
-$ aws ecs run-task <複数のオプション>
-```
+既存のタスク定義を一部上書きして，現在起動中のECSタスクとは別に，新しいものを起動する．
 
 **＊実装例＊**
 
-例えば，マイグレーション用のタスクを起動し，データベースを更新する手法がある．
+例えば，マイグレーション用のECSタスクを起動し，データベースを更新する手法がある．
 
 ```yaml
 version: 2.1
 
 orbs:
-  aws-ecs: circleci/aws-ecs@x.y.z
+  aws-cli: circleci/aws-cli@1.3.1
+  aws-ecs: circleci/aws-ecs@1.4.0
 
+jobs:
+  aws-ecs/run-task:
+    name: ecs_run_task_for_migration
+    cluster: "${SERVICE}-ecs-cluster"
+    # LATESTとするとその時点の最新バージョンを自動で割り振られてしまう．
+    platform-version: 1.4.0
+    awsvpc: true
+    launch-type: FARGATE
+    # タスク定義名．最新リビジョン番号が自動補完される．
+    task-definition: "${SERVICE}-ecs-task-definition"
+    subnet-ids: $AWS_SUBNET_IDS
+    security-group-ids: $AWS_SECURITY_GROUPS
+    # タスク起動時にマイグレーションコマンドを実行
+    overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"laravel\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
+          
 workflows:
-  version: 2.1
-  run-task:
+  # ステージング環境にデプロイ
+  develop:
     jobs:
-      - aws-ecs/run-task:
-          name: run-task-fargate
-          cluster: "${APP_NAME}-ecs-cluster"
-          # LATESTとするとその時点の最新バージョンを自動で割り振られてしまう．
-          platform-version: 1.3.0
-          assign-public-ip: ENABLED
-          awsvpc: true
-          launch-type: FARGATE
-          # タスク定義名．最新リビジョン番号が自動補完される．
-          task-definition: "${APP_NAME}-ecs-task-definition"
-          subnet-ids: $AWS_SUBNET_IDS
-          security-group-ids: $AWS_SECURITY_GROUPS
-          # タスク起動時にマイグレーションコマンドを実行
-          overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"app\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
+      - ecs_run_task_for_migration:
+          name: ecs_run_task_for_migration_staging
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      - ecs_run_task_for_migration:
+          name: ecs_run_task_for_migration_production
+          filters:
+            branches:
+              only:
+                - main
 ```
 
 <br>
@@ -1306,35 +1387,52 @@ S3にソースコードとappspecファイルをデプロイできる．また�
 version: 2.1
 
 orbs:
-  aws-code-deploy: circleci/aws-ecs@x.y.z
+  aws-code-deploy: circleci/aws-code-deploy@1.0.1
 
+jobs:
+  aws-code-deploy/deploy:
+    name: code_deploy
+    application-name: $SERVICE}
+    # appspecファイルを保存するバケット名
+    bundle-bucket: "${SERVICE}-bucket"
+    # appspecファイルのあるフォルダ
+    bundle-source: ./infra/aws_codedeploy
+    # appspecファイルをzipフォルダで保存
+    bundle-type: zip
+    # zipフォルダ名
+    bundle-key: xxx-bundle
+    deployment-config: CodeDeployDefault.ECSAllAtOnce
+    deployment-group: "${SERVICE}-deployment-group"
+    # ECSにアクセスできるCodeDeployサービスロール
+    service-role-arn: $CODE_DEPLOY_ROLE_FOR_ECS
+ 
 workflows:
-  run-task:
+  # ステージング環境にデプロイ
+  develop:
     jobs:
-      - aws-code-deploy/deploy:
-          requires:
-            - build-and-push-image-www
-          name: deploy-source-code
-          application-name: $APP_NAME}
-          # appspecファイルを保存するバケット名
-          bundle-bucket: "${APP_NAME}-bucket"
-          # appspecファイルのあるフォルダ
-          bundle-source: ./infra/aws_codedeploy
-          # appspecファイルをzipフォルダで保存
-          bundle-type: zip
-          # zipフォルダ名
-          bundle-key: xxx-bundle
-          deployment-config: CodeDeployDefault.ECSAllAtOnce
-          deployment-group: "${APP_NAME}-deployment-group"
-          # ECSにアクセスできるCodeDeployサービスロール
-          service-role-arn: $CODE_DEPLOY_ROLE_FOR_ECS
+      - code_deploy:
+          name: code_deploy_staging
+          filters:
+            branches:
+              only:
+                - develop
+                
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      - code_deploy:
+          name: code_deploy_production
+          filters:
+            branches:
+              only:
+                - main
 ```
 
 <br>
 
 ### slack
 
-#### ・commands：status
+#### ・commands：notify
 
 ジョブの終了時に，成功または失敗に基づいて，ステータスを通知する．ジョブの最後のステップとして設定しなければならない．
 
@@ -1342,22 +1440,46 @@ workflows:
 version: 2.1
 
 orbs:
-  slack: circleci/slack@x.y.z
+  slack: circleci/slack@4.1
+
+commands:
+  # 他のジョブ内で使用できるようにcommandとして定義
+  slack_notify:
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 jobs:
-  build:
-    docker:
-      - image: <docker image>
+  deploy:
     steps:
-      - run: exit 0
-      - slack/status:
-          # 成功した場合
-          success_message: ':tada: A $CIRCLE_job job has succeeded!'
-          # 失敗した場合
-          failure_message: ':red_circle: A $CIRCLE_job job has failed!'
-          # 通知先のUSERIDをカンマ区切りで指定
-          mentions: 'USERID1,USERID2'
-          # SlackチャンネルのWebhookURL（CircleCI環境変数として登録していれば設定不要）
-          webhook: webhook
+    # ～ 省略 ～
+
+workflows:
+  # ステージング環境にデプロイ
+  develop:
+    jobs:
+      - deploy:
+          name: deploy_staging
+          filters:
+            branches:
+              only:
+                - develop
+          # 失敗時に通知
+          post-steps:
+            - slack_notify:
+            
+  # 本番環境にデプロイ                
+  main:
+    jobs:
+      - deploy:
+          name: deploy_production
+          filters:
+            branches:
+              only:
+                - main
+          # 失敗時に通知
+          post-steps:
+            - slack_notify:
 ```
 
