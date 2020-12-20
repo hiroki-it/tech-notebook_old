@@ -334,8 +334,20 @@ const getBacketBasedOnDeviceType = (headers) => {
     {
       "cf": {
         "request": {
+          "body": {
+            "action": "read-only",
+            "data": "",
+            "encoding": "base64",
+            "inputTruncated": false
+          },
           "clientIp": "203.0.113.178",
           "headers": {
+            "host": [
+              {
+                "key": "Host",
+                "value": "example-bucket.s3.ap-northeast-1.amazonaws.com"
+              }
+            ],
             "cloudfront-is-mobile-viewer": [
               {
                 "key": "CloudFront-Is-Mobile-Viewer",
@@ -365,12 +377,6 @@ const getBacketBasedOnDeviceType = (headers) => {
                 "key": "User-Agent",
                 "value": "Amazon CloudFront"
               }
-            ],
-            "host": [
-              {
-                "key": "Host",
-                "value": "example.org"
-              }
             ]
           },
           "method": "GET",
@@ -382,7 +388,7 @@ const getBacketBasedOnDeviceType = (headers) => {
               "port": 443,
               "protocol": "https",
               "authMethod": "origin-access-identity",
-              "region": "ap-northeast-1",
+              "region": "ap-northeast-1"
             }
           },
           "querystring": "",
