@@ -1820,15 +1820,32 @@ class UserController extends Controller
 
 #### ・Json型データのレスポンス
 
-```Symfony\Component\HttpFoundation\Response```を継承している．
+LaravelのResponseクラスは，```Symfony\Component\HttpFoundation\Response```を継承している．
 
 **＊実装例＊**
 
 ```php
-return response()->json([
-    'name' => 'Abigail',
-    'state' => 'CA'
-]);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+
+        // ～ 省略 ～
+
+        return response()->json([
+            'name'  => 'Abigail',
+            'state' => 'CA'
+        ]);
+    }
+}
 ```
 
 #### ・Viewテンプレートのレスポンス
@@ -1836,17 +1853,49 @@ return response()->json([
 **＊実装例＊**
 
 ```php
-// データ，ステータスコード，ヘッダーなどを設定する場合
-return response()
-  ->view('hello', $data, 200)
-  ->header('Content-Type', $type);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // データ，ステータスコード，ヘッダーなどを設定する場合
+        return response()
+            ->view('hello', $data, 200)
+            ->header('Content-Type', $type);
+    }
+}
 ```
 
 ```php
-// ステータスコードのみ設定する場合
-return response()
-  ->view('hello')
-  ->setStatusCode(200);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // ステータスコードのみ設定する場合
+        return response()
+            ->view('hello')
+            ->setStatusCode(200);
+    }
+}
 ```
 
 <br>
