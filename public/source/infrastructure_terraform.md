@@ -27,8 +27,8 @@ $ terraform init \
     -reconfigure \
     -backend-config="bucket=<バケット名>" \
     -backend-config="key=terraform.tfstate" \
-    -backend-config="region=ap-northeast-1" \
     -backend-config="profile=<プロファイル名>" \
+    -backend-config="encrypt=true" \
     <ルートモジュールのディレクトリへの相対パス>
 ```
 
@@ -2655,6 +2655,15 @@ commands:
           command: |
             set -x
             source ./ops/terraform_fmt.sh
+            
+  # terraform validateを行います．
+  terraform_validate:
+    steps:
+      - run:
+          name: Terraform validate
+          command: |
+            set -x
+            source ./ops/terraform_validate.sh
 
   # terraform planを行います．
   terraform_plan:
@@ -2696,6 +2705,7 @@ jobs:
       - aws_setup
       - terraform_init
       - terraform_fmt
+      - terraform_validate
       - terraform_plan
       - persist_to_workspace:
           root: .
@@ -2902,7 +2912,7 @@ terraform plan \
 
 set -xeuo pipefail
 
-terraform validate $ENV
+terraform validate ./${ENV}
 
 ```
 
