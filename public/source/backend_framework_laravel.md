@@ -651,18 +651,33 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 ### Log  Channels
 
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```logging.php```ファイルから，指定された設定が選択される．
+
+```
+LOG_CHANNEL=<オプション名>
+```
+
 #### ・stack
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stack' => [
             'driver'            => 'stack',
             'channels'          => ['single'],
             'ignore_exceptions' => false,
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・single
@@ -671,7 +686,10 @@ return [
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'daily' => [
             'driver' => 'daily',
@@ -679,16 +697,23 @@ return [
             'level'  => env('LOG_LEVEL', 'debug'),
             'days'   => 14,
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・daily
 
 全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
 
-```
+```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stderr' => [
             'driver'    => 'monolog',
@@ -698,7 +723,11 @@ return [
                 'stream' => 'php://stderr',
             ],
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・stderr
