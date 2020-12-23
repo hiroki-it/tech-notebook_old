@@ -651,18 +651,33 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 ### Log  Channels
 
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```logging.php```ファイルから，指定された設定が選択される．
+
+```
+LOG_CHANNEL=<オプション名>
+```
+
 #### ・stack
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stack' => [
             'driver'            => 'stack',
             'channels'          => ['single'],
             'ignore_exceptions' => false,
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・single
@@ -671,7 +686,10 @@ return [
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'daily' => [
             'driver' => 'daily',
@@ -679,16 +697,23 @@ return [
             'level'  => env('LOG_LEVEL', 'debug'),
             'days'   => 14,
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・daily
 
 全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
 
-```
+```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stderr' => [
             'driver'    => 'monolog',
@@ -698,7 +723,11 @@ return [
                 'stream' => 'php://stderr',
             ],
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 #### ・stderr
@@ -707,7 +736,10 @@ return [
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stderr' => [
             'driver'    => 'monolog',
@@ -717,7 +749,11 @@ return [
                 'stream' => 'php://stderr',
             ],
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 <br>
@@ -1420,6 +1456,265 @@ class ExampleRepository extends Repository
 
 <br>
 
+## Database
+
+### データベース接続
+
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
+
+```
+DB_CONNECTION=<RDB名>
+DB_HOST=<ホスト名>
+DB_PORT=<ポート番号>
+DB_DATABASE=<データベース名>
+DB_USERNAME=<アプリケーションユーザ名>
+DB_PASSWORD=<アプリケーションユーザのパスワード>
+```
+
+#### ・単一のデータベースの場合
+
+単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
+
+```php
+return [
+
+    // ～ 省略 ～    
+
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // ～ 省略 ～
+
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => env('DB_HOST', '127.0.0.1'),
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+    ],
+
+    // ～ 省略 ～        
+
+];
+```
+
+#### ・RDSクラスターの場合
+
+RDSクラスターに接続する場合，書き込み処理をプライマリインスタンスに向け，また読み出し処理をリードレプリカインスタンスに向けることにより，負荷を分散できる．この場合，環境変数に二つのインスタンスのホストを実装する必要がある．
+
+```
+DB_HOST_PRIMARY=<プライマリインスタンスのホスト>
+DB_HOST_READ=<リードレプリカインスタンスのホスト>
+```
+
+なお，```sticky```キーを有効化しておくとよい．プライマリインスタンスにおけるデータ更新がリードレプリカインスタンスに同期される前に，リードレプリカインスタンスに対して読み出し処理が起こるような場合，これを防げる．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // ～ 省略 ～
+
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'read'           => [
+                'host' => [
+                    env('DB_HOST_PRIMARY', '127.0.0.1'),
+                ],
+            ],
+            'write'          => [
+                'host' => [
+                    env('DB_HOST_READ', '127.0.0.1'),
+                ],
+            ],
+            # stickyキーは有効化しておいたほうがよい．
+            'sticky'         => true,
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+    ],
+
+    // ～ 省略 ～
+
+];
+```
+
+<br>
+
+## File Systems
+
+### ファイルの保存先
+
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```filesystems.php```ファイルから，指定された設定が選択される．
+
+```
+AWS_ACCESS_KEY_ID=<アクセスキー>
+AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
+AWS_DEFAULT_REGION=<リージョン>
+AWS_BUCKET=<バケット名>
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Storage;
+
+class FileSystemPublicController extends Controller
+{
+    /**
+     * ファイルを保存する
+     */
+    public function index()
+    {
+        $disk = Storage::disk('public');
+
+        // 保存対象のファイルを読み込む
+        $public_path = '/path/to/public/';
+        $img_path = sprintf('%s%s', $public_path, 'test.jpg');
+        $contents = file_get_contents($img_path);
+
+        // 保存先ディレクトリ
+        $store_dir = 'images';
+
+        // ファイル名
+        $store_filename = 'example.jpg';
+
+        // 保存先パス（ディレクトリ＋ファイル名）
+        $store_file_path = sprintf('%s/%s', $store_dir, $store_filename);
+
+        // ファイルをアップロード．ルートパスは「/storage/app/public」
+        $disk->put($store_file_path, $contents);
+
+        $disk->url($store_file_path);
+
+    }
+}
+```
+
+#### ・ローカルストレージ（非公開）の場合
+
+ファイルを```/storage/app```ディレクトリに保存する．事前に，シンボリックリンクを作成する必要がある．
+
+```bash
+$ php artisan storage:link
+```
+
+```php
+return [
+
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    
+     // ～ 省略 ～
+
+    'disks' => [
+
+        'local' => [
+            'driver' => 'local',
+            'root'   => storage_path('app'),
+        ],
+        
+        // ～ 省略 ～
+        
+    ],
+];
+```
+
+#### ・ローカルストレージ（公開）の場合
+
+ファイルを```storage/app/public```ディレクトリに保存する．
+
+```php
+return [
+
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    
+     // ～ 省略 ～
+
+    'disks' => [
+        
+        // ～ 省略 ～
+
+        'public' => [
+            'driver'     => 'local',
+            'root'       => storage_path('app/public'),
+            'url'        => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        // ～ 省略 ～
+        
+    ],
+];
+```
+
+#### ・クラウドストレージの場合
+
+ファイルをS3バケット内のディレクトリに保存する．
+
+```php
+return [
+
+    // ～ 省略 ～
+    
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+
+    'disks' => [
+
+        // ～ 省略 ～
+
+        's3' => [
+            'driver'   => 's3',
+            'key'      => env('AWS_ACCESS_KEY_ID'),
+            'secret'   => env('AWS_SECRET_ACCESS_KEY'),
+            'region'   => env('AWS_DEFAULT_REGION'),
+            'bucket'   => env('AWS_BUCKET'),
+            'url'      => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+        ],
+    ],
+];
+```
+
+<br>
+
 ## HTTP｜Middleware
 
 ### artisanによる操作
@@ -1784,15 +2079,32 @@ class UserController extends Controller
 
 #### ・Json型データのレスポンス
 
-```Symfony\Component\HttpFoundation\Response```を継承している．
+LaravelのResponseクラスは，```Symfony\Component\HttpFoundation\Response```を継承している．
 
 **＊実装例＊**
 
 ```php
-return response()->json([
-    'name' => 'Abigail',
-    'state' => 'CA'
-]);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+
+        // ～ 省略 ～
+
+        return response()->json([
+            'name'  => 'Abigail',
+            'state' => 'CA'
+        ]);
+    }
+}
 ```
 
 #### ・Viewテンプレートのレスポンス
@@ -1800,17 +2112,49 @@ return response()->json([
 **＊実装例＊**
 
 ```php
-// データ，ステータスコード，ヘッダーなどを設定する場合
-return response()
-  ->view('hello', $data, 200)
-  ->header('Content-Type', $type);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // データ，ステータスコード，ヘッダーなどを設定する場合
+        return response()
+            ->view('hello', $data, 200)
+            ->header('Content-Type', $type);
+    }
+}
 ```
 
 ```php
-// ステータスコードのみ設定する場合
-return response()
-  ->view('hello')
-  ->setStatusCode(200);
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+final class ExampleController extends Controller
+{
+
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // ステータスコードのみ設定する場合
+        return response()
+            ->view('hello')
+            ->setStatusCode(200);
+    }
+}
 ```
 
 <br>
@@ -1938,37 +2282,80 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 本番環境で使用するアクセストークン．
 
-1. API側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，auth.phpで，```driver```を```passport```に設定する．また，認証フェーズで使用するテーブル名を```provider```に設定する．
+1. ```guards```キーにて，認証方式を設定する．```web```の場合，セッションを使用して，ユーザを認証する．一方で，```api```の場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+2. バックエンド側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，auth.phpで，```driver```を```passport```に設定する．また，認証フェーズで使用する認証情報テーブル名を```provider```に設定する．
 
 **＊実装例＊**
 
 ```php
-<?php
+return [
+    
+    // ～ 省略 ～
+    
+    'guards' => [
+        'web' => [
+            'driver'   => 'session',
+            'provider' => 'users',
+        ],
 
-// 一部省略
-
-'guards' => [
-    'web' => [
-        'driver'   => 'session',
-        'provider' => 'users',
+        'api' => [
+            'driver'   => 'passport',
+            'provider' => 'users',
+            'hash'     => false,
+        ],
     ],
 
-    'api' => [
-        'driver'   => 'passport',
-        'provider' => 'users',
-        'hash'     => false,
-    ],
-],
+    // ～ 省略 ～
+];
 ```
 
-2. API側では，テーブルに対応するモデルのルーティングに対して，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+3. バックエンド側では，auth.phpにて，```eloquest```ドライバを指定し，認証情報テーブルに対応するEloquentモデルを設定する．もし，DBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            // Eloquestモデルは自由に指定できる．
+            'model'  => App\Domain\Auth\User::class,
+        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+4. バックエンド側では，認証情報テーブルに対応するモデルのルーティングに対して，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
 
 **＊実装例＊**
 
 ```php
 Route::get('user', 'UserController@index')->middleware('auth:api');
 ```
-3. API側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
+5. バックエンド側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
 
 **＊実装例＊**
 
@@ -1985,11 +2372,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     
-    // 一部省略
+    // ～ 省略 ～
 }
 ```
 
-4. API側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+6. バックエンド側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
 
 **＊実装例＊**
 
@@ -2000,7 +2387,7 @@ use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    // 一部省略
+    // ～ 省略 ～
 
     public function boot()
     {
@@ -2011,7 +2398,7 @@ class AuthServiceProvider extends ServiceProvider
 }
 ```
 
-5. API側では，暗号キーとユーザを作成する．
+7. バックエンド側では，暗号キーとユーザを作成する．
 
 ```bash
 $ php artisan passport:keys
@@ -2019,7 +2406,7 @@ $ php artisan passport:keys
 $ php artisan passport:client --password
 ```
 
-6. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
+8. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
 
 **＊実装例＊**
 
@@ -2040,7 +2427,7 @@ $response = $http->post('http://your-app.com/oauth/token', [
 ]);
 ```
 
-7. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
+8. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
 
 **＊実装例＊**
 
@@ -2052,7 +2439,7 @@ $response = $http->post('http://your-app.com/oauth/token', [
 }
 ```
 
-8. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたAPI側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
+9. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたバックエンド側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
 
 **＊実装例＊**
 

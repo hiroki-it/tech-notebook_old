@@ -1,6 +1,6 @@
 # CircleCI
 
-## CircleCIとは
+## 01. CircleCIとは
 
 ### 設定ファイルの参考ドキュメント
 
@@ -1539,11 +1539,13 @@ workflows:
 
 #### ・jobs：run-task
 
-既存のタスク定義を一部上書きして，現在起動中のECSタスクとは別に，新しいものを起動する．
+現在起動中のECSタスクとは別に，新しいタスク定義を起動する．起動時に，```overrides```オプションを使用して，指定したコンテナの定義を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．
+
+上書きできるキーの参照リンク：https://docs.aws.amazon.com/cli/latest/reference/ecs/run-task.html
 
 **＊実装例＊**
 
-例えば，マイグレーション用のECSタスクを起動し，データベースを更新する手法がある．
+例えば，データベースに対してマイグレーションを実行するためのECSタスクを起動する．```overrides```オプションでコンテナ定義のコマンドを上書きする．
 
 ```yaml
 version: 2.1
@@ -1564,8 +1566,8 @@ jobs:
     task-definition: "${SERVICE}-ecs-task-definition"
     subnet-ids: $AWS_SUBNET_IDS
     security-group-ids: $AWS_SECURITY_GROUPS
-    # タスク起動時にマイグレーションコマンドを実行
-    overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"laravel\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
+    # タスク起動時にマイグレーションコマンドを実行するように，Laravelコンテナの　commandキーを上書き
+    overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"laravel-container\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
           
 workflows:
   # ステージング環境にデプロイ
