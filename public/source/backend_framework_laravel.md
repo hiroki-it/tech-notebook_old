@@ -1456,6 +1456,125 @@ class ExampleRepository extends Repository
 
 <br>
 
+## Database
+
+### データベース接続
+
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
+
+```
+DB_CONNECTION=<RDB名>
+DB_HOST=<ホスト名>
+DB_PORT=<ポート番号>
+DB_DATABASE=<データベース名>
+DB_USERNAME=<アプリケーションユーザ名>
+DB_PASSWORD=<アプリケーションユーザのパスワード>
+```
+
+#### ・単一のデータベースの場合
+
+単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
+
+```php
+return [
+
+    // ～ 省略 ～    
+
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // ～ 省略 ～
+
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => env('DB_HOST', '127.0.0.1'),
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+    ],
+
+    // ～ 省略 ～        
+
+];
+```
+
+#### ・RDSクラスターの場合
+
+RDSクラスターに接続する場合，書き込み処理をプライマリインスタンスに向け，また読み出し処理をリードレプリカインスタンスに向けることにより，負荷を分散できる．この場合，環境変数に二つのインスタンスのホストを実装する必要がある．
+
+```
+DB_HOST_PRIMARY=<プライマリインスタンスのホスト>
+DB_HOST_READ=<リードレプリカインスタンスのホスト>
+```
+
+なお，```sticky```キーを有効化しておくとよい．プライマリインスタンスにおけるデータ更新がリードレプリカインスタンスに同期される前に，リードレプリカインスタンスに対して読み出し処理が起こるような場合，これを防げる．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // ～ 省略 ～
+
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'read'           => [
+                'host' => [
+                    env('DB_HOST_PRIMARY', '127.0.0.1'),
+                ],
+            ],
+            'write'          => [
+                'host' => [
+                    env('DB_HOST_READ', '127.0.0.1'),
+                ],
+            ],
+            # stickyキーは有効化しておいたほうがよい．
+            'sticky'         => true,
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+    ],
+
+    // ～ 省略 ～
+
+];
+```
+
+<br>
+
 ## HTTP｜Middleware
 
 ### artisanによる操作
