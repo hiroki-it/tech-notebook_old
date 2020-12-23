@@ -383,7 +383,7 @@ const getBacketBasedOnDeviceType = (headers) => {
           "origin": {
             "s3": {
               "customHeaders": {},
-              "domainName": "pc-bucket.s3.amazonaws.com",
+              "domainName": "example-bucket.s3.amazonaws.com",
               "path": "/images/12345",
               "port": 443,
               "protocol": "https",
@@ -990,6 +990,30 @@ $ aws s3 ls s3://<バケット名>
 
 <br>
 
+### CORS設定
+
+#### ・指定したドメインからのGET送信を許可
+
+```json
+[
+  {
+    "AllowedHeaders": [
+      "Content-*"
+    ],
+    "AllowedMethods": [
+      "GET"
+    ],
+    "AllowedOrigins": [
+      "https://example.jp"
+    ],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
+<br>
+
 ## 04. データベース｜RDS
 
 ### Amazon RDS：Amazon Relational Database Service
@@ -1016,14 +1040,14 @@ $ aws s3 ls s3://<バケット名>
 
 #### ・データベースエンジン，RDB，DBMSの対応関係
 
-Amazon RDSでは，データベースエンジン，RDB，DBMSを選べる．
+Amazon RDSでは，DBMS，RDBを選べる．
 
-| データベースエンジンの種類 | RDBの種類              | DBMSの種類        |
-| -------------------------- | ---------------------- | ----------------- |
-| Amazon Aurora              | Amazon Aurora          | MySQL／PostgreSQL |
-| MariaDB                    | MariaDBデータベース    | MariaDB           |
-| MySQL                      | MySQLデータベース      | MySQL             |
-| PostgreSQL                 | PostgreSQLデータベース | PostgreSQL        |
+| DBMSの種類        | RDBの種類              |
+| ----------------- | ---------------------- |
+| MySQL／PostgreSQL | Amazon Aurora          |
+| MariaDB           | MariaDBデータベース    |
+| MySQL             | MySQLデータベース      |
+| PostgreSQL        | PostgreSQLデータベース |
 
 #### ・Amazon RDSのセキュリティグループ
 
@@ -1042,6 +1066,12 @@ Amazon RDSでは，データベースエンジン，RDB，DBMSを選べる．
 | **エンドポイント** | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． |
 
 #### ・データベースクラスターのエンドポイント
+
+| 種類                       | クエリの種類       | 説明                                     |
+| -------------------------- | ------------------ | ---------------------------------------- |
+| クラスターエンドポイント   | 書き込み／読み出し | プライマリインスタンスに接続できる．     |
+| 読み出しエンドポイント     | 読み出し           | リードレプリカインスタンスに接続できる． |
+| インスタンスエンドポイント |                    | 選択したインスタンスに接続できる．       |
 
 ![RDSエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RDSエンドポイント.png)
 
@@ -1387,6 +1417,27 @@ CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード�
 | ------------------- | ---- |
 | Distributions       |      |
 | Reports & analytics |      |
+
+#### ・全てのエッジサーバのIPアドレス
+
+CloudFrontには，エッジロケーションの数だけエッジサーバがあり，各サーバにIPアドレスが割り当てられている．以下のコマンドで，全てのエッジサーバのIPアドレスを確認できる．
+
+```bash
+$ curl https://ip-ranges.amazonaws.com/ip-ranges.json |
+jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
+```
+
+もしくは，以下のリンクを直接参照し，「```"service": "CLOUDFRONT"```」となっている部分を探す．
+
+参照リンク：https://ip-ranges.amazonaws.com/ip-ranges.json
+
+#### ・現在使用しているエッジサーバのIPアドレス
+
+CloudFrontには複数のエッジサーバがあり，これのうちいくつかを使用している状態にある．以下のコマンドで，CloudFrontのドメイン名に対応するエッジサーバのIPアドレスを確認できる．
+
+```bash
+$ nslookup <割り当てられた文字列>.cloudfront.net
+```
 
 <br>
 

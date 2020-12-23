@@ -707,7 +707,10 @@ return [
 
 ```php
 return [
-    'default' => env('LOG_CHANNEL', 'stack'),
+
+    // ～ 省略 ～
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
     'channels' => [
         'stderr' => [
             'driver'    => 'monolog',
@@ -717,7 +720,11 @@ return [
                 'stream' => 'php://stderr',
             ],
         ],
-]
+
+        // ～ 省略 ～
+
+    ]
+];
 ```
 
 <br>
