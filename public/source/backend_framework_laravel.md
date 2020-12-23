@@ -1974,37 +1974,80 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 本番環境で使用するアクセストークン．
 
-1. API側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，auth.phpで，```driver```を```passport```に設定する．また，認証フェーズで使用するテーブル名を```provider```に設定する．
+1. ```guards```キーにて，認証方式を設定する．```web```の場合，セッションを使用して，ユーザを認証する．一方で，```api```の場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+2. バックエンド側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，auth.phpで，```driver```を```passport```に設定する．また，認証フェーズで使用する認証情報テーブル名を```provider```に設定する．
 
 **＊実装例＊**
 
 ```php
-<?php
+return [
+    
+    // ～ 省略 ～
+    
+    'guards' => [
+        'web' => [
+            'driver'   => 'session',
+            'provider' => 'users',
+        ],
 
-// 一部省略
-
-'guards' => [
-    'web' => [
-        'driver'   => 'session',
-        'provider' => 'users',
+        'api' => [
+            'driver'   => 'passport',
+            'provider' => 'users',
+            'hash'     => false,
+        ],
     ],
 
-    'api' => [
-        'driver'   => 'passport',
-        'provider' => 'users',
-        'hash'     => false,
-    ],
-],
+    // ～ 省略 ～
+];
 ```
 
-2. API側では，テーブルに対応するモデルのルーティングに対して，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+3. バックエンド側では，auth.phpにて，```eloquest```ドライバを指定し，認証情報テーブルに対応するEloquentモデルを設定する．もし，DBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            // Eloquestモデルは自由に指定できる．
+            'model'  => App\Domain\Auth\User::class,
+        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+4. バックエンド側では，認証情報テーブルに対応するモデルのルーティングに対して，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
 
 **＊実装例＊**
 
 ```php
 Route::get('user', 'UserController@index')->middleware('auth:api');
 ```
-3. API側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
+5. バックエンド側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
 
 **＊実装例＊**
 
@@ -2021,11 +2064,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     
-    // 一部省略
+    // ～ 省略 ～
 }
 ```
 
-4. API側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+6. バックエンド側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
 
 **＊実装例＊**
 
@@ -2036,7 +2079,7 @@ use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    // 一部省略
+    // ～ 省略 ～
 
     public function boot()
     {
@@ -2047,7 +2090,7 @@ class AuthServiceProvider extends ServiceProvider
 }
 ```
 
-5. API側では，暗号キーとユーザを作成する．
+7. バックエンド側では，暗号キーとユーザを作成する．
 
 ```bash
 $ php artisan passport:keys
@@ -2055,7 +2098,7 @@ $ php artisan passport:keys
 $ php artisan passport:client --password
 ```
 
-6. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
+8. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
 
 **＊実装例＊**
 
@@ -2076,7 +2119,7 @@ $response = $http->post('http://your-app.com/oauth/token', [
 ]);
 ```
 
-7. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
+8. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
 
 **＊実装例＊**
 
@@ -2088,7 +2131,7 @@ $response = $http->post('http://your-app.com/oauth/token', [
 }
 ```
 
-8. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたAPI側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
+9. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたバックエンド側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
 
 **＊実装例＊**
 
