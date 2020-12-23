@@ -1575,6 +1575,146 @@ return [
 
 <br>
 
+## File Systems
+
+### ファイルの保存先
+
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```filesystems.php```ファイルから，指定された設定が選択される．
+
+```
+AWS_ACCESS_KEY_ID=<アクセスキー>
+AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
+AWS_DEFAULT_REGION=<リージョン>
+AWS_BUCKET=<バケット名>
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Storage;
+
+class FileSystemPublicController extends Controller
+{
+    /**
+     * ファイルを保存する
+     */
+    public function index()
+    {
+        $disk = Storage::disk('public');
+
+        // 保存対象のファイルを読み込む
+        $public_path = '/path/to/public/';
+        $img_path = sprintf('%s%s', $public_path, 'test.jpg');
+        $contents = file_get_contents($img_path);
+
+        // 保存先ディレクトリ
+        $store_dir = 'images';
+
+        // ファイル名
+        $store_filename = 'example.jpg';
+
+        // 保存先パス（ディレクトリ＋ファイル名）
+        $store_file_path = sprintf('%s/%s', $store_dir, $store_filename);
+
+        // ファイルをアップロード．ルートパスは「/storage/app/public」
+        $disk->put($store_file_path, $contents);
+
+        $disk->url($store_file_path);
+
+    }
+}
+```
+
+#### ・ローカルストレージ（非公開）の場合
+
+ファイルを```/storage/app```ディレクトリに保存する．事前に，シンボリックリンクを作成する必要がある．
+
+```bash
+$ php artisan storage:link
+```
+
+```php
+return [
+
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    
+     // ～ 省略 ～
+
+    'disks' => [
+
+        'local' => [
+            'driver' => 'local',
+            'root'   => storage_path('app'),
+        ],
+        
+        // ～ 省略 ～
+        
+    ],
+];
+```
+
+#### ・ローカルストレージ（公開）の場合
+
+ファイルを```storage/app/public```ディレクトリに保存する．
+
+```php
+return [
+
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    
+     // ～ 省略 ～
+
+    'disks' => [
+        
+        // ～ 省略 ～
+
+        'public' => [
+            'driver'     => 'local',
+            'root'       => storage_path('app/public'),
+            'url'        => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        // ～ 省略 ～
+        
+    ],
+];
+```
+
+#### ・クラウドストレージの場合
+
+ファイルをS3バケット内のディレクトリに保存する．
+
+```php
+return [
+
+    // ～ 省略 ～
+    
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+
+    'disks' => [
+
+        // ～ 省略 ～
+
+        's3' => [
+            'driver'   => 's3',
+            'key'      => env('AWS_ACCESS_KEY_ID'),
+            'secret'   => env('AWS_SECRET_ACCESS_KEY'),
+            'region'   => env('AWS_DEFAULT_REGION'),
+            'bucket'   => env('AWS_BUCKET'),
+            'url'      => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+        ],
+    ],
+];
+```
+
+<br>
+
 ## HTTP｜Middleware
 
 ### artisanによる操作
