@@ -89,9 +89,9 @@ workflows:
             - notify-failure-to-slack
           filters:
             branches:
-              only:
-                # NOTE: productionブランチのみ起動
-                - production
+              ignore: /.*/
+            tags:
+              only: /.*/
       # Make Deploy Source
       - make-deploy-source-by-builder:
           requires:
