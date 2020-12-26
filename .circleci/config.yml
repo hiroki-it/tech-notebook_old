@@ -98,6 +98,11 @@ workflows:
             - push-builder-image
           post-steps:
             - notify-failure-to-slack
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
       # Deploy Production Image To ECR www
       # env_var_name型設定項目は，${}をつけずに環境変数を出力
       - aws-ecr/build-and-push-image:
@@ -114,6 +119,11 @@ workflows:
           tag: ${CIRCLE_SHA1}
           attach-workspace: true
           workspace-root: ./workspace
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
       # Deploy Service To ECS www
       - aws-ecs/deploy-service-update:
           requires:
@@ -130,3 +140,8 @@ workflows:
           codedeploy-load-balanced-container-name: "${APP_NAME}-www"
           codedeploy-load-balanced-container-port: 80
           container-image-name-updates: "container=${APP_NAME}-www,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
