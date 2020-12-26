@@ -477,6 +477,8 @@ ssl_certificate_key /etc/nginx/ssl/server.key;
 
 ### ```location```ブロック
 
+#### ・色々なパターン
+
 リクエストメッセージのURLごとに，異なる処理を設定する．
 
 **＊実装例＊**
