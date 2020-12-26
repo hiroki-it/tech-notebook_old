@@ -305,6 +305,8 @@ GET http://127.0.0.1/testform.php?text1=a&text2=b HTTP/1.1
 HOST: 127.0.0.1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
+# キャッシュの最大有効期限
+Cache-Control: max-age=31536000
 # ブラウザのバージョン情報等
 User-Agent: Mozzila/5.0 (Windows NT 10.0; Win64; x64) Ch
 # レスポンスで送信してほしいMIMEタイプ
