@@ -2245,7 +2245,7 @@ resource "aws_instance" "bastion" {
   disable_api_termination     = true
 
   tags = {
-    Name        = "${var.environment}-${var.service}-bastion"
+    Name  = "${var.environment}-${var.service}-bastion"
   }
 
   depends_on = [var.internet_gateway]
