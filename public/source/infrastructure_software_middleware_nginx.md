@@ -523,6 +523,17 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
+#### ・ヘルスチェック
+
+アプリケーションに対してヘルスチェックを行う時，nginxでアクセスログを出力する必要はない．そこで，ヘルスチェックのパスで，```access_log```を無効化する．
+
+```nginx
+location /healthcheck {
+    try_files $uri $uri/ /index.php?$query_string;
+    access_log off;
+}
+```
+
 <br>
 
 ### ```upstream```ブロック
