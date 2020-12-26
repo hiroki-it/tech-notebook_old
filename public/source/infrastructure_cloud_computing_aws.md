@@ -280,18 +280,15 @@ exports.handler = (event, context, callback) => {
 
     const request = event.Records[0].cf.request;
     // ログストリームに変数を出力する．
-    console.dir({request});
+    console.log(JSON.stringify({request}, null, 2));
 
     const headers = request.headers;
-    // ログストリームに変数を出力する．
-    console.dir({headers});
-
-    const s3Backet = getBacketBasedOnUserAgent(headers);
+    const s3Backet = getBacketBasedOnDeviceType(headers);
 
     request.origin.s3.domainName = s3Backet
     request.headers.host[0].value = s3Backet
     // ログストリームに変数を出力する．
-    console.dir({request});
+    console.log(JSON.stringify({request}, null, 2));
 
     return callback(null, request);
 };
@@ -299,13 +296,14 @@ exports.handler = (event, context, callback) => {
 /**
  * デバイスタイプに基づいて、オリジンを切り替える．
  * 
- * @param   headers
- * @returns string
+ * @param   {Object} headers
+ * @param   {string} env
+ * @returns {string} pcBucket|spBucket
  */
 const getBacketBasedOnDeviceType = (headers) => {
 
-    const pcBucket = 'pc-bucket.s3.amazonaws.com';
-    const spBucket = 'sp-bucket.s3.amazonaws.com';
+    const pcBucket = env + '-bucket.s3.amazonaws.com';
+    const spBucket = env + '-bucket.s3.amazonaws.com';
 
     if (headers['cloudfront-is-desktop-viewer']
         && headers['cloudfront-is-desktop-viewer'][0].value === 'true') {
@@ -340,12 +338,12 @@ const getBacketBasedOnDeviceType = (headers) => {
             "encoding": "base64",
             "inputTruncated": false
           },
-          "clientIp": "203.0.113.178",
+          "clientIp": "nnn.n.nnn.nnn",
           "headers": {
             "host": [
               {
                 "key": "Host",
-                "value": "example-bucket.s3.ap-northeast-1.amazonaws.com"
+                "value": "prd-sp-bucket.s3.ap-northeast-1.amazonaws.com"
               }
             ],
             "cloudfront-is-mobile-viewer": [
@@ -382,17 +380,24 @@ const getBacketBasedOnDeviceType = (headers) => {
           "method": "GET",
           "origin": {
             "s3": {
-              "customHeaders": {},
-              "domainName": "example-bucket.s3.amazonaws.com",
-              "path": "/images/12345",
+              "authMethod": "origin-access-identity",                
+              "customHeaders": {
+                  "env": [
+                      {
+                          "key": "env",
+                          "value": "prd"
+                      }
+                  ]
+              },
+              "domainName": "prd-sp-bucket.s3.amazonaws.com",
+              "path": "",
               "port": 443,
               "protocol": "https",
-              "authMethod": "origin-access-identity",
               "region": "ap-northeast-1"
             }
           },
           "querystring": "",
-          "uri": "/"
+          "uri": "/images/12345"
         }
       }
     }
@@ -1059,11 +1064,11 @@ Amazon RDSでは，DBMS，RDBを選べる．
 
 #### ・データベースインスタンスの種類
 
-|                    | 読み出し／書き込みインスタンス                               | 読み出しオンリーインスタンス                                 |
-| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **別名**           | プライマリインスタンス                                       | リードレプリカインスタンス                                   |
-| **CRUD制限**       | 制限なし．ユーザ権限に依存する．                             | ユーザ権限の権限に関係なく，READしか実行できない．           |
-| **エンドポイント** | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． |
+|                | 読み出し／書き込みインスタンス                               | 読み出しオンリーインスタンス                                 |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 別名           | プライマリインスタンス                                       | リードレプリカインスタンス                                   |
+| CRUD制限       | 制限なし．ユーザ権限に依存する．                             | ユーザ権限の権限に関係なく，READしか実行できない．           |
+| エンドポイント | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． | 各インスタンスに，リージョンのイニシャルに合わせたエンヂポイントが割り振られる． |
 
 #### ・データベースクラスターのエンドポイント
 
@@ -1480,9 +1485,9 @@ $ nslookup <割り当てられた文字列>.cloudfront.net
 
 #### ・Behaviorの詳細項目
 
-何に基づいたCacheを行うかについては，★マークの項目で制御できる．★マークで，各項目の全て値が，過去のリクエストに合致した時のみ，そのリクエストと過去のものが同一であると見なす仕組みになっている．HIT率改善の方法は以下リンクを参照せよ．
+何に基づいたCacheを行うかについては，★マークの項目で制御できる．★マークで，各項目の全て値が，過去のリクエストに合致した時のみ，そのリクエストと過去のものが同一であると見なす仕組みになっている．キャッシュ判定時のパターンを減らし，HIT率を改善するために，★マークで可能な限り「None」を選択した方が良い．その他の改善方法は，以下リンクを参照せよ．
 
-https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/cache-hit-ratio.html#cache-hit-ratio-query-string-parameters
+参考：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/cache-hit-ratio.html#cache-hit-ratio-query-string-parameters
 
 | 設定項目                                                     | 説明                                                         | 備考                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -1494,7 +1499,7 @@ https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/cache-h
 | ★Cache Based on Selected Request Headers<br>（★については表上部参照） | リクエストヘッダーのうち，オリジンへの転送を許可し，またCacheの対象とするものを設定する． | ・各ヘッダー転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのヘッダーの転送を拒否し，Cacheの対象としない．動的になりやすい値をもつヘッダー（Accept-Datetimeなど）を一切使用せずに，それ以外のクエリ文字やCookieでCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br>・一部転送：指定したヘッダーのみ転送を許可し，Cacheの対象とする．<br>・全許可：全てのヘッダーがCacheの対象となる．しかし，日付に関するヘッダーなどの動的な値をCacheの対象としてしまうと．同一と見なすリクエストがほとんどなくなり，HITしなくなる．そのため，この設定でCacheは実質無効となり，「対象としない」に等しい． |
 | Whitelist Header                                             | Cache Based on Selected Request Headers を参照せよ．         | ・```Accept-xxxxx```：アプリケーションにレスポンスして欲しいデータの種類（データ型など）を指定．<br/>・ ```CloudFront-Is-xxxxx-Viewer```：デバイスタイプのBool値が格納されている．<br>・レスポンスのヘッダーに含まれる「```X-Cache:```」が「```Hit from cloudfront```」，「```Miss from cloudfront```」のどちらで，Cacheの使用の有無を判断できる．<br/> |
 | Object Caching                                               | CloudFrontにコンテンツのCacheを保存しておく秒数を設定する．  | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
-| TTL                                                          | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・リクエストヘッダーにCache-Control Max-Ageが指定されている場合はMinとMaxが適用され，設定されていない場合はDefault TTLが適用される．<br>・「Cache Based on Selected Request Headers = All」としている場合，Cacheが実質無効となるため，最小TTLはゼロでなければならない． |
+| TTL                                                          | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・「Cache Based on Selected Request Headers = All」としている場合，Cacheが実質無効となるため，最小TTLはゼロでなければならない． |
 | ★Farward Cookies<br/>（★については表上部参照）               | Cookie情報のキー名のうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのCookieの転送を拒否し，Cacheの対象としない．Cookieはユーザごとに一意になることが多く，動的であるが，それ以外のヘッダーやクエリ文字でCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br/>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，CloudFrontに保存されたCacheがHITしない．CloudFrontはキー名／値を保持するため，変化しやすいキー名／値は，オリジンに転送しないように設定する．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．そのため，ユーザを一意に判定することが難しくなってしまう．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
 | ★Query String Forwarding and Caching<br/>（★については表上部参照） | クエリストリングのうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・クエリストリング転送とCacheの，全拒否，一部許可，全許可を選択できる．全拒否にすると，Webサイトにクエリストリングをリクエストできなくなるので注意．<br>・異なるクエリパラメータを，別々のCacheとして保存するかどうかを設定できる． |
 | Restrict Viewer Access                                       | リクエストの送信元を制限するかどうかを設定できる．           | セキュリティグループで制御できるため，ここでは設定しなくてよい． |
@@ -1534,6 +1539,12 @@ CloudFront-Is-Desktop-Viewer: false
 CloudFront-Viewer-Country: JP
 CloudFront-Forwarded-Proto: https
 ```
+
+#### ・キャッシュの時間の決まり方
+
+キャッシュの時間は，リクエストヘッダー（```Cache-Control```，```Expires```）の値とCloudFrontの設定（最大最小デフォルトTTL）の組み合わせによって決まる．ちなみに，CloudFrontの最大最小デフォルトTTLを全て０秒にすると，キャッシュを完全に無効化できる．
+
+参照：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
 
 <br>
 
@@ -2379,8 +2390,10 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 ```http
 GET /example/
+# ホスト
 host: example.jp
 upgrade-insecure-requests: 1
+# ユーザエージェント
 user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
 accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
 sec-fetch-site: none
@@ -2389,6 +2402,7 @@ sec-fetch-user: ?1
 sec-fetch-dest: document
 accept-encoding: gzip, deflate, br
 accept-language: ja,en;q=0.9
+# Cookieヘッダー
 cookie: PHPSESSID=xxxxx; ___ua=1787709890.1608200633; accessId=xxxxx; style=null; bookmark=45; _gid=GA1.2.1643243662.1608715225; __ulfpc=202012231820255572; _ga=GA1.1.859191015.1558955663; _a1_f=8bd85d6d-0f18-41f1-a65d-ac6607316f6e; _a1_u=966b06f3-d387-476a-9a02-49192641c0f2; _td=5fd55a8a-1602-45ec-bbf7-96d75974f37a; _fbp=fb.1.1608715230439.1917315302; _ts_yjad=1608715232002; _ga_68HTFJXME5=GS1.1.1608722059.2.0.1608722059.60
 ```
 

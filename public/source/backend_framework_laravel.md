@@ -139,7 +139,7 @@ $result = Example::method();
 #### ・クラスの自動生成
 
 ```bash
-$ php artisan make:provider {クラス名}
+$ php artisan make:provider <クラス名>
 ```
 
 <br>
@@ -386,7 +386,9 @@ $result = $example->method();
 
 <br>
 
-### MacroServiceProvider
+### MigrationMacroServiceProvider
+
+複数のテーブルに共通のカラムを構築するマイグレーション処理を提供する．
 
 ```php
 <?php
@@ -416,14 +418,23 @@ class MigrationMacroServiceProvider extends ServiceProvider
                 ->nullable();
             $this->string('updated_by')
                 ->comment('レコードの最終更新者')
-                ->nullable();;
+                ->nullable();
             $this->string('created_at')
                 ->comment('レコードの作成日')
-                ->nullable();;
+                ->nullable();
             $this->string('updated_at')
                 ->comment('レコードの最終更新日')
-                ->nullable();;
+                ->nullable();
         });
+        
+        Blueprint::macro('dropSystemColumns', function () {
+            $this->dropColumn(
+                'created_by',
+                'updated_by',                
+                'created_at',
+                'updated_at'
+            );
+        });        
     }
 }
 ```
@@ -431,6 +442,8 @@ class MigrationMacroServiceProvider extends ServiceProvider
 <br>
 
 ### RouteServiceProvider
+
+ルーティングファイルの設定を定義する．
 
 ```php
 <?php
@@ -443,7 +456,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * コントローラの場所を定義します．
+     * コントローラの名前空間を定義します．
      */
     protected $namespace = 'App\Http\Controllers';
 
@@ -647,112 +660,169 @@ Laravelでは，CSRF対策のため，POST，PUT，DELETEメソッドを使用�
 
 <br>
 
-## Logging
+## Database
 
-### Log  Channels
+### データベース接続
 
 #### ・設定方法
 
-環境変数を```.env```ファイルに実装する．```logging.php```ファイルから，指定された設定が選択される．
+環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
 
 ```
-LOG_CHANNEL=<オプション名>
+DB_CONNECTION=<RDB名>
+DB_HOST=<ホスト名>
+DB_PORT=<ポート番号>
+DB_DATABASE=<データベース名>
+DB_USERNAME=<アプリケーションユーザ名>
+DB_PASSWORD=<アプリケーションユーザのパスワード>
 ```
 
-#### ・stack
+#### ・RDBとRedisの選択
+
+```php
+<?php
+
+use Illuminate\Support\Str;
+
+return [
+
+    // 使用するDBMSを設定
+    'default'     => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
+
+        // データベース接続情報（SQLite）
+        'sqlite' => [
+
+        ],
+
+        // データベース接続情報（MySQL）
+        'mysql'  => [
+
+        ],
+
+        // データベース接続情報（pgSQL）
+        'pgsql'  => [
+
+        ],
+
+        // データベース接続情報（SQLSRV）
+        'sqlsrv' => [
+
+        ],
+    ],
+
+    // マイグレーションファイルのあるディレクトリ
+    'migrations'  => 'migrations',
+
+    // Redis接続情報
+    'redis'       => [
+
+    ],
+];
+```
+
+<br>
+
+### MySQL
+
+#### ・単一のデータベースの場合
+
+単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
 
 ```php
 return [
 
     // ～ 省略 ～    
 
-    'default'  => env('LOG_CHANNEL', 'stack'),
-    'channels' => [
-        'stack' => [
-            'driver'            => 'stack',
-            'channels'          => ['single'],
-            'ignore_exceptions' => false,
-        ],
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
 
         // ～ 省略 ～
 
-    ]
-];
-```
-
-#### ・single
-
-全てのログを```/storage/logs/laravel.log```ファイルに対して出力する．
-
-```php
-return [
-
-    // ～ 省略 ～    
-
-    'default'  => env('LOG_CHANNEL', 'stack'),
-    'channels' => [
-        'daily' => [
-            'driver' => 'daily',
-            'path'   => storage_path('logs/laravel.log'),
-            'level'  => env('LOG_LEVEL', 'debug'),
-            'days'   => 14,
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => env('DB_HOST', '127.0.0.1'),
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
+    ],
 
-        // ～ 省略 ～
+    // ～ 省略 ～        
 
-    ]
 ];
 ```
 
-#### ・daily
+#### ・RDSクラスターの場合
 
-全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
+RDSクラスターに接続する場合，書き込み処理をプライマリインスタンスに向け，また読み出し処理をリードレプリカインスタンスに向けることにより，負荷を分散できる．この場合，環境変数に二つのインスタンスのホストを実装する必要がある．
 
-```php
-return [
-
-    // ～ 省略 ～    
-
-    'default'  => env('LOG_CHANNEL', 'stack'),
-    'channels' => [
-        'stderr' => [
-            'driver'    => 'monolog',
-            'handler'   => StreamHandler::class,
-            'formatter' => env('LOG_STDERR_FORMATTER'),
-            'with'      => [
-                'stream' => 'php://stderr',
-            ],
-        ],
-
-        // ～ 省略 ～
-
-    ]
-];
+```
+DB_HOST_PRIMARY=<プライマリインスタンスのホスト>
+DB_HOST_READ=<リードレプリカインスタンスのホスト>
 ```
 
-#### ・stderr
-
-全てのログを標準エラー出力に対して出力する．Docker上でLaravelを稼働させる場合は，これを選択する．
+なお，```sticky```キーを有効化しておくとよい．プライマリインスタンスにおけるデータ更新がリードレプリカインスタンスに同期される前に，リードレプリカインスタンスに対して読み出し処理が起こるような場合，これを防げる．
 
 ```php
 return [
 
     // ～ 省略 ～
 
-    'default'  => env('LOG_CHANNEL', 'stack'),
-    'channels' => [
-        'stderr' => [
-            'driver'    => 'monolog',
-            'handler'   => StreamHandler::class,
-            'formatter' => env('LOG_STDERR_FORMATTER'),
-            'with'      => [
-                'stream' => 'php://stderr',
-            ],
-        ],
+    'default' => env('DB_CONNECTION', 'mysql'),
+
+    'connections' => [
 
         // ～ 省略 ～
 
-    ]
+        'mysql' => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'read'           => [
+                'host' => [
+                    env('DB_HOST_PRIMARY', '127.0.0.1'),
+                ],
+            ],
+            'write'          => [
+                'host' => [
+                    env('DB_HOST_READ', '127.0.0.1'),
+                ],
+            ],
+            # stickyキーは有効化しておいたほうがよい．
+            'sticky'         => true,
+            'port'           => env('DB_PORT', 3306),
+            'database'       => env('DB_DATABASE', 'forge'),
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => true,
+            'engine'         => null,
+            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+    ],
+
+    // ～ 省略 ～
+
 ];
 ```
 
@@ -1456,125 +1526,6 @@ class ExampleRepository extends Repository
 
 <br>
 
-## Database
-
-### データベース接続
-
-#### ・設定方法
-
-環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
-
-```
-DB_CONNECTION=<RDB名>
-DB_HOST=<ホスト名>
-DB_PORT=<ポート番号>
-DB_DATABASE=<データベース名>
-DB_USERNAME=<アプリケーションユーザ名>
-DB_PASSWORD=<アプリケーションユーザのパスワード>
-```
-
-#### ・単一のデータベースの場合
-
-単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
-
-```php
-return [
-
-    // ～ 省略 ～    
-
-    'default' => env('DB_CONNECTION', 'mysql'),
-
-    'connections' => [
-
-        // ～ 省略 ～
-
-        'mysql' => [
-            'driver'         => 'mysql',
-            'url'            => env('DATABASE_URL'),
-            'host'           => env('DB_HOST', '127.0.0.1'),
-            'port'           => env('DB_PORT', 3306),
-            'database'       => env('DB_DATABASE', 'forge'),
-            'username'       => env('DB_USERNAME', 'forge'),
-            'password'       => env('DB_PASSWORD', ''),
-            'unix_socket'    => env('DB_SOCKET', ''),
-            'charset'        => 'utf8mb4',
-            'collation'      => 'utf8mb4_unicode_ci',
-            'prefix'         => '',
-            'prefix_indexes' => true,
-            'strict'         => true,
-            'engine'         => null,
-            'options'        => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-    ],
-
-    // ～ 省略 ～        
-
-];
-```
-
-#### ・RDSクラスターの場合
-
-RDSクラスターに接続する場合，書き込み処理をプライマリインスタンスに向け，また読み出し処理をリードレプリカインスタンスに向けることにより，負荷を分散できる．この場合，環境変数に二つのインスタンスのホストを実装する必要がある．
-
-```
-DB_HOST_PRIMARY=<プライマリインスタンスのホスト>
-DB_HOST_READ=<リードレプリカインスタンスのホスト>
-```
-
-なお，```sticky```キーを有効化しておくとよい．プライマリインスタンスにおけるデータ更新がリードレプリカインスタンスに同期される前に，リードレプリカインスタンスに対して読み出し処理が起こるような場合，これを防げる．
-
-```php
-return [
-
-    // ～ 省略 ～
-
-    'default' => env('DB_CONNECTION', 'mysql'),
-
-    'connections' => [
-
-        // ～ 省略 ～
-
-        'mysql' => [
-            'driver'         => 'mysql',
-            'url'            => env('DATABASE_URL'),
-            'read'           => [
-                'host' => [
-                    env('DB_HOST_PRIMARY', '127.0.0.1'),
-                ],
-            ],
-            'write'          => [
-                'host' => [
-                    env('DB_HOST_READ', '127.0.0.1'),
-                ],
-            ],
-            # stickyキーは有効化しておいたほうがよい．
-            'sticky'         => true,
-            'port'           => env('DB_PORT', 3306),
-            'database'       => env('DB_DATABASE', 'forge'),
-            'username'       => env('DB_USERNAME', 'forge'),
-            'password'       => env('DB_PASSWORD', ''),
-            'unix_socket'    => env('DB_SOCKET', ''),
-            'charset'        => 'utf8mb4',
-            'collation'      => 'utf8mb4_unicode_ci',
-            'prefix'         => '',
-            'prefix_indexes' => true,
-            'strict'         => true,
-            'engine'         => null,
-            'options'        => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-    ],
-
-    // ～ 省略 ～
-
-];
-```
-
-<br>
-
 ## File Systems
 
 ### ファイルの保存先
@@ -1723,7 +1674,7 @@ return [
 
 ```bash
 # Middlewareを自動生成
-$ php artisan make:middleware {クラス名}
+$ php artisan make:middleware <クラス名>
 ```
 
 <br>
@@ -1796,7 +1747,7 @@ class ExampleAfterMiddleware
 
 ```bash
 # フォームクラスを自動作成
-$ php artisan make:request {クラス名}
+$ php artisan make:request <クラス名>
 ```
 
 <br>
@@ -2010,12 +1961,12 @@ public function authorize()
 
 ```bash
 # コントローラクラスを自動作成
-$ php artisan make:controller {クラス名}
+$ php artisan make:controller <クラス名>
 ```
 
 <br>
 
-### Requestのコール
+### Requestオブジェクト
 
 ####  ・データの取得
 
@@ -2075,7 +2026,7 @@ class UserController extends Controller
 
 <br>
 
-### Responseのコール
+### Responseオブジェクト
 
 #### ・Json型データのレスポンス
 
@@ -2201,7 +2152,7 @@ $ php artisan passport:client --password
 
 ### AuthファサードによるDigest認証
 
-```attempt```メソッドを用いて，パスワードを自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
+パスワードを```attempt```メソッドを用いて自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
 
 ```php
 <?php
@@ -2739,23 +2690,21 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 <br>
 
-## Config
+## Application
 
-### 環境変数
+### App
 
-#### ・envメソッド
+#### ・設定方法
 
-ルートディレクトリにある```.env```ファイルに定義された値を，環境変数として出力することができる．
-
-```php
-<?php
-
-env('<環境変数名>', '<デフォルト値>');
+```
+APP_NAME=<サービス名>
+APP_ENV=<環境名>
+APP_KEY=<セッションの作成やパスワードの暗号化に使う認証キー>
+APP_DEBUG=<デバッグモードの有効無効化>
+APP_URL=<アプリケーションのURL>
 ```
 
-#### ・app.php
-
-ルートディレクトリにある```.env```ファイルのアプリケーションに関する値が出力される．
+#### ・アプリケーションの基本設定
 
 ```php
 <?php
@@ -2780,11 +2729,11 @@ return [
     'timezone'        => 'UTC',
 
     // 言語設定
-    'locale'          => 'en',
+    'locale'          => 'ja',
     'fallback_locale' => 'en',
-    'faker_locale'    => 'en_US',
+    'faker_locale'    => 'ja_JP',
 
-    // APIキー
+    // セッションの作成やパスワードの暗号化に使う認証キー
     'key'             => env('APP_KEY'),
 
     // 暗号化アルゴリズム
@@ -2800,55 +2749,115 @@ return [
 
     ],
 ];
-
-
-
 ```
 
-#### ・database.php
+<br>
 
-```.env```ファイルのデータベースに関する値が出力される．
+## Logging
+
+### Log  Channels
+
+#### ・設定方法
+
+環境変数を```.env```ファイルに実装する．```logging.php```ファイルから，指定された設定が選択される．
+
+```
+LOG_CHANNEL=<オプション名>
+```
+
+#### ・stack
 
 ```php
-<?php
-
-use Illuminate\Support\Str;
-
 return [
 
-    // 使用するDBMSを設定
-    'default'     => env('DB_CONNECTION', 'mysql'),
+    // ～ 省略 ～    
 
-    'connections' => [
-
-        // データベース接続情報（SQLite）
-        'sqlite' => [
-
+    'default'  => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stack' => [
+            'driver'            => 'stack',
+            'channels'          => ['single'],
+            'ignore_exceptions' => false,
         ],
 
-        // データベース接続情報（MySQL）
-        'mysql'  => [
+        // ～ 省略 ～
 
-        ],
-
-        // データベース接続情報（pgSQL）
-        'pgsql'  => [
-
-        ],
-
-        // データベース接続情報（SQLSRV）
-        'sqlsrv' => [
-
-        ],
-    ],
-
-    // マイグレーションファイルのあるディレクトリ
-    'migrations'  => 'migrations',
-
-    // Redis接続情報
-    'redis'       => [
-
-    ],
+    ]
 ];
 ```
 
+#### ・single
+
+全てのログを```/storage/logs/laravel.log```ファイルに対して出力する．
+
+```php
+return [
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'daily' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/laravel.log'),
+            'level'  => env('LOG_LEVEL', 'debug'),
+            'days'   => 14,
+        ],
+
+        // ～ 省略 ～
+
+    ]
+];
+```
+
+#### ・daily
+
+全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
+
+```php
+return [
+
+    // ～ 省略 ～    
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stderr' => [
+            'driver'    => 'monolog',
+            'handler'   => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with'      => [
+                'stream' => 'php://stderr',
+            ],
+        ],
+
+        // ～ 省略 ～
+
+    ]
+];
+```
+
+#### ・stderr
+
+全てのログを標準エラー出力に対して出力する．Docker上でLaravelを稼働させる場合は，これを選択する．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'default'  => env('LOG_CHANNEL', 'stack'),
+    'channels' => [
+        'stderr' => [
+            'driver'    => 'monolog',
+            'handler'   => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with'      => [
+                'stream' => 'php://stderr',
+            ],
+        ],
+
+        // ～ 省略 ～
+
+    ]
+];
+```
