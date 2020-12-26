@@ -477,6 +477,8 @@ ssl_certificate_key /etc/nginx/ssl/server.key;
 
 ### ```location```ブロック
 
+#### ・色々なパターン
+
 リクエストメッセージのURLごとに，異なる処理を設定する．
 
 **＊実装例＊**
@@ -520,6 +522,17 @@ location / {
 |    3     |   ~    | 正規表現（大文字・小文字を区別する）．   | ```http://example.com/images/AAA.jpg```                      |
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
+
+#### ・ヘルスチェック
+
+アプリケーションに対してヘルスチェックを行う時，nginxでアクセスログを出力する必要はない．そこで，ヘルスチェックのパスで，```access_log```を無効化する．
+
+```nginx
+location /healthcheck {
+    try_files $uri $uri/ /index.php?$query_string;
+    access_log off;
+}
+```
 
 <br>
 
