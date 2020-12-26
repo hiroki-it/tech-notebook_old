@@ -13,7 +13,7 @@ commands:
           name: Setup git config
           command: |
             git config --global core.quotepath false
-            
+
   # Slackに失敗を通知する
   notify-failure-to-slack:
     parameters:
@@ -47,7 +47,7 @@ jobs:
           name: Push builder
           command: |
             docker push ${DOCKER_USER}/${APP_NAME}-builder:${DOCKER_VERSION}
-        
+
   make-deploy-source-by-builder:
     docker:
       # stepsの実行環境
@@ -119,11 +119,12 @@ workflows:
           tag: ${CIRCLE_SHA1}
           attach-workspace: true
           workspace-root: ./workspace
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /.*/
+      # NOTE: 停止中のため，AWSにデプロイしないようにします．          
+      #          filters:
+      #            branches:
+      #              ignore: /.*/
+      #            tags:
+      #              only: /.*/
       # Deploy Service To ECS www
       - aws-ecs/deploy-service-update:
           requires:
@@ -140,8 +141,9 @@ workflows:
           codedeploy-load-balanced-container-name: "${APP_NAME}-www"
           codedeploy-load-balanced-container-port: 80
           container-image-name-updates: "container=${APP_NAME}-www,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /.*/
+      # NOTE: 停止中のため，AWSにデプロイしないようにします．          
+      #          filters:
+      #            branches:
+      #              ignore: /.*/
+      #            tags:
+      #              only: /.*/
