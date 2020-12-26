@@ -331,7 +331,8 @@ POST http://127.0.0.1/testform.php HTTP/1.1
 HOST: 127.0.0.1
 Connection: keep-alive
 Content-Length: 15
-Cache-Control: max-age=0
+# キャッシュの無効化
+Cache-Control: no-store
 # オリジン（プロトコル＋ドメイン＋ポート番号）
 Origin: http://127.0.0.1
 Upgrade-Insecure-Requests: 1
