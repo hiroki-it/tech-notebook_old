@@ -2768,6 +2768,283 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 <br>
 
+## Event
+
+### Model Event
+
+#### ・データベースアクセス系
+
+Modelがデータベースに対して処理を行う前後にイベントを定義できる．例えば，```create```メソッド，```save```メソッド，```update```メソッド，```delete```メソッド，の実行後にイベントを定義するためには，```created```メソッド，```saved```メソッド，```updated```メソッド，```deleted```メソッド，を使用する．
+
+```php
+<?php
+
+namespace Illuminate\Database\Eloquent\Concerns;
+
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Events\NullDispatcher;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+
+trait HasEvents
+{
+ 
+    // ～ 省略 ～    
+    
+    /**
+     * モデルのイベントをDispatcherに登録します．
+     *
+     * @param  string  $event
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    protected static function registerModelEvent($event, $callback)
+    {
+        if (isset(static::$dispatcher)) {
+            $name = static::class;
+
+            static::$dispatcher->listen("eloquent.{$event}: {$name}", $callback);
+        }
+    }
+    
+    /**
+     * モデルのイベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function saved($callback)
+    {
+        static::registerModelEvent('saved', $callback);
+    }
+
+    /**
+     * モデルのsaveメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function updated($callback)
+    {
+        static::registerModelEvent('updated', $callback);
+    }
+
+    /**
+     * モデルのcreateメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function created($callback)
+    {
+        static::registerModelEvent('created', $callback);
+    }
+
+    /**
+     * モデルのdeleteメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function deleted($callback)
+    {
+        static::registerModelEvent('deleted', $callback);
+    }
+    
+    // ～ 省略 ～       
+    
+}
+```
+
+#### ・Traitを使用したイベントの発火
+
+Laravelの多くのコンポーネントに，```boot```メソッドが定義されている．Modelクラスでは，インスタンス生成時に```boot```メソッドがコールされ，これによりに```bootTraits```メソッドが実行される．Traitに```boot+<クラス名>```という名前の静的メソッドが定義されていると，```bootTraits```メソッドはこれをコールする．
+
+```php
+<?php
+
+namespace Illuminate\Database\Eloquent;
+
+// ～ 省略 ～
+
+abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
+{
+    public function __construct(array $attributes = [])
+    {
+        // bootメソッドが実行されていなければコール
+        $this->bootIfNotBooted();
+
+        $this->initializeTraits();
+
+        $this->syncOriginal();
+
+        $this->fill($attributes);
+    }
+
+    protected function bootIfNotBooted()
+    {
+        if (! isset(static::$booted[static::class])) {
+            static::$booted[static::class] = true;
+
+            $this->fireModelEvent('booting', false);
+
+            // bootメソッドをコール
+            static::boot();
+
+            $this->fireModelEvent('booted', false);
+        }
+    }
+
+    protected static function boot()
+    {
+        // bootTraitsをコール
+        static::bootTraits();
+    }
+    
+    protected static function bootTraits()
+    {
+        $class = static::class;
+
+        $booted = [];
+
+        static::$traitInitializers[$class] = [];
+
+        foreach (class_uses_recursive($class) as $trait) {
+            
+            // useされたTraitにboot+<クラス名>のメソッドが存在するかを判定．
+            $method = 'boot'.class_basename($trait);
+            if (method_exists($class, $method) && ! in_array($method, $booted)) {
+                
+                // 指定した静的メソッドをコール．
+                forward_static_call([$class, $method]);
+
+                $booted[] = $method;
+            }
+
+            if (method_exists($class, $method = 'initialize'.class_basename($trait))) {
+                static::$traitInitializers[$class][] = $method;
+
+                static::$traitInitializers[$class] = array_unique(
+                    static::$traitInitializers[$class]
+                );
+            }
+        }
+    }    
+    
+// ～ 省略 ～
+
+}
+```
+
+コールされるTraitでは，```saved```メソッドにModel更新イベントを登録する．
+
+```php
+<?php
+
+namespace App\Models\Traits;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Events\UpdatedModelEvent;
+
+trait UpdatedModelTrait
+{
+    /**
+     * イベントを発火させます．
+     *
+     * @return void
+     */
+    protected static function bootUpdatedModelTrait(): void
+    {
+        static::saved(function (Model $updatedModel) {
+            event(new UpdatedModelEvent($updatedModel));
+        });
+
+        static::deleted(function (Model $updatedModel) {
+            event(new UpdatedModelEvent($updatedModel));
+        });
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Events;
+
+class UpdatedModelEvent
+{
+    /**
+     * @var Model
+     */
+    public $updatedModel;
+
+    /**
+     * @param Model
+     */
+    public function __construct(Model $updatedModel)
+    {
+        $this->$updatedModel = $updatedModel;
+    }
+}
+```
+
+Model更新イベントが発火してコールされるリスナーでは，```create_by```カラムまたは```updated_by```カラムを指定した更新者名に更新できるようにする．なお，イベントとリスナーの対応関係は，EventServiceProviderで登録する．
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\UpdatedModelEvent;
+
+class UpdatedModelListener
+{
+    /**
+     * @param UpdatedModelEvent
+     * @return void
+     */
+    public function handle(UpdatedModelEvent $updatedModelEvent): void
+    {
+        $by = $this->getModelUpdater();
+
+        // create_byプロパティに値が設定されているかを判定．
+        if (is_null($updatedModelEvent->updatedModel->created_by)) {     
+            $updatedModelEvent->updatedModel->created_by = $by;
+        }
+
+        $updatedModelEvent->updatedModel->updated_by = $by;
+
+        // save実行時にイベントが発火しないようにする
+        return static::withoutEvents(function () use ($options) {
+            // プロパティの変更を保存
+            return $this->save($options);
+        });
+    }
+    
+    /**
+     * モデルの更新者を取得します．
+     *
+     * @return string
+     */
+    private function getModelUpdater(): string
+    {
+        // コンソール経由で実行されたかを判定．
+        if (app()->runningInConsole()) {
+            return 'Artisan Command';
+        }
+
+        // API認証に成功したかを判定．
+        if (auth()->check()) {
+            return 'Staff:' . auth()->id();
+        }
+        
+        return 'Guest';
+    }    
+}
+```
+
+<br>
+
 ## Application
 
 ### App
