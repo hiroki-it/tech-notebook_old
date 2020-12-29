@@ -526,128 +526,41 @@ class RouteServiceProvider extends ServiceProvider
 
 ### EventServiceProvider
 
-<br>
+#### ・EventとListenerの登録
 
-## Routes
-
-### artisanによる操作
-
-#### ・ルーティング一覧
-
-```bash
-# ルーティングを一覧で表示
-$ php artisan route:list
-```
-
-#### ・キャッシュ削除
-
-```bash
-# ルーティングのキャッシュを削除
-$ php artisan route:clear
-
-# 全てのキャッシュを削除
-$ php artisan optimize:clear
-```
-
-<br>
-
-### 種類
-
-#### ・api.php
-
-RESTfulAPIとして扱うエンドポイントを実装する
-
-#### ・web.php
-
-API以外の場合，こちらにルーティング処理を実装する．第一引数にURL，第二引数に実行するメソッドを定義する．
-
-<br>
-
-### ルーティング
-
-#### ・ルーティング定義
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::get($uri, $callback);
-Route::post($uri, $callback);
-Route::put($uri, $callback);
-Route::patch($uri, $callback);
-Route::delete($uri, $callback);
-Route::options($uri, $callback);
-```
-
-```{コントローラ名}@{メソッド名}```で，コントローラに定義してあるメソッドをコールできる．
-
-**＊実装例＊**
-
-```php
-Route::get('/user', 'UserController@index');
-```
-
-#### ・namespace
-
-```group```メソッドと組み合わせて使用する．コントローラをコールする時に，グループ内で同じ名前空間を指定できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-    // "App\Http\Controllers\Admin\" 下にあるコントローラ
-    Route::get('/user', 'UserController@index');
-    Route::post('/user/{userId}', 'UserController@createUser');
-});
-```
-
-#### ・where
-
-パスパラメータの形式の制約を，正規表現で設定できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-
-    Route::get('/user', 'UserController@index')
-    
-    // userIdの形式を「0〜9が一つ以上」に設定
-    Route::post('/user/{userId}', 'UserController@createUser')
-        ->where('id', '[0-9]+');
-});
-```
-
-RouteServiceProviderの```boot```メソッドにて，```pattern```メソッドで制約を設定することによって，ルーティング時にwhereを使用する必要がなくなる．
+EventとListenerの対応関係を定義する．なお，Eventを発火させてListenerを実行する方法は，Eventコンポーネントを参照せよ．
 
 ```php
 <?php
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Route;
+use App\Events\UpdatedModelEvent;
+use App\Listeners\UpdatedModelListener;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
     /**
-     * ルートモデル結合、パターンフィルタなどの定義
+     * イベントとリスナーの対応関係を配列で定義します．
+     * [イベント => リスナー]
      *
+     * @var array
+     */
+    protected $listen = [
+        // Model更新イベント
+        UpdatedModelEvent::class => [
+            UpdatedModelListener::class,
+        ],
+    ];
+
+    /**
      * @return void
      */
     public function boot()
     {
-        Route::pattern('articleId', '[0-9]+');
-
-        parent::boot();
     }
 }
-
 ```
 
 <br>
