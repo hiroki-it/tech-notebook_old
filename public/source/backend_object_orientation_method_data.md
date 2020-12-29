@@ -235,7 +235,7 @@ class DogToyEntity
     }
     
     // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
-    public function aggregateDogToyEntity(array $fetchedData)
+    public static function aggregateDogToyEntity(array $fetchedData)
     {
         return new DogToyEntity(
             new ColorVO($fetchedData['dog_toy_type']),
@@ -255,13 +255,27 @@ class DogToyEntity
 class Example
 {
     // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
-    public function computeExampleFee(Entity $order): Money
+    public static function computeExampleFee(Entity $order): Money
     {
         $money = new Money($order->exampleFee);
         return $money;
     }
 }
 ```
+
+#### ・```self::```
+
+```php
+// ここに実装例
+```
+
+#### ・```static::```
+
+```php
+// ここに実装例
+```
+
+
 
 <br>
 
