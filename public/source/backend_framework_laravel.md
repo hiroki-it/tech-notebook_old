@@ -1,5 +1,13 @@
 # Laravel
 
+## コンポーネントのソースコード
+
+Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
+
+参考リンク：https://laravel.com/api/6.x/Illuminate.html
+
+<br>
+
 ## Facade
 
 ### 静的プロキシ
@@ -419,10 +427,10 @@ class MigrationMacroServiceProvider extends ServiceProvider
             $this->string('updated_by')
                 ->comment('レコードの最終更新者')
                 ->nullable();
-            $this->string('created_at')
+            $this->timestamp('created_at')
                 ->comment('レコードの作成日')
                 ->nullable();
-            $this->string('updated_at')
+            $this->timestamp('updated_at')
                 ->comment('レコードの最終更新日')
                 ->nullable();
         });
@@ -500,10 +508,15 @@ class RouteServiceProvider extends ServiceProvider
      */  
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
+        # API認証用のルーティングファイル．特定のクライアントのみルーティング可能．
+        Route::middleware(['api', 'auth:api'])
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+        
+        # API認証不要のヘルスチェック用ルーティングファイル
+        Route::middleware('api')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/guest.php'));
     }
 }
 
@@ -513,128 +526,41 @@ class RouteServiceProvider extends ServiceProvider
 
 ### EventServiceProvider
 
-<br>
+#### ・EventとListenerの登録
 
-## Routes
-
-### artisanによる操作
-
-#### ・ルーティング一覧
-
-```bash
-# ルーティングを一覧で表示
-$ php artisan route:list
-```
-
-#### ・キャッシュ削除
-
-```bash
-# ルーティングのキャッシュを削除
-$ php artisan route:clear
-
-# 全てのキャッシュを削除
-$ php artisan optimize:clear
-```
-
-<br>
-
-### 種類
-
-#### ・api.php
-
-RESTfulAPIとして扱うエンドポイントを実装する
-
-#### ・web.php
-
-API以外の場合，こちらにルーティング処理を実装する．第一引数にURL，第二引数に実行するメソッドを定義する．
-
-<br>
-
-### ルーティング
-
-#### ・ルーティング定義
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::get($uri, $callback);
-Route::post($uri, $callback);
-Route::put($uri, $callback);
-Route::patch($uri, $callback);
-Route::delete($uri, $callback);
-Route::options($uri, $callback);
-```
-
-```{コントローラ名}@{メソッド名}```で，コントローラに定義してあるメソッドをコールできる．
-
-**＊実装例＊**
-
-```php
-Route::get('/user', 'UserController@index');
-```
-
-#### ・namespace
-
-```group```メソッドと組み合わせて使用する．コントローラをコールする時に，グループ内で同じ名前空間を指定できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-    // "App\Http\Controllers\Admin\" 下にあるコントローラ
-    Route::get('/user', 'UserController@index');
-    Route::post('/user/{userId}', 'UserController@createUser');
-});
-```
-
-#### ・where
-
-パスパラメータの形式の制約を，正規表現で設定できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-
-    Route::get('/user', 'UserController@index')
-    
-    // userIdの形式を「0〜9が一つ以上」に設定
-    Route::post('/user/{userId}', 'UserController@createUser')
-        ->where('id', '[0-9]+');
-});
-```
-
-RouteServiceProviderの```boot```メソッドにて，```pattern```メソッドで制約を設定することによって，ルーティング時にwhereを使用する必要がなくなる．
+EventとListenerの対応関係を定義する．なお，Eventを発火させてListenerを実行する方法は，Eventコンポーネントを参照せよ．
 
 ```php
 <?php
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Route;
+use App\Events\UpdatedModelEvent;
+use App\Listeners\UpdatedModelListener;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
     /**
-     * ルートモデル結合、パターンフィルタなどの定義
+     * イベントとリスナーの対応関係を配列で定義します．
+     * [イベント => リスナー]
      *
+     * @var array
+     */
+    protected $listen = [
+        // Model更新イベント
+        UpdatedModelEvent::class => [
+            UpdatedModelListener::class,
+        ],
+    ];
+
+    /**
      * @return void
      */
     public function boot()
     {
-        Route::pattern('articleId', '[0-9]+');
-
-        parent::boot();
     }
 }
-
 ```
 
 <br>
@@ -1255,6 +1181,8 @@ class Example extends Model
 
 #### ・insert文の実行
 
+Modelクラスが持つ```save```メソッドを使用する．
+
 ```php
 <?php
 
@@ -1286,7 +1214,7 @@ class ExampleRepository extends Repository
 
 #### ・select文の実行
 
-内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
+Modelクラスが持つ```save```メソッドを使用する．内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
 
 ```php
 <?php
@@ -1355,6 +1283,8 @@ $collection->toArray();
 
 #### ・update文の実行
 
+Modelクラスが持つ```save```メソッドを使用する．
+
 ```php
 <?php
 
@@ -1397,7 +1327,7 @@ class ExampleRepository extends Repository
 
 #### ・delete文の実行（物理削除）
 
-```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
+Modelクラスが持つ```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
 
 ```php
 <?php
@@ -2834,6 +2764,283 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 {% block content %} <!-- @section('content') に相当 -->
     <p>子テンプレートのコンテンツになる要素</p>
 {% endblock %}
+```
+
+<br>
+
+## Event
+
+### Model Event
+
+#### ・データベースアクセス系
+
+Modelがデータベースに対して処理を行う前後にイベントを定義できる．例えば，```create```メソッド，```save```メソッド，```update```メソッド，```delete```メソッド，の実行後にイベントを定義するためには，```created```メソッド，```saved```メソッド，```updated```メソッド，```deleted```メソッド，を使用する．
+
+```php
+<?php
+
+namespace Illuminate\Database\Eloquent\Concerns;
+
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Events\NullDispatcher;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+
+trait HasEvents
+{
+ 
+    // ～ 省略 ～    
+    
+    /**
+     * モデルのイベントをDispatcherに登録します．
+     *
+     * @param  string  $event
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    protected static function registerModelEvent($event, $callback)
+    {
+        if (isset(static::$dispatcher)) {
+            $name = static::class;
+
+            static::$dispatcher->listen("eloquent.{$event}: {$name}", $callback);
+        }
+    }
+    
+    /**
+     * モデルのイベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function saved($callback)
+    {
+        static::registerModelEvent('saved', $callback);
+    }
+
+    /**
+     * モデルのsaveメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function updated($callback)
+    {
+        static::registerModelEvent('updated', $callback);
+    }
+
+    /**
+     * モデルのcreateメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function created($callback)
+    {
+        static::registerModelEvent('created', $callback);
+    }
+
+    /**
+     * モデルのdeleteメソッド実行後イベントをDispatcherに登録します．
+     *    
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function deleted($callback)
+    {
+        static::registerModelEvent('deleted', $callback);
+    }
+    
+    // ～ 省略 ～       
+    
+}
+```
+
+#### ・Traitを使用したイベントの発火
+
+Laravelの多くのコンポーネントに，```boot```メソッドが定義されている．Modelクラスでは，インスタンス生成時に```boot```メソッドがコールされ，これによりに```bootTraits```メソッドが実行される．Traitに```boot+<クラス名>```という名前の静的メソッドが定義されていると，```bootTraits```メソッドはこれをコールする．
+
+```php
+<?php
+
+namespace Illuminate\Database\Eloquent;
+
+// ～ 省略 ～
+
+abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
+{
+    public function __construct(array $attributes = [])
+    {
+        // bootメソッドが実行されていなければコール
+        $this->bootIfNotBooted();
+
+        $this->initializeTraits();
+
+        $this->syncOriginal();
+
+        $this->fill($attributes);
+    }
+
+    protected function bootIfNotBooted()
+    {
+        if (! isset(static::$booted[static::class])) {
+            static::$booted[static::class] = true;
+
+            $this->fireModelEvent('booting', false);
+
+            // bootメソッドをコール
+            static::boot();
+
+            $this->fireModelEvent('booted', false);
+        }
+    }
+
+    protected static function boot()
+    {
+        // bootTraitsをコール
+        static::bootTraits();
+    }
+    
+    protected static function bootTraits()
+    {
+        $class = static::class;
+
+        $booted = [];
+
+        static::$traitInitializers[$class] = [];
+
+        foreach (class_uses_recursive($class) as $trait) {
+            
+            // useされたTraitにboot+<クラス名>のメソッドが存在するかを判定．
+            $method = 'boot'.class_basename($trait);
+            if (method_exists($class, $method) && ! in_array($method, $booted)) {
+                
+                // 指定した静的メソッドをコール．
+                forward_static_call([$class, $method]);
+
+                $booted[] = $method;
+            }
+
+            if (method_exists($class, $method = 'initialize'.class_basename($trait))) {
+                static::$traitInitializers[$class][] = $method;
+
+                static::$traitInitializers[$class] = array_unique(
+                    static::$traitInitializers[$class]
+                );
+            }
+        }
+    }    
+    
+// ～ 省略 ～
+
+}
+```
+
+コールされるTraitでは，```saved```メソッドにModel更新イベントを登録する．
+
+```php
+<?php
+
+namespace App\Models\Traits;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Events\UpdatedModelEvent;
+
+trait UpdatedModelTrait
+{
+    /**
+     * イベントを発火させます．
+     *
+     * @return void
+     */
+    protected static function bootUpdatedModelTrait(): void
+    {
+        static::saved(function (Model $updatedModel) {
+            event(new UpdatedModelEvent($updatedModel));
+        });
+
+        static::deleted(function (Model $updatedModel) {
+            event(new UpdatedModelEvent($updatedModel));
+        });
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Events;
+
+class UpdatedModelEvent
+{
+    /**
+     * @var Model
+     */
+    public $updatedModel;
+
+    /**
+     * @param Model
+     */
+    public function __construct(Model $updatedModel)
+    {
+        $this->$updatedModel = $updatedModel;
+    }
+}
+```
+
+Model更新イベントが発火してコールされるリスナーでは，```create_by```カラムまたは```updated_by```カラムを指定した更新者名に更新できるようにする．なお，イベントとリスナーの対応関係は，EventServiceProviderで登録する．
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\UpdatedModelEvent;
+
+class UpdatedModelListener
+{
+    /**
+     * @param UpdatedModelEvent
+     * @return void
+     */
+    public function handle(UpdatedModelEvent $updatedModelEvent): void
+    {
+        $by = $this->getModelUpdater();
+
+        // create_byプロパティに値が設定されているかを判定．
+        if (is_null($updatedModelEvent->updatedModel->created_by)) {     
+            $updatedModelEvent->updatedModel->created_by = $by;
+        }
+
+        $updatedModelEvent->updatedModel->updated_by = $by;
+
+        // save実行時にイベントが発火しないようにする
+        return static::withoutEvents(function () use ($options) {
+            // プロパティの変更を保存
+            return $this->save($options);
+        });
+    }
+    
+    /**
+     * モデルの更新者を取得します．
+     *
+     * @return string
+     */
+    private function getModelUpdater(): string
+    {
+        // コンソール経由で実行されたかを判定．
+        if (app()->runningInConsole()) {
+            return 'Artisan Command';
+        }
+
+        // API認証に成功したかを判定．
+        if (auth()->check()) {
+            return 'Staff:' . auth()->id();
+        }
+        
+        return 'Guest';
+    }    
+}
 ```
 
 <br>

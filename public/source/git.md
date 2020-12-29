@@ -616,6 +616,24 @@ $
 
 トラウマコマンド
 
+#### ・```push --delete origin <タグ名>```
+
+リモートブランチのタグを削除する．
+
+```bash
+$ git push --delete origin v1.0.0
+```
+
+なお，ローカルのタグは別に削除する必要がある．
+
+```bash
+$ git tag -d v1.0.0
+```
+
+#### ・```push --tags```
+
+ローカルのコミットに付与したタグをリモートにpushする．
+
 <br>
 
 ### ```show-branch```：
@@ -623,7 +641,7 @@ $
 作業ブランチの派生元になっているブランチを確認．
 
 ```bash
-git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'
+$ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'
 ```
 
 <br>
