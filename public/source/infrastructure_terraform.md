@@ -2288,13 +2288,97 @@ resource "aws_instance" "bastion" {
 
 <br>
 
-### IAM Role
+### IAMユーザ
 
-#### ・信頼ポリシーのアタッチ方法
+#### ・カスタマー管理ポリシーを持つロール
+
+事前に，tpl形式のカスタマー管理ポリシーを定義しておく．構築済みのIAMロールに，```aws_iam_policy```リソースを使用して，AWS管理ポリシーをIAMユーザにアタッチする．
 
 **＊実装例＊**
 
+ローカルからAWS CLIコマンドを実行する必要がある場合に，コマンドを特定の送信元IPアドレスを特定のものに限定する．事前に，list型でIPアドレスを定義する．
+
+```tf
+###############################################
+# IP addresses
+###############################################
+global_ip_addresses = [
+  "nn.nnn.nnn.nnn/32",
+  "nn.nnn.nnn.nnn/32"
+]
 ```
+
+また事前に，指定した送信元IPアドレス以外を拒否するカスタマー管理ポリシーを定義する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Deny",
+    "Action": "*",
+    "Resource": "*",
+    "Condition": {
+      "NotIpAddress": {
+        "aws:SourceIp": ${global_ip_addresses}
+      }
+    }
+  }
+}
+```
+
+
+コンソール画面で作成済みのIAMユーザの名前を取得する．tpl形式のポリシーにlist型の値を渡す時，```jsonencode```関数を使用する必要がある．
+
+```tf
+###############################################
+# For IAM User
+###############################################
+data "aws_iam_user" "aws_cli_command_executor" {
+  user_name = "aws_cli_command_executor"
+}
+
+resource "aws_iam_policy" "aws_cli_command_executor_ip_address_restriction" {
+  name        = "${var.environment}-aws-cli-command-executor-ip-address-restriction-policy"
+  description = "Allow global IP addresses"
+  policy = templatefile(
+    "${path.module}/policies/customer_managed_policies/aws_cli_command_executor_ip_address_restriction_policy.tpl",
+    {
+      global_ip_addresses = jsonencode(var.global_ip_addresses)
+    }
+  )
+}
+```
+
+<br>
+
+### IAMロール
+
+#### ・信頼ポリシーを持つロール
+
+事前に，tpl形式の信頼ポリシーを定義しておく．```aws_iam_role```リソースを使用して，IAMロールを構築すると同時に，これに信頼ポリシーをアタッチする．
+
+**＊実装例＊**
+
+事前に，ECSタスクのための信頼ポリシーを定義する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+ECSタスクロールとECSタスク実行ロールに信頼ポリシーアタッチする．
+
+```tf
 ###############################################
 # IAM Role For ECS Task Execution
 ###############################################
@@ -2320,11 +2404,32 @@ resource "aws_iam_role" "ecs_task" {
 }
 ```
 
-#### ・インラインポリシーのアタッチ方法
+#### ・インラインポリシーを持つロール
+
+事前に，tpl形式のインラインポリシーを定義しておく．```aws_iam_role_policy```リソースを使用して，インラインポリシーを構築すると同時に，これにインラインポリシーをアタッチする．
 
 **＊実装例＊**
 
+事前に，ECSタスクに必要最低限の権限を与えるインラインポリシーを定義する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
 ```
+
+ECSタスクロールとECSタスク実行ロールにインラインポリシーアタッチする．
+
+```tf
 ###############################################
 # IAM Role For ECS Task
 ###############################################
@@ -2338,11 +2443,13 @@ resource "aws_iam_role_policy" "ecs_task" {
 }
 ```
 
-#### ・AWS管理ポリシーのアタッチ方法
+#### ・AWS管理ポリシーを持つロール
+
+事前に，tpl形式のAWS管理ポリシーを定義しておく．```aws_iam_role_policy_attachment```リソースを使用して，リモートにあるAWS管理ポリシーを構築済みのIAMロールにアタッチする．ポリシーのARNは，AWSのコンソール画面を確認する．
 
 **＊実装例＊**
 
-```
+```tf
 ###############################################
 # IAM Role For ECS Task Execution
 ###############################################
@@ -2352,19 +2459,38 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
 }
 ```
 
-#### ・カスタマー管理ポリシー
+#### ・カスタマー管理ポリシーを持つロール
+
+事前に，tpl形式のインラインポリシーを定義しておく．```aws_iam_role_policy```リソースを使用して，カスタマー管理ポリシーを構築する．```aws_iam_role_policy_attachment```リソースを使用して，カスタマー管理ポリシーを構築済みのIAMロールにアタッチする．
 
 **＊実装例＊**
 
+事前に，ECSタスクに必要最低限の権限を与えるカスタマー管理ポリシーを定義する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*"
+      ]
+    }
+  ]
+}
 ```
+
+ECSタスクロールにカスタマー管理ポリシーアタッチする．
+
+```tf
 ###############################################
 # IAM Role For ECS Task
 ###############################################
-resource "aws_iam_role_policy_attachment" "ecs_task" {
-  role       = aws_iam_role.ecs_task.name
-  policy_arn = aws_iam_policy.ecs_task.arn
-}
-
 resource "aws_iam_policy" "ecs_task" {
   name        = "${var.environment}-${var.service}-cloudwatch-logs-access-policy"
   description = "Provides access to CloudWatch Logs"
@@ -2373,13 +2499,20 @@ resource "aws_iam_policy" "ecs_task" {
     {}
   )
 }
+
+resource "aws_iam_role_policy_attachment" "ecs_task" {
+  role       = aws_iam_role.ecs_task.name
+  policy_arn = aws_iam_policy.ecs_task.arn
+}
 ```
 
-#### ・サービスリンクロールを手動で構築
+#### ・サービスリンクロール
 
-サービスリンクロールは，AWSリソースの構築時に自動的に作成され，アタッチされるロールである．そのため，Terraformの管理外である．```aws_iam_service_linked_role```を使用して，手動で構築することが可能であるが，数が多く実装の負担にもなるため，あえて管理外としても問題ない．
+サービスリンクロールは，AWSリソースの構築時に自動的に作成され，アタッチされる．そのため，Terraformの管理外である．```aws_iam_service_linked_role```リソースを使用して，手動で構築することが可能であるが，数が多く実装の負担にもなるため，あえて管理外としても問題ない．
 
 **＊実装例＊**
+
+サービス名を指定して，Application Auto Scalingのサービスリンクロールを構築する．
 
 ```tf
 ###############################################
@@ -2399,6 +2532,8 @@ output "ecs_service_auto_scaling_iam_service_linked_role_arn" {
   value = aws_iam_service_linked_role.ecs_service_auto_scaling.arn
 }
 ```
+
+Application Auto Scalingにサービスリンクロールをアタッチする．
 
 ```tf
 #########################################
