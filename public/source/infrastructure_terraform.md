@@ -1536,7 +1536,7 @@ resource "aws_s3_bucket_policy" "alb" {
 
 ### ポリシーのアタッチ
 
-#### ・管理ポリシー
+#### ・AWS管理ポリシー
 
 AWSから提供される管理ポリシーは，jsonファイルで定義する必要はない．ポリシーのARNを指定した上で，```aws_iam_role_policy_attachment```でロールにアタッチできる．
 
@@ -2153,17 +2153,17 @@ resource "aws_cloudfront_distribution" "this" {
 
   default_cache_behavior {
     target_origin_id       = "ELB-${var.alb_name}"
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD"]
     min_ttl                = 0
-    default_ttl            = 86400
     max_ttl                = 31536000
+    default_ttl            = 86400
     compress               = true
 
     forwarded_values {
-      headers      = ["*"]
       query_string = true
+      headers      = ["*"]
 
       cookies {
         forward = "all"
@@ -2183,7 +2183,7 @@ Terraformでは，```retain_on_delete```で設定できる．固有の設定で�
 
 #### ・リモートのリビジョン番号の追跡
 
-```
+```tf
 ###############################################
 # ECS Service
 ###############################################
@@ -2231,7 +2231,7 @@ Terraformでタスク定義を更新すると，現在動いているECSで稼�
 
 #### ・全体の実装例
 
-```
+```tf
 ###############################################
 # For bastion
 ###############################################
@@ -2882,7 +2882,7 @@ terraform init \
   -upgrade \
   -reconfigure \
   -backend=true \
-  -backend-config="bucket=${ENV}-lumonde-tfstate-bucket" \
+  -backend-config="bucket=${ENV}-tfstate-bucket" \
   -backend-config="key=terraform.tfstate" \
   -backend-config="encrypt=true" \
   ./${ENV}
