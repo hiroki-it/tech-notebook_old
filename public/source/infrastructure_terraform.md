@@ -2074,6 +2074,35 @@ output "nginx_ecr_repository_url" {
 
 ## 08. 各リソースタイプ独自の仕様
 
+### AMI
+
+#### ・取得するAMIのバージョンを固定
+
+取得するAMIのバージョンを常に最新にしておく，EC2が再構築されなねない．そこで，特定のAMIを取得できるようにしておく．
+
+```tf
+###############################################
+# For bastion
+###############################################
+data "aws_ami" "bastion" {
+  # EC2が，意図せず再構築されないように，特定のAMIを取得します．
+  most_recent = false
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-2018.03.0.20201028.0-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "image-id"
+    values = ["ami-040c9333a9c90b2b6"]
+  }
+}
+```
+
+<br>
+
 ### CloudFront
 
 #### ・全体の実装例
