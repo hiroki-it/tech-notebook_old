@@ -419,10 +419,10 @@ class MigrationMacroServiceProvider extends ServiceProvider
             $this->string('updated_by')
                 ->comment('レコードの最終更新者')
                 ->nullable();
-            $this->string('created_at')
+            $this->timestamp('created_at')
                 ->comment('レコードの作成日')
                 ->nullable();
-            $this->string('updated_at')
+            $this->timestamp('updated_at')
                 ->comment('レコードの最終更新日')
                 ->nullable();
         });
@@ -500,10 +500,15 @@ class RouteServiceProvider extends ServiceProvider
      */  
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
+        # API認証用のルーティングファイル．特定のクライアントのみルーティング可能．
+        Route::middleware(['api', 'auth:api'])
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+        
+        # API認証不要のヘルスチェック用ルーティングファイル
+        Route::middleware('api')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/guest.php'));
     }
 }
 
@@ -1255,6 +1260,8 @@ class Example extends Model
 
 #### ・insert文の実行
 
+Modelクラスが持つ```save```メソッドを使用する．
+
 ```php
 <?php
 
@@ -1286,7 +1293,7 @@ class ExampleRepository extends Repository
 
 #### ・select文の実行
 
-内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
+Modelクラスが持つ```save```メソッドを使用する．内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
 
 ```php
 <?php
@@ -1355,6 +1362,8 @@ $collection->toArray();
 
 #### ・update文の実行
 
+Modelクラスが持つ```save```メソッドを使用する．
+
 ```php
 <?php
 
@@ -1397,7 +1406,7 @@ class ExampleRepository extends Repository
 
 #### ・delete文の実行（物理削除）
 
-```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
+Modelクラスが持つ```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
 
 ```php
 <?php
