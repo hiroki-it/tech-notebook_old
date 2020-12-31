@@ -142,7 +142,7 @@ $result = Example::method();
 
 ## ServiceProvider
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -165,7 +165,7 @@ $ php artisan make:provider <クラス名>
 
 #### ・ServiceProviderのコール
 
-```config/app.php```の```providers```配列に，クラスの名前空間を登録すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
+クラスの名前空間を，```config/app.php```ファイルの```providers```配列に登録すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
 
 **＊実装例＊**
 
@@ -655,6 +655,8 @@ return [
 単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
 
 ```php
+<?php
+
 return [
 
     // ～ 省略 ～    
@@ -1437,7 +1439,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-#### ・update文の実行（論理削除）
+#### ・UPDATE文の実行（論理削除）
 
 論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．
 
