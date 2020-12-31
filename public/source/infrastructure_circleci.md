@@ -1539,7 +1539,7 @@ workflows:
 
 #### ・jobs：run-task
 
-現在起動中のECSタスクとは別に，新しいタスク定義を起動する．起動時に，```overrides```オプションを使用して，指定したコンテナの定義を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．
+現在起動中のECSタスクとは別に，新しいタスクを一時的に起動する．起動時に，```overrides```オプションを使用して，指定したタスク定義のコンテナ設定を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．コマンドが実行された後に，タスクは自動的にStopped状態になる．
 
 上書きできるキーの参照リンク：https://docs.aws.amazon.com/cli/latest/reference/ecs/run-task.html
 
@@ -1562,10 +1562,10 @@ jobs:
     platform-version: 1.4.0
     awsvpc: true
     launch-type: FARGATE
-    # タスク定義名．最新リビジョン番号が自動補完される．
-    task-definition: "${SERVICE}-ecs-task-definition"
     subnet-ids: $AWS_SUBNET_IDS
     security-group-ids: $AWS_SECURITY_GROUPS
+    # タスク定義名．最新リビジョン番号が自動補完される．
+    task-definition: "${SERVICE}-ecs-task-definition"
     # タスク起動時にマイグレーションコマンドを実行するように，Laravelコンテナの　commandキーを上書き
     overrides: "{\\\"containerOverrides\\\":[{\\\"name\\\": \\\"laravel-container\\\",\\\"command\\\": [\\\"php\\\", \\\"artisan\\\", \\\"migrate\\\", \\\"--force\\\"]}]}"
           
