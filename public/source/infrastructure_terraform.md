@@ -1486,7 +1486,7 @@ resource "aws_example" "example" {
 
 <br>
 
-## 06. JSONの切り出しと読み出し
+## 06. tpl形式の切り出しと読み出し
 
 ### templatefile関数
 
@@ -1514,7 +1514,7 @@ resource "aws_s3_bucket_policy" "alb" {
 }
 ```
 
-バケットポリシーを定義するtplファイルでは，string型で出力する場合は```"${}"```で，int型で出力する場合は```${}```で出力する．拡張子をjsonにしてしまうと，int型の出力をjsonの構文エラーとして扱われてしまう．
+バケットポリシーを定義するtpl形式ファイルでは，string型で出力する場合は```"${}"```で，int型で出力する場合は```${}```で出力する．ここで拡張子をjsonにしてしまうと，int型の出力をjsonの構文エラーとして扱われてしまう．
 
 ```json
 {
@@ -1535,216 +1535,6 @@ resource "aws_s3_bucket_policy" "alb" {
 <br>
 
 ### ポリシーのアタッチ
-
-#### ・AWS管理ポリシー
-
-AWSから提供される管理ポリシーは，jsonファイルで定義する必要はない．ポリシーのARNを指定した上で，```aws_iam_role_policy_attachment```でロールにアタッチできる．
-
-**＊実装例＊**
-
-例として，ecs-task-executionロールへのECSTaskExecutionRole管理ポリシーのアタッチを示す．
-
-```
-###############################################
-# IAM Role For ECS Task
-###############################################
-
-# ロールに管理ポリシーをアタッチします．
-resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
-  role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-```
-
-#### ・インラインポリシー
-
-jsonファイルで定義したインポリシーは，```aws_iam_role_policy```でロールにアタッチできる．
-
-**＊実装例＊**
-
-例として，ECS Taskにおける，ecs-task-executionロールへのSsmAccessインラインポリシーのアタッチを示す．
-
-```tf
-###############################################
-# IAM Role For ECS Task
-###############################################
-
-# ロールにインラインポリシーをアタッチします．
-resource "aws_iam_role_policy" "ecs_task" {
-  name = "${var.environment}-${var.service}-ssm-read-only-access-policy"
-  role = aws_iam_role.ecs_task_execution.id
-  policy = templatefile(
-    "${path.module}/policies/inline_policies/ecs_task_role_policy.tpl",
-    {}
-  )
-}
-```
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ssm:GetParameters"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-
-```
-
-#### ・信頼ポリシー
-
-コンソール画面でロールを作成する場合は意識することはないが，特定のリソースにロールをアタッチするためには，ロールに信頼ポリシーを組み込む必要がある．信頼ポリシーでは，信頼されるエンティティにリソース名が定義されている．jsonファイルで定義した信頼ポリシーは，```aws_iam_role```でロールにアタッチできる．
-
-**＊実装例＊**
-
-例として，ECS Taskにおける，ecs-task-executionロールへの信頼ポリシーのアタッチを示す．
-
-```
-###############################################
-# IAM Role For ECS Task
-###############################################
-
-# ロールに信頼ポリシーをアタッチします．
-resource "aws_iam_role" "ecs_task_execution" {
-  name        = "${var.environment}-${var.service}-ecs-task-execution-role"
-  description = "The role for ${var.environment}-${var.service}-ecs-task"
-  assume_role_policy = templatefile(
-    "${path.module}/policies/trust_policies/ecs_task_role_policy.tpl",
-    {}
-  )
-}
-```
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-**＊実装例＊**
-
-例として，Lambda@Edgeにおける，lambda-execute-roleロールへの信頼ポリシーのアタッチを示す．
-
-```tf
-###############################################
-# IAM Role For Lambda@Edge
-###############################################
-
-# ロールに信頼ポリシーをアタッチします．
-resource "aws_iam_role" "lambda_execute" {
-  name = "${var.environment}-${var.service}-lambda-execute-role"
-  assume_role_policy = templatefile(
-    "${path.module}/policies/lambda_execute_role_trust_policy.tpl",
-    {}
-  )
-}
-```
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "lambda.amazonaws.com",
-          "edgelambda.amazonaws.com"
-        ]
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-#### ・バケットポリシー
-
-S3アタッチされる，自身へのアクセスを制御するためにインラインポリシーのこと．詳しくは，AWSのノートを参照せよ．定義したバケットポリシーは，```aws_s3_bucket_policy```でロールにアタッチできる．
-
-**＊実装例＊**
-
-```tf
-###############################################
-# S3 bucket policy
-###############################################
-
-# S3にバケットポリシーをアタッチします．
-resource "aws_s3_bucket_policy" "alb" {
-  bucket = aws_s3_bucket.alb_logs.id
-  policy = templatefile(
-    "${path.module}/policies/alb_bucket_policy.tpl",
-    {}
-  )
-}
-```
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::582318560864:root"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::<バケット名>/*"
-    }
-  ]
-}
-```
-
-#### ・ライフサイクルポリシー
-
-ECRにアタッチされる，イメージの有効期間を定義するポリシー．コンソール画面から入力できるため，基本的にポリシーの実装は不要であるが，TerraformなどのIaCツールでは必要になる．
-
-```json
-{
-  "rules": [
-    {
-      "rulePriority": 1,
-      "description": "Keep last 10 images untagged",
-      "selection": {
-        "tagStatus": "untagged",
-        "countType": "imageCountMoreThan",
-        "countNumber": 10
-      },
-      "action": {
-        "type": "expire"
-      }
-    },
-    {
-      "rulePriority": 2,
-      "description": "Keep last 10 images any",
-      "selection": {
-        "tagStatus": "any",
-        "countType": "imageCountMoreThan",
-        "countNumber": 10
-      },
-      "action": {
-        "type": "expire"
-      }
-    }
-  ]
-}
-```
 
 <br>
 
@@ -2208,6 +1998,45 @@ Terraformでは，```retain_on_delete```で設定できる．固有の設定で�
 
 <br>
 
+### ECR
+
+#### ・ライフサイクルポリシー
+
+ECRにアタッチされる，イメージの有効期間を定義するポリシー．コンソール画面から入力できるため，基本的にポリシーの実装は不要であるが，TerraformなどのIaCツールでは必要になる．
+
+```json
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep last 10 images untagged",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Keep last 10 images any",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 10
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+```
+
+<br>
+
 ### ECS
 
 #### ・リモートのリビジョン番号の追跡
@@ -2355,7 +2184,7 @@ resource "aws_iam_policy" "aws_cli_command_executor_ip_address_restriction" {
 
 #### ・信頼ポリシーを持つロール
 
-事前に，tpl形式の信頼ポリシーを定義しておく．```aws_iam_role```リソースを使用して，IAMロールを構築すると同時に，これに信頼ポリシーをアタッチする．
+コンソール画面でロールを作成する場合は意識することはないが，特定のリソースにロールをアタッチするためには，ロールに信頼ポリシーを組み込む必要がある．事前に，tpl形式の信頼ポリシーを定義しておく．```aws_iam_role```リソースを使用して，IAMロールを構築すると同時に，これに信頼ポリシーをアタッチする．
 
 **＊実装例＊**
 
@@ -2399,6 +2228,46 @@ resource "aws_iam_role" "ecs_task" {
   description = "The role for ${var.environment}-${var.service}-ecs-task"
   assume_role_policy = templatefile(
     "${path.module}/policies/trust_policies/ecs_task_policy.tpl",
+    {}
+  )
+}
+```
+
+**＊実装例＊**
+
+事前に，Lambda@Edgeのための信頼ポリシーを定義する．
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "lambda.amazonaws.com",
+          "edgelambda.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+Lambda実行ロールに信頼ポリシーアタッチする．
+
+```tf
+###############################################
+# IAM Role For Lambda@Edge
+###############################################
+
+# ロールに信頼ポリシーをアタッチします．
+resource "aws_iam_role" "lambda_execute" {
+  name = "${var.environment}-${var.service}-lambda-execute-role"
+  assume_role_policy = templatefile(
+    "${path.module}/policies/lambda_execute_role_trust_policy.tpl",
     {}
   )
 }
@@ -2675,6 +2544,47 @@ https://github.com/hashicorp/terraform-provider-aws/issues/7307#issuecomment-457
 #### ・インスタンスにバックアップウインドウは設定しない
 
 クラスターとインスタンスの両方に，```preferred_backup_window```を設定できるが，RDSインスタンスに設定してはいけない．
+
+<br>
+
+### S3
+
+#### ・バケットポリシー
+
+S3アタッチされる，自身へのアクセスを制御するためにインラインポリシーのこと．詳しくは，AWSのノートを参照せよ．定義したバケットポリシーは，```aws_s3_bucket_policy```でロールにアタッチできる．
+
+**＊実装例＊**
+
+```tf
+###############################################
+# S3 bucket policy
+###############################################
+
+# S3にバケットポリシーをアタッチします．
+resource "aws_s3_bucket_policy" "alb" {
+  bucket = aws_s3_bucket.alb_logs.id
+  policy = templatefile(
+    "${path.module}/policies/alb_bucket_policy.tpl",
+    {}
+  )
+}
+```
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::582318560864:root"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::<バケット名>/*"
+    }
+  ]
+}
+```
 
 <br>
 
