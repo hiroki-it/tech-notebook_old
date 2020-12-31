@@ -865,7 +865,7 @@ class CreateExampleTable extends Migration
 
 ## Factory，Seeder
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・Factoryの生成
 
@@ -878,53 +878,94 @@ $ php artisan make:factory ExampleFactory --model=Example
 $ php artisan make:seeder UserSeeder
 ```
 
-#### ・DatabaseSeederの実行
+#### ・Seederの実行
 
 ```bash
 # 事前に，Composerのオートローラを再生成
 $ composer dump-autoload
 
-# DatabaseSeederを指定して実行
-$ php artisan db:seed --class=DatabaseSeeder
+# 特定のSeederを実行
+$ php artisan db:seed --class=ExampleSeeder
+
+# DatabaseSeederを指定して，全てのSeederを実行
+$ php artisan db:seed --class=ExampleSeeder
 ```
 
 <br>
 
 
-### テストデータ
+### Factory
 
-#### ・Factoryによるデータ定義
+#### ・テストデータの定義
+
+テストデータの値を定義する．
 
 **＊実装例＊**
+
+ユーザのテストデータを定義する．
 
 ```php
 <?php
 
-use App\User;
+use App\Domain\Auth\User;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @var Factory $factory
  */
-
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
         'email'             => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password'          => 'test',
         'remember_token'    => Str::random(10),
     ];
 });
 ```
 
-#### ・Seederによるデータ作成
+他に，商品のテストデータを定義する．
 
-Factoryにおける定義を基にして，指定した数だけデータを作成する．
+```php
+<?php
+
+use App\Domain\Entity\Order;
+use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
+
+/**
+ * @var Factory $factory
+ */
+$factory->define(User::class, function (Faker $faker) {
+    return [
+        'name '      => $faker->name,
+        'price'      => $faker->price,
+        'created_by' => $faker->name,
+        'updated_by' => $faker->name,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
+    ];
+});
+```
+
+#### ・Fakerライブラリのformatters
+
+Fakerはダミーデータを作成するためのライブラリである．Farkerオブジェクトのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+
+参考リンク：https://github.com/fzaninotto/Faker
+
+<br>
+
+### Seeder
+
+#### ・テストデータの量産
+
+Factoryにおける定義を基にして，指定した数だけデータを量産する．
 
 **＊実装例＊**
+
+UserSeederを定義し，50個のユーザデータを量産する．
 
 ```php
 <?php
@@ -945,9 +986,7 @@ class UserSeeder extends Seeder
 }
 ```
 
-DatabaseSeederにて，Seederをまとめて実行する．
-
-**＊実装例＊**
+DatabaseSeederにて，UserSeederなど，全てのSeederをまとめて実行する．
 
 ```php
 <?php
@@ -963,8 +1002,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // 本番環境以外のみで作成するテストデータ
+        if (!App::environment('production')) {
+            $this->call([
+                UserSeeder::class,
+            ]);
+        }
+        
+        // 全ての環境で作成するテストデータ
         $this->call([
-            UserSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
