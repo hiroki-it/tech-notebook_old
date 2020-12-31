@@ -786,7 +786,17 @@ $ php artisan migrate:status
 指定した履歴数だけ，ロールバックを行う
 
 ```bash
-$ php artisan migrate:rollback --step={ロールバック数}
+$ php artisan migrate:rollback --step=<ロールバック数>
+```
+
+実際の使用場面として，マイグレーションに失敗した場合に，一つ前の状態にロールバックしてマイグレーションファイルを修正した後，再びマイグレーションを行う．
+
+```bash
+# マイグレーションに失敗したので，一つ前の状態にロールバック．
+$ php artisan migrate:rollback --step=1
+
+# ファイル修正後にマイグレーションを実行
+$ php artisan migrate
 ```
 
 #### ・初期の状態までテーブルを元に戻す
