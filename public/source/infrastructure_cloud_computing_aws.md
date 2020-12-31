@@ -499,7 +499,11 @@ CloudFrontと連携する場合，CloudFrontに割り振られる可能性のあ
 
 ![AWSRegionMap](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSAWSRegionMap.png)
 
-![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSリージョンマップ.PNG)
+#### ・Globalとエッジロケーションとは
+
+Regionとは別に，物理サーバが世界中にあり，これらの間ではグローバルネットワークが構築されている．そのため，Globalなサービスは，特定のRegionに依存せずに，全てのRegionと連携できる．
+
+![EdgeLocation](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/EdgeLocation.png)
 
 #### ・Availability Zoneとは
 
