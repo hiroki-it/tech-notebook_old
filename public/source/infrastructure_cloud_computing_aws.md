@@ -1654,7 +1654,23 @@ Route53から転送されるパブリックIPアドレスを受信できるよ�
 
 <br>
 
-## 05-05. ネットワーキング，コンテンツ配信｜VPC
+## 05-05. ネットワーキング，コンテンツ配信｜Global Accelerator
+
+### Global Accelerator
+
+#### ・Global Acceleratorとは
+
+クライアントPCに最も近いエッジロケーションでリクエストを受信し，指定したリージョンに直通でこれをルーティングする．小さなレイテシーでトラフィックをルーティングできる．
+
+![GlobalAccelerator導入後](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GlobalAccelerator導入後.png)
+
+Global Acceleratorを使用しない場合，クライアントPCのリージョンから指定したリージョンに至るまで，いくつもネットワークを経由する必要があり，時間がかかってしまう．
+
+![GlobalAccelerator導入前](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GlobalAccelerator導入前.png)
+
+<br>
+
+## 05-06. ネットワーキング，コンテンツ配信｜VPC
 
 ### VPC：Virtual Private Cloud（＝プライベートネットワーク）
 
