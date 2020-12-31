@@ -65,7 +65,7 @@ class Example
 }
 ```
 
-```config/app.php```の```aliases```配列に，エイリアス名とクラスの名前空間を登録すると，そのエイリアス名でインスタンス化とメソッドコールを行えるようになる．
+エイリアス名とクラスの名前空間を```config/app.php```ファイルを```aliases```キーに登録すると，そのエイリアス名でインスタンス化とメソッドコールを行えるようになる．
 
 ```php
 <?php
@@ -142,7 +142,7 @@ $result = Example::method();
 
 ## ServiceProvider
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -165,7 +165,7 @@ $ php artisan make:provider <クラス名>
 
 #### ・ServiceProviderのコール
 
-```config/app.php```の```providers```配列に，クラスの名前空間を登録すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
+クラスの名前空間を，```config/app.php```ファイルの```providers```配列に登録すると，アプリケーションの起動時にServiceProviderをコールできるため，ServiceContainerへのクラスのバインドが自動的に完了する．
 
 **＊実装例＊**
 
@@ -608,8 +608,6 @@ DB_PASSWORD=<アプリケーションユーザのパスワード>
 ```php
 <?php
 
-use Illuminate\Support\Str;
-
 return [
 
     // 使用するDBMSを設定
@@ -657,6 +655,8 @@ return [
 単一のデータベースに接続する場合，```DB_HOST```を一つだけ設定する．
 
 ```php
+<?php
+
 return [
 
     // ～ 省略 ～    
@@ -705,6 +705,8 @@ DB_HOST_READ=<リードレプリカインスタンスのホスト>
 なお，```sticky```キーを有効化しておくとよい．プライマリインスタンスにおけるデータ更新がリードレプリカインスタンスに同期される前に，リードレプリカインスタンスに対して読み出し処理が起こるような場合，これを防げる．
 
 ```php
+<?php
+    
 return [
 
     // ～ 省略 ～
@@ -757,7 +759,7 @@ return [
 
 ## Migration
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・マイグレーションファイルを作成
 
@@ -784,12 +786,22 @@ $ php artisan migrate:status
 指定した履歴数だけ，ロールバックを行う
 
 ```bash
-$ php artisan migrate:rollback --step={ロールバック数}
+$ php artisan migrate:rollback --step=<ロールバック数>
+```
+
+実際の使用場面として，マイグレーションに失敗した場合に，一つ前の状態にロールバックしてマイグレーションファイルを修正した後，再びマイグレーションを行う．
+
+```bash
+# マイグレーションに失敗したので，一つ前の状態にロールバック．
+$ php artisan migrate:rollback --step=1
+
+# ファイル修正後にマイグレーションを実行
+$ php artisan migrate
 ```
 
 #### ・初期の状態までテーブルを元に戻す
 
-初期の状態までロールバック
+初期の状態まで，全てロールバックを行う．
 
 ```bash
 $ php artisan migrate:reset
@@ -797,7 +809,7 @@ $ php artisan migrate:reset
 
 #### ・テーブルを元に戻してから再作成
 
-```migrate:reset```と```migrate```を実行する．
+まず```migrate:reset```を行い，次いで```migrate```を実行する．
 
 ```bash
 $ php artisan migrate:refresh
@@ -814,7 +826,7 @@ $ php artisan migrate:fresh
 
 ### テーブルの作成と削除
 
-#### ・up，down
+#### ・```up```メソッド，```down```メソッド
 
 コマンドによるマイグレーション時にコールされる．```up```メソッドでテーブル，カラム，インデックスのCREATEを行う．```down```メソッドでCREATEのロールバックを行う．
 
@@ -839,7 +851,7 @@ class CreateExampleTable extends Migration
         Schema::create('example', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->timestamps();
+            $table->timestamps('created_at');
         });
     }
 
@@ -863,9 +875,49 @@ class CreateExampleTable extends Migration
 
 <br>
 
+### よく使うカラムタイプ
+
+#### ・```bigIncrements```メソッド
+
+AutoIncrementのINT型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->bigIncrements('id');
+});
+```
+
+#### ・```string```メソッド
+
+VARCHAR型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->string('name');
+});
+```
+
+#### ・```timestamp```メソッド
+
+TIMESTAMP型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->timestamp('created_at');
+});
+```
+
+<br>
+
 ## Factory，Seeder
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・Factoryの生成
 
@@ -878,53 +930,94 @@ $ php artisan make:factory ExampleFactory --model=Example
 $ php artisan make:seeder UserSeeder
 ```
 
-#### ・DatabaseSeederの実行
+#### ・Seederの実行
 
 ```bash
 # 事前に，Composerのオートローラを再生成
 $ composer dump-autoload
 
-# DatabaseSeederを指定して実行
-$ php artisan db:seed --class=DatabaseSeeder
+# 特定のSeederを実行
+$ php artisan db:seed --class=ExampleSeeder
+
+# DatabaseSeederを指定して，全てのSeederを実行
+$ php artisan db:seed --class=ExampleSeeder
 ```
 
 <br>
 
 
-### テストデータ
+### Factory
 
-#### ・Factoryによるデータ定義
+#### ・テストデータの定義
+
+テストデータの値を定義する．
 
 **＊実装例＊**
+
+ユーザのテストデータを定義する．
 
 ```php
 <?php
 
-use App\User;
+use App\Domain\Auth\User;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @var Factory $factory
  */
-
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
         'email'             => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password'          => 'test',
         'remember_token'    => Str::random(10),
     ];
 });
 ```
 
-#### ・Seederによるデータ作成
+他に，商品のテストデータを定義する．
 
-Factoryにおける定義を基にして，指定した数だけデータを作成する．
+```php
+<?php
+
+use App\Domain\Entity\Order;
+use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
+
+/**
+ * @var Factory $factory
+ */
+$factory->define(User::class, function (Faker $faker) {
+    return [
+        'name '      => $faker->name,
+        'price'      => $faker->price,
+        'created_by' => $faker->name,
+        'updated_by' => $faker->name,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
+    ];
+});
+```
+
+#### ・Fakerライブラリのformatters
+
+Fakerはダミーデータを作成するためのライブラリである．Farkerオブジェクトのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+
+参考リンク：https://github.com/fzaninotto/Faker
+
+<br>
+
+### Seeder
+
+#### ・テストデータの量産
+
+Factoryにおける定義を基にして，指定した数だけデータを量産する．
 
 **＊実装例＊**
+
+UserSeederを定義し，50個のユーザデータを量産する．
 
 ```php
 <?php
@@ -945,9 +1038,7 @@ class UserSeeder extends Seeder
 }
 ```
 
-DatabaseSeederにて，Seederをまとめて実行する．
-
-**＊実装例＊**
+DatabaseSeederにて，UserSeederなど，全てのSeederをまとめて実行する．
 
 ```php
 <?php
@@ -963,18 +1054,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // 本番環境以外のみで作成するテストデータ
+        if (!App::environment('production')) {
+            $this->call([
+                UserSeeder::class,
+            ]);
+        }
+        
+        // 全ての環境で作成するテストデータ
         $this->call([
-            UserSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
 ```
 
-
+<br>
 
 ## Eloquent｜Model
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -1169,7 +1268,7 @@ class Example extends Model
 
 ## Eloquent｜Data Access
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 ```bash
 
@@ -1179,7 +1278,7 @@ class Example extends Model
 
 ### CREATE
 
-#### ・insert文の実行
+#### ・INSERT文の実行
 
 Modelクラスが持つ```save```メソッドを使用する．
 
@@ -1212,7 +1311,7 @@ class ExampleRepository extends Repository
 
 ### READ
 
-#### ・select文の実行
+#### ・SELECT文の実行
 
 Modelクラスが持つ```save```メソッドを使用する．内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
 
@@ -1255,7 +1354,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-#### ・Collectionクラス
+#### ・Collection
 
 List型で，データを保持できるオブジェクトのこと．データ型変換メソッドを持っている．
 
@@ -1281,7 +1380,7 @@ $collection->toArray();
 
 ### UPDATE
 
-#### ・update文の実行
+#### ・UPDATE文の実行
 
 Modelクラスが持つ```save```メソッドを使用する．
 
@@ -1325,7 +1424,7 @@ class ExampleRepository extends Repository
 
 ### DELETE
 
-#### ・delete文の実行（物理削除）
+#### ・DELETE文の実行（物理削除）
 
 Modelクラスが持つ```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
 
@@ -1390,7 +1489,7 @@ class ExampleRepository extends Repository
 }
 ```
 
-#### ・update文の実行（論理削除）
+#### ・UPDATE文の実行（論理削除）
 
 論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．
 
@@ -1598,7 +1697,7 @@ return [
 
 ## Routes
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・ルーティング一覧
 
@@ -1621,15 +1720,15 @@ $ php artisan optimize:clear
 
 ### 種類
 
-#### ・api.php
+#### ・```api.php```ファイル
 
 APIのエンドポイントとして働くルーティング処理を実装する．基本的に，RouteServiceProviderでAPI認証を定義し，特定のクライアントしかルーティングされないようにする．
 
-#### ・web.php
+#### ・```web.php```ファイル
 
 API以外の場合，こちらにルーティング処理を実装する．第一引数にURL，第二引数に実行するメソッドを定義する．
 
-#### ・guest.php
+#### ・```guest.php```ファイル
 
 ヘルスチェックなど，API認証が不要なルーティング処理を実装する．
 
@@ -1660,7 +1759,7 @@ Route::options($uri, $callback);
 Route::get('/user', 'UserController@index');
 ```
 
-#### ・namespace
+#### ・```namespace```メソッド
 
 コントローラをコールする時に，グループ内で同じ名前空間を指定できるように，```group```メソッドと組み合わせて使用する．
 
@@ -1676,7 +1775,7 @@ Route::namespace('Admin')->group(function () {
 });
 ```
 
-#### ・where
+#### ・```where```メソッド
 
 パスパラメータの形式の制約を，正規表現で設定できる．
 
@@ -1746,7 +1845,7 @@ Route::get('/healthcheck', function () {
 
 ## HTTP｜Middleware
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -1819,7 +1918,7 @@ class ExampleAfterMiddleware
 
 ## HTTP｜Request
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -1916,7 +2015,7 @@ $validatedData = $request->validate([
 ]);
 ```
 
-#### ・Validatorファサード
+#### ・Validator
 
 ```Illuminate\Support\Facades\Validator```ファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
@@ -2033,7 +2132,7 @@ public function authorize()
 
 ## HTTP｜Controller
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・クラスの自動生成
 
@@ -2190,7 +2289,7 @@ final class ExampleController extends Controller
 
 ## HTTP｜Auth
 
-### artisanによる操作
+### artisanコマンドによる操作
 
 #### ・Digest認証の環境構築
 
@@ -2228,7 +2327,7 @@ $ php artisan passport:client --password
 
 <br>
 
-### AuthファサードによるDigest認証
+### AuthによるDigest認証
 
 パスワードを```attempt```メソッドを用いて自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
 
@@ -2963,6 +3062,21 @@ trait UpdatedModelTrait
             event(new UpdatedModelEvent($updatedModel));
         });
     }
+    
+    /**
+     * イベントを発火させずにモデルを保存します．
+     *
+     * @return void
+     */
+    protected static function saveWithoutEvents(): void
+    {
+        // 無限ループを防ぐために，save実行時にイベントが発火しないようにする．
+        return static::withoutEvents(function () use ($options) {
+            
+            // プロパティの変更を保存．
+            return $this->save($options);
+        });
+    }    
 }
 ```
 
@@ -3013,12 +3127,8 @@ class UpdatedModelListener
         }
 
         $updatedModelEvent->updatedModel->updated_by = $by;
-
-        // save実行時にイベントが発火しないようにする
-        return static::withoutEvents(function () use ($options) {
-            // プロパティの変更を保存
-            return $this->save($options);
-        });
+        
+        $updatedModelEvent->updatedModel->saveWithoutEvents();
     }
     
     /**
@@ -3120,7 +3230,7 @@ return [
 LOG_CHANNEL=<オプション名>
 ```
 
-#### ・stack
+#### ・```stack```キー
 
 ```php
 return [
@@ -3141,7 +3251,7 @@ return [
 ];
 ```
 
-#### ・single
+#### ・```single```キー
 
 全てのログを```/storage/logs/laravel.log```ファイルに対して出力する．
 
@@ -3165,7 +3275,7 @@ return [
 ];
 ```
 
-#### ・daily
+#### ・```daily```キー
 
 全てのログを```/storage/logs/laravel-<日付>.log```ファイルに対して出力する．
 
@@ -3191,7 +3301,7 @@ return [
 ];
 ```
 
-#### ・stderr
+#### ・```stderr```キー
 
 全てのログを標準エラー出力に対して出力する．Docker上でLaravelを稼働させる場合は，これを選択する．
 
