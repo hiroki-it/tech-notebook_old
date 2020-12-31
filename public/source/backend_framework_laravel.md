@@ -875,6 +875,46 @@ class CreateExampleTable extends Migration
 
 <br>
 
+### よく使うカラムタイプ
+
+#### ・```bigIncrements```メソッド
+
+AutoIncrementのINT型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->bigIncrements('id');
+});
+```
+
+#### ・```string```メソッド
+
+VARCHAR型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->string('name');
+});
+```
+
+#### ・```timestamp```メソッド
+
+TIMESTAMP型カラムを作成する．
+
+**＊実装例＊**
+
+```php
+Schema::create('example', function (Blueprint $table) {
+    $table->timestamp('created_at');
+});
+```
+
+<br>
+
 ## Factory，Seeder
 
 ### artisanコマンドによる操作
