@@ -491,11 +491,13 @@ CloudFrontと連携する場合，CloudFrontに割り振られる可能性のあ
 
 ## 01-05. コンピューティングに付随する設定
 
-### Region，Availability Zone
+### サービスレベル
 
 #### ・Regionとは
 
-2016年1月6日時点では，以下のRegionに物理サーバのデータセンターがある．
+物理サーバのあるデータセンターの地域名のこと．2020年時点では，以下の地点にデータセンターがある．
+
+![AWSRegionMap](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSAWSRegionMap.png)
 
 ![AWSリージョンマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSリージョンマップ.PNG)
 
@@ -1436,9 +1438,9 @@ jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
 
 参照リンク：https://ip-ranges.amazonaws.com/ip-ranges.json
 
-#### ・現在使用しているエッジサーバのIPアドレス
+#### ・エッジロケーションの使用中サーバのIPアドレス
 
-CloudFrontには複数のエッジサーバがあり，これのうちいくつかを使用している状態にある．以下のコマンドで，CloudFrontのドメイン名に対応するエッジサーバのIPアドレスを確認できる．
+CloudFrontには，エッジロケーションがあり，各ロケーションにサーバがある．以下のコマンドで，エッジロケーションにある使用中サーバのIPアドレスを確認できる．
 
 ```bash
 $ nslookup <割り当てられた文字列>.cloudfront.net
