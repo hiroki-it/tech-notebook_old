@@ -1527,13 +1527,17 @@ CloudFrontからオリジンに送信されるリクエストメッセージの�
 
 ```http
 GET /example/
+# リクエストされたドメイン名
 Host: stg.osohshiki.jp
 User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1
-Authorization: Bearer XXXXX
+Authorization: Bearer <Bearerトークン>
 X-Amz-Cf-Id: XXXXX
 Via: 2.0 77c20654dd474081d033f27ad1b56e1e.cloudfront.net (CloudFront)
-Cookie: PHPSESSID=xxxxx; ___ua=1787709890.1608200633; __ulfpc=202012171924472692; _fbp=fb.1.1608200694475.952015011; _ga=GA1.1.859191015.1558955663; _ga_68HTFJXME5=GS1.1.1608200317.1.1.1608201840.60; _gid=GA1.2.1864559874.1608200687; _td=cfeba1dc-be70-454d-a749-a5f6112fab39; _ts_yjad=1608200694057; accessId=24941993; bookmark=27
-X-Forwarded-For: nn.nnn.nnn.nnn
+# 各Cookieの値（二回目のリクエスト時に設定される）
+Cookie: PHPSESSID=<セッションID>; __ulfpc=<GoogleAnalytics値>; _ga=<GoogleAnalytics値>; _gid=<GoogleAnalytics値>
+# 送信元IPアドレス
+# ※プロキシサーバ（ALBやCloudFrontなども含む）を経由している場合に，それら全てのIPアドレスも順に設定される
+X-Forwarded-For: <client>, <proxy1>, <proxy2>
 Accept-Language: ja,en;q=0.9
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
 Accept-Encoding: gzip, deflate, br
@@ -1544,11 +1548,14 @@ sec-fetch-site: none
 sec-fetch-mode: navigate
 sec-fetch-user: ?1
 sec-fetch-dest: document
+# デバイスタイプ
 CloudFront-Is-Mobile-Viewer: true
 CloudFront-Is-Tablet-Viewer: false
 CloudFront-Is-SmartTV-Viewer: false
 CloudFront-Is-Desktop-Viewer: false
+# リクエストの送信元の国名
 CloudFront-Viewer-Country: JP
+# リクエストのプロトコル
 CloudFront-Forwarded-Proto: https
 ```
 
@@ -1616,7 +1623,7 @@ ALBからEC2へのルーティングをHTTPプロトコルとした場合，ア�
 
 #### ・Webサーバにおける対処方法
 
-ALBを経由したリクエストの場合，リクエストヘッダーに```X-Forwarded-Proto```が付与される．これには，ALBに対するリクエストのプロトコルの種類が．文字列で格納されている．これが「```https```」だった場合に，WebサーバへのリクエストをHTTPSであるとみなすように対処する．これにより，アプリケーションへのリクエストのプロトコルがHTTPSとなる（こちらを行った場合は，アプリケーション側の対応不要）．
+ALBを経由したリクエストの場合，リクエストヘッダーに```X-Forwarded-Proto```ヘッダーが付与される．これには，ALBに対するリクエストのプロトコルの種類が，文字列で格納されている．これが「HTTPS」だった場合に，WebサーバへのリクエストをHTTPSであるとみなすように対処する．これにより，アプリケーションへのリクエストのプロトコルがHTTPSとなる（こちらを行った場合は，以降のアプリケーション側の対応不要）．
 
 **＊実装例＊**
 
@@ -1626,7 +1633,7 @@ SetEnvIf X-Forwarded-Proto https HTTPS=on
 
 #### ・アプリケーションにおける対処方法
 
-ALBを経由したリクエストの場合，リクエストヘッダーに```HTTP_X_FORWARDED_PROTO```が付与される．これには，ALBに対するリクエストのプロトコルの種類が．文字列で格納されている．これが「```https```」だった場合に，アプリケーションへのリクエストをHTTPSであるとみなすように，```index.php```に追加実装を行う．
+ALBを経由したリクエストの場合，リクエストヘッダーに```HTTP_X_FORWARDED_PROTO```ヘッダーが付与される．これには，ALBに対するリクエストのプロトコルの種類が．文字列で格納されている．これが「HTTPS」だった場合に，アプリケーションへのリクエストをHTTPSであるとみなすように，```index.php```に追加実装を行う．
 
 **＊実装例＊**
 
@@ -2419,19 +2426,20 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 ```http
 GET /example/
 # ホスト
-host: example.jp
-upgrade-insecure-requests: 1
+Host: example.jp
+Upgrade-Insecure-Requests: 1
 # ユーザエージェント
-user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
-accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-sec-fetch-site: none
-sec-fetch-mode: navigate
-sec-fetch-user: ?1
-sec-fetch-dest: document
-accept-encoding: gzip, deflate, br
-accept-language: ja,en;q=0.9
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+# CORSであるか否か
+Sec-Fetch-Site: same-origin
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ja,en;q=0.9
 # Cookieヘッダー
-cookie: PHPSESSID=xxxxx; ___ua=1787709890.1608200633; accessId=xxxxx; style=null; bookmark=45; _gid=GA1.2.1643243662.1608715225; __ulfpc=202012231820255572; _ga=GA1.1.859191015.1558955663; _a1_f=8bd85d6d-0f18-41f1-a65d-ac6607316f6e; _a1_u=966b06f3-d387-476a-9a02-49192641c0f2; _td=5fd55a8a-1602-45ec-bbf7-96d75974f37a; _fbp=fb.1.1608715230439.1917315302; _ts_yjad=1608715232002; _ga_68HTFJXME5=GS1.1.1608722059.2.0.1608722059.60
+Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<GoogleAnalytics値>; _ga=<GoogleAnalytics値>
 ```
 
 <br>
