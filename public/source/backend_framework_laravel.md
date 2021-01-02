@@ -960,6 +960,7 @@ $ php artisan db:seed --class=ExampleSeeder
 <?php
 
 use App\Domain\Auth\User;
+use App\Domain\ValueObject\Type\UserType;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -967,12 +968,16 @@ use Illuminate\Database\Eloquent\Factory;
  * @var Factory $factory
  */
 $factory->define(User::class, function (Faker $faker) {
+    
     return [
-        'name'              => $faker->name,
-        'email'             => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password'          => 'test',
-        'remember_token'    => Str::random(10),
+        'user_name'             => $faker->name,
+        'tel_number'            => $faker->phoneNumber,
+        'email'                 => $faker->unique()->safeEmail,
+        'password'              => 'test',
+        'user_type'             => UserType::getRandomValue(),
+        'remember_token'        => Str::random(10),
+        'email_verified_at'     => now(),
+        'last_authenticated_at' => now(),
     ];
 });
 ```
@@ -982,7 +987,8 @@ $factory->define(User::class, function (Faker $faker) {
 ```php
 <?php
 
-use App\Domain\Entity\Order;
+use App\Domain\Entity\Product;
+use App\Domain\ValueObject\Type\ProductType
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -990,13 +996,11 @@ use Illuminate\Database\Eloquent\Factory;
  * @var Factory $factory
  */
 $factory->define(User::class, function (Faker $faker) {
+
     return [
-        'name '      => $faker->name,
-        'price'      => $faker->price,
-        'created_by' => $faker->name,
-        'updated_by' => $faker->name,
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime,
+        'product_name' => $faker->word,
+        'price'        => $faker->randomNumber(4),
+        'product_type' => ProductType::getRandomValue(),
     ];
 });
 ```
@@ -1063,7 +1067,7 @@ class DatabaseSeeder extends Seeder
         
         // 全ての環境で作成するテストデータ
         $this->call([
-            OrderSeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }
