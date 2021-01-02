@@ -301,8 +301,8 @@ POST http://www.example.co.jp/users/12345/messages
 ```http
 # エンドポイント
 GET http://127.0.0.1/testform.php?text1=a&text2=b HTTP/1.1
-# ドメイン名
-HOST: 127.0.0.1
+# リクエストされたドメイン名
+Host: 127.0.0.1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 # キャッシュの最大有効期限
@@ -317,6 +317,9 @@ Referer: http://127.0.0.1/
 Accept-Encondig: gzip, deflate, br
 # レスポンスで送信してほしい言語
 Accept-Language: ja, en-US; q=0.9, en; q=0.8
+# 送信元IPアドレス
+# ※プロキシサーバ（ALBやCloudFrontなども含む）を経由している場合に，それら全てのIPアドレスも順に設定される
+X-Forwarded-For: <client>, <proxy1>, <proxy2>
 ```
 
 #### ・POST送信の場合
@@ -325,10 +328,10 @@ Accept-Language: ja, en-US; q=0.9, en; q=0.8
 クエリパラメータを，URLに記述せず，メッセージボディに記述してリクエストメッセージを送る方法．以下では，Web APIのうち，特にRESTfulAPIに対して送信するためのリクエストメッセージの構造を説明する．メッセージボディに情報が記述されるため，履歴では確認できない．また，SSLによって暗号化されるため，傍受できない．リクエストメッセージは，以下の要素に分類できる．
 
 ```http
-エンドポイント
+# エンドポイント
 POST http://127.0.0.1/testform.php HTTP/1.1
-# ドメイン名
-HOST: 127.0.0.1
+# リクエストされたドメイン名
+Host: 127.0.0.1
 Connection: keep-alive
 Content-Length: 15
 # キャッシュの無効化
@@ -347,8 +350,11 @@ Referer: http://127.0.0.1/
 Accept-Encondig: gzip, deflate, br
 # レスポンスで送信してほしい言語
 Accept-Language: ja, en-US; q=0.9, en; q=0.8
-# 二回目のリクエスト時（name=value）
-Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
+# 各Cookieの値（二回目のリクエスト時に設定される）
+Cookie: PHPSESSID=<セッションID>; csrftoken=<トークン>; _gat=1
+# 送信元IPアドレス
+# ※プロキシサーバ（ALBやCloudFrontなども含む）を経由している場合に，それら全てのIPアドレスも順に設定される
+X-Forwarded-For: <client>, <proxy1>, <proxy2>
 
 # ボディ．（SSLによって暗号化されるため閲覧不可）
 text=a&text2=b 
