@@ -668,6 +668,52 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 | タスクメモリ | タスク当たりのコンテナの合計メモリ使用量 |
 | タスクCPU    | タスク当たりのコンテナの合計CPU使用量    |
 
+#### ・新しいタスクを一時的に実行
+
+現在起動中のECSタスクとは別に，新しいタスクを一時的に起動する．起動時に，```overrides```オプションを使用して，指定したタスク定義のコンテナ設定を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．コマンドが実行された後に，タスクは自動的にStopped状態になる．CI/CDツールで実行する以外に，ローカルから手動で実行する場合もある．
+
+**＊実装例＊**
+
+LaravelのSeederコマンドやロールバックコマンドをローカルから実行する．
+
+```bash
+#!/usr/bin/env bash
+
+set -x
+
+echo "Set Variables"
+SERVICE_NAME="stg-ecs-service"
+CLUSTER_NAME="stg-ecs-cluster"
+TASK_NAME="stg-ecs-task-definition"
+SUBNETS_CONFIG=$(aws ecs describe-services --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} --query "services[].deployments[].networkConfiguration[].awsvpcConfiguration[].subnets[]")
+SGS_CONFIG=$(aws ecs describe-services --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} --query "services[].deployments[].networkConfiguration[].awsvpcConfiguration[].securityGroups[]")
+
+echo "Run Task"
+TASK_ARN=$(aws ecs run-task \
+  --launch-type FARGATE \
+  --cluster ${CLUSTER_NAME} \
+  --platform-version "1.4.0" \
+  --network-configuration "awsvpcConfiguration={subnets=${SUBNETS_CONFIG},securityGroups=${SGS_CONFIG}}" \
+  --task-definition ${TASK_NAME} \
+  --overrides "{\"containerOverrides\": [{\"name\": \"laravel-container\",\"command\": [\"php\", \"artisan\", \"db:seed\", \"--class=DummySeeder\", \"--force\"]}]}" \
+  --query "tasks[0].taskArn" | tr -d '"')
+
+echo "Wait until task stopped"
+aws ecs wait tasks-stopped \
+  --cluster ${CLUSTER_NAME} \
+  --tasks ${TASK_ARN}
+
+echo "Get task result"
+RESULT=$(aws ecs describe-tasks \
+  --cluster ${CLUSTER_NAME} \
+  --tasks ${TASK_ARN})
+echo ${RESULT}
+
+EXIT_CODE=$(echo ${RESULT} | jq .tasks[0].containers[0].exitCode)
+echo exitCode ${EXIT_CODE}
+exit ${EXIT_CODE}
+```
+
 <br>
 
 ### Fargate起動タイプのコンテナ
