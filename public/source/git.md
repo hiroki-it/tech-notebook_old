@@ -165,6 +165,14 @@ $ git config --global core.autocrlf <値>
 |  true  |    LF -> CRLF    | CRLF -> LF |
 | false  |    変換しない    | 変換しない |
 
+#### ・```config --global core.editor```
+
+gitのデフォルトエディタを設定する．ここでは，Vimをデフォルトとする．
+
+```bash
+$ git config --global core.editor 'vim -c "set fenc=utf-8"'
+```
+
 <br>
 
 ## 03. Gitのコマンドメモ
