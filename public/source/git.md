@@ -122,6 +122,10 @@ $ git clone git@<ssh-configファイルでのサーバ接続名>:<組織名>/<�
 $ git config --local --list
 ```
 
+Macでは，一つのPCで二つのGutHubアカウントを使用する場合に，キーチェーンという機能で設定が必要になる．
+
+リンク：https://sy-base.com/myrobotics/others/git-push_403error/
+
 #### ・```config --<影響範囲> user.name```
 
 AuthorとCommitterの名前を設定する．```local```が一番最後に上書きされ，適用される．
@@ -164,6 +168,14 @@ $ git config --global core.autocrlf <値>
 | input  |    変換しない    | CRLF -> LF |
 |  true  |    LF -> CRLF    | CRLF -> LF |
 | false  |    変換しない    | 変換しない |
+
+#### ・```config --global core.editor```
+
+gitのデフォルトエディタを設定する．ここでは，Vimをデフォルトとする．
+
+```bash
+$ git config --global core.editor 'vim -c "set fenc=utf-8"'
+```
 
 <br>
 
@@ -413,7 +425,7 @@ $ git reset --hard <コミットID>
 
 #### ・```reset```の使用例
 
-1. まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
+1. まず，```log ```コマンドで，作業中のローカルブランチにおけるコミットIDを確認．
 
 ```bash
 $ git log
@@ -443,7 +455,7 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 $ git reset --soft f81c813a1ead9a968c109671e6d83934debcab2e
 ```
 
-3. ```log ```で，正しく変更されているか確認．
+3. ```log ```コマンドで，正しく変更されているか確認．
 
 ```bash
 $ git log
@@ -474,9 +486,9 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
 
 派生元を変更する機能を応用して，過去のコミットのメッセージ変更，削除，統合などを行う．
 
-- **コミットメッセージの変更**
+**＊コマンド例（コミットメッセージの変更）＊**
 
-1. まず，```log ```で，作業中のローカルブランチにおけるコミットIDを確認．
+1. まず，```log ```コマンドで，作業中のローカルブランチにおけるコミットIDを確認．
 
 ```bash
 $ git log
@@ -503,7 +515,7 @@ Date:   Wed Mar 20 20:54:34 2019 +0900
 2. 指定した履歴の削除
 
 ```bash
-$git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
+$ git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
 ```
 とすると，タブが表示され，指定のコミットIDの履歴が表示される
 
@@ -525,13 +537,13 @@ pick b1b5c0f add #0 xxxxxxxxxx
 
 で終了．
 
-3. ```commit --amend```でエディタを開き，メッセージを変更．
+3. ```commit --amend```に```m```オプションを付けて，メッセージを変更．
 
 ```bash
-$ git commit --amend
+$ git commit --amend -m="<変更後のメッセージ>"
 ```
 
-4. ```rebase --continue```を実行．
+4. ```rebase --continue```を実行し，変更を反映させる．
 
 ```bash
 $ git rebase --continue
@@ -541,9 +553,45 @@ Successfully rebased and updated refs/heads/develop.
 5. ```push```しようとすると，```![rejected] develop -> develop (non-fast-forward)```とエラーが出るので，
 
 ```bash
-git merge --allow-unrelated-histories
+$ git merge --allow-unrelated-histories
 ```
 で解決し，```push```する．
+
+**＊コマンド例（Author名とCommiter名の変更）＊**
+
+1. ハッシュ値を指定して，```rebase```コマンドを実行する．
+
+```bash
+$ git rebase --interactive 41cc21bb53a8597270b5deae3259751df18bce81
+```
+
+2. ```commit --amend```に```reset-author```オプションを付けて，configで設定した名前をAuthor名とComitter名に適用する．
+
+```bash
+$ git commit --amend --reset-author
+```
+
+3. ```rebase --continue```を実行し，変更を反映させる．
+
+```bash
+$ git rebase --continue
+Successfully rebased and updated refs/heads/develop.
+```
+
+過去の全てのコミットに対して，Author名とCommitter名を適用するコマンドもある．しかし，危険な方法であるため，個人利用のリポジトリのみで使用するようにするべきである．
+
+```bash
+#!/bin/bash
+
+git filter-branch -f --env-filter '
+    # Author名かCommitter名のいずれかが誤っていれば適用します．
+    if [ ${GIT_AUTHOR_NAME}="Hiroki-Hasegawa" -o ${GIT_COMMITTER_NAME}="Hiroki-Hasegawa" ] ; then
+    export GIT_AUTHOR_NAME="Hiroki-IT"
+    export GIT_AUTHOR_EMAIL="hasegawafeedshop@gmail.com"
+    export GIT_COMMITTER_NAME="Hiroki-IT"
+    export GIT_COMMITTER_EMAIL="hasegawafeedshop@gmail.com"
+fi'
+```
 
 #### ・```rebase --onto <派生元にしたいローカルブランチ名> <誤って派生元にしたローカルブランチ名> [派生元を変更したいローカルブランチ名>```
 
@@ -642,6 +690,23 @@ $ git tag -d v1.0.0
 
 ```bash
 $ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'
+```
+
+<br>
+
+### ```filter-branch```：
+
+#### ・```filter-branch -f --env-filter```
+
+全てのコミットの名前とメールアドレスを上書きする．
+
+```bash
+$ git filter-branch -f --env-filter \
+    "GIT_AUTHOR_NAME='Hiroki-IT'; \
+     GIT_AUTHOR_EMAIL='hasegawafeedshop@gmail.com'; \
+     GIT_COMMITTER_NAME='Hiroki-IT'; \
+     GIT_COMMITTER_EMAIL='hasegawafeedshop@gmail.com';" \
+    HEAD
 ```
 
 <br>
