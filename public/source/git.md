@@ -682,6 +682,23 @@ $ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | he
 
 <br>
 
+### ```filter-branch```：
+
+#### ・```filter-branch -f --env-filter```
+
+全てのコミットの名前とメールアドレスを上書きする．
+
+```bash
+$ git filter-branch -f --env-filter \
+    "GIT_AUTHOR_NAME='Hiroki-IT'; \
+     GIT_AUTHOR_EMAIL='hasegawafeedshop@gmail.com'; \
+     GIT_COMMITTER_NAME='Hiroki-IT'; \
+     GIT_COMMITTER_EMAIL='hasegawafeedshop@gmail.com';" \
+    HEAD
+```
+
+<br>
+
 ## 04. GitHubにおけるIssueとPullReqの書き方
 
 GitHubの個人的豆知識を以下に記す．
