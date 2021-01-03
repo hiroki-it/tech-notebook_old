@@ -54,7 +54,7 @@ Facadeとして使用したいクラスを定義する．
 ```php
 <?php
 
-namespace App\Domain\Entity;
+namespace App\Domain\DTO;
 
 class Example
 {
@@ -352,7 +352,7 @@ class ExampleServiceProvider extends ServiceProvider
 ```php
 <?php
 
-namespace App\Domain\Entity;
+namespace App\Domain\DTO;
 
 class Example extends Entity
 {
@@ -1500,7 +1500,7 @@ class ExampleRepository extends Repository
 ```php
 <?php
 
-namespace App\Domain\Entity;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -2218,7 +2218,7 @@ LaravelのResponseクラスは，```Symfony\Component\HttpFoundation\Response```
 ```php
 <?php
 
-namespace App\Http\Controllers\Example;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -2269,7 +2269,7 @@ final class ExampleController extends Controller
 ```php
 <?php
 
-namespace App\Http\Controllers\Example;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -2401,7 +2401,7 @@ public function boot()
 3. ユーザからのリクエスト時，クライアントIDを元に『認証』を行い，アクセストークンをレスポンスする．
 
 ```php
-$user = App\User::find(1);
+$user = User::find(1);
 
 // スコープ無しのトークンを作成する
 $token = $user->createToken('Token Name')->accessToken;
@@ -2494,7 +2494,7 @@ Route::get('user', 'UserController@index')->middleware('auth:api');
 ```php
 <?php
   
-namespace App\Domain\Entity;
+namespace App\Domain\DTO;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
