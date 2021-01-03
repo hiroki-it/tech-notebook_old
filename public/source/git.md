@@ -122,6 +122,10 @@ $ git clone git@<ssh-configファイルでのサーバ接続名>:<組織名>/<�
 $ git config --local --list
 ```
 
+Macでは，一つのPCで二つのGutHubアカウントを使用する場合に，キーチェーンという機能で設定が必要になる．
+
+リンク：https://sy-base.com/myrobotics/others/git-push_403error/
+
 #### ・```config --<影響範囲> user.name```
 
 AuthorとCommitterの名前を設定する．```local```が一番最後に上書きされ，適用される．
