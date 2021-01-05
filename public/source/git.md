@@ -229,7 +229,7 @@ $ git branch --all
 #### ・```branch checkout -b <新しいローカルブランチ名> <コミット番号>```
 
 ```bash
-git checkout -b feature/3 d7e49b04
+$ git checkout -b feature/3 d7e49b04
 ```
 
 指定のコミットから新しいブランチを生やすことができる．
@@ -243,7 +243,8 @@ git checkout -b feature/3 d7e49b04
 ファイルが，『インデックス』（=```add```）あるいは『HEAD』（=```commit```）に存在している状態で，異なるローカルブランチを```checkout```しようとすると，以下のエラーが出る．
 
 ```bash
-$ git checkout 2019/Symfony2_Nyumon/master
+$ git checkout 2019/Symfony2_Ny
+umon/master
 error: Your local changes to the following files would be overwritten by checkout:
         app/config/config.yml
         src/AppBundle/Entity/Inquiry.php
@@ -408,8 +409,7 @@ $ git reset --soft <コミットID>
 ```
 
 #### ・```reset --mixed <コミットID>```
-作業中のローカルブランチにおいて，インデックス（=```add```後），HEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除．
-```add```と```commit```を取り消したい場合はこれ．
+作業中のローカルブランチにおいて，インデックス（=```add```後），HEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除．```add```と```commit```を取り消したい場合はこれ．
 
 ```bash
 $ git reset --mixed <コミットID>

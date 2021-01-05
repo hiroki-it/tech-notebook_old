@@ -477,7 +477,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::pattern('id', '[0-9]+');
+        Route::pattern('user_id', '[0-9]+');
 
         parent::boot();
     }
@@ -764,7 +764,7 @@ return [
 #### ・マイグレーションファイルを作成
 
 ```bash
-$ php artisan make:migrate create_{テーブル名}_table
+$ php artisan make:migrate create_<テーブル名>_table
 ```
 
 #### ・テーブル作成
@@ -867,12 +867,6 @@ class CreateExampleTable extends Migration
 }
 ```
 
-#### ・インデックスタイプ
-
-```
-
-```
-
 <br>
 
 ### よく使うカラムタイプ
@@ -884,8 +878,14 @@ AutoIncrementのINT型カラムを作成する．
 **＊実装例＊**
 
 ```php
-Schema::create('example', function (Blueprint $table) {
-    $table->bigIncrements('id');
+Schema::create('examples', function (Blueprint $table) {
+    
+    // ～ 省略 ～
+    
+    $table->bigIncrements('example_id');
+    
+    // ～ 省略 ～
+    
 });
 ```
 
@@ -896,8 +896,14 @@ VARCHAR型カラムを作成する．
 **＊実装例＊**
 
 ```php
-Schema::create('example', function (Blueprint $table) {
+Schema::create('examples', function (Blueprint $table) {
+  
+    // ～ 省略 ～    
+    
     $table->string('name');
+    
+    // ～ 省略 ～
+    
 });
 ```
 
@@ -910,6 +916,8 @@ TIMESTAMP型カラムを作成する．
 ```php
 Schema::create('example', function (Blueprint $table) {
     $table->timestamp('created_at');
+    
+    // ～ 省略 ～
 });
 ```
 
@@ -1244,21 +1252,21 @@ class User extends Model
 ```
 
 
-#### ・デフォルト値の設定
+#### ・カラムデフォルト値の設定
 
 特定のカラムのデフォルト値を設定したい場合，```attributes```プロパティにて，カラム名と値を設定する．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Example extends Model
 {
     /**
-     * 属性に対するモデルのデフォルト値
+     * カラム名とデフォルト値
      *
      * @var array
      */
@@ -1367,12 +1375,12 @@ List型で，データを保持できるオブジェクトのこと．データ�
 
 $collection = collect([
     [
-        'id'  => '1',
-        'name' => '佐藤太郎',
+        'user_id' => '1',
+        'name'    => '佐藤太郎',
     ],
     [
-        'id'  => '2',
-        'name' => '山田次郎',
+        'user_id' => '2',
+        'name'    => '山田次郎',
     ],
 ]);
 
@@ -1615,7 +1623,7 @@ class FileSystemPublicController extends Controller
 
 #### ・ローカルストレージ（非公開）の場合
 
-ファイルを```/storage/app```ディレクトリに保存する．事前に，シンボリックリンクを作成する必要がある．
+ファイルを```/storage/app```ディレクトリに保存する．このファイルは非公開であり，リクエストによってアクセスできない．事前に，シンボリックリンクを作成する必要がある．
 
 ```bash
 $ php artisan storage:link
@@ -1643,7 +1651,7 @@ return [
 
 #### ・ローカルストレージ（公開）の場合
 
-ファイルを```storage/app/public```ディレクトリに保存する．
+ファイルを```storage/app/public```ディレクトリに保存する．このファイルは公開であり，リクエストによってアクセスできる．
 
 ```php
 return [
@@ -1893,7 +1901,7 @@ class ExampleBeforeMiddleware
 ```
 #### ・AfterMiddleware
 
-コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，```Illuminate\Http\Response```オブジェクトが代入されている．
+コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，Responseクラスが代入されている．
 
 **＊実装例＊**
 
@@ -1928,7 +1936,7 @@ class ExampleAfterMiddleware
 
 ```bash
 # フォームクラスを自動作成
-$ php artisan make:request <クラス名>
+$ php artisan make:request <Request名>
 ```
 
 <br>
@@ -1988,7 +1996,7 @@ public function store(ExampleRequest $request)
 
 #### ・```validate```メソッド
 
-```Illuminate\Http\Request```インスタンスの```validate```メソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+Requestクラスの```validate```メソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -2021,7 +2029,7 @@ $validatedData = $request->validate([
 
 #### ・Validator
 
-```Illuminate\Support\Facades\Validator```ファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+Validatorファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
 **＊実装例＊**
 
@@ -2066,7 +2074,7 @@ class ExampleController extends Controller
 
 #### ・セッション変数の取得
 
-```Illuminate\Http\Request```インスタンスの```session```メソッドを使用して，セッション変数を取得する．
+Requestクラスの```session```メソッドを使用して，セッション変数を取得する．
 
 **＊実装例＊**
 
@@ -2142,16 +2150,16 @@ public function authorize()
 
 ```bash
 # コントローラクラスを自動作成
-$ php artisan make:controller <クラス名>
+$ php artisan make:controller <Controller名>
 ```
 
 <br>
 
-### Requestオブジェクト
+### Requestクラス
 
 ####  ・データの取得
 
-```input```メソッドを用いて，リクエストボディに含まれるデータを取得できる．
+Requestクラスの```input```メソッドを用いて，リクエストボディに含まれるデータを取得できる．
 
 **＊実装例＊**
 
@@ -2223,7 +2231,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-final class ExampleController extends Controller
+class ExampleController extends Controller
 {
 
     public function index()
@@ -2251,7 +2259,7 @@ namespace App\Http\Controllers\Example;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-final class ExampleController extends Controller
+class ExampleController extends Controller
 {
 
     public function index()
@@ -2303,7 +2311,7 @@ final class ExampleController extends Controller
 
 #### ・Oauth認証の環境構築
 
-```/storage/oauth```キー，Personal Access Client，Password Grant Clientを生成する．
+コマンド実行により，```/storage/oauth```キー，Personal Access Client，Password Grant Clientを生成する．
 
 ```bash
 $ php artisan passport:install
@@ -2414,7 +2422,7 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 本番環境で使用するアクセストークン．
 
-1. ```guards```キーにて，認証方式を設定する．```web```の場合，セッションを使用して，ユーザを認証する．一方で，```api```の場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
+1. ```guards```キーにて，認証方式を設定する．web guardの場合，セッションを使用して，ユーザを認証する．一方で，api guardの場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
 
 ```php
 return [
@@ -2650,7 +2658,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 ### 要素の共通化
 
-#### ・@extends，@parent，@show
+#### ・```@extends```，```@parent```，```@show```
 
 三つセットで使うことが多いので，同時に説明する．テンプレート間が親子関係にある時，子テンプレートで親テンプレート全体を読み込む```@extends```を用いる．子テンプレートに```@section```を継承しつつ，要素を追加する場合，```@endsection```ではなく```@show```を使用する．
 
@@ -2676,7 +2684,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 </html>
 ```
 
-```@parent```で親テンプレートの```@section```を継承する．
+子テンプレートの```@parent```にて，親テンプレートの```@section```を継承する．
 
 ```html
 <!-- 子テンプレート -->
@@ -2689,7 +2697,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 @endsection
 ```
 
-#### ・@include（サブビュー）
+#### ・```@include```（サブビュー）
 
 読み込んだファイル全体を出力する．読み込むファイルに対して，変数を渡すこともできる．```@extentds```との使い分けとして，親子関係のないテンプレートの間で使用するのがよい．両者は，PHPでいう```extends```（クラスチェーン）と```require```（単なる読み込み）の関係に近い．
 
@@ -2705,7 +2713,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 ### 子テンプレートにおける要素の出力
 
-#### ・@yield，@section
+#### ・```@yield```，```@section```
 
 子テンプレートのレンダリング時に，HTMLの要素を動的に出力する場合に使用する．親テンプレートにて，```@yield('example')```を定義する．これを継承した子テンプレートのレンダリング時に，```@section('example')```-```@endsection```で定義した要素が，```@yieid()```部分に出力される．
 
@@ -2757,7 +2765,7 @@ Responseインスタンスから渡されたデータは，```{{ 変数名 }}``�
 
 <br>
 
-#### ・@stack，@push
+#### ・```@stack```，```@push```
 
 子テンプレートのレンダリング時に，CSSとJavaScriptのファイルを動的に出力する場合に使用する．親テンプレートにて，```@stack('example')```を定義する．これを継承した子テンプレートのレンダリング時に，```@push('example')```-```@endpush```で定義した要素が，```@stack()```部分に出力される．
 

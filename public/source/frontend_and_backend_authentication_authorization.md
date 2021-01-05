@@ -221,34 +221,36 @@ JSON型で実装されたアクセストークン．Oauth認証のアクセス�
 
 #### ・JWTの構造
 
-JWTは，エンコードされたヘッダー，ペイロード，署名，から構成される．
-
 **＊実装例＊**
 
+JWTは，エンコードされたヘッダー，ペイロード，署名，から構成される．
+
 ```javascript
-// JWTの構造
 const token = base64urlEncoding(header) + '.' +
       base64urlEncoding(payload) + '.' +
       base64urlEncoding(signature)
 ```
 
+ここで，ヘッダーは以下の構造からなる．
+
 ```javascript
-// ヘッダーの構造
 const header = {
     "alg" : "HS256", // 署名アルゴリズムを宣言．他にRS256がある．
     "typ" : "JWT"    // JWTの使用を宣言．
 }
 ```
 
+ここで，ペイロードは以下の構造からなる．
+
 ```javascript
-// ペイロードの構造
 const payload = {
     "sub" : "例えばユーザID",
 }
 ```
 
-```js
-// 署名の構造
+ここで，署名は以下の構造からなる．
+
+```javascript
 const signature = HMACSHA256(
     base64urlEncoding(header) + '.' + base64urlEncoding(payload),
     secret
