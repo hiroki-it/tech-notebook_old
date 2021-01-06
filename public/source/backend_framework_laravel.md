@@ -1559,6 +1559,210 @@ class Example extends Model
 }
 ```
 
+#### ・テーブル間のリレーションシップの定義
+
+Laravelでは，テーブル間のリレーションシップを，```hasOne```メソッド，```hasMany```メソッド，```belongsTo```メソッドを使用して定義する．これにより，JOIN句を使用せずに必要なデータを取得できる．
+
+**＊実装例＊**
+
+Departmentモデル側に，departmentテーブルとemployeeテーブルの間に，一対多の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Department extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "department_id";
+
+     /**
+     * 一対多の関係を定義します．
+     * （デフォルトではemployee_idに関連付けます）
+     * 
+     * @return HasMany
+     */
+    public function hasManyEmployee() :HasMany
+    {
+        return $this->hasMany(Employee::class);
+    }
+}
+```
+
+また，Employeeモデル側に，多対一の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Employee extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "employee_id";
+
+     /**
+     * 多対一の関係を定義します．
+     * （デフォルトではdepartment_idに関連付けます）
+     * 
+     * @return HasMany
+     */
+    public function belongsToDepartment() :BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+}
+```
+
+```php
+<?php
+
+// Departmentオブジェクトを取得
+$department = Department::find(1);
+
+// 全てのemployeeオブジェクトをarray型で取得
+$employees = $department->employees
+```
+
+#### ・変更可能／不可能なカラム名の設定
+
+Model経由で変更可能なカラム名は，```fillable```プロパティで定義する．カラムが増えるたびに，実装する必要がある．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * カラム名
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'api_token'
+    ];
+}
+```
+
+もしくは，変更不可能なカラム名を```guarded```プロパティで定義する．これらのいずれかの設定は，Modelにおいて必須である．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * カラム名
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'xxx',
+    ];
+}
+```
+
+<br>
+
+### 使用に注意する機能
+
+#### ・セッター
+
+Laravelでは，プロパティを定義しなくても，Modelからプロパティをコールすれば，処理の度に動的にプロパティを定義できる．しかし，この機能はプロパティがpublicアクセスである必要があるため，オブジェクト機能のメリットを享受できない．そのため，この機能を使用せずに，```constructor```メソッドを使用したコンストラクタインジェクション，またはセッターインジェクションを使用するようにする．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * @var ExampleName
+     */
+    private ExampleName $exampleName;
+
+    /**
+     * 名前を取得します．
+     *
+     * @return string
+     */
+    public function __construct(ExampleName $exampleName)
+    {
+        $this->exampleName = $exampleName;
+    }
+}
+```
+
+#### ・ゲッター
+
+Laravelでは，```getXxxxYyyyAttribute```という名前のメソッドを，```xxx_yyy```という名前でコールできる．一見，プロパティをコールしているように見えるため，注意が必要である．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * @var ExampleName
+     */
+    private ExampleName $exampleName;
+
+    /**
+     * 名前を取得します．
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return $this->exampleName . "です．" 
+    }
+}
+```
+
+```php
+<?php
+
+$example = Example::find(1);
+
+// nameプロパティを取得しているわけでなく，getNameAttributeメソッドを実行している．
+$exmapleName = $example->name;
+```
+
 <br>
 
 ## Eloquent｜Data Access
