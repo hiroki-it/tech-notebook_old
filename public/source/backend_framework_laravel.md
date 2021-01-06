@@ -2017,15 +2017,49 @@ class Example extends Model
     ];
 }
 ```
-さらに，マイグレーションファイルにて```softDeletes```メソッドを使用し，```deleted_at```カラムが追加されるようにする．```deleted_at```カラムのデフォルト値は```NULL```である．
+マイグレーションファイルにて```softDeletes```メソッドを使用すると，削除フラグとして```deleted_at```カラムが追加されるようになる．```deleted_at```カラムのデフォルト値は```NULL```である．
 
 ```php
-Schema::table('example', function (Blueprint $table) {
-    $table->softDeletes();
-});
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateExampleTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('example', function (Blueprint $table) {
+            
+            // ～ 省略
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+            
+            // ～ 省略
+            
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('example');
+    }
+}
 ```
 
-上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```が```NULL```でないデータを読み出さないため，論理削除を実現できる．
+上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```カラムが```NULL```でないデータを読み出さないため，論理削除を実現できる．
 
 ```php
 <?php
