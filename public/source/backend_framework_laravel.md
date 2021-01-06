@@ -433,6 +433,9 @@ class MigrationMacroServiceProvider extends ServiceProvider
             $this->timestamp('updated_at')
                 ->comment('レコードの最終更新日')
                 ->nullable();
+            $this->timestamp('deleted_at')
+                ->comment('レコードの削除日')
+                ->nullable();
         });
         
         Blueprint::macro('dropSystemColumns', function () {
@@ -440,9 +443,54 @@ class MigrationMacroServiceProvider extends ServiceProvider
                 'created_by',
                 'updated_by',                
                 'created_at',
-                'updated_at'
+                'updated_at',
+                'deleted_at'
             );
         });        
+    }
+}
+```
+
+マイグレーションファイルにて，定義した```systemColumn```メソッドをコールする．```softDeletes```メソッドについては，以降の説明を参照せよ．
+
+```php
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateExampleTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('examples', function (Blueprint $table) {
+            $table->bigIncrements('example_id')
+                ->comment('ID');
+            $table->string('name')
+                ->comment('名前');
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('examples');
     }
 }
 ```
@@ -848,10 +896,17 @@ class CreateExampleTable extends Migration
      */
     public function up()
     {
-        Schema::create('example', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->timestamps('created_at');
+        Schema::create('examples', function (Blueprint $table) {
+            $table->bigIncrements('example_id')
+                ->comment('ID');
+            $table->string('name')
+                ->comment('名前');
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
         });
     }
 
@@ -862,7 +917,54 @@ class CreateExampleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('example');
+        Schema::drop('examples');
+    }
+}
+```
+
+#### ・api guard用のテーブル作成
+
+```php
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateUsersTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('user_id');
+                ->comment('ユーザID');
+            $table->string('name')
+                ->comment('ユーザ名');
+            $table->string('api_token')
+                ->unique()
+                ->comment('APIトークン');      
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('users');
     }
 }
 ```
@@ -914,7 +1016,10 @@ TIMESTAMP型カラムを作成する．
 **＊実装例＊**
 
 ```php
-Schema::create('example', function (Blueprint $table) {
+Schema::create('examples', function (Blueprint $table) {
+    
+    // ～ 省略 ～
+    
     $table->timestamp('created_at');
     
     // ～ 省略 ～
@@ -923,19 +1028,14 @@ Schema::create('example', function (Blueprint $table) {
 
 <br>
 
-## Factory，Seeder
+## Seeder
 
 ### artisanコマンドによる操作
 
-#### ・Factoryの生成
+#### ・Seederの生成
 
 ```bash
-# --model={モデル名}
-$ php artisan make:factory ExampleFactory --model=Example
-```
-#### ・個別Seederの生成
-```bash
-$ php artisan make:seeder UserSeeder
+$ php artisan make:seeder <Seeder名>
 ```
 
 #### ・Seederの実行
@@ -945,24 +1045,181 @@ $ php artisan make:seeder UserSeeder
 $ composer dump-autoload
 
 # 特定のSeederを実行
-$ php artisan db:seed --class=ExampleSeeder
+$ php artisan db:seed --class=<Seeder名>
 
 # DatabaseSeederを指定して，全てのSeederを実行
-$ php artisan db:seed --class=ExampleSeeder
+$ php artisan db:seed --class=<Seeder名>
 ```
 
 <br>
 
+### 初期リアルデータの定義
 
-### Factory
+#### ・配列による定義
 
-#### ・テストデータの定義
+```php
+<?php
 
-テストデータの値を定義する．
+use Illuminate\Database\Seeder;
+use App\Constants\ExecutorConstant;
+
+class ProductsSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('products')->insert([
+            [
+                'product_name' => 'シャープペンシル',
+                'price'        => 300,
+                'product_type' => '1',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL
+            ],
+            [
+                'product_name' => 'ノート',
+                'price'        => 200,
+                'product_type' => '2',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL              
+            ],            
+            [
+                'product_name' => '消しゴム',
+                'price'        => 100,
+                'product_type' => '3',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,            
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL,               
+            ],
+            
+            // ～ 省略 ～
+            
+        ]);
+    }
+}
+```
+
+実行者名は，定数として管理しておくとよい．
+
+```php
+<?php
+
+namespace App\Constants;
+
+/**
+ * 実行者定数クラス
+ */
+class ExecutorConstant
+{
+    /**
+     * Artisanコマンド
+     */
+    public const ARTISAN_COMMAND = 'Artisan Command';
+
+    /**
+     * スタッフ
+     */
+    public const STAFF = 'Staff';
+    
+    /**
+     * ゲスト
+     */
+    public const GUEST = 'Guest';    
+}
+```
+
+<br>
+
+#### ・CSVファイルによる定義
+
+```php
+// ここに実装例
+```
+
+<br>
+
+### Seederの実行
+
+DatabaseSeederにて，全てのSeederをまとめて実行する．
+
+```php
+<?php
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // 開発環境用の初期データ
+        if (App::environment('local')) {
+            $this->call([
+                // ダミーデータ
+            ]);
+        }
+        
+        // ステージング環境用の初期データ
+        if (App::environment('staging')) {
+            $this->call([
+                // リアルデータ
+                ProductsSeeder::class
+            ]);
+        }
+        
+        // 本番環境用の初期データ
+        if (App::environment('production')) {
+            $this->call([
+                // リアルデータ
+                ProductsSeeder::class
+            ]);
+        }
+    }
+}
+```
+
+<br>
+
+## Factory
+
+### artisanコマンドによる操作
+
+#### ・Factoryの生成
+
+```bash
+$ php artisan make:factory <Factory名> --model=<対象とするModel名>
+```
+<br>
+
+### 初期ダミーデータの定義
+
+#### ・Fakerライブラリのformatters
+
+Fakerはダミーデータを作成するためのライブラリである．Farkerクラスのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+
+参考リンク：https://github.com/fzaninotto/Faker
+
+#### ・Fakerによるダミーデータ定義
 
 **＊実装例＊**
 
-ユーザのテストデータを定義する．
+ユーザのダミーデータを定義する．
 
 ```php
 <?php
@@ -984,13 +1241,13 @@ $factory->define(User::class, function (Faker $faker) {
         'password'              => 'test',
         'user_type'             => UserType::getRandomValue(),
         'remember_token'        => Str::random(10),
-        'email_verified_at'     => now(),
-        'last_authenticated_at' => now(),
+        'email_verified_at'     => NOW(),
+        'last_authenticated_at' => NOW(),
     ];
 });
 ```
 
-他に，商品のテストデータを定義する．
+他に，商品の初期ダミーデータを定義する．
 
 ```php
 <?php
@@ -1013,30 +1270,21 @@ $factory->define(User::class, function (Faker $faker) {
 });
 ```
 
-#### ・Fakerライブラリのformatters
+#### ・Seederによるダミーデータの量産
 
-Fakerはダミーデータを作成するためのライブラリである．Farkerオブジェクトのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
-
-参考リンク：https://github.com/fzaninotto/Faker
-
-<br>
-
-### Seeder
-
-#### ・テストデータの量産
-
-Factoryにおける定義を基にして，指定した数だけデータを量産する．
+Factoryにおける定義を基にして，指定した数だけダミーデータを量産する．
 
 **＊実装例＊**
 
-UserSeederを定義し，50個のユーザデータを量産する．
+DummyUsersSeederを定義し，50個のダミーユーザデータを量産する．
 
 ```php
 <?php
 
+use App\Domain\Entity\User;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class DummyUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -1045,12 +1293,34 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create();
+        factory(User::class, 50)->create();
     }
 }
 ```
 
-DatabaseSeederにて，UserSeederなど，全てのSeederをまとめて実行する．
+また，DummyProductsSeederを定義し，50個のダミーユーザデータを量産する．
+
+```php
+<?php
+
+use App\Domain\Entity\Product;
+use Illuminate\Database\Seeder;
+
+class DummyProductsSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        factory(Product::class, 50)->create();
+    }
+}
+```
+
+DatabaseSeederにて，全てのSeederをまとめて実行する．
 
 ```php
 <?php
@@ -1060,23 +1330,34 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * データベース初期値設定の実行
+     * Seederを実行します．
      *
      * @return void
      */
     public function run()
     {
-        // 本番環境以外のみで作成するテストデータ
-        if (!App::environment('production')) {
+        // 開発環境用の初期データ
+        if (App::environment('local')) {
             $this->call([
-                UserSeeder::class,
+                // ダミーデータ
+                DummyUsersSeeder::class,
+                DummyProductsSeeder::class
             ]);
         }
         
-        // 全ての環境で作成するテストデータ
-        $this->call([
-            ProductSeeder::class,
-        ]);
+        // ステージング環境用の初期データ
+        if (App::environment('staging')) {
+            $this->call([
+                // リアルデータ
+            ]);
+        }
+        
+        // 本番環境用の初期データ
+        if (App::environment('production')) {
+            $this->call([
+                // リアルデータ
+            ]);
+        }
     }
 }
 ```
@@ -1090,7 +1371,7 @@ class DatabaseSeeder extends Seeder
 #### ・クラスの自動生成
 
 ```bash
-$ php artisan make:model Example
+$ php artisan make:model <Model名>
 ```
 
 <br>
@@ -1129,7 +1410,7 @@ Modelクラスを継承したクラスは，```INSERT```文や```UPDATE```文な
 ````php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1140,14 +1421,14 @@ class Example extends Model
 ````
 
 
-#### ・テーブルとの関連付け
+#### ・Modelとテーブルの関連付け
 
 Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を```table```プロパティに自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1162,25 +1443,27 @@ class Example extends Model
 }
 ```
 
-#### ・主キーとの関連付け
+#### ・Modelと主キーの関連付け
 
 Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```で主キーのデータ型，また```incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Example extends Model
 {
+    
     /**
      * 主キーとするカラム
+     * （デフォルトではidが主キーです）
      * 
      * @var string 
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'example_id';
     
     /**
      * 主キーのデータ型
@@ -1190,7 +1473,7 @@ class Example extends Model
     protected $keyType = 'int';
     
     /**
-     * 主キーのAutoIncrementの有効化
+     * 主キーのAutoIncrementの有効化します．
      * 
      * @var bool 
      */
@@ -1198,14 +1481,14 @@ class Example extends Model
 }
 ```
 
-#### ・タイムスタンプ型カラムとの関連付け
+#### ・ModelとTIMESTAMP型カラムの関連付け
 
-Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```と```updated_at```を自動的に更新する．また，タイムスタンプ型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
+Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```カラムと```updated_at```カラムを自動的に更新する．また，TIMESTAMP型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1215,23 +1498,23 @@ class Example extends Model
     const UPDATED_AT = 'updated_data_time';
     
     /**
-     * モデルのタイムスタンプを更新するかの指示
+     * モデルのタイムスタンプを更新するかの指示します．
      *
      * @var bool
      */
-    protected $timestamps = true; // falseで無効化
+    protected $timestamps = true;
 }
 ```
 
 
-#### ・読み出し時のDateTimeクラス自動変換
+#### ・TIMESTAMP型カラム読み出し時のデータ型変換
 
 データベースからタイムスタンプ型カラムを読み出すと同時に，CarbonのDateTimeクラスに変換したい場合，```data```プロパティにて，カラム名を設定する．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1274,6 +1557,210 @@ class Example extends Model
         'is_deleted' => false,
     ];
 }
+```
+
+#### ・テーブル間のリレーションシップの定義
+
+Laravelでは，テーブル間のリレーションシップを，```hasOne```メソッド，```hasMany```メソッド，```belongsTo```メソッドを使用して定義する．これにより，JOIN句を使用せずに必要なデータを取得できる．
+
+**＊実装例＊**
+
+Departmentモデル側に，departmentテーブルとemployeeテーブルの間に，一対多の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Department extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "department_id";
+
+     /**
+     * 一対多の関係を定義します．
+     * （デフォルトではemployee_idに関連付けます）
+     * 
+     * @return HasMany
+     */
+    public function hasManyEmployee() :HasMany
+    {
+        return $this->hasMany(Employee::class);
+    }
+}
+```
+
+また，Employeeモデル側に，多対一の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Employee extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "employee_id";
+
+     /**
+     * 多対一の関係を定義します．
+     * （デフォルトではdepartment_idに関連付けます）
+     * 
+     * @return HasMany
+     */
+    public function belongsToDepartment() :BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+}
+```
+
+```php
+<?php
+
+// Departmentオブジェクトを取得
+$department = Department::find(1);
+
+// 全てのemployeeオブジェクトをarray型で取得
+$employees = $department->employees
+```
+
+#### ・変更可能／不可能なカラム名の設定
+
+Model経由で変更可能なカラム名は，```fillable```プロパティで定義する．カラムが増えるたびに，実装する必要がある．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * カラム名
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'api_token'
+    ];
+}
+```
+
+もしくは，変更不可能なカラム名を```guarded```プロパティで定義する．これらのいずれかの設定は，Modelにおいて必須である．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * カラム名
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'xxx',
+    ];
+}
+```
+
+<br>
+
+### 使用に注意する機能
+
+#### ・セッター
+
+Laravelでは，プロパティを定義しなくても，Modelからプロパティをコールすれば，処理の度に動的にプロパティを定義できる．しかし，この機能はプロパティがpublicアクセスである必要があるため，オブジェクト機能のメリットを享受できない．そのため，この機能を使用せずに，```constructor```メソッドを使用したコンストラクタインジェクション，またはセッターインジェクションを使用するようにする．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * @var ExampleName
+     */
+    private ExampleName $exampleName;
+
+    /**
+     * 名前を取得します．
+     *
+     * @return string
+     */
+    public function __construct(ExampleName $exampleName)
+    {
+        $this->exampleName = $exampleName;
+    }
+}
+```
+
+#### ・ゲッター
+
+Laravelでは，```getXxxxYyyyAttribute```という名前のメソッドを，```xxx_yyy```という名前でコールできる．一見，プロパティをコールしているように見えるため，注意が必要である．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Example extends Model
+{
+    /**
+     * @var ExampleName
+     */
+    private ExampleName $exampleName;
+
+    /**
+     * 名前を取得します．
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return $this->exampleName . "です．" 
+    }
+}
+```
+
+```php
+<?php
+
+$example = Example::find(1);
+
+// nameプロパティを取得しているわけでなく，getNameAttributeメソッドを実行している．
+$exmapleName = $example->name;
 ```
 
 <br>
@@ -1503,7 +1990,7 @@ class ExampleRepository extends Repository
 
 #### ・UPDATE文の実行（論理削除）
 
-論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．
+論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．マイグレーション時に追加される```delete_at```をSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
 
 ```php
 <?php
@@ -1530,15 +2017,49 @@ class Example extends Model
     ];
 }
 ```
-さらに，マイグレーションファイルにて```softDeletes```メソッドを使用し，```deleted_at```カラムが追加されるようにする．```deleted_at```カラムのデフォルト値は```NULL```である．
+マイグレーションファイルにて```softDeletes```メソッドを使用すると，削除フラグとして```deleted_at```カラムが追加されるようになる．```deleted_at```カラムのデフォルト値は```NULL```である．
 
 ```php
-Schema::table('example', function (Blueprint $table) {
-    $table->softDeletes();
-});
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateExampleTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('example', function (Blueprint $table) {
+            
+            // ～ 省略
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+            
+            // ～ 省略
+            
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('example');
+    }
+}
 ```
 
-上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```が```NULL```でないデータを読み出さないため，論理削除を実現できる．
+上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```カラムが```NULL```でないデータを読み出さないため，論理削除を実現できる．
 
 ```php
 <?php
@@ -1746,11 +2267,116 @@ API以外の場合，こちらにルーティング処理を実装する．第�
 
 <br>
 
-### ルーティング
+### グルーピング
 
-#### ・ルーティング定義
+#### ・```namespace```メソッド
+
+コントローラをコールする時に，グループ内で同じ名前空間を指定する．「```App\Http\Controllers```」は内部で読み込まれているので，これ以下の名前空間を指定すればよい．
 
 **＊実装例＊**
+
+```php
+<?php
+
+// 「App\Http\Controllers」は内部で読み込まれる．
+Route::namespace('Auth')->group(function () {
+    
+    // 「App\Http\Controllers\Auth\」 以下にあるコントローラを指定できる．
+    Route::get('/user', 'UserController@index');
+    Route::post('/user/{userId}', 'UserController@createUser');
+});
+```
+
+#### ・```middleware```メソッド
+
+コントローラへのルーティング時に実行するMiddlewareクラスを設定する．引数として，```App\Http\Kernel.php```ファイルで定義されたMiddlewareクラスのエイリアス名を設定する．
+
+**＊実装例＊**
+
+認証方法としてweb guardを使用する場合，```auth```エイリアスを設定する．
+
+```php
+<?php
+
+// authエイリアスのMiddlewareクラスが使用される．
+Route::middleware('auth')->group(function () {
+    
+    Route::get('/user', 'App\Http\Controllers\Auth\UserController@index');
+    Route::post('/user/{userId}', 'App\Http\Controllers\Auth\UserController@createUser');
+});
+```
+
+デフォルトでは，```App\Http\Kernel.php```ファイルにて，```auth```エイリアスに```\App\Http\Middleware\Authenticate```クラスが関連付けられている．
+
+
+```php
+<?php
+
+namespace App\Http;
+
+use App\Http\Middleware\BeforeMiddleware\ArticleIdConverterMiddleware;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+class Kernel extends HttpKernel
+{
+    
+    // ～ 省略 ～
+    
+    protected $routeMiddleware = [
+        'auth'                 => \App\Http\Middleware\Authenticate::class,
+        'auth.basic'           => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings'             => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers'        => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can'                  => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest'                => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm'     => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed'               => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle'             => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified'             => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
+    
+    // ～ 省略 ～    
+    
+}
+```
+
+一方で，認証方法としてapi guardを使用する場合，```auth:api```エイリアスを設定する．
+
+```php
+<?php
+
+// authエイリアスのMiddlewareクラスが使用される．
+Route::middleware('auth:api')->group(function () {
+    // 何らのルーティング
+});
+```
+
+#### ・```group```メソッド
+
+複数のグループを組み合わせる場合，```group```メソッドを使用する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+// 複数のグループを組み合わせる．
+Route::group(['namespace' => 'Auth' , 'middleware' => 'auth'])->group(function () {
+    
+    // 「App\Http\Controllers\Auth\」 以下にあるコントローラを指定できる．
+    // authエイリアスのMiddlewareクラスが使用される．
+    Route::get('/user', 'UserController@index');
+    Route::post('/user/{userId}', 'UserController@createUser');
+});
+```
+
+<br>
+
+### HTTPメソッド
+
+#### ・```http```メソッド
+
+Routeクラスには，各HTTPメソッドをルーティングできるメソッドが用意されている．
 
 ```php
 <?php
@@ -1763,28 +2389,12 @@ Route::delete($uri, $callback);
 Route::options($uri, $callback);
 ```
 
-```{コントローラ名}@{メソッド名}```で，コントローラに定義してあるメソッドをコールできる．
+各メソッドの第二引数として，「```{コントローラ名}@{メソッド名}```」を渡すと，コントローラに定義してあるメソッドをコールできる．
 
 **＊実装例＊**
 
 ```php
 Route::get('/user', 'UserController@index');
-```
-
-#### ・```namespace```メソッド
-
-コントローラをコールする時に，グループ内で同じ名前空間を指定できるように，```group```メソッドと組み合わせて使用する．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-    // "App\Http\Controllers\Admin\" 下にあるコントローラ
-    Route::get('/user', 'UserController@index');
-    Route::post('/user/{userId}', 'UserController@createUser');
-});
 ```
 
 #### ・```where```メソッド
@@ -1798,13 +2408,13 @@ userIdの形式を「0〜9が一つ以上」に設定している．
 ```php
 <?php
 
-Route::namespace('Admin')->group(function () {
+Route::namespace('Auth')->group(function () {
 
     Route::get('/user', 'UserController@index')
     
     // userIdの形式を「0〜9が一つ以上」に設定
     Route::post('/user/{userId}', 'UserController@createUser')
-        ->where('id', '[0-9]+');
+        ->where('user_id', '[0-9]+');
 });
 ```
 
@@ -1832,8 +2442,9 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
     }
 }
-
 ```
+
+
 
 <br>
 
@@ -1863,7 +2474,7 @@ Route::get('/healthcheck', function () {
 
 ```bash
 # Middlewareを自動生成
-$ php artisan make:middleware <クラス名>
+$ php artisan make:middleware <Middleware名>
 ```
 
 <br>
@@ -1878,7 +2489,7 @@ $ php artisan make:middleware <クラス名>
 
 #### ・BeforeMiddleware
 
-ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，```Illuminate\Http\Request```オブジェクトが代入されている．
+ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，Requestクラスが代入されている．
 
 **＊実装例＊**
 
@@ -2211,15 +2822,16 @@ class UserController extends Controller
     {
         //
     }
+}
 ```
 
 <br>
 
-### Responseオブジェクト
+### Responseクラス
 
 #### ・Json型データのレスポンス
 
-LaravelのResponseクラスは，```Symfony\Component\HttpFoundation\Response```を継承している．
+Responseクラスは，SymfonyコンポーネントのResponseクラスを継承している．
 
 **＊実装例＊**
 
@@ -2618,7 +3230,7 @@ $ php artisan optimize:clear
 
 #### ・データの出力
 
-Responseインスタンスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
+Responseクラスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
 
 **＊実装例＊**
 
@@ -3122,6 +3734,7 @@ Model更新イベントが発火してコールされるリスナーでは，```
 namespace App\Listeners;
 
 use App\Events\UpdatedModelEvent;
+use App\Constants\ExecutorConstant;
 
 class UpdatedModelListener
 {
@@ -3144,7 +3757,7 @@ class UpdatedModelListener
     }
     
     /**
-     * モデルの更新者を取得します．
+     * 更新処理の実行者を取得します．
      *
      * @return string
      */
@@ -3152,16 +3765,45 @@ class UpdatedModelListener
     {
         // コンソール経由で実行されたかを判定．
         if (app()->runningInConsole()) {
-            return 'Artisan Command';
+            return ExecutorConstant::ARTISAN_COMMAND;
         }
 
         // API認証に成功したかを判定．
         if (auth()->check()) {
-            return 'Staff:' . auth()->id();
+            return ExecutorConstant::STAFF . ':' . auth()->id();
         }
         
-        return 'Guest';
+        return ExecutorConstant::GUEST;
     }    
+}
+```
+
+実行者名は，定数として管理しておくとよい．
+
+```php
+<?php
+
+namespace App\Constants;
+
+/**
+ * 実行者定数クラス
+ */
+class ExecutorConstant
+{
+    /**
+     * Artisanコマンド
+     */
+    public const ARTISAN_COMMAND = 'Artisan Command';
+
+    /**
+     * スタッフ
+     */
+    public const STAFF = 'Staff';
+    
+    /**
+     * ゲスト
+     */
+    public const GUEST = 'Guest';    
 }
 ```
 
