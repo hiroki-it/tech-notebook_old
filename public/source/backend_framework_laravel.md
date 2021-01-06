@@ -2267,11 +2267,116 @@ API以外の場合，こちらにルーティング処理を実装する．第�
 
 <br>
 
-### ルーティング
+### グルーピング
 
-#### ・ルーティング定義
+#### ・```namespace```メソッド
+
+コントローラをコールする時に，グループ内で同じ名前空間を指定する．「```App\Http\Controllers```」は内部で読み込まれているので，これ以下の名前空間を指定すればよい．
 
 **＊実装例＊**
+
+```php
+<?php
+
+// 「App\Http\Controllers」は内部で読み込まれる．
+Route::namespace('Auth')->group(function () {
+    
+    // 「App\Http\Controllers\Auth\」 以下にあるコントローラを指定できる．
+    Route::get('/user', 'UserController@index');
+    Route::post('/user/{userId}', 'UserController@createUser');
+});
+```
+
+#### ・```middleware```メソッド
+
+コントローラへのルーティング時に実行するMiddlewareクラスを設定する．引数として，```App\Http\Kernel.php```ファイルで定義されたMiddlewareクラスのエイリアス名を設定する．
+
+**＊実装例＊**
+
+認証方法としてweb guardを使用する場合，```auth```エイリアスを設定する．
+
+```php
+<?php
+
+// authエイリアスのMiddlewareクラスが使用される．
+Route::middleware('auth')->group(function () {
+    
+    Route::get('/user', 'App\Http\Controllers\Auth\UserController@index');
+    Route::post('/user/{userId}', 'App\Http\Controllers\Auth\UserController@createUser');
+});
+```
+
+デフォルトでは，```App\Http\Kernel.php```ファイルにて，```auth```エイリアスに```\App\Http\Middleware\Authenticate```クラスが関連付けられている．
+
+
+```php
+<?php
+
+namespace App\Http;
+
+use App\Http\Middleware\BeforeMiddleware\ArticleIdConverterMiddleware;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+class Kernel extends HttpKernel
+{
+    
+    // ～ 省略 ～
+    
+    protected $routeMiddleware = [
+        'auth'                 => \App\Http\Middleware\Authenticate::class,
+        'auth.basic'           => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings'             => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers'        => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can'                  => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest'                => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm'     => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed'               => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle'             => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified'             => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
+    
+    // ～ 省略 ～    
+    
+}
+```
+
+一方で，認証方法としてapi guardを使用する場合，```auth:api```エイリアスを設定する．
+
+```php
+<?php
+
+// authエイリアスのMiddlewareクラスが使用される．
+Route::middleware('auth:api')->group(function () {
+    // 何らのルーティング
+});
+```
+
+#### ・```group```メソッド
+
+複数のグループを組み合わせる場合，```group```メソッドを使用する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+// 複数のグループを組み合わせる．
+Route::group(['namespace' => 'Auth' , 'middleware' => 'auth'])->group(function () {
+    
+    // 「App\Http\Controllers\Auth\」 以下にあるコントローラを指定できる．
+    // authエイリアスのMiddlewareクラスが使用される．
+    Route::get('/user', 'UserController@index');
+    Route::post('/user/{userId}', 'UserController@createUser');
+});
+```
+
+<br>
+
+### HTTPメソッド
+
+#### ・```http```メソッド
+
+Routeクラスには，各HTTPメソッドをルーティングできるメソッドが用意されている．
 
 ```php
 <?php
@@ -2284,28 +2389,12 @@ Route::delete($uri, $callback);
 Route::options($uri, $callback);
 ```
 
-```{コントローラ名}@{メソッド名}```で，コントローラに定義してあるメソッドをコールできる．
+各メソッドの第二引数として，「```{コントローラ名}@{メソッド名}```」を渡すと，コントローラに定義してあるメソッドをコールできる．
 
 **＊実装例＊**
 
 ```php
 Route::get('/user', 'UserController@index');
-```
-
-#### ・```namespace```メソッド
-
-コントローラをコールする時に，グループ内で同じ名前空間を指定できるように，```group```メソッドと組み合わせて使用する．
-
-**＊実装例＊**
-
-```php
-<?php
-
-Route::namespace('Admin')->group(function () {
-    // "App\Http\Controllers\Admin\" 下にあるコントローラ
-    Route::get('/user', 'UserController@index');
-    Route::post('/user/{userId}', 'UserController@createUser');
-});
 ```
 
 #### ・```where```メソッド
