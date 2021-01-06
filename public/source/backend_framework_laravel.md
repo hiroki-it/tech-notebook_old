@@ -433,6 +433,9 @@ class MigrationMacroServiceProvider extends ServiceProvider
             $this->timestamp('updated_at')
                 ->comment('レコードの最終更新日')
                 ->nullable();
+            $this->timestamp('deleted_at')
+                ->comment('レコードの削除日')
+                ->nullable();
         });
         
         Blueprint::macro('dropSystemColumns', function () {
@@ -440,9 +443,54 @@ class MigrationMacroServiceProvider extends ServiceProvider
                 'created_by',
                 'updated_by',                
                 'created_at',
-                'updated_at'
+                'updated_at',
+                'deleted_at'
             );
         });        
+    }
+}
+```
+
+マイグレーションファイルにて，定義した```systemColumn```メソッドをコールする．```softDeletes```メソッドについては，以降の説明を参照せよ．
+
+```php
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateExampleTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('examples', function (Blueprint $table) {
+            $table->bigIncrements('example_id')
+                ->comment('ID');
+            $table->string('name')
+                ->comment('名前');
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('examples');
     }
 }
 ```
