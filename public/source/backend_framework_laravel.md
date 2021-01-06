@@ -1028,19 +1028,14 @@ Schema::create('examples', function (Blueprint $table) {
 
 <br>
 
-## Factory，Seeder
+## Seeder
 
 ### artisanコマンドによる操作
 
-#### ・Factoryの生成
+#### ・Seederの生成
 
 ```bash
-# --model={モデル名}
-$ php artisan make:factory ExampleFactory --model=Example
-```
-#### ・個別Seederの生成
-```bash
-$ php artisan make:seeder UserSeeder
+$ php artisan make:seeder <Seeder名>
 ```
 
 #### ・Seederの実行
@@ -1050,10 +1045,153 @@ $ php artisan make:seeder UserSeeder
 $ composer dump-autoload
 
 # 特定のSeederを実行
-$ php artisan db:seed --class=ExampleSeeder
+$ php artisan db:seed --class=<Seeder名>
 
 # DatabaseSeederを指定して，全てのSeederを実行
-$ php artisan db:seed --class=ExampleSeeder
+$ php artisan db:seed --class=<Seeder名>
+```
+
+<br>
+
+### 初期リアルデータの定義
+
+#### ・配列による定義
+
+```php
+<?php
+
+use Illuminate\Database\Seeder;
+use App\Constants\ExecutorConstant;
+
+class ProductsSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('products')->insert([
+            [
+                'product_name' => 'シャープペンシル',
+                'price'        => 300,
+                'product_type' => '1',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL
+            ],
+            [
+                'product_name' => 'ノート',
+                'price'        => 200,
+                'product_type' => '2',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL              
+            ],            
+            [
+                'product_name' => '消しゴム',
+                'price'        => 100,
+                'product_type' => '3',
+                'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,            
+                'created_at'   => NOW(),
+                'updated_at'   => NOW(),
+                'deleted_at'   => NULL,               
+            ],
+            
+            // ～ 省略 ～
+            
+        ]);
+    }
+}
+```
+
+実行者名は，定数として管理しておくとよい．
+
+```php
+<?php
+
+namespace App\Constants;
+
+/**
+ * 実行者定数クラス
+ */
+class ExecutorConstant
+{
+    /**
+     * Artisanコマンド
+     */
+    public const ARTISAN_COMMAND = 'Artisan Command';
+
+    /**
+     * スタッフ
+     */
+    public const STAFF = 'Staff';
+    
+    /**
+     * ゲスト
+     */
+    public const GUEST = 'Guest';    
+}
+```
+
+<br>
+
+#### ・CSVファイルによる定義
+
+```php
+// ここに実装例
+```
+
+<br>
+
+### Seederの実行
+
+DatabaseSeederにて，全てのSeederをまとめて実行する．
+
+```php
+<?php
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // 開発環境用の初期データ
+        if (App::environment('local')) {
+            $this->call([
+                // ダミーデータ
+            ]);
+        }
+        
+        // ステージング環境用の初期データ
+        if (App::environment('staging')) {
+            $this->call([
+                // リアルデータ
+                ProductsSeeder::class
+            ]);
+        }
+        
+        // 本番環境用の初期データ
+        if (App::environment('production')) {
+            $this->call([
+                // リアルデータ
+                ProductsSeeder::class
+            ]);
+        }
+    }
+}
 ```
 
 <br>
