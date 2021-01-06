@@ -2474,7 +2474,7 @@ Route::get('/healthcheck', function () {
 
 ```bash
 # Middlewareを自動生成
-$ php artisan make:middleware <クラス名>
+$ php artisan make:middleware <Middleware名>
 ```
 
 <br>
@@ -2822,6 +2822,7 @@ class UserController extends Controller
     {
         //
     }
+}
 ```
 
 <br>
