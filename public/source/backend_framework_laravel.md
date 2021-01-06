@@ -896,10 +896,17 @@ class CreateExampleTable extends Migration
      */
     public function up()
     {
-        Schema::create('example', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->timestamps('created_at');
+        Schema::create('examples', function (Blueprint $table) {
+            $table->bigIncrements('example_id')
+                ->comment('ID');
+            $table->string('name')
+                ->comment('名前');
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
         });
     }
 
@@ -910,7 +917,54 @@ class CreateExampleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('example');
+        Schema::drop('examples');
+    }
+}
+```
+
+#### ・api guard用のテーブル作成
+
+```php
+<?php
+  
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateUsersTable extends Migration
+{
+    /**
+     * マイグレート
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('user_id');
+                ->comment('ユーザID');
+            $table->string('name')
+                ->comment('ユーザ名');
+            $table->string('api_token')
+                ->unique()
+                ->comment('APIトークン');      
+            
+            // MigrationMacroServiceProviderのメソッドを使用する．
+            $table->systemColumns();
+            
+            // deleted_atカラムを追加する．
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * ロールバック
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('users');
     }
 }
 ```
@@ -962,7 +1016,10 @@ TIMESTAMP型カラムを作成する．
 **＊実装例＊**
 
 ```php
-Schema::create('example', function (Blueprint $table) {
+Schema::create('examples', function (Blueprint $table) {
+    
+    // ～ 省略 ～
+    
     $table->timestamp('created_at');
     
     // ～ 省略 ～
