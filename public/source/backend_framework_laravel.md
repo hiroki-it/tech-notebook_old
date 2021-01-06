@@ -1196,16 +1196,30 @@ class DatabaseSeeder extends Seeder
 
 <br>
 
+## Factory
 
-### Factory
+### artisanコマンドによる操作
 
-#### ・テストデータの定義
+#### ・Factoryの生成
 
-テストデータの値を定義する．
+```bash
+$ php artisan make:factory <Factory名> --model=<対象とするModel名>
+```
+<br>
+
+### 初期ダミーデータの定義
+
+#### ・Fakerライブラリのformatters
+
+Fakerはダミーデータを作成するためのライブラリである．Farkerクラスのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+
+参考リンク：https://github.com/fzaninotto/Faker
+
+#### ・Fakerによるダミーデータ定義
 
 **＊実装例＊**
 
-ユーザのテストデータを定義する．
+ユーザのダミーデータを定義する．
 
 ```php
 <?php
@@ -1227,13 +1241,13 @@ $factory->define(User::class, function (Faker $faker) {
         'password'              => 'test',
         'user_type'             => UserType::getRandomValue(),
         'remember_token'        => Str::random(10),
-        'email_verified_at'     => now(),
-        'last_authenticated_at' => now(),
+        'email_verified_at'     => NOW(),
+        'last_authenticated_at' => NOW(),
     ];
 });
 ```
 
-他に，商品のテストデータを定義する．
+他に，商品の初期ダミーデータを定義する．
 
 ```php
 <?php
@@ -1256,30 +1270,21 @@ $factory->define(User::class, function (Faker $faker) {
 });
 ```
 
-#### ・Fakerライブラリのformatters
+#### ・Seederによるダミーデータの量産
 
-Fakerはダミーデータを作成するためのライブラリである．Farkerオブジェクトのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
-
-参考リンク：https://github.com/fzaninotto/Faker
-
-<br>
-
-### Seeder
-
-#### ・テストデータの量産
-
-Factoryにおける定義を基にして，指定した数だけデータを量産する．
+Factoryにおける定義を基にして，指定した数だけダミーデータを量産する．
 
 **＊実装例＊**
 
-UserSeederを定義し，50個のユーザデータを量産する．
+DummyUsersSeederを定義し，50個のダミーユーザデータを量産する．
 
 ```php
 <?php
 
+use App\Domain\Entity\User;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class DummyUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -1288,12 +1293,34 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create();
+        factory(User::class, 50)->create();
     }
 }
 ```
 
-DatabaseSeederにて，UserSeederなど，全てのSeederをまとめて実行する．
+また，DummyProductsSeederを定義し，50個のダミーユーザデータを量産する．
+
+```php
+<?php
+
+use App\Domain\Entity\Product;
+use Illuminate\Database\Seeder;
+
+class DummyProductsSeeder extends Seeder
+{
+    /**
+     * Seederを実行します．
+     *
+     * @return void
+     */
+    public function run()
+    {
+        factory(Product::class, 50)->create();
+    }
+}
+```
+
+DatabaseSeederにて，全てのSeederをまとめて実行する．
 
 ```php
 <?php
@@ -1303,23 +1330,34 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * データベース初期値設定の実行
+     * Seederを実行します．
      *
      * @return void
      */
     public function run()
     {
-        // 本番環境以外のみで作成するテストデータ
-        if (!App::environment('production')) {
+        // 開発環境用の初期データ
+        if (App::environment('local')) {
             $this->call([
-                UserSeeder::class,
+                // ダミーデータ
+                DummyUsersSeeder::class,
+                DummyProductsSeeder::class
             ]);
         }
         
-        // 全ての環境で作成するテストデータ
-        $this->call([
-            ProductSeeder::class,
-        ]);
+        // ステージング環境用の初期データ
+        if (App::environment('staging')) {
+            $this->call([
+                // リアルデータ
+            ]);
+        }
+        
+        // 本番環境用の初期データ
+        if (App::environment('production')) {
+            $this->call([
+                // リアルデータ
+            ]);
+        }
     }
 }
 ```
