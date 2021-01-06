@@ -1990,7 +1990,7 @@ class ExampleRepository extends Repository
 
 #### ・UPDATE文の実行（論理削除）
 
-論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．
+論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．マイグレーション時に追加される```delete_at```をSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
 
 ```php
 <?php
@@ -3610,6 +3610,7 @@ Model更新イベントが発火してコールされるリスナーでは，```
 namespace App\Listeners;
 
 use App\Events\UpdatedModelEvent;
+use App\Constants\ExecutorConstant;
 
 class UpdatedModelListener
 {
@@ -3650,6 +3651,35 @@ class UpdatedModelListener
         
         return ExecutorConstant::GUEST;
     }    
+}
+```
+
+実行者名は，定数として管理しておくとよい．
+
+```php
+<?php
+
+namespace App\Constants;
+
+/**
+ * 実行者定数クラス
+ */
+class ExecutorConstant
+{
+    /**
+     * Artisanコマンド
+     */
+    public const ARTISAN_COMMAND = 'Artisan Command';
+
+    /**
+     * スタッフ
+     */
+    public const STAFF = 'Staff';
+    
+    /**
+     * ゲスト
+     */
+    public const GUEST = 'Guest';    
 }
 ```
 
