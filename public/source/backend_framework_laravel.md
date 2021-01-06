@@ -1371,7 +1371,7 @@ class DatabaseSeeder extends Seeder
 #### ・クラスの自動生成
 
 ```bash
-$ php artisan make:model Example
+$ php artisan make:model <Model名>
 ```
 
 <br>
@@ -1410,7 +1410,7 @@ Modelクラスを継承したクラスは，```INSERT```文や```UPDATE```文な
 ````php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1421,14 +1421,14 @@ class Example extends Model
 ````
 
 
-#### ・テーブルとの関連付け
+#### ・Modelとテーブルの関連付け
 
 Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を```table```プロパティに自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1443,25 +1443,27 @@ class Example extends Model
 }
 ```
 
-#### ・主キーとの関連付け
+#### ・Modelと主キーの関連付け
 
 Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```で主キーのデータ型，また```incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Example extends Model
 {
+    
     /**
      * 主キーとするカラム
+     * （デフォルトではidが主キーです）
      * 
      * @var string 
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'example_id';
     
     /**
      * 主キーのデータ型
@@ -1471,7 +1473,7 @@ class Example extends Model
     protected $keyType = 'int';
     
     /**
-     * 主キーのAutoIncrementの有効化
+     * 主キーのAutoIncrementの有効化します．
      * 
      * @var bool 
      */
@@ -1479,14 +1481,14 @@ class Example extends Model
 }
 ```
 
-#### ・タイムスタンプ型カラムとの関連付け
+#### ・ModelとTIMESTAMP型カラムの関連付け
 
-Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```と```updated_at```を自動的に更新する．また，タイムスタンプ型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
+Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```カラムと```updated_at```カラムを自動的に更新する．また，TIMESTAMP型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -1496,23 +1498,23 @@ class Example extends Model
     const UPDATED_AT = 'updated_data_time';
     
     /**
-     * モデルのタイムスタンプを更新するかの指示
+     * モデルのタイムスタンプを更新するかの指示します．
      *
      * @var bool
      */
-    protected $timestamps = true; // falseで無効化
+    protected $timestamps = true;
 }
 ```
 
 
-#### ・読み出し時のDateTimeクラス自動変換
+#### ・TIMESTAMP型カラム読み出し時のデータ型変換
 
 データベースからタイムスタンプ型カラムを読み出すと同時に，CarbonのDateTimeクラスに変換したい場合，```data```プロパティにて，カラム名を設定する．
 
 ```php
 <?php
 
-namespace App;
+namespace App\Domain\DTO;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -2079,13 +2081,13 @@ userIdの形式を「0〜9が一つ以上」に設定している．
 ```php
 <?php
 
-Route::namespace('Admin')->group(function () {
+Route::namespace('Auth')->group(function () {
 
     Route::get('/user', 'UserController@index')
     
     // userIdの形式を「0〜9が一つ以上」に設定
     Route::post('/user/{userId}', 'UserController@createUser')
-        ->where('id', '[0-9]+');
+        ->where('user_id', '[0-9]+');
 });
 ```
 
@@ -2113,8 +2115,9 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
     }
 }
-
 ```
+
+
 
 <br>
 
@@ -2159,7 +2162,7 @@ $ php artisan make:middleware <クラス名>
 
 #### ・BeforeMiddleware
 
-ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，```Illuminate\Http\Request```オブジェクトが代入されている．
+ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，Requestクラスが代入されている．
 
 **＊実装例＊**
 
@@ -2496,11 +2499,11 @@ class UserController extends Controller
 
 <br>
 
-### Responseオブジェクト
+### Responseクラス
 
 #### ・Json型データのレスポンス
 
-LaravelのResponseクラスは，```Symfony\Component\HttpFoundation\Response```を継承している．
+Responseクラスは，SymfonyコンポーネントのResponseクラスを継承している．
 
 **＊実装例＊**
 
@@ -2899,7 +2902,7 @@ $ php artisan optimize:clear
 
 #### ・データの出力
 
-Responseインスタンスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
+Responseクラスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
 
 **＊実装例＊**
 
@@ -3425,7 +3428,7 @@ class UpdatedModelListener
     }
     
     /**
-     * モデルの更新者を取得します．
+     * 更新処理の実行者を取得します．
      *
      * @return string
      */
@@ -3433,15 +3436,15 @@ class UpdatedModelListener
     {
         // コンソール経由で実行されたかを判定．
         if (app()->runningInConsole()) {
-            return 'Artisan Command';
+            return ExecutorConstant::ARTISAN_COMMAND;
         }
 
         // API認証に成功したかを判定．
         if (auth()->check()) {
-            return 'Staff:' . auth()->id();
+            return ExecutorConstant::STAFF . ':' . auth()->id();
         }
         
-        return 'Guest';
+        return ExecutorConstant::GUEST;
     }    
 }
 ```
