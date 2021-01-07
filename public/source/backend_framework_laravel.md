@@ -156,12 +156,12 @@ $ php artisan make:provider <クラス名>
 
 #### ・ServiceProviderの用途
 
-| 用途の種類                                         | 説明                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------ |
-| AppServiceProvider                                 | ・ServiceContainerへのクラスのバインド（登録）<br>・ServiceContainerからのインスタンスのリゾルブ（生成） |
-| MacroServiceProvider                               | ServiceContainerへのメソッドのバインド（登録）               |
-| RouteServiceProvider<br>（app.php，web.phpも使用） | ルーティングとコントローラの対応関係の定義                   |
-| EventServiceProvider                               | EventListenerとEventhandler関数の対応関係の定義              |
+| 用途の種類                                                   | 説明                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| AppServiceProvider                                           | ・ServiceContainerへのクラスのバインド（登録）<br>・ServiceContainerからのインスタンスのリゾルブ（生成） |
+| MacroServiceProvider                                         | ServiceContainerへのメソッドのバインド（登録）               |
+| RouteServiceProvider<br>（```app.php```，```web.php```も使用） | ルーティングとコントローラの対応関係の定義                   |
+| EventServiceProvider                                         | EventListenerとEventhandler関数の対応関係の定義              |
 
 #### ・ServiceProviderのコール
 
