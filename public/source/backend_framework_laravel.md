@@ -1078,7 +1078,7 @@ class ProductsSeeder extends Seeder
                 'price'        => 300,
                 'product_type' => '1',
                 'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
-                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,            
                 'created_at'   => NOW(),
                 'updated_at'   => NOW(),
                 'deleted_at'   => NULL
@@ -1088,10 +1088,10 @@ class ProductsSeeder extends Seeder
                 'price'        => 200,
                 'product_type' => '2',
                 'created_by'   => ExecutorConstant::ARTISAN_COMMAND,
-                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,           
+                'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,            
                 'created_at'   => NOW(),
                 'updated_at'   => NOW(),
-                'deleted_at'   => NULL              
+                'deleted_at'   => NULL                
             ],            
             [
                 'product_name' => '消しゴム',
@@ -1101,7 +1101,7 @@ class ProductsSeeder extends Seeder
                 'updated_by'   => ExecutorConstant::ARTISAN_COMMAND,            
                 'created_at'   => NOW(),
                 'updated_at'   => NOW(),
-                'deleted_at'   => NULL,               
+                'deleted_at'   => NULL                
             ],
             
             // ～ 省略 ～
@@ -1270,7 +1270,7 @@ $factory->define(User::class, function (Faker $faker) {
 });
 ```
 
-#### ・Seederによるダミーデータの量産
+#### ・Seederによるダミーデータ量産
 
 Factoryにおける定義を基にして，指定した数だけダミーデータを量産する．
 
@@ -2228,7 +2228,7 @@ return [
 
 <br>
 
-## Routes
+## Routing
 
 ### artisanコマンドによる操作
 
@@ -2251,7 +2251,7 @@ $ php artisan optimize:clear
 
 <br>
 
-### 種類
+### ルーティングファイルの種類
 
 #### ・```api.php```ファイル
 
@@ -2267,7 +2267,7 @@ API以外の場合，こちらにルーティング処理を実装する．第�
 
 <br>
 
-### グルーピング
+### Routeファサード
 
 #### ・```namespace```メソッド
 
@@ -2370,10 +2370,6 @@ Route::group(['namespace' => 'Auth' , 'middleware' => 'auth'])->group(function (
 });
 ```
 
-<br>
-
-### HTTPメソッド
-
 #### ・```http```メソッド
 
 Routeクラスには，各HTTPメソッドをルーティングできるメソッドが用意されている．
@@ -2444,15 +2440,13 @@ class RouteServiceProvider extends ServiceProvider
 }
 ```
 
-
-
 <br>
 
 ### ヘルスチェック
 
-#### ・単純な200レスポンス
+#### ・単純な```200```レスポンス
 
-ALBやGlobal Acceleratorから```/healthcheck```パスに対してヘルスチェックを設定した上で，200ステータスのレスポンスを送信するようにする．Nginxでヘルスチェックを実装することもできるが，アプリケーションの死活管理としては，Laravelに実装する方が適切である．RouteServiceProviderも参照せよ．
+ALBやGlobal Acceleratorから```/healthcheck```パスに対してヘルスチェックを設定した上で，```200```ステータスのレスポンスを送信するようにする．Nginxでヘルスチェックを実装することもできるが，アプリケーションの死活管理としては，Laravelに実装する方が適切である．RouteServiceProviderも参照せよ．
 
 **＊実装例＊**
 
@@ -2638,7 +2632,7 @@ $validatedData = $request->validate([
 ]);
 ```
 
-#### ・Validator
+#### ・Validatorファサード
 
 Validatorファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
@@ -2822,7 +2816,7 @@ class UserController extends Controller
     {
         //
     }
-}
+}    
 ```
 
 <br>
@@ -2951,7 +2945,7 @@ $ php artisan passport:client --password
 
 <br>
 
-### AuthによるDigest認証
+### AuthファサードによるDigest認証
 
 パスワードを```attempt```メソッドを用いて自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
 
