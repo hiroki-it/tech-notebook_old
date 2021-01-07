@@ -4023,3 +4023,60 @@ return [
     ]
 ];
 ```
+
+<br>
+
+## よく使うグローバルヘルパ関数
+
+### 一覧
+
+以下リンクを参照せよ．
+
+https://readouble.com/laravel/6.x/ja/helpers.html#method-view
+
+<br>
+
+### パス
+
+#### ・```base_path```メソッド
+
+引数を設定しない場合，projectルートディレクトリの絶対パスを生成する．また，projectルートディレクトリからの相対パスを引数として，絶対パスを生成する．
+
+```php
+<?php
+
+// /var/www/project
+$path = base_path();
+
+// /var/www/project/vendor/bin
+$path = base_path('vendor/bin');
+```
+
+#### ・```public_path```メソッド
+
+引数を設定しない場合，publicディレクトリの絶対パスを生成する．また，publicディレクトリからの相対パスを引数として，絶対パスを生成する．
+
+```php
+<?php
+
+// /var/www/project/public
+$path = public_path();
+
+// /var/www/project/public/css/app.css
+$path = public_path('css/app.css');
+```
+
+#### ・```storage_path```メソッド
+
+引数を設定しない場合，storageディレクトリの絶対パスを生成する．まあ，storageディレクトリからの相対パスを引数として，絶対パスを生成する．
+
+```php
+<?php
+
+// /var/www/project/storage
+$path = storage_path();
+
+// /var/www/project/storage/app/file.txt
+$path = storage_path('app/file.txt');
+```
+
