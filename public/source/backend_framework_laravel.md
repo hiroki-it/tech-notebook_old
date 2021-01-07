@@ -2090,57 +2090,7 @@ class ExampleRepository extends Repository
 
 ## File Systems
 
-### ファイルの保存先
-
-#### ・設定方法
-
-環境変数を```.env```ファイルに実装する．```filesystems.php```ファイルから，指定された設定が選択される．
-
-```
-AWS_ACCESS_KEY_ID=<アクセスキー>
-AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
-AWS_DEFAULT_REGION=<リージョン>
-AWS_BUCKET=<バケット名>
-```
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use Storage;
-
-class FileSystemPublicController extends Controller
-{
-    /**
-     * ファイルを保存する
-     */
-    public function index()
-    {
-        $disk = Storage::disk('public');
-
-        // 保存対象のファイルを読み込む
-        $public_path = '/path/to/public/';
-        $img_path = sprintf('%s%s', $public_path, 'test.jpg');
-        $contents = file_get_contents($img_path);
-
-        // 保存先ディレクトリ
-        $store_dir = 'images';
-
-        // ファイル名
-        $store_filename = 'example.jpg';
-
-        // 保存先パス（ディレクトリ＋ファイル名）
-        $store_file_path = sprintf('%s/%s', $store_dir, $store_filename);
-
-        // ファイルをアップロード．ルートパスは「/storage/app/public」
-        $disk->put($store_file_path, $contents);
-
-        $disk->url($store_file_path);
-
-    }
-}
-```
+### ファイルの操作
 
 #### ・ローカルストレージ（非公開）の場合
 
@@ -2164,10 +2114,29 @@ return [
             'root'   => storage_path('app'),
         ],
         
-        // ～ 省略 ～
+     // ～ 省略 ～
         
+    // シンボリックリンクの関係を定義
+    'links' => [
+        
+        // 「/var/www/project/public/storage」から「/var/www/project/storage/app/public」へのリンク
+        public_path('storage') => storage_path('app/public'),
     ],
 ];
+```
+
+**＊実装例＊**
+
+Storageファサードの```disk```メソッドを用いてlocalディスクを指定する．```file.txt```ファイルを```storage/app/file.txt```として保存する．
+
+```php
+Storage::disk('local')->put('file.txt', 'file.txt');
+```
+
+ただし，```filesytems.php```ファイルでデフォルトディスクは```local```になっているため，```put```メソッドを直接使用できる．
+
+```php
+Storage::put('file.txt', 'file.txt');
 ```
 
 #### ・ローカルストレージ（公開）の場合
@@ -2198,17 +2167,79 @@ return [
 ];
 ```
 
+**＊実装例＊**
+
+Storageファサードの```disk```メソッドを用いてpublicディスクを指定する．また，```file.txt```ファイルを```storage/app/public/file.txt```として保存する．
+
+```php
+Storage::disk('s3')->put('file.txt', 'file.txt');
+```
+
+ただし，環境変数を使用して，```filesytems.php```ファイルでデフォルトディスクを```s3```に変更すると，```put```メソッドを直接使用できる．
+
+```php
+FILESYSTEM_DRIVER=s3
+```
+
+```php
+Storage::put('file.txt', 'file.txt');
+```
+
+**＊実装例＊**
+
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Storage;
+
+class FileSystemPublicController extends Controller
+{
+    /**
+     * ファイルをpublicディスクに保存する
+     */
+    public function putContentsInPublicDisk()
+    {
+        // 保存先をpublicに設定する．
+        $disk = Storage::disk('public');
+
+        // 保存対象のファイルを読み込む
+        $file_path = '/path/to/public/example.jpg'
+        $contents = file_get_contents($file_path);
+
+        // 保存先パス（ディレクトリ＋ファイル名）
+        $saved_file_path = '/images/example.jpg';
+
+        // example.jpgを「/images/example.jpg」に保存
+        // ルートディレクトリは「/storage/app/public」
+        $disk->put($saved_file_path, $contents);
+    }
+}
+```
+
 #### ・クラウドストレージの場合
 
-ファイルをS3バケット内のディレクトリに保存する．
+ファイルをS3バケット内のディレクトリに保存する．環境変数を```.env```ファイルに実装する．```filesystems.php```ファイルから，指定された設定が選択される．AWSアカウントの認証情報を環境変数として設定するか，またはS3アクセスポリシーをEC2やECSタスクに付与することにより，S3にアクセスできるようになる．
+
+```
+# S3アクセスポリシーをEC2やECSタスクに付与してもよい
+AWS_ACCESS_KEY_ID=<アクセスキー>
+AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
+AWS_DEFAULT_REGION=<リージョン>
+
+# 必須
+AWS_BUCKET=<バケット名>
+```
 
 ```php
 return [
 
-    // ～ 省略 ～
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
     
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
-
+     // ～ 省略 ～
+    
     'disks' => [
 
         // ～ 省略 ～
@@ -2224,6 +2255,24 @@ return [
         ],
     ],
 ];
+```
+
+**＊実装例＊**
+
+Storageファサードの```disk```メソッドを用いてs3ディスクを指定する．また，```file.txt```ファイルをS3バケットのルートに```file.txt```として保存する．
+
+```php
+Storage::disk('s3')->put('file.txt', 'file.txt');
+```
+
+ただし，環境変数を使用して，```filesytems.php```ファイルでデフォルトディスクを```s3```に変更すると，```put```メソッドを直接使用できる．
+
+```php
+FILESYSTEM_DRIVER=s3
+```
+
+```php
+Storage::put('file.txt', 'file.txt');
 ```
 
 <br>
