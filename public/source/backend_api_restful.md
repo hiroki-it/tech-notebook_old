@@ -305,7 +305,7 @@ GET http://127.0.0.1/testform.php?text1=a&text2=b HTTP/1.1
 Host: 127.0.0.1
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
-# キャッシュの最大有効期限
+# ブラウザキャッシュの最大有効期限（リクエストヘッダーとレスポンスヘッダーの両方で定義可能）
 Cache-Control: max-age=31536000
 # ブラウザのバージョン情報等
 User-Agent: Mozzila/5.0 (Windows NT 10.0; Win64; x64) Ch
@@ -334,7 +334,7 @@ POST http://127.0.0.1/testform.php HTTP/1.1
 Host: 127.0.0.1
 Connection: keep-alive
 Content-Length: 15
-# キャッシュの無効化
+# ブラウザキャッシュの最大有効期限（リクエストヘッダーとレスポンスヘッダーの両方で定義可能）
 Cache-Control: no-store
 # オリジン（プロトコル＋ドメイン＋ポート番号）
 Origin: http://127.0.0.1
@@ -394,9 +394,11 @@ Accept-CH: ect,rtt,downlink
 Accept-CH-Lifetime:	86400
 X-UA-Compatible: IE=edge
 Content-Language: ja-JP
+# ブラウザキャッシュの最大有効期限（リクエストヘッダーとレスポンスヘッダーの両方で定義可能）
 Cache-Control: no-cache
+# ブラウザキャッシュの最大有効期限（レスポンスヘッダーのみで定義可能）
+Expires: Wed, 21 Oct 2015 07:28:00 GMT
 Pragma:	no-cache
-Expires: -1
 X-XSS-Protection: 1;
 X-Content-Type-Options:	nosniff
 Vary: Accept-Encoding,User-Agent,Content-Type,Accept-Encoding,X-Amzn-CDN-Cache,X-Amzn-AX-Treatment,User-Agent
