@@ -1211,7 +1211,7 @@ $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 
 #### ・Fakerライブラリのformatters
 
-Fakerはダミーデータを作成するためのライブラリである．Farkerクラスのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+Fakerはダミーデータを作成するためのライブラリである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
 
 参考リンク：https://github.com/fzaninotto/Faker
 
@@ -2555,7 +2555,7 @@ class ExampleBeforeMiddleware
 ```
 #### ・AfterMiddleware
 
-コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，Responseクラスが代入されている．
+コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．
 
 **＊実装例＊**
 
@@ -3273,7 +3273,7 @@ $ php artisan optimize:clear
 
 #### ・データの出力
 
-Responseクラスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
+Controllerクラスから返却されたデータは，```{{ 変数名 }}```で取得できる．`
 
 **＊実装例＊**
 
@@ -4026,7 +4026,7 @@ return [
 
 <br>
 
-## よく使うグローバルヘルパ関数
+## よく使うグローバルヘルパー関数
 
 ### 一覧
 
@@ -4052,7 +4052,7 @@ $path = base_path();
 $path = base_path('vendor/bin');
 ```
 
-#### ・```public_path```メソッド
+#### ・```public_path```ヘルパー
 
 引数を設定しない場合，publicディレクトリの絶対パスを生成する．また，publicディレクトリからの相対パスを引数として，絶対パスを生成する．
 
@@ -4066,7 +4066,7 @@ $path = public_path();
 $path = public_path('css/app.css');
 ```
 
-#### ・```storage_path```メソッド
+#### ・```storage_path```ヘルパー
 
 引数を設定しない場合，storageディレクトリの絶対パスを生成する．まあ，storageディレクトリからの相対パスを引数として，絶対パスを生成する．
 
