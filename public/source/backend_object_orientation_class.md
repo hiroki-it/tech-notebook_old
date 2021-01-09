@@ -827,6 +827,8 @@ https://stackoverflow.com/questions/1230889/difference-between-association-and-d
 
 https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-dependency-injection
 
+<br>
+
 ### 結合度
 
 #### ・結合度とは
@@ -983,7 +985,7 @@ class ModuleB
 
 上記二つ以外のメソッドの引数から，サプライヤー側のインスタンスを注入する方法．サプライヤー側をデータとして保持せず，読み込んでメソッドを使用する．
 
-
+<br>
 
 ### DI Container（依存性注入コンテナ），Service Container
 
