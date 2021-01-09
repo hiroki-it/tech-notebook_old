@@ -1211,7 +1211,7 @@ $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 
 #### ・Fakerライブラリのformatters
 
-Fakerはダミーデータを作成するためのライブラリである．Farkerクラスのインスタンスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+Fakerはダミーデータを作成するためのライブラリである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
 
 参考リンク：https://github.com/fzaninotto/Faker
 
@@ -2555,7 +2555,7 @@ class ExampleBeforeMiddleware
 ```
 #### ・AfterMiddleware
 
-コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．```$response```には，Responseクラスが代入されている．
+コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．
 
 **＊実装例＊**
 
@@ -2866,90 +2866,6 @@ class UserController extends Controller
         //
     }
 }    
-```
-
-<br>
-
-### Responseクラス
-
-#### ・Json型データのレスポンス
-
-Responseクラスは，SymfonyコンポーネントのResponseクラスを継承している．
-
-**＊実装例＊**
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-
-class ExampleController extends Controller
-{
-
-    public function index()
-    {
-
-        // ～ 省略 ～
-
-        return response()->json([
-            'name'  => 'Abigail',
-            'state' => 'CA'
-        ]);
-    }
-}
-```
-
-#### ・Viewテンプレートのレスポンス
-
-**＊実装例＊**
-
-```php
-<?php
-
-namespace App\Http\Controllers\Example;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-
-class ExampleController extends Controller
-{
-
-    public function index()
-    {
-        // ～ 省略 ～
-
-        // データ，ステータスコード，ヘッダーなどを設定する場合
-        return response()
-            ->view('hello', $data, 200)
-            ->header('Content-Type', $type);
-    }
-}
-```
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-
-final class ExampleController extends Controller
-{
-
-    public function index()
-    {
-        // ～ 省略 ～
-
-        // ステータスコードのみ設定する場合
-        return response()
-            ->view('hello')
-            ->setStatusCode(200);
-    }
-}
 ```
 
 <br>
@@ -3273,7 +3189,7 @@ $ php artisan optimize:clear
 
 #### ・データの出力
 
-Responseクラスから渡されたデータは，```{{ 変数名 }}``で取得できる．`
+Controllerクラスから返却されたデータは，```{{ 変数名 }}```で取得できる．`
 
 **＊実装例＊**
 
@@ -4026,7 +3942,7 @@ return [
 
 <br>
 
-## よく使うグローバルヘルパ関数
+## よく使うグローバルヘルパー関数
 
 ### 一覧
 
@@ -4036,9 +3952,219 @@ https://readouble.com/laravel/6.x/ja/helpers.html#method-view
 
 <br>
 
-### パス
+### ```config```ヘルパー
 
-#### ・```base_path```メソッド
+#### ・環境変数ファイルの読み込み
+
+環境変数ファイル名とキー名をドットで指定し，事前に設定された値を出力する．
+
+**＊実装例＊**
+
+標準で搭載されている```app.php```ファイルの```timezone```キーの値を出力する．
+
+```php
+<?php
+
+$value = config('app.timezone');
+```
+
+#### ・独自環境変数ファイルの作成と読み込み
+
+configディレクトリに任意の名前のphp形式を作成しておく．これは，configヘルパーで読み込むことができる．
+
+**＊実装例＊**
+
+
+```php
+<?php
+
+$requestUrl = config('api.example1.endpoint_url');
+```
+
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+<br>
+
+### ```response```ヘルパー
+
+#### ・ソースコード
+
+https://github.com/laravel/framework/blob/6.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
+
+#### ・Json型データのレスポンス
+
+返却されるResponseFactoryクラスの```json```メソッドにレンダリングしたいJSONデータを設定する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+
+        // ～ 省略 ～
+
+        return response()
+            ->json([
+                'name'  => 'Abigail',
+                'state' => 'CA'
+            ]);
+    }
+}
+```
+
+#### ・Viewテンプレートのレスポンス
+
+返却されるResponseFactoryクラスの```view```メソッドに，レンダリングしたいデータ（テンプレート，array型データ，ステータスコードなど）を設定する．また，Viewクラスの```header```メソッドにHTTPヘッダーの値を設定する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // データ，ステータスコード，ヘッダーなどを設定する場合
+        return response()
+            ->view(
+              'hello',
+              $data,
+              200
+            )->header(
+              'Content-Type',
+              $type
+            );
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // ステータスコードのみ設定する場合
+        return response()
+            ->view('hello')
+            ->setStatusCode(200);
+    }
+}
+```
+
+#### ・ロギング
+
+返却されるResponseFactoryクラスの```error```メソッドに，エラーメッセージを設定するようにする．この時，```sprintf```メソッドを使用すると便利である．
+
+**＊実装例＊**
+
+外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        $client = new Client();
+        $requestUrl = config('api.example1.endpoint_url');
+        
+        try {
+            
+            $response = $client->request(
+                'GET',
+                $requestUrl,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'X-API-Key'    => 'api.example1.api_key',
+                    ]
+                ]
+            );
+            
+            // JSONをクライアントにレスポンス
+            return $response->getBody()->getContents();
+            
+        } catch (GuzzleException $e) {
+            
+            return response()
+                ->error(sprintf(
+                    '%s : %s at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                ));
+        }
+    }
+```
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+
+<br>
+
+### ```path```系ヘルパー
+
+#### ・```base_path```ヘルパー
 
 引数を設定しない場合，projectルートディレクトリの絶対パスを生成する．また，projectルートディレクトリからの相対パスを引数として，絶対パスを生成する．
 
@@ -4052,7 +4178,7 @@ $path = base_path();
 $path = base_path('vendor/bin');
 ```
 
-#### ・```public_path```メソッド
+#### ・```public_path```ヘルパー
 
 引数を設定しない場合，publicディレクトリの絶対パスを生成する．また，publicディレクトリからの相対パスを引数として，絶対パスを生成する．
 
@@ -4066,7 +4192,7 @@ $path = public_path();
 $path = public_path('css/app.css');
 ```
 
-#### ・```storage_path```メソッド
+#### ・```storage_path```ヘルパー
 
 引数を設定しない場合，storageディレクトリの絶対パスを生成する．まあ，storageディレクトリからの相対パスを引数として，絶対パスを生成する．
 
