@@ -3952,7 +3952,23 @@ https://readouble.com/laravel/6.x/ja/helpers.html#method-view
 
 <br>
 
-### パス
+### ```config```ヘルパー
+
+#### ・環境変数ファイルの読み込み
+
+環境変数ファイル名とキー名をドットで指定し，事前に設定された値を出力する．
+
+**＊実装例＊**
+
+標準で搭載されている```app.php```ファイルの```timezone```キーの値を出力する．
+
+```php
+<?php
+
+$value = config('app.timezone');
+```
+
+#### ・独自環境変数ファイルの作成と読み込み
 
 #### ・```base_path```メソッド
 
