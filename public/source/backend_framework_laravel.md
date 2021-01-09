@@ -3970,7 +3970,201 @@ $value = config('app.timezone');
 
 #### ・独自環境変数ファイルの作成と読み込み
 
-#### ・```base_path```メソッド
+configディレクトリに任意の名前のphp形式を作成しておく．これは，configヘルパーで読み込むことができる．
+
+**＊実装例＊**
+
+
+```php
+<?php
+
+$requestUrl = config('api.example1.endpoint_url');
+```
+
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+<br>
+
+### ```response```ヘルパー
+
+#### ・ソースコード
+
+https://github.com/laravel/framework/blob/6.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
+
+#### ・Json型データのレスポンス
+
+返却されるResponseFactoryクラスの```json```メソッドにレンダリングしたいJSONデータを設定する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+
+        // ～ 省略 ～
+
+        return response()
+            ->json([
+                'name'  => 'Abigail',
+                'state' => 'CA'
+            ]);
+    }
+}
+```
+
+#### ・Viewテンプレートのレスポンス
+
+返却されるResponseFactoryクラスの```view```メソッドに，レンダリングしたいデータ（テンプレート，array型データ，ステータスコードなど）を設定する．また，Viewクラスの```header```メソッドにHTTPヘッダーの値を設定する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers\Example;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // データ，ステータスコード，ヘッダーなどを設定する場合
+        return response()
+            ->view(
+              'hello',
+              $data,
+              200
+            )->header(
+              'Content-Type',
+              $type
+            );
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        // ～ 省略 ～
+
+        // ステータスコードのみ設定する場合
+        return response()
+            ->view('hello')
+            ->setStatusCode(200);
+    }
+}
+```
+
+#### ・ロギング
+
+返却されるResponseFactoryクラスの```error```メソッドに，エラーメッセージを設定するようにする．この時，```sprintf```メソッドを使用すると便利である．
+
+**＊実装例＊**
+
+外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        $client = new Client();
+        $requestUrl = config('api.example1.endpoint_url');
+        
+        try {
+            
+            $response = $client->request(
+                'GET',
+                $requestUrl,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'X-API-Key'    => 'api.example1.api_key',
+                    ]
+                ]
+            );
+            
+            // JSONをクライアントにレスポンス
+            return $response->getBody()->getContents();
+            
+        } catch (GuzzleException $e) {
+            
+            return response()
+                ->error(sprintf(
+                    '%s : %s at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                ));
+        }
+    }
+```
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+
+<br>
+
+### ```path```系ヘルパー
+
+#### ・```base_path```ヘルパー
 
 引数を設定しない場合，projectルートディレクトリの絶対パスを生成する．また，projectルートディレクトリからの相対パスを引数として，絶対パスを生成する．
 
