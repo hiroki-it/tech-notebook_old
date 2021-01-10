@@ -225,7 +225,7 @@ example($data);
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class DogToyEntity
 {
@@ -250,7 +250,7 @@ class DogToyEntity
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -303,7 +303,7 @@ Getterでは，データを取得するだけではなく，何かしらの処�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class ABC {
 
@@ -331,7 +331,7 @@ class ABC {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Test01 {
 
@@ -352,7 +352,7 @@ class Test01 {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Test02 {
 
@@ -370,7 +370,7 @@ class Test02 {
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でも呼び出せ，その度にデータの値を上書きできる．
 
-```PHP
+```php
 <?php
 class Test01 {
 // 中身は省略
@@ -385,7 +385,7 @@ $test01->setProperty01("新しいデータ01の値");
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct```メソッドだけを持たせれば，『Immutable』なクラスとなる．
 
-```PHP
+```php
 <?php
 class Test02 {
 // 中身は省略
@@ -410,7 +410,7 @@ Entityは，Mutableであるため，Setterと```__construct```メソッドの�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -451,7 +451,7 @@ $example->hoge;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -467,7 +467,7 @@ class Example
 }
 ```
 
-```PHP
+```php
 class Example {
 // 中身は省略
 }
@@ -486,7 +486,7 @@ $example->hoge = "HOGE";
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Test02 {
 
@@ -505,7 +505,7 @@ class Test02 {
 
 Test01クラスインスタンスの```$property01```に値を設定するためには，インスタンスからSetterをコールする．Setterは何度でもコールでき，その度にデータの値を上書きできる．
 
-```PHP
+```php
 <?php
 $test01 = new Test01;
 
@@ -516,7 +516,7 @@ $test01->setProperty01("新しいデータ01の値");
 
 一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct```メソッドだけを持たせれば，『Immutable』なオブジェクトとなる．
 
-```PHP
+```php
 <?php
 $test02 = new Test02("データ02の値");
 
@@ -568,7 +568,7 @@ $example([1, 2, 3]);
 
 どちらも，new演算子と組み合わせて，自身のインスタンスを返却するメソッドであるが，生成の対象になるクラスが異なる．
 
-```PHP
+```php
 <?php
     
 class A
@@ -585,14 +585,14 @@ class A
 }
 ```
 
-```PHP
+```php
 <?php
 class B extends A {}
 ```
 
 以下の通り，```self```メソッドは定義されたクラスをインスタンス化する．一方で，```static```メソッドはコールされたクラスをインスタンス化する．自身のインスタンス化処理が継承される場合は，```static```メソッドを用いた方が良い．
 
-```PHP
+```php
 <?php
 echo get_class(B::get_self());   // 継承元のクラスA
 
@@ -611,7 +611,7 @@ echo get_class(A::get_static()); // 継承元のクラスA
 
 【オブジェクトA（オブジェクトBをデータに持つ）】
 
-```PHP
+```php
 <?php
 class Obj_A{
     private $objB;
@@ -626,7 +626,7 @@ class Obj_A{
 
 【オブジェクトB（オブジェクトCをデータに持つ）】
 
-```PHP
+```php
 <?php
 class Obj_B{
     private $objC;
@@ -641,7 +641,7 @@ class Obj_B{
 
 【オブジェクトC（オブジェクトDをデータに持つ）】
 
-```PHP
+```php
 <?php
 class Obj_C{
     private $objD;
@@ -656,7 +656,7 @@ class Obj_C{
 
 以下のように，返却値のオブジェクトを用いて，より深い層に連続してアクセスしていく場合…
 
-```PHP
+```php
 <?php
 $ObjA = new Obj_A;
 
@@ -669,7 +669,7 @@ $ObjD = $ObjC->objD();
 
 以下のように，メソッドチェーンという書き方が可能．
 
-```PHP
+```php
 <?php
 $D = objB()->objC()->objC();
 
@@ -697,7 +697,7 @@ $D = objB()->objC()->objC();
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example{
     
@@ -775,7 +775,7 @@ var_dump($result);
 **＊実装例＊**
 
 
-```PHP
+```php
 <?php
 class Example{
   
@@ -795,7 +795,7 @@ $example->returnMethod(); // returnMethod()です。
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example{
   
@@ -825,7 +825,7 @@ $example->exitMethod(); // exitMethod()です。
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -858,7 +858,7 @@ foreach ($oneToThree as $value) {
 
 特定の文字列によって，動的にメソッドをコールするオブジェクトをDispatcherという．
 
-```PHP
+```php
 <?php
 class Dispatcher {
 // 中身は省略
@@ -884,7 +884,7 @@ $dispatcher->dispatch("example", "test");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -900,7 +900,7 @@ class ExampleEventDispatcher
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class ResultCacher
 {
@@ -967,7 +967,7 @@ class ResultCacher
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Item {
 // 中身は省略
@@ -992,7 +992,7 @@ echo $optionName;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Item {
 // 中身は省略
@@ -1018,7 +1018,7 @@ echo $optionName("BC");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Item {
 // 中身は省略
@@ -1055,7 +1055,7 @@ echo $option->name("BC");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Item {
 // 中身は省略
@@ -1089,7 +1089,7 @@ echo $optionName;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 // 第一引数のみの場合
 class Example
@@ -1116,7 +1116,7 @@ $example->test("callbackMethod");
 // 出力に成功しました．
 ```
 
-```PHP
+```php
 <?php
 // 第一引数と第二引数の場合
 class Example
@@ -1146,7 +1146,7 @@ $example->higherOrder("第一引数", "callbackMethod");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -1177,7 +1177,7 @@ $example->higherOrder($parentVar, function () use ($parentVar) {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Example
 {
@@ -1294,7 +1294,7 @@ Array
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $array = array("あ", "い", "う");
@@ -1327,7 +1327,7 @@ PHPの```list```メソッドは，List型とは意味合いが異なる．配列
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $array = array("あ", "い", "う");
@@ -1342,7 +1342,7 @@ echo $a.$i.$u; // あいう
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 list($a, $i, $u) = array("あ", "い", "う");
@@ -1372,7 +1372,7 @@ PHPでは，```array_push```メソッドと```array_shift```メソッドを組�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 $array = array("Blue", "Green");
 
@@ -1570,7 +1570,7 @@ Fruit Object
 
 #### ・```(string)```
 
-```PHP
+```php
 <?php
 $var = 10; // $varはInt型．
 
@@ -1580,7 +1580,7 @@ $var = (string) $var; // $varはString型
 
 #### ・```(int)```
 
-```PHP
+```php
 <?php
 $var = "1";
 
@@ -1592,7 +1592,7 @@ $var = (int) $var;
 
 #### ・```(bool)```
 
-```PHP
+```php
 <?php
 $var = 1;
 
@@ -1604,7 +1604,7 @@ $var = (bool) $var;
 
 #### ・```(float)```
 
-```PHP
+```php
 <?php
 $var = "1.0";
 
@@ -1616,7 +1616,7 @@ $var = (float) $var;
 
 #### ・```(array)```
 
-```PHP
+```php
 <?php
 // Array型
 $var = (array) $var;
@@ -1624,7 +1624,7 @@ $var = (array) $var;
 
 #### ・```(object)```
 
-```PHP
+```php
 <?php
 // Object型
 $var = (object) $var;
@@ -1640,7 +1640,7 @@ $var = (object) $var;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 class requiredTime
@@ -1699,7 +1699,7 @@ class requiredTime
 
 以下の実装を持つファイルを，「```/var/www/app```」下に置いておき，「```/vendor/autoload.php```」と結合してパスを通す．
 
-```PHP
+```php
 <?php
     
 # /var/www/app/vendor/autoload.php
@@ -1712,7 +1712,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 class ExampleA
@@ -1724,7 +1724,7 @@ class ExampleA
 }
 ```
 
-```PHP
+```php
 <?php
     
 class ExampleA {
@@ -1740,7 +1740,7 @@ $exampleA->a(); // a が返却される．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 class ExampleB
@@ -1752,7 +1752,7 @@ class ExampleB
 }
 ```
 
-```PHP
+```php
 <?php
     
 $exampleB = new ExmapleB;
@@ -1775,7 +1775,7 @@ $exampleB->b(); // ExampleB::b が返却される．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $fruit = "リンゴ";
@@ -1790,7 +1790,7 @@ echo 'これは$fruitです．'; // これは，$fruitです．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $fruit = "リンゴ";
@@ -1803,7 +1803,7 @@ echo 'これは{$fruit}です．'; // これは，{$fruit}です．
 
 変数の前後に半角スペースを置いた場合にのみ，変数は展開される．（※半角スペースがないとエラーになる）
 
-```PHP
+```php
 <?php
     
     
@@ -1817,7 +1817,7 @@ echo "これは $fruit です．"; // これは リンゴ です．
 
 波括弧を用いると，明示的に変数として扱うことができる．これによって，変数の前後に半角スペースを置かなくとも，変数は展開される．
 
-```PHP
+```php
 <?php
     
 $fruit = "リンゴ";
@@ -1834,7 +1834,7 @@ echo "これは{$fruit}です．"; // これは，リンゴです．
 
 「参照渡し」とは，変数に代入した値の参照先（メモリアドレス）を渡すこと．
 
-```PHP
+```php
 <?php
     
 $value = 1;
@@ -1845,7 +1845,7 @@ $result = &$value; // 値の入れ物を参照先として代入
 
 ```$b```には，```$a```の参照によって10が格納される．
 
-```PHP
+```php
 <?php
     
 $a = 2;
@@ -1860,7 +1860,7 @@ echo $b; // 10
 
 「値渡し」とは，変数に代入した値のコピーを渡すこと．
 
-```PHP
+```php
 <?php
     
 $value = 1;
@@ -1871,7 +1871,7 @@ $result = $value; // 1をコピーして代入
 
 ```$b```には，```$a```の一行目の格納によって2が格納される．
 
-```PHP
+```php
 <?php
     
 $a = 2;
@@ -1963,7 +1963,7 @@ file_put_contents(
 
 #### ・正規表現を用いた文字列検索
 
-```PHP
+```php
 // ここに実装例
 ```
 
@@ -1975,7 +1975,7 @@ file_put_contents(
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // 何らかの文字列
