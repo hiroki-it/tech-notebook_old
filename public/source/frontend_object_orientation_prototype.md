@@ -216,7 +216,7 @@ const example = {
 
 #### ・省略形
 
-```methodA(): fucntion{}``` とするところを，```methodA() {}```と記述できる．
+リテラル表記において，```methodA(): fucntion{}``` とするところを，```methodA() {}```と記述できる．
 
 ```javascript
 // リテラル表記
