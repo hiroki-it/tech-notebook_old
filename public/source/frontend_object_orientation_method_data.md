@@ -143,13 +143,13 @@ const a = null;
 console.log(a); // null
 ```
 
-#### ・undefined型データの返却
+#### ・undefinedの返却
 
-```undifined```を返却する場合，```return```のみを記述する．
+undefinedを返却する場合，```return```のみを記述する．
 
 **＊実装例＊**
 
-```JavaScript
+```javascript
 function hoge(){
     return; // 空の『return文』です。空なので『undefined』を返します。
 }
