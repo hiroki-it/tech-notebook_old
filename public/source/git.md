@@ -254,7 +254,7 @@ Aborting
 
 この場合，一度```stash```を行い，『インデックス』（=```add```）あるいは『HEAD』（=```commit```）を横に置いておく必要がある．
 
-#### ・```stash -u```（```--include-untracked```）
+#### ・```stash -u --include-untracked```
 トラッキングされていないファイルも含めて，全てのファイルを退避．
 ```git status```をしたところ，修正ファイルが３つ，トラックされていないファイルが１つある．
 
@@ -393,7 +393,7 @@ $ git revert -m 1 xyz
 
 ![reset.png](https://qiita-image-store.s3.amazonaws.com/0/292201/e96468c4-57cc-bf2b-941a-d179ac829627.png)
 
-#### ・```reset HEAD <ファイル名／ファイルパス]```
+#### ・```reset HEAD <ファイル名／ファイルパス>```
 インデックスから，指定したファイルを削除．
 
 ```bash
@@ -401,8 +401,7 @@ $ git reset HEAD <ファイル名／ファイルパス>
 ```
 
 #### ・```reset --soft <コミットID>```
-作業中のローカルブランチにおいて，最新のHEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除
-```commit```のみを取り消したい場合はこれ．
+作業中のローカルブランチにおいて，最新のHEAD（=```commit```後）を指定の履歴まで戻し，それ以降を削除する．```commit```のみを取り消したい場合はこれ．
 
 ```bash
 $ git reset --soft <コミットID>
