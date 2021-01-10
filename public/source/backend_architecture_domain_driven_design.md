@@ -273,7 +273,7 @@ interface GetDogToyEntityRepository
 
 #### ・入力データに対するビジネスルールのValidation
 
-```isXxxx()```の真偽値メソッドのように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理する．
+真偽値メソッド（```isXxxx```メソッド）のように，オブジェクトのデータを検証して、仕様を要求を満たしているか、何らかの目的のための用意ができているかを調べる処理する．
 
 **＊実装例＊**
 
@@ -410,7 +410,7 @@ class ToyOrderEntity
 
 ![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_集約関係.jpg)
 
-  EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
+ EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
 
 **＊実装例＊**
 

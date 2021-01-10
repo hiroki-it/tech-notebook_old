@@ -127,7 +127,7 @@ $ /usr/local/bin/composer clear-cache
 
 ####  ・autoloadの対象に登録した設定を反映
 
-```require```メソッドによる読み込みを不要とするファイルをcomposer.jsonに登録できる．
+外部ファイルの読み込み時に，```require```メソッドを不要とするファイルを```composer.json```ファイルに登録できる．
 
 ```json
 {
@@ -161,6 +161,7 @@ $ /usr/local/bin/composer dump-autoload
 
 ```PHP
 <?php
+    
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 ```
 
@@ -180,12 +181,13 @@ RDBの読み込み系／書き込み系の操作を行うライブラリ．他�
 
 https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/query-builder.html
 
-```QueryBuilder```は，CRUD処理に必要なSQLを保持し，トランザクションによってSQLを実行する．
+CRUD処理に必要なSQLを保持し，トランザクションによってSQLを実行する．
 
 **＊実装例＊**
 
 ```PHP
 <?php
+    
 // QueryBuilderインスタンスを作成．
 $queryBuilder = $this->createQueryBuilder();
 ```
@@ -198,6 +200,7 @@ QueryBuilderクラスにおける```insert```メソッドに，値を設定す�
 
 ```PHP
 <?php
+    
 $queryBuilder
     ->insert('mst_users')
 ```
@@ -210,6 +213,7 @@ QueryBuilderクラスにおける```select```メソッドに，値を設定す�
 
 ```PHP
 <?php
+    
 $queryBuilder
     ->select('id', 'name')
     ->from('mst_users');
@@ -223,6 +227,7 @@ QueryBuilderクラスにおける```update```メソッドに，値を設定す�
 
 ```PHP
 <?php
+    
 $queryBuilder
     ->update('mst_users');
 ```
@@ -247,6 +252,7 @@ $queryBuilder
 
 ```PHP
 <?php
+    
 // データベースに接続．
 $queryBuilder->getConnection()
     // SQLを実行し，レコードを読み出す．
@@ -267,6 +273,7 @@ $queryBuilder->getConnection()
 
 ```PHP
 <?php
+    
 use Doctrine\DBAL\Connection;
 
 class DogToyQuery
@@ -312,6 +319,7 @@ class DogToyQuery
 
 ```PHP
 <?php
+    
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 
@@ -349,14 +357,17 @@ class Example
 
 #### ・トランザクション，コミット，ロールバック
 
-https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
+![コミットメント制御](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コミットメント制御.jpg)
 
-```beginTransaction```メソッド，```commit```メソッド，```rollBack```メソッドを用いて，RDBを操作する．
+RDBの処理用語に相当する```beginTransaction```メソッド，```commit```メソッド，```rollBack```メソッドを用いて，RDBを操作する．
+
+参照：https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/transactions.html
 
 **＊実装例＊**
 
 ```PHP
 <?php
+    
 $conn = new Doctrine\DBAL\Connection
 
 // トランザクションの開始 
@@ -395,6 +406,7 @@ DateTimeインスタンスを引数として，Carbonインスタンスを作成
 
 ```PHP
 <?php
+    
 $datetime = new \DateTime('2019-07-07 19:07:07');
 $carbon = Carbon::instance($datetime);
 
@@ -411,6 +423,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 ```PHP
 <?php
+    
 $carbon = Carbon::create(2019, 07, 07, 19, 07, 07);
 
 echo $carbon; // 2019-07-07 19:07:07
@@ -428,6 +441,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 ```PHP
 <?php
+    
 // 日時数字から，Carbonインスタンスを作成する．
 $carbonFromeDate = Carbon::createFromDate(2019, 07, 07);
 
@@ -440,6 +454,7 @@ echo $carbonFromeDate; // 2019-07-07
 
 ```PHP
 <?php
+    
 // 時間数字から，Carbonインスタンスを作成する．
 $carbonFromTime = Carbon::createFromTime(19, 07, 07);
 
@@ -454,6 +469,7 @@ echo $carbonFromTime; // 19:07:07
 
 ```PHP
 <?php
+    
 // 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．
 // 第一引数でフォーマットを指定する必要がある．
 $carbonFromFormat = Carbon::createFromFormat('Y-m-d H:m:s', '2019-07-07 19:07:07');
@@ -467,6 +483,7 @@ echo $carbonFromFormat; // 2019-07-07 19:07:07
 
 ```PHP
 <?php
+    
 // タイムスタンプフォーマットから，Carbonインスタンスを作成する．
 $carbonFromTimestamp = Carbon::createFromTimestamp(1562494027);
 
@@ -483,6 +500,7 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 
 ```PHP
 <?php
+    
 $carbon = Carbon::parse('2019-07-07 19:07:07')
 ```
 
@@ -504,6 +522,7 @@ SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach```�
 
 ```PHP
 <?php
+    
 use Pinq\Traversable;
 
 class Example
@@ -544,6 +563,7 @@ class Example
 
 ```PHP
 <?php
+    
 $client = new Client();
 
 // GET送信
@@ -556,6 +576,7 @@ $response = $client->request("GET", <アクセスしたいURL>);
 
 ```PHP
 <?php
+    
 $client = new Client();
 
 // POST送信
@@ -573,7 +594,7 @@ $body = json_decode($response->getBody(), true);
 
 ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するライブラリ．
 
-### ```generateFromHtml```メソッド
+### ・```generateFromHtml```メソッド
 
 htmlファイルを元にして，ローカルディレクトリにPDFファイルを作成する．
 
@@ -581,6 +602,7 @@ htmlファイルを元にして，ローカルディレクトリにPDFファイ�
 
 ```PHP
 <?php
+    
 $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
 
 $snappy->generateFromHtml('example.html', '.../example.pdf');
@@ -596,6 +618,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf');
 
 ```PHP
 <?php
+    
 // ここに実装例
 ```
 
