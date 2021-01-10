@@ -6,12 +6,12 @@
 
 #### ・CentOSにインストール
 
-```bash
+```sh
 # mysqlコマンドのみをインストールしたい場合はこちら
 $ dnf install -y mysql
 ```
 
-```bash
+```sh
 # mysqlコマンド，データベースサーバ機能，をインストールしたい場合はこちら
 $ dnf install -y mysql-server
 ```
@@ -24,7 +24,7 @@ $ dnf install -y mysql-server
 
 データベースに登録されているグローバルパラメータとセッションパラメータを表示する．
 
-```mysql
+```sql
 -- セッション／グローバルパラメータを表示
 SHOW SESSION VARIABLES;
 SHOW GLOBAL VARIABLES;
@@ -54,7 +54,7 @@ SET time_zone = 'Asia/Tokyo';
 
 **＊実装例＊**
 
-```mysql
+```sql
 -- 注文テーブル作成
 CREATE TABLE order_data (
 
@@ -86,7 +86,7 @@ CREATE TABLE order_data (
 
 **＊実装例＊**
 
-```mysql
+```sql
 CREATE VIEW { テーブル名 } AS
 SELECT
     *
@@ -142,7 +142,7 @@ FROM
 
 ```SELECT```文のstored procedureを作成するとする．
 
-```mysql
+```sql
 -- PROCEDUREを作成し，データベースへ格納しておく．
 CREATE PROCEDURE SelectContact AS
 SELECT
@@ -151,7 +151,7 @@ FROM
     { テーブル名 }
 ```
 
-```mysql
+```sql
 -- PROCEDUREを実行
 EXEC SelectContact
 ```
@@ -164,7 +164,7 @@ EXEC SelectContact
 
 DBからテーブルをエクスポートする．エクスポートしたいテーブルの数だけ，テーブル名を連ねる
 
-```bash
+```sh
 $ mysqldump --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' '{ テーブル名1 }' '{ テーブル名2 }' > table.sql
 ```
 
@@ -172,7 +172,7 @@ $ mysqldump --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名
 
 DBにテーブルをインポートする．forceオプションで，エラーが出ても強制的にインポート．
 
-```bash
+```sh
  $ mysql --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' < table.sql
 ```
 
@@ -208,7 +208,7 @@ DBにテーブルをインポートする．forceオプションで，エラー�
 
 #### ・ユーザ作成
 
-```mysql
+```sql
 CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{ パスワード }';
 ```
 
@@ -216,7 +216,7 @@ CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{ パスワード }';
 
 ここで表示される特権と．ALL特権は異なる．
 
-```mysql
+```sql
 SELECT * FROM mysql.user;
 ```
 
@@ -226,7 +226,7 @@ SELECT * FROM mysql.user;
 
 #### ・ユーザ削除
 
-```mysql
+```sql
 -- ユーザ別のホスト名の確認
 SELECT * FROM mysql.user;
 
@@ -244,7 +244,7 @@ DROP USER { ユーザ名 }@`%`;
 データベース名は，シングルクオーテーションで囲う必要が無い．全権限を付与する場合，```PRIVILEGES```は省略できるが，厳密には省略しないようほうがよい．
 
 
-```mysql
+```sql
 -- 全てのデータベースに関する権限を付与
 GRANT ALL PRIVILEGES ON *.* TO '{ ユーザ名 }';
 
@@ -252,7 +252,7 @@ GRANT ALL PRIVILEGES ON *.* TO '{ ユーザ名 }';
 GRANT ALL PRIVILEGES ON `%`.* TO '{ ユーザー名 }';
 ```
 
-```mysql
+```sql
 -- Amazon Auroraも同じく
 -- 特定のデータベースに関する全権限を付与
 GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
@@ -262,7 +262,7 @@ GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
 
 特定のデータベースに関する読み出し権限のみ付与する．
 
-```mysql
+```sql
 GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';
 ```
 
@@ -281,13 +281,13 @@ GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';
 
 ユーザに付与されている権限を表示する．
 
-```mysql
+```sql
 SHOW GRANTS FOR '{ ユーザ名 }';
 ```
 
 作成しただけで権限を何も付与してないユーザの場合，「データベースサーバ内の全データベースに関して，全権限なし」を表す```USAGE```として表示される．
 
-```mysql
+```sql
 GRANT USAGE ON *.* TO '{ ユーザー名 }';
 ```
 
@@ -301,7 +301,7 @@ GRANT USAGE ON *.* TO '{ ユーザー名 }';
 
 全権限を削除し，GRANT権限をUSAGEに戻す．
 
-```mysql
+```sql
 -- Amazon AuroraまたはRDSの場合
 REVOKE ALL PRIVILEGES ON `%`.* FROM '{ ユーザ名 }';
 
@@ -310,7 +310,7 @@ REVOKE ALL PRIVILEGES ON {DB名}.* FROM '{ ユーザ名 }';
 
 #### ・ユーザ名変更
 
-```mysql
+```sql
 RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
 ```
 
@@ -335,7 +335,7 @@ FROM ---> JOIN ---> WHERE ---> GROUP BY ---> HAVING ---> SELECT ---> ORDER BY
 
 指定したカラムで，『フィールド』の合計を取得
 
-```mysql
+```sql
 SELECT
     SUM({ カラム名 })
 FROM
@@ -346,7 +346,7 @@ FROM
 
 指定したカラムで，『フィールド』の平均値を取得
 
-```mysql
+```sql
 SELECT
     AVG({ カラム名 })
 FROM
@@ -357,7 +357,7 @@ FROM
 
 指定したカラムで，『フィールド』の最小値を取得
 
-```mysql
+```sql
 SELECT
     MIN({ カラム名 })
 FROM
@@ -368,7 +368,7 @@ FROM
 
 指定したカラムで，『フィールド』の最大値を取得
 
-```mysql
+```sql
 SELECT
     MAX({ カラム名 })
 FROM
@@ -379,7 +379,7 @@ FROM
 
 指定したカラムで，『フィールド』の個数を取得
 
-```mysql
+```sql
 SELECT
     { カラム名 } COUNT(*)
 FROM
@@ -392,7 +392,7 @@ FROM
 
 集合関数を集合関数の中に入れ子状にすることはできない．
 
-```mysql
+```sql
 -- 
 SELECT
     AVG(SUM({ カラム名 }))
@@ -402,14 +402,14 @@ FROM
 
 指定したカラムで，値無しも含む『フィールド』を取得
 
-```mysql
+```sql
 SELECT
     { カラム名 } COUNT(*)
 FROM
     { テーブル名 };
 ```
 指定したカラムで，値無しを除いた『フィールド』を取得
-```mysql
+```sql
 SELECT
     { カラム名 } COUNT(*);
 ```
@@ -418,7 +418,7 @@ SELECT
 
 最後に挿入されたIDを読み出す．
 
-```mysql
+```sql
 SELECT LAST_INSERT_ID();
 ```
 
@@ -426,7 +426,7 @@ SELECT LAST_INSERT_ID();
 
 文字列をハッシュ化
 
-```mysql
+```sql
 SELECT MD5('xxxxx');
 ```
 
@@ -436,7 +436,7 @@ SELECT MD5('xxxxx');
 
  カラム1が```true```だったら，カラム2を取得する．```false```であったら，カラム3を取得する．
 
-```mysql
+```sql
 SELECT
     CASE
         WHEN { エイリアス }.{ カラム名1 } = 1 THEN { エイリアス }.{ カラム名2 }
@@ -454,7 +454,7 @@ FROM
 
 ![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部結合のベン図.jpg)
 
-#### ・```left JOIN```（左外部結合）
+#### ・```LEFT JOIN```（左外部結合）
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
@@ -472,7 +472,7 @@ FROM
 
 **＊実装例＊**
 
-```mysql
+```sql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
 SELECT
     { テーブル名1 }.{ カラム名1 },
@@ -491,7 +491,7 @@ WHERE
 
 **＊実装例＊**
 
-```mysql
+```sql
 -- 『カラム』だけでなく，どの『表』なの物なのかも指定
 SELECT
     { テーブル名1 }.{ カラム名1 },
@@ -556,7 +556,7 @@ $sql = <<<SQL
 
 指定したカラムで，指定した値の『フィールド』を取得
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -565,7 +565,7 @@ WHERE
     { カラム名 } in (xxx, xxx,...);
 ```
 指定したカラムで，指定した値以外の『フィールド』を取得
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -576,7 +576,7 @@ WHERE
 
 指定したカラムで，```SELECT```で読み出した値以外の『フィールド』を取得
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -595,7 +595,7 @@ WHERE
 
 **【IN句を使用しなかった場合】**
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -607,7 +607,7 @@ WHERE
 
 **【IN句を使用した場合】**
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -620,7 +620,7 @@ WHERE
 
   書き方が異なるだけで，```in```と同じ出力
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -641,7 +641,7 @@ WHERE
 
 指定したカラムをグループ化し，フィールドの値の平均値を算出する．
 
-```mysql
+```sql
 SELECT
     { カラム名1 },
     AVG({ カラム名2 })
@@ -661,7 +661,7 @@ GROUP BY
 
 **＊実装例＊**
 
-```mysql
+```sql
 -- HAVINGによる集計結果を指定して出力．
 SELECT
     { カラム名1 },
@@ -677,7 +677,7 @@ HAVING
 
 ※以下の場合，```GROUP BY + HAVING```を使っても，```WHERE```を使っても，同じ出力結果になる．
 
-```mysql
+```sql
 SELECT
     { カラム名 }
 FROM
@@ -688,7 +688,7 @@ HAVING
     { ロー名 };
 ```
 
-```mysql
+```sql
 SELECT
     { カラム名 }
 FROM
@@ -707,7 +707,7 @@ GROUP BY
 
 **＊実装例＊**
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -716,7 +716,7 @@ WHERE
     { カラム名 } LIKE '%営業';
 ```
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -735,7 +735,7 @@ WHERE
 
 指定したカラムで，1以上10以下の『フィールド』を取得
 
-```mysql
+```sql
 SELECT
     *
 FROM
@@ -752,7 +752,7 @@ FROM
 
 **＊実装例＊**
 
-```mysql
+```sql
 SET
     @A = { パラメータ値 };
 
@@ -777,7 +777,7 @@ WHERE
 
 **＊実装例＊**
 
-```mysql
+```sql
 -- Main-query
 SELECT
     *
@@ -799,7 +799,7 @@ WHERE
 
 #### ・各データベースの容量
 
-```mysql
+```sql
 SELECT
     table_schema,
     sum(data_length) / 1024 / 1024 AS mb
@@ -813,7 +813,7 @@ ORDER BY
 
 #### ・カラム検索
 
-```mysql
+```sql
 SELECT
     table_name,
     column_name
@@ -836,7 +836,7 @@ WHERE
 
 #### ・```FETCH```のメソッド名に関する注意点
 
-```FETCH()```系のメソッドは，ベンダーによって名前が異なっていることがあるため，同じ名前でも同じ分だけレコードを取得するとは限らない．
+注意点として，```FETCH()```系のメソッドは，ベンダーによって名前が異なっていることがある．そのため，同じ名前でも同じ分だけレコードを取得するとは限らない．
 
 <br>
 
@@ -1011,7 +1011,7 @@ class ItemQuery
 
 ### ```UPDATE```
 
-```mysql
+```sql
 
 ```
 
@@ -1019,7 +1019,7 @@ class ItemQuery
 
 ### ```DELETE```
 
-```mysql
+```sql
 
 ```
 

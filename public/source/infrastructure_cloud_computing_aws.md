@@ -20,7 +20,7 @@
 
 ローカルに置かれている秘密鍵が，該当するEC2に置かれている公開鍵とペアなのかどうか，フィンガープリント値を照合して確認する方法
 
-```bash
+```sh
 $ openssl pkcs8 -in <秘密鍵>.pem -inform PEM -outform DER -topk8 -nocrypt | openssl sha1 -c
 ```
 
@@ -676,7 +676,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 LaravelのSeederコマンドやロールバックコマンドをローカルから実行する．
 
-```bash
+```sh
 #!/usr/bin/env bash
 
 set -x
@@ -866,11 +866,11 @@ FargateにパブリックIPアドレスを持たせたい場合，Elastic IPア�
 
 DNS経由で，EFSマウントヘルパーを使用した場合を示す．
 
-```bash
+```sh
 $ mount -t <ファイルシステムタイプ> -o tls <ファイルシステムID>:/ <マウントポイント>
 ```
 
-```bash
+```sh
 # Amazon EFSで，マウントポイントを登録
 $ mount -t efs -o tls fs-xxxxx:/ /var/www/app
 
@@ -940,7 +940,7 @@ fs-xxx.efs.ap-northeast-1.amazonaws.com:/ xxx       xxx  xxx       1%   /var/www
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # 指定したバケット内のファイル名を表示
 $ aws s3 ls s3://<バケット名>
 ```
@@ -1209,24 +1209,24 @@ xxxxx-cluster.cluster-ro-abcde12345.ap-northeast-1.rds.amazonaws.com
 
 #### ・コマンド
 
-```bash
+```sh
 # Redis接続コマンド
 $ /usr/local/sbin/redis-stable/src/redis-cli -c -h <Redisのホスト名> -p 6379
 ```
 
-```bash
+```sh
 # Redis接続中の状態
 # 全てのキーを表示
 redis xxxxx:6379> keys *
 ```
 
-```bash
+```sh
 # Redis接続中の状態
 # キーを指定して，対応する値を表示
 redis xxxxx:6379> type <キー名>
 ```
 
-```bash
+```sh
 # Redis接続中の状態
 # Redisが受け取ったコマンドをフォアグラウンドで表示
 redis xxxxx:6379> monitor
@@ -1249,7 +1249,7 @@ EC2インスタンスの冗長化時，これらの間で共通のセッショ�
 SELECT * FROM users;
 ```
 
-```bash
+```sh
 # ElastiCacheには，SQLの実行結果がまだ保存されていない
 *** no cache ***
 {"id"=>"1", "name"=>"alice"}
@@ -1272,7 +1272,7 @@ SELECT * FROM users;
 ```
 
 
-```bash
+```sh
 # ElastiCacheには，SQLの実行結果が既に保存されている
 *** cache hit ***
 {"id"=>"1", "name"=>"alice"}
@@ -1499,7 +1499,7 @@ DNSサーバによる名前解決は，ドメインを購入したドメイン�
 
 CloudFrontには，エッジロケーションの数だけエッジサーバがあり，各サーバにIPアドレスが割り当てられている．以下のコマンドで，全てのエッジサーバのIPアドレスを確認できる．
 
-```bash
+```sh
 $ curl https://ip-ranges.amazonaws.com/ip-ranges.json |
 jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
 ```
@@ -1512,7 +1512,7 @@ jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
 
 CloudFrontには，エッジロケーションがあり，各ロケーションにサーバがある．以下のコマンドで，エッジロケーションにある使用中サーバのIPアドレスを確認できる．
 
-```bash
+```sh
 $ nslookup <割り当てられた文字列>.cloudfront.net
 ```
 
@@ -2082,7 +2082,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # CloudWatchのアラームの状態を変更する．
 aws cloudwatch set-alarm-state --alarm-name "Alarm名" --state-value ALARM --state-reason "アラーム文言"
 ```
@@ -2109,7 +2109,7 @@ CloudWatchエージェントは，```/opt/aws/amazon-cloudwatch-agent/bin/config
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # EC2内にある設定ファイルを，CloudWatchエージェントに読み込ませる（再起動を含む）
 $ /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 
@@ -2117,7 +2117,7 @@ $ /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-conf
 $ /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
 ```
 
-```bash
+```sh
 # 設定ファイルが読み込まれたかを確認
 
 ### CloudWatchエージェントのプロセスのログファイル
@@ -2279,7 +2279,7 @@ log_group_name   = /var/www/project/app/storage/logs/laravel_log.production
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # CloudWatchエージェントの再起動
 # 注意: restartだとCloudWatchに反映されない時がある．
 $ service awslogs restart
@@ -2904,7 +2904,7 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 
 #### ・AWS-CLI
 
-```bash
+```sh
 # ユーザ名を変更する．
 $ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
 ```
@@ -2913,7 +2913,7 @@ $ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新�
 
 AWS-CLIでクラウドインフラを操作するためには，機密情報ファイルに定義されたプロファイルが必要である．
 
-```bash
+```sh
 $ aws configure set aws_access_key_id "XXXXX"
 $ aws configure set aws_secret_access_key "XXXXX"
 $ aws configure set aws_default_region "ap-northeast-1"
@@ -3008,7 +3008,7 @@ AWSリソースに一時的にアクセスできる認証情報（アクセス�
 
 信頼されたエンティティ（ユーザ）から，STS（```https://sts.amazonaws.com```）に対して，ロールのアタッチをリクエストする．
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -3083,7 +3083,7 @@ jqを使用して，JSONデータからアカウント情報を抽出する．
 jq：https://stedolan.github.io/jq/
 
 
-```bash
+```sh
 #!/bin/bash
 
 cat << EOF > assumed_user.sh
@@ -3116,7 +3116,7 @@ echo aws_session_token = $(echo "$aws_sts_credentials" | jq -r '.SessionToken') 
 
 ロールを引き受けた新しいアカウントを使用して，AWSリソースに接続できるかを確認する．
 
-```bash
+```sh
 #!/bin/bash
 
 aws s3 ls --profile <プロファイル名>

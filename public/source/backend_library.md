@@ -8,7 +8,7 @@
 
 composer.json にパッケージ名を書き込む．インストールは行わない．
 
-```bash
+```sh
 $ /usr/local/bin/composer require <パッケージ名>:^x.x
 ```
 
@@ -16,7 +16,7 @@ $ /usr/local/bin/composer require <パッケージ名>:^x.x
 
 composer.json に書き込まれているパッケージを全てインストールする．
 
-```bash
+```sh
 $ /usr/local/bin/composer install 
 ```
 
@@ -24,7 +24,7 @@ $ /usr/local/bin/composer install
 
 requireタグ内の特定のライブラリ（コンポーネント）をインストール．
 
-```bash
+```sh
 $ /usr/local/bin/composer install <パッケージ名>
 ```
 
@@ -32,7 +32,7 @@ $ /usr/local/bin/composer install <パッケージ名>
 
 Composerの配布サイトからインストールする．```prefer-source```オプションを使用するよりも高速でインストールできる．デフォルトでdistを使用するため，実際は宣言しなくても問題ない．
 
-```bash
+```sh
 $ /usr/local/bin/composer install --prefer-dist
 ```
 
@@ -40,7 +40,7 @@ $ /usr/local/bin/composer install --prefer-dist
 
 GitHubのComposerリポジトリからインストールする．Composerの開発者用である．
 
-```bash
+```sh
 $ /usr/local/bin/composer install --prefer-source
 ```
 
@@ -48,7 +48,7 @@ $ /usr/local/bin/composer install --prefer-source
 
 phpのメモリ上限を無しにしてcomposer updateを行う．phpバイナリファイルを使用する．
 
-```bash
+```sh
 $ php -d memory_limit=-1 /usr/local/bin/composer update
 ```
 
@@ -56,7 +56,7 @@ $ php -d memory_limit=-1 /usr/local/bin/composer update
 
 プロセスを表示しながら，インストールする．
 
-```bash
+```sh
 $ /usr/local/bin/composer update -vvv
 ```
 
@@ -64,7 +64,7 @@ $ /usr/local/bin/composer update -vvv
 
 require-devタグ内のライブラリは除いてインストール
 
-```bash
+```sh
 $ /usr/local/bin/composer install --no-dev
 ```
 
@@ -80,7 +80,7 @@ $ /usr/local/bin/composer update
 
 インストール時に生成されたキャッシュを削除する．
 
-```bash
+```sh
 $ /usr/local/bin/composer clear-cache
 ```
 
@@ -145,7 +145,7 @@ $ /usr/local/bin/composer clear-cache
 
 その後，コマンドでこの登録を反映する．
 
-```bash
+```sh
 $ /usr/local/bin/composer dump-autoload
 ```
 
@@ -192,7 +192,7 @@ $queryBuilder = $this->createQueryBuilder();
 
 #### 2. CREATE処理
 
-```QueryBuilder```インスタンスにおける```insert```メソッドに，値を設定する．
+QueryBuilderクラスにおける```insert```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -204,7 +204,7 @@ $queryBuilder
 
 #### 3. READ処理
 
-```QueryBuilder```インスタンスにおける```select```メソッドに，値を設定する．
+QueryBuilderクラスにおける```select```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -217,7 +217,7 @@ $queryBuilder
 
 #### 4. UPDATE処理
 
-```QueryBuilder```インスタンスにおける```update```メソッドに，値を設定する．
+QueryBuilderクラスにおける```update```メソッドに，値を設定する．
 
 **＊実装例＊**
 
@@ -229,7 +229,7 @@ $queryBuilder
 
 #### 5. DELETE処理
 
-```QueryBuilder```インスタンスにおける```delete```メソッドに，値を設定する．
+QueryBuilderクラスにおける```delete```メソッドに，値を設定する．
 
 **＊実装例＊**
 

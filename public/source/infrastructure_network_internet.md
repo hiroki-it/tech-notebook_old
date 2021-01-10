@@ -543,7 +543,7 @@ GET変数（```$_GET```），POST変数（```$_POST```），COOKIE（```$_COOKIE
 
 #### ・Symfonyフレームワークによる各変数の取得
 
-```PHP
+```php
 <?php
 // $_GET['hoge']
 $request->query->get('hoge');
