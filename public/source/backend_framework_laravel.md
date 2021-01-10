@@ -146,7 +146,7 @@ $result = Example::method();
 
 #### ・クラスの自動生成
 
-```bash
+```sh
 $ php artisan make:provider <クラス名>
 ```
 
@@ -811,7 +811,7 @@ return [
 
 #### ・マイグレーションファイルを作成
 
-```bash
+```sh
 $ php artisan make:migrate create_<テーブル名>_table
 ```
 
@@ -819,13 +819,13 @@ $ php artisan make:migrate create_<テーブル名>_table
 
 マイグレーションファイルを元にテーブルを作成する．
 
-```bash
+```sh
 $ php artisan migrate
 ```
 
 #### ・マイグレーションの結果を確認
 
-```bash
+```sh
 $ php artisan migrate:status
 ```
 
@@ -833,13 +833,13 @@ $ php artisan migrate:status
 
 指定した履歴数だけ，ロールバックを行う
 
-```bash
+```sh
 $ php artisan migrate:rollback --step=<ロールバック数>
 ```
 
 実際の使用場面として，マイグレーションに失敗した場合に，一つ前の状態にロールバックしてマイグレーションファイルを修正した後，再びマイグレーションを行う．
 
-```bash
+```sh
 # マイグレーションに失敗したので，一つ前の状態にロールバック．
 $ php artisan migrate:rollback --step=1
 
@@ -851,7 +851,7 @@ $ php artisan migrate
 
 初期の状態まで，全てロールバックを行う．
 
-```bash
+```sh
 $ php artisan migrate:reset
 ```
 
@@ -859,14 +859,14 @@ $ php artisan migrate:reset
 
 まず```migrate:reset```を行い，次いで```migrate```を実行する．
 
-```bash
+```sh
 $ php artisan migrate:refresh
 ```
 #### ・テーブルを削除してから再作成
 
 全てのテーブルを削除と```migrate```を実行する．マイグレーションファイルの構文チェックを行わずに，強制的に実行される．
 
-```bash
+```sh
 $ php artisan migrate:fresh
 ```
 
@@ -1034,13 +1034,13 @@ Schema::create('examples', function (Blueprint $table) {
 
 #### ・Seederの生成
 
-```bash
+```sh
 $ php artisan make:seeder <Seeder名>
 ```
 
 #### ・Seederの実行
 
-```bash
+```sh
 # 事前に，Composerのオートローラを再生成
 $ composer dump-autoload
 
@@ -1202,7 +1202,7 @@ class DatabaseSeeder extends Seeder
 
 #### ・Factoryの生成
 
-```bash
+```sh
 $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 ```
 <br>
@@ -1370,7 +1370,7 @@ class DatabaseSeeder extends Seeder
 
 #### ・クラスの自動生成
 
-```bash
+```sh
 $ php artisan make:model <Model名>
 ```
 
@@ -1769,7 +1769,7 @@ $exmapleName = $example->name;
 
 ### artisanコマンドによる操作
 
-```bash
+```sh
 
 ```
 
@@ -2096,7 +2096,7 @@ class ExampleRepository extends Repository
 
 ファイルを```/storage/app```ディレクトリに保存する．このファイルは非公開であり，リクエストによってアクセスできない．事前に，シンボリックリンクを作成する必要がある．
 
-```bash
+```sh
 $ php artisan storage:link
 ```
 
@@ -2283,14 +2283,14 @@ Storage::put('file.txt', 'file.txt');
 
 #### ・ルーティング一覧
 
-```bash
+```sh
 # ルーティングを一覧で表示
 $ php artisan route:list
 ```
 
 #### ・キャッシュ削除
 
-```bash
+```sh
 # ルーティングのキャッシュを削除
 $ php artisan route:clear
 
@@ -2515,7 +2515,7 @@ Route::get('/healthcheck', function () {
 
 #### ・クラスの自動生成
 
-```bash
+```sh
 # Middlewareを自動生成
 $ php artisan make:middleware <Middleware名>
 ```
@@ -2588,7 +2588,7 @@ class ExampleAfterMiddleware
 
 #### ・クラスの自動生成
 
-```bash
+```sh
 # フォームクラスを自動作成
 $ php artisan make:request <Request名>
 ```
@@ -2802,7 +2802,7 @@ public function authorize()
 
 #### ・クラスの自動生成
 
-```bash
+```sh
 # コントローラクラスを自動作成
 $ php artisan make:controller <Controller名>
 ```
@@ -2876,7 +2876,7 @@ class UserController extends Controller
 
 #### ・Digest認証の環境構築
 
-```bash
+```sh
 # ここにコマンド例
 ```
 
@@ -2884,7 +2884,7 @@ class UserController extends Controller
 
 コマンド実行により，```/storage/oauth```キー，Personal Access Client，Password Grant Clientを生成する．
 
-```bash
+```sh
 $ php artisan passport:install
 
 Personal access client created successfully.
@@ -2897,7 +2897,7 @@ Client secret: xxxxxxxxxxxx
 
 ただし，生成コマンドを個別に実行してもよい．
 
-```bash
+```sh
 # 暗号キーを生成
 $ php artisan passport:keys
 
@@ -2953,7 +2953,7 @@ class LoginController extends Controller
 
 1. 暗号キーとユーザを作成する．
 
-```bash
+```sh
 $ php artisan passport:keys
 
 $ php artisan passport:client --personal
@@ -3111,7 +3111,7 @@ class AuthServiceProvider extends ServiceProvider
 
 7. バックエンド側では，暗号キーとユーザを作成する．
 
-```bash
+```sh
 $ php artisan passport:keys
 
 $ php artisan passport:client --password
@@ -3175,7 +3175,7 @@ return (string)$response->getBody();
 
 #### ・キャッシュの削除
 
-```bash
+```sh
 # ビューのキャッシュを削除
 $ php artisan view:clear
 

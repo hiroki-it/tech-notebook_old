@@ -243,7 +243,7 @@ console.log(x); // fuga
 
 #### ・```var```
 
-```console.log()```を実行した場合，```x```を宣言していないため，「x is not defined 」エラーになりそうだが，```x```に値が代入されていないことを示す「undefined」となる．
+確認のため```console.log```メソッドを実行した場合，```x```を宣言していないため，「x is not defined 」エラーになりそうだが，```x```に値が代入されていないことを示す「undefined」となる．
 
 ```javascript
 console.log(x); // undefined
@@ -263,7 +263,7 @@ var x = 'hoge'; // 宣言と代入が行われる
 
 #### ・```let```,```const```
 
-```let```，```const```の場合は，巻き上げは起こらない．
+宣言に```let```，```const```を使用した場合，巻き上げは起こらない．
 
 ```javascript
 console.log(x); // x is not defined

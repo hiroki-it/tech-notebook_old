@@ -6,14 +6,14 @@
 
 #### ・起動／停止
 
-```bash
+```sh
 $ systemctl start nginx
 $ systemctl stop nginx
 ```
 
 #### ・設定ファイルのバリデーション
 
-```bash
+```sh
 $ service nginx configtest
 
 # もしくはこちら
@@ -22,7 +22,7 @@ $ nginx -t
 
 #### ・設定ファイルの反映と安全な再起動
 
-```bash
+```sh
 $ kill -s HUP NINGXPID
 ```
 
@@ -40,7 +40,7 @@ $ kill -s HUP NINGXPID
 
 **＊実装例＊**
 
- ```bash
+ ```sh
 # 設定ファイルのバリデーション
 $ php-fpm -t
  ```
