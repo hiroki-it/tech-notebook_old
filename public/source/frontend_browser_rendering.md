@@ -193,7 +193,7 @@ JavaScriptでは，画面上で何らかのイベントが発火し，これに�
 
 
 
-### HTML形式ファイル上でイベントハンドラ関数をコールする記述方法
+### HTML形式におけるイベントハンドラ関数のコール
 
 #### ・```onload```
 
@@ -215,7 +215,7 @@ function methodA(){
 
 <br>
 
-### JSファイル上でイベントハンドラ関数をコールする記述方法
+### JS形式におけるイベントハンドラ関数のコール
 
 
 #### ・```document.getElementById()```
@@ -418,7 +418,7 @@ JavaScriptのインタプリタのこと．JavaScriptエンジンは，レンダ
 
 ![JavascriptEngine](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/JavascriptEngine.png)
 
-#### ・JavaScriptエンジンによる機械語翻訳
+#### ・機械語翻訳
 
 JavaScriptエンジンは，ソースコードを，字句解析，構造解析，意味解釈，命令の実行，をコード一行ずつに対し，繰り返し行う．詳しくは，ソフトウェアのノートを参照せよ．
 
