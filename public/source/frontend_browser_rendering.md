@@ -45,7 +45,7 @@ Webページをテキストによって構成するための言語をマーク�
 
 **＊実装例＊**
 
-```dtd
+```xml
 <!DOCTYPE Employee[
     <!ELEMENT Name (First, Last)>
     <!ELEMENT First (#PCDATA)>
@@ -280,6 +280,8 @@ JavaScriptやHTMLの更新にブラウザが追いついていない場合に，
 3. JS
 4. 画像
 
+<br>
+
 ### Pre-Loading
 
 #### ・Pre-Loadingとは
@@ -409,6 +411,8 @@ img { float: right }
 ### Scripting処理とは
 
 JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳され，実行される．この処理は，初回アクセス時だけでなく，イベントが発火した時にも実行される．
+
+<br>
 
 ### JavaScriptエンジン
 
