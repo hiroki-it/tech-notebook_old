@@ -373,15 +373,13 @@ https://github.com/postmanlabs/postman-app-support/issues/131
 
 **＊具体例＊**
 
-GoogleChromeにて，```https://www.amazon.co.jp```に送信した場合
-
 ```http
 HTTP/1.1 200
 # レスポンスで送信するMIMEタイプ
 Content-Type: text/html;charset=UTF-8
 Transfer-Encoding: chunked
 Connection: close
-# Webサーバ（nginx，apacheなど）
+# Webサーバ（nginx，apache，AmazonS3など）
 Server: nginx
 Date: Sat, 26 Sep 2020 04:25:08 GMT
 x-amz-rid:	xxxxx
