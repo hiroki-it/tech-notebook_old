@@ -6,7 +6,7 @@
 
 #### ・設定ファイルのバリデーション
 
-```bash
+```sh
 # systemctlコマンドは無い
 $ service httpd configtest
 $ apachectl configtest
@@ -15,7 +15,7 @@ $ apachectl -t
 
 #### ・強制的な起動／停止／再起動
 
-```bash
+```sh
 $ systemctl start httpd
 
 $ systemctl stop httpd
@@ -25,7 +25,7 @@ $ systemctl restart httpd
 
 #### ・安全な再起動
 
-```bash
+```sh
 $ apachectl -k graceful
 ```
 
@@ -244,11 +244,13 @@ Directoryディレクティブによってリクエストされたディレク�
 </Directory>
 ```
 
+<br>
+
 ### AllowOverride
 
 #### ・AllowOverrideとは
 
-```htaccess```ファイルで有効化するディレクティブを定義する．
+別に用意した```.htaccess```ファイルにて，有効化するディレクティブを定義する．
 
 **＊実装例＊**
 
@@ -261,7 +263,7 @@ Directoryディレクティブによってリクエストされたディレク�
 
 #### ・All
 
-```htaccess```ファイルで実装可能なディレクティブを全て有効化する．
+別に用意した```.htaccess```ファイルにて，実装可能なディレクティブを全て有効化する．
 
 **＊実装例＊**
 
@@ -271,7 +273,7 @@ AllowOverride All
 
 #### ・None
 
-全て無効化する．
+別に用意した```.htaccess```ファイルにて，実装可能なディレクティブを全て無効化する．
 
 **＊実装例＊**
 
@@ -281,7 +283,7 @@ AllowOverride None
 
 #### ・Indexes
 
-htaccessファイルでDirectoryIndexを有効化する．
+別に用意した```.htaccess```ファイルにて，DirectoryIndexディレクティブを有効化する．
 
 **＊実装例＊**
 

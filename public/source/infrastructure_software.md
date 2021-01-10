@@ -154,9 +154,9 @@ MS-DOSを源流として派生したOS．今では，全ての派生がWindows 1
 
 #### ・OSとバージョンの確認コマンド
 
-```/etc/issue```ファイルに，OSとバージョンが記載されている．
+OSとバージョンが```/etc/issue```ファイルに記載されている．
 
-```bash
+```sh
 $ cat /etc/issue
 Debian GNU/Linux 10 \n \l
 ```

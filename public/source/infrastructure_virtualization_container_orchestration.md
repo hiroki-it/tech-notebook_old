@@ -212,7 +212,7 @@ networks:
 
 **＊コマンド例＊**
 
-```bash
+```sh
 $ docker network ls
 
 NETWORK ID       NAME                      DRIVER       SCOPE
@@ -230,7 +230,7 @@ xxxxxxxxxxxx     <プロジェクト名>_default     bridge      local
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動
 $ docker-compose up -d
 ```
@@ -241,7 +241,7 @@ $ docker-compose up -d
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # イメージのビルド，コンテナレイヤー生成，コンテナ構築，コンテナ起動 
 $ docker-compose run -d -it <イメージ名>
 ```
@@ -252,7 +252,7 @@ $ docker-compose run -d -it <イメージ名>
 
 **＊コマンド例＊**
 
-```bash
+```sh
 $ docker-compose stop
 ```
 
@@ -262,7 +262,7 @@ $ docker-compose stop
 
 **＊コマンド例＊**
 
-```bash
+```sh
 # コンテナ名でなくサービス名であることに注意
 $ docker-compose logs <サービス名>
 
