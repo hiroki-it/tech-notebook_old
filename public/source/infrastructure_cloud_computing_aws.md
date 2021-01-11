@@ -72,7 +72,7 @@ Lambdaを実行するためには，デプロイされた関数を使用する�
 
 #### ・テストとデバッグ
 
-Lambdaで関数を作成すると，CloudWatchLogsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
+Lambdaで関数を作成すると，CloudWatch Logsのロググループに，「```/aws/lambda/<関数名>```」というグループが自動的に作成される．Lambdaの関数内で発生したエラーや```console.log```メソッドのログはここに出力されるため，都度確認すること．
 
 <br>
 
@@ -97,56 +97,6 @@ exports.MyHandler = (event, context, callback) => {
 | eventオブジェクト    | HTTPリクエストに関するデータが格納されている．               | Lambdaにリクエストを送信するAWSリソースごとに，オブジェクトの構造が異なる．構造は以下の通り．<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/lambda-services.html |
 | contextオブジェクト  | Lambdaに関するデータ（名前，バージョンなど）を取得できるメソッドとプロパティが格納されている． | オブジェクトの構造は以下の通り<br>参考：https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/nodejs-context.html |
 | callbackオブジェクト |                                                              |                                                              |
-
-<br>
-
-### Lambdaプロキシ統合
-
-#### ・Lambdaプロキシ統合とは
-
-LambdaとAPI Gatewayの間で，リクエストまたはレスポンスのJSONを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
-
-#### ・リクエスト時のマッピング
-
-API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONにマッピングされる．
-
-```json
-{
-  "resource": "Resource path",
-  "path": "Path parameter",
-  "httpMethod": "Incoming request's method name",
-  "headers": {String containing incoming request headers},
-  "multiValueHeaders": {List of strings containing incoming request headers},
-  "queryStringParameters": {query string parameters },
-  "multiValueQueryStringParameters": {List of query string parameters},
-  "pathParameters":  {path parameters},
-  "stageVariables": {Applicable stage variables},
-  "requestContext": {Request context, including authorizer-returned key-value pairs},
-  "body": "A JSON string of the request payload.",
-  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
-}
-
-```
-
-#### ・レスポンス時のマッピング
-
-API GAtewayは，Lambdaからのレスポンスを，以下のJSONにマッピングする．これ以外の構造のJSONを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
-
-```json
-{
-  "isBase64Encoded": true|false,
-  "statusCode": httpStatusCode,
-  "headers": { "headerName": "headerValue", ... },
-  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
-  "body": "Hello Lambda"
-}
-```
-
-API Gatewayは上記のJSONを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
-
-```h
-"Hello Lambda"
-```
 
 <br>
 
@@ -211,14 +161,14 @@ exports.handler = (event, context, callback) => {
 
 #### ・Lambda@Edgeとは
 
-CloudFrontに統合されたLambdaを，特別にLambda@Edgeという．CloudFrontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとする．エッジロケーションのCloudFrontに，Lambdaのレプリカが構築される．
+Cloud Frontに統合されたLambdaを，特別にLambda@Edgeという．Cloud Frontのビューワーリクエスト，オリジンリクエスト，オリジンレスポンス，ビューワーレスポンス，をトリガーとする．エッジロケーションのCloud Frontに，Lambdaのレプリカが構築される．
 
 | トリガーの種類       | 発火のタイミング                                             |
 | -------------------- | ------------------------------------------------------------ |
-| ビューワーリクエスト | CloudFrontが，ビューワーからリクエストを受信した後（キャッシュを確認する前）． |
-| オリジンリクエスト   | CloudFrontが，リクエストをオリジンサーバーに転送する前（キャッシュを確認した後）． |
-| オリジンレスポンス   | CloudFrontが，オリジンからレスポンスを受信した後（キャッシュを確認する前）． |
-| ビューワーレスポンス | CloudFrontが，ビューワーにレスポンスを転送する前（キャッシュを確認した後）． |
+| ビューワーリクエスト | Cloud Frontが，ビューワーからリクエストを受信した後（キャッシュを確認する前）． |
+| オリジンリクエスト   | Cloud Frontが，リクエストをオリジンサーバーに転送する前（キャッシュを確認した後）． |
+| オリジンレスポンス   | Cloud Frontが，オリジンからレスポンスを受信した後（キャッシュを確認する前）． |
+| ビューワーレスポンス | Cloud Frontが，ビューワーにレスポンスを転送する前（キャッシュを確認した後）． |
 
 #### ・最低限必要なポリシー
 
@@ -288,7 +238,7 @@ exports.handler = (event, context, callback) => {
     request.origin.s3.domainName = s3Backet
     request.headers.host[0].value = s3Backet
     // ログストリームに変数を出力する．
-    console.log(JSON.stringify({request}, null, 2));
+    console.log(JSONデータ.stringify({request}, null, 2));
 
     return callback(null, request);
 };
@@ -324,7 +274,7 @@ const getBacketBasedOnDeviceType = (headers) => {
 };
 ```
 
-オリジンリクエストは，以下のeventオブジェクトのJSONにマッピングされている．なお，一部のキーは省略している．
+オリジンリクエストは，以下のeventオブジェクトのJSONデータにマッピングされている．なお，一部のキーは省略している．
 
 ```json
 {
@@ -470,12 +420,12 @@ EC2に割り振られる可能性のあるIPアドレスを許可するために
 
 #### ・ALBの例
 
-CloudFrontと連携する場合，CloudFrontに割り振られる可能性のあるIPアドレスを許可するために，全てのIPアドレスを許可する．その代わりに，CloudFrontにWAFを紐づけ，ALBの前でIPアドレスを制限するようにする．CloudFrontとは連携しない場合，ALBのSecurity GroupでIPアドレスを制限するようにする．
+Cloud Frontと連携する場合，Cloud Frontに割り振られる可能性のあるIPアドレスを許可するために，全てのIPアドレスを許可する．その代わりに，Cloud FrontにWAFを紐づけ，ALBの前でIPアドレスを制限するようにする．Cloud Frontとは連携しない場合，ALBのSecurity GroupでIPアドレスを制限するようにする．
 
-| タイプ | プロトコル | ポート    | ソース          | 説明                         |      |
-| ------ | ---------- | --------- | --------------- | ---------------------------- | ---- |
-| HTTP   | TCP        | ```80```  | ```0.0.0.0/0``` | HTTP access from CloudFront  |      |
-| HTTPS  | TCP        | ```443``` | ```0.0.0.0/0``` | HTTPS access from CloudFront |      |
+| タイプ | プロトコル | ポート    | ソース          | 説明                          |      |
+| ------ | ---------- | --------- | --------------- | ----------------------------- | ---- |
+| HTTP   | TCP        | ```80```  | ```0.0.0.0/0``` | HTTP access from Cloud Front  |      |
+| HTTPS  | TCP        | ```443``` | ```0.0.0.0/0``` | HTTPS access from Cloud Front |      |
 
 <br>
 
@@ -575,7 +525,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 #### ・ローリングアップデート
 
 1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを作成．
+2. タスク定義の新しいリビジョンを構築．
 3. サービスを更新．
 4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
 
@@ -584,7 +534,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 ![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
 
 1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを作成．
+2. タスク定義の新しいリビジョンを構築．
 3. サービスを更新．
 4. CodeDeployによって，タスク定義を基に，現行の本番環境（Prodブルー）のタスクとは別に，テスト環境（Testグリーン）が構築される．ロードバランサーの接続先を本番環境（Prodブルー）のターゲットグルーップ（Primaryターゲットグループ）から，テスト環境（Testグリーン）のターゲットグループに切り替える．テスト環境（Testグリーン）で問題なければ，これを新しい本番環境としてリリースする．
 
@@ -600,7 +550,7 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 #### ・タスク定義とは
 
-各タスクをどのような設定値（```json```形式ファイル）に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．タスク定義を削除するには，全てのリビジョン番号のタスク定義を登録解除する必要がある．
+各タスクをどのような設定値に基づいて構築するかを設定できる．タスク定義は，バージョンを示す「リビジョンナンバー」で番号づけされる．タスク定義を削除するには，全てのリビジョン番号のタスク定義を登録解除する必要がある．
 
 #### ・タスクロール
 
@@ -919,7 +869,7 @@ fs-xxx.efs.ap-northeast-1.amazonaws.com:/ xxx       xxx  xxx       1%   /var/www
 | -------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
 | ブロックパブリックアクセス | パブリックネットワークとVPCからのアクセスの許否を設定する． | ・パブリックアクセスを有効にすると，パブリックネットワークから「```https://<バケット名>.s3.amazonaws.com```」というようにURLを指定して，S3にアクセスできるようになる．ただし非推奨．<br>・パブリックアクセスを全て無効にすると，パブリックネットワークとVPCの全アクセスを遮断できる．ただし，アクセスロールまたはバケットポリシーを用いて，特定のAWSリソースからのアクセスを許可できる． |
 | アクセスコントロールリスト |                                                             |                                                              |
-| バケットポリシー           | S3へのアクセスをポリシーで管理する．                        | ポリシーを付与できない，CloudFront，ALB，などが自身へのアクセスログを生成するために必要．EC2のアクセス権限は，EC2にS3アクセスロールを付与できるので不要． |
+| バケットポリシー           | S3へのアクセスをポリシーで管理する．                        | ポリシーを付与できない，Cloud Front，ALB，などが自身へのアクセスログを生成するために必要．EC2のアクセス権限は，EC2にS3アクセスロールを付与できるので不要． |
 | CORSの設定                 |                                                             |                                                              |
 
 #### ・レスポンスヘッダーの設定
@@ -936,7 +886,7 @@ fs-xxx.efs.ap-northeast-1.amazonaws.com:/ xxx       xxx  xxx       1%   /var/www
 | Content-Encoding                |                                                              |                                                |
 | x-amz-website-redirect-location | コンテンツのリダイレクト先を設定する．                       |                                                |
 
-#### ・AWS-CLI
+#### ・AWS CLI
 
 **＊コマンド例＊**
 
@@ -975,9 +925,9 @@ $ aws s3 ls s3://<バケット名>
 }
 ```
 
-#### ・CloudFrontのファイル読み出しを許可
+#### ・Cloud Frontのファイル読み出しを許可
 
-パブリックアクセスが無効化されたS3に対して，CloudFrontからのルーティングで静的ファイルを読み出したい場合，バケットポリシーを設定する必要がある．
+パブリックアクセスが無効化されたS3に対して，Cloud Frontからのルーティングで静的ファイルを読み出したい場合，バケットポリシーを設定する必要がある．
 
 **＊実装例＊**
 
@@ -999,9 +949,9 @@ $ aws s3 ls s3://<バケット名>
 }
 ```
 
-#### ・CloudFrontのアクセスログの保存を許可
+#### ・Cloud Frontのアクセスログの保存を許可
 
-2020-10-08時点の仕様では，パブリックアクセスが無効化されたS3に対して，CloudFrontへのアクセスログを保存することはできない．よって，危険ではあるが，パブリックアクセスを有効化する必要がある．
+2020-10-08時点の仕様では，パブリックアクセスが無効化されたS3に対して，Cloud Frontへのアクセスログを保存することはできない．よって，危険ではあるが，パブリックアクセスを有効化する必要がある．
 
 ```json
 // ポリシーは不要
@@ -1087,9 +1037,9 @@ $ aws s3 ls s3://<バケット名>
 
 ## 04. データベース｜RDS
 
-### Amazon RDS：Amazon Relational Database Service
+### RDS：Relational Database Service
 
-#### ・Amazon RDSとは
+#### ・RDSとは
 
 | 設定項目                               | 説明                                                         | 備考                                                         |
 | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -1175,6 +1125,10 @@ xxxxx-cluster.cluster-ro-abcde12345.ap-northeast-1.rds.amazonaws.com
 
 アプリケーションの代わりに，セッション，クエリCache，を管理する．RedisとMemcachedがある．
 
+<br>
+
+### Redis
+
 #### ・Redisとは
 
 ![Redis](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Redis.png)
@@ -1194,20 +1148,7 @@ xxxxx-cluster.cluster-ro-abcde12345.ap-northeast-1.rds.amazonaws.com
 | バックアップ                     | バックアップの有効化，保持期間，時間を設定する．             | バックアップを取るほどでもないため，無効化しておいて問題ない． |
 | メンテナンス                     | メンテナンスの時間を設定する．                               |                                                              |
 
-#### ・フェールオーバー
-
-ノードの障害を検知し，障害が発生したノードを新しいものに置き換えることができる．
-
-| 障害の発生したノード | 挙動                                                         |
-| -------------------- | ------------------------------------------------------------ |
-| プライマリノード     | リードレプリカの一つがプライマリノードに昇格し，障害が起きたプライマリノードと置き換えられる． |
-| リードレプリカノード | 障害が起きたリードレプリカノードが，別の新しいものに置き換えられる． |
-
-<br>
-
-### Redis
-
-#### ・コマンド
+#### ・Redisの操作
 
 ```sh
 # Redis接続コマンド
@@ -1231,6 +1172,15 @@ redis xxxxx:6379> type <キー名>
 # Redisが受け取ったコマンドをフォアグラウンドで表示
 redis xxxxx:6379> monitor
 ```
+
+#### ・フェールオーバー
+
+ノードの障害を検知し，障害が発生したノードを新しいものに置き換えることができる．
+
+| 障害の発生したノード | 挙動                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| プライマリノード     | リードレプリカの一つがプライマリノードに昇格し，障害が起きたプライマリノードと置き換えられる． |
+| リードレプリカノード | 障害が起きたリードレプリカノードが，別の新しいものに置き換えられる． |
 
 #### ・セッション管理機能
 
@@ -1301,8 +1251,8 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 | 設定項目                 | 説明                                                         | 備考                                                         |
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| AWSリソース              | エンドポイント，HTTPメソッド，転送先，などを設定する．       | 作成したAWSリソースのパスが，APIGatewayのエンドポイントになる． |
-| ステージ                 | APIGatewayをデプロイする環境を定義する．                     |                                                              |
+| AWSリソース              | エンドポイント，HTTPメソッド，転送先，などを設定する．       | 構築したAWSリソースのパスが，API Gatewayのエンドポイントになる． |
+| ステージ                 | API Gatewayをデプロイする環境を定義する．                    |                                                              |
 | オーソライザー           |                                                              |                                                              |
 | ゲートウェイのレスポンス |                                                              |                                                              |
 | モデル                   |                                                              |                                                              |
@@ -1313,7 +1263,7 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | 使用量プラン             |                                                              |                                                              |
 | APIキー                  | APIキーによる認可を設定する．                                |                                                              |
 | クライアント証明書       |                                                              |                                                              |
-| CloudWatchLogsの設定     | APIGatewayがCloudWatchLogsにアクセスできるよう，ロールを設定する． | 一つのAWS環境につき，一つのロールを設定すればよい．          |
+| CloudWatch Logsの設定    | API GatewayがCloudWatch Logsにアクセスできるよう，ロールを設定する． | 一つのAWS環境につき，一つのロールを設定すればよい．          |
 
 <br>
 
@@ -1324,7 +1274,7 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | 順番 | 処理               | 説明                                                         | 備考                                                         |
 | ---- | ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 1    | メソッドリクエスト | クライアントから送信されたデータのうち，実際に転送するデータのフィルタリングを行う． |                                                              |
-| 2    | 統合リクエスト     | 指定のリソースに転送するデータを設定する．                   |                                                              |
+| 2    | 統合リクエスト     | メソッドリクエストから転送された各データを，マッピングテンプレートのJSONに紐づける． |                                                              |
 | 3    | 統合レスポンス     |                                                              | 統合リクエストでプロキシ統合を使用する場合，統合レスポンスを使用できなくなる． |
 | 4    | メソッドレスポンス | レスポンスが成功した場合，クライアントに送信するステータスコードを設定する． |                                                              |
 
@@ -1342,38 +1292,137 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 #### ・統合リクエストの詳細項目
 
-| 設定項目                     | 説明                                                         | 備考                                                   |
-| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
-| 統合タイプ                   | リクエストの転送先を設定する．                               |                                                        |
-| VPCリンク                    |                                                              |                                                        |
-| プロキシ統合                 | HTTPリクエストのデータをAWS側が用意したJSONにマッピングするかどうかを設定する． | Lambdaプロキシ統合については，Lambdaの説明を参照せよ． |
-| エンドポイントURL            | エンドポイントで受信したリクエストのルーティング先URLを設定する． |                                                        |
-| デフォルトタイムアウトの使用 |                                                              |                                                        |
-| URLパスパラメータ            |                                                              |                                                        |
-| URLクエリ文字列パラメータ    |                                                              |                                                        |
-| HTTPヘッダー                 |                                                              |                                                        |
+| 設定項目                  | 説明                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| 統合タイプ                | リクエストの転送先を設定する．                               |
+| URLパスパラメータ         | メソッドリクエストから転送された各データを，パスパラメータに紐づける． |
+| URLクエリ文字列パラメータ | メソッドリクエストから転送された各データを，クエリ文字列パラメータに紐づける． |
+| HTTPヘッダー              |                                                              |
 
 #### ・テスト
 
-| 設定項目       | 設定例                 | 備考                                               |
-| -------------- | ---------------------- | -------------------------------------------------- |
-| クエリ文字     |                        |                                                    |
-| ヘッダー       | ```X-API-Token:test``` | 波括弧，スペース，クオーテーションは不要．         |
-| リクエスト本文 | {test:"test"}          | 改行タグやスペースが入り込まないよう，整形しない． |
+| 設定項目       | 設定例              | 備考                                               |
+| -------------- | ------------------- | -------------------------------------------------- |
+| クエリ文字     |                     |                                                    |
+| ヘッダー       | X-API-Token: test   | 波括弧，スペース，クオーテーションは不要．         |
+| リクエスト本文 | ```{test:"test"}``` | 改行タグやスペースが入り込まないよう，整形しない． |
+
+<br>
+
+### プライベート統合
+
+#### ・プライベート統合とは
+
+API GatewayとVPCリンクの間で，リクエストまたはレスポンスのJSONデータを自動的にマッピングする機能のこと．
+
+| 設定項目                     | 説明                                                  | 備考                                                 |
+| ---------------------------- | ----------------------------------------------------- | ---------------------------------------------------- |
+| 統合タイプ                   | VPCリンクを選択する．                                 |                                                      |
+| プロキシ統合の使用           | VPCリンクとのプロキシ統合を有効化する．               | 有効化しておかないと，パスパラメータを転送できない． |
+| メソッド                     | HTTPメソッドを設定する．                              |                                                      |
+| VPCリンク                    | VPCリンク名を設定する．                               |                                                      |
+| エンドポイントURL            | NLBのDNS名をドメイン名として，転送先のURLを設定する． |                                                      |
+| デフォルトタイムアウトの使用 |                                                       |                                                      |
+
+#### ・メソッドリクエストと統合リクエストのマッピング
+
+<br>
+
+### Lambdaプロキシ統合
+
+#### ・Lambdaプロキシ統合とは
+
+API GatewayとLambdaの間で，リクエストまたはレスポンスのJSONデータを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
+
+| 設定項目                     | 説明                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| 統合タイプ                   | Lambda関数を選択する．                                       |
+| Lambdaプロキシ統合の使用     | Lambdaとのプロキシ統合を有効化する．                         |
+| Lambdaリージョン             | 実行したLambda関数のリージョンを設定する．                   |
+| Lambda関数                   | 実行したLambda関数の名前を設定する．                         |
+| 実行ロール                   | 実行したいLambda関数へのアクセス権限が付与されたロールのARNを設定する． |
+| 認証情報のキャッシュ         |                                                              |
+| デフォルトタイムアウトの使用 |                                                              |
+
+#### ・リクエスト時のマッピング
+
+API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONデータにマッピングされる．
+
+```json
+{
+  "resource": "Resource path",
+  "path": "Path parameter",
+  "httpMethod": "Incoming request's method name",
+  "headers": {String containing incoming request headers},
+  "multiValueHeaders": {List of strings containing incoming request headers},
+  "queryStringParameters": {query string parameters },
+  "multiValueQueryStringParameters": {List of query string parameters},
+  "pathParameters":  {path parameters},
+  "stageVariables": {Applicable stage variables},
+  "requestContext": {Request context, including authorizer-returned key-value pairs},
+  "body": "A JSON string of the request payload.",
+  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
+}
+
+```
+
+#### ・レスポンス時のマッピング
+
+API Gatewayは，Lambdaからのレスポンスを，以下のJSONデータにマッピングする．これ以外の構造のJSONデータを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
+
+```json
+{
+  "isBase64Encoded": true|false,
+  "statusCode": httpStatusCode,
+  "headers": { "headerName": "headerValue", ... },
+  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
+  "body": "Hello Lambda"
+}
+```
+
+API Gatewayは上記のJSONデータを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
+
+```
+"Hello Lambda"
+```
 
 <br>
 
 ### ステージ
 
-#### ・ステージの詳細設定
+#### ・設定
 
-| 設定項目       | 説明 | 備考 |
-| -------------- | ---- | ---- |
-| その他の設定   |      |      |
-| ログ／トレース |      |      |
-| ステージ変数   |      |      |
-| SDKの生成      |      |      |
-| Canary         |      |      |
+| 設定項目                           | 説明                      |
+| ---------------------------------- | ------------------------- |
+| キャッシュ設定                     |                           |
+| デフォルトのメソッドスロットリング |                           |
+| WAF                                |                           |
+| クライアント証明書                 | 関連付けるWAFを設定する． |
+
+#### ・ログ／トレース
+
+| 設定項目                   | 説明                                                        |
+| -------------------------- | ----------------------------------------------------------- |
+| CloudWatch設定             | CloudWatch Logsにアクセスログを送信するかどうかを設定する． |
+| カスタムアクセスのログ記録 |                                                             |
+| X-Rayトレース              |                                                             |
+
+#### ・ステージ変数
+
+デプロイされるステージ固有の環境変数を設定できる．Lambda関数名，エンドポイントURL，パラメータマッピング，マッピングテンプレートで値を出力できる．
+
+参照：https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html
+
+#### ・SDKの生成
+
+#### ・Canary
+
+| 設定項目                                   | 説明 |
+| ------------------------------------------ | ---- |
+| ステージのリクエストディストリビューション |      |
+| Canaryのデプロイ                           |      |
+| Canaryステージ変数                         |      |
+| キャッシュ                                 |      |
 
 <br>
 
@@ -1388,7 +1437,7 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | 設定項目       | 説明                                                         |
 | -------------- | ------------------------------------------------------------ |
 | ホストゾーン   | ドメイン名を設定する．                                       |
-| レコードセット | 名前解決時のルーティング方法を設定する．<br>※ サブドメイン名を扱うことも可能． |
+| レコードセット | 名前解決時のルーティング方法を設定する．サブドメイン名を扱うことも可能． |
 
 <br>
 
@@ -1409,12 +1458,12 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 リソースのDNS名は，以下の様に決定される．
 
-| 種別             | リソース   | 例                                                           |
-| ---------------- | ---------- | ------------------------------------------------------------ |
-| DNS名            | ALB        | ```<ALB名>-<ランダムな文字列>.<リージョン>.elb.amazonaws.com``` |
-|                  | EC2        | ```ec2-<パブリックIPをハイフン区切りにしたもの>.<リージョン>.compute.amazonaws.com``` |
-| ドメイン名       | CloudFront | ```<ランダムな文字列>.cloudfront.net```                      |
-| エンドポイント名 | S3         | ```<バケット名>.<リージョン>.amazonaws.com```                |
+| 種別             | リソース    | 例                                                           |
+| ---------------- | ----------- | ------------------------------------------------------------ |
+| DNS名            | ALB         | ```<ALB名>-<ランダムな文字列>.<リージョン>.elb.amazonaws.com``` |
+|                  | EC2         | ```ec2-<パブリックIPをハイフン区切りにしたもの>.<リージョン>.compute.amazonaws.com``` |
+| ドメイン名       | Cloud Front | ```<ランダムな文字列>.cloudfront.net```                      |
+| エンドポイント名 | S3          | ```<バケット名>.<リージョン>.amazonaws.com```                |
 
 #### ・レコードタイプの名前解決方法の違い
 
@@ -1426,9 +1475,9 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | AAAA           | 完全修飾ドメイン名 |  →   |  パブリックIPv6  |  →   |       -        |
 | CNAME          | 完全修飾ドメイン名 |  →   | （リダイレクト） |  →   | パブリックIPv4 |
 
-#### ・CloudFrontへのルーティング
+#### ・Cloud Frontへのルーティング
 
-CloudFrontにルーティングする場合，CloudFrontのCNAMEをレコード名とすると，CloudFrontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）が，入力フォームに表示されるようになる．
+Cloud Frontにルーティングする場合，Cloud FrontのCNAMEをレコード名とすると，Cloud Frontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）が，入力フォームに表示されるようになる．
 
 #### ・Route53を含む多数のDNSサーバによって名前解決される仕組み
 
@@ -1480,15 +1529,15 @@ DNSサーバによる名前解決は，ドメインを購入したドメイン�
 
 <br>
 
-## 05-03. ネットワーキング，コンテンツ配信｜CloudFront
+## 05-03. ネットワーキング，コンテンツ配信｜Cloud Front
 
-### CloudFront
+### Cloud Front
 
 ![AWSのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CloudFrontによるリクエストの振り分け.png)
 
-#### ・CloudFrontとは
+#### ・Cloud Frontとは
 
-クラウドリバースプロキシサーバとして働く．VPCの外側（パブリックネットワーク）に設置されている．オリジンサーバ（コンテンツ提供元）をS3とした場合，動的コンテンツへのリクエストをEC2に振り分ける．また，静的コンテンツへのリクエストをCacheし，その上でAmazon S3へ振り分ける．次回以降の静的コンテンツのリンクエストは，CloudFrontがレンスポンスを行う．
+クラウドリバースプロキシサーバとして働く．VPCの外側（パブリックネットワーク）に設置されている．オリジンサーバ（コンテンツ提供元）をS3とした場合，動的コンテンツへのリクエストをEC2に振り分ける．また，静的コンテンツへのリクエストをCacheし，その上でAmazon S3へ振り分ける．次回以降の静的コンテンツのリンクエストは，Cloud Frontがレンスポンスを行う．
 
 | 設定項目            | 説明 |
 | ------------------- | ---- |
@@ -1497,7 +1546,7 @@ DNSサーバによる名前解決は，ドメインを購入したドメイン�
 
 #### ・全てのエッジサーバのIPアドレス
 
-CloudFrontには，エッジロケーションの数だけエッジサーバがあり，各サーバにIPアドレスが割り当てられている．以下のコマンドで，全てのエッジサーバのIPアドレスを確認できる．
+Cloud Frontには，エッジロケーションの数だけエッジサーバがあり，各サーバにIPアドレスが割り当てられている．以下のコマンドで，全てのエッジサーバのIPアドレスを確認できる．
 
 ```sh
 $ curl https://ip-ranges.amazonaws.com/ip-ranges.json |
@@ -1510,7 +1559,7 @@ jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
 
 #### ・エッジロケーションの使用中サーバのIPアドレス
 
-CloudFrontには，エッジロケーションがあり，各ロケーションにサーバがある．以下のコマンドで，エッジロケーションにある使用中サーバのIPアドレスを確認できる．
+Cloud Frontには，エッジロケーションがあり，各ロケーションにサーバがある．以下のコマンドで，エッジロケーションにある使用中サーバのIPアドレスを確認できる．
 
 ```sh
 $ nslookup <割り当てられた文字列>.cloudfront.net
@@ -1524,33 +1573,33 @@ $ nslookup <割り当てられた文字列>.cloudfront.net
 
 [参考になったサイト](https://www.geekfeed.co.jp/geekblog/wordpress%E3%81%A7%E6%A7%8B%E7%AF%89%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%82%A6%E3%82%A7%E3%83%96%E3%82%B5%E3%82%A4%E3%83%88%E3%81%ABcloudfront%E3%82%92%E7%AB%8B%E3%81%A6%E3%81%A6%E9%AB%98/)
 
-| 設定項目                 | 説明                                                     |
-| ------------------------ | -------------------------------------------------------- |
-| General                  |                                                          |
-| Origin and Origin Groups | コンテンツを提供するAWSリソースを設定                    |
-| Behavior                 | オリジンにリクエストが行われた時のCloudFrontの挙動を設定 |
-| ErrorPage                |                                                          |
-| Restriction              |                                                          |
-| Invalidation             | CloudFrontに保存されているCacheを削除できる．            |
+| 設定項目                 | 説明                                                      |
+| ------------------------ | --------------------------------------------------------- |
+| General                  |                                                           |
+| Origin and Origin Groups | コンテンツを提供するAWSリソースを設定                     |
+| Behavior                 | オリジンにリクエストが行われた時のCloud Frontの挙動を設定 |
+| ErrorPage                |                                                           |
+| Restriction              |                                                           |
+| Invalidation             | Cloud Frontに保存されているCacheを削除できる．            |
 
 #### ・Generalの詳細項目
 
 | 設定項目            | 説明                                                         | 備考                                                         |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Price Class         | 使用するエッジロケーションを設定する．                       | Asiaが含まれているものを選択．                               |
-| AWS WAF             | CloudFrontに紐づけるWAFを設定する．                          |                                                              |
-| CNAME               | CloudFrontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）に紐づけるRoute53レコード名を設定する． | ・Route53からルーティングする場合は必須．<br>・複数のレコード名を設定できる． |
+| AWS WAF             | Cloud Frontに紐づけるWAFを設定する．                         |                                                              |
+| CNAME               | Cloud Frontのデフォルトドメイン名（```xxxxx.cloudfront.net.```）に紐づけるRoute53レコード名を設定する． | ・Route53からルーティングする場合は必須．<br>・複数のレコード名を設定できる． |
 | SSL Certificate     | HTTPSプロトコルでオリジンに転送する場合に設定する．          | 上述のCNAMEを設定した場合，SSL証明書が別途必要になる．また，Certificate Managerを使用する場合，この証明書は『バージニア北部』で申請する必要がある． |
 | Default Root Object | オリジンのドキュメントルートを設定する．                     | 例えば，index.htmlを設定すると，「```/```」でリクエストした時に，index,htmlが自動で省略される． |
-| Standard Logging    | CloudFrontのアクセスログをS3に生成するかどうかを設定する．   |                                                              |
+| Standard Logging    | Cloud FrontのアクセスログをS3に生成するかどうかを設定する．  |                                                              |
 
 #### ・Origin and Origin Groupsの詳細項目
 
 | 設定項目               | 説明                                                         | 備考                                                         |
 | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Origin Domain Name     | CloudFrontを経由してコンテンツを提供するAWSリソースのエンドポイントやDNS名を設定する． | ・例えば，S3のエンドポイント，ALBのDNS名を設定する．<br>・別アカウントのAWSリソースのDNS名であってもよい． |
+| Origin Domain Name     | Cloud Frontを経由してコンテンツを提供するAWSリソースのエンドポイントやDNS名を設定する． | ・例えば，S3のエンドポイント，ALBのDNS名を設定する．<br>・別アカウントのAWSリソースのDNS名であってもよい． |
 | Origin Path            | オリジンのルートディレクトリを設定する．                     | デフォルトは「```/```」で，その後にBehaviorのパスが追加される．例えば，「```/var/www/app```」とすると，Behaviorで設定したパスが「```/var/www/app/xxxxx```」のように追加される． |
-| Origin Access Identity | リクエストの転送先となるAWSリソースでアクセス権限の付与が必要な場合に設定する．転送先のAWSリソースでは，アクセスポリシーを付与する． | CloudFrontがS3に対して読み出しを行うために必要．             |
+| Origin Access Identity | リクエストの転送先となるAWSリソースでアクセス権限の付与が必要な場合に設定する．転送先のAWSリソースでは，アクセスポリシーを付与する． | Cloud FrontがS3に対して読み出しを行うために必要．            |
 | Origin Protocol Policy | リクエストの転送先となるAWSリソースに対して，HTTPとHTTPSのいずれのプロトコルで転送するかを設定する． | ・ALBで必要．ALBのリスナーのプロトコルに合わせて設定する．<br>・```HTTP Only```：HTTPで転送<br/>・```HTTPS Only```：HTTPSで転送<br/>・```Match Viewer```：両方で転送 |
 | HTTPポート             | 転送時に指定するオリジンのHTTPのポート番号                   |                                                              |
 | HTTPSポート            | 転送時に指定するオリジンのHTTPSのポート番号                  |                                                              |
@@ -1563,27 +1612,27 @@ $ nslookup <割り当てられた文字列>.cloudfront.net
 
 | 設定項目                                                     | 説明                                                         | 備考                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Precedence                                                   | 処理の優先順位．                                             | 最初に作成したBehaviorが「```Default (*)```」となり，これは後から変更できないため，主要なBehaviorをまず最初に設定する． |
+| Precedence                                                   | 処理の優先順位．                                             | 最初に構築したBehaviorが「```Default (*)```」となり，これは後から変更できないため，主要なBehaviorをまず最初に設定する． |
 | Path Pattern                                                 | Behaviorを行うファイルパスを設定する．                       |                                                              |
 | Origin or Origin Group                                       | Behaviorを行うオリジンを設定する．                           |                                                              |
 | Viewer Protocol Policy                                       | HTTP／HTTPSのどちらを受信するか，またどのように変換して転送するかを設定 | ・```HTTP and HTTPS```：両方受信し，そのまま転送<br/>・```Redirect HTTP to HTTPS```：両方受信し，HTTPSで転送<br/>・```HTTPS Only```：HTTPSのみ受信し，HTTPSで転送 |
 | Allowed HTTP Methods                                         | リクエストのHTTPメソッドのうち，オリジンへの転送を許可するものを設定 | ・パスパターンが静的ファイルへのリクエストの場合，GETのみ許可．<br>・パスパターンが動的ファイルへのリクエストの場合，全てのメソッドを許可． |
 | ★Cache Based on Selected Request Headers<br>（★については表上部参照） | リクエストヘッダーのうち，オリジンへの転送を許可し，またCacheの対象とするものを設定する． | ・各ヘッダー転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのヘッダーの転送を拒否し，Cacheの対象としない．動的になりやすい値をもつヘッダー（Accept-Datetimeなど）を一切使用せずに，それ以外のクエリ文字やCookieでCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br>・一部転送：指定したヘッダーのみ転送を許可し，Cacheの対象とする．<br>・全許可：全てのヘッダーがCacheの対象となる．しかし，日付に関するヘッダーなどの動的な値をCacheの対象としてしまうと．同一と見なすリクエストがほとんどなくなり，HITしなくなる．そのため，この設定でCacheは実質無効となり，「対象としない」に等しい． |
 | Whitelist Header                                             | Cache Based on Selected Request Headers を参照せよ．         | ・```Accept-xxxxx```：アプリケーションにレスポンスして欲しいデータの種類（データ型など）を指定．<br/>・ ```CloudFront-Is-xxxxx-Viewer```：デバイスタイプのBool値が格納されている．<br>・レスポンスのヘッダーに含まれる「```X-Cache:```」が「```Hit from cloudfront```」，「```Miss from cloudfront```」のどちらで，Cacheの使用の有無を判断できる．<br/> |
-| Object Caching                                               | CloudFrontにコンテンツのCacheを保存しておく秒数を設定する．  | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
-| TTL                                                          | CloudFrontにCacheを保存しておく秒数を詳細に設定する．        | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・「Cache Based on Selected Request Headers = All」としている場合，Cacheが実質無効となるため，最小TTLはゼロでなければならない． |
-| ★Farward Cookies<br/>（★については表上部参照）               | Cookie情報のキー名のうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのCookieの転送を拒否し，Cacheの対象としない．Cookieはユーザごとに一意になることが多く，動的であるが，それ以外のヘッダーやクエリ文字でCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br/>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，CloudFrontに保存されたCacheがHITしない．CloudFrontはキー名／値を保持するため，変化しやすいキー名／値は，オリジンに転送しないように設定する．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．そのため，ユーザを一意に判定することが難しくなってしまう．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
+| Object Caching                                               | Cloud FrontにコンテンツのCacheを保存しておく秒数を設定する． | ・Origin Cache ヘッダーを選択した場合，アプリケーションからのレスポンスヘッダーのCache-Controlの値が適用される．<br>・カスタマイズを選択した場合，ブラウザのTTLとは別に設定できる． |
+| TTL                                                          | Cloud FrontにCacheを保存しておく秒数を詳細に設定する．       | ・Min，Max，Default，の全てを0秒とすると，Cacheを無効化できる．<br>・「Cache Based on Selected Request Headers = All」としている場合，Cacheが実質無効となるため，最小TTLはゼロでなければならない． |
+| ★Farward Cookies<br/>（★については表上部参照）               | Cookie情報のキー名のうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・Cookie情報キー名転送の全拒否，一部許可，全許可を設定できる．<br>・全拒否：全てのCookieの転送を拒否し，Cacheの対象としない．Cookieはユーザごとに一意になることが多く，動的であるが，それ以外のヘッダーやクエリ文字でCacheを判定するようになるため，同一と見なすリクエストが増え，HIT率改善につながる．<br/>・リクエストのヘッダーに含まれるCookie情報（キー名／値）が変動していると，Cloud Frontに保存されたCacheがHITしない．Cloud Frontはキー名／値を保持するため，変化しやすいキー名／値は，オリジンに転送しないように設定する．例えば，GoogleAnalyticsのキー名（```_ga```）の値は，ブラウザによって異なるため，１ユーザがブラウザを変えるたびに，異なるCacheが生成されることになる．そのため，ユーザを一意に判定することが難しくなってしまう．<br>・セッションIDはCookieヘッダーに設定されているため，フォーム送信に関わるパスパターンでは，セッションIDのキー名を許可する必要がある． |
 | ★Query String Forwarding and Caching<br/>（★については表上部参照） | クエリストリングのうち，オリジンへの転送を許可し，Cacheの対象とするものを設定する． | ・クエリストリング転送とCacheの，全拒否，一部許可，全許可を選択できる．全拒否にすると，Webサイトにクエリストリングをリクエストできなくなるので注意．<br>・異なるクエリパラメータを，別々のCacheとして保存するかどうかを設定できる． |
 | Restrict Viewer Access                                       | リクエストの送信元を制限するかどうかを設定できる．           | セキュリティグループで制御できるため，ここでは設定しなくてよい． |
 | Compress Objects Automatically                               | レスポンス時にgzipを圧縮するかどうかを設定                   | ・クライアントからのリクエストヘッダーのAccept-Encodingにgzipが設定されている場合，レスポンス時に，gzip形式で圧縮して送信するかどうかを設定する．設定しない場合，圧縮せずにレスポンスを送信する．<br>・クライアント側のダウンロード速度向上のため，基本的には有効化する． |
 
 #### ・Invalidation
 
-CloudFrontに保存してあるCacheを削除できる．全てのファイルのCacheを削除したい場合は「```/*```」，特定のファイルのCacheを削除したい場合は「```/<ファイルへのパス>```」，を指定する．CloudFrontに関するエラーページが表示された場合，不具合を修正した後でもCacheが残っていると，エラーページが表示されてしまうため，作業後には必ずCacheを削除する．
+Cloud Frontに保存してあるCacheを削除できる．全てのファイルのCacheを削除したい場合は「```/*```」，特定のファイルのCacheを削除したい場合は「```/<ファイルへのパス>```」，を指定する．Cloud Frontに関するエラーページが表示された場合，不具合を修正した後でもCacheが残っていると，エラーページが表示されてしまうため，作業後には必ずCacheを削除する．
 
 #### ・オリジンに対するリクエストメッセージの構造
 
-CloudFrontからオリジンに送信されるリクエストメッセージの構造例を以下に示す．
+Cloud Frontからオリジンに送信されるリクエストメッセージの構造例を以下に示す．
 
 ```http
 GET /example/
@@ -1592,11 +1641,11 @@ Host: stg.osohshiki.jp
 User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1
 Authorization: Bearer <Bearerトークン>
 X-Amz-Cf-Id: XXXXX
-Via: 2.0 77c20654dd474081d033f27ad1b56e1e.cloudfront.net (CloudFront)
+Via: 2.0 77c20654dd474081d033f27ad1b56e1e.cloudfront.net (Cloud Front)
 # 各Cookieの値（二回目のリクエスト時に設定される）
 Cookie: PHPSESSID=<セッションID>; __ulfpc=<GoogleAnalytics値>; _ga=<GoogleAnalytics値>; _gid=<GoogleAnalytics値>
 # 送信元IPアドレス
-# ※プロキシサーバ（ALBやCloudFrontなども含む）を経由している場合に，それら全てのIPアドレスも順に設定される
+# ※プロキシサーバ（ALBやCloud Frontなども含む）を経由している場合に，それら全てのIPアドレスも順に設定される
 X-Forwarded-For: <client>, <proxy1>, <proxy2>
 Accept-Language: ja,en;q=0.9
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
@@ -1621,7 +1670,7 @@ CloudFront-Forwarded-Proto: https
 
 #### ・キャッシュの時間の決まり方
 
-キャッシュの時間は，リクエストヘッダー（```Cache-Control```，```Expires```）の値とCloudFrontの設定（最大最小デフォルトTTL）の組み合わせによって決まる．ちなみに，CloudFrontの最大最小デフォルトTTLを全て０秒にすると，キャッシュを完全に無効化できる．
+キャッシュの時間は，リクエストヘッダー（```Cache-Control```，```Expires```）の値とCloud Frontの設定（最大最小デフォルトTTL）の組み合わせによって決まる．ちなみに，Cloud Frontの最大最小デフォルトTTLを全て０秒にすると，キャッシュを完全に無効化できる．
 
 参照：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
 
@@ -1932,18 +1981,30 @@ Subnetには，役割ごとにいくつか種類がある．
 
 <br>
 
-### VPCエンドポイント（Private Link）
+### VPCエンドポイント
 
 ![VPCエンドポイント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCエンドポイント.png)
 
 #### ・VPCエンドポイントとは
 
-NAT Gatewayを使用せずに，VPCの外側とアウトバウンドな通信を行う機能．
+VPCのプライベートサブネット内のリソースが，VPC外のリソースに対して，アウトバウンド通信を実行できるようにする．Gateway型とInterface型がある．VPCエンドポイントを使用しない場合，プライベートサブネット内からのアウトバウンド通信には，インターネットゲートウェイとNAT Gatewayを使用する必要がある．
 
-|      | メリット                                                     |
-| ---- | ------------------------------------------------------------ |
-| 1    | NAT Gatewayを通過しないため，料金が少しだけ安くなる．        |
-| 2    | インターネットゲートウェイを通過しないため，アウトバウンドな通信がセキュアになる． |
+#### ・メリット
+
+インターネットゲートウェイとNAT Gatewayの代わりに，VPCエンドポイントを使用すると，料金が少しだけ安くなり，また，VPC外のリソースとの通信がより安全になる．
+
+#### ・タイプ
+
+| タイプ      | 説明                                                         | リソース例                       |
+| ----------- | ------------------------------------------------------------ | -------------------------------- |
+| Gateway型   | ルートテーブルにおける定義に則って，VPCエンドポイントに対してアウトバウンド通信を行う． | S3，DynamoDBのみ                 |
+| Interface型 | プライベートリンクともいう．プライベートIPアドレスを持つENIに対して，アウトバウンド通信を行う． | S3，DynamoDB以外の全てのリソース |
+
+#### ・VPCエンドポイントサービス
+
+VPCエンドポイントとは異なる機能なので注意．Interface型のVPCエンドポイントとNLBを組み合わせることにより，異なるVPC間で通信できるようにする．エンドポイントのサービス名は，「``` com.amazonaws.vpce.ap-northeast-1.vpce-svc-xxxxx```」になる．
+
+![VPCエンドポイントサービス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCエンドポイントサービス.png)
 
 <br>
 
@@ -1970,7 +2031,18 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 ![VPCピアリング接続不可の場合-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPCピアリング接続不可の場合-2.png)
 
+#### ・VPCエンドポイントサービスとの比較
 
+| 機能                       | VPCピアリング                                     | VPCエンドポイントサービス           |
+| -------------------------- | ------------------------------------------------- | ----------------------------------- |
+| 接続可能なVPC数            | 一対一のみ                                        | 一対多                              |
+| 接続可能なIPアドレスの種類 | IPv4，IPv6                                        | IPv4                                |
+| 接続可能なCIDRブロック     | 両VPCのCIDRブロックが重複していると接続できない． | 重複していても接続できる．          |
+| 接続可能なリソース         | 制限なし                                          | NLBでルーティングできるリソースのみ |
+| クロスアカウント           | 可能                                              | 可能                                |
+| クロスリージョン           | 可能                                              | 不可能                              |
+
+<br>
 
 ## 06. アプリケーションインテグレーション
 
@@ -2078,7 +2150,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 ### CloudWatch
 
-#### ・AWS-CLI
+#### ・AWS CLI
 
 **＊コマンド例＊**
 
@@ -2182,8 +2254,8 @@ CloudWatchエージェントを使用して，CloudWatchにログファイルを
 | 設定項目           | 説明                                                         | 備考                                                       |
 | ------------------ | ------------------------------------------------------------ | ---------------------------------------------------------- |
 | フィルターパターン | 紐づくロググループで，メトリクス値増加のトリガーとする文字列を設定する． | 大文字と小文字を区別するため，網羅的に設定する必要がある． |
-| 名前空間           | 紐づくロググループが属する名前空間を設定する．CloudWatchLogsが，設定した名前空間に対して，値を発行する． |                                                            |
-| メトリクス         | 紐づくロググループが属する名前空間内のメトリクスを設定する．CloudWatchLogsが，設定したメトリクスに対して，値を発行する． |                                                            |
+| 名前空間           | 紐づくロググループが属する名前空間を設定する．CloudWatch Logsが，設定した名前空間に対して，値を発行する． |                                                            |
+| メトリクス         | 紐づくロググループが属する名前空間内のメトリクスを設定する．CloudWatch Logsが，設定したメトリクスに対して，値を発行する． |                                                            |
 | メトリクス値       | フィルターパターンで文字列が検出された時に，メトリクスに対して発行する値のこと． | 例えば「検出数」を発行する場合は，「１」を設定する．       |
 
 #### ・フィルターパターンのテンプレート
@@ -2202,7 +2274,7 @@ CloudWatchエージェントを使用して，CloudWatchにログファイルを
 
 ![名前空間，メトリクス，ディメンション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前空間，メトリクス，ディメンション.png)
 
-#### ・CloudWatchLogsエージェントの設定（非推奨）
+#### ・CloudWatch Logsエージェントの設定（非推奨）
 
 2020/10/05現在は非推奨で，CloudWatchエージェントへの設定の移行が推奨されている．
 
@@ -2464,16 +2536,16 @@ DNS検証またはEメール検証によって，ドメイン名の所有者で�
 
 AWSの使用上，ACM証明書を設置できないAWSリソースに対しては，外部の証明書を手に入れて設置する．HTTPSによるSSLプロトコルを受け付けるネットワークの最終地点のことを，SSLターミネーションという．
 
-| パターン<br>（Route53には必ず設置）                      | SSLターミネーション<br>（HTTPSの最終地点） | 備考                                                         |
-| -------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------ |
-| Route53 → ALB(+ACM証明書) → EC2                          | ALB                                        |                                                              |
-| Route53 → CloudFront(+ACM証明書) → ALB(+ACM証明書) → EC2 | ALB                                        | CloudFrontはバージニア北部で，またALBは東京リージョンで，証明書を構築する必要がある．CloudFrontに送信されたHTTPSリクエストをALBにルーティングするために，両方に関連付ける証明書で承認するドメインは，一致させる必要がある． |
-| Route53 → CloudFront(+ACM証明書) → EC2                   | CloudFront                                 |                                                              |
-| Route53 → CloudFront(+ACM証明書) → S3                    | CloudFront                                 |                                                              |
-| Route53 → ALB(+ACM証明書) → EC2(+外部証明書)             | EC2                                        |                                                              |
-| Route53 → NLB → EC2(+外部証明書)                         | EC2                                        |                                                              |
-| Route53 → EC2(+外部証明書)                               | EC2                                        |                                                              |
-| Route53 → Lightsail(+ACM証明書)                          | Lightsail                                  |                                                              |
+| パターン<br>（Route53には必ず設置）                       | SSLターミネーション<br>（HTTPSの最終地点） | 備考                                                         |
+| --------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------ |
+| Route53 → ALB(+ACM証明書) → EC2                           | ALB                                        |                                                              |
+| Route53 → Cloud Front(+ACM証明書) → ALB(+ACM証明書) → EC2 | ALB                                        | Cloud Frontはバージニア北部で，またALBは東京リージョンで，証明書を構築する必要がある．Cloud Frontに送信されたHTTPSリクエストをALBにルーティングするために，両方に関連付ける証明書で承認するドメインは，一致させる必要がある． |
+| Route53 → Cloud Front(+ACM証明書) → EC2                   | Cloud Front                                |                                                              |
+| Route53 → Cloud Front(+ACM証明書) → S3                    | Cloud Front                                |                                                              |
+| Route53 → ALB(+ACM証明書) → EC2(+外部証明書)              | EC2                                        |                                                              |
+| Route53 → NLB → EC2(+外部証明書)                          | EC2                                        |                                                              |
+| Route53 → EC2(+外部証明書)                                | EC2                                        |                                                              |
+| Route53 → Lightsail(+ACM証明書)                           | Lightsail                                  |                                                              |
 
 <br>
 
@@ -2513,16 +2585,16 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 #### ・Web ACLsの詳細項目
 
-| 設定項目                 | 説明                                                         | 備考                                  |
-| ------------------------ | ------------------------------------------------------------ | ------------------------------------- |
-| Overview                 | WAFによって許可／拒否されたリクエストのアクセスログを確認できる． |                                       |
-| Rules                    | 順番にルールを判定し，一致するルールがあればアクションを実行する．この時，一致するルールの後にあるルールは．判定されない． | ルールの設定を参照せよ．              |
-| Associated AWS resources | WAFをアタッチするAWSリソースを設定する．                     | CloudFront，ALBなどにアタッチできる． |
-| Logging and metrics      | アクセスログをKinesis Data Firehoseに出力するように設定する． |                                       |
+| 設定項目                 | 説明                                                         | 備考                                   |
+| ------------------------ | ------------------------------------------------------------ | -------------------------------------- |
+| Overview                 | WAFによって許可／拒否されたリクエストのアクセスログを確認できる． |                                        |
+| Rules                    | 順番にルールを判定し，一致するルールがあればアクションを実行する．この時，一致するルールの後にあるルールは．判定されない． | ルールの設定を参照せよ．               |
+| Associated AWS resources | WAFをアタッチするAWSリソースを設定する．                     | Cloud Front，ALBなどにアタッチできる． |
+| Logging and metrics      | アクセスログをKinesis Data Firehoseに出力するように設定する． |                                        |
 
 #### ・OverviewにおけるSampled requestsの見方
 
-「全てのルール」または「個別のルール」におけるアクセス許可／拒否の履歴を確認できる．ALBやCloudFrontのアクセスログよりも解りやすく，様々なデバッグに役立つ．ただし，３時間分しか残らない．一例として，CloudFrontにアタッチしたWAFで取得できるログを以下に示す．
+「全てのルール」または「個別のルール」におけるアクセス許可／拒否の履歴を確認できる．ALBやCloud Frontのアクセスログよりも解りやすく，様々なデバッグに役立つ．ただし，３時間分しか残らない．一例として，Cloud FrontにアタッチしたWAFで取得できるログを以下に示す．
 
 ```http
 GET /example/
@@ -2631,7 +2703,7 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
 
 #### ・IAMポリシーとは
 
-実行権限のあるアクションが定義されたIAMステートメントのセットを持つ，JSON型オブジェクトデータのこと．
+実行権限のあるアクションが定義されたIAMステートメントのセットを持つ，JSONデータのこと．
 
 #### ・IAMポリシーの種類
 
@@ -2679,7 +2751,7 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
 
 ####  ・IAMステートメントとは
 
-実行権限のあるアクションを定義した，JSON型オブジェクトデータのこと．
+実行権限のあるアクションを定義した，JSONデータのこと．
 
 **＊具体例＊**
 
@@ -2734,7 +2806,7 @@ AWSが提供しているポリシーのこと．アタッチ式のポリシー�
 
 #### ・カスタマー管理ポリシー
 
-ユーザが独自に作成したポリシーのこと．すでにアタッチされていても，他のものにもアタッチできる．
+ユーザが独自に構築したポリシーのこと．すでにアタッチされていても，他のものにもアタッチできる．
 
 #### ・インラインポリシー
 
@@ -2902,16 +2974,9 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
 
 特定の権限をもったアカウントのこと．
 
-#### ・AWS-CLI
+#### ・```credentials```ファイル
 
-```sh
-# ユーザ名を変更する．
-$ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
-```
-
-#### ・AWS-CLIのための機密情報ファイル
-
-AWS-CLIでクラウドインフラを操作するためには，機密情報ファイルに定義されたプロファイルが必要である．
+AWS CLIでクラウドインフラを操作するためには，```credentials```ファイルに定義されたプロファイルが必要である．
 
 ```sh
 $ aws configure set aws_access_key_id "XXXXX"
@@ -2920,8 +2985,8 @@ $ aws configure set aws_default_region "ap-northeast-1"
 ```
 
 ```
-// Linux，Unixの場合：$HOME/.aws/<機密情報ファイル名>
-// Windowsの場合：%USERPROFILE%\.aws\<機密情報ファイル名>
+# Linux，Unixの場合：$HOME/.aws/<credentialsファイル名>
+# Windowsの場合：%USERPROFILE%\.aws\<credentialsファイル名>
 
 [default]
 aws_access_key_id=<アクセスキー>
@@ -2930,6 +2995,38 @@ aws_secret_access_key=<シークレットキー>
 [user1]
 aws_access_key_id=<アクセスキー>
 aws_secret_access_key=<シークレットキー>
+```
+
+#### ・AWS CLIの社内アクセス制限
+
+特定の送信元IPアドレスを制限するポリシーをIAMユーザに付与することで，そのIAMユーザがAWS CLIの実行する時に，社外から実行できないように制限をかけられる．
+
+**＊実装例＊**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Deny",
+    "Action": "*",
+    "Resource": "*",
+    "Condition": {
+      "NotIpAddress": {
+        "aws:SourceIp": [
+          "nn.nnn.nnn.nnn/32",
+          "nn.nnn.nnn.nnn/32"
+        ]
+      }
+    }
+  }
+}
+```
+
+#### ・AWS CLI
+
+```sh
+# ユーザ名を変更する．
+$ aws iam update-user --user-name <現行のユーザ名> --new-user-name <新しいユーザ名>
 ```
 
 <br>
@@ -3095,9 +3192,9 @@ export AWS_DEFAULT_REGION="ap-northeast-1"
 EOF
 ```
 
-#### 4. credentialsを作成
+#### 4. ```credentials```ファイルを作成
 
-ロールを引き受けた新しいアカウントの情報を，credentialsに書き込む．
+ロールを引き受けた新しいアカウントの情報を，```credentials```ファイルに書き込む．
 
 ```shell
 #!/bin/bash
