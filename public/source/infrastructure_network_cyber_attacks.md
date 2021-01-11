@@ -174,9 +174,8 @@ Google play で，過去にアプリとして忍び込んでいたトロイの�
 
 **＊実装例＊**
 
-```PHP
+```php
 use Doctrine\DBAL\Connection;
-
 
 class dogToyQuey(Value $toyType): array
 {
