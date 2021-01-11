@@ -107,8 +107,9 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 #### ・Domain層とInfrastructure層のバインディング
 
-```PHP
+```php
 <?php
+
 // ここに実装例
 ```
 
@@ -133,8 +134,9 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class AcceptOrdersController
 {
     // 単なるメソッドではなく，Use caseとなるようなメソッド
@@ -162,8 +164,9 @@ Application層の中で，ドメイン層のオブジェクトを使用する汎
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class SlackNotificationService
 {
     public function notify(SlackMessage $message)
@@ -183,8 +186,9 @@ class SlackNotificationService
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 use Respect\Validation\Validator; // Validationのライブラリ
 
 class FormatValidator
@@ -215,8 +219,9 @@ class FormatValidator
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class Converter
 {
     // オブジェクトを連想配列に詰め替える処理．
@@ -244,8 +249,9 @@ class Converter
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 interface GetDogToyEntityRepository
 {
 
@@ -277,8 +283,9 @@ interface GetDogToyEntityRepository
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class XxxSpecification
 {
     public function isSatisfiedBy($XxxEntity)
@@ -294,8 +301,9 @@ class XxxSpecification
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class XxxCriteria
 {
     private $id;
@@ -374,8 +382,9 @@ class XxxCriteria
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class ToyOrderEntity
 {
     // 犬用おもちゃ
@@ -414,8 +423,9 @@ class ToyOrderEntity
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class DogToyEntity
 {
     // おもちゃタイプ
@@ -476,8 +486,9 @@ class DogToyEntity
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 /**
  * 支払情報オブジェクト
  */
@@ -546,7 +557,7 @@ EntityとValue Objectのどちらとして，オブジェクトをモデリン�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 class ExampleVO
@@ -574,8 +585,9 @@ Test01クラスインスタンスの```$property01```に値を設定するため
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 $test01 = new Test01;
 
 $test01->setProperty01("データ01の値");
@@ -587,8 +599,9 @@ $test01->setProperty01("新しいデータ01の値");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
@@ -598,8 +611,9 @@ $test02 = new Test02("新しいデータ02の値");
 
 ### 概念的な統一体
 
-```PHP
+```php
 <?php
+
 // ここに実装例
 ```
 
@@ -621,8 +635,9 @@ $test02 = new Test02("新しいデータ02の値");
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 // （1）ドメイン層の氏名を扱うVO
 class NameVO
 {
@@ -655,8 +670,9 @@ class NameVO
 
 同様に，Immutableトレイトを基に，VOを生成する．
 
-```PHP
+```php
 <?php
+
 // ドメイン層の金額を扱うVO
 class Money
 {
@@ -678,8 +694,9 @@ Type Codeは概念的な呼び名で，実際は，標準的なライブラリ�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 class ColorVO extends Enum
 {
     const RED = '1';
@@ -764,8 +781,9 @@ DBに対する書き込み操作を行う．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 // 集約の構成とデータ追加を行う．
 class setDogToyEntityRepository
 {
@@ -818,8 +836,9 @@ DBに対する書き込み操作を行う．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 // データのReadと集約再構成を行う．
 class getDogToyEntityRepository
 {
@@ -879,8 +898,9 @@ class getDogToyEntityRepository
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 // 構成した集約関係を加工して新たな集約を再構成する
 class Factory
 {
