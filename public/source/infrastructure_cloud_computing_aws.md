@@ -100,56 +100,6 @@ exports.MyHandler = (event, context, callback) => {
 
 <br>
 
-### Lambdaプロキシ統合
-
-#### ・Lambdaプロキシ統合とは
-
-LambdaとAPI Gatewayの間で，リクエストまたはレスポンスのJSONを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
-
-#### ・リクエスト時のマッピング
-
-API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONにマッピングされる．
-
-```json
-{
-  "resource": "Resource path",
-  "path": "Path parameter",
-  "httpMethod": "Incoming request's method name",
-  "headers": {String containing incoming request headers},
-  "multiValueHeaders": {List of strings containing incoming request headers},
-  "queryStringParameters": {query string parameters },
-  "multiValueQueryStringParameters": {List of query string parameters},
-  "pathParameters":  {path parameters},
-  "stageVariables": {Applicable stage variables},
-  "requestContext": {Request context, including authorizer-returned key-value pairs},
-  "body": "A JSON string of the request payload.",
-  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
-}
-
-```
-
-#### ・レスポンス時のマッピング
-
-API GAtewayは，Lambdaからのレスポンスを，以下のJSONにマッピングする．これ以外の構造のJSONを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
-
-```json
-{
-  "isBase64Encoded": true|false,
-  "statusCode": httpStatusCode,
-  "headers": { "headerName": "headerValue", ... },
-  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
-  "body": "Hello Lambda"
-}
-```
-
-API Gatewayは上記のJSONを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
-
-```h
-"Hello Lambda"
-```
-
-<br>
-
 ### Node.jsを用いた関数例
 
 #### ・AWS-SDKの読み込み
@@ -1301,8 +1251,8 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 | 設定項目                 | 説明                                                         | 備考                                                         |
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| AWSリソース              | エンドポイント，HTTPメソッド，転送先，などを設定する．       | 作成したAWSリソースのパスが，APIGatewayのエンドポイントになる． |
-| ステージ                 | APIGatewayをデプロイする環境を定義する．                     |                                                              |
+| AWSリソース              | エンドポイント，HTTPメソッド，転送先，などを設定する．       | 構築したAWSリソースのパスが，API Gatewayのエンドポイントになる． |
+| ステージ                 | API Gatewayをデプロイする環境を定義する．                    |                                                              |
 | オーソライザー           |                                                              |                                                              |
 | ゲートウェイのレスポンス |                                                              |                                                              |
 | モデル                   |                                                              |                                                              |
@@ -1313,7 +1263,7 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | 使用量プラン             |                                                              |                                                              |
 | APIキー                  | APIキーによる認可を設定する．                                |                                                              |
 | クライアント証明書       |                                                              |                                                              |
-| CloudWatchLogsの設定     | APIGatewayがCloudWatchLogsにアクセスできるよう，ロールを設定する． | 一つのAWS環境につき，一つのロールを設定すればよい．          |
+| CloudWatch Logsの設定    | API GatewayがCloudWatch Logsにアクセスできるよう，ロールを設定する． | 一つのAWS環境につき，一つのロールを設定すればよい．          |
 
 <br>
 
@@ -1324,7 +1274,7 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 | 順番 | 処理               | 説明                                                         | 備考                                                         |
 | ---- | ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 1    | メソッドリクエスト | クライアントから送信されたデータのうち，実際に転送するデータのフィルタリングを行う． |                                                              |
-| 2    | 統合リクエスト     | 指定のリソースに転送するデータを設定する．                   |                                                              |
+| 2    | 統合リクエスト     | メソッドリクエストから転送された各データを，マッピングテンプレートのJSONに紐づける． |                                                              |
 | 3    | 統合レスポンス     |                                                              | 統合リクエストでプロキシ統合を使用する場合，統合レスポンスを使用できなくなる． |
 | 4    | メソッドレスポンス | レスポンスが成功した場合，クライアントに送信するステータスコードを設定する． |                                                              |
 
@@ -1342,38 +1292,137 @@ API Gatewayは，メソッドリクエスト，統合リクエスト，統合レ
 
 #### ・統合リクエストの詳細項目
 
-| 設定項目                     | 説明                                                         | 備考                                                   |
-| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
-| 統合タイプ                   | リクエストの転送先を設定する．                               |                                                        |
-| VPCリンク                    |                                                              |                                                        |
-| プロキシ統合                 | HTTPリクエストのデータをAWS側が用意したJSONにマッピングするかどうかを設定する． | Lambdaプロキシ統合については，Lambdaの説明を参照せよ． |
-| エンドポイントURL            | エンドポイントで受信したリクエストのルーティング先URLを設定する． |                                                        |
-| デフォルトタイムアウトの使用 |                                                              |                                                        |
-| URLパスパラメータ            |                                                              |                                                        |
-| URLクエリ文字列パラメータ    |                                                              |                                                        |
-| HTTPヘッダー                 |                                                              |                                                        |
+| 設定項目                  | 説明                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| 統合タイプ                | リクエストの転送先を設定する．                               |
+| URLパスパラメータ         | メソッドリクエストから転送された各データを，パスパラメータに紐づける． |
+| URLクエリ文字列パラメータ | メソッドリクエストから転送された各データを，クエリ文字列パラメータに紐づける． |
+| HTTPヘッダー              |                                                              |
 
 #### ・テスト
 
-| 設定項目       | 設定例                 | 備考                                               |
-| -------------- | ---------------------- | -------------------------------------------------- |
-| クエリ文字     |                        |                                                    |
-| ヘッダー       | ```X-API-Token:test``` | 波括弧，スペース，クオーテーションは不要．         |
-| リクエスト本文 | {test:"test"}          | 改行タグやスペースが入り込まないよう，整形しない． |
+| 設定項目       | 設定例              | 備考                                               |
+| -------------- | ------------------- | -------------------------------------------------- |
+| クエリ文字     |                     |                                                    |
+| ヘッダー       | X-API-Token: test   | 波括弧，スペース，クオーテーションは不要．         |
+| リクエスト本文 | ```{test:"test"}``` | 改行タグやスペースが入り込まないよう，整形しない． |
+
+<br>
+
+### プライベート統合
+
+#### ・プライベート統合とは
+
+API GatewayとVPCリンクの間で，リクエストまたはレスポンスのJSONデータを自動的にマッピングする機能のこと．
+
+| 設定項目                     | 説明                                                  | 備考                                                 |
+| ---------------------------- | ----------------------------------------------------- | ---------------------------------------------------- |
+| 統合タイプ                   | VPCリンクを選択する．                                 |                                                      |
+| プロキシ統合の使用           | VPCリンクとのプロキシ統合を有効化する．               | 有効化しておかないと，パスパラメータを転送できない． |
+| メソッド                     | HTTPメソッドを設定する．                              |                                                      |
+| VPCリンク                    | VPCリンク名を設定する．                               |                                                      |
+| エンドポイントURL            | NLBのDNS名をドメイン名として，転送先のURLを設定する． |                                                      |
+| デフォルトタイムアウトの使用 |                                                       |                                                      |
+
+#### ・メソッドリクエストと統合リクエストのマッピング
+
+<br>
+
+### Lambdaプロキシ統合
+
+#### ・Lambdaプロキシ統合とは
+
+API GatewayとLambdaの間で，リクエストまたはレスポンスのJSONデータを自動的にマッピングする機能のこと．プロキシ統合を使用すると，Lambdaに送信されたリクエストはハンドラ関数のeventオブジェクトに格納される．プロキシ統合を使用しない場合，LambdaとAPI Gatewayの間のマッピングを手動で行う必要がある．
+
+| 設定項目                     | 説明                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| 統合タイプ                   | Lambda関数を選択する．                                       |
+| Lambdaプロキシ統合の使用     | Lambdaとのプロキシ統合を有効化する．                         |
+| Lambdaリージョン             | 実行したLambda関数のリージョンを設定する．                   |
+| Lambda関数                   | 実行したLambda関数の名前を設定する．                         |
+| 実行ロール                   | 実行したいLambda関数へのアクセス権限が付与されたロールのARNを設定する． |
+| 認証情報のキャッシュ         |                                                              |
+| デフォルトタイムアウトの使用 |                                                              |
+
+#### ・リクエスト時のマッピング
+
+API Gateway側でプロキシ統合を有効化すると，API Gatewayを経由したクライアントからのリクエストは，ハンドラ関数のeventオブジェクトのJSONデータにマッピングされる．
+
+```json
+{
+  "resource": "Resource path",
+  "path": "Path parameter",
+  "httpMethod": "Incoming request's method name",
+  "headers": {String containing incoming request headers},
+  "multiValueHeaders": {List of strings containing incoming request headers},
+  "queryStringParameters": {query string parameters },
+  "multiValueQueryStringParameters": {List of query string parameters},
+  "pathParameters":  {path parameters},
+  "stageVariables": {Applicable stage variables},
+  "requestContext": {Request context, including authorizer-returned key-value pairs},
+  "body": "A JSON string of the request payload.",
+  "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encoded"
+}
+
+```
+
+#### ・レスポンス時のマッピング
+
+API Gatewayは，Lambdaからのレスポンスを，以下のJSONデータにマッピングする．これ以外の構造のJSONデータを送信すると，API Gatewayで「```Internal Server Error```」のエラーが起こる．
+
+```json
+{
+  "isBase64Encoded": true|false,
+  "statusCode": httpStatusCode,
+  "headers": { "headerName": "headerValue", ... },
+  "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", ...], ... },
+  "body": "Hello Lambda"
+}
+```
+
+API Gatewayは上記のJSONデータを受信した後，```body```のみ値をレスポンスのメッセージボディに格納し，クライアントに送信する．
+
+```
+"Hello Lambda"
+```
 
 <br>
 
 ### ステージ
 
-#### ・ステージの詳細設定
+#### ・設定
 
-| 設定項目       | 説明 | 備考 |
-| -------------- | ---- | ---- |
-| その他の設定   |      |      |
-| ログ／トレース |      |      |
-| ステージ変数   |      |      |
-| SDKの生成      |      |      |
-| Canary         |      |      |
+| 設定項目                           | 説明                      |
+| ---------------------------------- | ------------------------- |
+| キャッシュ設定                     |                           |
+| デフォルトのメソッドスロットリング |                           |
+| WAF                                |                           |
+| クライアント証明書                 | 関連付けるWAFを設定する． |
+
+#### ・ログ／トレース
+
+| 設定項目                   | 説明                                                        |
+| -------------------------- | ----------------------------------------------------------- |
+| CloudWatch設定             | CloudWatch Logsにアクセスログを送信するかどうかを設定する． |
+| カスタムアクセスのログ記録 |                                                             |
+| X-Rayトレース              |                                                             |
+
+#### ・ステージ変数
+
+デプロイされるステージ固有の環境変数を設定できる．Lambda関数名，エンドポイントURL，パラメータマッピング，マッピングテンプレートで値を出力できる．
+
+参照：https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html
+
+#### ・SDKの生成
+
+#### ・Canary
+
+| 設定項目                                   | 説明 |
+| ------------------------------------------ | ---- |
+| ステージのリクエストディストリビューション |      |
+| Canaryのデプロイ                           |      |
+| Canaryステージ変数                         |      |
+| キャッシュ                                 |      |
 
 <br>
 
