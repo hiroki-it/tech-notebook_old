@@ -2861,7 +2861,7 @@ class UserController extends Controller
      * @param  string  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function save(Request $request, $id)
     {
         //
     }
