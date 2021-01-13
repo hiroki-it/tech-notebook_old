@@ -1765,97 +1765,13 @@ $exmapleName = $example->name;
 
 <br>
 
-## Eloquent｜Data Access
+### データ型変換
 
-### artisanコマンドによる操作
+#### ・シリアライズ
 
-```sh
+フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，オブジェクト（PHP型）をJSONに変換する処理はシリアライズである．
 
-```
-
-<br>
-
-### CREATE
-
-#### ・INSERT文の実行
-
-Modelクラスが持つ```save```メソッドを使用する．
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Domain\Entity\Example;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-class ExampleRepository extends Repository
-{
-    /**
-     * Exampleエンティティを作成
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Example $example)
-    {
-        // 内部でinsert文が実行される
-        $example->save();
-    }
-}
-```
-
-<br>
-
-### READ
-
-#### ・SELECT文の実行
-
-Modelクラスが持つ```save```メソッドを使用する．内部でselect文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Domain\Entity\Example;
-use App\Http\Controllers\Controller;
-
-class ExampleRepository extends Repository
-{
-    private $example;
-    
-    public function __construct(Example $example)
-    {
-        $this->example = $example;
-    }
-  
-    /**
-     * 全てのExampleエンティティを読み出し
-     *
-     * @param Id $id
-     */
-    public function findAllEntity()
-    {
-        return $this->example->all()->toArray();
-    }
-  
-    /**
-     * 条件に合うExampleエンティティを読み出し
-     *
-     * @param Id $id
-     */
-    public function findEntityByCriteria($id)
-    {
-        return $this->example->find($id)->toArray();
-    }
-}
-```
-
-#### ・Collection
-
-List型で，データを保持できるオブジェクトのこと．データ型変換メソッドを持っている．
+**＊実装例＊**
 
 ```php
 <?php
@@ -1875,47 +1791,277 @@ $collection = collect([
 $collection->toArray();
 ```
 
+**＊実装例＊**
+
+```php
+<?php
+
+$users = App\User::all();
+
+// Array型に変換する
+return $users->toArray();
+```
+
+#### ・デシリアライズ
+
+フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，JSONをオブジェクト（PHP型）に変換する処理はデシリアライズである．
+
+<br>
+
+### フィルタリング
+
+#### ・```filter```メソッド
+
+コールバック関数において，```true```を返却した配列のみを抽出する．
+
+```php
+$collection = collect([1, 2, 3, 4]);
+
+// trueを返却した配列のみ抽出する
+$filtered = $collection->filter(function ($value, $key) {
+    return $value > 2;
+});
+
+$filtered->all();
+
+// [3, 4]
+```
+
+ちなみに，複数の条件を設定したいときは，早期リターンを使用する必要がある．
+
+```php
+$collection = collect([1, 2, 3, 4, "yes"]);
+
+// 複数の条件で抽出する．
+$filtered = $collection->filter(function ($value, $key) {
+    
+    // まずはyesを検証する．
+    if($value == "yes") {
+        return true;
+    }
+    
+    return $value > 2;
+});
+
+$filtered->all();
+
+// [3, 4, "yes"]
+```
+
+<br>
+
+## Eloquent｜Data Access
+
+### artisanコマンドによる操作
+
+```sh
+
+```
+
+<br>
+
+### ドメイン駆動設計との組み合わせ
+
+ビジネスロジック用のエンティティと，EloquentのModelクラスを継承した詰め替えモデル（例：DTOクラス）を用意する．アプリケーション層から受け取ったエンティティが保持するデータを，DTOクラスに詰め替えるようにすると，エンティティが他の層に依存しなくなる．
+
+<br>
+
+### CREATE
+
+#### ・INSERT文の実行
+
+Modelクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Modelクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
+
+参考：https://codelikes.com/laravel-eloquent-basic/#toc9
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{    
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを作成
+     *
+     * @param  Example $example
+     * @return Response
+     */
+    public function create(Example $example)
+    {
+        // 内部でinsert文が実行される
+        $this->exampleDTO
+            ->create([
+                'name'  => $example->name()
+                'age'   => $example->age()
+                'email' => $example->email()
+            ]);
+        
+        // 以下の実装でよい．
+        // $this->exampleDTO
+        //    ->fill([
+        //        'name'  => $example->name()
+        //        'age'   => $example->age()
+        //        'email' => $example->email()
+        //    ])
+        //    ->save();
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ExampleDTO extends Model
+{
+    // 更新可能なカラム
+    protected $fillable = [
+        'name',
+        'age',
+        'email',
+    ];
+}
+```
+
+<br>
+
+### READ
+
+#### ・SELECT文の実行
+
+Modelクラスが持つ```find```メソッドにプライマリキーを設定する．内部でSELECT文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+  
+    /**
+     * 全てのExampleエンティティを読み出し
+     *
+     * @param Id $id
+     */
+    public function findAllEntity()
+    {
+        return $this->exampleDTO->all()->toArray();
+    }
+  
+    /**
+     * 条件に合うExampleエンティティを読み出し
+     *
+     * @param Id $id
+     */
+    public function findEntityByCriteria($id)
+    {
+        return $this->exampleDTO
+            ->find($id)
+            ->toArray();
+    }
+}
+```
+
 <br>
 
 ### UPDATE
 
 #### ・UPDATE文の実行
 
-Modelクラスが持つ```save```メソッドを使用する．
+Modelクラスが```find```メソッドで更新対象のモデルを検索する．返却されたModelクラスの```fill```メソッドで，挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．．
+
+参考：https://codelikes.com/laravel-eloquent-basic/#toc9
 
 ```php
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entity\Example;
-use App\Http\Controllers\Controller;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
 
-class ExampleRepository extends Repository
+class ExampleRepository extends Repository implements DomainExampleRepository
 {
-    private $example;
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
     
-    public function __construct(Example $example)
+    public function __construct(ExampleDTO $exampleDTO)
     {
-        $this->example = $example;
-    }
+        $this->exampleDTO = $exampleDTO;
+    }   
     
     /**
      * Exampleエンティティを更新
      *
      * @param Id $id
      */
-    public function update(Id $id)
+    public function save(Example $example)
     {
-        $example = $this->example->find($id);
-        
-        // エンティティのデータを更新
-        $example->name = $example->name;
-        $example->type = $example->type;
-        
-        // 内部でupdate文が実行される
-        $example->save();
+        $this->exampleDTO
+            // 更新対象のモデルを取得する．
+            ->find($id)
+            // オブジェクトにデータを設定する．
+            ->fill([
+                'name'  => $example->name()
+                'age'   => $example->age()
+                'email' => $example->email()
+            ])
+            // 内部でupdate文が実行される
+            ->save();
     }
+}
+```
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ExampleDTO extends Model
+{
+    // 更新可能なカラム
+    protected $fillable = [
+        'name',
+        'age',
+        'email',
+    ];
 }
 ```
 
@@ -1925,24 +2071,28 @@ class ExampleRepository extends Repository
 
 #### ・DELETE文の実行（物理削除）
 
-Modelクラスが持つ```find```メソッドで読み出したモデルから，```delete```メソッドをコールし，このモデルを削除する．
+Modelクラスの```find```メソッドで削除対象のモデルを検索する．返却されたModelクラスの```delete```メソッドをコールし，自身を削除する．
 
 ```php
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entity\Example;
-use App\Http\Controllers\Controller;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
 
-class ExampleRepository extends Repository
+class ExampleRepository extends Repository implements DomainExampleRepository
 {
-    private $example;
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
     
-    public function __construct(Example $example)
+    public function __construct(ExampleDTO $exampleDTO)
     {
-        $this->example = $example;
-    }
+        $this->exampleDTO = $exampleDTO;
+    }   
   
     /**
      * Exampleエンティティを削除
@@ -1951,39 +2101,13 @@ class ExampleRepository extends Repository
      */
     public function delete(Id $id)
     {
-        $example = $this->example->find($id);
+        $this->exampleDTO
+            ->find($id)
+            // 内部でdelete文が実行され，物理削除される．
+            ->delete();
         
-        // 内部でdelete文が実行され，物理削除される．
-        $example->delete();
-    }
-}
-```
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Domain\Entity\Example;
-use App\Http\Controllers\Controller;
-
-class ExampleRepository extends Repository
-{
-    private $example;
-    
-    public function __construct(Example $example)
-    {
-        $this->example = $example;
-    }  
-
-    /**
-     * Exampleエンティティを登録
-     *
-     * @param  Example $example
-     */
-    public function delete(Id $id)
-    {
-        $this->example->destroy($id);
+        // 以下の実装でもよい．
+        // $this->exampleDTO->destroy($id);
     }
 }
 ```
@@ -2000,7 +2124,7 @@ namespace App\Domain\DTO;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Example extends Model
+class ExampleDTO extends Model
 {
     /**
     * トレイトの読み込み
@@ -2059,29 +2183,43 @@ class CreateExampleTable extends Migration
 }
 ```
 
-上記の状態で，同様に```delete```メソッドをコールすると，物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```カラムが```NULL```でないデータを読み出さないため，論理削除を実現できる．
+上記の状態で，同様に```delete```メソッドを使用して，自身を削除する．物理削除ではなく，```deleled_at```カラムが更新されるようになる．```find```メソッドは，```deleled_at```カラムが```NULL```でないデータを読み出さないため，論理削除を実現できる．
 
 ```php
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entity\Example;
-use App\Http\Controllers\Controller;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
 
-class ExampleRepository extends Repository
+class ExampleRepository extends Repository implements DomainExampleRepository
 {
     /**
-     * Exampleエンティティを登録
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを削除
      *
      * @param Id $id
      */
     public function delete(Id $id)
     {
-        $example = Example::find($id);
+        $this->exampleDTO
+            ->find($id)
+            // 内部でdelete文が実行され，論理削除される．
+            ->delete();
         
-        // 内部でupdate文が実行され，論理削除される．
-        $example->delete();
+        // 以下の実装でもよい．
+        // $this->exampleDTO->destroy($id);        
     }
 }
 ```
