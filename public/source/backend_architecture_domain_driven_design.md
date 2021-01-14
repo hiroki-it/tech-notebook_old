@@ -553,7 +553,7 @@ EntityとValue Objectのどちらとして，オブジェクトをモデリン�
 
 #### ・普遍性をコードで実現する方法
 
-インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
+インスタンス化時に自動的に呼び出される```construct```メソッドを用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```construct```メソッドでのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
 
 **＊実装例＊**
 
@@ -595,7 +595,7 @@ $test01->setProperty01("データ01の値");
 $test01->setProperty01("新しいデータ01の値");
 ```
 
-一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
+一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```construct```メソッドだけを持たせれば，『Immutable』なオブジェクトとなる．
 
 **＊実装例＊**
 
@@ -702,47 +702,37 @@ class ColorVO extends Enum
     const RED = '1';
     const BLUE = '2';
 
-
     // 『self::定数名』で，定義の値へアクセスする．
     private $defs = [
         self::RED => ['color_name' => 'レッド'],
         self::BLUE => ['color_name' => 'ブルー']
     ];
 
-
     // 色値データ
-    private $colorValue;
-    
+    private $colorValue;    
     
     // 色名データ．
     private $colorName;
     
-    
     // インスタンス化の時に，『色の区分値』を受け取る．
-    public function __construct
-    (
-        String $value
-    )
+    public function __construct(string $value)
     {
         // $kbnValueに応じて，色名をcolornameデータにセットする．
         $this->colorValue = $value;
         $this->colorname = $this->defs[$value]['color_name'];
     }
     
-    
     // constructによってセットされた色値を返すメソッド．
     public function colorValue() :int
     {
         return $this->colorValue;
-    } 
-
+    }
 
     // constructによってセットされた色名を返すメソッド．
     public function colorName() :string
     {
         return $this->colorName;
     } 
-    
 }
 ```
 
@@ -781,43 +771,33 @@ DBに対する書き込み操作を行う．
 
 **＊実装例＊**
 
+参考：https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/query-builder.html
+
 ```php
 <?php
+    
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
 
-// 集約の構成とデータ追加を行う．
-class setDogToyEntityRepository
+class DogToyRepository
 {
-    
-    // 接続先したいデータベースが設定されたデータ
-    private $dbs;
-  
-    public function setDataSet(Request $request)
+    /**
+     * Route Entityを書き込みます．
+     */
+    public function create(DogToy $dogToy)
     {
-  
-        $dogToyEntity = new DogToyEntity;
-  
-  
-        // 送信された値を取り出して格納し，集約を生成．
-        $dogToyEntity->toyType = $request->xxx();
-        $dogToyEntity->toyName	= $request->xxx();
-        $dogToyEntity->number = $request->xxx();
-        $dogToyEntity->priceVO = $request->xxx(new PriceVO());
-        $dogToyEntity->colorVO = $request->xxx(new ColorVO());
-  
-  
-        // 集約を連想配列に分解する．
-        $data = [
-            'type' => $dogToyEntity->toyType,
-            'name' => $dogToyEntity->toyName,
-            'number' => $dogToyEntity->number,
-            'price' => $dogToyEntity->priceVO->price(),
-            'color_value' => $dogToyEntity->colorVO->value(),
-        ];
-  
-  
-        // データベースのテーブルに挿入する．
-        $this->dbs['app']->insert(dog_toy_table, $data);
-    
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
+        
+        // SQLを定義する．
+        $query->insert('dog_toy_table', [
+            
+            // Route Entityの要素をカラム値として設定する．
+            'name'  => $dogToy->toyName,
+            'type'  => $dogToy->toyType,
+            'price' => $dogToy->priceVO->price(),
+            'color' => $dogToy->colorVO->value(),
+        ]);
     }
 }
 ```
@@ -836,55 +816,68 @@ DBに対する書き込み操作を行う．
 
 **＊実装例＊**
 
+参考：https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/query-builder.html
+
 ```php
 <?php
+    
+namespace App\Infrastructure\Repositories;
 
-// データのReadと集約再構成を行う．
-class getDogToyEntityRepository
-{
-  // 接続先したいデータベースが設定されたデータ
-    private $dbs;
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
 
-
-    // 連想配列データから『RouteEntity』の集約を構成し，レスポンスする．
-    public function arrayDogToyEntities(): DogToyEntities
+class DogToyRepository
+{   
+     /**
+     * Route Entityのセットを生成します．
+     */
+    public function findAllDogToys(): array
     {
-        $dogToyEntities = [];
-        foreach($this->fetchDataSet() as $fetchedData){
-            $dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
+        $dogToys = [];
+        
+        foreach($this->fetchAllDogToy() as $fetched){
+            $dogToys[] = $this->aggregateDogToy($fetched);
         }
         
-        return $dogToyEntities;
+        return $dogToys;
     }
-
-
-    // データベースからデータをReadする．
-    private function fetchDataSet()
+    
+    /**
+    * Entityを全て読み出します．
+    */
+    private function fetchAllDogToy(): array
     {
-        $select = [
-            'dog_toy.type AS dog_type',
-            'dog_toy.name AS dog_toy_name',
-            'dog_toy.number AS number',
-            'dog_toy.price AS dog_toy_price',
-            'dog_toy.color_value AS color_value'
-        ];
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
         
-        $query = $this->getFecthQuery($select);
-        return $query->getConnection()->executeQuery()->fetchAll(); 
+        // SQLを設定する．
+        $query->select([
+            'dog_toy_table.name AS dog_toy_name',
+            'dog_toy_table.type AS dog_toy_type',
+            'dog_toy_table.price AS dog_toy_price',
+            'dog_toy_table.color AS dog_toy_color'
+        ])
+        ->from('dog_toy_table', 'dog_toy_table')
+        ->getQuery();
+            
+        // SQLを実行する．
+        $query->getResult();
     }
 
-
-    // 集約を行うメソッド
-    private function aggregateDogToyEntity(Array $fetchedData)
+    /**
+     * Route Entityを生成します．
+     */
+    private function aggregateDogToy(array $fetched): DogToy
     {
-        $dogToyEntity = new DogToyEntity;
-        $dogToyEntity->toyType = $fetchedData['dog_toy_type'];
-        $dogToyEntity->toyName = $fetchedData['dog_toy_name'];
-        $dogToyEntity->number = $fetchedData['number'];
-        $dogToyEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
-        $dogToyEntity->colorVO = new ColorVO($fetchedData['color_value']);
+        $dogToy = new DogToy;
+        
+        $dogToy->toyName = $fetched['dog_toy_name'];
+        $dogToy->toyType = $fetched['dog_toy_type'];
+        $dogToy->priceVO = new PriceVO($fetched['dog_toy_price']);
+        $dogToy->colorVO = new ColorVO($fetched['dog_toy_color']);
+        
+        return $dogToy;
     }
-  
 }
 ```
 
@@ -894,31 +887,49 @@ class getDogToyEntityRepository
 
 #### ・責務
 
-責務として，構成した集約関係を加工して新たな集約を再構成する．
+責務として，新たな集約を構成する．既存の集約を分解して再構成させてもよい．
 
 **＊実装例＊**
 
 ```php
 <?php
-
-// 構成した集約関係を加工して新たな集約を再構成する
-class Factory
-{
-  
-    private $factory;
-
-    public function __construct(Factory $factory)
-    {
-        $this->$factory = $factory;
-    }
-  
-    public function factoryToyOrderEntity()
-    {
-        if(isset($this->factory)){
-            $toyOrderEntity = ;//なんらかの集約処理;
-            }
     
-        return $toyOrderEntity;
+namespace App\Infrastructure\Factories;
+
+use App\Domain\Entity\DogToy;
+use App\Domain\Entity\DogToy\DogToyId;
+use App\Domain\Entity\DogToy\DogToyName;
+use App\Domain\Entity\DogToy\DogToyType;
+use App\Domain\Entity\DogToy\DogToyPrice;
+use App\Domain\Entity\DogToy\DogToyColor;
+use App\Domain\Entity\DogFood;
+use App\Domain\Entity\DogFood\DogFoodId;
+use App\Domain\Entity\DogFood\DogFoodName;
+use App\Domain\Entity\DogFood\DogFoodType;
+use App\Domain\Entity\DogFood\DogFoodPrice;
+use App\Domain\Entity\DogFood\DogFoodFlavor;
+
+class DogToyFactory
+{   
+    /**
+     * 新たな集約を構成します．
+     */
+    public static function createDogToy($data): DogItem
+    {
+        return new DogItem(
+            new DogToy(
+                $data['dog_toy_name'],
+                $data['dog_toy_type'],
+                $data['dog_toy_price'],
+                $data['dog_toy_color'],
+            ),
+            new DogFood(
+                $data['dog_food_name'],
+                $data['dog_food_type'],
+                $data['dog_food_price'],
+                $data['dog_food_flavor'],
+            )
+        );
     }
     
 }
