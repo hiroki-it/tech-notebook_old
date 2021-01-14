@@ -137,6 +137,8 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 ```php
 <?php
 
+namespace App\Controller;        
+    
 class AcceptOrdersController
 {
     // 単なるメソッドではなく，Use caseとなるようなメソッド
@@ -144,7 +146,6 @@ class AcceptOrdersController
     {
     
     }
-
 }  
 ```
 
@@ -167,6 +168,8 @@ Application層の中で，ドメイン層のオブジェクトを使用する汎
 ```php
 <?php
 
+namespace App\Service;    
+    
 class SlackNotificationService
 {
     public function notify(SlackMessage $message)
@@ -193,7 +196,9 @@ use Respect\Validation\Validator; // Validationのライブラリ
 
 class FormatValidator
 {
-    // 日時データのフォーマットを検証する．
+   /**
+    * 日時データのフォーマットを検証します．
+    */    
     public function validateFormat($dateTime)
     {
         if(empty($dateTime)) {
@@ -221,10 +226,14 @@ class FormatValidator
 
 ```php
 <?php
-
+    
+namespace App\Converter;
+    
 class Converter
 {
-    // オブジェクトを連想配列に詰め替える処理．
+   /**
+    * オブジェクトを連想配列に詰め替えます．
+    */
     public function convertToArray(XxxEntity $xxxEntity)
     {
         $xxxArray['id'] = $xxxEntity->id;
@@ -252,12 +261,14 @@ class Converter
 ```php
 <?php
 
-interface GetDogToyEntityRepository
+namespace App\Domain\Repository;    
+    
+interface DogToyRepository
 {
-
-    // 対応する具象メソッドはInfrastructure層のRepositoryに実装．
-    function arrayDogToyEntities();
-
+    /**
+     * 具象メソッドはInfrastructure層のRepositoryに実装．
+     */
+    function findAllDogToys();
 }
 ```
 
@@ -286,6 +297,8 @@ interface GetDogToyEntityRepository
 ```php
 <?php
 
+namespace App\Specification;    
+    
 class XxxSpecification
 {
     public function isSatisfiedBy($XxxEntity)
@@ -304,6 +317,8 @@ class XxxSpecification
 ```php
 <?php
 
+namespace App\Criteria;
+    
 class XxxCriteria
 {
     private $id;
@@ -311,8 +326,10 @@ class XxxCriteria
     private $name;
   
     private $email;
-  
-    // 検索条件のオブジェクトを生成．
+    
+    /**
+     * 検索条件のオブジェクトを生成します．
+     */      
     public function build(array $array)
     {
         // 自身をインスタンス化．
@@ -385,26 +402,34 @@ class XxxCriteria
 ```php
 <?php
 
-class ToyOrderEntity
+namespace App\Domain\Entity;    
+    
+/**
+ * おもちゃのEntity
+ */
+class ToyEntity
 {
-    // 犬用おもちゃ
-    private $dogToyEntity;
+
+    /**
+     * 犬用おもちゃ
+     */    
+    private $dogToy;
     
-    // 猫用おもちゃ
-    private $catToyEntity;
+    /**
+     * 猫用おもちゃ
+     */    
+    private $catToy;
     
-    // Setterを実装
     public function __construct
     (
-        DogToyEntity $dogToyEntity,
-        CatToyEntity $catToyEntity
+        DogToy $dogToy,
+        CatToy $catToy
     )
     {
-        $this->dogToyEntity = $dogToyEntity;
-        $this->catToyEntity = $catToyEntity;
+        $this->dogToy = $dogToy;
+        $this->catToy = $catToy;
     }
   
-    // 	Getterを実装
     public function getXXX()
     {
         //  Read処理;
@@ -426,25 +451,38 @@ class ToyOrderEntity
 ```php
 <?php
 
-class DogToyEntity
+namespace App\Domain\ValueObject;    
+    
+/**
+ * 犬おもちゃのEntity
+ */
+class DogToy
 {
-    // おもちゃタイプ
+    /**
+     * おもちゃタイプ
+     */
     private $toyType;
     
-    // おもちゃ商品名
+     /**
+     * おもちゃ商品名
+     */    
     private $toyName;
     
-    // 数量
+    /**
+     * 数量
+     */    
     private $number;
     
-    // 価格VO
+     /**
+     * 価格VO
+     */    
     private $priceVO;
     
-    // 色VO
+    /**
+     * 色VO
+     */    
     private $colorVO;
     
-    
-    // Setterを実装
     public function __construct
     (
         int $toyType,
@@ -461,7 +499,6 @@ class DogToyEntity
         $this->colorVO = $colorVO;
     }
         
-    // Getterを実装
     public function toyNameWithColor()
     {
         return sprintf(
@@ -489,8 +526,10 @@ class DogToyEntity
 ```php
 <?php
 
+namespace App\Domain\ValueObject;    
+    
 /**
- * 支払情報オブジェクト
+ * 支払情報のValue Object
  */
 class PaymentInfoVO
 {
@@ -553,13 +592,18 @@ EntityとValue Objectのどちらとして，オブジェクトをモデリン�
 
 #### ・普遍性をコードで実現する方法
 
-インスタンス化時に自動的に呼び出される```__construct()```を用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```__construct()```でのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
+インスタンス化時に自動的に呼び出される```construct```メソッドを用いる．インスタンス化時に実行したい処理を記述できる．Setterを持たせずに，```construct```メソッドでのみ値の設定を行えば，Value Objectのような，『Immutable』なオブジェクトを実現できる．
 
 **＊実装例＊**
 
 ```php
 <?php
 
+namespace App\Domain\ValueObject;    
+    
+/**
+ * Value Object
+ */     
 class ExampleVO
 {
     
@@ -569,7 +613,6 @@ class ExampleVO
     
     private $propertyC;
     
-    // コンストラクタで$propertyに値を設定
     public function __construct($param)
     {
         $this->propertyA = $param['a'];
@@ -595,7 +638,7 @@ $test01->setProperty01("データ01の値");
 $test01->setProperty01("新しいデータ01の値");
 ```
 
-一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```__construct()```だけを持たせれば，『Immutable』なオブジェクトとなる．
+一方で，Test02クラスインスタンスの```$property02```に値を設定するためには，インスタンスを作り直さなければならない．つまり，以前に作ったインスタンスの```$property02```の値は上書きできない．Setterを持たせずに，```construct```メソッドだけを持たせれば，『Immutable』なオブジェクトとなる．
 
 **＊実装例＊**
 
@@ -637,20 +680,32 @@ $test02 = new Test02("新しいデータ02の値");
 
 ```php
 <?php
+    
+namespace App\Domain\ValueObject;
 
-// （1）ドメイン層の氏名を扱うVO
+/**
+ * 氏名のValue Object
+ */    
 class NameVO
 {
-        // （2）予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
+    /**
+     * 予め実装したImmutableObjectトレイトを用いて，データの不変性を実現
+     */   
     use ImmutableObject;
 
-    // 苗字データ
+    /**
+     * 苗字
+     */
     private $lastName;
     
-    // 名前データ
+    /**
+     * 名前
+     */
     private $firstName;
     
-    // （6） メソッドによってオブジェクトの状態が変わらない
+     /**
+     * メソッドによってオブジェクトの状態が変わらない
+     */   
     public function fullName(): string
     {
         return $this->lastName . $this->firstName;
@@ -673,10 +728,62 @@ class NameVO
 ```php
 <?php
 
-// ドメイン層の金額を扱うVO
-class Money
+namespace App\Domain\ValueObject;
+    
+/**
+ * 金額のValue Object
+ */
+class MoneyVO
 {
+    /**
+     * 金額
+     */        
+    private $amount;
 
+    public function __construct($amount = 0)
+    {
+        $this->amount = (float) $amount;
+    }
+    
+    /**
+     * 金額を返却します．
+     */        
+    public function amount()
+    {
+        return $this->amount;
+    }
+    
+    /**
+     * 単位を返却します．
+     */    
+    public function unit()
+    {
+        return '円';
+    }
+    
+    /**
+     * 足し算の結果を返却します．
+     */    
+    public function add(Money $rhs)
+    {
+        return new static($this->amount + $rhs->amount);
+    }
+    
+    /**
+     * 引き算の結果を返却します
+     */
+    public function substract(Money $rhs)
+    {
+        return new static($this->amount - $rhs->amount);
+    }
+    
+    /**
+     * 掛け算の結果を返却します
+     */    
+    public function multiply($rhs)
+    {
+        return new static($this->amount * $rhs);
+    }    
 }
 ```
 
@@ -696,53 +803,59 @@ Type Codeは概念的な呼び名で，実際は，標準的なライブラリ�
 
 ```php
 <?php
-
+   
+namespace App\Domain\ValueObject;
+    
+/**
+ * 色のValue Object
+ */
 class ColorVO extends Enum
 {
     const RED = '1';
     const BLUE = '2';
-
-
-    // 『self::定数名』で，定義の値へアクセスする．
+    
+    /**
+     * 『self::定数名』で，定義の値へアクセスします．
+     */
     private $defs = [
         self::RED => ['color_name' => 'レッド'],
         self::BLUE => ['color_name' => 'ブルー']
     ];
 
-
-    // 色値データ
-    private $colorValue;
+    /**
+     * 色値
+     */
+    private $colorValue;    
     
-    
-    // 色名データ．
+    /**
+     * 色名
+     */
     private $colorName;
     
-    
     // インスタンス化の時に，『色の区分値』を受け取る．
-    public function __construct
-    (
-        String $value
-    )
+    public function __construct(string $value)
     {
         // $kbnValueに応じて，色名をcolornameデータにセットする．
         $this->colorValue = $value;
         $this->colorname = $this->defs[$value]['color_name'];
     }
     
-    
-    // constructによってセットされた色値を返すメソッド．
+    /**
+     * 色値を返却します．
+     */
     public function colorValue() :int
     {
         return $this->colorValue;
-    } 
+    }
 
 
-    // constructによってセットされた色名を返すメソッド．
+    /**
+     * 色名を返却します．
+     */
     public function colorName() :string
     {
         return $this->colorName;
     } 
-    
 }
 ```
 
@@ -761,6 +874,8 @@ class ColorVO extends Enum
 
 #### ・DBに対する書き込み責務（Create，Update，Delete）
 
+![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ更新.png)
+
 DBに対する書き込み操作を行う．
 
 1. GETまたはPOSTによって，アプリケーション層から値が送信される．
@@ -777,52 +892,122 @@ DBに対する書き込み操作を行う．
 
 7. DBに対して，書き込みを行う．
 
-   ![ドメイン駆動設計_リポジトリ_データ更新](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ更新.png)
+
+参考：
+
+https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/query-builder.html
+
+https://github.com/doctrine/dbal/blob/2.12.x/lib/Doctrine/DBAL/Query/QueryBuilder.php
 
 **＊実装例＊**
+
+CREATE処理のため，DoctrineのQueryBuilderクラスの```insert```メソッドを実行する．
+
+```php
+<?php
+    
+namespace App\Infrastructure\Repositories;    
+    
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
+
+/**
+ * 犬用おもちゃリポジトリ
+ */
+class DogToyRepository
+{
+    /**
+     * Route Entityを書き込みます．
+     */
+    public function create(DogToy $dogToy)
+    {
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
+        
+        // SQLを定義する．
+        $query->insert('dog_toy_table')
+            ->values([
+                // Route Entityの要素をカラム値として設定する．（IDはAutoIncrement）
+                'name'  => $dogToy->toyName,
+                'type'  => $dogToy->toyType,
+                'price' => $dogToy->priceVO->price(),
+                'color' => $dogToy->colorVO->value(),
+        ]);
+    }
+}
+```
+
+UPDATE処理のため，DoctrineのQueryBuilderクラスの```update```メソッドを実行する．
 
 ```php
 <?php
 
-// 集約の構成とデータ追加を行う．
-class setDogToyEntityRepository
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
+
+/**
+ * 犬用おもちゃリポジトリ
+ */
+class DogToyRepository
 {
-    
-    // 接続先したいデータベースが設定されたデータ
-    private $dbs;
-  
-    public function setDataSet(Request $request)
+    /**
+     * Route Entityを書き込みます．
+     */
+    public function create(DogToy $dogToy)
     {
-  
-        $dogToyEntity = new DogToyEntity;
-  
-  
-        // 送信された値を取り出して格納し，集約を生成．
-        $dogToyEntity->toyType = $request->xxx();
-        $dogToyEntity->toyName	= $request->xxx();
-        $dogToyEntity->number = $request->xxx();
-        $dogToyEntity->priceVO = $request->xxx(new PriceVO());
-        $dogToyEntity->colorVO = $request->xxx(new ColorVO());
-  
-  
-        // 集約を連想配列に分解する．
-        $data = [
-            'type' => $dogToyEntity->toyType,
-            'name' => $dogToyEntity->toyName,
-            'number' => $dogToyEntity->number,
-            'price' => $dogToyEntity->priceVO->price(),
-            'color_value' => $dogToyEntity->colorVO->value(),
-        ];
-  
-  
-        // データベースのテーブルに挿入する．
-        $this->dbs['app']->insert(dog_toy_table, $data);
-    
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
+        
+        // SQLを定義する．
+        $query->update('dog_toy_table', 'dog_toy')
+            // Route Entityの要素をカラム値として設定する．
+            ->set('dog_toy.name', $dogToy->toyName->name())
+            ->set('dog_toy.type', $dogToy->toyType->type())
+            ->set('dog_toy.price', $dogToy->priceVO->price())
+            ->set('dog_toy.color', $dogToy->colorVO->value())
+            ->where('dog_toy.id', $dogToy->dogToyId->id();
+    }
+}
+```
+
+DELETE処理（論理削除）のため，DoctrineのQueryBuilderクラスの```update```メソッドを実行する．
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;    
+
+use App\Constants\FlagConstant;
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
+
+/**
+ * 犬用おもちゃリポジトリ
+ */
+class DogToyRepository
+{
+    /**
+     * Route Entityを書き込みます．
+     */
+    public function create(DogToy $dogToy)
+    {
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
+        
+        // SQLを定義する．
+        $query->update('dog_toy_table', 'dog_toy')
+            // 論理削除
+            ->set('dog_toy.is_deleted', FlagConstant::IS_ON)
+            ->where('dog_toy.id', $dogToy->toyId->id();
     }
 }
 ```
 
 #### ・DBに対する読み出し責務（Read）
+
+![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
 
 DBに対する書き込み操作を行う．
 
@@ -832,59 +1017,84 @@ DBに対する書き込み操作を行う．
 4. Repositoryによって，最終的な集約を構成する．
 5. 再構成された集約をアプリケーション層にレスポンス．
 
-![ドメイン駆動設計_リポジトリ_データ取得](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_リポジトリ_データ取得.jpg)
+参考：
+
+https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/query-builder.html
+
+https://github.com/doctrine/dbal/blob/2.12.x/lib/Doctrine/DBAL/Query/QueryBuilder.php
 
 **＊実装例＊**
 
+READ処理のため，DoctrineのQueryBuilderクラスの```select```メソッドを実行する．
+
 ```php
 <?php
+    
+namespace App\Infrastructure\Repositories;
 
-// データのReadと集約再構成を行う．
-class getDogToyEntityRepository
-{
-  // 接続先したいデータベースが設定されたデータ
-    private $dbs;
+use App\Constants\FlagConstant;
+use App\Domain\Entity\DogToy;
+use Doctrine\DBAL\Query\QueryBuilder;
 
-
-    // 連想配列データから『RouteEntity』の集約を構成し，レスポンスする．
-    public function arrayDogToyEntities(): DogToyEntities
+/**
+ * 犬用おもちゃリポジトリ
+ */
+class DogToyRepository
+{   
+     /**
+     * Route Entityのセットを生成します．
+     */
+    public function findAllDogToys(): array
     {
-        $dogToyEntities = [];
-        foreach($this->fetchDataSet() as $fetchedData){
-            $dogToyEntities[] = $this->aggregateDogToyEntity($fetchedData)
+        $dogToys = [];
+        
+        foreach($this->fetchAllDogToy() as $fetched){
+            $dogToys[] = $this->aggregateDogToy($fetched);
         }
         
-        return $dogToyEntities;
+        return $dogToys;
     }
-
-
-    // データベースからデータをReadする．
-    private function fetchDataSet()
+    
+    /**
+    * Entityを全て読み出します．
+    */
+    private function fetchAllDogToy(): array
     {
-        $select = [
-            'dog_toy.type AS dog_type',
-            'dog_toy.name AS dog_toy_name',
-            'dog_toy.number AS number',
-            'dog_toy.price AS dog_toy_price',
-            'dog_toy.color_value AS color_value'
-        ];
+        // クエリビルダ生成
+        $query = $this->createQueryBuilder();
         
-        $query = $this->getFecthQuery($select);
-        return $query->getConnection()->executeQuery()->fetchAll(); 
+        // SQLを設定する．
+        $query->select(
+            'dog_toy.id    AS dog_toy_id',
+            'dog_toy.name  AS dog_toy_name',
+            'dog_toy.type  AS dog_toy_type',
+            'dog_toy.price AS dog_toy_price',
+            'dog_toy.color AS dog_toy_color'
+        )
+        ->from('dog_toy_table', 'dog_toy')
+        // 論理削除されていないもののみ
+        ->where('dog_toy.is_deleted', FlagConstant::IS_OFF)
+        ->getQuery();    
+        
+        // SQLを実行する．
+        $query->getResult();
     }
 
-
-    // 集約を行うメソッド
-    private function aggregateDogToyEntity(Array $fetchedData)
+    /**
+     * Route Entityを生成します．
+     */
+    private function aggregateDogToy(array $fetched): DogToy
     {
-        $dogToyEntity = new DogToyEntity;
-        $dogToyEntity->toyType = $fetchedData['dog_toy_type'];
-        $dogToyEntity->toyName = $fetchedData['dog_toy_name'];
-        $dogToyEntity->number = $fetchedData['number'];
-        $dogToyEntity->priceVO = new PriceVO($fetchedData['dog_toy_price']);
-        $dogToyEntity->colorVO = new ColorVO($fetchedData['color_value']);
+        $dogToy = new DogToy;
+        
+        $dogToy->toyId = $fetched['dog_toy_id']
+        $dogToy->toyName = $fetched['dog_toy_name'];
+        $dogToy->toyType = $fetched['dog_toy_type'];
+        $dogToy->priceVO = new PriceVO($fetched['dog_toy_price']);
+        $dogToy->colorVO = new ColorVO($fetched['dog_toy_color']);
+        
+        return $dogToy;
     }
-  
 }
 ```
 
@@ -894,32 +1104,45 @@ class getDogToyEntityRepository
 
 #### ・責務
 
-責務として，構成した集約関係を加工して新たな集約を再構成する．
+責務として，新たな集約を構成する．既存の集約を分解して再構成させてもよい．
 
 **＊実装例＊**
 
 ```php
 <?php
-
-// 構成した集約関係を加工して新たな集約を再構成する
-class Factory
-{
-  
-    private $factory;
-
-    public function __construct(Factory $factory)
-    {
-        $this->$factory = $factory;
-    }
-  
-    public function factoryToyOrderEntity()
-    {
-        if(isset($this->factory)){
-            $toyOrderEntity = ;//なんらかの集約処理;
-            }
     
-        return $toyOrderEntity;
-    }
-    
+namespace App\Infrastructure\Factories;
+
+use App\Domain\Entity\DogToy;
+use App\Domain\Entity\DogFood;
+use App\Domain\Entity\DogItem;
+
+/**
+ * 犬用おもちゃファクトリ
+ */
+class DogToyFactory
+{   
+    /**
+     * 新たな集約を構成します．
+     */
+    public static function createDogToy($data): DogItem
+    {
+        return new DogItem(
+            new DogToy(
+                $data['dog_toy_id'],
+                $data['dog_toy_name'],
+                $data['dog_toy_type'],
+                $data['dog_toy_price'],
+                $data['dog_toy_color'],
+            ),
+            new DogFood(
+                $data['dog_food_id'],
+                $data['dog_food_name'],
+                $data['dog_food_type'],
+                $data['dog_food_price'],
+                $data['dog_food_flavor'],
+            )
+        );
+    } 
 }
 ```
