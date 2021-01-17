@@ -4,7 +4,7 @@
 
 Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
 
-参考リンク：https://laravel.com/api/6.x/Illuminate.html
+参考：https://laravel.com/api/6.x/Illuminate.html
 
 <br>
 
@@ -518,7 +518,7 @@ class Example extends Model
      */
     public function getNameAttribute()
     {
-        return $this->exampleName . "です．" 
+        return $this->exampleName . "です．";
     }
 }
 ```
@@ -759,9 +759,11 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      *
      * @param Id $id
      */
-    public function findAllEntity()
+    public function findAll()
     {
-        return $this->exampleDTO->all()->toArray();
+        return $this->exampleDTO
+            ->all()
+            ->toArray();
     }
   
     /**
@@ -769,7 +771,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      *
      * @param Id $id
      */
-    public function findEntityByCriteria($id)
+    public function findOneByCriteria($id)
     {
         return $this->exampleDTO
             ->find($id)
@@ -1479,7 +1481,7 @@ $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 
 Fakerはダミーデータを作成するためのライブラリである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
 
-参考リンク：https://github.com/fzaninotto/Faker
+参考：https://github.com/fzaninotto/Faker
 
 #### ・Fakerによるダミーデータ定義
 
@@ -1893,7 +1895,7 @@ class ExampleAfterMiddleware
 
 <br>
 
-## 10. HTTP｜Request
+## 09-02. HTTP｜Request
 
 ### artisanコマンドによる操作
 
@@ -1906,11 +1908,11 @@ $ php artisan make:request <Request名>
 
 <br>
 
-### バリデーションルールの定義
+### FormRequest
 
-#### ・```rules```メソッド，```validated```メソッド
+#### ・```rules```メソッド
 
-FormRequestを継承したクラスにて，```rules```メソッドを使用して，ルールを定義する．バリデーションルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+FormRequestクラスの```rules```メソッドを使用して，ルールを定義する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．また，
 
 **＊実装例＊**
 
@@ -1924,12 +1926,13 @@ use Illuminate\Foundation\Http\FormRequest;
 class ExampleRequest extends FormRequest
 {
     /**
-     * リクエストに適用するバリデーションルールを取得
+     * ルールを返却します．
      *
      * @return array
      */
     public function rules()
     {
+        // ルールの定義
         return [
             'title' => 'required|unique:posts|max:255',
             'body'  => 'required',
@@ -1938,63 +1941,141 @@ class ExampleRequest extends FormRequest
 }
 ```
 
-Controllerで，ExampleRequestを型指定すると，コントローラのメソッドをコールする前にバリデーションが自動で行われる．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションが失敗した場合，メソッドのコール前に，ExampleRequestが元々のページにリダイレクトする処理を自動で実行する．
+#### ・```validated```メソッド
+
+Requestクラスの```validated```メソッドを使用して，バリデーションを実行する．Controllerで，Requestクラスを引数に指定すると，コントローラのメソッドをコールする前にバリデーションを自動的に実行する．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
 
 **＊実装例＊**
 
 ```php
-/**
- * ブログポストの保存
- *
- * @param  ExampleRequest $request
- * @return Response
- */
-// メソッドが実行される前にバリデーションが行われる．
-public function store(ExampleRequest $request) 
-{
-    // バリデーション済みデータをいきなり取得
-    $validated = $request->validated();
+<?php
   
-    ExampleRepository::update($validated);
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validated();
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
 }
 ```
 
 #### ・```validate```メソッド
 
-Requestクラスの```validate```メソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+同じくRequestクラスの```validate```メソッドを使用して，ルールを定義し，さらにバリデーションを実行する．```validated```メソッドと間違わないように注意する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
 
 **＊実装例＊**
 
 ```php
-/**
- *
- * @param Request $request
- * @return Response
- */
-public
-function store(Request $request)
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
 {
-    $validatedData = $request->validate([
-        'title' => 'required|unique:posts|max:255',
-        'body'  => 'required',
-    ]);
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // ルールの定義，バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body'  => 'required',
+        ]);
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
 }
 ```
 
-validationルールは，配列で定義してよい．
+なお，ルールは，配列で定義してよい．
 
 **＊実装例＊**
 
 ```php
-$validatedData = $request->validate([
-    'title' => ['required', 'unique:posts', 'max:255'],
-    'body' => ['required'],
-]);
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // ルールの定義，バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validate([
+            'title' => ['required', 'unique:posts', 'max:255'],
+            'body'  => ['required'],
+        ]);
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
+}
 ```
 
-#### ・Validatorファサード
+#### ・エラーメッセージの出力
 
-Validatorファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+バリデーションでエラーがあった場合，Handlerクラスの```invalid```メソッドがコールされ，MessageBagクラスがViewに渡される．
+
+参考：
+
+https://laravel.com/api/6.x/Illuminate/Foundation/Exceptions/Handler.html#method_invalid
+
+https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
+
+<br>
+
+### Validatorファサード
+
+#### ・Validatorクラス，```fails```メソッド
+
+バリデーションのために，Requestクラスの```validated```メソッドや```validate```メソッドの代わりに，Validatorファサードを使用しても良い．まず，Validateファサードの```make```メソッドを使用して，ルールを定義する．この時，第一引数で，バリデーションを行うリクエストデータを渡す．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．次に，```fails```メソッドを使用して，バリデーションでエラーが起こった場合の処理を定義する．
 
 **＊実装例＊**
 
@@ -2013,22 +2094,78 @@ class ExampleController extends Controller
      * 新しいブログポストの保存
      *
      * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
+        // ルールの定義
         $validator = Validator::make($request->all(), [
             'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'body'  => 'required',
         ]);
 
+        // バリデーション時にエラーが起こった場合
         if ($validator->fails()) {
-            return redirect('example/create')
-                        ->withErrors($validator)
-                        ->withInput();
+            // 指定したページにリダイレクト
+            return redirect('error')
+                // validatorを渡すことでエラーメッセージをViewに渡せる．
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // ブログポストの保存処理…
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
+}
+```
+
+#### ・```validate```メソッド
+
+Validatorクラスの```validate```メソッドを使用すると，Requestクラスの```validate```メソッドと同様の処理が実行される．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
+
+```php
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {  
+        // 元のページにリダイレクトする場合は，validateメソッドを使用する．
+        $validator = Validator::make($request->all(), [
+           'title' => 'required|unique:posts|max:255',
+           'body'  => 'required',
+        ])
+        ->validate();
+
+        // バリデーション時にエラーが起こった場合
+        if ($validator->fails()) {
+            // 指定したページにリダイレクト
+            return redirect('error')
+                // validatorを渡すことでエラーメッセージをViewに渡せる．
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
     }
 }
 ```
@@ -2051,18 +2188,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
-     * 指定されたユーザーのプロフィールを表示
-     *
      * @param  Request  $request
      * @param  int  $id
-     * @return Response
      */
     public function show(Request $request, $id)
     {
-        $value = $request->session()->get('key');
+        $session = $request->session()->get('key');
     }
 }
 ```
@@ -2070,7 +2204,7 @@ class UserController extends Controller
 全てのセッション変数を取得することもできる．
 
 ```php
-$data = $request->session()->all();
+$session = $request->session()->all();
 ```
 
 #### ・フラッシュデータの設定
@@ -2107,7 +2241,7 @@ public function authorize()
 
 <br>
 
-## 10-02. HTTP｜Controller
+## 09-03. HTTP｜Controller
 
 ### artisanコマンドによる操作
 
@@ -2135,7 +2269,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
      * 新しいユーザーを保存
@@ -2143,7 +2277,7 @@ class UserController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
         $name = $request->input('name');
     }
@@ -2163,7 +2297,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
      * 指定したユーザーの更新
@@ -2181,7 +2315,7 @@ class UserController extends Controller
 
 <br>
 
-## 10-03. HTTP｜Auth
+## 09-04. HTTP｜Auth
 
 ### artisanコマンドによる操作
 
@@ -2481,7 +2615,7 @@ return (string)$response->getBody();
 
 <br>
 
-## 11. Logging
+## 10. Logging
 
 ### Log  Channels
 
@@ -2593,7 +2727,7 @@ return [
 <br>
 
 
-## 12. Migration
+## 11. Migration
 
 ### artisanコマンドによる操作
 
@@ -2812,6 +2946,92 @@ Schema::create('examples', function (Blueprint $table) {
     
     // ～ 省略 ～
 });
+```
+
+<br>
+
+## 12. Resource
+
+### artisanコマンドによる操作
+
+#### ・Resourceの生成
+
+```sh
+$ php artisan make:resource <Resource名>
+```
+
+<br>
+
+### データ型変換
+
+#### ・Modelの配列化
+
+一つのModelを配列に変換する．Resourceクラスの```toArray```メソッドにて，```this```変数は自身ではなく，Resourceクラス名につくModel名になる．また，```this```変数からゲッターを経由せずに直接プロパティにアクセスできる．
+
+**＊実装例＊**
+
+Exampleクラスからデータを取り出し，配列化する．
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ExampleJsonResource extends JsonResource
+{
+    /**
+     * オブジェクトを配列に変換します．
+     *
+     * @param  Request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id'       => $this->id,
+            'name'     => $this->name,
+            'email'    => $this->email,
+            'password' => $this->password
+        ];
+    }
+}
+```
+
+Controllerにて，ResouceクラスにModelを渡すようにする．Laravelはレスポンス時に，```toArray```メソッドをコールし，さらにこの返却値をJSONデータに変換する．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * クライアントにデータを返却します．
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        // ここに，Modelをデータベースから取得する処理
+        
+        // Modelを渡す．
+        return new ExampleResource($example);
+    }
+}
+```
+
+#### ・Collectionの配列化
+
+ModelのCollectionを配列に変換する．
+
+```php
+// ここに実装例
 ```
 
 <br>
@@ -3850,9 +4070,15 @@ Controllerクラスから返却されたデータは，```{{ 変数名 }}```で�
 </html>
 ```
 
-#### ・validationメッセージの出力
+#### ・バリデーションメッセージの出力
+
+バリデーションでエラーが起こった場合，バリデーションでエラーがあった場合，Handlerクラスの```invalid```メソッドがコールされ，MessageBagクラスがViewに渡される．MessageBagクラスは，Blade上で```errors```変数に格納されており，各メソッドをコールしてエラーメッセージを出力できる．
+
+参考：https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
 
 **＊実装例＊**
+
+MessageBagクラスの```all```メソッドで，全てのエラーメッセージを出力する．
 
 ```html
 <!-- /resources/views/example/create.blade.php -->
@@ -3860,18 +4086,30 @@ Controllerクラスから返却されたデータは，```{{ 変数名 }}```で�
 <h1>ポスト作成</h1>
 
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            
-        </ul>
+    <div>
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error }}</p>
+        @endforeach        
     </div>
 @endif
 
+@isset ($status)
+    <div class="complete">
+        <p>登録が完了しました．</p>
+    </div>
+@endisset
+
 <!-- ポスト作成フォーム -->
+```
+
+```css
+.errors {
+    /* 何らかのデザイン */
+}
+
+.complete {
+    /* 何らかのデザイン */
+}
 ```
 
 <br>
@@ -4214,7 +4452,7 @@ class ExampleController extends Controller
         // データ，ステータスコード，ヘッダーなどを設定する場合
         return response()
             ->view(
-              'hello',
+              'example',
               $data,
               200
             )->header(
@@ -4241,7 +4479,7 @@ class ExampleController extends Controller
 
         // ステータスコードのみ設定する場合
         return response()
-            ->view('hello')
+            ->view('example')
             ->setStatusCode(200);
     }
 }
@@ -4300,6 +4538,7 @@ class ExampleController extends Controller
                 ));
         }
     }
+}
 ```
 
 ```php
@@ -4361,5 +4600,108 @@ $path = storage_path();
 
 // /var/www/project/storage/app/file.txt
 $path = storage_path('app/file.txt');
+```
+
+<br>
+
+## 18. 外部ライブラリ
+
+### Enum
+
+#### ・ソースコード
+
+参考：https://github.com/BenSampo/laravel-enum
+
+#### ・Enumクラスの定義
+
+BenSampoのEnumクラスを継承し，区分値と判定メソッドを実装する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Domain\ValueObject\Type;
+
+use BenSampo\Enum\Enum;
+
+class RoleType extends Enum
+{
+    public const CALL_ROLE = '1';        // コールセンター職  
+    public const DEVELOPMENT_ROLE = '2'; // 開発職    
+    public const FINANCE_ROLE = '3';     // 経理職     
+    public const PLAN_ROLE = '4';        // 企画職       
+    public const SALES_ROLE = '5';       // 営業職
+    
+    /**
+     * コールセンター職の区分値をもつかどうかを判定します．
+     */    
+    public function isCallRole()
+    {
+        return $this->is(self::CALL_ROLE);
+    }
+    
+    /**
+     * 開発職の区分値をもつかを判定します．
+     */       
+    public function isDevelopmentRole()
+    {
+        return $this->is(self::DEVELOPMENT_ROLE);
+    }
+    
+    /**
+     * 経理職の区分値をもつかどうかを判定します．
+     */       
+    public function isFinanceRole()
+    {
+        return $this->is(self::FINANCE_ROLE);
+    }
+    
+    /**
+     * 企画職の区分値をもつかどうかを判定します．
+     */       
+    public function isPlanRole()
+    {
+        return $this->is(self::PLAN_ROLE);
+    }  
+    
+    /**
+     * 営業職の区分値をもつかどうかを判定します．
+     */       
+    public function isSalesRole()
+    {
+        return $this->is(self::SALES_ROLE);
+    }        
+}
+```
+
+#### ・Enumクラスの使い方
+
+**＊実装例＊**
+
+データベースから区分値をSELECTした後，これを元にEnumクラスを作成する．
+
+```php
+<?php
+
+// Staffモデル
+$staff = new Staff();
+ 
+// データベースから取得した区分値（開発職：2）からEnumクラスを作成
+$staff->roleType = new RoleType($fetched['role_type']);
+// 以下の方法でもよい．
+// $staff->roleType = RoleType::fromValue($fetched['role_type']);
+
+// StaffモデルがいずれのRoleTypeをもつか
+$staff->roleType->isDevelopmentRole(); // true
+$staff->roleType->isSalesRole(); // false
+```
+
+**＊実装例＊**
+
+リクエストメッセージからデータを取り出した後，これを元にEnumクラスを作成する．
+
+```
+
 ```
 

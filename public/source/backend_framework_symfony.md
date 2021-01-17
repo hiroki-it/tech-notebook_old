@@ -1,6 +1,12 @@
 # Symfony
 
-## 01. Symfonyのディレクトリ構成
+## 01. 参考になるリファレンス
+
+参考：https://symfony.com/doc/current/the-fast-track/ja/index.html
+
+<br>
+
+## 01-02. Symfonyのディレクトリ構成
 
 ```
 Symfony
@@ -56,7 +62,7 @@ Symfony
 
 ## 02. 特に汎用的なSymfonyコンポーネント
 
-### Consoleコンポーネント
+### Console
 
 ```PHP
 <?php
@@ -69,7 +75,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 <br>
 
-### HttpFoundationコンポーネント
+### HttpFoundation
 
 ```PHP
 <?php
@@ -83,7 +89,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 <br>
 
-### HttpKernelコンポーネント
+### HttpKernel
 
 ```PHP
 <?php
@@ -95,7 +101,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 <br>
 
-### Pimpleコンポーネント
+### Pimple
 
 ```PHP
 <?php
@@ -107,7 +113,7 @@ use Pimple\ServiceProviderInterface;
 
 <br>
 
-### Securityコンポーネント
+### Security
 
 ```PHP
 <?php
@@ -118,7 +124,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 <br>
 
-### EventDispatcherコンポーネント
+### EventDispatcher
 
 ```PHP
 <?php
@@ -129,7 +135,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 <br>
 
-### Routingコンポーネント
+### Routing
 
 ```PHP
 <?php
@@ -138,7 +144,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 <br>
 
-### Cacheコンポーネント
+### Cache
 
 ```PHP
 <?php
@@ -148,7 +154,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 <br>
 
 
-## 03. Consoleコンポーネント
+## 03. Console
 
 ### CLI：Command Line Interface
 
@@ -227,7 +233,7 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 
 <br>
 
-## 03-02. HttpFoundationコンポーネント
+## 03-02. HttpFoundation
 
 ### AppKernel
 
@@ -344,7 +350,7 @@ class ExampleController extends AbstractController
 
 <br>
 
-## 03-03. HttpKernelコンポーネント
+## 03-03. HttpKernel
 
 ### HttpKernelによるリクエストとレスポンス
 
@@ -352,7 +358,7 @@ class ExampleController extends AbstractController
 
 <br>
 
-## 03-04. Pimpleコンポーネント
+## 03-04. Pimple
 
 ### Service Container
 
@@ -360,7 +366,7 @@ Symfonyから提供されるDIコンテナのこと．
 
 <br>
 
-## 03-05. Routingコンポーネント
+## 03-05. Routing
 
 ### RoutingConfigurator
 
@@ -387,13 +393,13 @@ return function (RoutingConfigurator $routes) {
 
 <br>
 
-## 03-06. Cacheコンポーネント
+## 03-06. Cache
 
 ### FilesystemAdapter
 
 #### ・FilesystemAdapterとは
 
-データをキャッシングできるコンポーネント．オプションで，名前空間，キャッシュ存続時間，キャッシュルートパスを指定できる．
+データをキャッシングできる．オプションで，名前空間，キャッシュ存続時間，キャッシュルートパスを指定できる．
 
 ```PHP
 <?php

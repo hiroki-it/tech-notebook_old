@@ -1411,7 +1411,7 @@ API Gatewayは上記のJSONデータを受信した後，```body```のみ値を�
 
 デプロイされるステージ固有の環境変数を設定できる．Lambda関数名，エンドポイントURL，パラメータマッピング，マッピングテンプレートで値を出力できる．
 
-参照：https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html
+参考：https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html
 
 #### ・SDKの生成
 
@@ -1555,7 +1555,7 @@ jq  '.prefixes[] | select(.service=="CLOUDFRONT") | .ip_prefix'
 
 もしくは，以下のリンクを直接参照し，「```"service": "CLOUDFRONT"```」となっている部分を探す．
 
-参照リンク：https://ip-ranges.amazonaws.com/ip-ranges.json
+参考：https://ip-ranges.amazonaws.com/ip-ranges.json
 
 #### ・エッジロケーションの使用中サーバのIPアドレス
 
@@ -1672,7 +1672,7 @@ CloudFront-Forwarded-Proto: https
 
 キャッシュの時間は，リクエストヘッダー（```Cache-Control```，```Expires```）の値とCloud Frontの設定（最大最小デフォルトTTL）の組み合わせによって決まる．ちなみに，Cloud Frontの最大最小デフォルトTTLを全て０秒にすると，キャッシュを完全に無効化できる．
 
-参照：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
+参考：https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
 
 <br>
 
@@ -1788,7 +1788,7 @@ Global Acceleratorを使用しない場合，クライアントPCのリージョ
 
 以下のサイトで，Global Acceleratorを使用した場合としなかった場合のレスポンス速度を比較できる．
 
-速度比較：https://speedtest.globalaccelerator.aws/#/
+参考：https://speedtest.globalaccelerator.aws/#/
 
 <br>
 
@@ -3177,7 +3177,7 @@ STSへのリクエストの結果，ロールがアタッチされた新しいIA
 
 jqを使用して，JSONデータからアカウント情報を抽出する．
 
-jq：https://stedolan.github.io/jq/
+参考：https://stedolan.github.io/jq/
 
 
 ```sh
