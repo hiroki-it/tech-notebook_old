@@ -4,7 +4,7 @@
 
 Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
 
-参考リンク：https://laravel.com/api/6.x/Illuminate.html
+参考：https://laravel.com/api/6.x/Illuminate.html
 
 <br>
 
@@ -518,7 +518,7 @@ class Example extends Model
      */
     public function getNameAttribute()
     {
-        return $this->exampleName . "です．" 
+        return $this->exampleName . "です．";
     }
 }
 ```
@@ -1479,7 +1479,7 @@ $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 
 Fakerはダミーデータを作成するためのライブラリである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
 
-参考リンク：https://github.com/fzaninotto/Faker
+参考：https://github.com/fzaninotto/Faker
 
 #### ・Fakerによるダミーデータ定義
 
@@ -2051,18 +2051,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
-     * 指定されたユーザーのプロフィールを表示
-     *
      * @param  Request  $request
      * @param  int  $id
-     * @return Response
      */
     public function show(Request $request, $id)
     {
-        $value = $request->session()->get('key');
+        $session = $request->session()->get('key');
     }
 }
 ```
@@ -2070,7 +2067,7 @@ class UserController extends Controller
 全てのセッション変数を取得することもできる．
 
 ```php
-$data = $request->session()->all();
+$session = $request->session()->all();
 ```
 
 #### ・フラッシュデータの設定
@@ -2107,7 +2104,7 @@ public function authorize()
 
 <br>
 
-## 10-02. HTTP｜Controller
+## 09-03. HTTP｜Controller
 
 ### artisanコマンドによる操作
 
@@ -2135,7 +2132,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
      * 新しいユーザーを保存
@@ -2143,7 +2140,7 @@ class UserController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
         $name = $request->input('name');
     }
@@ -2163,7 +2160,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ExampleController extends Controller
 {
     /**
      * 指定したユーザーの更新
@@ -2181,7 +2178,7 @@ class UserController extends Controller
 
 <br>
 
-## 10-03. HTTP｜Auth
+## 09-04. HTTP｜Auth
 
 ### artisanコマンドによる操作
 
@@ -2481,7 +2478,7 @@ return (string)$response->getBody();
 
 <br>
 
-## 11. Logging
+## 10. Logging
 
 ### Log  Channels
 
@@ -2593,7 +2590,7 @@ return [
 <br>
 
 
-## 12. Migration
+## 11. Migration
 
 ### artisanコマンドによる操作
 
@@ -4214,7 +4211,7 @@ class ExampleController extends Controller
         // データ，ステータスコード，ヘッダーなどを設定する場合
         return response()
             ->view(
-              'hello',
+              'example',
               $data,
               200
             )->header(
@@ -4241,7 +4238,7 @@ class ExampleController extends Controller
 
         // ステータスコードのみ設定する場合
         return response()
-            ->view('hello')
+            ->view('example')
             ->setStatusCode(200);
     }
 }
@@ -4300,6 +4297,7 @@ class ExampleController extends Controller
                 ));
         }
     }
+}
 ```
 
 ```php
