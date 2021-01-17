@@ -759,9 +759,11 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      *
      * @param Id $id
      */
-    public function findAllEntity()
+    public function findAll()
     {
-        return $this->exampleDTO->all()->toArray();
+        return $this->exampleDTO
+            ->all()
+            ->toArray();
     }
   
     /**
@@ -769,7 +771,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      *
      * @param Id $id
      */
-    public function findEntityByCriteria($id)
+    public function findOneByCriteria($id)
     {
         return $this->exampleDTO
             ->find($id)
