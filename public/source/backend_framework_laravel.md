@@ -1895,7 +1895,7 @@ class ExampleAfterMiddleware
 
 <br>
 
-## 10. HTTP｜Request
+## 09-02. HTTP｜Request
 
 ### artisanコマンドによる操作
 
@@ -1908,11 +1908,11 @@ $ php artisan make:request <Request名>
 
 <br>
 
-### バリデーションルールの定義
+### FormRequest
 
-#### ・```rules```メソッド，```validated```メソッド
+#### ・```rules```メソッド
 
-FormRequestを継承したクラスにて，```rules```メソッドを使用して，ルールを定義する．バリデーションルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+FormRequestクラスの```rules```メソッドを使用して，ルールを定義する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．また，
 
 **＊実装例＊**
 
@@ -1926,12 +1926,13 @@ use Illuminate\Foundation\Http\FormRequest;
 class ExampleRequest extends FormRequest
 {
     /**
-     * リクエストに適用するバリデーションルールを取得
+     * ルールを返却します．
      *
      * @return array
      */
     public function rules()
     {
+        // ルールの定義
         return [
             'title' => 'required|unique:posts|max:255',
             'body'  => 'required',
@@ -1940,61 +1941,131 @@ class ExampleRequest extends FormRequest
 }
 ```
 
-Controllerで，ExampleRequestを型指定すると，コントローラのメソッドをコールする前にバリデーションが自動で行われる．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションが失敗した場合，メソッドのコール前に，ExampleRequestが元々のページにリダイレクトする処理を自動で実行する．
+#### ・```validated```メソッド
+
+Requestクラスの```validated```メソッドを使用して，バリデーションを実行する．Controllerで，Requestクラスを引数に指定すると，コントローラのメソッドをコールする前にバリデーションを自動的に実行する．そのため，コントローラの中では，```validated```メソッドでバリデーションを終えたデータをいきなり取得できる．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
 
 **＊実装例＊**
 
 ```php
-/**
- * ブログポストの保存
- *
- * @param  ExampleRequest $request
- * @return Response
- */
-// メソッドが実行される前にバリデーションが行われる．
-public function store(ExampleRequest $request) 
-{
-    // バリデーション済みデータをいきなり取得
-    $validated = $request->validated();
+<?php
   
-    ExampleRepository::update($validated);
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validated();
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
 }
 ```
 
 #### ・```validate```メソッド
 
-Requestクラスの```validate```メソッドを使用して，ルールを定義する．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+同じくRequestクラスの```validate```メソッドを使用して，ルールを定義し，さらにバリデーションを実行する．```validated```メソッドと間違わないように注意する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
 
 **＊実装例＊**
 
 ```php
-/**
- *
- * @param Request $request
- * @return Response
- */
-public
-function store(Request $request)
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
 {
-    $validatedData = $request->validate([
-        'title' => 'required|unique:posts|max:255',
-        'body'  => 'required',
-    ]);
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // ルールの定義，バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body'  => 'required',
+        ]);
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
 }
 ```
 
-validationルールは，配列で定義してよい．
+なお，ルールは，配列で定義してよい．
 
 **＊実装例＊**
 
 ```php
-$validatedData = $request->validate([
-    'title' => ['required', 'unique:posts', 'max:255'],
-    'body' => ['required'],
-]);
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {
+        // ルールの定義，バリデーションの実行
+        // エラーが起こった場合は元々のページにリダイレクト
+        $validated = $request->validate([
+            'title' => ['required', 'unique:posts', 'max:255'],
+            'body'  => ['required'],
+        ]);
+  
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        // バリデーション時にエラーが起こらなかった場合
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
+}
 ```
 
-#### ・Validatorファサード
+#### ・エラーメッセージの出力
+
+バリデーションでエラーがあった場合，Handlerクラスの```invalid```メソッドがコールされ，MessageBagクラスがViewに渡される．
+
+参考：
+
+https://laravel.com/api/6.x/Illuminate/Foundation/Exceptions/Handler.html#method_invalid
 
 Validatorファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
 
