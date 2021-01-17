@@ -4602,3 +4602,106 @@ $path = storage_path();
 $path = storage_path('app/file.txt');
 ```
 
+<br>
+
+## 18. 外部ライブラリ
+
+### Enum
+
+#### ・ソースコード
+
+参考：https://github.com/BenSampo/laravel-enum
+
+#### ・Enumクラスの定義
+
+BenSampoのEnumクラスを継承し，区分値と判定メソッドを実装する．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Domain\ValueObject\Type;
+
+use BenSampo\Enum\Enum;
+
+class RoleType extends Enum
+{
+    public const CALL_ROLE = '1';        // コールセンター職  
+    public const DEVELOPMENT_ROLE = '2'; // 開発職    
+    public const FINANCE_ROLE = '3';     // 経理職     
+    public const PLAN_ROLE = '4';        // 企画職       
+    public const SALES_ROLE = '5';       // 営業職
+    
+    /**
+     * コールセンター職の区分値をもつかどうかを判定します．
+     */    
+    public function isCallRole()
+    {
+        return $this->is(self::CALL_ROLE);
+    }
+    
+    /**
+     * 開発職の区分値をもつかを判定します．
+     */       
+    public function isDevelopmentRole()
+    {
+        return $this->is(self::DEVELOPMENT_ROLE);
+    }
+    
+    /**
+     * 経理職の区分値をもつかどうかを判定します．
+     */       
+    public function isFinanceRole()
+    {
+        return $this->is(self::FINANCE_ROLE);
+    }
+    
+    /**
+     * 企画職の区分値をもつかどうかを判定します．
+     */       
+    public function isPlanRole()
+    {
+        return $this->is(self::PLAN_ROLE);
+    }  
+    
+    /**
+     * 営業職の区分値をもつかどうかを判定します．
+     */       
+    public function isSalesRole()
+    {
+        return $this->is(self::SALES_ROLE);
+    }        
+}
+```
+
+#### ・Enumクラスの使い方
+
+**＊実装例＊**
+
+データベースから区分値をSELECTした後，これを元にEnumクラスを作成する．
+
+```php
+<?php
+
+// Staffモデル
+$staff = new Staff();
+ 
+// データベースから取得した区分値（開発職：2）からEnumクラスを作成
+$staff->roleType = new RoleType($fetched['role_type']);
+// 以下の方法でもよい．
+// $staff->roleType = RoleType::fromValue($fetched['role_type']);
+
+// StaffモデルがいずれのRoleTypeをもつか
+$staff->roleType->isDevelopmentRole(); // true
+$staff->roleType->isSalesRole(); // false
+```
+
+**＊実装例＊**
+
+リクエストメッセージからデータを取り出した後，これを元にEnumクラスを作成する．
+
+```
+
+```
+
