@@ -2950,6 +2950,92 @@ Schema::create('examples', function (Blueprint $table) {
 
 <br>
 
+## 12. Resource
+
+### artisanコマンドによる操作
+
+#### ・Resourceの生成
+
+```sh
+$ php artisan make:resource <Resource名>
+```
+
+<br>
+
+### データ型変換
+
+#### ・Modelの配列化
+
+一つのModelを配列に変換する．Resourceクラスの```toArray```メソッドにて，```this```変数は自身ではなく，Resourceクラス名につくModel名になる．また，```this```変数からゲッターを経由せずに直接プロパティにアクセスできる．
+
+**＊実装例＊**
+
+Exampleクラスからデータを取り出し，配列化する．
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ExampleJsonResource extends JsonResource
+{
+    /**
+     * オブジェクトを配列に変換します．
+     *
+     * @param  Request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id'       => $this->id,
+            'name'     => $this->name,
+            'email'    => $this->email,
+            'password' => $this->password
+        ];
+    }
+}
+```
+
+Controllerにて，ResouceクラスにModelを渡すようにする．Laravelはレスポンス時に，```toArray```メソッドをコールし，さらにこの返却値をJSONデータに変換する．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * クライアントにデータを返却します．
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        // ここに，Modelをデータベースから取得する処理
+        
+        // Modelを渡す．
+        return new ExampleResource($example);
+    }
+}
+```
+
+#### ・Collectionの配列化
+
+ModelのCollectionを配列に変換する．
+
+```php
+// ここに実装例
+```
+
+<br>
+
 ## 13. Routing
 
 ### artisanコマンドによる操作
