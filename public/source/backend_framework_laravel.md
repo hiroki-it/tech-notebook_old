@@ -2067,7 +2067,15 @@ class ExampleController extends Controller
 
 https://laravel.com/api/6.x/Illuminate/Foundation/Exceptions/Handler.html#method_invalid
 
-Validatorファサードの```make```メソッドを使用して，ルールを定義する．第一引数で，バリデーションを行うリクエストデータを渡す．validationルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```から対応するエラーメッセージを自動的に選択する．
+https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
+
+<br>
+
+### Validatorファサード
+
+#### ・Validatorクラス，```fails```メソッド
+
+バリデーションのために，Requestクラスの```validated```メソッドや```validate```メソッドの代わりに，Validatorファサードを使用しても良い．まず，Validateファサードの```make```メソッドを使用して，ルールを定義する．この時，第一引数で，バリデーションを行うリクエストデータを渡す．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．次に，```fails```メソッドを使用して，バリデーションでエラーが起こった場合の処理を定義する．
 
 **＊実装例＊**
 
@@ -2086,22 +2094,78 @@ class ExampleController extends Controller
      * 新しいブログポストの保存
      *
      * @param  Request  $request
-     * @return Response
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
+        // ルールの定義
         $validator = Validator::make($request->all(), [
             'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'body'  => 'required',
         ]);
 
+        // バリデーション時にエラーが起こった場合
         if ($validator->fails()) {
-            return redirect('example/create')
-                        ->withErrors($validator)
-                        ->withInput();
+            // 指定したページにリダイレクト
+            return redirect('error')
+                // validatorを渡すことでエラーメッセージをViewに渡せる．
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // ブログポストの保存処理…
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
+    }
+}
+```
+
+#### ・```validate```メソッド
+
+Validatorクラスの```validate```メソッドを使用すると，Requestクラスの```validate```メソッドと同様の処理が実行される．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
+
+```php
+<?php
+  
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいブログポストの保存
+     *
+     * @param  Request  $request
+     */
+    public function update(Request $request)
+    {  
+        // 元のページにリダイレクトする場合は，validateメソッドを使用する．
+        $validator = Validator::make($request->all(), [
+           'title' => 'required|unique:posts|max:255',
+           'body'  => 'required',
+        ])
+        ->validate();
+
+        // バリデーション時にエラーが起こった場合
+        if ($validator->fails()) {
+            // 指定したページにリダイレクト
+            return redirect('error')
+                // validatorを渡すことでエラーメッセージをViewに渡せる．
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $exampleRepository = new ExampleRepository;
+        $exampleRepository->update($validated);
+        
+        return response()
+            ->view('example')
+            ->setStatusCode(200);
     }
 }
 ```
