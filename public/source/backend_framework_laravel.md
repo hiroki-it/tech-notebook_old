@@ -176,6 +176,8 @@ $ php artisan make:model <Model名>
 
 Modelクラスを継承したクラスは，```INSERT```文や```UPDATE```文などのデータアクセスロジックを使用できるようになる．
 
+**＊実装例＊**
+
 ````php
 <?php
 
@@ -193,6 +195,8 @@ class Example extends Model
 #### ・Modelとテーブルの関連付け
 
 Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を```table```プロパティに自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -215,6 +219,8 @@ class Example extends Model
 #### ・Modelと主キーの関連付け
 
 Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```で主キーのデータ型，また```incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -254,6 +260,8 @@ class Example extends Model
 
 Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```カラムと```updated_at```カラムを自動的に更新する．また，TIMESTAMP型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
 
+**＊実装例＊**
+
 ```php
 <?php
 
@@ -279,6 +287,8 @@ class Example extends Model
 #### ・TIMESTAMP型カラム読み出し時のデータ型変換
 
 データベースからタイムスタンプ型カラムを読み出すと同時に，CarbonのDateTimeクラスに変換したい場合，```data```プロパティにて，カラム名を設定する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -308,6 +318,8 @@ class User extends Model
 
 特定のカラムのデフォルト値を設定したい場合，```attributes```プロパティにて，カラム名と値を設定する．
 
+**＊実装例＊**
+
 ```php
 <?php
 
@@ -335,6 +347,8 @@ Laravelでは，テーブル間のリレーションシップを，```hasOne```�
 **＊実装例＊**
 
 Departmentモデル側に，departmentテーブルとemployeeテーブルの間に，一対多の関係を定義する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -367,6 +381,8 @@ class Department extends Model
 ```
 
 また，Employeeモデル側に，多対一の関係を定義する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -411,6 +427,8 @@ $employees = $department->employees
 #### ・変更可能／不可能なカラム名の設定
 
 Model経由で変更可能なカラム名は，```fillable```プロパティで定義する．カラムが増えるたびに，実装する必要がある．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -464,6 +482,8 @@ class Example extends Model
 #### ・セッター
 
 Laravelでは，プロパティを定義しなくても，Modelからプロパティをコールすれば，処理の度に動的にプロパティを定義できる．しかし，この機能はプロパティがpublicアクセスである必要があるため，オブジェクト機能のメリットを享受できない．そのため，この機能を使用せずに，```constructor```メソッドを使用したコンストラクタインジェクション，またはセッターインジェクションを使用するようにする．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -538,7 +558,7 @@ $exmapleName = $example->name;
 
 #### ・シリアライズ
 
-フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，オブジェクト（PHP型）をJSONに変換する処理はシリアライズである．
+フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，配列型オブジェクトをJSONに変換する処理はシリアライズである．
 
 **＊実装例＊**
 
@@ -560,8 +580,6 @@ $collection = collect([
 $collection->toArray();
 ```
 
-**＊実装例＊**
-
 ```php
 <?php
 
@@ -573,7 +591,7 @@ return $users->toArray();
 
 #### ・デシリアライズ
 
-フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，JSONをオブジェクト（PHP型）に変換する処理はデシリアライズである．
+フロントエンドとバックエンド間，またバックエンドとデータベース間のデータ送信のために，JSONを配列型オブジェクトに変換する処理はデシリアライズである．
 
 <br>
 
@@ -582,6 +600,8 @@ return $users->toArray();
 #### ・```filter```メソッド
 
 コールバック関数の返却値が```true```であった要素を全て抽出する．
+
+**＊実装例＊**
 
 ```php
 $collection = collect([1, 2, 3, 4]);
@@ -597,6 +617,8 @@ $filtered->all();
 ```
 
 ちなみに，複数の条件を設定したいときは，早期リターンを使用する必要がある．
+
+**＊実装例＊**
 
 ```php
 $collection = collect([1, 2, 3, 4, "yes"]);
@@ -620,6 +642,8 @@ $filtered->all();
 #### ・```first```メソッド
 
 コールバック関数の返却値が```true```であった最初の要素のみを抽出する．
+
+**＊実装例＊**
 
 ```php
 $collection = collect([1, 2, 3, 4]);
@@ -652,11 +676,13 @@ $filtered = $collection->first(function ($value, $key) {
 
 ### CREATE
 
-#### ・INSERT文の実行
+#### ・```create```メソッド
 
-Modelクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Modelクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
+INSERT文を実行する．Modelクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Modelクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
 
 参考：https://codelikes.com/laravel-eloquent-basic/#toc9
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -687,7 +713,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      */
     public function create(Example $example)
     {
-        // 内部でinsert文が実行される
+        // insert文を実行する．
         $this->exampleDTO
             ->create([
                 'name'  => $example->name()
@@ -729,9 +755,53 @@ class ExampleDTO extends Model
 
 ### READ
 
-#### ・SELECT文の実行
+#### ・```find```メソッド
 
-Modelクラスが持つ```find```メソッドにプライマリキーを設定する．内部でSELECT文を実行する```all```メソッドまたは```get```メソッドの返却値の型は，Collectionである．
+SELECT文を実行する．引数としてプライマリキーを渡した場合，指定したプライマリキーを持つModelをModel型として返却する．```toArray```メソッドで配列型に変換できる．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+  
+    /**
+     * 条件に合うExampleエンティティを読み出し
+     *
+     * @param Id $id
+     * @return array
+     */
+    public function findOneByCriteria($id): array
+    {
+        return $this->exampleDTO
+            ->find($id)
+            ->toArray();
+    }
+}
+```
+
+#### ・```all```メソッド
+
+SELECT文を実行する．全てのプライマリキーのModelをCollection型として返却する．```toArray```メソッドで配列型に再帰的に変換できる．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -757,24 +827,12 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     /**
      * 全てのExampleエンティティを読み出し
      *
-     * @param Id $id
+     * @return array 
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->exampleDTO
             ->all()
-            ->toArray();
-    }
-  
-    /**
-     * 条件に合うExampleエンティティを読み出し
-     *
-     * @param Id $id
-     */
-    public function findOneByCriteria($id)
-    {
-        return $this->exampleDTO
-            ->find($id)
             ->toArray();
     }
 }
@@ -784,11 +842,13 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 
 ### UPDATE
 
-#### ・UPDATE文の実行
+#### ・```update```メソッド
 
-Modelクラスが```find```メソッドで更新対象のモデルを検索する．返却されたModelクラスの```fill```メソッドで，挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．．
+UPDATE文を実行する．Modelクラスが```find```メソッドで更新対象のモデルを検索する．返却されたModelクラスの```fill```メソッドで，挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスには```fillable```プロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．．
 
 参考：https://codelikes.com/laravel-eloquent-basic/#toc9
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -814,21 +874,22 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     /**
      * Exampleエンティティを更新
      *
-     * @param Id $id
+     * @param Example $example
      */
     public function save(Example $example)
     {
-        $this->exampleDTO
+        $exampleData = $this->exampleDTO
             // 更新対象のモデルを取得する．
-            ->find($id)
-            // オブジェクトにデータを設定する．
-            ->fill([
-                'name'  => $example->name()
-                'age'   => $example->age()
-                'email' => $example->email()
-            ])
-            // 内部でupdate文が実行される
-            ->save();
+            ->find($id);
+        
+        // オブジェクトにデータを設定する．
+        $exampleData->fill([
+            'name'  => $example->name()
+            'age'   => $example->age()
+            'email' => $example->email()
+        ])
+        // update文を実行する．
+        ->save();
     }
 }
 ```
@@ -855,9 +916,11 @@ class ExampleDTO extends Model
 
 ### DELETE
 
-#### ・DELETE文の実行（物理削除）
+#### ・```delete```メソッド（物理削除）
 
-Modelクラスの```find```メソッドで削除対象のモデルを検索する．返却されたModelクラスの```delete```メソッドをコールし，自身を削除する．
+DELETE文を実行する．Modelクラスの```find```メソッドで削除対象のモデルを検索する．返却されたModelクラスの```delete```メソッドをコールし，自身を削除する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -887,20 +950,24 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      */
     public function delete(Id $id)
     {
-        $this->exampleDTO
-            ->find($id)
-            // 内部でdelete文が実行され，物理削除される．
-            ->delete();
+        $exampleData = $this->exampleDTO
+            // 削除対象のモデルを取得する．
+            ->find($id);
         
-        // 以下の実装でもよい．
+        // delete文を実行し，物理削除する．
+        $exampleData->delete();
+        
+        // 以下の実装でfindメソッドとdeleteメソッドを実行してもよい．
         // $this->exampleDTO->destroy($id);
     }
 }
 ```
 
-#### ・UPDATE文の実行（論理削除）
+#### ・```delete```メソッドとSoftDeletesのTrait（論理削除）
 
-論理削除を行いたい場合，テーブルに対応するモデルにて，SoftDeletesトレイトを読み込む．マイグレーション時に追加される```delete_at```をSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
+削除フラグを更新するUPDATE文を実行する．テーブルに対応するモデルにて，SoftDeletesのTraitを読み込む．マイグレーション時に追加される```delete_at```カラムをSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -913,7 +980,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ExampleDTO extends Model
 {
     /**
-    * トレイトの読み込み
+    * Traitの読み込み
     */
     use SoftDeletes;
 
@@ -1000,13 +1067,141 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      */
     public function delete(Id $id)
     {
-        $this->exampleDTO
-            ->find($id)
-            // 内部でdelete文が実行され，論理削除される．
-            ->delete();
+        $exampleData = $this->exampleDTO
+            // 削除対象のモデルを取得する．
+            ->find($id);
+            
+        // delete文を実行し，論理削除する．
+        $exampleData->delete();
         
-        // 以下の実装でもよい．
+        // 以下の実装でfindメソッドとdeleteメソッドを実行してもよい．
         // $this->exampleDTO->destroy($id);        
+    }
+}
+```
+
+<br>
+
+### DBファサード
+
+#### ・DBファサードとは
+
+データベースを操作する処理を実行する．Eloquentの代わりに，DBファサードを使用しても良い．Active Recordのロジックを持たないため，Repositoryパターンのロジックとして使用できる．
+
+#### ・```transaction```メソッド
+
+一連のトランザクション処理を実行する．引数として渡した無名関数が例外を返却した場合，ロールバックを自動的に実行する．例外が発生しなかった場合，無名関数の返却値が，そのまま```transaction```メソッドの返却値になる．ちなみに，トランザクション処理は必須ではなく，使用するとアプリケーションがデータベースを操作するために要する時間が増えるため，使用しなくても良い．
+
+参考：https://rightcode.co.jp/blog/information-technology/node-js-mongodb-transaction-function-use#i-5
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを更新
+     *
+     * @param Id $id
+     */
+    public function save(Example $example)
+    {
+        $exampleData = $this->exampleDTO
+            // 更新対象のモデルを取得する．
+            ->find($id);
+        
+        // 一連のトランザクション処理を実行する．
+        DB::transaction(function () use ($exampleData){
+            
+            // オブジェクトにデータを設定する．
+            $exampleData->fill([
+                'name'  => $example->name(),
+                'age'   => $example->age(),
+                'email' => $example->email()
+            ])
+            // update文を実行する．
+            ->save();
+            
+        });
+    }
+}
+```
+
+#### ・```beginTransaction```メソッド，```commit```メソッド，```rollback```メソッド，
+
+トランザクション処理の各操作を実行する．基本的には，```transaction```メソッドを使用してトランザクション処理を実行すれば良い．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを更新
+     *
+     * @param Id $id
+     */
+    public function save(Example $example)
+    {
+        // トランザクション処理を開始する．
+        DB::beginTransaction();
+        
+        try {
+            $this->exampleDTO
+            // 更新対象のモデルを取得する．
+            ->find($id)
+            // オブジェクトにデータを設定する．
+            ->fill([
+                'name'  => $example->name()
+                'age'   => $example->age()
+                'email' => $example->email()
+            ])
+            // update文を実行する．
+            ->save();            
+            
+            // コミットメントを実行する．
+            DB::commit();
+        } catch (\Exception $e) {
+            
+            // ロールバックを実行する．
+            DB::rollback();
+        }
     }
 }
 ```
@@ -1020,6 +1215,8 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 #### ・データベースアクセス系
 
 Modelがデータベースに対して処理を行う前後にイベントを定義できる．例えば，```create```メソッド，```save```メソッド，```update```メソッド，```delete```メソッド，の実行後にイベントを定義するためには，```created```メソッド，```saved```メソッド，```updated```メソッド，```deleted```メソッド，を使用する．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -1104,6 +1301,8 @@ trait HasEvents
 #### ・Traitを使用したイベントの発火
 
 Laravelの多くのコンポーネントに，```boot```メソッドが定義されている．Modelクラスでは，インスタンス生成時に```boot```メソッドがコールされ，これによりに```bootTraits```メソッドが実行される．Traitに```boot+<クラス名>```という名前の静的メソッドが定義されていると，```bootTraits```メソッドはこれをコールする．
+
+**＊実装例＊**
 
 ```php
 <?php
@@ -2073,9 +2272,13 @@ https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
 
 ### Validatorファサード
 
+#### ・Validatorファサードとは
+
+ルールを定義し，バリデーションを実行する．Requestクラスの```validated```メソッドや```validate```メソッドの代わりに，Validatorファサードを使用しても良い．
+
 #### ・Validatorクラス，```fails```メソッド
 
-バリデーションのために，Requestクラスの```validated```メソッドや```validate```メソッドの代わりに，Validatorファサードを使用しても良い．まず，Validateファサードの```make```メソッドを使用して，ルールを定義する．この時，第一引数で，バリデーションを行うリクエストデータを渡す．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．次に，```fails```メソッドを使用して，バリデーションでエラーが起こった場合の処理を定義する．
+Validateファサードの```make```メソッドを使用して，ルールを定義する．この時，第一引数で，バリデーションを行うリクエストデータを渡す．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．次に，```fails```メソッドを使用して，バリデーションでエラーが起こった場合の処理を定義する．
 
 **＊実装例＊**
 
@@ -2355,7 +2558,13 @@ $ php artisan passport:client --password
 
 <br>
 
-### AuthファサードによるDigest認証
+### Authファサードによる認証
+
+#### ・Authファサードとは
+
+Laravelからあらかじめ提供されている認証を使用しない場合，Authファサードを使用して，認証ロジックを実装できる．
+
+#### ・Digest認証
 
 パスワードを```attempt```メソッドを用いて自動的にハッシュ化し，データベースのハッシュ値と照合する．認証が終わると，認証セッションを開始する．```intended```メソッドで，ログイン後の初期ページにリダイレクトする．
 
@@ -2390,7 +2599,27 @@ class LoginController extends Controller
 
 <br>
 
-### PassportによるAPIのOauth認証
+### PassportライブラリによるOauth認証
+
+#### ・Passportライブラリとは
+
+Laravelから提供されており，Oauth認証のための認可サーバが実装されたライブラリ．```composer.json```ファイルを使用して，インストールする必要がある．
+
+参考：https://github.com/laravel/passport
+
+```json
+{
+    // ～ 省略 ～
+    
+    "require": {
+
+        "laravel/passport": "^10.0",
+        
+    },
+    
+    // ～ 省略 ～
+}
+```
 
 #### ・Personal Access Token
 
@@ -2512,7 +2741,7 @@ return [
 Route::get('user', 'UserController@index')->middleware('auth:api');
 ```
 
-5. バックエンド側では，認証ガードを行ったモデルに対して，HasAPIToken，Notifiableのトレイトをコールするようにする．
+5. バックエンド側では，認証ガードを行ったモデルに対して，HasAPIToken，NotifiableのTraitをコールするようにする．
 
 **＊実装例＊**
 
@@ -3026,9 +3255,9 @@ class ExampleController extends Controller
 }
 ```
 
-#### ・Collectionの配列化
+#### ・Collection型の配列化
 
-ModelのCollectionを配列に変換する．
+ModelのCollection型を配列に変換する．
 
 ```php
 // ここに実装例
@@ -3076,6 +3305,10 @@ API以外の場合，こちらにルーティング処理を実装する．第�
 <br>
 
 ### Routeファサード
+
+#### ・Routeファサードとは
+
+コントローラへのルーティングを定義する．
 
 #### ・```namespace```メソッド
 
@@ -4158,6 +4391,8 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 #### ・```@include```（サブビュー）
 
 読み込んだファイル全体を出力する．読み込むファイルに対して，変数を渡すこともできる．```@extentds```との使い分けとして，親子関係のないテンプレートの間で使用するのがよい．両者は，PHPでいう```extends```（クラスチェーン）と```require```（単なる読み込み）の関係に近い．
+
+**＊実装例＊**
 
 ```html
 <div>
