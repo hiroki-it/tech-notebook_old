@@ -1067,7 +1067,124 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      */
     public function delete(Id $id)
     {
-        $this->exampleDTO
+        $exampleData = $this->exampleDTO
+            // 削除対象のモデルを取得する．
+            ->find($id);
+            
+        // delete文を実行し，論理削除する．
+        $exampleData->delete();
+        
+        // 以下の実装でfindメソッドとdeleteメソッドを実行してもよい．
+        // $this->exampleDTO->destroy($id);        
+    }
+}
+```
+
+<br>
+
+### DBファサード
+
+#### ・DBファサードとは
+
+データベースを操作する処理を実行する．Eloquentの代わりに，DBファサードを使用しても良い．Active Recordのロジックを持たないため，Repositoryパターンのロジックとして使用できる．
+
+#### ・```transaction```メソッド
+
+一連のトランザクション処理を実行する．引数として渡した無名関数が例外を返却した場合，ロールバックを自動的に実行する．例外が発生しなかった場合，無名関数の返却値が，そのまま```transaction```メソッドの返却値になる．ちなみに，トランザクション処理は必須ではなく，使用するとアプリケーションがデータベースを操作するために要する時間が増えるため，使用しなくても良い．
+
+参考：https://rightcode.co.jp/blog/information-technology/node-js-mongodb-transaction-function-use#i-5
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを更新
+     *
+     * @param Id $id
+     */
+    public function save(Example $example)
+    {
+        $exampleData = $this->exampleDTO
+            // 更新対象のモデルを取得する．
+            ->find($id);
+        
+        // 一連のトランザクション処理を実行する．
+        DB::transaction(function () use ($exampleData){
+            
+            // オブジェクトにデータを設定する．
+            $exampleData->fill([
+                'name'  => $example->name(),
+                'age'   => $example->age(),
+                'email' => $example->email()
+            ])
+            // update文を実行する．
+            ->save();
+            
+        });
+    }
+}
+```
+
+#### ・```beginTransaction```メソッド，```commit```メソッド，```rollback```メソッド，
+
+トランザクション処理の各操作を実行する．基本的には，```transaction```メソッドを使用してトランザクション処理を実行すれば良い．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Example;
+use App\Domain\Repositories\ExampleRepository as DomainExampleRepository;
+use App\Infrastructure\DTO\ExampleDTO;
+
+class ExampleRepository extends Repository implements DomainExampleRepository
+{
+    /**
+     * @var ExampleDTO
+     */
+    private ExampleDTO $exampleDTO;
+    
+    public function __construct(ExampleDTO $exampleDTO)
+    {
+        $this->exampleDTO = $exampleDTO;
+    }   
+    
+    /**
+     * Exampleエンティティを更新
+     *
+     * @param Id $id
+     */
+    public function save(Example $example)
+    {
+        // トランザクション処理を開始する．
+        DB::beginTransaction();
+        
+        try {
+            $this->exampleDTO
+            // 更新対象のモデルを取得する．
             ->find($id)
             // オブジェクトにデータを設定する．
             ->fill([
