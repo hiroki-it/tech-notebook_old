@@ -4070,9 +4070,15 @@ Controllerクラスから返却されたデータは，```{{ 変数名 }}```で�
 </html>
 ```
 
-#### ・validationメッセージの出力
+#### ・バリデーションメッセージの出力
+
+バリデーションでエラーが起こった場合，バリデーションでエラーがあった場合，Handlerクラスの```invalid```メソッドがコールされ，MessageBagクラスがViewに渡される．MessageBagクラスは，Blade上で```errors```変数に格納されており，各メソッドをコールしてエラーメッセージを出力できる．
+
+参考：https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
 
 **＊実装例＊**
+
+MessageBagクラスの```all```メソッドで，全てのエラーメッセージを出力する．
 
 ```html
 <!-- /resources/views/example/create.blade.php -->
@@ -4080,18 +4086,30 @@ Controllerクラスから返却されたデータは，```{{ 変数名 }}```で�
 <h1>ポスト作成</h1>
 
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            
-        </ul>
+    <div>
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error }}</p>
+        @endforeach        
     </div>
 @endif
 
+@isset ($status)
+    <div class="complete">
+        <p>登録が完了しました．</p>
+    </div>
+@endisset
+
 <!-- ポスト作成フォーム -->
+```
+
+```css
+.errors {
+    /* 何らかのデザイン */
+}
+
+.complete {
+    /* 何らかのデザイン */
+}
 ```
 
 <br>
