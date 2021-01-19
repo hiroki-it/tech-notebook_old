@@ -468,6 +468,26 @@ SSLCertificateKeyFile /etc/httpd/conf.d/server.key
 
 <br>
 
+## 04-07. mod_headersにおける設定ディレクティブ
+
+### Header
+
+#### ・Headerとは
+
+レスポンスヘッダーを定義する．```set```，```append```，```add```，```unset```，```echo```オプションを設定できる．
+
+**＊実装例＊**
+
+```apacheconf
+# Referrer-Policyヘッダーを追加する
+Header set Referrer-Policy "no-referrer-when-downgrade"
+
+# Referrer-Policyヘッダーを削除する
+Header unset Referrer-Policy "no-referrer-when-downgrade
+```
+
+<br>
+
 ## 05. htaccess
 
 ### 影響範囲
