@@ -1123,7 +1123,7 @@ RDSでは，DBMS，RDBを選べる．
 
 <br>
 
-### 負荷分散
+### 負荷対策
 
 #### ・エンドポイント
 
@@ -1155,6 +1155,25 @@ xxxxx-cluster.cluster-ro-abcde12345.ap-northeast-1.rds.amazonaws.com
 ```sql
 /* SQL Error (1290): The MySQL server is running with the --read-only option so it cannot execute this statement */
 ```
+
+<br>
+
+### 障害対策
+
+#### ・フェイルオーバー
+
+RDSのフェイルオーバーには，データベースの種類に応じて，以下の種類のものがある．
+
+| データベース | フェイルオーバーの仕組み                               | 備考                                                         |
+| ------------ | ------------------------------------------------------ | ------------------------------------------------------------ |
+| Aurora       | リードレプリカがプライマリインスタンスに昇格する．     | 参考：https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraHighAvailability.html |
+| Aurora以外   | スタンバイレプリカがプライマリインスタンスに昇格する． | 参考：https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html |
+
+Auroraの場合，フェイルオーバーによって昇格するインスタンスは次の順番で決定される．基本的には，優先度の数値の小さいインスタンスが昇格対象になる．優先度が同じだと，インスタンスクラスが大きいインスタンスが昇格対象になる．インスタンスクラスが同じだと，同じサブネットにあるインスタンスが昇格対象になる．
+
+1. 優先度の順番
+2. インスタンスクラスの大きさ
+3. 同じサブネット
 
 <br>
 
@@ -1287,7 +1306,7 @@ redis xxxxx:6379> monitor
 
 ### 障害対策
 
-#### ・フェールオーバー
+#### ・フェイルオーバー
 
 ノードの障害を検知し，障害が発生したノードを新しいものに置き換えることができる．
 

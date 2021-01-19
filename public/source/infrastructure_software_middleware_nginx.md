@@ -2,7 +2,15 @@
 
 ## 01. Tips
 
-### コマンド
+### コマンドリファレンス
+
+#### ・nginx
+
+参考：https://httpd.apache.org/docs/trunk/ja/programs/apachectl.html
+
+<br>
+
+### よく使うコマンド
 
 #### ・起動／停止
 
@@ -23,7 +31,7 @@ $ nginx -t
 #### ・設定ファイルの反映と安全な再起動
 
 ```sh
-$ kill -s HUP NINGXPID
+$ systemctl reload nginx
 ```
 
 <br>
@@ -400,6 +408,14 @@ Content-Typeが，mime.typesファイルにないMIME typeであった場合に�
 default_type application/octet-stream
 ```
 
+#### ・```add_header```
+
+レスポンスヘッダーを設定する．
+
+```nginx
+# Referrer-Policyヘッダーに値を設定する
+add_header Referrer-Policy 'no-referrer-when-downgrade';
+```
 
 #### ・```/etc/nginx/mime.types```
 
