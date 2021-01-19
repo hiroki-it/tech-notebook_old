@@ -1007,9 +1007,9 @@ class ExampleRepository extends Repository implements DomainExampleRepository
         
         // オブジェクトにデータを設定する．
         $exampleData->fill([
-            'name'  => $example->name()
-            'age'   => $example->age()
-            'email' => $example->email()
+            'name'  => $example->name(),
+            'age'   => $example->age(),
+            'email' => $example->email(),
         ])
         // update文を実行する．
         ->save();
@@ -1328,6 +1328,22 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }
 }
 ```
+
+<br>
+
+### N+1問題の解決
+
+#### ・N+1問題とは
+
+```sql
+select * from `departments`;
+select * from `employees` where `employees`.`department_id` = 1 and `employees`.`department_id` is not null;
+select * from `employees` where `employees`.`department_id` = 2 and `employees`.`department_id` is not null;
+select * from `employees` where `employees`.`department_id` = 3 and `employees`.`department_id` is not null;
+...
+```
+
+#### ・解決方法
 
 <br>
 
