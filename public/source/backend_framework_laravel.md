@@ -194,7 +194,7 @@ class Example extends Model
 
 #### ・Modelとテーブルの関連付け
 
-Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を```table```プロパティに自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
+Eloquentは，Model自身の```table```プロパティに代入されている名前のテーブルに，Modelクラスを関連付ける．ただし，```table```プロパティにテーブル名を代入する必要はない．Eloquentがクラス名の複数形をテーブル名と見なし，これをスネークケースにした文字列を```table```プロパティに自動的に代入する．また，テーブル名を独自で命名したい場合は，代入によるOverrideを行っても良い．
 
 **＊実装例＊**
 
@@ -208,7 +208,7 @@ use Illuminate\Database\Eloquent\Model;
 class Example extends Model
 {
     /**
-     * モデルと関連しているテーブル
+     * Modelと関連しているテーブル
      *
      * @var string
      */
@@ -218,7 +218,7 @@ class Example extends Model
 
 #### ・Modelと主キーの関連付け
 
-Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```で主キーのデータ型，また```incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
+Eloquentは，```primaryKey```プロパティの値を主キーのカラム名と見なす．```keyType```プロパティで主キーのデータ型，また```incrementing```プロパティで主キーのAutoIncrementを有効化するか否か，を設定できる．
 
 **＊実装例＊**
 
@@ -258,7 +258,7 @@ class Example extends Model
 
 #### ・ModelとTIMESTAMP型カラムの関連付け
 
-Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelに関連付くテーブルの```created_at```カラムと```updated_at```カラムを自動的に更新する．また，TIMESTAMP型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
+Eloquentは，```timestamps```プロパティの値が```true```の時に，Modelクラスに関連付くテーブルの```created_at```カラムと```updated_at```カラムを自動的に更新する．また，TIMESTAMP型カラム名を独自で命名したい場合は，代入によるOverideを行っても良い．
 
 **＊実装例＊**
 
@@ -275,7 +275,7 @@ class Example extends Model
     const UPDATED_AT = 'updated_data_time';
     
     /**
-     * モデルのタイムスタンプを更新するかの指示します．
+     * Modelのタイムスタンプを更新するかの指示します．
      *
      * @var bool
      */
@@ -342,13 +342,11 @@ class Example extends Model
 
 #### ・テーブル間のリレーションシップの定義
 
-Laravelでは，テーブル間のリレーションシップを，```hasOne```メソッド，```hasMany```メソッド，```belongsTo```メソッドを使用して定義する．これにより，JOIN句を使用せずに必要なデータを取得できる．
+Laravelでは，テーブル間の一対多（親子）のリレーションシップを，```hasOne```メソッド，```hasMany```メソッド，```belongsTo```メソッドを使用して定義する．これにより，JOIN句を使用せずに必要なデータを取得できる．
 
 **＊実装例＊**
 
-Departmentモデル側に，departmentテーブルとemployeeテーブルの間に，一対多の関係を定義する．
-
-**＊実装例＊**
+Department（親）に，departmentsテーブルとemployeesテーブルの間に，一対多の関係を定義する．
 
 ```php
 <?php
@@ -373,16 +371,14 @@ class Department extends Model
      * 
      * @return HasMany
      */
-    public function hasManyEmployee() :HasMany
+    public function hasManyEmployees() :HasMany
     {
         return $this->hasMany(Employee::class);
     }
 }
 ```
 
-また，Employeeモデル側に，多対一の関係を定義する．
-
-**＊実装例＊**
+また，Employee（子）に，反対の多対一の関係を定義する．
 
 ```php
 <?php
@@ -401,13 +397,13 @@ class Employee extends Model
      */
     protected $primaryKey = "employee_id";
 
-     /**
+    /**
      * 多対一の関係を定義します．
      * （デフォルトではdepartment_idに関連付けます）
      * 
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function belongsToDepartment() :BelongsTo
+    public function belongsToDepartments() :BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
@@ -670,7 +666,7 @@ $filtered = $collection->first(function ($value, $key) {
 
 ### ドメイン駆動設計との組み合わせ
 
-ビジネスロジック用のエンティティと，EloquentのModelクラスを継承した詰め替えモデル（例：DTOクラス）を用意する．アプリケーション層から受け取ったエンティティが保持するデータを，DTOクラスに詰め替えるようにすると，エンティティが他の層に依存しなくなる．
+ビジネスロジック用のエンティティと，EloquentのModelクラスを継承した詰め替えModel（例：DTOクラス）を用意する．アプリケーション層から受け取ったエンティティが保持するデータを，DTOクラスに詰め替えるようにすると，エンティティが他の層に依存しなくなる．
 
 <br>
 
@@ -678,7 +674,7 @@ $filtered = $collection->first(function ($value, $key) {
 
 #### ・```create```メソッド
 
-INSERT文を実行する．Modelクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Modelクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
+INSERT文を実行する．Builderクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Builderクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．別に，Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
 
 参考：https://codelikes.com/laravel-eloquent-basic/#toc9
 
@@ -706,7 +702,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
     
     /**
-     * Exampleエンティティを作成
+     * Exampleを構築します．
      *
      * @param  Example $example
      * @return Response
@@ -783,16 +779,15 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
   
     /**
-     * 条件に合うExampleエンティティを読み出し
+     * Idに関連付くExampleを読み出します．
      *
-     * @param Id $id
-     * @return array
+     * @param  Id $id
+     * @return ExampleDTO
      */
-    public function findOneByCriteria($id): array
+    public function findOneById(Id $id): ExampleDTO
     {
         return $this->exampleDTO
-            ->find($id)
-            ->toArray();
+            ->find($id);
     }
 }
 ```
@@ -825,11 +820,11 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
   
     /**
-     * 全てのExampleエンティティを読み出し
+     * 全てのExampleを読み出します．
      *
-     * @return array 
+     * @return Collection 
      */
-    public function findAll(): array
+    public function findAll(): Collection
     {
         return $this->exampleDTO
             ->all()
@@ -844,7 +839,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 
 #### ・```update```メソッド
 
-UPDATE文を実行する．Modelクラスが```find```メソッドで更新対象のモデルを検索する．返却されたModelクラスの```fill```メソッドで，挿入対象のカラムと値を設定し，```save```メソッドを実行する．Modelクラスには```fillable```プロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．．
+UPDATE文を実行する．Builderクラスが```find```メソッドで更新対象のModelを検索する．返却されたBuilderクラスの```fill```メソッドで，挿入対象のカラムと値を設定し，```save```メソッドを実行する．別に，Modelクラスには```fillable```プロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．．
 
 参考：https://codelikes.com/laravel-eloquent-basic/#toc9
 
@@ -872,15 +867,15 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
     
     /**
-     * Exampleエンティティを更新
+     * Exampleを更新します．
      *
      * @param Example $example
      */
     public function save(Example $example)
     {
         $exampleData = $this->exampleDTO
-            // 更新対象のモデルを取得する．
-            ->find($id);
+            // 更新対象のModelを取得する．
+            ->find($example->id());
         
         // オブジェクトにデータを設定する．
         $exampleData->fill([
@@ -918,7 +913,7 @@ class ExampleDTO extends Model
 
 #### ・```delete```メソッド（物理削除）
 
-DELETE文を実行する．Modelクラスの```find```メソッドで削除対象のモデルを検索する．返却されたModelクラスの```delete```メソッドをコールし，自身を削除する．
+DELETE文を実行する．Builderクラスの```find```メソッドで削除対象のModelを検索する．返却されたBuilderクラスの```delete```メソッドをコールし，自身を削除する．
 
 **＊実装例＊**
 
@@ -944,15 +939,15 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
   
     /**
-     * Exampleエンティティを削除
+     * Exampleを削除します．
      *
-     * @param Id $id
+     * @param Example $example
      */
-    public function delete(Id $id)
+    public function delete(Example $example)
     {
         $exampleData = $this->exampleDTO
-            // 削除対象のモデルを取得する．
-            ->find($id);
+            // 削除対象のModelを取得する．
+            ->find($example->id());
         
         // delete文を実行し，物理削除する．
         $exampleData->delete();
@@ -965,7 +960,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 
 #### ・```delete```メソッドとSoftDeletesのTrait（論理削除）
 
-削除フラグを更新するUPDATE文を実行する．テーブルに対応するモデルにて，SoftDeletesのTraitを読み込む．マイグレーション時に追加される```delete_at```カラムをSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
+削除フラグを更新するUPDATE文を実行する．テーブルに対応するModelにて，SoftDeletesのTraitを読み込む．マイグレーション時に追加される```delete_at```カラムをSQLで取得する時に，DataTimeクラスに変換できるようにしておく．
 
 **＊実装例＊**
 
@@ -1061,15 +1056,15 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
     
     /**
-     * Exampleエンティティを削除
+     * Exampleを削除します．
      *
-     * @param Id $id
+     * @param Example $example
      */
-    public function delete(Id $id)
+    public function delete(Example $example)
     {
         $exampleData = $this->exampleDTO
-            // 削除対象のモデルを取得する．
-            ->find($id);
+            // 削除対象のModelを取得する．
+            ->find($example->id());
             
         // delete文を実行し，論理削除する．
         $exampleData->delete();
@@ -1118,18 +1113,18 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
     
     /**
-     * Exampleエンティティを更新
+     * Exampleを更新します．
      *
-     * @param Id $id
+     * @param Example $example
      */
     public function save(Example $example)
     {
         $exampleData = $this->exampleDTO
-            // 更新対象のモデルを取得する．
-            ->find($id);
+            // 更新対象のModelを取得する．
+            ->find($example->id());
         
         // 一連のトランザクション処理を実行する．
-        DB::transaction(function () use ($exampleData){
+        DB::transaction(function () use ($exampleData, $example){
             
             // オブジェクトにデータを設定する．
             $exampleData->fill([
@@ -1173,9 +1168,9 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     }   
     
     /**
-     * Exampleエンティティを更新
+     * Exampleを更新します．
      *
-     * @param Id $id
+     * @param Example $example
      */
     public function save(Example $example)
     {
@@ -1184,8 +1179,8 @@ class ExampleRepository extends Repository implements DomainExampleRepository
         
         try {
             $this->exampleDTO
-            // 更新対象のモデルを取得する．
-            ->find($id)
+            // 更新対象のModelを取得する．
+            ->find($example->id())
             // オブジェクトにデータを設定する．
             ->fill([
                 'name'  => $example->name(),
@@ -1214,7 +1209,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 
 #### ・データベースアクセス系
 
-Modelがデータベースに対して処理を行う前後にイベントを定義できる．例えば，```create```メソッド，```save```メソッド，```update```メソッド，```delete```メソッド，の実行後にイベントを定義するためには，```created```メソッド，```saved```メソッド，```updated```メソッド，```deleted```メソッド，を使用する．
+Modelクラスがデータベースに対して処理を行う前後にイベントを定義できる．例えば，```create```メソッド，```save```メソッド，```update```メソッド，```delete```メソッド，の実行後にイベントを定義するためには，```created```メソッド，```saved```メソッド，```updated```メソッド，```deleted```メソッド，を使用する．
 
 **＊実装例＊**
 
@@ -1234,7 +1229,7 @@ trait HasEvents
     // ～ 省略 ～    
     
     /**
-     * モデルのイベントをDispatcherに登録します．
+     * ModelのイベントをDispatcherに登録します．
      *
      * @param  string  $event
      * @param  \Closure|string  $callback
@@ -1250,7 +1245,7 @@ trait HasEvents
     }
     
     /**
-     * モデルのイベントをDispatcherに登録します．
+     * ModelのイベントをDispatcherに登録します．
      *    
      * @param  \Closure|string  $callback
      * @return void
@@ -1261,7 +1256,7 @@ trait HasEvents
     }
 
     /**
-     * モデルのsaveメソッド実行後イベントをDispatcherに登録します．
+     * Modelのsaveメソッド実行後イベントをDispatcherに登録します．
      *    
      * @param  \Closure|string  $callback
      * @return void
@@ -1272,7 +1267,7 @@ trait HasEvents
     }
 
     /**
-     * モデルのcreateメソッド実行後イベントをDispatcherに登録します．
+     * Modelのcreateメソッド実行後イベントをDispatcherに登録します．
      *    
      * @param  \Closure|string  $callback
      * @return void
@@ -1283,7 +1278,7 @@ trait HasEvents
     }
 
     /**
-     * モデルのdeleteメソッド実行後イベントをDispatcherに登録します．
+     * Modelのdeleteメソッド実行後イベントをDispatcherに登録します．
      *    
      * @param  \Closure|string  $callback
      * @return void
@@ -1409,7 +1404,7 @@ trait UpdatedModelTrait
     }
     
     /**
-     * イベントを発火させずにモデルを保存します．
+     * イベントを発火させずにModelを保存します．
      *
      * @return void
      */
@@ -2709,7 +2704,7 @@ return [
 ];
 ```
 
-3. バックエンド側では，```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentモデルを設定する．ここでは，Userモデルを設定する．Laravelでは，モデルに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
+3. バックエンド側では，```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentのModelを設定する．ここでは，Userを設定する．Laravelでは，Modelに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
 
 ```php
 return [
@@ -2719,7 +2714,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            // Eloquestモデルは自由に指定できる．
+            // EloquestのModelは自由に指定できる．
             'model'  => App\Domain\Auth\User::class,
         ],
 
@@ -2733,7 +2728,7 @@ return [
 ];
 ```
 
-4. バックエンド側では，Userモデルへのルーティング時に，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+4. バックエンド側では，Userへのルーティング時に，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
 
 **＊実装例＊**
 
@@ -2741,7 +2736,7 @@ return [
 Route::get('user', 'UserController@index')->middleware('auth:api');
 ```
 
-5. バックエンド側では，認証ガードを行ったモデルに対して，HasAPIToken，NotifiableのTraitをコールするようにする．
+5. バックエンド側では，認証ガードを行ったModelに対して，HasAPIToken，NotifiableのTraitをコールするようにする．
 
 **＊実装例＊**
 
@@ -4919,7 +4914,7 @@ class RoleType extends Enum
 ```php
 <?php
 
-// Staffモデル
+// Staff
 $staff = new Staff();
  
 // データベースから取得した区分値（開発職：2）からEnumクラスを作成
@@ -4927,7 +4922,7 @@ $staff->roleType = new RoleType($fetched['role_type']);
 // 以下の方法でもよい．
 // $staff->roleType = RoleType::fromValue($fetched['role_type']);
 
-// StaffモデルがいずれのRoleTypeをもつか
+// StaffがいずれのRoleTypeをもつか
 $staff->roleType->isDevelopmentRole(); // true
 $staff->roleType->isSalesRole(); // false
 ```
