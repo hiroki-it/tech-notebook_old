@@ -2,31 +2,89 @@
 
 ## 01. Tips
 
-### コマンド
+### コマンドリファレンス
+
+#### ・httpd
+
+参考：https://httpd.apache.org/docs/trunk/ja/programs/httpd.html
+
+#### ・apachectl
+
+参考：https://httpd.apache.org/docs/trunk/ja/programs/apachectl.html
+
+<br>
+
+### よく使うコマンド
+
+#### ・ディレクティブの実装場所の一覧
+
+特定のディレクティブを実装するべき設定ファイルを一覧で表示する．
+
+```sh
+$ httpd -L
+```
 
 #### ・設定ファイルのバリデーション
 
 ```sh
-# systemctlコマンドは無い
+# systemctlコマンドでは実行不可能
+
 $ service httpd configtest
+
 $ apachectl configtest
+
 $ apachectl -t
+```
+
+#### ・コンパイル済みモジュールの一覧
+
+コンパイル済みのモジュールを一覧で表示する．表示されているからといって，読み込まれているとは限らない．
+
+```sh
+$ httpd -l
+```
+
+#### ・読み込み済みモジュールの一覧
+
+コンパイル済みのモジュールのうちで，実際に読み込まれているモジュールを表示する．
+
+```sh
+$ httpd -M
+```
+
+#### ・読み込み済み```conf```ファイルの一覧
+
+読み込まれた```conf```ファイルを一覧で表示する．この結果から，使われていない```conf```ファイルもを検出できる．
+
+```sh
+$ httpd -t -D DUMP_CONFIG 2>/dev/null | grep '# In' | awk '{print $4}'
+```
+
+#### ・読み込まれるVirtualHost設定の一覧
+
+```sh
+$ httpd -S
 ```
 
 #### ・強制的な起動／停止／再起動
 
 ```sh
+# 起動
 $ systemctl start httpd
 
+# 停止
 $ systemctl stop httpd
 
+# 再起動
 $ systemctl restart httpd
 ```
 
 #### ・安全な再起動
 
+Apacheを段階的に再起動する．安全に再起動できる．
+
 ```sh
-$ apachectl -k graceful
+$ apachectl graceful
 ```
 
 <br>
