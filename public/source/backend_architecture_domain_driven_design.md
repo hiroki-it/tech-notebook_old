@@ -1118,14 +1118,14 @@ use App\Domain\Entity\DogFood;
 use App\Domain\Entity\DogItem;
 
 /**
- * 犬用おもちゃファクトリ
+ * 犬用商品ファクトリ
  */
-class DogToyFactory
+class DogItemFactory
 {   
     /**
      * 新たな集約を構成します．
      */
-    public static function createDogToy($data): DogItem
+    public static function createDogItem($data): DogItem
     {
         return new DogItem(
             new DogToy(

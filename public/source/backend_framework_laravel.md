@@ -1188,8 +1188,8 @@ class ExampleRepository extends Repository implements DomainExampleRepository
             ->find($id)
             // オブジェクトにデータを設定する．
             ->fill([
-                'name'  => $example->name()
-                'age'   => $example->age()
+                'name'  => $example->name(),
+                'age'   => $example->age(),
                 'email' => $example->email()
             ])
             // update文を実行する．
