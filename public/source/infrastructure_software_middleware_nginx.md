@@ -408,6 +408,14 @@ Content-Typeが，mime.typesファイルにないMIME typeであった場合に�
 default_type application/octet-stream
 ```
 
+#### ・```add_header```
+
+レスポンスヘッダーを設定する．
+
+```nginx
+# Referrer-Policyヘッダーに値を設定する
+add_header Referrer-Policy 'no-referrer-when-downgrade';
+```
 
 #### ・```/etc/nginx/mime.types```
 
