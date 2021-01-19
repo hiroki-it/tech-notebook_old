@@ -827,11 +827,139 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     public function findAll(): Collection
     {
         return $this->exampleDTO
-            ->all()
-            ->toArray();
+            ->all();
     }
 }
 ```
+
+#### ・```with```メソッド
+
+二つのSELECT文を実行する．テーブル間に一対多（親子）のリレーションシップがある場合に使用する．まず，親テーブルを読み出す．さらに，親テーブルのidを使用して子テーブルを読み出す．
+
+**＊実装例＊**
+
+Department（親）に，departmentsテーブルとemployeesテーブルの間に，一対多の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Department extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "department_id";
+
+     /**
+     * 一対多の関係を定義します．
+     * （デフォルトではemployee_idに関連付けます）
+     * 
+     * @return HasMany
+     */
+    public function hasManyEmployees() :HasMany
+    {
+        return $this->hasMany(Employee::class);
+    }
+}
+```
+
+また，Employee（子）に，反対の多対一の関係を定義する．
+
+```php
+<?php
+
+namespace App\Domain\DTO;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Employee extends Model
+{
+    /**
+     * 主キーとするカラム
+     * 
+     * @var string 
+     */
+    protected $primaryKey = "employee_id";
+
+    /**
+     * 多対一の関係を定義します．
+     * （デフォルトではdepartment_idに関連付けます）
+     * 
+     * @return BelongsTo
+     */
+    public function belongsToDepartments() :BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+}
+```
+
+Department（親）と，これに紐づくEmployee（子）を読み出す．
+
+```php
+<?php
+
+namespace App\Infrastructure\Repositories;
+
+use App\Domain\Entity\Department;
+use App\Domain\Repositories\DepartmentRepository as DomainDepartmentRepository;
+use App\Infrastructure\DTO\DepartmentDTO;
+
+class DepartmentRepository extends Repository implements DomainDepartmentRepository
+{
+    /**
+     * @var DepartmentDTO
+     */
+    private DepartmentDTO $departmentDTO;
+    
+    public function __construct(DepartmentDTO $departmentDTO)
+    {
+        $this->departmentDTO = $departmentDTO;
+    }   
+    
+    /**
+     * 指定したIdのDepartmentに属するEmployeesを全て読み出します．
+     * （departments : employees = 1 : 多）
+     *
+     * @var    DepartmentId $id      
+     * @return Department
+     */
+    public function findOneWith(DepartmentId $id): Department
+    {
+        return $this->departmentDTO
+            ->with('employees')
+            ->find($id);
+    }  
+    
+    /**
+     * Departmentに属するEmployeesを全て読み出します．
+     * （departments : employees = 1 : 多）
+     * 
+     * @return Collection
+     */
+    public function findAllWith(): Collection
+    {
+        return $this->departmentDTO
+            ->with('employees')
+            ->get();
+    }
+}
+```
+
+Builderクラスの```with```メソッドでは，二つのSELECT文を実行している．```with```メソッドを使用すると，N+1問題の対策になる．
+
+````sql
+select * from `departments`;
+select * from `employees` where `employees`.`department_id` in (1, 2, 3, ...);
+````
 
 <br>
 
