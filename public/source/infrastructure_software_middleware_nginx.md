@@ -570,64 +570,46 @@ tcp_nopush on;
 
 <br>
 
-### ```location```ブロック
+### ヘルスチェックの受信
 
-#### ・色々なパターン
+#### ・nginxによるレスポンス
 
-リクエストメッセージのURLごとに，異なる処理を設定する．
+Webサーバのみヘルスチェックを受信する．ヘルスチェック用の```server```ブロックで，```gif```ファイルのレスポンスを返信するように```location```ブロックを定義する．Nginxでアクセスログを出力する必要はないため，```location```ブロックでは```access_log```を無効化する．
 
 **＊実装例＊**
 
-各設定の優先順位に沿った以下の順番で実装した方が良い．
-
 ```nginx
-# 1. ドキュメントルートを指定したリクエストの場合
-location = / {
+server {
+    listen 80      default_server;
+    listen [::]:80 default_server;
+    root           /var/www/example;
+    index          index.php index.html;
 
-}
-
-# 2. 『/images/』で始まるリクエストの場合
-location ^~ /images/ {
-
-}
-
-# 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合
-# バックスラッシュでドットをエスケープし，任意の文字ではなく「ドット文字」として認識できるようにする．
-location ~* \.(gif|jpg|jpeg)$ {
-
-}
-
-# 5-1. 『/docs/』で始まる全てのリクエストの場合
-location /docs/ {
-
-}
-
-# 5-2. 『/』で始まる全てのリクエストの場合
-location / {
-    # 『/.aaa.html』を探し，『/.aaa.html/』もなければ，『/index.html』で200レスポンス
-    # 全てがない場合，404レスポンス．
-    try_files $uri $uri/ /index.html =404;
+    location /healthcheck {
+        empty_gif;
+        access_log off;
+        break;
+    }
 }
 ```
 
-ルートの一致条件は，以下の通りである．
+#### ・アプリケーションによるレスポンス
 
-| 優先順位 | prefix | ルートの一致条件                         | ルートの具体例                                               |
-| :------: | :----: | ---------------------------------------- | ------------------------------------------------------------ |
-|    1     |   =    | 指定したルートに一致する場合．           | ```http://example.com/```                                    |
-|    2     |   ^~   | 指定したルートで始まる場合．             | ```http://example.com/images/aaa.gif```                      |
-|    3     |   ~    | 正規表現（大文字・小文字を区別する）．   | ```http://example.com/images/AAA.jpg```                      |
-|    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
-|    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
+Webサーバとアプリケーションの両方でヘルスチェックを受信する．アプリケーション側に```200```ステータスのレスポンスを返信するエンドポイントを実装したうえで，ヘルスチェック用の```server```ブロックで，アプリケーションにルーティングするように```location```ブロックを定義する．Nginxでアクセスログを出力する必要はないため，```location```ブロックでは```access_log```を無効化する．
 
-#### ・ヘルスチェック
-
-ヘルスチェック専用のパスを用意する．アプリケーションに対してヘルスチェックを行う時，nginxでアクセスログを出力する必要はない．そこで，ヘルスチェックのパスで，```access_log```を無効化する．```location```ブロックの優先順位に則って，一番最初に実装した方が良い．
+**＊実装例＊**
 
 ```nginx
-location = /healthcheck {
-    try_files $uri $uri/ /index.php?$query_string;
-    access_log off;
+server {
+    listen 80      default_server;
+    listen [::]:80 default_server;
+    root           /var/www/example;
+    index          index.php index.html;
+
+    location /healthcheck {
+        try_files $uri $uri/ /index.php?$query_string;
+        access_log off;
+    }
 }
 ```
 
