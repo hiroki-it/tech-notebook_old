@@ -1222,61 +1222,6 @@ Auroraの場合，フェイルオーバーによって昇格するインスタ�
 | バックアップ                     | バックアップの有効化，保持期間，時間を設定する．             | バックアップを取るほどでもないため，無効化しておいて問題ない． |
 | メンテナンス                     | メンテナンスの時間を設定する．                               |                                                              |
 
-#### ・セッション管理機能
-
-![ElastiCacheのセッション管理機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ElastiCacheのセッション管理機能.png)
-
-EC2インスタンスの冗長化時，これらの間で共通のセッションを使用できるように，セッションを管理する．
-
-#### ・クエリCache管理機能
-
-![ElastiCacheのクエリCache管理機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ElastiCacheのクエリキャッシュ管理機能.png)
-
-1. SQLの実行結果を管理する．最初，EC2インスタンスからRDSにSQLが実行される時，SQLの実行結果を保存しておく．
-
-```mysql
-# アプリケーションがSQLを実行する
-SELECT * FROM users;
-```
-
-```sh
-# ElastiCacheには，SQLの実行結果がまだ保存されていない
-*** no cache ***
-{"id"=>"1", "name"=>"alice"}
-{"id"=>"2", "name"=>"bob"}
-{"id"=>"3", "name"=>"charles"}
-{"id"=>"4", "name"=>"donny"}
-{"id"=>"5", "name"=>"elie"}
-{"id"=>"6", "name"=>"fabian"}
-{"id"=>"7", "name"=>"gabriel"}
-{"id"=>"8", "name"=>"harold"}
-{"id"=>"9", "name"=>"Ignatius"}
-{"id"=>"10", "name"=>"jonny"}
-```
-
-2. 以降，同じSQLが実行された時には，RDSの代わりにデータをアプリケーションに渡す．
-
-```mysql
-# アプリケーションが１番と同じSQLを実行する
-SELECT * FROM users;
-```
-
-
-```sh
-# ElastiCacheには，SQLの実行結果が既に保存されている
-*** cache hit ***
-{"id"=>"1", "name"=>"alice"}
-{"id"=>"2", "name"=>"bob"}
-{"id"=>"3", "name"=>"charles"}
-{"id"=>"4", "name"=>"donny"}
-{"id"=>"5", "name"=>"elie"}
-{"id"=>"6", "name"=>"fabian"}
-{"id"=>"7", "name"=>"gabriel"}
-{"id"=>"8", "name"=>"harold"}
-{"id"=>"9", "name"=>"Ignatius"}
-{"id"=>"10", "name"=>"jonny"}
-```
-
 #### ・Redisの操作
 
 ```sh
@@ -1304,7 +1249,76 @@ redis xxxxx:6379> monitor
 
 <br>
 
-### 障害対策
+### Redisの管理機能
+
+#### ・セッション管理機能
+
+アプリケーションの冗長化時，これらの間で共通のセッションを使用できるように，セッションを管理する．
+
+![ElastiCacheのセッション管理機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ElastiCacheのセッション管理機能.png)
+
+#### ・クエリCache管理機能
+
+RDSに対するSQLと読み出されたデータを，キャッシュとして管理する．
+
+![クエリCache管理機能_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クエリCache管理機能_1.png)
+
+1. アプリケーションは，RDSの前に，Redisに対してSQLを実行する．
+
+```mysql
+SELECT * FROM users;
+```
+
+2. 始めて実行されたSQLの場合，RedisはSQLをキーとして保存し，Cacheが無いことがアプリケーションに返却する．
+3. アプリケーションはRDSに対してSQLを実行する．
+4. データが読み出される．
+5. アプリケーションはRedisにデータを登録する．
+
+```sh
+# ElastiCacheには，SQLの実行結果がまだ保存されていない
+
+*** no cache ***
+{"id"=>"1", "name"=>"alice"}
+{"id"=>"2", "name"=>"bob"}
+{"id"=>"3", "name"=>"charles"}
+{"id"=>"4", "name"=>"donny"}
+{"id"=>"5", "name"=>"elie"}
+{"id"=>"6", "name"=>"fabian"}
+{"id"=>"7", "name"=>"gabriel"}
+{"id"=>"8", "name"=>"harold"}
+{"id"=>"9", "name"=>"Ignatius"}
+{"id"=>"10", "name"=>"jonny"}
+```
+
+![クエリCache管理機能_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クエリCache管理機能_2.png)
+
+6. 次回，アプリケーションは，RDSの前に，Redisに対してSQLを実行する．
+
+```mysql
+SELECT * FROM users;
+```
+
+7. Redisは，SQLをキーにしてデータを特定し，アプリケーションに返却する．
+
+```sh
+# ElastiCacheには，SQLの実行結果が既に保存されている
+
+*** cache hit ***
+{"id"=>"1", "name"=>"alice"}
+{"id"=>"2", "name"=>"bob"}
+{"id"=>"3", "name"=>"charles"}
+{"id"=>"4", "name"=>"donny"}
+{"id"=>"5", "name"=>"elie"}
+{"id"=>"6", "name"=>"fabian"}
+{"id"=>"7", "name"=>"gabriel"}
+{"id"=>"8", "name"=>"harold"}
+{"id"=>"9", "name"=>"Ignatius"}
+{"id"=>"10", "name"=>"jonny"}
+```
+
+<br>
+
+### Redisの障害対策
 
 #### ・フェイルオーバー
 
