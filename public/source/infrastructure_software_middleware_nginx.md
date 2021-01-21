@@ -42,7 +42,7 @@ $ systemctl reload nginx
 
 #### ・PHP-FPMとの組み合わせ
 
-静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを送信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
+静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを返信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
 
 ![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
@@ -223,7 +223,7 @@ server {
 
 ### リバースProxyのミドルウェアとして
 
-前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスする．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
+前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスを返信する．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
 
 **＊実装例＊**
 
@@ -257,19 +257,9 @@ server {
 
 ## 03-01. Mainモジュール
 
-**＊実装例＊**
+### ディレクティブ
 
-```nginx
-user                  www www;
-worker_processes      5;
-error_log             logs/error.log;
-pid                   logs/nginx.pid;
-worker_rlimit_nofile  8192;
-```
-
-<br>
-
-### ```user```ディレクティブ 
+#### ・```user```
 
 本設定ファイルの実行ユーザとグループを設定する．グループ名を入力しなかった場合，ユーザ名と同じものが自動的に設定される．
 
@@ -277,33 +267,25 @@ worker_rlimit_nofile  8192;
 user  www www;
 ```
 
-<br>
-
-### ```worker_processes```ディレクティブ 
+#### ・```worker_processes```
 
 ```nginx
 worker_processes  5;
 ```
 
-<br>
-
-### ```error_log```ディレクティブ 
+#### ・```error_log```
 
 ```nginx
 error_log  logs/error.log;
 ```
 
-<br>
-
-### ```pid```ディレクティブ 
+#### ・```pid``` 
 
 ```nginx
 pid  logs/nginx.pid;
 ```
 
-<br>
-
-### ```worker_rlimit_nofile```ディレクティブ 
+#### ・```worker_rlimit_nofile```
 
 ```nginx
 worker_rlimit_nofile  8192;
@@ -313,33 +295,57 @@ worker_rlimit_nofile  8192;
 
 ## 03-02. Configurationモジュール
 
-### ```include```ディレクティブ
+### ディレクティブ
 
-#### ・mime.typesの読み込み
+#### ・```include```
 
-他のファイルの設定を読み込む．
-
-```nginx
-include  /etc/nginx/mime.types;
-```
-
-ワイルドカードも可能
+共通化された設定ファイルを読み込む．アスタリスクによるワイルドカードに対応している．
 
 ```nginx
-include  /etc/nginx/*.types;
+include /etc/nginx/conf.d/*.conf;
 ```
 
-#### ・modulesの読み込み
+<br>
+
+### 設定ファイルの種類
+
+#### ・```/etc/nginx/conf.d/*.conf```ファイル
+
+デフォルトの設定が定義されているいくつかのファイル．基本的には読み込むようにする．ただし，nginx.confファイルの設定が上書きされてしまわないかを注意する．
+
+```nginx
+include /etc/nginx/conf.d/*.conf;
+```
+
+#### ・```/etc/nginx/mime.types```ファイル
+
+リクエストのContent-TypeのMIMEタイプとファイル拡張子の間の対応関係が定義されているファイル．
+
+```nginx
+include /etc/nginx/mime.types;
+```
+
+#### ・```/usr/share/nginx/modules/*.conf```ファイル
+
+モジュールの読み込み処理が定義されているファイル．
 
 ```nginx
 include  /usr/share/nginx/modules/*.conf;
+```
+
+例えば，```mod-http-image-filter.conf```ファイルの内容は以下の通り．
+
+```nginx
+load_module "/usr/lib64/nginx/modules/ngx_http_image_filter_module.so";
 ```
 
 <br>
 
 ## 03-03. Eventsモジュール
 
-### ```events```ブロック
+### ブロック
+
+#### ・```events```ブロック
 
 **＊実装例＊**
 
@@ -349,7 +355,11 @@ events {
 }
 ```
 
-#### ・```worker_connections```ディレクティブ
+<br>
+
+### ディレクティブ
+
+#### ・```worker_connections```
 
 workerプロセスが同時に処理可能なコネクションの最大数を設定する．
 
@@ -361,7 +371,11 @@ worker_connections  1024;
 
 ## 03-04. HTTPCoreモジュール
 
-### ```http```ブロック
+### ブロック
+
+#### ・```http```ブロック
+
+全てのWebサーバに共通する処理を設定する．
 
 ```nginx
 http {
@@ -379,24 +393,94 @@ http {
     include            /etc/nginx/mime.types;
     include            /etc/nginx/conf.d/*.conf;
         
-    #----- 省略 -----#
+    server {
+        # ～ 省略 ～
+    }
 }
 ```
 
-#### ・```sendfile```
+#### ・```server```ブロック
 
-クライアントへのレスポンス時に，ファイル送信のためにLinuxのsendfileシステムコールを使用するかどうかを設定する．ファイル送信処理をOS内で行うため，処理が速くなる．使用しない場合，Nginxがレスポンス時に自身でファイル送信処理を行う．
+個別のWebサーバの処理を設定する．
 
 ```nginx
-sendfile on;
+server {
+    listen      80;
+    server_name www.sougi-bon.com;
+    root        /var/www/example;
+    index       index.php index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass  unix:/run/php-fpm/www.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include       fastcgi_params;
+    }
+}
 ```
 
-#### ・```tcp_nopush```
+#### ・```location```ブロック
 
-上述のLinuxの```sendfile```システムコールを使用する場合に，適用できる．クライアントへのレスポンス時，ヘッダーとファイルを，一つのパケットにまとめて送信するかどうかを設定する．
+個別のWebサーバにおける特定のURLの処理を設定する．
+
+**＊実装例＊**
+
+各設定の優先順位に沿った以下の順番で実装した方が良い．
 
 ```nginx
-tcp_nopush on;
+# 1. ドキュメントルートを指定したリクエストの場合
+location = / {
+
+}
+
+# 2. 『/images/』で始まるリクエストの場合
+location ^~ /images/ {
+
+}
+
+# 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合
+# バックスラッシュでドットをエスケープし，任意の文字ではなく「ドット文字」として認識できるようにする．
+location ~* \.(gif|jpg|jpeg)$ {
+
+}
+
+# 5-1. 『/docs/』で始まる全てのリクエストの場合
+location /docs/ {
+
+}
+
+# 5-2. 『/』で始まる全てのリクエストの場合
+location / {
+    # 『/.aaa.html』を探し，『/.aaa.html/』もなければ，『/index.html』で200レスポンス
+    # 全てがない場合，404レスポンス．
+    try_files $uri $uri/ /index.html =404;
+}
+```
+
+ルートの一致条件は，以下の通りである．
+
+| 優先順位 | prefix | ルートの一致条件                         | ルートの具体例                                               |
+| :------: | :----: | ---------------------------------------- | ------------------------------------------------------------ |
+|    1     |   =    | 指定したルートに一致する場合．           | ```http://example.com/```                                    |
+|    2     |   ^~   | 指定したルートで始まる場合．             | ```http://example.com/images/aaa.gif```                      |
+|    3     |   ~    | 正規表現（大文字・小文字を区別する）．   | ```http://example.com/images/AAA.jpg```                      |
+|    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
+|    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
+
+<br>
+
+### ディレクティブ
+
+#### ・```add_header```
+
+レスポンスヘッダーを設定する．
+
+```nginx
+# Referrer-Policyヘッダーに値を設定する
+add_header Referrer-Policy 'no-referrer-when-downgrade';
 ```
 
 #### ・```default_type```
@@ -408,37 +492,7 @@ Content-Typeが，mime.typesファイルにないMIME typeであった場合に�
 default_type application/octet-stream
 ```
 
-#### ・```add_header```
-
-レスポンスヘッダーを設定する．
-
-```nginx
-# Referrer-Policyヘッダーに値を設定する
-add_header Referrer-Policy 'no-referrer-when-downgrade';
-```
-
-#### ・```/etc/nginx/mime.types```
-
-リクエストのContent-TypeのMIMEタイプと，ファイル拡張子の間の，対応関係が定義されているファイル．
-
-```nginx
-include /etc/nginx/mime.types;
-```
-
-
-#### ・```/etc/nginx/conf.d/*.conf```
-
-デフォルトの設定が定義されているいくつかのファイル．基本的には読み込むようにする．ただし，nginx.confファイルの設定が上書きされてしまわないかを注意する．
-
-```nginx
-include /etc/nginx/conf.d/*.conf;
-```
-
-<br>
-
-### ```server```ブロック
-
-#### ・```listen```ディレクティブ
+#### ・```listen```
 
 開放するポート```80```を設定する．
 
@@ -452,8 +506,15 @@ listen 80;
 listen 443 ssl;
 ```
 
+#### ・```sendfile```
 
-#### ・```server_name```ディレクティブ
+クライアントへのレスポンス時に，ファイル送信のためにLinuxのsendfileシステムコールを使用するかどうかを設定する．ファイル返信処理をOS内で行うため，処理が速くなる．使用しない場合，Nginxがレスポンス時に自身でファイル返信処理を行う．
+
+```nginx
+sendfile on;
+```
+
+#### ・```server_name```
 
 パブリックIPアドレスに紐づくドメイン名を設定する．
 
@@ -467,7 +528,7 @@ server_name example.com;
 server_name 192.168.0.0;
 ```
 
-#### ・```ssl```ディレクティブ
+#### ・```ssl```
 
 NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効にする必要がある．
 
@@ -475,7 +536,7 @@ NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効�
 ssl on;
 ```
 
-#### ・```ssl_certificate```ディレクティブ
+#### ・```ssl_certificate```
 
 PEM証明書のパスを設定する．
 
@@ -483,12 +544,20 @@ PEM証明書のパスを設定する．
 ssl_certificate /etc/nginx/ssl/server.crt;
 ```
 
-#### ・```ssl_certificate_key```ディレクティブ
+#### ・```ssl_certificate_key```
 
 PEM秘密鍵のパスを設定する．
 
 ```nginx
 ssl_certificate_key /etc/nginx/ssl/server.key;
+```
+
+#### ・```tcp_nopush```
+
+上述のLinuxの```sendfile```システムコールを使用する場合に，適用できる．クライアントへのレスポンス時，ヘッダーとファイルを，一つのパケットにまとめて返信するかどうかを設定する．
+
+```nginx
+tcp_nopush on;
 ```
 
 <br>

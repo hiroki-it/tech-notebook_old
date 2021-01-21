@@ -1009,7 +1009,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
         $exampleData->fill([
             'name'  => $example->name(),
             'age'   => $example->age(),
-            'email' => $example->email(),
+            'email' => $example->email()
         ])
         // update文を実行する．
         ->save();
@@ -2103,7 +2103,7 @@ class FileSystemPublicController extends Controller
 
 #### ・クラウドストレージの場合
 
-ファイルをS3バケット内のディレクトリに保存する．環境変数を```.env```ファイルに実装する．```filesystems.php```ファイルから，指定された設定が選択される．AWSアカウントの認証情報を環境変数として設定するか，またはS3アクセスポリシーをEC2やECSタスクに付与することにより，S3にアクセスできるようになる．
+ファイルをS3バケット内のディレクトリに保存する．環境変数を```.env```ファイルに実装する必要がある．```filesystems.php```ファイルから，指定された設定が選択される．AWSアカウントの認証情報を環境変数として設定するか，またはS3アクセスポリシーをEC2やECSタスクに付与することにより，S3にアクセスできるようになる．
 
 ```
 # S3アクセスポリシーをEC2やECSタスクに付与してもよい
@@ -3415,13 +3415,13 @@ ModelのCollection型を配列に変換する．
 $ php artisan route:list
 ```
 
-#### ・キャッシュ削除
+#### ・Cache削除
 
 ```sh
-# ルーティングのキャッシュを削除
+# ルーティングのCacheを削除
 $ php artisan route:clear
 
-# 全てのキャッシュを削除
+# 全てのCacheを削除
 $ php artisan optimize:clear
 ```
 
@@ -4414,13 +4414,13 @@ return [
 
 ### arisanによる操作
 
-#### ・キャッシュの削除
+#### ・Cacheの削除
 
 ```sh
-# ビューのキャッシュを削除
+# ビューのCacheを削除
 $ php artisan view:clear
 
-# 全てのキャッシュを削除
+# 全てのCacheを削除
 $ php artisan optimize:clear
 ```
 
