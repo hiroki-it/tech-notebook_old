@@ -133,6 +133,23 @@ return [
 
 <br>
 
+### Redis
+
+#### ・クエリCache管理
+
+環境変数を```.env```ファイルに実装する必要がある．
+
+```
+CACHE_DRIVER=redis
+REDIS_HOST=<Redisのホスト>
+REDIS_PASSWORD=<Redisのパスワード>
+REDIS_PORT=<Redisのポート>
+```
+
+
+
+<br>
+
 ## 04. Eloquent｜Domain
 
 ### artisanコマンドによる操作
