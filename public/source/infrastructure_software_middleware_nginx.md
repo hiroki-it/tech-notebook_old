@@ -34,6 +34,14 @@ $ nginx -t
 $ systemctl reload nginx
 ```
 
+#### ・読み込まれた設定ファイルと設定値の一覧
+
+読み込まれている全ての設定ファイル（```include```ディレクティブの対象も含む）の内容を展開して表示する．
+
+```sh
+$ nginx -T
+```
+
 <br>
 
 ## 02. Nginxの用途
@@ -42,7 +50,7 @@ $ systemctl reload nginx
 
 #### ・PHP-FPMとの組み合わせ
 
-静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを送信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
+静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを返信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
 
 ![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
@@ -223,7 +231,7 @@ server {
 
 ### リバースProxyのミドルウェアとして
 
-前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスする．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
+前提として，ロードバランサ－から転送されたHTTPリクエストを受信するとする．静的コンテンツのリクエストは，リバースProxy（Nginx）でレスポンスを返信する．Webサーバは，必ずリバースProxyを経由して，動的リクエストを受信する．
 
 **＊実装例＊**
 
@@ -257,19 +265,9 @@ server {
 
 ## 03-01. Mainモジュール
 
-**＊実装例＊**
+### ディレクティブ
 
-```nginx
-user                  www www;
-worker_processes      5;
-error_log             logs/error.log;
-pid                   logs/nginx.pid;
-worker_rlimit_nofile  8192;
-```
-
-<br>
-
-### ```user```ディレクティブ 
+#### ・```user```
 
 本設定ファイルの実行ユーザとグループを設定する．グループ名を入力しなかった場合，ユーザ名と同じものが自動的に設定される．
 
@@ -277,33 +275,25 @@ worker_rlimit_nofile  8192;
 user  www www;
 ```
 
-<br>
-
-### ```worker_processes```ディレクティブ 
+#### ・```worker_processes```
 
 ```nginx
 worker_processes  5;
 ```
 
-<br>
-
-### ```error_log```ディレクティブ 
+#### ・```error_log```
 
 ```nginx
 error_log  logs/error.log;
 ```
 
-<br>
-
-### ```pid```ディレクティブ 
+#### ・```pid``` 
 
 ```nginx
 pid  logs/nginx.pid;
 ```
 
-<br>
-
-### ```worker_rlimit_nofile```ディレクティブ 
+#### ・```worker_rlimit_nofile```
 
 ```nginx
 worker_rlimit_nofile  8192;
@@ -313,33 +303,57 @@ worker_rlimit_nofile  8192;
 
 ## 03-02. Configurationモジュール
 
-### ```include```ディレクティブ
+### ディレクティブ
 
-#### ・mime.typesの読み込み
+#### ・```include```
 
-他のファイルの設定を読み込む．
-
-```nginx
-include  /etc/nginx/mime.types;
-```
-
-ワイルドカードも可能
+共通化された設定ファイルを読み込む．アスタリスクによるワイルドカードに対応している．
 
 ```nginx
-include  /etc/nginx/*.types;
+include /etc/nginx/conf.d/*.conf;
 ```
 
-#### ・modulesの読み込み
+<br>
+
+### 設定ファイルの種類
+
+#### ・```/etc/nginx/conf.d/*.conf```ファイル
+
+デフォルトの設定が定義されているいくつかのファイル．基本的には読み込むようにする．ただし，nginx.confファイルの設定が上書きされてしまわないかを注意する．
+
+```nginx
+include /etc/nginx/conf.d/*.conf;
+```
+
+#### ・```/etc/nginx/mime.types```ファイル
+
+リクエストのContent-TypeのMIMEタイプとファイル拡張子の間の対応関係が定義されているファイル．
+
+```nginx
+include /etc/nginx/mime.types;
+```
+
+#### ・```/usr/share/nginx/modules/*.conf```ファイル
+
+モジュールの読み込み処理が定義されているファイル．
 
 ```nginx
 include  /usr/share/nginx/modules/*.conf;
+```
+
+例えば，```mod-http-image-filter.conf```ファイルの内容は以下の通り．
+
+```nginx
+load_module "/usr/lib64/nginx/modules/ngx_http_image_filter_module.so";
 ```
 
 <br>
 
 ## 03-03. Eventsモジュール
 
-### ```events```ブロック
+### ブロック
+
+#### ・```events```ブロック
 
 **＊実装例＊**
 
@@ -349,7 +363,11 @@ events {
 }
 ```
 
-#### ・```worker_connections```ディレクティブ
+<br>
+
+### ディレクティブ
+
+#### ・```worker_connections```
 
 workerプロセスが同時に処理可能なコネクションの最大数を設定する．
 
@@ -361,7 +379,11 @@ worker_connections  1024;
 
 ## 03-04. HTTPCoreモジュール
 
-### ```http```ブロック
+### ブロック
+
+#### ・```http```ブロック
+
+全てのWebサーバに共通する処理を設定する．
 
 ```nginx
 http {
@@ -379,125 +401,38 @@ http {
     include            /etc/nginx/mime.types;
     include            /etc/nginx/conf.d/*.conf;
         
-    #----- 省略 -----#
+    server {
+        # ～ 省略 ～
+    }
 }
 ```
 
-#### ・```sendfile```
+#### ・```server```ブロック
 
-クライアントへのレスポンス時に，ファイル送信のためにLinuxのsendfileシステムコールを使用するかどうかを設定する．ファイル送信処理をOS内で行うため，処理が速くなる．使用しない場合，Nginxがレスポンス時に自身でファイル送信処理を行う．
-
-```nginx
-sendfile on;
-```
-
-#### ・```tcp_nopush```
-
-上述のLinuxの```sendfile```システムコールを使用する場合に，適用できる．クライアントへのレスポンス時，ヘッダーとファイルを，一つのパケットにまとめて送信するかどうかを設定する．
+個別のWebサーバの処理を設定する．
 
 ```nginx
-tcp_nopush on;
+server {
+    listen      80;
+    server_name www.sougi-bon.com;
+    root        /var/www/example;
+    index       index.php index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass  unix:/run/php-fpm/www.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include       fastcgi_params;
+    }
+}
 ```
 
-#### ・```default_type```
+#### ・```location```ブロック
 
-Content-Typeが，mime.typesファイルにないMIME typeであった場合に，適用するMIME type．
-
-```nginx
-# application/octet-stream：任意のMIME type（指定なし）と見なして送信
-default_type application/octet-stream
-```
-
-#### ・```add_header```
-
-レスポンスヘッダーを設定する．
-
-```nginx
-# Referrer-Policyヘッダーに値を設定する
-add_header Referrer-Policy 'no-referrer-when-downgrade';
-```
-
-#### ・```/etc/nginx/mime.types```
-
-リクエストのContent-TypeのMIMEタイプと，ファイル拡張子の間の，対応関係が定義されているファイル．
-
-```nginx
-include /etc/nginx/mime.types;
-```
-
-
-#### ・```/etc/nginx/conf.d/*.conf```
-
-デフォルトの設定が定義されているいくつかのファイル．基本的には読み込むようにする．ただし，nginx.confファイルの設定が上書きされてしまわないかを注意する．
-
-```nginx
-include /etc/nginx/conf.d/*.conf;
-```
-
-<br>
-
-### ```server```ブロック
-
-#### ・```listen```ディレクティブ
-
-開放するポート```80```を設定する．
-
-```nginx
-listen 80;
-```
-
-開放するポート```443```を設定する．
-
-```nginx
-listen 443 ssl;
-```
-
-
-#### ・```server_name```ディレクティブ
-
-パブリックIPアドレスに紐づくドメイン名を設定する．
-
-```nginx
-server_name example.com;
-```
-
-パブリックIPアドレスを直接記述してもよい．
-
-```nginx
-server_name 192.168.0.0;
-```
-
-#### ・```ssl```ディレクティブ
-
-NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効にする必要がある．
-
-```nginx
-ssl on;
-```
-
-#### ・```ssl_certificate```ディレクティブ
-
-PEM証明書のパスを設定する．
-
-```nginx
-ssl_certificate /etc/nginx/ssl/server.crt;
-```
-
-#### ・```ssl_certificate_key```ディレクティブ
-
-PEM秘密鍵のパスを設定する．
-
-```nginx
-ssl_certificate_key /etc/nginx/ssl/server.key;
-```
-
-<br>
-
-### ```location```ブロック
-
-#### ・色々なパターン
-
-リクエストメッセージのURLごとに，異なる処理を設定する．
+個別のWebサーバにおける特定のURLの処理を設定する．
 
 **＊実装例＊**
 
@@ -543,14 +478,138 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
-#### ・ヘルスチェック
+<br>
 
-ヘルスチェック専用のパスを用意する．アプリケーションに対してヘルスチェックを行う時，nginxでアクセスログを出力する必要はない．そこで，ヘルスチェックのパスで，```access_log```を無効化する．```location```ブロックの優先順位に則って，一番最初に実装した方が良い．
+### ディレクティブ
+
+#### ・```add_header```
+
+レスポンスヘッダーを設定する．
 
 ```nginx
-location = /healthcheck {
-    try_files $uri $uri/ /index.php?$query_string;
-    access_log off;
+# Referrer-Policyヘッダーに値を設定する
+add_header Referrer-Policy 'no-referrer-when-downgrade';
+```
+
+#### ・```default_type```
+
+Content-Typeが，mime.typesファイルにないMIME typeであった場合に，適用するMIME type．
+
+```nginx
+# application/octet-stream：任意のMIME type（指定なし）と見なして送信
+default_type application/octet-stream
+```
+
+#### ・```listen```
+
+開放するポート```80```を設定する．
+
+```nginx
+listen 80;
+```
+
+開放するポート```443```を設定する．
+
+```nginx
+listen 443 ssl;
+```
+
+#### ・```sendfile```
+
+クライアントへのレスポンス時に，ファイル送信のためにLinuxのsendfileシステムコールを使用するかどうかを設定する．ファイル返信処理をOS内で行うため，処理が速くなる．使用しない場合，Nginxがレスポンス時に自身でファイル返信処理を行う．
+
+```nginx
+sendfile on;
+```
+
+#### ・```server_name```
+
+パブリックIPアドレスに紐づくドメイン名を設定する．
+
+```nginx
+server_name example.com;
+```
+
+パブリックIPアドレスを直接記述してもよい．
+
+```nginx
+server_name 192.168.0.0;
+```
+
+#### ・```ssl```
+
+NginxでHTTPSプロトコルを受信する場合，sslプロトコルを有効にする必要がある．
+
+```nginx
+ssl on;
+```
+
+#### ・```ssl_certificate```
+
+PEM証明書のパスを設定する．
+
+```nginx
+ssl_certificate /etc/nginx/ssl/server.crt;
+```
+
+#### ・```ssl_certificate_key```
+
+PEM秘密鍵のパスを設定する．
+
+```nginx
+ssl_certificate_key /etc/nginx/ssl/server.key;
+```
+
+#### ・```tcp_nopush```
+
+上述のLinuxの```sendfile```システムコールを使用する場合に，適用できる．クライアントへのレスポンス時，ヘッダーとファイルを，一つのパケットにまとめて返信するかどうかを設定する．
+
+```nginx
+tcp_nopush on;
+```
+
+<br>
+
+### ヘルスチェックの受信
+
+#### ・nginxによるレスポンス
+
+Webサーバのみヘルスチェックを受信する．ヘルスチェック用の```server```ブロックで，```gif```ファイルのレスポンスを返信するように```location```ブロックを定義する．Nginxでアクセスログを出力する必要はないため，```location```ブロックでは```access_log```を無効化する．
+
+**＊実装例＊**
+
+```nginx
+server {
+    listen 80      default_server;
+    listen [::]:80 default_server;
+    root           /var/www/example;
+    index          index.php index.html;
+
+    location /healthcheck {
+        empty_gif;
+        access_log off;
+        break;
+    }
+}
+```
+
+#### ・アプリケーションによるレスポンス
+
+Webサーバとアプリケーションの両方でヘルスチェックを受信する．アプリケーション側に```200```ステータスのレスポンスを返信するエンドポイントを実装したうえで，ヘルスチェック用の```server```ブロックで，アプリケーションにルーティングするように```location```ブロックを定義する．Nginxでアクセスログを出力する必要はないため，```location```ブロックでは```access_log```を無効化する．
+
+**＊実装例＊**
+
+```nginx
+server {
+    listen 80      default_server;
+    listen [::]:80 default_server;
+    root           /var/www/example;
+    index          index.php index.html;
+
+    location /healthcheck {
+        try_files $uri $uri/ /index.php?$query_string;
+        access_log off;
+    }
 }
 ```
 
