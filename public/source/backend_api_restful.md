@@ -382,6 +382,8 @@ Connection: close
 # Webサーバ（nginx，apache，AmazonS3などが表示される）
 Server: nginx
 Date: Sat, 26 Sep 2020 04:25:08 GMT
+# リファラポリシー（nginx，apache，などで実装可能）
+Referrer-Policy: no-referrer-when-downgrade
 x-amz-rid:	xxxxx
 # セッションIDを含むCookie情報
 Set-Cookie: session-id=<セッションID>; Domain=.amazon.co.jp; Expires=Sun, 26-Sep-2021 04:25:08 GMT; Path=/
