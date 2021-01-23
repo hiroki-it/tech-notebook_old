@@ -15,23 +15,23 @@
 #### ・起動／停止
 
 ```sh
-$ systemctl start nginx
-$ systemctl stop nginx
+$ sudo systemctl start nginx
+$ sudo systemctl stop nginx
 ```
 
 #### ・設定ファイルのバリデーション
 
 ```sh
-$ service nginx configtest
+$ sudo service nginx configtest
 
 # もしくはこちら
-$ nginx -t
+$ sudo nginx -t
 ```
 
 #### ・設定ファイルの反映と安全な再起動
 
 ```sh
-$ systemctl reload nginx
+$ sudo systemctl reload nginx
 ```
 
 #### ・読み込まれた設定ファイルと設定値の一覧
@@ -39,7 +39,7 @@ $ systemctl reload nginx
 読み込まれている全ての設定ファイル（```include```ディレクティブの対象も含む）の内容を展開して表示する．
 
 ```sh
-$ nginx -T
+$ sudo nginx -T
 ```
 
 <br>
