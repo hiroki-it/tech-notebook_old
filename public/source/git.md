@@ -179,6 +179,34 @@ $ git config --global core.editor 'vim -c "set fenc=utf-8"'
 
 <br>
 
+### ```remote```：
+
+#### ・```remote set-url origin <SSH URL>```
+
+プライベートリポジトリに接続する．```config```ファイルに記述されたユーザ名と接続名を設定する．一つのPCで複数のGitHubアカウントを使用している場合，設定が必須である．
+
+```
+git remote set-url origin <ユーザ名>@<接続名>:uqo/<リポジトリ名>.git
+```
+
+```
+# リポジトリ１
+Host <接続名1>
+    User <リポジトリ１のユーザ名>
+    Port 22
+    HostName <リポジトリ１のホスト名>
+    IdentityFile <秘密鍵へのパス>
+
+# リポジトリ２
+Host <接続名２>
+    User <リポジトリ２のユーザ名>
+    Port 22
+    HostName <リポジトリ２のホスト名>
+    IdentityFile <秘密へのパス>
+```
+
+<br>
+
 ## 03. Gitのコマンドメモ
 
 ### ```add```：
