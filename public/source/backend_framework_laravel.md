@@ -2304,10 +2304,9 @@ Requestクラスの```validated```メソッドを使用して，バリデーシ�
 
 ```php
 <?php
-  
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ExampleController extends Controller
@@ -2315,20 +2314,19 @@ class ExampleController extends Controller
     /**
      * 新しいブログポストの保存
      *
-     * @param  Request  $request
+     * @param Request $request
      */
     public function update(Request $request)
     {
         // バリデーションの実行
         // エラーが起こった場合は元々のページにリダイレクト
         $validated = $request->validated();
-  
+
         $exampleRepository = new ExampleRepository;
         $exampleRepository->update($validated);
-        
+
         // バリデーション時にエラーが起こらなかった場合
-        return response()
-            ->view('example')
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
@@ -2342,10 +2340,9 @@ class ExampleController extends Controller
 
 ```php
 <?php
-  
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ExampleController extends Controller
@@ -2353,7 +2350,7 @@ class ExampleController extends Controller
     /**
      * 新しいブログポストの保存
      *
-     * @param  Request  $request
+     * @param Request $request
      */
     public function update(Request $request)
     {
@@ -2363,13 +2360,12 @@ class ExampleController extends Controller
             'title' => 'required|unique:posts|max:255',
             'body'  => 'required',
         ]);
-  
+
         $exampleRepository = new ExampleRepository;
         $exampleRepository->update($validated);
-        
+
         // バリデーション時にエラーが起こらなかった場合
-        return response()
-            ->view('example')
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
@@ -2381,10 +2377,9 @@ class ExampleController extends Controller
 
 ```php
 <?php
-  
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ExampleController extends Controller
@@ -2392,7 +2387,7 @@ class ExampleController extends Controller
     /**
      * 新しいブログポストの保存
      *
-     * @param  Request  $request
+     * @param Request $request
      */
     public function update(Request $request)
     {
@@ -2402,13 +2397,12 @@ class ExampleController extends Controller
             'title' => ['required', 'unique:posts', 'max:255'],
             'body'  => ['required'],
         ]);
-  
+
         $exampleRepository = new ExampleRepository;
         $exampleRepository->update($validated);
-        
+
         // バリデーション時にエラーが起こらなかった場合
-        return response()
-            ->view('example')
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
@@ -2440,10 +2434,9 @@ Validateファサードの```make```メソッドを使用して，ルールを�
 
 ```php
 <?php
-  
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -2452,12 +2445,13 @@ class ExampleController extends Controller
     /**
      * 新しいブログポストの保存
      *
-     * @param  Request  $request
+     * @param Request $request
      */
     public function update(Request $request)
     {
         // ルールの定義
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(
+            $request->all(), [
             'title' => 'required|unique:posts|max:255',
             'body'  => 'required',
         ]);
@@ -2465,17 +2459,17 @@ class ExampleController extends Controller
         // バリデーション時にエラーが起こった場合
         if ($validator->fails()) {
             // 指定したページにリダイレクト
-            return redirect('error')
-                // validatorを渡すことでエラーメッセージをViewに渡せる．
-                ->withErrors($validator)
+            // validatorを渡すことでエラーメッセージをViewに渡せる．
+            return redirect('error')->withErrors($validator)
                 ->withInput();
         }
 
         $exampleRepository = new ExampleRepository;
-        $exampleRepository->update($validated);
-        
-        return response()
-            ->view('example')
+        $exampleRepository->update(
+            $validator->valid()
+        );
+
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
@@ -2487,10 +2481,9 @@ Validatorクラスの```validate```メソッドを使用すると，Requestク�
 
 ```php
 <?php
-  
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -2499,31 +2492,32 @@ class ExampleController extends Controller
     /**
      * 新しいブログポストの保存
      *
-     * @param  Request  $request
+     * @param Request $request
      */
     public function update(Request $request)
-    {  
+    {
         // 元のページにリダイレクトする場合は，validateメソッドを使用する．
-        $validator = Validator::make($request->all(), [
-           'title' => 'required|unique:posts|max:255',
-           'body'  => 'required',
-        ])
-        ->validate();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|unique:posts|max:255',
+                'body'  => 'required',
+            ])->validate();
 
         // バリデーション時にエラーが起こった場合
         if ($validator->fails()) {
             // 指定したページにリダイレクト
-            return redirect('error')
-                // validatorを渡すことでエラーメッセージをViewに渡せる．
-                ->withErrors($validator)
+            // validatorを渡すことでエラーメッセージをViewに渡せる．
+            return redirect('error')->withErrors($validator)
                 ->withInput();
         }
 
         $exampleRepository = new ExampleRepository;
-        $exampleRepository->update($validated);
-        
-        return response()
-            ->view('example')
+        $exampleRepository->update(
+            $validator->valid()
+        );
+
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
@@ -2544,7 +2538,6 @@ Requestクラスの```session```メソッドを使用して，セッション変
   
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ExampleController extends Controller
@@ -2555,7 +2548,8 @@ class ExampleController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $session = $request->session()->get('key');
+        $session = $request->session()
+            ->get('key');
     }
 }
 ```
@@ -2571,7 +2565,8 @@ $session = $request->session()->all();
 現在のセッションにおいて，今回と次回のリクエストだけで有効な一時データを設定できる．
 
 ```php
-$request->session()->flash('status', 'Task was successful!');
+$request->session()
+    ->flash('status', 'Task was successful!');
 ```
 
 <br>
@@ -2594,7 +2589,7 @@ public function authorize()
 {
     $comment = Comment::find($this->route('comment'));
 
-    return $comment && $this->user()->can('update', $comment);
+    return $comment&& $this->user()->can('update', $comment);
 }
 ```
 
@@ -2631,7 +2626,7 @@ use Illuminate\Http\Request;
 class ExampleController extends Controller
 {
     /**
-     * 新しいユーザーを保存
+     * 新しいユーザーを保存します．
      *
      * @param  Request  $request
      * @return Response
@@ -2659,7 +2654,7 @@ use Illuminate\Http\Request;
 class ExampleController extends Controller
 {
     /**
-     * 指定したユーザーの更新
+     * 指定したユーザーを更新します．
      *
      * @param  Request  $request
      * @param  string  $id
@@ -2735,10 +2730,9 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     /**
-     * 認証を処理する
+     * 認証を処理します．
      *
-     * @param  \Illuminate\Http\Request $request
-     *
+     * @param Request $request
      * @return Response
      */
     public function authenticate(Request $request)
@@ -2751,6 +2745,7 @@ class LoginController extends Controller
         }
     }
 }
+
 ```
 
 <br>
@@ -2810,6 +2805,8 @@ public function boot()
 3. ユーザからのリクエスト時，クライアントIDを元に『認証』を行い，アクセストークンをレスポンスする．
 
 ```php
+<?php
+
 $user = User::find(1);
 
 // スコープ無しのトークンを作成する
@@ -3002,7 +2999,7 @@ return (string)$response->getBody();
 
 ## 10. Logging
 
-### Log  Channels
+### ログの出力先
 
 #### ・設定方法
 
@@ -3108,6 +3105,89 @@ return [
     ]
 ];
 ```
+
+<br>
+
+### ログの出力
+
+#### ・```error```メソッド
+
+エラーメッセージを定義する時，```sprintf```メソッドを使用すると便利である．
+
+**＊実装例＊**
+
+外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        $client = new Client();
+        $requestUrl = config('api.example1.endpoint_url');
+
+        try {
+
+            $response = $client->request(
+                'GET',
+                $requestUrl,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'X-API-Key'    => 'api.example1.api_key',
+                    ]
+                ]
+            );
+
+            // JSONをクライアントにレスポンス
+            return $response->getBody()
+                ->getContents();
+
+        } catch (GuzzleException $e) {
+
+            Log::error(sprintf(
+                    '%s : %s at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine())
+            );
+
+            return response()->json(
+                [],
+                $e->getCode()
+            );
+        }
+    }
+}
+
+```
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+
+#### ・```info```メソッド
 
 <br>
 
@@ -3248,7 +3328,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
+            $table->bigIncrements('user_id')
                 ->comment('ユーザID');
             $table->string('name')
                 ->comment('ユーザ名');
@@ -3335,7 +3415,238 @@ Schema::create('examples', function (Blueprint $table) {
 
 <br>
 
-## 12. Resource
+## 12. Notification
+
+### artisanコマンドによる操作
+
+```
+
+```
+
+<br>
+
+### 通知
+
+#### ・Notificationの実装
+
+SNSに送信するためには，MailMessageクラスやViewクラスの```render```メソッドで文字列に変換する必要がある．
+
+参考：
+
+- https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_subject
+- https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_render
+- https://laravel.com/api/6.x/Illuminate/View/View.html#method_render
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use App\Domain\User;
+use App\Notifications\Channels\AwsSnsChannel;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class TfaTokenNotification extends Notification
+{
+    /**
+     * 使用する送信チャンネルを返却します．
+     *
+     * @param
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return [AwsSnsChannel::class, 'database'];
+    }
+
+    /**
+     * SMSの内容を返却します．
+     *
+     * @param
+     * @return string
+     */
+    public function toSms($notifiable)
+    {
+        return view('template.sms', [
+            'subject'   => 'コードを送信いたしました．',
+            'tfa_token' => $notifiable->tfaToken()
+            ])
+            // テンプレートを文字列で返却
+            ->render();
+    }
+
+    /**
+     * メールの内容を返却します．
+     *
+     * @param
+     * @return string
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->subject('コードを送信いたしました．')
+            ->markdown('template.mail', [
+                'tfa_token' => $notifiable->tfaToken()
+            ])
+            // テンプレートを文字列で返却
+            ->render();
+    }
+
+    /**
+     * データベースに値を保存します．
+     *
+     * @param
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            'tfa_token' => $notifiable->tfaToken(),
+            'via'       => 'aws_sns'
+        ];
+    }
+}
+```
+
+MailMessageクラスの```markdown```メソッドを使用することで，通知メッセージをマークダウン形式で実装できるようになる．当然，```markdown```メソッドを使用せずに，bladeで通知メッセージを実装してもよいが，デザインのない通知メッセージであれば，より簡単なマークダウンを使用してもよいかもしれない．
+
+参考：https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_markdown
+
+```html
+@component('mail::message')
+
+認証コード「{ $tfa_token }}」を入力して下さい。<br/>
+
++++++++++++++++++++++++++++++++++++++<br/>
+本アドレスは送信専用です。ご返信頂いてもお答えできませんので、ご了承ください。
+
+@endcomponent
+```
+
+#### ・Channelの実装
+
+送信方法を定義する．
+
+**＊実装例＊**
+
+SNSを送信方法とする．AWSから配布されているライブラリが必要である．
+
+```sh
+$ composer require aws/aws-sdk-php-laravel
+```
+
+```php
+<?php
+
+namespace App\Notifications\Channels;
+
+use Aws\Sns\SnsClient;
+use Aws\Exception\AwsException;
+use Illuminate\Notifications\Notification;
+
+class AwsSnsChannel
+{
+    public function __construct(SnsClient $awsSnsClient)
+    {
+        $this->awsSnsClient = $awsSnsClient;
+    }
+
+    /**
+     * AWS SNSにメッセージを送信します．
+     *
+     * @param 
+     * @param Notification
+     */
+    public function send($notifiable, Notification $notification)
+    {
+        try {
+
+            $message = $notification->toSms($notifiable);
+
+            $this->awsSnsClient->publish([
+                'Message'     => $message,
+                'PhoneNumber' => $this->toE164nizeInJapan(
+                    $notifiable->phoneNumber()
+                ),
+            ]);
+        } catch (AwsException $e) {
+
+            Log::error(sprintf(
+                    '%s : %s at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine())
+            );
+
+            throw new AwsException($e->getMessage());
+        }
+    }
+
+    /**
+     * E.164形式の日本電話番号を返却します．
+     * @param string
+     * @return string
+     */
+    private function toE164nizeInJapan(string $phoneNumeber): string
+    {
+        return '+81' . substr($phoneNumeber, 1);
+    }
+}
+
+```
+
+#### ・通知対象におけるNotifiableの使用
+
+通知対象のクラスで，Notifiable Traitを継承する必要がある．これにより，```notify```メソッドを使用できるようになる．
+
+参考：https://laravel.com/api/6.x/Illuminate/Notifications/Notifiable.html
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    use Notifiable;
+}
+```
+
+#### ・対象に通知
+
+通知対象のクラスから```notify```メソッドをコールし，任意のNotificationクラスを渡す．これにより，通知処理が実行される．
+
+参考：https://laravel.com/api/6.x/Illuminate/Notifications/RoutesNotifications.html#method_notify
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Domain\User;
+use App\Notifications\TfaTokenNotification;
+
+class ExampleController extends Controller
+{
+    /**
+     * TFAトークンを通知します．
+     */
+    public function notifyTfaToken()
+    {
+        // ユーザを取得する処理
+
+        // 通知する
+        $user->notify(new TfaTokenNotification());
+    }
+}
+```
+
+<br>
+
+## 13. Resource
 
 ### artisanコマンドによる操作
 
@@ -3421,7 +3732,7 @@ ModelのCollection型を配列に変換する．
 
 <br>
 
-## 13. Routing
+## 14. Routing
 
 ### artisanコマンドによる操作
 
@@ -3657,7 +3968,7 @@ Route::get('/healthcheck', function () {
 
 <br>
 
-## 14. Seeder
+## 15. Seeder
 
 ### artisanコマンドによる操作
 
@@ -3825,7 +4136,7 @@ class DatabaseSeeder extends Seeder
 
 <br>
 
-## 15. ServiceProvider
+## 16. ServiceProvider
 
 ### artisanコマンドによる操作
 
@@ -4070,7 +4381,8 @@ class Example
 }
 
 // Exampleクラスをリゾルブし，そのままmethodをコール
-$result = app()->make(Example::class)->method();
+$result = app()->make(Example::class)
+    ->method();
 
 // Exampleクラスをリゾルブ
 $example = App::make(Example::class);
@@ -4226,30 +4538,27 @@ class RouteServiceProvider extends ServiceProvider
      * Webルーティングファイルのパスを定義します
      *
      * @return void
-     */  
+     */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+        Route::middleware('web')->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
      * Apiルーティングファイルのパスを定義します．
      *
      * @return void
-     */  
+     */
     protected function mapApiRoutes()
     {
         # API認証用のルーティングファイル．特定のクライアントのみルーティング可能．
-        Route::middleware(['api', 'auth:api'])
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
-        
+        Route::middleware(['api', 'auth:api'])->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
+
         # API認証不要のヘルスチェック用ルーティングファイル
-        Route::middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/guest.php'));
+        Route::middleware('api')->namespace($this->namespace)
+            ->group(base_path('routes/guest.php'));
     }
 }
 
@@ -4427,7 +4736,7 @@ return [
 
 <br>
 
-## 16. Views
+## 17. Views
 
 ### arisanによる操作
 
@@ -4728,7 +5037,7 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 <br>
 
-## 17. よく使うグローバルヘルパー関数
+## 18. よく使うグローバルヘルパー関数
 
 ### 一覧
 
@@ -4811,11 +5120,10 @@ class ExampleController extends Controller
 
         // ～ 省略 ～
 
-        return response()
-            ->json([
-                'name'  => 'Abigail',
-                'state' => 'CA'
-            ]);
+        return response()->json([
+            'name'  => 'Abigail',
+            'state' => 'CA'
+        ]);
     }
 }
 ```
@@ -4841,15 +5149,14 @@ class ExampleController extends Controller
         // ～ 省略 ～
 
         // データ，ステータスコード，ヘッダーなどを設定する場合
-        return response()
-            ->view(
-              'example',
-              $data,
-              200
-            )->header(
-              'Content-Type',
-              $type
-            );
+        return response()->view(
+            'example',
+            $data,
+            200
+        )->header(
+            'Content-Type',
+            $type
+        );
     }
 }
 ```
@@ -4869,82 +5176,10 @@ class ExampleController extends Controller
         // ～ 省略 ～
 
         // ステータスコードのみ設定する場合
-        return response()
-            ->view('example')
+        return response()->view('example')
             ->setStatusCode(200);
     }
 }
-```
-
-#### ・ロギング
-
-返却されるResponseFactoryクラスの```error```メソッドに，エラーメッセージを設定するようにする．この時，```sprintf```メソッドを使用すると便利である．
-
-**＊実装例＊**
-
-外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Http\Controllers\Controller;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Response;
-
-class ExampleController extends Controller
-{
-    public function index()
-    {
-        $client = new Client();
-        $requestUrl = config('api.example1.endpoint_url');
-        
-        try {
-            
-            $response = $client->request(
-                'GET',
-                $requestUrl,
-                [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'X-API-Key'    => 'api.example1.api_key',
-                    ]
-                ]
-            );
-            
-            // JSONをクライアントにレスポンス
-            return $response->getBody()->getContents();
-            
-        } catch (GuzzleException $e) {
-            
-            return response()
-                ->error(sprintf(
-                    '%s : %s at %s line %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    $e->getFile(),
-                    $e->getLine()
-                ));
-        }
-    }
-}
-```
-
-```php
-<?php
-
-return [
-    'example1' => [
-        'endpoint_url' => env('ENDPOINT_URL', ''),
-        'api_key'      => env('SQUID_API_KEY'),
-    ],
-    'example2' => [
-        'endpoint_url' => env('ENDPOINT_URL', ''),
-        'api_key'      => env('SQUID_API_KEY'),
-    ]
-];
 ```
 
 <br>
@@ -4995,7 +5230,7 @@ $path = storage_path('app/file.txt');
 
 <br>
 
-## 18. 外部ライブラリ
+## 19. 外部ライブラリ
 
 ### Enum
 
