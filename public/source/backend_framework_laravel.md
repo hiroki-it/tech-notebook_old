@@ -3108,6 +3108,89 @@ return [
 
 <br>
 
+### ログの出力
+
+#### ・```error```メソッド
+
+エラーメッセージを定義する時，```sprintf```メソッドを使用すると便利である．
+
+**＊実装例＊**
+
+外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Response;
+
+class ExampleController extends Controller
+{
+    public function index()
+    {
+        $client = new Client();
+        $requestUrl = config('api.example1.endpoint_url');
+
+        try {
+
+            $response = $client->request(
+                'GET',
+                $requestUrl,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'X-API-Key'    => 'api.example1.api_key',
+                    ]
+                ]
+            );
+
+            // JSONをクライアントにレスポンス
+            return $response->getBody()
+                ->getContents();
+
+        } catch (GuzzleException $e) {
+
+            Log::error(sprintf(
+                    '%s : %s at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine())
+            );
+
+            return response()->json(
+                [],
+                $e->getCode()
+            );
+        }
+    }
+}
+
+```
+
+```php
+<?php
+
+return [
+    'example1' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ],
+    'example2' => [
+        'endpoint_url' => env('ENDPOINT_URL', ''),
+        'api_key'      => env('SQUID_API_KEY'),
+    ]
+];
+```
+
+#### ・```info```メソッド
+
+<br>
+
 
 ## 11. Migration
 
