@@ -4,28 +4,28 @@
 
 ### コマンド
 
-#### ・composer.jsonにライブラリを追加
+#### ・```composer.json```ファイルにライブラリを追加
 
-composer.json にパッケージ名を書き込む．インストールは行わない．
+パッケージ名を```composer.json```ファイルを書き込む．インストールは行わない．コマンドを使用せずに自分で実装しても良い．
 
 ```sh
-$ /usr/local/bin/composer require <パッケージ名>:^x.x
+$ composer require <パッケージ名>:^x.x
 ```
 
 #### ・インストール
 
-composer.json に書き込まれているパッケージを全てインストールする．
+あらかじめ実装された```composer.json```ファイルにあるパッケージを全てインストールする．
 
 ```sh
-$ /usr/local/bin/composer install 
+$ composer install 
 ```
 
 ####  ・特定のライブラリをインストール
 
-requireタグ内の特定のライブラリ（コンポーネント）をインストール．
+requireタグ内の特定のライブラリをインストール．
 
 ```sh
-$ /usr/local/bin/composer install <パッケージ名>
+$ composer install <パッケージ名>
 ```
 
 #### ・高速インストール
@@ -33,7 +33,7 @@ $ /usr/local/bin/composer install <パッケージ名>
 Composerの配布サイトからインストールする．```prefer-source```オプションを使用するよりも高速でインストールできる．デフォルトでdistを使用するため，実際は宣言しなくても問題ない．
 
 ```sh
-$ /usr/local/bin/composer install --prefer-dist
+$ composer install --prefer-dist
 ```
 
 #### ・開発者用インストール
@@ -41,15 +41,15 @@ $ /usr/local/bin/composer install --prefer-dist
 GitHubのComposerリポジトリからインストールする．Composerの開発者用である．
 
 ```sh
-$ /usr/local/bin/composer install --prefer-source
+$ composer install --prefer-source
 ```
 
 ####  ・メモリ上限をなくしてインストール
 
-phpのメモリ上限を無しにしてcomposer updateを行う．phpバイナリファイルを使用する．
+phpのメモリ上限を無しにして，任意のcomposerコマンドを実行する．phpバイナリファイルを使用する．
 
 ```sh
-$ php -d memory_limit=-1 /usr/local/bin/composer update
+$ COMPOSER_MEMORY_LIMIT=-1 composer update
 ```
 
 ####  ・ログを表示しつつインストール
@@ -57,7 +57,7 @@ $ php -d memory_limit=-1 /usr/local/bin/composer update
 プロセスを表示しながら，インストールする．
 
 ```sh
-$ /usr/local/bin/composer update -vvv
+$ composer update -vvv
 ```
 
 ####  ・--no-devを除いてインストール
@@ -65,7 +65,7 @@ $ /usr/local/bin/composer update -vvv
 require-devタグ内のライブラリは除いてインストール
 
 ```sh
-$ /usr/local/bin/composer install --no-dev
+$ composer install --no-dev
 ```
 
 #### ・バージョン表記に合わせて，ライブラリをアップデート
@@ -73,7 +73,7 @@ $ /usr/local/bin/composer install --no-dev
 全てのパッケージを最新版に更新
 
 ``` bash
-$ /usr/local/bin/composer update
+$ composer update
 ```
 
 #### ・キャッシュを削除
@@ -81,7 +81,7 @@ $ /usr/local/bin/composer update
 インストール時に生成されたキャッシュを削除する．
 
 ```sh
-$ /usr/local/bin/composer clear-cache
+$ composer clear-cache
 ```
 
 <br>
@@ -94,7 +94,7 @@ $ /usr/local/bin/composer clear-cache
 // 個人的に一番おすすめ
 // キャレット表記
 {
-  "dependencies": {
+  "require": {
     "foo": "^1.1.1",  // >=1.1.1 and <2.0.0
     "bar": "^0.1.1",  // >=0.1.1 and <0.2.0
     "hoge": "^0.0.1"  // >=0.0.1 and <0.0.2
@@ -105,7 +105,7 @@ $ /usr/local/bin/composer clear-cache
 ```json
 // チルダ表記
 {
-  "dependencies": {
+  "require": {
     "foo": "~1.1.1",  // >=1.1.1 and <1.2.0
     "bar": "~1.1",    // >=1.1.0 and <1.2.0
     "hoge": "~1"      // >=1.1.0 and <2.0.0
@@ -116,7 +116,7 @@ $ /usr/local/bin/composer clear-cache
 ```json
 // エックス，アスタリスク表記
 {
-  "dependencies": {
+  "require": {
     "foo": "*",     // どんなバージョンでもOK
     "bar": "1.1.x", // >=1.1.0 and <1.2.0 
     "hoge": "1.X",  // >=1.0.0 and <2.0.0
@@ -146,7 +146,7 @@ $ /usr/local/bin/composer clear-cache
 その後，コマンドでこの登録を反映する．
 
 ```sh
-$ /usr/local/bin/composer dump-autoload
+$ composer dump-autoload
 ```
 
 <br>
