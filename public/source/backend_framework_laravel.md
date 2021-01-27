@@ -691,7 +691,7 @@ $filtered = $collection->first(function ($value, $key) {
 
 #### ・```create```メソッド
 
-INSERT文を実行する．Builderクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Builderクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．別に，Modelクラスにはfillableプロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
+INSERT文を実行する．Builderクラスが持つ```create```メソッドに挿入対象のカラムと値を設定する．または，Builderクラスの```fill```メソッドで挿入対象のカラムと値を設定し，```save```メソッドを実行する．別に，Modelクラスには```fillable```プロパティを設定しておく．UPDATE文の実行時と使用するメソッドは同じである．
 
 参考：https://codelikes.com/laravel-eloquent-basic/#toc9
 
@@ -734,7 +734,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
                 'email' => $example->email()
             ]);
         
-        // 以下の実装でよい．
+        // 以下の実装でもよい．
         // $this->exampleDTO
         //    ->fill([
         //        'name'  => $example->name()
@@ -772,6 +772,8 @@ class ExampleDTO extends Model
 
 SELECT文を実行する．引数としてプライマリキーを渡した場合，指定したプライマリキーを持つModelをModel型として返却する．```toArray```メソッドで配列型に変換できる．
 
+参考：https://laravel.com/api/6.x/Illuminate/Database/Query/Builder.html#method_find
+
 **＊実装例＊**
 
 ```php
@@ -798,20 +800,28 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     /**
      * Idに関連付くExampleを読み出します．
      *
-     * @param  Id $id
-     * @return ExampleDTO
+     * @param ExampleId $exampleId
+     * @return Example
      */
-    public function findOneById(Id $id): ExampleDTO
+    public function findOneById(ExampleId $exampleId): Article
     {
-        return $this->exampleDTO
-            ->find($id);
+        $exampleDTO = $this->exampleDTO
+            ->find($exampleId);
+
+        return new Example(
+            $exampleDTO->id(),
+            $exampleDTO->name(),
+            $exampleDTO->age(),
+            $exampleDTO->email(),
+        );
     }
-}
 ```
 
 #### ・```all```メソッド
 
-SELECT文を実行する．全てのプライマリキーのModelをCollection型として返却する．```toArray```メソッドで配列型に再帰的に変換できる．
+SELECT文を実行する．全てのプライマリキーのCollection型を配列型として返却する．```toArray```メソッドで配列型に再帰的に変換できる．
+
+参考：https://laravel.com/api/6.x/Illuminate/Support/Collection.html#method_all
 
 **＊実装例＊**
 
@@ -839,12 +849,23 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     /**
      * 全てのExampleを読み出します．
      *
-     * @return Collection 
+     * @return array 
      */
-    public function findAll(): Collection
+    public function findAll(): array
     {
-        return $this->exampleDTO
+        $exampleDTOs = $this->exampleDTO
             ->all();
+
+        $exmaples = [];
+        foreach ($exampleDTOs as $exampleDTO)
+            $exmaples = new Example(
+                $exampleDTO->id(),
+                $exampleDTO->name(),
+                $exampleDTO->age(),
+                $exampleDTO->email(),
+            );
+
+        return $exmaples;
     }
 }
 ```
@@ -1018,18 +1039,15 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      */
     public function save(Example $example)
     {
-        $exampleData = $this->exampleDTO
-            // 更新対象のModelを取得する．
-            ->find($example->id());
-        
         // オブジェクトにデータを設定する．
-        $exampleData->fill([
-            'name'  => $example->name(),
-            'age'   => $example->age(),
-            'email' => $example->email()
-        ])
-        // update文を実行する．
-        ->save();
+        $exampleData
+            ->fill([
+                'name'  => $example->name(),
+                'age'   => $example->age(),
+                'email' => $example->email()
+            ])
+            // update文を実行する．
+            ->save();
     }
 }
 ```
@@ -1049,6 +1067,41 @@ class ExampleDTO extends Model
         'age',
         'email',
     ];
+}
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    public function __construct(ExampleRepository $exampleRepository)
+    {
+        $this->exampleRepository = $exampleRepository;
+    }
+    
+    /**
+     * 更新します．
+     *
+     * @param ArticleId $articleId
+     * @return Response
+     */
+    public function delete(ExampleId $exampleId)
+    {
+        $example = $this->articleRepository
+            ->findOneById($exampleId);
+        
+        $this->exampleRepository
+            ->delete($example);
+
+        // バリデーション時にエラーが起こらなかった場合
+        return response()->view('example')
+            ->setStatusCode(200);
+    }
 }
 ```
 
@@ -1087,18 +1140,52 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      * Exampleを削除します．
      *
      * @param Example $example
+     * @return void
      */
-    public function delete(Example $example)
+    public function delete(Example $example): void
     {
-        $exampleData = $this->exampleDTO
-            // 削除対象のModelを取得する．
-            ->find($example->id());
+        $articleDTO = $this->articleDTO
+            ->find($article->id());
         
-        // delete文を実行し，物理削除する．
-        $exampleData->delete();
+        // delete文を実行し，論理削除する．
+        $this->exampleDto->delete();
         
-        // 以下の実装でfindメソッドとdeleteメソッドを実行してもよい．
-        // $this->exampleDTO->destroy($id);
+        // destoryメソッドで削除処理を実行してもよい．ModelのIdが必要である．
+        // $this->exampleDTO->destroy($example->id());     
+    }
+}
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    public function __construct(ExampleRepository $exampleRepository)
+    {
+        $this->exampleRepository = $exampleRepository;
+    }
+    
+    /**
+     * 更新します．
+     *
+     * @param ArticleId $articleId
+     * @return Response
+     */
+    public function delete(ExampleId $exampleId)
+    {
+        $example = $this->exampleRepository
+            ->findOneById($exampleId);
+        
+        $this->exampleRepository
+            ->delete($example);
+
+        return response()->view('example')
+            ->setStatusCode(200);
     }
 }
 ```
@@ -1203,19 +1290,19 @@ class ExampleRepository extends Repository implements DomainExampleRepository
     /**
      * Exampleを削除します．
      *
-     * @param Example $example
+     * @param Exmaple $example
+     * @return void
      */
-    public function delete(Example $example)
+    public function delete(Exmaple $example): void
     {
-        $exampleData = $this->exampleDTO
-            // 削除対象のModelを取得する．
-            ->find($example->id());
-            
-        // delete文を実行し，論理削除する．
-        $exampleData->delete();
+        $example = $this->exampleRepository
+            ->findOneById($exampleId);
         
-        // 以下の実装でfindメソッドとdeleteメソッドを実行してもよい．
-        // $this->exampleDTO->destroy($id);        
+        $this->exampleRepository
+            ->delete($example);
+        
+        // destoryメソッドで削除処理を実行してもよい．ModelのIdが必要である．
+        // $this->exampleDTO->destroy($example->id());        
     }
 }
 ```
@@ -1263,11 +1350,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
      * @param Example $example
      */
     public function save(Example $example)
-    {
-        $exampleData = $this->exampleDTO
-            // 更新対象のModelを取得する．
-            ->find($example->id());
-        
+    {   
         // 一連のトランザクション処理を実行する．
         DB::transaction(function () use ($exampleData, $example){
             
@@ -1324,8 +1407,6 @@ class ExampleRepository extends Repository implements DomainExampleRepository
         
         try {
             $this->exampleDTO
-            // 更新対象のModelを取得する．
-            ->find($example->id())
             // オブジェクトにデータを設定する．
             ->fill([
                 'name'  => $example->name(),
@@ -1351,6 +1432,8 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 ### N+1問題の解決
 
 #### ・N+1問題とは
+
+アプリケーションがデータベースにアクセスする時に，
 
 ```sql
 select * from `departments`;
@@ -1703,7 +1786,7 @@ new演算子でインスタンスを作成する．
 ```php
 <?php
   
-namespace 
+namespace App\Domain\DTO; 
     
 class Example
 {
@@ -2335,6 +2418,8 @@ class ExampleController extends Controller
 #### ・```validate```メソッド
 
 同じくRequestクラスの```validate```メソッドを使用して，ルールを定義し，さらにバリデーションを実行する．```validated```メソッドと間違わないように注意する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
+
+参考：https://laravel.com/api/6.x/Illuminate/Http/Request.html#method_validate
 
 **＊実装例＊**
 
@@ -3869,7 +3954,7 @@ Route::middleware('auth:api')->group(function () {
 <?php
 
 // 複数のグループを組み合わせる．
-Route::group(['namespace' => 'Auth' , 'middleware' => 'auth'])->group(function () {
+Route::group(['namespace' => 'Auth' , 'middleware' => 'auth'], (function () {
     
     // 「App\Http\Controllers\Auth\」 以下にあるコントローラを指定できる．
     // authエイリアスのMiddlewareクラスが使用される．

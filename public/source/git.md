@@ -185,8 +185,8 @@ $ git config --global core.editor 'vim -c "set fenc=utf-8"'
 
 プライベートリポジトリに接続する．```config```ファイルに記述されたユーザ名と接続名を設定する．一つのPCで複数のGitHubアカウントを使用している場合，設定が必須である．
 
-```
-git remote set-url origin <ユーザ名>@<接続名>:uqo/<リポジトリ名>.git
+```sh
+$ git remote set-url origin <ユーザ名>@<接続名>:uqo/<リポジトリ名>.git
 ```
 
 ```
