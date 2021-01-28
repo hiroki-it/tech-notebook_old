@@ -3844,11 +3844,78 @@ $ php artisan optimize:clear
 
 #### ・```api.php```ファイル
 
-APIのエンドポイントとして働くルーティング処理を実装する．基本的に，RouteServiceProviderでAPI認証を定義し，特定のクライアントしかルーティングされないようにする．
+APIのエンドポイントとして働くルーティング処理を実装する．実装したルーティング処理時には，Kernelクラスの```middlewareGroups```プロパティの```api```キーで設定したミドルウェアが実行される．APIのエンドポイントは外部公開する必要があるため，```web```キーと比較して，セキュリティのためのミドルウェアが設定されていない．
+
+```php
+<?php
+
+namespace App\Http;
+
+use App\Http\Middleware\BeforeMiddleware\ArticleIdConverterMiddleware;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+class Kernel extends HttpKernel
+{
+    // 〜 省略 〜
+    
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+
+        // 〜 省略 〜
+
+        'api' => [
+            'throttle:60,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+    ];
+    
+    // 〜 省略 〜
+}
+```
 
 #### ・```web.php```ファイル
 
-API以外の場合，こちらにルーティング処理を実装する．第一引数にURL，第二引数に実行するメソッドを定義する．
+API以外のルーティング処理を実装する．実装したルーティング処理時には，Kernelクラスの```middlewareGroups```プロパティの```web```キーで設定したミドルウェアが実行される．API以外のルーティングは外部公開する必要がないため，```api```キーと比較して，セキュリティのためのミドルウェアが多く設定されている．例えば，CSRF対策のためのVerifyCsrfTokenクラスがある．
+
+```php
+<?php
+
+namespace App\Http;
+
+use App\Http\Middleware\BeforeMiddleware\ArticleIdConverterMiddleware;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+class Kernel extends HttpKernel
+{
+    // 〜 省略 〜
+    
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+        
+        // 〜 省略 〜
+        
+    ];
+    
+    // 〜 省略 〜
+}
+```
 
 #### ・```guest.php```ファイル
 
@@ -5182,11 +5249,34 @@ return [
 
 #### ・ソースコード
 
-https://github.com/laravel/framework/blob/6.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
+```php
+if (! function_exists('response')) {
+    /**
+     * Return a new response from the application.
+     *
+     * @param  \Illuminate\View\View|string|array|null  $content
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    function response($content = '', $status = 200, array $headers = [])
+    {
+        $factory = app(ResponseFactory::class);
+
+        if (func_num_args() === 0) {
+            return $factory;
+        }
+
+        return $factory->make($content, $status, $headers);
+    }
+}
+```
 
 #### ・Json型データのレスポンス
 
-返却されるResponseFactoryクラスの```json```メソッドにレンダリングしたいJSONデータを設定する．
+返却されるResponseFactoryクラスの```json```メソッドにレンダリングしたいJSONデータを設定する．```response```ヘルパーは初期値として```200```ステータスが設定されているが，```view```メソッドや```setStatusCode```メソッドを使用して，明示的に設定してもよい．
+
+参考：https://github.com/laravel/framework/blob/6.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
 
 **＊実装例＊**
 
@@ -5208,14 +5298,14 @@ class ExampleController extends Controller
         return response()->json([
             'name'  => 'Abigail',
             'state' => 'CA'
-        ]);
+        ], 200);
     }
 }
 ```
 
 #### ・Viewテンプレートのレスポンス
 
-返却されるResponseFactoryクラスの```view```メソッドに，レンダリングしたいデータ（テンプレート，array型データ，ステータスコードなど）を設定する．また，Viewクラスの```header```メソッドにHTTPヘッダーの値を設定する．
+返却されるResponseFactoryクラスの```view```メソッドに，レンダリングしたいデータ（テンプレート，array型データ，ステータスコードなど）を設定する．また，Viewクラスの```header```メソッドにHTTPヘッダーの値を設定する．```response```ヘルパーは初期値として```200```ステータスが設定されているが，```view```メソッドや```setStatusCode```メソッドを使用して，明示的に設定してもよい．
 
 **＊実装例＊**
 
