@@ -469,6 +469,8 @@ COPY ./infra/docker/www/production.nginx.conf /etc/nginx/nginx.conf
 
 ![イメージ上へのコンテナレイヤーの積み重ね](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/イメージ上へのコンテナレイヤーの積み重ね.png)
 
+<br>
+
 ### コマンド
 
 #### ・コンテナレイヤー生成，コンテナ構築
@@ -505,18 +507,10 @@ $ docker run -a -it --name <コンテナ名> <使用イメージ名> /bin/bash
 $ docker run -d -it --name <コンテナ名> <使用イメージ名> /bin/bash
 ```
 
-#### ・構築されたコンテナの停止／削除
+#### ・構築されたコンテナの削除
 
 **＊コマンド例＊**
 
-```sh
-# 起動中コンテナを停止
-$ docker stop <起動中コンテナ名>
-```
-```sh
-# 全てのコンテナを停止
-$ docker stop $(docker ps --all --quiet)
-```
 ```sh
 # 停止中のコンテナのみを全て削除
 $ docker container prune
@@ -572,6 +566,17 @@ $ docker ps -a
 # grepとも組み合わせられる．
 $ docker inspect <コンテナID>
 $ docker inspect <コンテナID> | grep IPAddress
+```
+
+#### ・起動中のコンテナを停止
+
+```sh
+# 起動中コンテナを停止
+$ docker stop <起動中コンテナ名>
+```
+```sh
+# 全てのコンテナを停止
+$ docker stop $(docker ps --all --quiet)
 ```
 
 #### ・起動中のコンテナに接続

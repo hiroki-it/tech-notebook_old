@@ -101,7 +101,7 @@ $ sudo apachectl graceful
 
 ### ServerRoot
 
-#### ・ServerRootとは
+#### ・```ServerRoot```とは
 
 他の設定ディレクティブで，相対パスが設定されている場合に適用される．そのルートディレクトリを定義する．
 
@@ -123,7 +123,7 @@ ServerRoot /opt/rh/httpd24/root/etc/httpd
 
 ### VirtualHost
 
-#### ・VirtualHostとは
+#### ・```VirtualHost```とは
 
 ディレクティブを囲うディレクティブの一つ．特定のホスト名やIPアドレスにリクエストがあった時に実行するディレクティブを定義する．VirtualHostという名前の通り，1 つのサーバ上で，仮想的に複数のドメインを扱うような処理も定義できる．複数のVirtualHostを設定した場合，一つ目がデフォルト設定として認識される．
 
@@ -144,20 +144,20 @@ NameVirtualHost *:80
     ServerName www.example.org
 </VirtualHost>
 ```
-#### ・IPベースVirtualHost
+#### ・IPベース```VirtualHost```
 
 各ドメインに異なるIPアドレスを割り振るバーチャルホスト．
 
-#### ・名前ベースVirtualHost
+#### ・名前ベース```VirtualHost```
 全てのドメインに同じIPアドレスを割り振るバーチャルホスト．
 
 <br>
 
 ### DocumentRoot
 
-#### ・DocumentRootとは
+#### ・```DocumentRoot```とは
 
-ドキュメントのルートディレクトリを定義する．ドキュメントルートに「```index.html```」というファイルを置くと，ファイル名を指定しなくとも，ルートディレクトリ内の```index.html```が，エントリーポイントとして自動的に認識されて表示される．
+ドキュメントのルートディレクトリを定義する．ドキュメントルートに「```index.html```」というファイルを置くと，ファイル名を指定しなくとも，ルートディレクトリ内の```index.html```ファイルが，エントリーポイントとして自動的に認識されて表示される．
 
 **＊実装例＊**
 
@@ -183,7 +183,7 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 ### Directory
 
-#### ・Directoryとは
+#### ・```Directory```とは
 
 ディレクティブを囲うディレクティブの一つ．指定したディレクトリ内にリクエストがあった時に実行するディレクティブを定義する．
 
@@ -200,7 +200,7 @@ index.html以外の名前をエントリーポイントにする場合，ファ�
 
 ### User，Group
 
-#### ・Userとは
+#### ・```User```とは
 
 httpdプロセスのユーザ名を定義する．httpdプロセスによって作成されたファイルの所有者名は，このディレクティブで定義したものになる．
 
@@ -210,7 +210,7 @@ httpdプロセスのユーザ名を定義する．httpdプロセスによって�
 User apache
 ```
 
-#### ・Groupとは
+#### ・```Group```とは
 
 httpdプロセスのグループ名を定義する．httpdプロセスによって作成されたファイルのグループ名は，このディレクティブで定義したものになる．
 
@@ -224,7 +224,7 @@ Group apache
 
 ### KeepAlive，MaxKeepAliveRequests，KeepAliveTimeout
 
-#### ・KeepAliveとは
+#### ・```KeepAlive```とは
 
 HTTPプロトコルのリクエストのクライアントに対して，セッションIDを付与するかどうか，を定義する．
 
@@ -234,7 +234,7 @@ HTTPプロトコルのリクエストのクライアントに対して，セッ�
 KeepAlive On
 ```
 
-#### ・KeepAliveTimeout
+#### ・```KeepAliveTimeout```
 
 セッションIDを付与中のクライアントにおいて，再びリクエストを送信するまでに何秒間空いたら，セッションIDを破棄するか，を定義する．
 
@@ -245,7 +245,7 @@ KeepAlive On
 KeepAliveTimeout 5
 ```
 
-#### ・MaxKeepAliveRequests
+#### ・```MaxKeepAliveRequests```
 
 セッションIDを付与中のクライアントにおいて，リクエストのファイルの最大数を定義する．
 
@@ -306,7 +306,7 @@ Directoryディレクティブによってリクエストされたディレク�
 
 ### AllowOverride
 
-#### ・AllowOverrideとは
+#### ・```AllowOverride```とは
 
 別に用意した```.htaccess```ファイルにて，有効化するディレクティブを定義する．
 
@@ -319,7 +319,7 @@ Directoryディレクティブによってリクエストされたディレク�
 </Directory>
 ```
 
-#### ・All
+#### ・```All```
 
 別に用意した```.htaccess```ファイルにて，実装可能なディレクティブを全て有効化する．
 
@@ -329,7 +329,7 @@ Directoryディレクティブによってリクエストされたディレク�
 AllowOverride All
 ```
 
-#### ・None
+#### ・```None```
 
 別に用意した```.htaccess```ファイルにて，実装可能なディレクティブを全て無効化する．
 
@@ -339,7 +339,7 @@ AllowOverride All
 AllowOverride None
 ```
 
-#### ・Indexes
+#### ・```Indexes```
 
 別に用意した```.htaccess```ファイルにて，DirectoryIndexディレクティブを有効化する．
 
@@ -355,7 +355,7 @@ AllowOverride Indexes
 
 ### RewriteCond
 
-#### ・RewriteCondとは
+#### ・```RewriteCond```とは
 
 条件分岐と，それによる処理を定義する．
 
@@ -371,10 +371,11 @@ RewriteCond %変数名 条件
 RewriteCond %{HTTP:X-Forwarded-Port} !^443$
 ```
 
+<br>
 
 ### RewriteRule
 
-#### ・RewriteRuleとは
+#### ・```RewriteRule```とは
 
 条件分岐による処理を定義する．
 
@@ -396,7 +397,7 @@ RewriteRule ^(.*)?$ https://%{HTTP_HOST}$1 [R=301,L]
 
 ### SetEnvIf
 
-#### ・SetEnvIfとは
+#### ・```SetEnvIf```とは
 
 条件分岐と環境変数の設定を定義する．
 
@@ -415,7 +416,7 @@ SetEnvIf Request_URI "\.(gif|jpe?g|png|js|css)$" object-is-ignore
 
 ### LogFormat
 
-#### ・LogFormatとは
+#### ・```LogFormat```とは
 
 アクセスログファイルの書式を定義する．
 
@@ -463,7 +464,7 @@ LogFormat "%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"" combined
 
 ### ErrorLog
 
-#### ・ErrorLogとは
+#### ・```ErrorLog```とは
 
 エラーログファイルの書式を定義する．
 
@@ -481,7 +482,7 @@ ErrorLog /var/log/httpd/error_log
 
 ### LogLevel
 
-#### ・LogLevelとは
+#### ・```LogLevel```とは
 
 どのレベルまでログを出力するかを定義する．
 
@@ -502,7 +503,7 @@ ErrorLog /var/log/httpd/error_log
 
 ### SSLCertificateFile
 
-#### ・SSLCertificateFileとは
+#### ・```SSLCertificateFile```とは
 
 PKIにおける公開鍵の検証に必要なSSLサーバ証明書のディレクトリを定義する．本番環境ではAWSのACM証明書を用いることが多いため，基本的な用途としては，ローカル開発でのオレオレ証明書読み込みのために用いる．
 
@@ -512,9 +513,11 @@ PKIにおける公開鍵の検証に必要なSSLサーバ証明書のディレ�
 SSLCertificateFile /etc/httpd/conf.d/server.crt
 ```
 
+<br>
+
 ### SSLCertificateKeyFile
 
-#### ・SSLCertificateKeyFileとは
+#### ・```SSLCertificateKeyFile```とは
 
 PKIにおける公開鍵の検証に必要な秘密鍵のディレクトリを定義する．
 
@@ -530,18 +533,42 @@ SSLCertificateKeyFile /etc/httpd/conf.d/server.key
 
 ### Header
 
-#### ・Headerとは
+#### ・```Header```とは
 
-レスポンスヘッダーを定義する．```set```，```append```，```add```，```unset```，```echo```オプションを設定できる．
+レスポンスヘッダーを定義する．```set```，```append```，```add```，```unset```，```echo```オプションを設定できる．標準では```2xx```と```3xx```のステータスコードのみで設定が適用される．オプションとして，```always```を設定することで，全てのステータスコードでヘッダーを設定する．
+
+#### ・```set```
+
+レスポンスヘッダーを追加する．
 
 **＊実装例＊**
 
-```apacheconf
-# Referrer-Policyヘッダーを追加する
-Header set Referrer-Policy "no-referrer-when-downgrade"
+Referrer-Policyヘッダーを追加し，値を```no-referrer-when-downgrade```とする．ちなみに，Chrome85以降のReferrer-Policyヘッダー初期値の仕様変更については，以下を参考にせよ．
 
-# Referrer-Policyヘッダーを削除する
+参考：https://www.chromestatus.com/feature/6251880185331712
+
+```apacheconf
+Header set Referrer-Policy "no-referrer-when-downgrade"
+```
+
+```apacheconf
+Header set Referrer-Policy "no-referrer-when-downgrade" always
+```
+
+#### ・```unset```
+
+レスポンスヘッダーを削除する．
+
+**＊実装例＊**
+
+Referrer-Policyヘッダーを削除する
+
+```apacheconf
 Header unset Referrer-Policy "no-referrer-when-downgrade
+```
+
+```apacheconf
+Header unset Referrer-Policy "no-referrer-when-downgrade" always
 ```
 
 <br>
