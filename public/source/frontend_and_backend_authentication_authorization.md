@@ -210,6 +210,34 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 Authorization: Bearer <Bearerトークン，JWT，など>
 ```
 
+#### ・付与タイプ
+
+Oauth認証のトークンの付与方法には種類がある．
+
+参考：https://oauth.net/2/grant-types/
+
+| 付与タイプ名             | 説明                                                         | 使用例                          |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------- |
+| Authorization Code Grant | アプリケーションが他のAPIにアクセスする場合に使用する．推奨されている．<br>参考：https://oauth.net/2/grant-types/authorization-code/ | 他のSNSアプリとのアカウント連携 |
+| Client Credentials Grant | 推奨されている．<br/>参考：https://oauth.net/2/grant-types/client-credentials/ |                                 |
+| Device Code              | 推奨されている．<br/>参考：https://oauth.net/2/grant-types/device-code/ |                                 |
+| Implicit Grant           | 非推奨されている．<br/>参考：https://oauth.net/2/grant-types/implicit/ |                                 |
+| Password Grant           | ユーザ名とパスワードを元に，トークンを付与する．非推奨されている．<br>参考：<br>・https://oauth.net/2/grant-types/password/<br>・https://developer.okta.com/blog/2018/06/29/what-is-the-oauth2-password-grant#the-oauth-20-password-grant |                                 |
+
+<br>
+
+### Personal Access Token
+
+#### ・Personal Access Tokenとは
+
+Personal Access Token（個人用アクセストークン）を使用する認証方法．Oauth認証では，認可時にクライアントアプリがアクセストークンの付与を認可サーバにリクエストし，認証時にこれを送信してくれる．しかし，Personal Access Tokenでは，ユーザがアクセストークンの付与をリクエストし，また開示されたアクセストークンを送信する必要がある．作成時以降，アクセストークンを確認できなくなるため，ユーザがアクセストークンを管理する必要がある．
+
+参考：https://www.contentful.com/help/personal-access-tokens/
+
+| サービス例 | トークン名            | 説明                                                         |
+| ---------- | --------------------- | ------------------------------------------------------------ |
+| GitHub     | Personal access Token | HTTPSを使用して，プライベートリポジトリにリクエストを送信するために必要．HTTPSを使用する場面として，アプリの拡張機能のGitHub連携，リポジトリのライブラリ化，などがある．<br>参考：https://docs.github.com/ja/github/authenticating-to-github/creating-a-personal-access-token |
+
 <br>
 
 ### OpenID Connect
