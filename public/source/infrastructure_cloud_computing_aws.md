@@ -747,6 +747,8 @@ FargateにパブリックIPアドレスを持たせたい場合，Elastic IPア�
 
 そこで，Fargateのアウトバウンド通信が，Elastic IPアドレスを持つNAT Gatewayを経由するようにする（Fargateは，パブリックサブネットとPrivateサブネットのどちらに置いても良い）．これによって，Nat GatewayのElastic IPアドレスが送信元パケットに付加されるため，Fargateの送信元IPアドレスを見かけ上静的に扱うことができるようになる．
 
+参考：https://aws.amazon.com/jp/premiumsupport/knowledge-center/ecs-fargate-static-elastic-ip-address/
+
 #### ・VPCの外側に対するアウトバウト通信問題
 
 タスク内のFargateは，VPCの外側にあるサービスに対して，アウトバウンド通信を送信するために，NATGatewayまたはVPCエンドポイントが必要である．料金的な観点から，VPCエンドポイントを使用した方がよい．
@@ -1949,7 +1951,7 @@ VPCの出入り口に設置され，グローバルネットワークとPrivate�
 
 #### ・NAT Gatewayとは
 
-NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して，複数のEC2のPrivateIPを紐づけられる．パブリックサブネットに置き，PrivateサブネットのEC2からのレスポンスを受け付ける．詳しくは，別ノートのNAPT（動的NAT）を参考にせよ．
+NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して，複数のEC2のPrivateIPを紐づけられる．パブリックサブネットに置き，PrivateサブネットのEC2からのレスポンスを受け付ける．詳しくは，別ノートのNAPT（動的NAT）を参考にせよ．NAT Gateway
 
 #### ・比較表
 
