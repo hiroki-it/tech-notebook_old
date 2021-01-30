@@ -2835,253 +2835,6 @@ class LoginController extends Controller
 
 <br>
 
-### PassportライブラリによるOauth認証
-
-#### ・Passportライブラリとは
-
-Laravelから提供されており，Oauth認証のための認可サーバが実装されたライブラリ．```composer.json```ファイルを使用して，インストールする必要がある．
-
-参考：https://github.com/laravel/passport
-
-```json
-{
-    // ～ 省略 ～
-    
-    "require": {
-
-        "laravel/passport": "^10.0",
-        
-    },
-    
-    // ～ 省略 ～
-}
-```
-
-#### ・Personal Access Token
-
-開発環境で使用するアクセストークン．
-
-1. 暗号キーとユーザを作成する．
-
-```sh
-$ php artisan passport:keys
-
-$ php artisan passport:client --personal
-```
-
-2. 作成したユーザに，クライアントIDを付与する．
-
-```php
-/**
- * 全認証／認可の登録
- *
- * @return void
- */
-public function boot()
-{
-    $this->registerPolicies();
-
-    Passport::routes();
-
-    Passport::personalAccessClientId('client-id');
-}
-```
-
-3. ユーザからのリクエスト時，クライアントIDを元に『認証』を行い，アクセストークンをレスポンスする．
-
-```php
-<?php
-
-$user = User::find(1);
-
-// スコープ無しのトークンを作成する
-$token = $user->createToken('Token Name')->accessToken;
-
-// スコープ付きのトークンを作成する
-$token = $user->createToken('My Token', ['place-orders'])->accessToken;
-```
-
-#### ・Password Grant Token
-
-本番環境で使用するアクセストークン．
-
-1. ```guards```キーにて，認証方式を設定する．web guardの場合，セッションを使用して，ユーザを認証する．一方で，api guardの場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
-
-```php
-return [
-
-    // ～ 省略 ～
-
-    'defaults' => [
-        'guard' => 'api',
-        'passwords' => 'users',
-    ],
-
-    // ～ 省略 ～
-];
-```
-
-2. バックエンド側では，Oauth認証（認証フェーズ＋認可フェーズ）を行うために，```auth.php```ファイルで，```driver```キーにpassportドライバを設定する．また，```provider```キーで，usersプロバイダーを設定する．
-
-**＊実装例＊**
-
-```php
-return [
-    
-    // ～ 省略 ～
-    
-    'guards' => [
-        'web' => [
-            'driver'   => 'session',
-            'provider' => 'users',
-        ],
-
-        'api' => [
-            'driver'   => 'passport',
-            'provider' => 'users',
-            'hash'     => false,
-        ],
-    ],
-
-    // ～ 省略 ～
-];
-```
-
-3. バックエンド側では，```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentのModelを設定する．ここでは，Userを設定する．Laravelでは，Modelに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
-
-```php
-return [
-
-    // ～ 省略 ～
-
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            // EloquestのModelは自由に指定できる．
-            'model'  => App\Domain\Auth\User::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-    ],
-
-    // ～ 省略 ～
-];
-```
-
-4. バックエンド側では，Userへのルーティング時に，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
-
-**＊実装例＊**
-
-```php
-Route::get('user', 'UserController@index')->middleware('auth:api');
-```
-
-5. バックエンド側では，認証ガードを行ったModelに対して，HasAPIToken，NotifiableのTraitをコールするようにする．
-
-**＊実装例＊**
-
-```php
-<?php
-  
-namespace App\Domain\DTO;
-
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
-
-class User extends Authenticatable
-{
-    use HasApiTokens, Notifiable;
-    
-    // ～ 省略 ～
-}
-```
-
-6. バックエンド側では，Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
-
-**＊実装例＊**
-
-```php
-<?php
-  
-use Laravel\Passport\Passport;
-
-class AuthServiceProvider extends ServiceProvider
-{
-    // ～ 省略 ～
-
-    public function boot()
-    {
-        $this->registerPolicies();
-
-        Passport::routes();
-    }
-}
-```
-
-7. バックエンド側では，暗号キーとユーザを作成する．
-
-```sh
-$ php artisan passport:keys
-
-$ php artisan passport:client --password
-```
-
-8. 以降，ユーザ側のアプリケーションでの作業となる．『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
-
-**＊実装例＊**
-
-```php
-<?php
-
-$http = new GuzzleHttp\Client;
-
-$response = $http->post('http://your-app.com/oauth/token', [
-    'form_params' => [
-        'grant_type'    => 'password',
-        'client_id'     => 'client-id',
-        'client_secret' => 'client-secret',
-        'username'      => 'taylor@laravel.com',
-        'password'      => 'my-password',
-        'scope'         => '',
-    ],
-]);
-```
-
-8. ユーザ側のアプリケーションでは，ユーザ側のアプリケーションにアクセストークンを含むJSON型データを受信する．
-
-**＊実装例＊**
-
-```json
-{
-  "token_type":"Bearer",
-  "expires_in":31536000,
-  "access_token":"xxxxx"
-}
-```
-
-9. ユーザ側のアプリケーションでは，ヘッダーにアクセストークンを含めて，認証ガードの設定されたバックエンド側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
-
-**＊実装例＊**
-
-```php
-<?php
-  
-$response = $client->request('GET', '/api/user', [
-    'headers' => [
-        'Accept'        => 'application/json',
-        'Authorization' => 'Bearer xxxxx',
-    ]
-]);
-
-return (string)$response->getBody();
-```
-
-<br>
-
 ## 10. Logging
 
 ### ログの出力先
@@ -5405,9 +5158,279 @@ $path = storage_path('app/file.txt');
 
 <br>
 
-## 19. 外部ライブラリ
+## 19. Passportライブラリ
 
-### Enum
+### Passportライブラリ
+
+#### ・Passportライブラリとは
+
+Laravelから提供されており，Ouath認証を含むいくつかの認証方法を実装できる．```composer.json```ファイルを使用して，インストールする必要がある．
+
+参考：https://github.com/laravel/passport
+
+```json
+{
+    // ～ 省略 ～
+    
+    "require": {
+
+        "laravel/passport": "^10.0",
+        
+    },
+    
+    // ～ 省略 ～
+}
+```
+
+#### ・実装できるOauth認証の付与タイプ
+
+| 付与タイプ               | 説明                           |
+| ------------------------ | ------------------------------ |
+| Authorization Code Grant | 認証認可のノートを参考にせよ． |
+| Client Credentials Grant | 認証認可のノートを参考にせよ． |
+| Implicit Grant           | 認証認可のノートを参考にせよ． |
+| Password Grant           | 認証認可のノートを参考にせよ． |
+
+#### ・その他の認可方法
+
+| 認証方法              | 説明                           |
+| --------------------- | ------------------------------ |
+| Personal Access Token | 認証認可のノートを参考にせよ． |
+
+<br>
+
+### Password Grant
+
+#### ・バックエンド側の実装
+
+1. ```guards```キーにて，認証方式を設定する．web guardの場合，セッションを使用して，ユーザを認証する．一方で，api guardの場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+2. Oauth認証（認証フェーズ＋認可フェーズ）を行うために，```auth.php```ファイルで，```driver```キーにpassportドライバを設定する．また，```provider```キーで，usersプロバイダーを設定する．
+
+**＊実装例＊**
+
+```php
+return [
+    
+    // ～ 省略 ～
+    
+    'guards' => [
+        'web' => [
+            'driver'   => 'session',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver'   => 'passport',
+            'provider' => 'users',
+            'hash'     => false,
+        ],
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+3. ```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentのModelを設定する．ここでは，Userを設定する．Laravelでは，Modelに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
+
+```php
+return [
+
+    // ～ 省略 ～
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            // EloquestのModelは自由に指定できる．
+            'model'  => App\Domain\Auth\User::class,
+        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
+
+    // ～ 省略 ～
+];
+```
+
+4. Userへのルーティング時に，```middleware```メソッドによる認証ガードを行う．これにより，Oauth認証に成功したユーザのみがルーティングを行えるようになる．
+
+**＊実装例＊**
+
+```php
+Route::get('user', 'UserController@index')->middleware('auth:api');
+```
+
+5. 認証ガードを行ったModelに対して，HasAPIToken，NotifiableのTraitをコールするようにする．
+
+**＊実装例＊**
+
+```php
+<?php
+  
+namespace App\Domain\DTO;
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens, Notifiable;
+    
+    // ～ 省略 ～
+}
+```
+
+6. Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+
+**＊実装例＊**
+
+```php
+<?php
+  
+use Laravel\Passport\Passport;
+
+class AuthServiceProvider extends ServiceProvider
+{
+    // ～ 省略 ～
+
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+    }
+}
+```
+
+7. 暗号キーとユーザを作成する．
+
+```sh
+$ php artisan passport:keys
+
+$ php artisan passport:client --password
+```
+
+#### ・クライアントアプリ側の実装
+
+1. 『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
+
+**＊実装例＊**
+
+```php
+<?php
+
+$http = new GuzzleHttp\Client;
+
+$response = $http->post('http://your-app.com/oauth/token', [
+    'form_params' => [
+        'grant_type'    => 'password',
+        'client_id'     => 'client-id',
+        'client_secret' => 'client-secret',
+        'username'      => 'taylor@laravel.com',
+        'password'      => 'my-password',
+        'scope'         => '',
+    ],
+]);
+```
+
+2. アクセストークンを含むJSON型データを受信する．
+
+**＊実装例＊**
+
+```json
+{
+  "token_type":"Bearer",
+  "expires_in":31536000,
+  "access_token":"xxxxx"
+}
+```
+
+3. ヘッダーにアクセストークンを含めて，認証ガードの設定されたバックエンド側のルーティングに対して，リクエストを送信する．レスポンスのリクエストボディからデータを取得する．
+
+**＊実装例＊**
+
+```php
+<?php
+  
+$response = $client->request('GET', '/api/user', [
+    'headers' => [
+        'Accept'        => 'application/json',
+        'Authorization' => 'Bearer xxxxx',
+    ]
+]);
+
+return (string)$response->getBody();
+```
+
+<br>
+
+### Personal Access Token
+
+#### ・バックエンド側の実装
+
+1. 暗号キーとユーザを作成する．
+
+```sh
+$ php artisan passport:keys
+
+$ php artisan passport:client --personal
+```
+
+2. 作成したユーザに，クライアントIDを付与する．
+
+```php
+/**
+ * 全認証／認可の登録
+ *
+ * @return void
+ */
+public function boot()
+{
+    $this->registerPolicies();
+
+    Passport::routes();
+
+    Passport::personalAccessClientId('client-id');
+}
+```
+
+3. ユーザからのリクエスト時，クライアントIDを元に『認証』を行い，アクセストークンをレスポンスする．
+
+```php
+<?php
+
+$user = User::find(1);
+
+// スコープ無しのトークンを作成する
+$token = $user->createToken('Token Name')->accessToken;
+
+// スコープ付きのトークンを作成する
+$token = $user->createToken('My Token', ['place-orders'])->accessToken;
+```
+
+<br>
+
+## 20. 非公式ライブラリ
+
+### laravel-enum
 
 #### ・ソースコード
 
