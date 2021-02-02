@@ -414,7 +414,7 @@ http {
 ```nginx
 server {
     listen      80;
-    server_name www.sougi-bon.com;
+    server_name example.com;
     root        /var/www/example;
     index       index.php index.html;
     
