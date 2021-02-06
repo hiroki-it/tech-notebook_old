@@ -1915,9 +1915,9 @@ $ php artisan make:factory <Factory名> --model=<対象とするModel名>
 
 ### 初期ダミーデータの定義
 
-#### ・Fakerライブラリのformatters
+#### ・Fakerパッケージのformatters
 
-Fakerはダミーデータを作成するためのライブラリである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
+Fakerはダミーデータを作成するためのパッケージである．Farkerクラスは，プロパティにランダムなデータを保持している．このプロパティを特に，Formattersという．
 
 参考：https://github.com/fzaninotto/Faker
 
@@ -2758,38 +2758,22 @@ class ExampleController extends Controller
 
 ### artisanコマンドによる操作
 
-#### ・Digest認証の環境構築
+#### ・ログイン処理関連クラスの自動生成
+
+ログイン処理に関連するクラスを自動生成できる．事前に，```laravel/ui```パッケージをインストールする必要がある．
 
 ```sh
-# ここにコマンド例
+$ composer require laravel/ui:^1.0 --dev
 ```
 
-#### ・Oauth認証の環境構築
-
-コマンド実行により，```/storage/oauth```キー，Personal Access Client，Password Grant Clientを生成する．
+Bladeに組み合わせるJavaScriptを選べる．
 
 ```sh
-$ php artisan passport:install
+# Vuejsを使用する場合．
+$ php artisan ui vue --auth
 
-Personal access client created successfully.
-Client ID: 3
-Client secret: xxxxxxxxxxxx
-Password grant client created successfully.
-Client ID: 4
-Client secret: xxxxxxxxxxxx
-```
-
-ただし，生成コマンドを個別に実行してもよい．
-
-```sh
-# 暗号キーを生成
-$ php artisan passport:keys
-
-# クライアントを生成
-## Persinal Access Tokenの場合
-$ php artisan passport:client --personal
-## Password Grant Tokenの場合
-$ php artisan passport:client --password
+# Bootstrapを使用する場合．
+$ php artisan ui bootstrap --auth 
 ```
 
 <br>
@@ -2954,7 +2938,7 @@ return [
 
 **＊実装例＊**
 
-外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleライブラリを使用している．
+外部のAPIに対してリクエストを送信し，データを取得する．取得したJSONデータを，クライアントにレスポンスする．この時，リクエスト処理のために，Guzzleパッケージを使用している．
 
 ```php
 <?php
@@ -3048,6 +3032,12 @@ $ php artisan make:migrate create_<テーブル名>_table
 $ php artisan migrate
 ```
 
+コマンド実行時，以下のエラーが出ることがある．マイグレーションファイル名のスネークケースで，これがクラス名のキャメルケースと対応づけられており，ファイル名とクラス名の関係が正しくないために起こるエラーである．
+
+```sh
+Symfony\Component\Debug\Exception\FatalThrowableError : Class 'CreateXxxxxTable' not found
+```
+
 #### ・マイグレーションの結果を確認
 
 ```sh
@@ -3093,6 +3083,12 @@ $ php artisan migrate:refresh
 
 ```sh
 $ php artisan migrate:fresh
+```
+
+マイグレーション時，テーブルがすでに存在するエラーが起こることがある．この場合，テーブルがマイグレーションされる前までロールバックし，マイグレーションを再実行することが最適である．しかしそれが難しければ，このコマンドを実行する必要がある．
+
+```sh
+SQLSTATE[42S01]: <テーブル名> table or view already exists
 ```
 
 <br>
@@ -3366,7 +3362,7 @@ MailMessageクラスの```markdown```メソッドを使用することで，通�
 
 **＊実装例＊**
 
-SNSを送信方法とする．AWSから配布されているライブラリが必要である．
+SNSを送信方法とする．AWSから配布されているパッケージが必要である．
 
 ```sh
 $ composer require aws/aws-sdk-php-laravel
@@ -3885,10 +3881,13 @@ $ php artisan make:seeder <Seeder名>
 
 #### ・Seederの実行
 
-```sh
-# 事前に，Composerのオートローラを再生成
-$ composer dump-autoload
+Seederを新しく作成した時やSeeder名を変更した時，Composerの```dump-autoload```を実行する必要がある．
 
+```sh
+$ composer dump-autoload
+```
+
+```sh
 # 特定のSeederを実行
 $ php artisan db:seed --class=<Seeder名>
 
@@ -3900,7 +3899,7 @@ $ php artisan db:seed --class=<Seeder名>
 
 ### 初期リアルデータの定義
 
-#### ・配列による定義
+#### ・DBファサードによる定義
 
 ```php
 <?php
@@ -3918,7 +3917,6 @@ class ProductsSeeder extends Seeder
     public function run()
     {
         DB::table('products')->insert([
-            [
                 'product_name' => 'シャープペンシル',
                 'price'        => 300,
                 'product_type' => '1',
@@ -3984,8 +3982,6 @@ class ExecutorConstant
     public const GUEST = 'Guest';    
 }
 ```
-
-<br>
 
 #### ・CSVファイルによる定義
 
@@ -4719,45 +4715,6 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 ### 要素の共通化
 
-#### ・```@extends```，```@parent```，```@show```
-
-三つセットで使うことが多いので，同時に説明する．テンプレート間が親子関係にある時，子テンプレートで親テンプレート全体を読み込む```@extends```を用いる．子テンプレートに```@section```を継承しつつ，要素を追加する場合，```@endsection```ではなく```@show```を使用する．
-
-**＊実装例＊**
-
-```html
-<!-- 親テンプレート -->
-
-<html>
-    <head>
-        <title>共通のタイトルとなる要素</title>
-    </head>
-    <body>
-        
-        @section('sidebar')
-            親テンプレートのサイドバーとなる要素
-        @show
-
-        <div class="container">
-            共通の要素
-        </div>
-    </body>
-</html>
-```
-
-子テンプレートの```@parent```にて，親テンプレートの```@section```を継承する．
-
-```html
-<!-- 子テンプレート -->
-
-@extends('layouts.app')
-
-@section('sidebar')
-    @parent
-    <p>子テンレプートのサイドバーに追加される要素</p>
-@endsection
-```
-
 #### ・```@include```（サブビュー）
 
 読み込んだファイル全体を出力する．読み込むファイルに対して，変数を渡すこともできる．```@extentds```との使い分けとして，親子関係のないテンプレートの間で使用するのがよい．両者は，PHPでいう```extends```（クラスチェーン）と```require```（単なる読み込み）の関係に近い．
@@ -4774,11 +4731,11 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 <br>
 
-### 子テンプレートにおける要素の出力
+### 要素の継承
 
-#### ・```@yield```，```@section```
+#### ・```@yield```，```@extends```，```@section```，```@endsection```
 
-子テンプレートのレンダリング時に，HTMLの要素を動的に出力する場合に使用する．親テンプレートにて，```@yield('example')```を定義する．これを継承した子テンプレートのレンダリング時に，```@section('example')```-```@endsection```で定義した要素が，```@yieid()```部分に出力される．
+子テンプレートのレンダリング時に，子テンプレートで新しく定義したHTMLの要素を，親テンプレートの指定した場所に出力する．親テンプレートにて，```@yield('example')```を定義する．
 
 **＊実装例＊**
 
@@ -4798,6 +4755,10 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 </html>
 ```
 
+これを子テンプレートで```@extends```で継承すると，レンダリング時に，子テンプレートの```@section('example')```-```@endsection```で定義した要素が，親テンプレートの```@yieid()```部分に出力される．
+
+**＊実装例＊**
+
 ```html
 <!-- 子テンプレート -->
 
@@ -4808,7 +4769,9 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 @endsection
 ```
 
-子テンプレートは，レンダリング時に以下のように出力される．
+ちなみに，子テンプレートは，レンダリング時に以下のように出力される．
+
+**＊実装例＊**
 
 ```html
 <!-- 子テンプレート -->
@@ -5158,28 +5121,83 @@ $path = storage_path('app/file.txt');
 
 <br>
 
-## 19. Passportライブラリ
+## 19. Passportパッケージ
 
-### Passportライブラリ
+### Passportパッケージ
 
-#### ・Passportライブラリとは
+#### ・Passportパッケージとは
 
-Laravelから提供されており，Ouath認証を含むいくつかの認証方法を実装できる．```composer.json```ファイルを使用して，インストールする必要がある．
+Laravelから提供されており，Ouath認証を含むいくつかのAPIの認証方法を実装できる．
+
+#### ・インストール
+
+composerでインストールする必要がある．
+
+```sh
+$ composer require laravel/passport:^10.0
+```
 
 参考：https://github.com/laravel/passport
 
-```json
-{
-    // ～ 省略 ～
-    
-    "require": {
+#### ・Oauth認証のトークン管理テーブルを生成
 
-        "laravel/passport": "^10.0",
-        
-    },
-    
-    // ～ 省略 ～
-}
+事前に，Passportの管理テーブルを生成する必要があるため，マイグレーションを実行する．
+
+```sh
+$ php artisan migrate
+
+Migrating: 2014_10_12_000000_create_users_table
+Migrated:  2014_10_12_000000_create_users_table (0.02 seconds)
+Migrating: 2014_10_12_100000_create_password_resets_table
+Migrated:  2014_10_12_100000_create_password_resets_table (0 seconds)
+Migrating: 2016_06_01_000001_create_oauth_auth_codes_table
+Migrated:  2016_06_01_000001_create_oauth_auth_codes_table (0 seconds)
+Migrating: 2016_06_01_000002_create_oauth_access_tokens_table
+Migrated:  2016_06_01_000002_create_oauth_access_tokens_table (0 seconds)
+Migrating: 2016_06_01_000003_create_oauth_refresh_tokens_table
+Migrated:  2016_06_01_000003_create_oauth_refresh_tokens_table (0 seconds)
+Migrating: 2016_06_01_000004_create_oauth_clients_table
+Migrated:  2016_06_01_000004_create_oauth_clients_table (0 seconds)
+Migrating: 2016_06_01_000005_create_oauth_personal_access_clients_table
+Migrated:  2016_06_01_000005_create_oauth_personal_access_clients_table 
+```
+
+マイグレーション後，以下のテーブルが作成される．
+
+| テーブル名                    | 説明                                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| oauth_access_tokens           | 全てのアクセストークンを管理する．                           |
+| oauth_auth_codes              | Authorization Code Grantタイプの情報を管理する．             |
+| oauth_clients                 | Passportで使用している付与タイプを管理する．                 |
+| oauth_personal_access_clients | Personal Access Tokenタイプの情報を管理する．                |
+| oauth_refresh_tokens          | リフレッシュトークンを管理する．アクセストークンの有効期限が切れた時に，再生成をリクエストするために使用する．<br>参考：https://auth0.com/blog/jp-refresh-tokens-what-are-they-and-when-to-use-them/ |
+
+#### ・トークンを生成
+
+コマンド実行により，```/storage/oauth```キー，Personal Access Client，Password Grant Clientを生成する．
+
+```sh
+$ php artisan passport:install
+
+Personal access client created successfully.
+Client ID: 3
+Client secret: xxxxxxxxxxxx
+Password grant client created successfully.
+Client ID: 4
+Client secret: xxxxxxxxxxxx
+```
+
+ただし，生成コマンドを個別に実行してもよい．
+
+```sh
+# 暗号キーを生成
+$ php artisan passport:keys
+
+# クライアントを生成
+## Persinal Access Tokenの場合
+$ php artisan passport:client --personal
+## Password Grant Tokenの場合
+$ php artisan passport:client --password
 ```
 
 #### ・実装できるOauth認証の付与タイプ
@@ -5203,7 +5221,12 @@ Laravelから提供されており，Ouath認証を含むいくつかの認証�
 
 #### ・バックエンド側の実装
 
-1. ```guards```キーにて，認証方式を設定する．web guardの場合，セッションを使用して，ユーザを認証する．一方で，api guardの場合，アクセストークンを使用して認証する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
+| Guardの種類 | 説明                                                         |
+| ----------- | ------------------------------------------------------------ |
+| Web Guard   | セッション，Cookie，storageを使用して，認証を行う．          |
+| API Guard   | アクセストークンを使用して，認証を行う．アクセストークンは，データベースで管理する． |
+
+1. ```guards```キーにて，認証方式を設定する．ここでは，```api```を設定する．認証方法については，認証と認可のノートを参照せよ．
 
 ```php
 return [
@@ -5219,7 +5242,7 @@ return [
 ];
 ```
 
-2. Oauth認証（認証フェーズ＋認可フェーズ）を行うために，```auth.php```ファイルで，```driver```キーにpassportドライバを設定する．また，```provider```キーで，usersプロバイダーを設定する．
+2. Oauth認証（認証フェーズ＋認可フェーズ）を行うために，```auth.php```ファイルで，```driver```キーにpassportドライバを設定する．また，```provider```キーで，```users```を設定する．
 
 **＊実装例＊**
 
@@ -5245,7 +5268,7 @@ return [
 ];
 ```
 
-3. ```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentのModelを設定する．ここでは，Userを設定する．Laravelでは，Modelに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
+3. ```auth.php```ファイルにて，```driver```キーにeloquentドライバを設定する．また，```model```キーで認証情報テーブルに対応するEloquentのModelを設定する．ここでは，Userクラスを設定する．Laravelでは，Modelに対応するテーブル名はクラス名の複数形になるため，usersテーブルに認証情報が格納されることになる．もしDBファサードのクエリビルダを使用したい場合は，```database```ドライバを指定する．
 
 ```php
 return [
@@ -5298,7 +5321,7 @@ class User extends Authenticatable
 }
 ```
 
-6. Passportの```routes```メソッドをコールするようにする．これにより，認証フェーズでアクセストークンをリクエストするための全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
+6. Passportの```routes```メソッドをコールするようにする．これにより，Passportの認証フェーズに関わる全てのルーティング（``````/oauth/xxx``````）が有効になる．また，アクセストークンを発行できるよになる．
 
 **＊実装例＊**
 
@@ -5330,7 +5353,7 @@ $ php artisan passport:client --password
 
 #### ・クライアントアプリ側の実装
 
-1. 『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleライブラリを使用して，リクエストを送信するものとする．
+1. 『認証』のために，アクセストークンのリクエストを送信する．ユーザ側のアプリケーションは，```/oauth/authorize```へリクエストを送信する必要がある．ここでは，リクエストGuzzleパッケージを使用して，リクエストを送信するものとする．
 
 **＊実装例＊**
 

@@ -84,7 +84,7 @@ Your branch is ahead of 'origin/feature/XXXX' by 10 commits.
 
 ## 02. Gitの準備
 
-### ```clone```：
+### clone：
 
 #### ・```clone <HTTPS接続>```
 
@@ -104,7 +104,7 @@ $ git clone git@<ssh-configファイルでのサーバ接続名>:<組織名>/<�
 
 <br>
 
-### ```config```：
+### config：
 
 #### ・ 設定の影響範囲の種類
 
@@ -179,7 +179,7 @@ $ git config --global core.editor 'vim -c "set fenc=utf-8"'
 
 <br>
 
-### ```remote```：
+### remote：
 
 #### ・```remote set-url origin <SSH URL>```
 
@@ -209,7 +209,7 @@ Host <接続名２>
 
 ## 03. Gitのコマンドメモ
 
-### ```add```：
+### add：
 
 #### ・```add --all```
 
@@ -217,7 +217,7 @@ Host <接続名２>
 
 <br>
 
-### ```branch```：
+### branch：
 
 #### ・```branch --all```
 作業中のローカルブランチとリモート追跡ブランチを表示．
@@ -264,7 +264,7 @@ $ git checkout -b feature/3 d7e49b04
 
 <br>
 
-### ```stash```：
+### stash：
 
 #### ・```stash```とは
 
@@ -371,7 +371,7 @@ $ git stash clear
 
 <br>
 
-### ```revert```：
+### revert：
 
 #### ・```revert```とは
 
@@ -413,7 +413,7 @@ $ git revert -m 1 xyz
 
 <br>
 
-### ```reset```：
+### reset：
 
 #### ・```reset```とは
 
@@ -503,7 +503,7 @@ To github.com:Hiroki-IT/Symfony2_Nyumon.git
  + f0d8b1a...f81c813 master -> master (forced update)
 ```
 
-### ```rebase```：
+### rebase：
 
 #### ・```rebase```とは（注意点あり）
 
@@ -711,7 +711,7 @@ $ git tag -d v1.0.0
 
 <br>
 
-### ```show-branch```：
+### show-branch：
 
 作業ブランチの派生元になっているブランチを確認．
 
@@ -721,7 +721,7 @@ $ git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | he
 
 <br>
 
-### ```filter-branch```：
+### filter-branch：
 
 #### ・```filter-branch -f --env-filter```
 
