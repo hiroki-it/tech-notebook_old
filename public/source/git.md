@@ -681,7 +681,21 @@ $
 
 <br>
 
-### ```push ```
+### pull：
+
+#### ・コマンド組み合わせ
+
+全てのリモートブランチをpullする．
+
+```sh
+$ git branch -r | grep -v "\->" | grep -v main | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
+$ git fetch --all
+$ git pull --all
+```
+
+<br>
+
+### push ：
 
 #### ・```push -u origin <作成したブランチ名>```
 
