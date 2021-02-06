@@ -4789,6 +4789,66 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 </html>
 ```
 
+#### ・```@section```，```@show```，```@extends```，```@parent```
+
+子テンプレートのレンダリング時に，親テンプレートと子テンプレートそれぞれで新しく定義したHTMLの要素を，親テンプレートの指定した場所に出力する．親テンプレートにて，```@section```-```@show```で要素を定義する．
+
+**＊実装例＊**
+
+```html
+<!-- 親テンプレート -->
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>アプリケーション</title>
+    </head>
+    <body>
+        <h2>タイトル</h2>
+        @section('sidebar')
+        <p>親テンプレートのサイドバーとなる要素</p>
+        @show
+    </body>
+</html>
+```
+
+子テンプレートの```@section```にて，```@parent```を使用する．親テンプレートと子テンプレートそれぞれの要素が出力される．
+
+**＊実装例＊**
+
+```html
+<!-- 子テンプレート -->
+
+@extends('layouts.app')
+
+@section('sidebar')
+    @parent
+    <p>子テンレプートのサイドバーに追加される要素</p>
+@endsection
+```
+
+ちなみに，子テンプレートは，レンダリング時に以下のように出力される．
+
+**＊実装例＊**
+
+```html
+<!-- 子テンプレート -->
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>アプリケーション</title>
+    </head>
+    <body>
+        <h2>タイトル</h2>
+        <p>親テンプレートのサイドバーとなる要素</p>
+        <p>子テンレプートのサイドバーに追加される要素</p>
+    </body>
+</html>
+```
+
 <br>
 
 #### ・```@stack```，```@push```
