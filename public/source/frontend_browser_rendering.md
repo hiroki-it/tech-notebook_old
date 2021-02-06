@@ -87,7 +87,8 @@ document.write("JavaScriptを直接組み込んでいます。")
 外部JavaScriptファイルを組み込む方法．
 
 ```html
-<script src="sample.js"></script>
+<script src="sample.js"></sc
+    ript>
 ```
 
 CDNの仕組みを用いて，Web上からリソースを取得することもできる．

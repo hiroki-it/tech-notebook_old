@@ -64,54 +64,31 @@
 
 <br>
 
-### データの伝送
-
-#### ・伝送とは
-
-サーバからクライアントPCにデータを送信すること．相互の送信は，通信と呼ぶ．
-
-#### ・伝送速度の実測値
-
-伝送速度は，『プロバイダ』，『光回線』，『自宅の有線／無線』の三つに影響される．
-
-![伝送速度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/伝送速度.png)
-
-#### ・伝送秒数の求め方
-
-```
-(伝送秒数)
-= データ容量(bit) ÷ 伝送速度(bit/s) × 伝送効率
-```
-
-#### ・トラフィックとは
-
-ネットワークの，とある地点での伝送速度```(bit/s)```のこと．
-
-![トラフィック](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィック.png)
-
-総務省のデータで，日本のブロードバンド大手5社の総トラフィックを年次でグラフ化したものがある．
-
-![トラフィックのグラフ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィックのグラフ.png)
-
-<br>
-
 ## 02. OSI参照モデルとTCP階層モデル
 
-### データの作成，ヘッダ情報追加，カプセル化
+### データがパケットになるまで
 
-パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
+1. アプリケーション層でデータが作成される．
+2. トランスポート層でTCPヘッダが追加される．
+3. インターネット層でIPヘッダが追加される．
+4. ネットワークインターフェース層でEthernetヘッダが追加される．
+5. パケットとして送信される．
 
 ![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
 
 <br>
 
-### OSI参照モデルにおいて各概念層で追加されるヘッダ情報の内容
+### OSI参照モデル
+
+#### ・各概念層のヘッダ情報追加
 
 ![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデル.png)
 
 <br>
 
-### プロトコルの分類と扱われる階層
+### TCP階層モデル
+
+#### ・プロトコルの分類と扱われる階層
 
 TCP/IPモデルで用いられるプロトコルのうち，最も代表的な「TCP」と「IP」から名前をとって「TCP/IP」と名付けられた．プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
 
@@ -121,7 +98,7 @@ TCP/IPモデルで用いられるプロトコルのうち，最も代表的な�
 
 ## 02-02. 通信機器におけるヘッダ情報認識
 
-### 各概念層の実際の通信機器の対応関係
+### 各概念層と通信機器の間の対応関係
 
 ![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器.jpg)
 
@@ -135,7 +112,7 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 <br>
 
-### 通信機器における各層のヘッダ情報の認識
+### 各概念層のヘッダ情報認識
 
 送信元で作成されたパケットは，非カプセル化されながら，通信機器に認識される．
 
