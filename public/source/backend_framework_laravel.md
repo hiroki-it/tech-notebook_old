@@ -5555,7 +5555,25 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 <br>
 
-## 20. 非公式ライブラリ
+## 19-02. Breezeパッケージ
+
+### Breezeパッケージ
+
+#### ・Breezeパッケージとは
+
+Laravel8系の```laravel/ui```パッケージの後継となるパッケージ．
+
+#### ・インストール
+
+composerでインストールする必要がある．
+
+```sh
+composer require laravel/breeze --dev
+```
+
+<br>
+
+## 20. 非公式パッケージ
 
 ### laravel-enum
 
