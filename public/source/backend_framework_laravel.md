@@ -4975,6 +4975,50 @@ https://readouble.com/laravel/6.x/ja/helpers.html#method-view
 
 <br>
 
+### ```auth```ヘルパー
+
+#### ・AuthManagerインスタンスの返却
+
+認証処理をもつAuthManagerクラスのインスタンスを返却する．
+
+参考：https://laravel.com/api/6.x/Illuminate/Auth/AuthManager.html
+
+```php
+<?php
+
+// Illuminate\Auth\AuthManager
+$auth = auth();
+```
+
+#### ・AuthManagerインスタンスの仕様
+
+AuthManagerクラスの```user```メソッドをコールする場合，AuthManagerにはこれがないため，```__call```メソッドがコールする．ここで，```guard```メソッドが，Guardインターフェースの実装クラスが返却する．```auth.php```ファイルで選択したGuardドライバーによって，リゾルブされる実装クラスが決まり，例えば```token```ドライバーを選んだ場合は，TokenGuardクラスを返却する．```auth.php```ファイルの```providers```キーで設定されたModelを認証対象として，TokenGuardクラスの```user```メソッドは認証済みのModelを返却する．
+
+参考：
+
+- https://teratail.com/questions/171582
+- https://laravel.com/api/6.x/Illuminate/Contracts/Auth/Guard.html#method_user
+- https://laravel.com/api/6.x/Illuminate/Auth/TokenGuard.html#method_user
+
+| Guardドライバー | 実装クラス         | 備考                                                         |
+| --------------- | ------------------ | ------------------------------------------------------------ |
+| ```session```   | SessionGuardクラス | https://laravel.com/api/6.x/Illuminate/Auth/SessionGuard.html |
+| ```web```       | RequestGuardクラス | https://laravel.com/api/6.x/Illuminate/Auth/RequestGuard.html |
+| ```token```     | TokenGuardクラス   | https://laravel.com/api/6.x/Illuminate/Auth/TokenGuard.html  |
+
+```php
+<?php
+    
+// Illuminate\Auth\AuthManager
+$auth = auth();
+    
+// Illuminate\Contracts\Auth\Guard
+// ドライバーによって，リゾルブされるGuard実装クラス決まる
+$user = $auth->user();
+```
+
+<br>
+
 ### ```config```ヘルパー
 
 #### ・環境変数ファイルの読み込み
