@@ -2380,7 +2380,7 @@ $ php artisan make:middleware <Middleware名>
 
 #### ・BeforeMiddleware
 
-ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．```$request```には，Requestクラスが代入されている．
+ルーティング時のコントローラメソッドのコール前に実行する処理を設定できる．一連の処理を終えた後，Requestクラスを，次のMiddlewareクラスやControllerクラスに渡す必要がある．これらのクラスはClosure（無名関数）として，```next```変数に格納されている．
 
 **＊実装例＊**
 
@@ -2393,10 +2393,15 @@ use Closure;
 
 class ExampleBeforeMiddleware
 {
+    /**
+     * @param  Request  $request
+     * @param  \Closure  $next
+     */
     public function handle($request, Closure $next)
     {
         // 何らかの処理
 
+        // 次のMiddlewareクラスやControllerクラスに，Requestクラスを渡す．
         return $next($request);
     }
 }
@@ -2404,7 +2409,7 @@ class ExampleBeforeMiddleware
 
 #### ・AfterMiddleware
 
-コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．
+コントローラメソッドのレスポンスの実行後（テンプレートのレンダリングを含む）に実行する処理を設定できる．あらかじめ，Requestクラスを，前のMiddlewareクラスやControllerクラスから受け取る必要がある．これらのクラスはClosure（無名関数）として，```next```変数に格納されている．
 
 **＊実装例＊**
 
@@ -2418,12 +2423,17 @@ use Closure;
 
 class ExampleAfterMiddleware
 {
+    /**
+     * @param  Request  $request
+     * @param  \Closure  $next
+     */    
     public function handle($request, Closure $next)
     {
         $response = $next($request);
 
         // 何らかの処理
 
+        // 前のMiddlewareクラスやControllerクラスから，Requestクラスを受け取る．
         return $response;
     }
 }
@@ -2842,104 +2852,6 @@ public function authorize()
 
     return $comment&& $this->user()->can('update', $comment);
 }
-```
-
-<br>
-
-## 09-03. HTTP｜Controller
-
-### artisanコマンドによる操作
-
-#### ・クラスの自動生成
-
-```sh
-# コントローラクラスを自動作成
-$ php artisan make:controller <Controller名>
-```
-
-<br>
-
-### Requestクラス
-
-####  ・データの取得
-
-Requestクラスの```input```メソッドを用いて，リクエストボディに含まれるデータを取得できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class ExampleController extends Controller
-{
-    /**
-     * 新しいユーザーを保存します．
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
-        $name = $request->input('name');
-    }
-}
-```
-
-#### ・パスパラメータの取得
-
-第二引数にパスパラメータ名を記述することで，パスパラメータの値を取得できる．
-
-**＊実装例＊**
-
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class ExampleController extends Controller
-{
-    /**
-     * 指定したユーザーを更新します．
-     *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return Response
-     */
-    public function save(Request $request, $id)
-    {
-        //
-    }
-}    
-```
-
-<br>
-
-## 09-04. HTTP｜Auth
-
-### artisanコマンドによる操作
-
-#### ・ログイン処理関連クラスの自動生成
-
-ログイン処理に関連するクラスを自動生成できる．事前に，```laravel/ui```パッケージをインストールする必要がある．
-
-```sh
-$ composer require laravel/ui:^1.0 --dev
-```
-
-Bladeに組み合わせるJavaScriptを選べる．
-
-```sh
-# Vuejsを使用する場合．
-$ php artisan ui vue --auth
-
-# Bootstrapを使用する場合．
-$ php artisan ui bootstrap --auth 
 ```
 
 <br>
@@ -5133,7 +5045,13 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 ## 18. よく使うグローバルヘルパー関数
 
-### 一覧
+### ヘルパー関数
+
+#### ・ヘルパー関数とは
+
+グローバルにコールできるLaravel専用のメソッドのこと．基本的には，ヘルパー関数で実行される処理は，Facadeの内部で実行されるものと同じである．
+
+#### ・一覧
 
 以下リンクを参照せよ．
 
