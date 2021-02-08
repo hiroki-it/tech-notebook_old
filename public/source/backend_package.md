@@ -164,6 +164,36 @@ $ COMPOSER_MEMORY_LIMIT=-1 composer update -vvv
 $ composer clear-cache
 ```
 
+#### ・ユーザ定義のコマンド
+
+ユーザが定義したエイリアス名のコマンドを実行する．
+
+```sh
+$ composer <エイリアス名>
+```
+
+あらかじめ，任意のエイリアス名を```scripts```キー下に定義する．エイリアスの中で，実行するコマンドのセットを定義する．
+
+```json
+{
+    "scripts": {
+        "<エイリアス名>": [
+            "@<実行するコマンド>"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    }
+}
+```
+
 <br>
 
 ## 02. アプリケーションによるパッケージの読み込み
