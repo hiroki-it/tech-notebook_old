@@ -2259,7 +2259,105 @@ Storage::put('file.txt', 'file.txt');
 
 <br>
 
-## 09. HTTP｜Middleware
+## 09-02. HTTP｜Auth
+
+### artisanコマンドによる操作
+
+#### ・ログイン処理関連クラスの自動生成
+
+ログイン処理に関連するクラスを自動生成できる．事前に，```laravel/ui```パッケージをインストールする必要がある．
+
+```sh
+$ composer require laravel/ui:^1.0 --dev
+```
+
+Bladeに組み合わせるJavaScriptを選べる．
+
+```sh
+# Vuejsを使用する場合．
+$ php artisan ui vue --auth
+
+# Bootstrapを使用する場合．
+$ php artisan ui bootstrap --auth 
+```
+
+<br>
+
+## 09-03. HTTP｜Controller
+
+### artisanコマンドによる操作
+
+#### ・クラスの自動生成
+
+```sh
+# コントローラクラスを自動作成
+$ php artisan make:controller <Controller名>
+```
+
+<br>
+
+### Requestクラス
+
+####  ・データの取得
+
+Requestクラスの```input```メソッドを用いて，リクエストボディに含まれるデータを取得できる．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 新しいユーザーを保存します．
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        $name = $request->input('name');
+    }
+}
+```
+
+#### ・パスパラメータの取得
+
+第二引数にパスパラメータ名を記述することで，パスパラメータの値を取得できる．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * 指定したユーザーを更新します．
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function save(Request $request, $id)
+    {
+        //
+    }
+}    
+```
+
+<br>
+
+## 09-04. HTTP｜Middleware
 
 ### artisanコマンドによる操作
 
