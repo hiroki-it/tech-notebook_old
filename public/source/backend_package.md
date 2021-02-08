@@ -41,25 +41,28 @@
 }
 ```
 
-####  ・autoloadの対象に登録した設定を反映
+####  ・名前空間のユーザ定義
 
-外部ファイルの読み込み時に，```require```メソッドを不要とするファイルを```composer.json```ファイルに登録できる．
+名前空間とファイルパスの対応関係を設定する．
 
 ```json
 {
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
-    }
+  "autoload": {
+    "psr-4": {
+      "<名前空間>": "<ファイルパス>",
+      "App\\": "app/",
+      "Database\\Factories\\Infrastructure\\DTO\\": "database/factories/production",
+      "Database\\Seeders\\": "database/seeds/production"
+    },
+    "classmap": [
+      "database/seeds",
+      "database/factories"
+    ]
+  }
 }
 ```
 
-その後，コマンドでこの登録を反映する．
+その後，名前空間の読み込みを登録する．
 
 ```sh
 $ composer dump-autoload
