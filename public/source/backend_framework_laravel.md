@@ -2333,7 +2333,75 @@ class ExampleAfterMiddleware
 
 <br>
 
-## 09-02. HTTP｜Request
+### Auth
+
+#### ・認証処理後のリダイレクト
+
+AfterMiddlewareとして，認証処理後にホームページにリダイレクトする必要がある．認証には，Guardインターフェースの実装クラスがもつ```check```メソッドを使用する．Guardインターフェースの実装クラスを取得するために，Authファサードまたは```auth```ヘルパーを使用する．
+
+````php
+<?php
+
+namespace App\Http\Middleware\Auth;
+
+use App\Providers\RouteServiceProvider;
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class RedirectIfAuthenticated
+{
+    /**
+     * 認証後にアクセスできるページにリダイレクトします．
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string|null  $guard
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            
+            // 認証後のホームページにリダイレクトします．
+            return redirect(RouteServiceProvider::HOME);
+        }
+        
+        // 以下の実装でもよい
+        // if (auth()->guard($guard)->check()) {
+        //     return redirect(RouteServiceProvider::HOME);
+        // }
+
+        return $next($request);
+    }
+}
+````
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+
+class RouteServiceProvider extends ServiceProvider
+{
+    // 〜 省略 〜
+
+    /**
+     * 認証後のホームページURL
+     *
+     * @var string
+     */
+    public const HOME = '/dashboard';
+    
+    // 〜 省略 〜
+}
+```
+
+<br>
+
+## 09-05. HTTP｜Request
 
 ### artisanコマンドによる操作
 
@@ -4992,7 +5060,7 @@ $auth = auth();
 
 #### ・AuthManagerインスタンスの仕様
 
-AuthManagerクラスの```user```メソッドをコールする場合，AuthManagerにはこれがないため，```__call```メソッドがコールする．ここで，```guard```メソッドが，Guardインターフェースの実装クラスが返却する．```auth.php```ファイルで選択したGuardドライバーによって，リゾルブされる実装クラスが決まり，例えば```token```ドライバーを選んだ場合は，TokenGuardクラスを返却する．```auth.php```ファイルの```providers```キーで設定されたModelを認証対象として，TokenGuardクラスの```user```メソッドは認証済みのModelを返却する．
+AuthManagerクラスの```user```メソッドをコールする場合，AuthManagerにはこれがないため，```__call```メソッドがコールされる．ここで，```guard```メソッドが，Guardインターフェースの実装クラスを返却する．```auth.php```ファイルで選択したGuardドライバーによって，リゾルブされる実装クラスが決まり，例えば```token```ドライバーを選んだ場合は，TokenGuardクラスを返却する．```auth.php```ファイルの```providers```キーで設定されたModelを認証対象として，TokenGuardクラスの```user```メソッドは認証済みのModelを返却する．
 
 参考：
 
