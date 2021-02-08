@@ -24,23 +24,48 @@
 
 ## 02. ドメイン駆動設計とは
 
-### ビジネスルールに対するオブジェクト指向分析と設計
-
-#### ・ドメインエキスパート，ユビキタス言語とは
-
-ドメインエキスパート（現実世界のビジネスルールに詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，ビジネスルールに対して，オブジェクト指向分析と設計を行っていく．この時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．
+### ドメイン駆動設計の手順
 
 #### ・戦略的設計の手順
 
-1. ドメインエキスパートと話し合い，現実世界の業務内容に含まれる『名詞』と『振舞』に着目．
-2. 『名詞』と『振舞』を要素として，オブジェクト指向分析と設計を行い，EntityやValue Objectを抽出していく．
-3. EntityやValue Objectを用いて，ドメインモデリング（オブジェクト間の関連付け）を行う．
+1. ドメインエキスパートと話し合い，ドメインの境界線を見つけ，それぞれを境界づけられたコンテキストとする．
+2. コンテキストマップを作成する．
+3. ユースケースとユースケースシナリオを作成する．
+4. ドメインエキスパートと話し合い，現実世界の業務内容に含まれる『名詞』と『振舞』を洗い出す．
+5. 『名詞』と『振舞』を要素として，オブジェクト指向分析と設計を行い，EntityやValue Objectを抽出していく．
+6. EntityやValue Objectを用いて，ドメインモデリング（オブジェクト間の関連付け）を行う．
 
 #### ・戦術的設計の手順
 
 戦略的設計を基に，各オブジェクトとオブジェクト間の関連性を実装していく．
 
-![DDDの概念](https://user-images.githubusercontent.com/42175286/61179612-d305c800-a640-11e9-8c4a-3d31225af633.jpg)
+<br>
+
+### ドメイン駆動設計にまつわる用語
+
+#### ・ドメインエキスパート，ユビキタス言語とは
+
+ドメインエキスパート（現実世界のビジネスルールに詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，ビジネスルールに対して，オブジェクト指向分析と設計を行っていく．この時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．
+
+![ドメインモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメインモデル.png)
+
+#### ・境界づけられたコンテキストとは
+
+コアドメインやサブドメインの内部を詳細にグループ化する時，ビジネスの関心事の視点で分割されたまとまりのこと．コンテキストの中は，さらに詳細なコンテキストにグループ化できる．両方のコンテキストで関心事が異なっていても，対象は同じドメインであることもある．
+
+![コアドメイン，サブドメイン，境界づけられたコンテキスト](/Users/h.hasegawa/Documents/Drive1st/プログラミング/tech-notebook/Drive_source/images/コアドメイン，サブドメイン，境界づけられたコンテキスト.png)
+
+**＊具体例＊**
+
+仕事仲介サイトでは，仕事の発注者のドメインに注目した時，発注時の視点で分割された仕事募集コンテキストと，同じく契約後の視点で分割された契約コンテキストにまとめることができる．モデリングされた「仕事」は，それぞれで意味合いが異なる．仕事募集コンテキストでは，仕事を探す人
+
+![境界づけられたコンテキストの例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/境界づけられたコンテキストの例.png)
+
+#### ・コンテキストマップとは
+
+広義のドメイン全体の俯瞰する図のこと．コアドメイン，サブドメイン，境界づけられたコンテキストを定義した後，これらの関係性を視覚化する．
+
+![コンテキストマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンテキストマップ.png)
 
 <br>
 
@@ -129,8 +154,6 @@ Layeredアーキテクチャ型ドメイン駆動設計において，MVCは，�
 3. Repositoryからメソッドをコールし，連想配列を渡してDBからオブジェクトデータをReadする．
 4. Readしたオブジェクトデータを連想配列に変換する．
 5. 最後に，連想配列をJSON型データにパースし，JavaScriptに送信する．
-
-![シリアライズとデシリアライズ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シリアライズとデシリアライズ.png)
 
 **＊実装例＊**
 
@@ -402,71 +425,27 @@ class XxxCriteria
 ```php
 <?php
 
-namespace App\Domain\Entity;    
-    
-/**
- * おもちゃのEntity
- */
-class ToyEntity
-{
-
-    /**
-     * 犬用おもちゃ
-     */    
-    private $dogToy;
-    
-    /**
-     * 猫用おもちゃ
-     */    
-    private $catToy;
-    
-    public function __construct
-    (
-        DogToy $dogToy,
-        CatToy $catToy
-    )
-    {
-        $this->dogToy = $dogToy;
-        $this->catToy = $catToy;
-    }
-  
-    public function getXXX()
-    {
-        //  Read処理;
-    }  
-  
-}
-```
-
-<br>
-
-### Route Entityとは
-
-![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_集約関係.jpg)
-
- EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
-
-**＊実装例＊**
-
-```php
-<?php
-
 namespace App\Domain\ValueObject;    
     
 /**
- * 犬おもちゃのEntity
+ * 犬用おもちゃのエンティティ
  */
 class DogToy
 {
     /**
-     * おもちゃタイプ
+     * 犬用おもちゃID
      */
-    private $toyType;
+    private $id;    
+    
+    /**
+     * 犬用おもちゃタイプ
+     */
+    private $type;
     
      /**
-     * おもちゃ商品名
+     * 犬用おもちゃ商品名
      */    
-    private $toyName;
+    private $name;
     
     /**
      * 数量
@@ -483,31 +462,107 @@ class DogToy
      */    
     private $colorVO;
     
-    public function __construct
-    (
-        int $toyType,
-        string $toyName,
-        int $number,
-        priceVO $priceVO,
-        ColorVO $colorVO
-    )
+    public function __construct(int $type, string $name, int $number, priceVO $priceVO, ColorVO $colorVO)
     {
-        $this->toyType = $toyType;
-        $this->toyName = $toyName;
+        $this->type = $type;
+        $this->name = $name;
         $this->number = $number;
         $this->priceVO = $priceVO;
         $this->colorVO = $colorVO;
     }
+    
+    /**
+     * エンティティの等価性を検証します．
+     */
+    public function equals($dogToy)
+    {
+        return ($id instanceof $this || $this instanceof $id)
+            && $this->id->equals($dogToy->getId());
+    }
         
-    public function toyNameWithColor()
+    /**
+     * 犬用おもちゃ名（色）を返却します．
+     */
+    public function nameWithColor()
     {
         return sprintf(
             '%s（%s）',
-            $this->toyName,
+            $this->name->value(),
             $this->colorVO->colorName()
         );
     }
+}
+```
+
+<br>
+
+### Route Entityとは
+
+![ドメイン駆動設計_集約関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_集約関係.jpg)
+
+ EntityやValue Objectからなる集約の中で，最終的にアプリケーション層へレスポンスされる集約を，『RouteEntity』という．
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Domain\Entity;    
     
+/**
+ * 犬用注文エンティティ
+ */
+class DogOrder
+{
+    /**
+     * 犬用商品コンボID
+     */    
+    private $id;
+    
+    /**
+     * 犬用おもちゃ
+     */    
+    private $dogToy;
+    
+    /**
+     * 犬用えさ
+     */    
+    private $dogFood;
+    
+    public function __construct(DogToy $dogToy, DogFood $dogFood)
+    {
+        $this->dogToy = $dogToy;
+        $this->dogFood = $dogFood;
+    }
+    
+    /**
+     * エンティティの等価性を検証します．
+     * 
+     * IDのみ検証する必要がある．
+     */
+    public function equals(DogOrder $dogOrder)
+    {
+        // データ型を検証します．
+        return $dogOrder instanceof $this
+            // IDを検証します．
+            || $this->id->equals($dogOrder->getId()) ;
+    }
+    
+    /**
+     * 犬用おもちゃを返却します．
+     */
+    public function getDogToy()
+    {
+        return $this->dogToy;
+    }  
+
+    /**
+     * 犬えさを返却します
+     */
+    public function getDogFood()
+    {
+        return $this->dogFood;
+    }  
 }
 ```
 
@@ -526,6 +581,43 @@ class DogToy
 ```php
 <?php
 
+namespace App\Domain\ValueObject;
+
+/**
+ * 犬用おもちゃID
+ */
+class DogToyId
+{
+    /**
+     * ID値 
+     */
+    private $value;
+    
+    public function __constructor(string $value)
+    {
+        $this->value = $value
+    }
+    
+    /**
+     * VOの属性の等価性を検証します．
+     */
+    public function equals($id)
+    {
+        // データ型を検証します．
+        return ($id instanceof $this || $this instanceof $id)
+            // 値を検証します．
+            && $this->value() === $id->value();
+    }
+}
+```
+
+
+
+**＊実装例＊**
+
+```php
+<?php
+
 namespace App\Domain\ValueObject;    
     
 /**
@@ -537,18 +629,11 @@ class PaymentInfoVO
     use ImmutableObject;
 
     /**
-     * 支払いID
-     *
-     * @var PaymentId
-     */
-    private $PaymentId;
-
-    /**
      * 支払い方法
      *
      * @var PaymentType
      */
-    private $PaymentType;
+    private $paymentType;
     
     /**
      * 連絡先メールアドレス
@@ -562,7 +647,22 @@ class PaymentInfoVO
      *
      * @var Money
      */
-    private $price;    
+    private $price;  
+    
+    /**
+     * VOの属性の等価性を検証します．
+     *
+     * 全ての属性を検証する必要がある．
+     */
+    public function equals($paymentInfoVO)
+    {
+        // データ型を検証します．
+        return ($paymentInfoVO instanceof $this || $this instanceof $paymentInfoVO)
+            // 全ての属性を検証します．
+            && $this->paymentType->value() === $paymentInfoVO->paymentType->value()
+            && $this->contactMail->value() === $paymentInfoVO->contactMail->value()
+            && $this->price->value() === $paymentInfoVO->price->value();
+    }
 }
 ```
 
@@ -606,7 +706,6 @@ namespace App\Domain\ValueObject;
  */     
 class ExampleVO
 {
-    
     private $propertyA;
     
     private $propertyB;
@@ -928,10 +1027,10 @@ class DogToyRepository
         $query->insert('dog_toy_table')
             ->values([
                 // Route Entityの要素をカラム値として設定する．（IDはAutoIncrement）
-                'name'  => $dogToy->toyName,
-                'type'  => $dogToy->toyType,
-                'price' => $dogToy->priceVO->price(),
-                'color' => $dogToy->colorVO->value(),
+                'name'  => $dogToy->getName()->value(),
+                'type'  => $dogToy->getType()->value(),
+                'price' => $dogToy->getPriceVO()->value(),
+                'color' => $dogToy->getColorVO()->value(),
         ]);
     }
 }
@@ -963,11 +1062,11 @@ class DogToyRepository
         // SQLを定義する．
         $query->update('dog_toy_table', 'dog_toy')
             // Route Entityの要素をカラム値として設定する．
-            ->set('dog_toy.name', $dogToy->toyName->name())
-            ->set('dog_toy.type', $dogToy->toyType->type())
-            ->set('dog_toy.price', $dogToy->priceVO->price())
-            ->set('dog_toy.color', $dogToy->colorVO->value())
-            ->where('dog_toy.id', $dogToy->dogToyId->id();
+            ->set('dog_toy.name', $dogToy->getName()->value())
+            ->set('dog_toy.type', $dogToy->getType()->value())
+            ->set('dog_toy.price', $dogToy->getPriceVO()->value())
+            ->set('dog_toy.color', $dogToy->getColorVO()->value())
+            ->where('dog_toy.id', $dogToy->getId()->value();
     }
 }
 ```
@@ -1000,7 +1099,7 @@ class DogToyRepository
         $query->update('dog_toy_table', 'dog_toy')
             // 論理削除
             ->set('dog_toy.is_deleted', FlagConstant::IS_ON)
-            ->where('dog_toy.id', $dogToy->toyId->id();
+            ->where('dog_toy.id', $dogToy->getId()->value();
     }
 }
 ```
@@ -1085,13 +1184,13 @@ class DogToyRepository
      */
     private function aggregateDogToy(array $fetched): DogToy
     {
-        $dogToy = new DogToy;
-        
-        $dogToy->toyId = $fetched['dog_toy_id']
-        $dogToy->toyName = $fetched['dog_toy_name'];
-        $dogToy->toyType = $fetched['dog_toy_type'];
-        $dogToy->priceVO = new PriceVO($fetched['dog_toy_price']);
-        $dogToy->colorVO = new ColorVO($fetched['dog_toy_color']);
+        $dogToy = new DogToy(
+            $fetched['dog_toy_id'],
+            $fetched['dog_toy_name'],
+            $fetched['dog_toy_type'],
+            new PriceVO($fetched['dog_toy_price'],
+            new ColorVO($fetched['dog_toy_color']
+        );
         
         return $dogToy;
     }
@@ -1115,19 +1214,19 @@ namespace App\Infrastructure\Factories;
 
 use App\Domain\Entity\DogToy;
 use App\Domain\Entity\DogFood;
-use App\Domain\Entity\DogItem;
+use App\Domain\Entity\DogCombo;
 
 /**
- * 犬用商品ファクトリ
+ * 犬用コンボファクトリ
  */
-class DogItemFactory
+class DogComboFactory
 {   
     /**
      * 新たな集約を構成します．
      */
-    public static function createDogItem($data): DogItem
+    public static function createDogCombo($data): DogItem
     {
-        return new DogItem(
+        return new DogCombo(
             new DogToy(
                 $data['dog_toy_id'],
                 $data['dog_toy_name'],
