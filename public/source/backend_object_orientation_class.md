@@ -645,6 +645,51 @@ $exmaple = new Example();
 $example->example(); // Hello World
 ```
 
+#### ・マジックメソッドを禁止するTrait
+
+マジックメソッドを使用すると，処理が多くなるため，パフォーマンスが悪くなる．そこで，各クラスでtraitを使用し，マジックメソッドをコールした時に，開発者向けにエラーが発生させる．
+
+**＊実装例＊**
+
+マジックゲッターメソッドとマジックセッターメソッドがコールされることを禁止する．
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Traits;
+
+/**
+ * 使用制限マジックメソッドトレイト
+ */
+trait UnsupportedMagicMethodTrait
+{
+    /**
+     * パフォーマンスの観点から，マジックゲッターメソッドの使用を制限します．
+     *
+     * @param $name
+     * @throws \Exception
+     */
+    public function __get($name)
+    {
+        throw new \Exception('This method is not supported');
+    }
+
+    /**
+     * パフォーマンスの観点から，マジックセッターメソッドの使用を制限します．
+     *
+     * @param $name
+     * @param $value
+     * @throws \Exception
+     */
+    public function __set($name, $value)
+    {
+        throw new \Exception('This method is not supported');
+    }
+}
+```
+
 <br>
 
 ## 04-03. 外部ファイルの読み込み

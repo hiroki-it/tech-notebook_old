@@ -1,10 +1,78 @@
-# ライブラリ
+# バックエンドパッケージ
 
-## 01. composerによるライブラリの管理
+## 01. composerによるパッケージの管理
 
-### コマンド
+### composer.jsonファイルの実装
 
-#### ・```composer.json```ファイルにライブラリを追加
+#### ・バージョンを定義
+
+```json
+// 個人的に一番おすすめ
+// キャレット表記
+{
+  "require": {
+    "foo": "^1.1.1",  // >=1.1.1 and <1.2.0
+    "bar": "^1.1",    // >=1.1.0 and <1.2.0
+    "hoge": "^0.0.1"  // >=0.0.1 and <0.0.2
+  }
+}
+```
+
+```json
+// チルダ表記
+{
+  "require": {
+    "foo": "~1.1.1",  // >=1.1.1 and <2.0.0
+    "bar": "~1.1",    // >=1.1.0 and <2.0.0
+    "hoge": "~1"      // >=1.1.0 and <2.0.0
+  }
+}
+```
+
+```json
+// エックス，アスタリスク表記
+{
+  "require": {
+    "foo": "*",     // どんなバージョンでもOK
+    "bar": "1.1.x", // >=1.1.0 and <1.2.0 
+    "hoge": "1.X",  // >=1.0.0 and <2.0.0
+    "huga": ""      // "*"と同じことになる = どんなバージョンでもOK
+  }
+}
+```
+
+####  ・名前空間のユーザ定義
+
+名前空間とファイルパスの対応関係を設定する．
+
+```json
+{
+  "autoload": {
+    "psr-4": {
+      "<名前空間>": "<ファイルパス>",
+      "App\\": "app/",
+      "Database\\Factories\\Infrastructure\\DTO\\": "database/factories/production",
+      "Database\\Seeders\\": "database/seeds/production"
+    },
+    "classmap": [
+      "database/seeds",
+      "database/factories"
+    ]
+  }
+}
+```
+
+その後，名前空間の読み込みを登録する．
+
+```sh
+$ composer dump-autoload
+```
+
+<br>
+
+### require
+
+#### ・```composer.json```ファイルにパッケージを追加
 
 パッケージ名を```composer.json```ファイルを書き込む．インストールは行わない．コマンドを使用せずに自分で実装しても良い．
 
@@ -12,20 +80,32 @@
 $ composer require <パッケージ名>:^x.x
 ```
 
+<br>
+
+### install
+
 #### ・インストール
 
-あらかじめ実装された```composer.json```ファイルにあるパッケージを全てインストールする．
+初めてパッケージをインストールする時，```composer.json```ファイルにあるパッケージを全てインストールする．
 
 ```sh
 $ composer install 
 ```
 
-####  ・特定のライブラリをインストール
+####  ・処理ログを表示する
 
-requireタグ内の特定のライブラリをインストール．
+コマンド処理中のログを表示する
 
 ```sh
-$ composer install <パッケージ名>
+$ composer install -vvv
+```
+
+####  ・--no-devを除いてインストール
+
+require-devタグ内のパッケージは除いてインストール
+
+```sh
+$ composer install --no-dev
 ```
 
 #### ・高速インストール
@@ -44,37 +124,37 @@ GitHubのComposerリポジトリからインストールする．Composerの開�
 $ composer install --prefer-source
 ```
 
-####  ・メモリ上限をなくしてインストール
+<br>
 
-phpのメモリ上限を無しにして，任意のcomposerコマンドを実行する．phpバイナリファイルを使用する．
+### update
 
-```sh
-$ COMPOSER_MEMORY_LIMIT=-1 composer update
-```
+#### ・追加インストールと更新
 
-####  ・ログを表示しつつインストール
-
-プロセスを表示しながら，インストールする．
+インストールされていないパッケージをインストールする．また，バージョン定義をもとに更新可能なパッケージを更新する．
 
 ```sh
-$ composer update -vvv
-```
-
-####  ・--no-devを除いてインストール
-
-require-devタグ内のライブラリは除いてインストール
-
-```sh
-$ composer install --no-dev
-```
-
-#### ・バージョン表記に合わせて，ライブラリをアップデート
-
-全てのパッケージを最新版に更新
-
-``` bash
 $ composer update
 ```
+
+####  ・処理ログを表示する
+
+コマンド処理中のログを表示する
+
+```sh
+$ composer install -vvv
+```
+
+####  ・メモリ上限をなくしてインストール
+
+phpのメモリ上限を無しにして，任意のcomposerコマンドを実行する．phpバイナリファイルを使用する．Dockerコンテナ内で実行する場合，設定画面からコンテナのCPUやメモリを増設することもできる．．
+
+```sh
+$ COMPOSER_MEMORY_LIMIT=-1 composer update -vvv
+```
+
+<br>
+
+### その他のコマンド
 
 #### ・キャッシュを削除
 
@@ -84,78 +164,43 @@ $ composer update
 $ composer clear-cache
 ```
 
-<br>
+#### ・ユーザ定義のコマンド
 
-### composer.jsonの実装
+ユーザが定義したエイリアス名のコマンドを実行する．
 
-#### ・バージョンを定義
-
-```json
-// 個人的に一番おすすめ
-// キャレット表記
-{
-  "require": {
-    "foo": "^1.1.1",  // >=1.1.1 and <2.0.0
-    "bar": "^0.1.1",  // >=0.1.1 and <0.2.0
-    "hoge": "^0.0.1"  // >=0.0.1 and <0.0.2
-  }
-}
+```sh
+$ composer <エイリアス名>
 ```
 
-```json
-// チルダ表記
-{
-  "require": {
-    "foo": "~1.1.1",  // >=1.1.1 and <1.2.0
-    "bar": "~1.1",    // >=1.1.0 and <1.2.0
-    "hoge": "~1"      // >=1.1.0 and <2.0.0
-  }
-}
-```
-
-```json
-// エックス，アスタリスク表記
-{
-  "require": {
-    "foo": "*",     // どんなバージョンでもOK
-    "bar": "1.1.x", // >=1.1.0 and <1.2.0 
-    "hoge": "1.X",  // >=1.0.0 and <2.0.0
-    "huga": ""      // "*"と同じことになる = どんなバージョンでもOK
-  }
-}
-```
-
-####  ・autoloadの対象に登録した設定を反映
-
-外部ファイルの読み込み時に，```require```メソッドを不要とするファイルを```composer.json```ファイルに登録できる．
+あらかじめ，任意のエイリアス名を```scripts```キー下に定義する．エイリアスの中で，実行するコマンドのセットを定義する．
 
 ```json
 {
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
+    "scripts": {
+        "<エイリアス名>": [
+            "@<実行するコマンド>"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
         ]
     }
 }
 ```
 
-その後，コマンドでこの登録を反映する．
-
-```sh
-$ composer dump-autoload
-```
-
 <br>
 
-## 02. アプリケーションによるライブラリの読み込み
+## 02. アプリケーションによるパッケージの読み込み
 
 ### エントリポイントにおける```autoload.php```ファイルの読み込み
 
-ライブラリが，```vendor```ディレクトリ下に保存されていると仮定する．ライブラリを使用するたびに，各クラスでディレクトリを読み込むことは手間なので，エントリーポイント（```index.php```）あるいは```bootstrap.php```で，最初に読み込んでおき，クラスでは読み込まなくて良いようにする．
+パッケージが，```vendor```ディレクトリ下に保存されていると仮定する．パッケージを使用するたびに，各クラスでディレクトリを読み込むことは手間なので，エントリーポイント（```index.php```）あるいは```bootstrap.php```で，最初に読み込んでおき，クラスでは読み込まなくて良いようにする．
 
 **＊実装例＊**
 
@@ -167,11 +212,11 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 <br>
 
-## 03. Doctrineライブラリ
+## 03. Doctrineパッケージ
 
 ### Doctrineとは
 
-RDBの読み込み系／書き込み系の操作を行うライブラリ．他の同様ライブラリとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
+RDBの読み込み系／書き込み系の操作を行うパッケージ．他の同様パッケージとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
 
 <br>
 
@@ -385,7 +430,7 @@ try{
 
 <br>
 
-## 04. Carbonライブラリ
+## 04. Carbonパッケージ
 
 ### Date型
 
@@ -506,11 +551,11 @@ $carbon = Carbon::parse('2019-07-07 19:07:07')
 
 <br>
 
-## 05. Pinqライブラリ
+## 05. Pinqパッケージ
 
 ### Pinqとは：Php Integrated Query
 
-配列データやオブジェクトデータに対して，クエリを実行できるようになる．他の同様ライブラリとして，Linqがある．
+配列データやオブジェクトデータに対して，クエリを実行できるようになる．他の同様パッケージとして，Linqがある．
 
 <br>
 
@@ -547,11 +592,11 @@ class Example
 
 <br>
 
-## 06. Guzzleライブラリ
+## 06. Guzzleパッケージ
 
-### Guzzleライブラリとは
+### Guzzleパッケージとは
 
-通常，リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う．しかし，GuzzleライブラリのClientを使えば，サーバから他サーバ（外部のAPIなど）に対して，リクエストメッセージの送受信ができる．
+通常，リクエストメッセージの送受信は，クライアントからサーバに対して，Postmanやcurl関数などを使用して行う．しかし，GuzzleパッケージのClientを使えば，サーバから他サーバ（外部のAPIなど）に対して，リクエストメッセージの送受信ができる．
 
 <br>
 
@@ -588,11 +633,11 @@ $body = json_decode($response->getBody(), true);
 
 <br>
 
-## 07. Knp/Snappyライブラリ
+## 07. Knp/Snappyパッケージ
 
 ###  Knp/Snappyとは
 
-ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するライブラリ．
+ローカルまたは指定したURLのhtmlファイルから，PDFや画像のファイルを生成するパッケージ．
 
 ### ・```generateFromHtml```メソッド
 
@@ -610,7 +655,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf');
 
 <br>
 
-## 08. Respect/Validationライブラリ
+## 08. Respect/Validationパッケージ
 
 ### Respect/Validationとは
 

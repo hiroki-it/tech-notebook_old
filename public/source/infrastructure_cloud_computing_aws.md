@@ -3320,7 +3320,23 @@ aws s3 ls --profile <プロファイル名>
 
 <br>
 
-## 13. コスト管理
+## 13. 負荷テスト
+
+### Distributed Load Testing（分散負荷テスト）
+
+#### ・分散負荷テストとは
+
+AWSから提供されている負荷を発生させるインフラ環境のこと．CloudFormationで構築でき，Fargateを使用して，ユーザからのリクエストを擬似的に再現できる．
+
+参考：https://d1.awsstatic.com/Solutions/ja_JP/distributed-load-testing-on-aws.pdf
+
+#### ・インフラ構成
+
+![distributed_load_testing](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/distributed_load_testing.png)
+
+<br>
+
+## 14. コスト管理
 
 ### コスト管理の観点
 
@@ -3364,7 +3380,7 @@ aws s3 ls --profile <プロファイル名>
 
 <br>
 
-## 14. タグ
+## 15. タグ
 
 ### タグ付け戦略
 
