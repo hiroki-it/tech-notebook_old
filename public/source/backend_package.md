@@ -47,18 +47,18 @@
 
 ```json
 {
-  "autoload": {
-    "psr-4": {
-      "<名前空間>": "<ファイルパス>",
-      "App\\": "app/",
-      "Database\\Factories\\Infrastructure\\DTO\\": "database/factories/production",
-      "Database\\Seeders\\": "database/seeds/production"
-    },
-    "classmap": [
-      "database/seeds",
-      "database/factories"
-    ]
-  }
+    "autoload": {
+        "psr-4": {
+            "<名前空間>": "<ファイルパス>",
+            "App\\": "app/",
+            "Database\\Factories\\Infrastructure\\DTO\\": "database/factories/production",
+            "Database\\Seeders\\": "database/seeds/production"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ]
+    }
 }
 ```
 
