@@ -4,7 +4,7 @@
 
 Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
 
-参考：https://laravel.com/api/6.x/Illuminate.html
+参考：https://laravel.com/api/8.x/Illuminate.html
 
 <br>
 
@@ -772,7 +772,7 @@ class ExampleDTO extends Model
 
 SELECT文を実行する．引数としてプライマリキーを渡した場合，指定したプライマリキーを持つModelをModel型として返却する．```toArray```メソッドで配列型に変換できる．
 
-参考：https://laravel.com/api/6.x/Illuminate/Database/Query/Builder.html#method_find
+参考：https://laravel.com/api/8.x/Illuminate/Database/Query/Builder.html#method_find
 
 **＊実装例＊**
 
@@ -821,7 +821,7 @@ class ExampleRepository extends Repository implements DomainExampleRepository
 
 SELECT文を実行する．全てのプライマリキーのCollection型を配列型として返却する．```toArray```メソッドで配列型に再帰的に変換できる．
 
-参考：https://laravel.com/api/6.x/Illuminate/Support/Collection.html#method_all
+参考：https://laravel.com/api/8.x/Illuminate/Support/Collection.html#method_all
 
 **＊実装例＊**
 
@@ -1853,51 +1853,51 @@ $result = Example::method();
 
 | エイリアス名         | クラス名                                                     | サービスコンテナ結合キー |
 | :------------------- | :----------------------------------------------------------- | :----------------------- |
-| App                  | [Illuminate\Foundation\Application](https://laravel.com/api/6.x/Illuminate/Foundation/Application.html) | `app`                    |
-| Artisan              | [Illuminate\Contracts\Console\Kernel](https://laravel.com/api/6.x/Illuminate/Contracts/Console/Kernel.html) | `artisan`                |
-| Auth                 | [Illuminate\Auth\AuthManager](https://laravel.com/api/6.x/Illuminate/Auth/AuthManager.html) | `auth`                   |
-| Auth (Instance)      | [Illuminate\Contracts\Auth\Guard](https://laravel.com/api/6.x/Illuminate/Contracts/Auth/Guard.html) | `auth.driver`            |
-| Blade                | [Illuminate\View\Compilers\BladeCompiler](https://laravel.com/api/6.x/Illuminate/View/Compilers/BladeCompiler.html) | `blade.compiler`         |
-| Broadcast            | [Illuminate\Contracts\Broadcasting\Factory](https://laravel.com/api/6.x/Illuminate/Contracts/Broadcasting/Factory.html) |                          |
-| Broadcast (Instance) | [Illuminate\Contracts\Broadcasting\Broadcaster](https://laravel.com/api/6.x/Illuminate/Contracts/Broadcasting/Broadcaster.html) |                          |
-| Bus                  | [Illuminate\Contracts\Bus\Dispatcher](https://laravel.com/api/6.x/Illuminate/Contracts/Bus/Dispatcher.html) |                          |
-| Cache                | [Illuminate\Cache\CacheManager](https://laravel.com/api/6.x/Illuminate/Cache/CacheManager.html) | `cache`                  |
-| Cache (Instance)     | [Illuminate\Cache\Repository](https://laravel.com/api/6.x/Illuminate/Cache/Repository.html) | `cache.store`            |
-| Config               | [Illuminate\Config\Repository](https://laravel.com/api/6.x/Illuminate/Config/Repository.html) | `config`                 |
-| Cookie               | [Illuminate\Cookie\CookieJar](https://laravel.com/api/6.x/Illuminate/Cookie/CookieJar.html) | `cookie`                 |
-| Crypt                | [Illuminate\Encryption\Encrypter](https://laravel.com/api/6.x/Illuminate/Encryption/Encrypter.html) | `encrypter`              |
-| DB                   | [Illuminate\Database\DatabaseManager](https://laravel.com/api/6.x/Illuminate/Database/DatabaseManager.html) | `db`                     |
-| DB (Instance)        | [Illuminate\Database\Connection](https://laravel.com/api/6.x/Illuminate/Database/Connection.html) | `db.connection`          |
-| Event                | [Illuminate\Events\Dispatcher](https://laravel.com/api/6.x/Illuminate/Events/Dispatcher.html) | `events`                 |
-| File                 | [Illuminate\Filesystem\Filesystem](https://laravel.com/api/6.x/Illuminate/Filesystem/Filesystem.html) | `files`                  |
-| Gate                 | [Illuminate\Contracts\Auth\Access\Gate](https://laravel.com/api/6.x/Illuminate/Contracts/Auth/Access/Gate.html) |                          |
-| Hash                 | [Illuminate\Contracts\Hashing\Hasher](https://laravel.com/api/6.x/Illuminate/Contracts/Hashing/Hasher.html) | `hash`                   |
-| Lang                 | [Illuminate\Translation\Translator](https://laravel.com/api/6.x/Illuminate/Translation/Translator.html) | `translator`             |
-| Log                  | [Illuminate\Log\LogManager](https://laravel.com/api/6.x/Illuminate/Log/LogManager.html) | `log`                    |
-| Mail                 | [Illuminate\Mail\Mailer](https://laravel.com/api/6.x/Illuminate/Mail/Mailer.html) | `mailer`                 |
-| Notification         | [Illuminate\Notifications\ChannelManager](https://laravel.com/api/6.x/Illuminate/Notifications/ChannelManager.html) |                          |
-| Password             | [Illuminate\Auth\Passwords\PasswordBrokerManager](https://laravel.com/api/6.x/Illuminate/Auth/Passwords/PasswordBrokerManager.html) | `auth.password`          |
-| Password (Instance)  | [Illuminate\Auth\Passwords\PasswordBroker](https://laravel.com/api/6.x/Illuminate/Auth/Passwords/PasswordBroker.html) | `auth.password.broker`   |
-| Queue                | [Illuminate\Queue\QueueManager](https://laravel.com/api/6.x/Illuminate/Queue/QueueManager.html) | `queue`                  |
-| Queue (Instance)     | [Illuminate\Contracts\Queue\Queue](https://laravel.com/api/6.x/Illuminate/Contracts/Queue/Queue.html) | `queue.connection`       |
-| Queue (Base Class)   | [Illuminate\Queue\Queue](https://laravel.com/api/6.x/Illuminate/Queue/Queue.html) |                          |
-| Redirect             | [Illuminate\Routing\Redirector](https://laravel.com/api/6.x/Illuminate/Routing/Redirector.html) | `redirect`               |
-| Redis                | [Illuminate\Redis\RedisManager](https://laravel.com/api/6.x/Illuminate/Redis/RedisManager.html) | `redis`                  |
-| Redis (Instance)     | [Illuminate\Redis\Connections\Connection](https://laravel.com/api/6.x/Illuminate/Redis/Connections/Connection.html) | `redis.connection`       |
-| Request              | [Illuminate\Http\Request](https://laravel.com/api/6.x/Illuminate/Http/Request.html) | `request`                |
-| Response             | [Illuminate\Contracts\Routing\ResponseFactory](https://laravel.com/api/6.x/Illuminate/Contracts/Routing/ResponseFactory.html) |                          |
-| Response (Instance)  | [Illuminate\Http\Response](https://laravel.com/api/6.x/Illuminate/Http/Response.html) |                          |
-| Route                | [Illuminate\Routing\Router](https://laravel.com/api/6.x/Illuminate/Routing/Router.html) | `router`                 |
-| Schema               | [Illuminate\Database\Schema\Builder](https://laravel.com/api/6.x/Illuminate/Database/Schema/Builder.html) |                          |
-| Session              | [Illuminate\Session\SessionManager](https://laravel.com/api/6.x/Illuminate/Session/SessionManager.html) | `session`                |
-| Session (Instance)   | [Illuminate\Session\Store](https://laravel.com/api/6.x/Illuminate/Session/Store.html) | `session.store`          |
-| Storage              | [Illuminate\Filesystem\FilesystemManager](https://laravel.com/api/6.x/Illuminate/Filesystem/FilesystemManager.html) | `filesystem`             |
-| Storage (Instance)   | [Illuminate\Contracts\Filesystem\Filesystem](https://laravel.com/api/6.x/Illuminate/Contracts/Filesystem/Filesystem.html) | `filesystem.disk`        |
-| URL                  | [Illuminate\Routing\UrlGenerator](https://laravel.com/api/6.x/Illuminate/Routing/UrlGenerator.html) | `url`                    |
-| Validator            | [Illuminate\Validation\Factory](https://laravel.com/api/6.x/Illuminate/Validation/Factory.html) | `validator`              |
-| Validator (Instance) | [Illuminate\Validation\Validator](https://laravel.com/api/6.x/Illuminate/Validation/Validator.html) |                          |
-| View                 | [Illuminate\View\Factory](https://laravel.com/api/6.x/Illuminate/View/Factory.html) | `view`                   |
-| View (Instance)      | [Illuminate\View\View](https://laravel.com/api/6.x/Illuminate/View/View.html) |                          |
+| App                  | [Illuminate\Foundation\Application](https://laravel.com/api/8.x/Illuminate/Foundation/Application.html) | `app`                    |
+| Artisan              | [Illuminate\Contracts\Console\Kernel](https://laravel.com/api/8.x/Illuminate/Contracts/Console/Kernel.html) | `artisan`                |
+| Auth                 | [Illuminate\Auth\AuthManager](https://laravel.com/api/8.x/Illuminate/Auth/AuthManager.html) | `auth`                   |
+| Auth (Instance)      | [Illuminate\Contracts\Auth\Guard](https://laravel.com/api/8.x/Illuminate/Contracts/Auth/Guard.html) | `auth.driver`            |
+| Blade                | [Illuminate\View\Compilers\BladeCompiler](https://laravel.com/api/8.x/Illuminate/View/Compilers/BladeCompiler.html) | `blade.compiler`         |
+| Broadcast            | [Illuminate\Contracts\Broadcasting\Factory](https://laravel.com/api/8.x/Illuminate/Contracts/Broadcasting/Factory.html) |                          |
+| Broadcast (Instance) | [Illuminate\Contracts\Broadcasting\Broadcaster](https://laravel.com/api/8.x/Illuminate/Contracts/Broadcasting/Broadcaster.html) |                          |
+| Bus                  | [Illuminate\Contracts\Bus\Dispatcher](https://laravel.com/api/8.x/Illuminate/Contracts/Bus/Dispatcher.html) |                          |
+| Cache                | [Illuminate\Cache\CacheManager](https://laravel.com/api/8.x/Illuminate/Cache/CacheManager.html) | `cache`                  |
+| Cache (Instance)     | [Illuminate\Cache\Repository](https://laravel.com/api/8.x/Illuminate/Cache/Repository.html) | `cache.store`            |
+| Config               | [Illuminate\Config\Repository](https://laravel.com/api/8.x/Illuminate/Config/Repository.html) | `config`                 |
+| Cookie               | [Illuminate\Cookie\CookieJar](https://laravel.com/api/8.x/Illuminate/Cookie/CookieJar.html) | `cookie`                 |
+| Crypt                | [Illuminate\Encryption\Encrypter](https://laravel.com/api/8.x/Illuminate/Encryption/Encrypter.html) | `encrypter`              |
+| DB                   | [Illuminate\Database\DatabaseManager](https://laravel.com/api/8.x/Illuminate/Database/DatabaseManager.html) | `db`                     |
+| DB (Instance)        | [Illuminate\Database\Connection](https://laravel.com/api/8.x/Illuminate/Database/Connection.html) | `db.connection`          |
+| Event                | [Illuminate\Events\Dispatcher](https://laravel.com/api/8.x/Illuminate/Events/Dispatcher.html) | `events`                 |
+| File                 | [Illuminate\Filesystem\Filesystem](https://laravel.com/api/8.x/Illuminate/Filesystem/Filesystem.html) | `files`                  |
+| Gate                 | [Illuminate\Contracts\Auth\Access\Gate](https://laravel.com/api/8.x/Illuminate/Contracts/Auth/Access/Gate.html) |                          |
+| Hash                 | [Illuminate\Contracts\Hashing\Hasher](https://laravel.com/api/8.x/Illuminate/Contracts/Hashing/Hasher.html) | `hash`                   |
+| Lang                 | [Illuminate\Translation\Translator](https://laravel.com/api/8.x/Illuminate/Translation/Translator.html) | `translator`             |
+| Log                  | [Illuminate\Log\LogManager](https://laravel.com/api/8.x/Illuminate/Log/LogManager.html) | `log`                    |
+| Mail                 | [Illuminate\Mail\Mailer](https://laravel.com/api/8.x/Illuminate/Mail/Mailer.html) | `mailer`                 |
+| Notification         | [Illuminate\Notifications\ChannelManager](https://laravel.com/api/8.x/Illuminate/Notifications/ChannelManager.html) |                          |
+| Password             | [Illuminate\Auth\Passwords\PasswordBrokerManager](https://laravel.com/api/8.x/Illuminate/Auth/Passwords/PasswordBrokerManager.html) | `auth.password`          |
+| Password (Instance)  | [Illuminate\Auth\Passwords\PasswordBroker](https://laravel.com/api/8.x/Illuminate/Auth/Passwords/PasswordBroker.html) | `auth.password.broker`   |
+| Queue                | [Illuminate\Queue\QueueManager](https://laravel.com/api/8.x/Illuminate/Queue/QueueManager.html) | `queue`                  |
+| Queue (Instance)     | [Illuminate\Contracts\Queue\Queue](https://laravel.com/api/8.x/Illuminate/Contracts/Queue/Queue.html) | `queue.connection`       |
+| Queue (Base Class)   | [Illuminate\Queue\Queue](https://laravel.com/api/8.x/Illuminate/Queue/Queue.html) |                          |
+| Redirect             | [Illuminate\Routing\Redirector](https://laravel.com/api/8.x/Illuminate/Routing/Redirector.html) | `redirect`               |
+| Redis                | [Illuminate\Redis\RedisManager](https://laravel.com/api/8.x/Illuminate/Redis/RedisManager.html) | `redis`                  |
+| Redis (Instance)     | [Illuminate\Redis\Connections\Connection](https://laravel.com/api/8.x/Illuminate/Redis/Connections/Connection.html) | `redis.connection`       |
+| Request              | [Illuminate\Http\Request](https://laravel.com/api/8.x/Illuminate/Http/Request.html) | `request`                |
+| Response             | [Illuminate\Contracts\Routing\ResponseFactory](https://laravel.com/api/8.x/Illuminate/Contracts/Routing/ResponseFactory.html) |                          |
+| Response (Instance)  | [Illuminate\Http\Response](https://laravel.com/api/8.x/Illuminate/Http/Response.html) |                          |
+| Route                | [Illuminate\Routing\Router](https://laravel.com/api/8.x/Illuminate/Routing/Router.html) | `router`                 |
+| Schema               | [Illuminate\Database\Schema\Builder](https://laravel.com/api/8.x/Illuminate/Database/Schema/Builder.html) |                          |
+| Session              | [Illuminate\Session\SessionManager](https://laravel.com/api/8.x/Illuminate/Session/SessionManager.html) | `session`                |
+| Session (Instance)   | [Illuminate\Session\Store](https://laravel.com/api/8.x/Illuminate/Session/Store.html) | `session.store`          |
+| Storage              | [Illuminate\Filesystem\FilesystemManager](https://laravel.com/api/8.x/Illuminate/Filesystem/FilesystemManager.html) | `filesystem`             |
+| Storage (Instance)   | [Illuminate\Contracts\Filesystem\Filesystem](https://laravel.com/api/8.x/Illuminate/Contracts/Filesystem/Filesystem.html) | `filesystem.disk`        |
+| URL                  | [Illuminate\Routing\UrlGenerator](https://laravel.com/api/8.x/Illuminate/Routing/UrlGenerator.html) | `url`                    |
+| Validator            | [Illuminate\Validation\Factory](https://laravel.com/api/8.x/Illuminate/Validation/Factory.html) | `validator`              |
+| Validator (Instance) | [Illuminate\Validation\Validator](https://laravel.com/api/8.x/Illuminate/Validation/Validator.html) |                          |
+| View                 | [Illuminate\View\Factory](https://laravel.com/api/8.x/Illuminate/View/Factory.html) | `view`                   |
+| View (Instance)      | [Illuminate\View\View](https://laravel.com/api/8.x/Illuminate/View/View.html) |                          |
 
 <br>
 
@@ -2259,31 +2259,13 @@ Storage::put('file.txt', 'file.txt');
 
 <br>
 
-## 09-02. HTTP｜Auth
+## 09-01. HTTP｜Auth
 
-### artisanコマンドによる操作
-
-#### ・ログイン処理関連クラスの自動生成
-
-ログイン処理に関連するクラスを自動生成できる．事前に，```laravel/ui```パッケージをインストールする必要がある．
-
-```sh
-$ composer require laravel/ui:^1.0 --dev
-```
-
-Bladeに組み合わせるJavaScriptを選べる．
-
-```sh
-# Vuejsを使用する場合．
-$ php artisan ui vue --auth
-
-# Bootstrapを使用する場合．
-$ php artisan ui bootstrap --auth 
-```
+詳しくは，```auth```ヘルパーを参考にせよ．
 
 <br>
 
-## 09-03. HTTP｜Controller
+## 09-02. HTTP｜Controller
 
 ### artisanコマンドによる操作
 
@@ -2357,7 +2339,7 @@ class ExampleController extends Controller
 
 <br>
 
-## 09-04. HTTP｜Middleware
+## 09-03. HTTP｜Middleware
 
 ### artisanコマンドによる操作
 
@@ -2509,7 +2491,7 @@ class RouteServiceProvider extends ServiceProvider
 
 <br>
 
-## 09-05. HTTP｜Request
+## 09-04. HTTP｜Request
 
 ### artisanコマンドによる操作
 
@@ -2595,7 +2577,7 @@ class ExampleController extends Controller
 
 同じくRequestクラスの```validate```メソッドを使用して，ルールを定義し，さらにバリデーションを実行する．```validated```メソッドと間違わないように注意する．ルールに反すると，一つ目のルール名（例えば```required```）に基づき，```validation.php```ファイルから対応するエラーメッセージを自動的に選択する．バリデーションでエラーが起こった場合，Handlerクラスの```invalid```メソッドがコールされ，元々のページにリダイレクトされる．
 
-参考：https://laravel.com/api/6.x/Illuminate/Http/Request.html#method_validate
+参考：https://laravel.com/api/8.x/Illuminate/Http/Request.html#method_validate
 
 **＊実装例＊**
 
@@ -2675,9 +2657,9 @@ class ExampleController extends Controller
 
 参考：
 
-https://laravel.com/api/6.x/Illuminate/Foundation/Exceptions/Handler.html#method_invalid
+https://laravel.com/api/8.x/Illuminate/Foundation/Exceptions/Handler.html#method_invalid
 
-https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
+https://laravel.com/api/8.x/Illuminate/Support/MessageBag.html
 
 <br>
 
@@ -3345,9 +3327,9 @@ SNSに送信するためには，MailMessageクラスやViewクラスの```rende
 
 参考：
 
-- https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_subject
-- https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_render
-- https://laravel.com/api/6.x/Illuminate/View/View.html#method_render
+- https://laravel.com/api/8.x/Illuminate/Notifications/Messages/MailMessage.html#method_subject
+- https://laravel.com/api/8.x/Illuminate/Notifications/Messages/MailMessage.html#method_render
+- https://laravel.com/api/8.x/Illuminate/View/View.html#method_render
 
 ```php
 <?php
@@ -3421,7 +3403,7 @@ class TfaTokenNotification extends Notification
 
 MailMessageクラスの```markdown```メソッドを使用することで，通知メッセージをマークダウン形式で実装できるようになる．当然，```markdown```メソッドを使用せずに，bladeで通知メッセージを実装してもよいが，デザインのない通知メッセージであれば，より簡単なマークダウンを使用してもよいかもしれない．
 
-参考：https://laravel.com/api/6.x/Illuminate/Notifications/Messages/MailMessage.html#method_markdown
+参考：https://laravel.com/api/8.x/Illuminate/Notifications/Messages/MailMessage.html#method_markdown
 
 ```html
 @component('mail::message')
@@ -3511,7 +3493,7 @@ class AwsSnsChannel
 
 通知対象のクラスで，Notifiable Traitを継承する必要がある．これにより，```notify```メソッドを使用できるようになる．
 
-参考：https://laravel.com/api/6.x/Illuminate/Notifications/Notifiable.html
+参考：https://laravel.com/api/8.x/Illuminate/Notifications/Notifiable.html
 
 ```php
 <?php
@@ -3531,7 +3513,7 @@ class User extends Authenticatable
 
 通知対象のクラスから```notify```メソッドをコールし，任意のNotificationクラスを渡す．これにより，通知処理が実行される．
 
-参考：https://laravel.com/api/6.x/Illuminate/Notifications/RoutesNotifications.html#method_notify
+参考：https://laravel.com/api/8.x/Illuminate/Notifications/RoutesNotifications.html#method_notify
 
 ```php
 <?php
@@ -4751,7 +4733,7 @@ Controllerクラスから返却されたデータは，```{{ 変数名 }}```で�
 
 バリデーションでエラーが起こった場合，バリデーションでエラーがあった場合，Handlerクラスの```invalid```メソッドがコールされ，MessageBagクラスがViewに渡される．MessageBagクラスは，Blade上で```errors```変数に格納されており，各メソッドをコールしてエラーメッセージを出力できる．
 
-参考：https://laravel.com/api/6.x/Illuminate/Support/MessageBag.html
+参考：https://laravel.com/api/8.x/Illuminate/Support/MessageBag.html
 
 **＊実装例＊**
 
@@ -5043,7 +5025,7 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 <br>
 
-## 18. よく使うグローバルヘルパー関数
+## 19. よく使うグローバルヘルパー関数
 
 ### ヘルパー関数
 
@@ -5055,7 +5037,7 @@ MessageBagクラスの```all```メソッドで，全てのエラーメッセー�
 
 以下リンクを参照せよ．
 
-https://readouble.com/laravel/6.x/ja/helpers.html#method-view
+https://readouble.com/laravel/8.x/ja/helpers.html#method-view
 
 <br>
 
@@ -5065,7 +5047,7 @@ https://readouble.com/laravel/6.x/ja/helpers.html#method-view
 
 認証処理をもつAuthManagerクラスのインスタンスを返却する．
 
-参考：https://laravel.com/api/6.x/Illuminate/Auth/AuthManager.html
+参考：https://laravel.com/api/8.x/Illuminate/Auth/AuthManager.html
 
 ```php
 <?php
@@ -5081,14 +5063,14 @@ AuthManagerクラスの```user```メソッドをコールする場合，AuthMana
 参考：
 
 - https://teratail.com/questions/171582
-- https://laravel.com/api/6.x/Illuminate/Contracts/Auth/Guard.html#method_user
-- https://laravel.com/api/6.x/Illuminate/Auth/TokenGuard.html#method_user
+- https://laravel.com/api/8.x/Illuminate/Contracts/Auth/Guard.html#method_user
+- https://laravel.com/api/8.x/Illuminate/Auth/TokenGuard.html#method_user
 
 | Guardドライバー | 実装クラス         | 備考                                                         |
 | --------------- | ------------------ | ------------------------------------------------------------ |
-| ```session```   | SessionGuardクラス | https://laravel.com/api/6.x/Illuminate/Auth/SessionGuard.html |
-| ```web```       | RequestGuardクラス | https://laravel.com/api/6.x/Illuminate/Auth/RequestGuard.html |
-| ```token```     | TokenGuardクラス   | https://laravel.com/api/6.x/Illuminate/Auth/TokenGuard.html  |
+| ```session```   | SessionGuardクラス | https://laravel.com/api/8.x/Illuminate/Auth/SessionGuard.html |
+| ```web```       | RequestGuardクラス | https://laravel.com/api/8.x/Illuminate/Auth/RequestGuard.html |
+| ```token```     | TokenGuardクラス   | https://laravel.com/api/8.x/Illuminate/Auth/TokenGuard.html  |
 
 ```php
 <?php
@@ -5180,7 +5162,7 @@ if (! function_exists('response')) {
 
 返却されるResponseFactoryクラスの```json```メソッドにレンダリングしたいJSONデータを設定する．```response```ヘルパーは初期値として```200```ステータスが設定されているが，```view```メソッドや```setStatusCode```メソッドを使用して，明示的に設定してもよい．
 
-参考：https://github.com/laravel/framework/blob/6.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
+参考：https://github.com/laravel/framework/blob/8.x/src/Illuminate/Contracts/Routing/ResponseFactory.php
 
 **＊実装例＊**
 
@@ -5309,7 +5291,7 @@ $path = storage_path('app/file.txt');
 
 <br>
 
-## 19. Passportパッケージ
+## 20. Passportパッケージ
 
 ### Passportパッケージ
 
@@ -5639,25 +5621,102 @@ $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 <br>
 
-## 19-02. Breezeパッケージ
+## 20-02. UIパッケージ
+
+### UIパッケージ
+
+#### ・UIパッケージとは
+
+Laravel7系以前で，認証処理を自動生成する．
+
+参考：https://github.com/laravel/ui
+
+#### ・インストール
+
+パッケージをインストールする．
+
+```sh
+$ composer require laravel/ui:^1.0 --dev
+```
+
+#### ・認証処理ファイルの自動生成
+
+認証処理に関連するクラスを自動生成できる．Bladeに組み合わせるJavaScriptを選べる．
+
+```sh
+# Vuejsを使用する場合．
+$ php artisan ui vue --auth
+
+# Reactを使用する場合
+$ php artisan ui react --auth
+
+# Bootstrapを使用する場合．
+$ php artisan ui bootstrap --auth 
+```
+
+<br>
+
+## 20-03. Breezeパッケージ
 
 ### Breezeパッケージ
 
 #### ・Breezeパッケージとは
 
-Laravel8系の```laravel/ui```パッケージの後継となるパッケージ．
+Laravel8系以降で，認証処理を自動生成する．
+
+参考：https://github.com/laravel/breeze
 
 #### ・インストール
 
-composerでインストールする必要がある．
+パッケージをインストールする．
+
+``` sh
+$ composer require laravel/breeze:^1.0 --dev
+```
+
+#### ・認証処理ファイルの自動生成
+
+認証処理に関連するクラスを自動生成できる．Bladeに組み合わせるJavaScriptを選べる．
 
 ```sh
-composer require laravel/breeze --dev
+$ php artisan breeze:install
 ```
 
 <br>
 
-## 20. 非公式パッケージ
+## 20-04. Laravel Mixパッケージ
+
+### Laravel Mixパッケージ
+
+#### ・Laravel Mixパッケージとは
+
+WebpackをLaravelを介して操作できるパッケージのこと．Breezeパッケージにも同梱されている．
+
+参考：https://readouble.com/laravel/8.x/ja/mix.html
+
+<br>
+
+### Webpackを操作するコマンド
+
+#### ・アセットの初期コンパイル
+
+アセットのコンパイルを行う．
+
+```sh
+$ npm run dev
+```
+
+#### ・アセットの自動再コンパイル
+
+アセットのソースコードが変更された時に，これと検知し，自動的に再コンパイルを行う．
+
+```sh
+$ npm run watch
+```
+
+<br>
+
+## 21. 非公式パッケージ
 
 ### laravel-enum
 
