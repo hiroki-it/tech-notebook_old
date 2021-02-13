@@ -47,25 +47,25 @@
 
 ドメインエキスパート（現実世界のビジネスルールに詳しく，また実際にシステムを使う人）と，エンジニアが話し合いながら，ビジネスルールに対して，オブジェクト指向分析と設計を行っていく．この時，ドメインエキスパートとエンジニアの話し合いに齟齬が生まれぬように，ユビキタス言語（業務内容について共通の用語）を設定しておく．
 
-![ドメインモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメインモデル.png)
+![ドメインモデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/domain-model.png)
 
 #### ・境界づけられたコンテキストとは
 
 コアドメインやサブドメインの内部を詳細にグループ化する時，ビジネスの関心事の視点で分割されたまとまりのこと．コンテキストの中は，さらに詳細なコンテキストにグループ化できる．両方のコンテキストで関心事が異なっていても，対象は同じドメインであることもある．
 
-![コアドメイン，サブドメイン，境界づけられたコンテキスト](/Users/h.hasegawa/Documents/Drive1st/プログラミング/tech-notebook/Drive_source/images/コアドメイン，サブドメイン，境界づけられたコンテキスト.png)
+![コアドメイン，サブドメイン，境界づけられたコンテキスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/core-domain_sub-domain_bounded-context.png)
 
 **＊具体例＊**
 
 仕事仲介サイトでは，仕事の発注者のドメインに注目した時，発注時の視点で分割された仕事募集コンテキストと，同じく契約後の視点で分割された契約コンテキストにまとめることができる．モデリングされた「仕事」は，それぞれで意味合いが異なる．仕事募集コンテキストでは，仕事を探す人
 
-![境界づけられたコンテキストの例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/境界づけられたコンテキストの例.png)
+![境界づけられたコンテキストの例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/bounded-context_example.png)
 
 #### ・コンテキストマップとは
 
 広義のドメイン全体の俯瞰する図のこと．コアドメイン，サブドメイン，境界づけられたコンテキストを定義した後，これらの関係性を視覚化する．
 
-![コンテキストマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンテキストマップ.png)
+![コンテキストマップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/context-map.png)
 
 <br>
 
@@ -476,7 +476,7 @@ class DogToy
      */
     public function equals($dogToy)
     {
-        return ($id instanceof $this || $this instanceof $id)
+        return ($dogToy instanceof $this || $this instanceof $dogToy)
             && $this->id->equals($dogToy->getId());
     }
         
@@ -543,9 +543,9 @@ class DogOrder
     public function equals(DogOrder $dogOrder)
     {
         // データ型を検証します．
-        return $dogOrder instanceof $this
+        return ($dogOrder instanceof $this || $this instanceof $dogOrder)
             // IDを検証します．
-            || $this->id->equals($dogOrder->getId()) ;
+            && $this->id->equals($dogOrder->getId()) ;
     }
     
     /**
