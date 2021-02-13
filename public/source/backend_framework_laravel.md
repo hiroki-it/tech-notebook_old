@@ -4697,7 +4697,88 @@ return [
 
 <br>
 
-## 17. Views
+## 17. Session
+
+### セッションの操作
+
+#### ・よく使う操作メソッド
+
+Requestクラスの```session```メソッドはStoreクラスを返却する．このクラスのメソッドを使用して，セッションを操作できる．
+
+| メソッド名   | 説明                                                         |
+| ------------ | ------------------------------------------------------------ |
+| ```get```    | セッションのキー名を指定して，一つの値を取得する．           |
+| ```all```    | セッションの全ての値を取得する．                             |
+| ```forget``` | セッションのキー名を指定して，値を取得する．キー名を配列で渡して，複数個を削除することも可能． |
+| ```flush```  | セッションの全ての値を取得する．                             |
+| ```pull```   | セッションのキー名を指定して，一つの値を取得し，取得後に削除する． |
+| ```has```    | セッションのキー名を指定して，値が存在しているかを検証する．```null```は```false```として判定する． |
+
+参考：https://laravel.com/api/8.x/Illuminate/Session/Store.html
+
+**＊実装例＊**
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ExampleController extends Controller
+{
+    /**
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function index(Request $request, $id)
+    {
+        // getメソッド
+        $data = $request->session()->get('example');
+        
+        // allメソッド
+        $data = $request->session()->all();
+        
+        // forgetメソッド
+        $request->session()->forget('example');
+        $request->session()->forget(['example1', 'example2']);
+        
+        // flush
+        $request->session()->flush();
+        
+        // pullメソッド
+        $data = $request->session()->pull('example');
+        
+        // hasメソッド
+        if ($request->session()->has('example')) {
+    
+        }
+    }
+}
+```
+
+#### ・セッションファイルがStoreクラスに至るまで
+
+全てを追うことは難しいので，StartSessionクラスの```handle```メソッドが実行されるところから始めるものとする．ここで，```handleStatefulRequest```メソッドの中の```startSession```メソッドが実行される．これにより，Storeクラスの```start```メソッド，```loadSession```メソッド，```readFromHandler```メソッドが実行され，```SessionHandlerInterface```の実装クラスの```read```メソッドが実行される．```read```メソッドは，セッションファイルに書き込まれているセッションを読み出し，```attribute```プロパティに格納する．Sessionクラスのメソッドは，```attribute```プロパティを使用して，セッションを操作する．最終的に,```handleStatefulRequest```では，```saveSession```メソッドの中の```save```メソッドが実行され，セッションファイルに新しい値が書き込まれる．
+
+参考：
+
+- https://laravel.com/api/8.x/Illuminate/Session/Middleware/StartSession.html#method_handle
+- https://laravel.com/api/8.x/Illuminate/Session/Middleware/StartSession.html#method_handleStatefulRequest
+- https://laravel.com/api/8.x/Illuminate/Session/Middleware/StartSession.html#method_startSession
+- https://laravel.com/api/8.x/Illuminate/Session/Store.html#method_start
+- https://laravel.com/api/8.x/Illuminate/Session/Store.html#method_loadSession
+- https://laravel.com/api/8.x/Illuminate/Session/Store.html#method_readFromHandler
+- https://www.php.net/manual/ja/sessionhandlerinterface.read.php
+- https://laravel.com/api/8.x/Illuminate/Session/Middleware/StartSession.html#method_saveSession
+- https://laravel.com/api/8.x/Illuminate/Session/Store.html#method_save
+- https://www.php.net/manual/ja/sessionhandlerinterface.write.php
+
+<br>
+
+## 18. Views
 
 ### arisanによる操作
 
