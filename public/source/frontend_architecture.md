@@ -42,6 +42,10 @@ HTML，XHTML，CSS，JavaScript，DOM，XML，XSLT，を組み合わせて非同
 
 ### SSR：Server Side Rendering
 
+#### ・SSRとは
+
+1つのWebページの中で，サーバとデータを非同期通信し，サーバ側で部分的に静的ファイルを生成する方法のこと．SPAと同様にして，非同期通信は，Ajaxの手法を用いて実現される．また，静的ファイルの部分的な生成は，MVVMアーキテクチャによって実現する．また，ページ全体の静的ファイルをリクエストするのは最初のみで，２回目以降は，サーバ側からJSONを受け取り，部分的にリクエストを行う．
+
 <br>
 
 ### SSG：Static Site Generation
