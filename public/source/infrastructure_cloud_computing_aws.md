@@ -2134,7 +2134,106 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 <br>
 
-## 06. アプリケーションインテグレーション
+## 06. フロントエンドウェブ，モバイル
+
+### Amplify
+
+#### ・Amplifyとは
+
+フロントエンドメインのアプリケーションのためのクラウドインフラストラクチャのフレームワーク．SSGの場合，静的ファイルをデプロイしさえすれば，アプリケーションとしての要件が全て整う．SPAの場合，サーバレスのバックエンドを自動構築してくれ，フロントエンドをデプロイしさえすれば，要件が全て整う．
+
+参考：https://d1.awsstatic.com/webinars/jp/pdf/services/20200520_AWSBlackBelt_Amplify_A.pdf
+
+| 役割                   | 使用されているAWSリソース |
+| ---------------------- | ------------------------- |
+| 認証                   | Gognito                   |
+| データベース           | DynamoDB                  |
+| API                    | API Gateway，AppSync      |
+| ストレージ             | S3                        |
+| 静的サイトホスティング | Cloud Front，S3           |
+| リアルタイム通知       | AppSync，IoT Core         |
+
+#### ・設定の構成
+
+参考：https://docs.aws.amazon.com/ja_jp/amplify/latest/userguide/build-settings.html
+
+```yaml
+version: 1
+
+#=====================
+# 環境変数
+#===================== 
+env:
+  variables:
+      key: value
+      
+#=====================      
+# バックエンドのCI/CD
+#===================== 
+backend:
+  phases:
+    preBuild:
+      commands:
+        - *enter command*
+    build:
+      commands:
+        - *enter command*
+    postBuild:
+        commands:
+        - *enter command*
+        
+#=====================         
+# フロントエンドのCI/CD
+#=====================  
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "APP_ENV=$APP_ENV" >> .env
+        - npm install
+    build:
+      commands:
+        - nuxt generate
+  artifacts:
+    # デプロイ対象のディレクトリ  
+    files:
+        # 全てのディレクトリ
+        - **/*
+    discard-paths: yes
+    # ビルド成果物のディレクトリ 
+    baseDirectory: dist
+  # キャッシュとして保存するディレクトリ
+  cache:
+    paths:
+      - node_modules/**/*
+        
+#=====================         
+# テスト        
+#===================== 
+test:
+  phases:
+    preTest:
+      commands:
+        - *enter command*
+    test:
+      commands:
+        - *enter command*
+    postTest:
+      commands:
+        - *enter command* 
+  artifacts:
+    # デプロイ対象のディレクトリ
+    files:
+        # 全てのディレクトリ
+        - **/*
+    configFilePath: *location*
+    # ビルド成果物のディレクトリ      
+    baseDirectory: *location*
+```
+
+<br>
+
+## 07. アプリケーションインテグレーション
 
 ### SQS：Simple Queue Service
 
@@ -2180,7 +2279,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 <br>
 
-## 07. 管理，ガバナンス
+## 08. 管理，ガバナンス
 
 ### オートスケーリング
 
@@ -2236,7 +2335,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 <br>
 
-## 07-02. 管理，ガバナンス｜CloudWatch
+## 08-02. 管理，ガバナンス｜CloudWatch
 
 ### CloudWatch
 
@@ -2479,7 +2578,7 @@ $ service awslogs start
 
 <br>
 
-## 08. 開発者用ツール
+## 09. 開発者用ツール
 
 ### CodeDeploy
 
@@ -2514,7 +2613,7 @@ Resources:
 <br>
 
 
-## 09. カスタマーエンゲージメント｜SES
+## 10. カスタマーエンゲージメント｜SES
 
 ### SES：Simple Email Service
 
@@ -2567,7 +2666,7 @@ SESはデフォルトではSandboxモードになっている．Sandboxモード
 
 <br>
 
-## 10. ビジネスアプリケーション
+## 11. ビジネスアプリケーション
 
 ### WorkMail
 
@@ -2583,7 +2682,7 @@ AWSから提供されている．Gmail，サンダーバード，Yahooメール�
 
 <br>
 
-## 11. 暗号化とPKI｜Certificate Manager
+## 12. 暗号化とPKI｜Certificate Manager
 
 ### Certificate Manager
 
@@ -2647,7 +2746,7 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 <br>
 
-## 12. セキュリティ｜WAF
+## 13. セキュリティ｜WAF
 
 ### AWSリソース vs. サイバー攻撃
 
@@ -2795,7 +2894,7 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
 
 <br>
 
-## 12-02. セキュリティ｜IAM
+## 13-02. セキュリティ｜IAM
 
 ### IAMポリシー，IAMステートメント：Identify and Access Management
 
@@ -3161,7 +3260,7 @@ IAMポリシーのセットを持つ
 
 <br>
 
-## 12-03. セキュリティ｜STS
+## 13-03. セキュリティ｜STS
 
 ### STS：Security Token Service
 
@@ -3320,7 +3419,7 @@ aws s3 ls --profile <プロファイル名>
 
 <br>
 
-## 13. 負荷テスト
+## 14. 負荷テスト
 
 ### Distributed Load Testing（分散負荷テスト）
 
@@ -3336,7 +3435,7 @@ AWSから提供されている負荷を発生させるインフラ環境のこ�
 
 <br>
 
-## 14. コスト管理
+## 16. コスト管理
 
 ### コスト管理の観点
 
