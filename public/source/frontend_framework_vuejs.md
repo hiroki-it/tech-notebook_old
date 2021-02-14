@@ -22,7 +22,7 @@ ViewModel層から渡されたデータを出力するだけ．
 
 3. Model層（```store.js```または```xxx.js```)
 
-ビジネスロジックや，Ajaxによるデータ送受信，を記述する．
+ビジネスロジックや，ajaxメソッドによるデータ送受信，を記述する．
 
 #### ・Vueを用いたMVVMアーキテクチャ，双方向データバインディング
 
@@ -80,12 +80,12 @@ var vExampleComponent = {
 var vm = new Vue({
 
     el: '#app',
-  
+
     components: {
         // 親コンポーネントにオブジェクト名をつける．
         'v-example-component': vExampleComponent
     }
-  
+
 })
 ```
 
@@ -98,12 +98,12 @@ var vm = new Vue({
 var vm = new Vue({
 
     el: '#app',
-  
+
     components: {
         // テンプレートと親コンポーネントの対応関係
         'v-example-component': require('./xxx/xxx/xxx'),
     }
-  
+
 })
 ```
 
@@ -160,89 +160,85 @@ Vueコンストラクタをインスタンス化することによって，ル�
 // ルートVueインスタンス
 // 変数への格納を省略してもよい
 var vm = new Vue({
-    
+
     //　Vueインスタンスを使用するdivタグを設定.
     el: '#app',
 
-  
     /* dataオプション
     ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
     ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義．
     */
-    data: function() {
-          return {
-              isLoading: false,
-              staffData: [],
-              criteria: {
-                  id: null,
-                  name: null
-                  },
-          };
-     },
+    data: function () {
+        return {
+            isLoading: false,
+            staffData: [],
+            criteria: {
+                id: null,
+                name: null
+            },
+        };
+    },
 
-    
-     /* methodオプション
-     ・イベントハンドラ関数，dataオプションのセッターを定義
-     ・dataオプションの状態を変化させる．
-     */
-     method: {
-       
-         // イベントハンドラ関数
-         changeQuery(criteriaObj) {
-             const keys = [
-                 'criteria',
-                 'limit',
-             ];
-             for (const key of keys) {
-                 if (key in criteriaObj) {
-                     this[key] = criteriaObj[key];
-             }
+    /* methodオプション
+    ・イベントハンドラ関数，dataオプションのセッターを定義
+    ・dataオプションの状態を変化させる．
+    */
+    method: {
+
+        // イベントハンドラ関数
+        changeQuery(criteriaObj) {
+            const keys = [
+                'criteria',
+                'limit',
+            ];
+            for (const key of keys) {
+                if (key in criteriaObj) {
+                    this[key] = criteriaObj[key];
+                }
+            }
         },
-            
+
         // dataオプションのセッター
         load(query) {
             // ここでのthisはdataオプションを指す．
             this.isLoading = true;
             this.staffData = [];
-            // JSON型データをajax()でサーバサイドに送信し，JSON型オブジェクトを受信
+            // ajaxメソッドをラッピングしたメソッドをコール
             return Staff.find(query)
-            
+
                 /* done()
-                Ajaxによって返却されたJSON型オブジェクトが引数になる．
+                ajaxメソッドによって返却されたJSONが引数になる．
                 */
                 .done((data) => {
-               
+
                     /*
-                    サーバサイドからのJSON型データをデシリアライズ．             
+                    サーバサイドからのJSONをデシリアライズ．             
                     dataオプションに設定．
                     */
                     this.staffData = _.map(
-                                        data.staffData,
-                                        Staff.deserializeStaff
-                                     );
+                        data.staffData,
+                        Staff.deserializeStaff
+                    );
                 })
         },
     },
 
-       
     /* watchオプション
     Vueインスタンス内の値の変化を監視する関数を定義．
     Vue-Routerを参照せよ．
     */
-    watch: {
-      
-    },
-    
-       
+    watch: {},
+
     // テンプレートと親コンポーネントの対応になるようにする．
     component: {
-      
+
         //『HTMLでのコンポーネントのタグ名：子コンポーネント』
         'v-example-component-1': require('.../component/xxx-1.vue'),
         'v-example-component-2': require('.../component/xxx-2.vue'),
         'v-example-component-3': require('.../component/xxx-3.vue')
     },
 })
+
 ```
 #### (2) 【View + ViewModel層】単一ファイルコンポーネントとしてのコンポーネント（```xxx-component.vue```）
 
@@ -254,97 +250,96 @@ var vm = new Vue({
 
 ```vue
 <template>
-<!----------------------------------------
-// View層
-// ・親コンポーネント
-// ・ここに，出力したいHTMLやTWIGを記述する． 
------------------------------------------->
+  <!----------------------------------------
+  // View層
+  // ・親コンポーネント
+  // ・ここに，出力したいHTMLやTWIGを記述する． 
+  ------------------------------------------>
 
   <!-- 
   ・子コンポーネントタグを記述 
   ・下方のdataオプションの値をpropsに渡すように設定．
   -->
   <v-example-component-4
-   :aaa="a"
-   :bbb="b"
-  ></v-example-component-4>  
+          :aaa="a"
+          :bbb="b"
+  ></v-example-component-4>
 
   <!-- 条件付きレンダリングを行うディレクション -->
   <template v-if="example.isOk()">
     <!-- 孫コンポーネントタグを記述 -->
     <v-example-component-5
-      :ccc="c"
-      :ddd="d"                          
-    ></v-example-component-5>  
+            :ccc="c"
+            :ddd="d"
+    ></v-example-component-5>
   </template>
 
 </template>
 
 <script>
-//=============
-// ViewModel層
-//=============
-    
-// 親コンポーネント以降では，Vueインスタンスを生成しないようにする．
-module.exports = {
+  //=============
+  // ViewModel層
+  //=============
 
-  /* propsオプション
-  ・親コンポーネントまたはAjaxからpropsオブジェクトのプロパティに値が格納される．
-  */
-  props: {
+  // 親コンポーネント以降では，Vueインスタンスを生成しないようにする．
+  module.exports = {
+
+    /* propsオプション
+    ・親コンポーネントまたはajaxメソッドからpropsオブジェクトのプロパティに値が格納される．
+    */
+    props: {
       'criteria': {
-          type: Object,
-          required: true,
+        type: Object,
+        required: true,
       },
-        
-      'example':{
-          type Object,
-          required:true,
-      }
-  },
-      
-  /* dataオプション
-  ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
-  ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義する．
-  */
-  data: function() {
-      return {
-          a: "a"
-          b: "b"
-          c: "c"
-          d: "d"
-      };
-  },
-      
-      
-  // イベントハンドラ関数，dataオプションのセッター
-  method: {
-      updateCriteria (key, value) {
-              
-          /*
-          ・コンポーネント（v-example-component-1）と紐づく処理
-          ・changeイベントの発火と，これのイベントハンドラ関数に引数を渡す．
-          */
-          this.$emit(
-              'change',
-              {'criteria': localCriteria}
-              );
-            
-      // Ajaxから送信されてきたデータを用いて，propsを更新 
-      updateProps (key, value) {
-            
-      }
-  },
-    
-        
-  // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
-  component: {
 
-      // 子コンポーネントと孫コンポーネントの対応関係
-      'v-example-component-4': require('./xxx/xxx/xxx-4'),
-      'v-example-component-5': require('./xxx/xxx/xxx-5'),
-  },
-}
+      'example': {
+        type: Object,
+        required: true,
+      }
+    },
+
+    /* dataオプション
+    ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
+    ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義する．
+    */
+    data: function () {
+      return {
+        a: "a",
+        b: "b",
+        c: "c",
+        d: "d",
+      };
+    },
+
+    // イベントハンドラ関数，dataオプションのセッター
+    method: {
+      updateCriteria(key, value) {
+
+        /*
+        ・コンポーネント（v-example-component-1）と紐づく処理
+        ・changeイベントの発火と，これのイベントハンドラ関数に引数を渡す．
+        */
+        this.$emit(
+                'change',
+                {'criteria': localCriteria}
+        );
+      },
+
+      // ajaxメソッドから送信されてきたデータを用いて，propsを更新 
+      updateProps(key, value) {
+
+      },
+
+      // 『HTMLでのコンポーネントのタグ名：　JSでのコンポーネントのオブジェクト名』
+      component: {
+          
+        // 子コンポーネントと孫コンポーネントの対応関係
+        'v-example-component-4': require('./xxx/xxx/xxx-4'),
+        'v-example-component-5': require('./xxx/xxx/xxx-5'),
+      },
+    }
+  }
 </script>
 ```
 
@@ -360,16 +355,15 @@ Vuexについては，以降の説明を参照せよ．
 
 ```javascript
 class Example {
-    
+
     /*
     ・コンポーネントからデータを受信．
     ・プロパティの宣言と，同時に格納．
     */
     constructor(properties) {
         this.isOk = properties.isOk;
-        ...
     }
-    
+
     // コンストラクタによって宣言されているので，アクセスできる．
     isOk() {
         // bool値を返却するとする．
@@ -411,13 +405,13 @@ View層のフォーム送信イベントが起きた時点で，ViewModel層に�
 ```html
 <div id='app'>
   <v-example-component
-    v-on:search="result()"
-  ></v-example-component>                                        
+          v-on:search="result()"
+  ></v-example-component>
 </div>
 
 <!-- Vueインスタンスの生成は外部スクリプトで行う． -->
 <script
-    src="{{ asset('.../index.js') }}">
+        src="{{ asset('.../index.js') }}">
 </script>
 ```
 
@@ -456,18 +450,18 @@ var vm = new Vue({
 </template>
 
 <script>
-// 変数への格納を省略してもよい
-var vm = new Vue({
-  
-  // イベントハンドラ関数を定義
-  methods: {
-    search() { 
-      // 親コンポーネントのsearchイベントを発火させる．
-      this.$emit('search')
-    },
-  }
-})
-</script>      
+  // 変数への格納を省略してもよい
+  var vm = new Vue({
+
+    // イベントハンドラ関数を定義
+    methods: {
+      search() {
+        // 親コンポーネントのsearchイベントを発火させる．
+        this.$emit('search')
+      },
+    }
+  })
+</script>
 ```
 
 #### ・```v-on:click="<イベントハンドラ関数>"```
@@ -571,9 +565,9 @@ const vueRouter = require('vue-router').default;
 
 // VueRouterインスタンスを作成する．
 const router = new VueRouter({
-  routes:[
-    {path: "/", component: Home},
-    {path: "/example", component: Example}
+    routes: [
+        {path: "/", component: Home},
+        {path: "/example", component: Example}
     ]
 })
 
@@ -588,16 +582,17 @@ module.exports = router;
 var vm = new Vue({
 
     router,
-  
-  　// watchオプション
+
+    // watchオプション
     watch: {
         // スタック内で履歴の移動が起こった時に，対応付けた無名関数を実行．
         '$route': function (to, from) {
-            if(to.fullPath !== from.fullPath) {
+            if (to.fullPath !== from.fullPath) {
                 // 何らかの処理．
-        }
-    },
-)}
+            }
+        },
+    }
+})
 ```
 
 #### ・```$router```（Routerインスタンス）
@@ -668,7 +663,7 @@ const vuex = require('vuex')
 
 // 外部ファイルが，このStoreインスタンスを読み込めるようにする．
 module.exports = new Vuex.Store({
-  
+
     /* getters
     ・データから状態を取得するメソッドをいくつか持つ
     ・クラスベースオブジェクト指向のGetterメソッドに相当.
@@ -687,7 +682,7 @@ module.exports = new Vuex.Store({
         // stateには多くを設定せず，Vueインスタンスのdataオプションに設定しておく．
         staffData: [],
     },
-    
+
     /* mutations
     ・データの状態（state）を変化させるメソッドをいくつかもつ．
     ・クラスベースオブジェクト指向のSetterメソッドに相当．
@@ -696,22 +691,23 @@ module.exports = new Vuex.Store({
         // Vuexのstateを第一引数，外部からセットしたい値を第二引数
         mutate(state, staffData) {
             exArray.forEach(
-                
                 /*
                 ・矢印はアロー関数を表し，無名関数の即コールを省略することができる．
                 ・引数で渡されたexArrayの要素を，stateのexArrayに格納する．
                 */
-                (element) => { state.exArray.push(element); }
-                
+                (element) => {
+                    state.exArray.push(element);
+                }
+
                 /* 
                 ※アロー関数を用いなければ，以下のように記述できる．
                 function(element) { state.exArray.push(element); }
                 */
-            );  
+            );
         },
-        
+
     },
-    
+
     /* actions
     ・mutations{}のメソッドを間接的にコールするためのメソッドをいくつか持つ．
     ・contextオブジェクトからcommit機能を取り出す必要がある．（※省略記法あり）
@@ -719,9 +715,9 @@ module.exports = new Vuex.Store({
     */
     actions: {
         // 省略記法（Argument destructuring)
-        mutate ({commit})
-           commit('mutate')
-        }  
+        mutate({commit}) {
+            commit('mutate');
+        }
     }
 })
 ```
@@ -759,49 +755,48 @@ module.exports = new Vuex.Store({
 **＊実装例＊**
 
 ```vue
-
 <!-- 子コンポーネント -->
 <template>
-...
+  ...
 </template>
 <script>
 
-// Vuex.Store()を読み込む．
-const store = require('./_store')
+  // Vuex.Store()を読み込む．
+  const store = require('./_store')
 
-// Vuex.Store()のgetters，mutations，actionsをマッピングできるように読み込む．
-const mapGetters = require('vuex').mapGetters;
-const mapActions = require('vuex').mapActions;
-const mapMutaions = require('vuex').mapMutaions;
+  // Vuex.Store()のgetters，mutations，actionsをマッピングできるように読み込む．
+  const mapGetters = require('vuex').mapGetters;
+  const mapActions = require('vuex').mapActions;
+  const mapMutaions = require('vuex').mapMutaions;
 
 
-module.exports = {
-    
+  module.exports = {
+
     // イベントハンドラ関数を定義（※データを状態の変更を保持したくないもの）
     computed: {
 
-        /* mapGettersヘルパー．
-        StoreのGetterをローカルのcomputed:{}にマッピングし，コールできるように．
-        */
-        ...mapGetters([
+      /* mapGettersヘルパー．
+      StoreのGetterをローカルのcomputed:{}にマッピングし，コールできるように．
+      */
+      ...mapGetters([
         'x-Function'
-        ])
+      ])
 
     },
 
     // イベントハンドラ関数を定義（※データを状態の変更を保持したいもの）
     methods: {
 
-        // mapMutationsヘルパー
-        ...mapMutations([
+      // mapMutationsヘルパー
+      ...mapMutations([
         'y-Function'
-        ]),
+      ]),
 
-        // mapActionsヘルパー
-        ...mapActions([
+      // mapActionsヘルパー
+      ...mapActions([
         'z-Function'
-        ]),
+      ]),
     }
-}
+  }
 </script>
 ```
