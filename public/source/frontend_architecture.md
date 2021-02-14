@@ -6,13 +6,19 @@
 
 #### ・SPAとは
 
-1つのWebページの中で，サーバとデータを非同期的に通信し，レンダリングすることができるようにする設計のこと．SPA設計では，ページ全体をローディングするのは最初のみで，２回目以降は，サーバ側からJsonデータを受け取り，部分的にローディングを行う．Vueでは，意識せずともSPA設計の元で実装できるようになっている．
+1つのWebページの中で，サーバとデータを非同期通信し，部分的にレンダリングする方法のこと．非同期通信は，Ajaxの手法を用いて実現される．また，部分的なレンダリングは，MVVMアーキテクチャによって実現する．SPAでは，ページ全体をローディングするのは最初のみで，２回目以降は，サーバ側からJsonデータを受け取り，部分的にローディングを行う．Vueでは，意識せずともSPA設計の元で実装できるようになっている．
 
 ![SPアプリにおけるデータ通信の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SPアプリにおけるデータ通信の仕組み.png)
 
-#### ・SPAの仕組み
+#### ・MVVMアーキテクチャとは
+
+Vue.jsのノートを参考にせよ．
+
+#### ・Ajaxとは：Asynchronous JavaScript + XML
 
 ![AJAXの処理フロー](https://user-images.githubusercontent.com/42175286/58467340-6741cb80-8176-11e9-9692-26e6401f1de9.png)
+
+HTML，XHTML，CSS，JavaScript，DOM，XML，XSLT，を組み合わせて非同期通信を実現する手法のこと．これらの技術を以下の順で組み合わせる．
 
 1. urlにアクセスすることにより，サーバからデータがレスポンスされる．
 2. DOMのマークアップ言語の解析により，Webページが構成される．
@@ -26,9 +32,9 @@
 10. オブジェクトがマークアップ言語に出力される．
 11. DOMを用いて，Webページを再び構成する．
 
-#### ・従来WebアプリとSPAの処理速度の違い
+#### ・MPAとSPAの処理速度の違い
 
-サーバとデータを非同期的に通信できるため，1つのWebページの中で必要なデータだけを通信すればよく，レンダリングが速い．
+従来のアーキテクチャであるMPAと比較して，データを非同期的に通信できるため，1つのWebページの中で必要なデータだけを通信すればよく，レンダリングが速い．
 
 ![従来WebアプリとSPアプリの処理速度の違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/従来WebアプリとSPアプリの処理速度の違い.png)
 
@@ -42,151 +48,223 @@
 
 <br>
 
-## 02. Ajaxによる非同期的なデータ送受信
+## 02. JQueryパッケージ
 
-### JQueryの```ajax```メソッドを用いたAjaxの実装
+### ```ajax```メソッドによるAjaxの実現
 
 #### ・```ajax```メソッドとは
 
-コンポーネントごとにリクエストメッセージを送信する必要があるので，JQueryの```ajax```メソッドには，メソッド，URL，ヘッダー，ボディを設定する項目がある．データ送信後は，その結果に応じてJQuery.Defferredモジュールで後処理を行う．
+HTTPメソッド，URL，ヘッダー，メッセージボディなどを設定し，非同期的にデータを送受信する．Promiseオブジェクトを返却する．
 
-#### ・GET送信の場合
-
-リクエストメッセージの構造については，ネットワークのノートを参照せよ．
+参考：https://api.jquery.com/jquery.ajax
 
 **＊実装例＊**
 
-JQueryの```ajax```メソッドで，GET送信でリクエストするデータから，クエリパラメータを生成する．
-
 ```javascript
-// ここに実装例
-```
+class Example {
+    
+    constructor(properties) {
+        this.id = properties.id;
+    }
+    
+    /**
+     * ajaxメソッドのラッパーメソッド
+     */
+    static find() {
+        return $.ajax({
 
-URLの各```<キー名>=<値>```が，「```&```」で結合され，クエリパラメータとなる．
+            // ###################
+            //  リクエストメッセージ
+            // ###################
+            
+            // HTTPメソッドを指定
+            type: 'POST',
+            
+            // ルートとパスパラメータを指定
+            url: '/xxx/xxx/' + this.id + '/', 
 
-```
-# ...の部分には，データ型を表す記号などが含まれる．
-http://127.0.0.1/.../?fruit...=ばなな&fruit...=りんご&account...=200
-```
+            // 送信するデータの形式を指定
+            contentType: 'application/json',
 
-#### ・POST送信の場合
+            // メッセージボディ
+            data: {
+                param1: "AAA",
+                param2: "BBB"
+            },
 
-リクエストメッセージの構造については，ネットワークのノートを参照せよ．
-
-**＊実装例＊**
-
-このようなJavaScriptのオブジェクトが送信されてきたとする．
-
-```javascript
-const query = {
-    criteria: {
-    id: 777,
-    name: "hiroki"
+            // ###################
+            //  レスポンスメッセージ
+            // ###################
+            
+            // 受信するメッセージボディのデータ型を指定
+            dataType: 'json',
+        })
     }
 }
 ```
 
-リクエストメッセージをサーバサイド に送信し，またレスポンスを受信する．
+<br>
+
+### レスポンス受信後の処理分岐
+
+#### ・```done```メソッド，```fail```メソッド，```always```メソッドとは
+
+Promiseオブジェクトがもつメソッド．```ajax```メソッドによってレスポンスを受信した後，その結果を```done```，```fail```，```always```の三つに分類し，これに応じたコールバック処理を実行する方法．
 
 **＊実装例＊**
 
 ```javascript
-static find(query) {
+class Example {
+    
+    constructor(properties) {
+        this.id = properties.id;
+    }
+    
+    /**
+     * ajaxメソッドのラッパーメソッド
+     */
+    static find() {
+        return $.ajax({
+            type: 'POST',
+            url: '/xxx/xxx/' + this.id + '/', 
+            contentType: 'application/json',
+            data: {
+                param1: "AAA",
+                param2: "BBB"
+            },
+        })
+            // 非同期通信の成功時のコールバック処理
+            .done((data) => {
 
-    return $.ajax({
-        /* リクエストメッセージ */
-        // メソッドとURL
-        type: 'POST', // メソッドを指定
-        url: '/xxx/xxx', // ルートとパスパラメータを指定
-        // ヘッダー
-        contentType: 'application/json',　// 送信するデータの形式を指定
-        // ボディ
-        data: query, // 送信するメッセージボディのデータを指定
-      
-      
-        /* レスポンスメッセージ */
-        dataType: 'json', // 受信するメッセージボディのデータ型を指定
+            })
         
-    })
+            // 非同期通信の失敗時のコールバック処理
+            .fail((data) => {
+                toastr.error('', 'エラーが発生しました．');
+            })
+        
+            // 非同期通信の成功失敗に関わらず常に実行する処理
+            .always((data) => {
+                this.isLoaded = false;
+            });
+    }
+}
+```
 
-    /* JQueryのDeferredモジュールを使用
-    ajax()の処理が成功した場合に起こる処理．
-    */ 
-    .done((data) => {
- 
-    })
+#### ・```then```メソッドとは
 
-    // ajax()の処理が失敗した場合に起こる処理．
-    .fail(() => {
-        toastr.error('', 'エラーが発生しました．');
-    })
+Promiseオブジェクトがもつメソッド．```ajax```メソッドによってレスポンスを受信した後，その結果を```then```メソッドの引数の順番で分類し，これに応じたコールバック処理を実行する方法．非同期処理を連続で行いたい場合に用いる．
 
-    // ajax()の成功失敗に関わらず，必ず起こる処理．
-    .always(() => {
-        this.isLoaded = false;
-    });
-} 
+**＊実装例＊**
+
+```javascript
+class Example {
+    
+    constructor(properties) {
+        this.id = properties.id;
+    }
+    
+    /**
+     * ajaxメソッドのラッパーメソッド
+     */
+    static find() {
+        return $.ajax({
+            type: 'POST',
+            url: '/xxx/xxx/' + this.id + '/', 
+            contentType: 'application/json',
+            data: {
+                param1: "AAA",
+                param2: "BBB"
+            },
+        })
+            // 最初のthen
+            .then(
+                // 引数1つめは通信成功時のコールバック処理
+                (data) => {
+
+                },
+                // 引数2つめは通信失敗時のコールバック処理
+                (data) => {
+
+                })
+            // 次のthen
+            .then(
+                // 引数1つめは通信成功時のコールバック処理
+                (data) => {
+
+                });
+    }
+}
 ```
 
 <br>
 
-### Deferredモジュール
+## 02-02. Axiosパッケージ
 
-#### ・```Deferred.done().fail().always()```とは
+### axiosオブジェクトによるAjaxの実現
 
-JQueryの```ajax```メソッドの結果を，```done()```，```fail()```，```always()```の三つに分類し，これに応じたコールバック処理を実行する方法．
+#### ・axiosオブジェクトとは
+
+参考：https://github.com/axios/axios#axios
+
+<br>
+
+## 02-03. async/await宣言
+
+### async/await宣言による非同期関数化
+
+#### ・async/await宣言とは
+
+宣言することにより，非同期関数として定義できる．定義された非同期関数は，Promiseオブジェクトを返却する．
+
+**＊実装例＊**
 
 ```javascript
-$.ajax({
-  url: "xxxxx", // URLを指定
-  type: "GET", // GET,POSTなどを指定
-  data: { // データを指定
-    param1 : "AAA",
-    param2 : "BBB"
-  }
-})
-  // 通信成功時のコールバック処理
-  .done((data) => {
-  
-  })
-  // 通信失敗時のコールバック処理
-  .fail((data) => {
-  
-  })
-  // 常に実行する処理
-  .always((data) => {
-  
-});
+async function example() {
+    // 何らかの処理
+}
 ```
 
-#### ・```Deferred.then()```とは
+参考：https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/async_function
 
-JQueryの```ajax```メソッドの結果を，```then()```の引数の順番で分類し，これに応じたコールバック処理を実行する方法．非同期処理を連続で行いたい場合に用いる．
+#### ・resolveとreject
+
+**＊実装例＊**
 
 ```javascript
-$.ajax({
-  url: "xxxxx", // URLを指定
-  type: "GET", // GET,POSTなどを指定
-  data: { // データを指定
-    param1 : "AAA",
-    param2 : "BBB"
-  }
-})
-// 最初のthen
-.then(
-  // 引数1つめは通信成功時のコールバック処理
-  (data)　=> {
-    
-  },
-  // 引数2つめは通信失敗時のコールバック処理
-  (data) => {
-    
-})
-// 次のthen
-.then(
-  // 引数1つめは通信成功時のコールバック処理
-  (data)　=> {
-    
+// resolve1!!をreturnしているため、この値がresolveされる
+async function resolveExample() {
+  return 'resolve!!';
+}
+
+// resolveExampleがPromiseを返し、resolve!!がresolveされるため
+// then()が実行されコンソールにresolve!!が表示される
+resolveExample().then(value => {
+  console.log(value); // => resolve!!
+});
+
+
+// reject!!をthrowしているため、この値がrejectされる
+async function rejectExample() {
+  throw new Error('reject!!');
+}
+
+// rejectExampleがPromiseを返し、reject!!がrejectされるため
+// catch()が実行されコンソールにreject!!が表示される
+rejectExample().catch(err => {
+  console.log(err); // => reject!!
+});
+
+
+// resolveErrorはasync functionではないため、Promiseを返さない
+function resolveError() {
+  return 'resolveError!!';
+}
+
+// resolveErrorはPromiseを返さないため、エラーが発生して動かない
+// Uncaught TypeError: resolveError(...).then is not a function
+resolveError().then(value => {
+  console.log(value);
 });
 ```
 
