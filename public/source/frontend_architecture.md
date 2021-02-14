@@ -46,6 +46,10 @@ HTML，XHTML，CSS，JavaScript，DOM，XML，XSLT，を組み合わせて非同
 
 ### SSG：Static Site Generation
 
+#### ・SSGとは
+
+静的ファイルとしてビルドされたWebページをフロントエンドとして使用する方法．各ページに必要なデータは，ビルド時にデータベースにリクエストを送信して取得する．
+
 <br>
 
 ## 02. JQueryパッケージ
