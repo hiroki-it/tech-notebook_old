@@ -570,7 +570,7 @@ workflows:
 
 ![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CircleCIキャッシュ.png)
 
-生成したファイルをキャッシュとして保存する．使い所として，例えば，Composerにおいて，ライブラリはcomposer.jsonの設定が変更されない限り，毎回のWorkflowで同じライブラリがインストールされる．しかし，CircleCIのWorkflowのたびに，ライブラリをインストールするのは非効率である．そこで，composer.jsonが変更されない限り，前回のWorkflow時に生成されたvendorディレクトリを繰り返し利用するようにする．また，一つのWorkflowの中でも，繰り返し利用できる．
+ビルドの成果物をキャッシュとして保存する．この機能を使用しない場合，例えば，CircleCIコンテナで```composer install```を実行すると，毎回のWorkflowで同じライブラリがインストールされる．しかし，Workflowのたびに，ライブラリをインストールするのは非効率である．そこで，```composer.json```ファイルの実装が変更されない限り，前回のWorkflowのビルド時に，vendorディレクトリに配置された成果物を再利用するようにする．この機能は，複数のWorkflowの間だけでなく，一つのWorkflowの中でも利用できる．
 
 **＊実装例＊**
 
@@ -592,7 +592,7 @@ jobs:
           name: Run composer install
           commands: |
             composer install -n --prefer-dist
-      # 最新のvendorを保存
+      # 最新のvendorディレクトリをキャッシュとして保存
       - save_cache:
           key: v1-dependecies-{{ checksum "composer.json" }}
           paths:
@@ -644,17 +644,17 @@ version: 2.1
 commands:
   restore_vendor:
     steps:
-      # composer.jsonが変更されている場合は処理をスキップ．
+      # composer.jsonの実装が変更されていない場合は処理をスキップ．
       - restore_cache:
           key:
-            - v1-dependecies-{{ checksum "composer.json" }}
+            - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
        
   save_vendor:
     steps:
       # 最新のvendorを保存．
       - save_cache:
-          key: v1-dependecies-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
             

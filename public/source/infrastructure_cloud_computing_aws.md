@@ -2180,7 +2180,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 <br>
 
-## 07. 管理，ガバナンス
+## 08. 管理，ガバナンス
 
 ### オートスケーリング
 
@@ -2236,7 +2236,7 @@ IAMユーザによる操作や，ロールのアタッチの履歴を記録し�
 
 <br>
 
-## 07-02. 管理，ガバナンス｜CloudWatch
+## 08-02. 管理，ガバナンス｜CloudWatch
 
 ### CloudWatch
 
@@ -2479,7 +2479,7 @@ $ service awslogs start
 
 <br>
 
-## 08. 開発者用ツール
+## 09. 開発者用ツール
 
 ### CodeDeploy
 
@@ -2514,7 +2514,7 @@ Resources:
 <br>
 
 
-## 09. カスタマーエンゲージメント｜SES
+## 10. カスタマーエンゲージメント｜SES
 
 ### SES：Simple Email Service
 
@@ -2567,7 +2567,7 @@ SESはデフォルトではSandboxモードになっている．Sandboxモード
 
 <br>
 
-## 10. ビジネスアプリケーション
+## 11. ビジネスアプリケーション
 
 ### WorkMail
 
@@ -2583,7 +2583,7 @@ AWSから提供されている．Gmail，サンダーバード，Yahooメール�
 
 <br>
 
-## 11. 暗号化とPKI｜Certificate Manager
+## 12. 暗号化とPKI｜Certificate Manager
 
 ### Certificate Manager
 
@@ -2647,7 +2647,7 @@ AWSの使用上，ACM証明書を設置できないAWSリソースに対して�
 
 <br>
 
-## 12. セキュリティ｜WAF
+## 13. セキュリティ｜WAF
 
 ### AWSリソース vs. サイバー攻撃
 
@@ -2795,7 +2795,7 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
 
 <br>
 
-## 12-02. セキュリティ｜IAM
+## 13-02. セキュリティ｜IAM
 
 ### IAMポリシー，IAMステートメント：Identify and Access Management
 
@@ -3161,7 +3161,7 @@ IAMポリシーのセットを持つ
 
 <br>
 
-## 12-03. セキュリティ｜STS
+## 13-03. セキュリティ｜STS
 
 ### STS：Security Token Service
 
@@ -3320,7 +3320,7 @@ aws s3 ls --profile <プロファイル名>
 
 <br>
 
-## 13. 負荷テスト
+## 14. 負荷テスト
 
 ### Distributed Load Testing（分散負荷テスト）
 
@@ -3336,7 +3336,7 @@ AWSから提供されている負荷を発生させるインフラ環境のこ�
 
 <br>
 
-## 14. コスト管理
+## 16. コスト管理
 
 ### コスト管理の観点
 
