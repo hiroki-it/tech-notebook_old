@@ -248,7 +248,7 @@ exports.handler = (event, context, callback) => {
     request.origin.s3.domainName = s3Backet
     request.headers.host[0].value = s3Backet
     // ログストリームに変数を出力する．
-    console.log(JSONデータ.stringify({request}, null, 2));
+    console.log(JSON.stringify({request}, null, 2));
 
     return callback(null, request);
 };
@@ -2140,7 +2140,7 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 
 #### ・Amplifyとは
 
-フロントエンドメインのアプリケーションのためのクラウドインフラストラクチャのフレームワーク．SSGの場合，静的ファイルをデプロイしさえすれば，アプリケーションとしての要件が全て整う．SPAの場合，サーバレスのバックエンドを自動構築してくれ，フロントエンドをデプロイしさえすれば，要件が全て整う．
+フロントエンドメインのアプリケーションのためのクラウドインフラストラクチャのフレームワーク．SSGの場合，静的ファイルをデプロイしさえすれば，アプリケーションとしての要件が全て整う．SPAの場合，サーバレスのバックエンドを自動構築してくれ，フロントエンドをデプロイしさえすれば，要件が全て整う．これのAWSリソースはCloudFormationによって構築されるが，Amplify経由でしか設定を変更できず，各AWSリリースのコンソール画面を見ても，非表示になっている．
 
 参考：https://d1.awsstatic.com/webinars/jp/pdf/services/20200520_AWSBlackBelt_Amplify_A.pdf
 
