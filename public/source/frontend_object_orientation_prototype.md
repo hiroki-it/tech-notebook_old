@@ -93,7 +93,7 @@ console.log(
 
 ### JSON
 
-#### ・```JSON.parse()```
+#### ・```JSON.parse```メソッド
 
 JavaScriptからJSONにシリアライズする．
 
@@ -112,7 +112,7 @@ console.log(
 // "{"x":5, "y":5 "z":"test"}"
 ```
 
-#### ・```JSON.stringify()```
+#### ・```stringify```メソッド
 
 JSONからJavaScriptにデシリアライズする．
 
@@ -120,11 +120,11 @@ JSONからJavaScriptにデシリアライズする．
 
 ```javascript
 console.log(
-    JSON.parse("{
+    JSON.parse({
         "x" : 1,
         "y" : 5,
         "z" : "test"
-     }")
+     })
 );
 
 // JavaScriptオブジェクト
@@ -137,7 +137,7 @@ console.log(
 
 ### Document
 
-#### ・```Document.getElementbyId()```
+#### ・```getElementbyId```メソッド
 
 指定した```id```のhtml要素を取得する．
 
@@ -162,7 +162,7 @@ console.log(
 
 ### EventTarget
 
-#### ・```EventTarget.addEventListener()```
+#### ・```addEventListene```メソッド
 
 第一引数で，```click```などのイベントを設定し，第二引数でメソッド（無名関数でも可）を渡す．
 
@@ -204,11 +204,11 @@ const example = {
       alert(value);
   }, 
   
-  set setValue(value) {
+  setValue(value) {
       this._property = value;
   },  
   
-  get getValue() {
+  getValue() {
       return this._property;
   }
 }
@@ -245,16 +245,16 @@ const example = {
 ```javascript
 const example = new Object({
 
-    // 慣習的にアンダーバーでprivateを表す．
-    _property: 0,
-  
-    set setValue(value) {
-        this._property = value;
-    },  
-    
-    get getValue() {
-        return this._property;
-    }
+  // 慣習的にアンダーバーでprivateを表す．
+  _property: 0,
+
+  setValue(value) {
+    this._property = value;
+  },
+
+  getValue() {
+    return this._property;
+  }
 })
 ```
 
@@ -519,18 +519,18 @@ console.log(result);
 
 ```javascript
 const example = {
-  
+
   // 慣習的にアンダーバーでprivateを表す．
   _property: 0,
-  
-    set setValue(value) {
-        this._property = value;
-    },  
-    
-    get getValue() {
-        return this._property;
-    }
-}	
+
+  setValue(value) {
+    this._property = value;
+  },
+
+  getValue() {
+    return this._property;
+  }
+}
 ```
 
 ```javascript

@@ -95,7 +95,7 @@ var vm = new Vue({
 
 ```javascript
 // 変数への格納を省略してもよい
-new Vue({
+var vm = new Vue({
 
     el: '#app',
 
