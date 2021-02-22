@@ -4638,6 +4638,8 @@ return [
 
 RDSクラスターに接続する場合，書き込み処理をプライマリインスタンスに向け，また読み出し処理をリードレプリカインスタンスに向けることにより，負荷を分散できる．この場合，環境変数に二つのインスタンスのホストを実装する必要がある．
 
+参考：https://readouble.com/laravel/6.x/ja/database.html#contentContainer:~:text=Read%EF%BC%8FWrite%E6%8E%A5%E7%B6%9A
+
 ```
 DB_HOST_PRIMARY=<プライマリインスタンスのホスト>
 DB_HOST_READ=<リードレプリカインスタンスのホスト>
