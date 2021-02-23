@@ -152,34 +152,57 @@ esac
 
 #### ・pipelineとは
 
-複数のプログラムの入出力を繋ぐプロセス間通信の仕組み．
+「```|```」の縦棒記号のこと．複数のプログラムの入出力を繋ぐことができる．
 
 ![pipeline](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/pipeline.png)
 
 #### ・grepとの組み合わせ
 
-「```|```」の縦棒記号のこと．コマンドの出力結果を表示せずに，次のコマンドの引数として渡す．例えば，```find```コマンドの出力結果を```grep```コマンドに渡し，フィルタリングを行う．
+コマンドの出力結果を```grep```コマンドに渡し，フィルタリングを行う．
+
+**＊コマンド例＊**
+
+検索されたファイル内で，さらに文字列を検索する．
 
 ```sh
-# find ---> grep
-$ find /* -type f |xargs grep "<検索文字>"
+$ find /* -type f | xargs grep "<検索文字>"
 ```
 
 #### ・killとの組み合わせ
 
-フィルタリング結果に対して，```kill```コマンドを行う．
+コマンドの出力結果に対して，```kill```コマンドを行う．
+
+**＊コマンド例＊**
+
+フィルタリングされたプロセスを削除する．
 
 ```sh
-# フィルタリングされたプロセスを削除する．
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
+```
+
+#### ・awkとの組み合わせ
+
+コマンドの出力結果に対して，```awk```コマンドを行う．
+
+**＊コマンド例＊**
+
+検索されたファイルの容量を合計する．
+
+```sh
+$ find ./* -name "*.js" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+$ find ./* -name "*.css" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+$ find ./* -name "*.png" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
 ```
 
 #### ・sortとの組み合わせ
 
-出力結果に対して，並び順を変更する．
+コマンドの出力結果に対して，並び順を変更する．
+
+**＊コマンド例＊**
+
+表示された環境変数をAZ昇順に並び替える．
 
 ```sh
-# 表示された環境変数をAZ昇順に並び替える．
 $ printenv | sort -f
 ```
 
