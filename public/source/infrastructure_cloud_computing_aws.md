@@ -897,10 +897,21 @@ fs-xxx.efs.ap-northeast-1.amazonaws.com:/ xxx       xxx  xxx       1%   /var/www
 
 **＊コマンド例＊**
 
+指定したバケット内のファイル名を表示する．
+
 ```sh
-# 指定したバケット内のファイル名を表示
 $ aws s3 ls s3://<バケット名>
 ```
+
+**＊コマンド例＊**
+
+指定したバケット内のファイル容量を合計する．
+
+```sh
+$ aws s3 ls s3://<バケット名> --summarize --recursive --human-readable
+```
+
+
 
 <br>
 
