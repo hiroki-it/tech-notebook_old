@@ -536,22 +536,6 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 5. リクエスト数が減少し，CPU使用率が20%に低下する．
 6. タスク数が2つにスケールインし，CPU使用率40%に維持される．
 
-#### ・ローリングアップデート
-
-1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを構築．
-3. サービスを更新．
-4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
-
-#### ・CodeDeployを使用したBlue/Greenデプロイ
-
-![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
-
-1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを構築．
-3. サービスを更新．
-4. CodeDeployによって，タスク定義を基に，現行の本番環境（Prodブルー）のタスクとは別に，テスト環境（Testグリーン）が構築される．ロードバランサーの接続先を本番環境（Prodブルー）のターゲットグループ（Primaryターゲットグループ）から，テスト環境（Testグリーン）のターゲットグループに切り替える．テスト環境（Testグリーン）で問題なければ，これを新しい本番環境としてリリースする．
-
 <br>
 
 ### タスク
@@ -677,6 +661,23 @@ EXIT_CODE=$(echo ${RESULT} | jq .tasks[0].containers[0].exitCode)
 echo exitCode ${EXIT_CODE}
 exit ${EXIT_CODE}
 ```
+
+<br>
+
+### 新しいタスクのデプロイ
+
+#### ・ローリングアップデート
+
+![rolling-update](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/rolling-update.png)
+
+1. ECRのイメージを更新
+2. タスク定義の新しいリビジョンを構築．
+3. サービスを更新．
+4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
+
+#### ・Blue/Greenデプロイメント
+
+詳しくは，CodeDeployの説明を参考にせよ．
 
 <br>
 
