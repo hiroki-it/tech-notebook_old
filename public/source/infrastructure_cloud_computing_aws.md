@@ -2301,6 +2301,16 @@ test:
 
 <br>
 
+### EventBridge（CloudWatchEvents）
+
+#### ・EventBridgeとは
+
+AWSリソースのイベントを他のAWSリソースに転送する．サポート対象のAWSリソースは以下のリンクを参考にせよ．
+
+参考：https://docs.aws.amazon.com/eventbridge/latest/userguide/what-is-amazon-eventbridge.html
+
+<br>
+
 ## 08. 管理，ガバナンス
 
 ### オートスケーリング
@@ -2344,6 +2354,12 @@ SNSを経由して，CloudWatchからの通知をチャットアプリに転送�
 | Slackチャンネル | 通知の転送先のSlackチャンネルを設定する．                    |
 | アクセス許可    | SNSを介して，CloudWatchにアクセスするためのロールを設定する． |
 | SNSトピック     | CloudWatchへのアクセス時経由する，SNSトピックを設定する．    |
+
+#### ・サポート対象のイベント
+
+AWSリソースのイベントを，EventBridge（CloudWatchEvents）を用いて，Chatbotに転送できるが，全てのAWSリソースをサポートしているわけではない．サポート対象のAWSリソースは以下のリンクを参考にせよ．
+
+参考：https://docs.aws.amazon.com/ja_jp/chatbot/latest/adminguide/related-services.html#cloudwatchevents
 
 <br>
 
@@ -2577,22 +2593,6 @@ $ service awslogs start
 
 # ログが新しく生成されないと変更が適用されないことがあるため，ログファイルに適当な文字列行を増やしてみる．
 ```
-
-<br>
-
-### CloudWatch Events
-
-#### ・CloudWatch Eventsとは
-
-イベントを検知し，指定したアクションを行う．
-
-| イベント例                        |      | アクション例                               |
-| --------------------------------- | ---- | ------------------------------------------ |
-| ECSタスクスケジュール機能の有効化 | ⇒    | 決められた時間にスケジューリング機能を発火 |
-| APIのコール                       | ⇒    | Lambdaによる関数の実行                     |
-| AWSコンソールへのログイン         | ⇒    | SQSによるメッセージの格納                  |
-| インスタンスの状態変化            | ⇒    | SNSによるメール通知                        |
-| ...                               | ⇒    | ...                                        |
 
 <br>
 
