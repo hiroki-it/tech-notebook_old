@@ -2284,7 +2284,7 @@ test:
 | サブスクリプション       | サブスクリプションを登録する．                               |
 | アクセスポリシー         | トピックへのアクセス権限を設定する．                         |
 | 配信再試行ポリシー       | サブスクリプションのHTTP/Sエンドポイントが失敗した時のリトライ方法を設定する．<br>参考：https://docs.aws.amazon.com/ja_jp/sns/latest/dg/sns-message-delivery-retries.html |
-| 配信ステータスのログ記録 | サブスクリプションへの発信のログをCloudWatchLogsに転送するように設定する． |
+| 配信ステータスのログ記録 | サブスクリプションへの発信のログをCloudWatch Logsに転送するように設定する． |
 | 暗号化                   |                                                              |
 
 #### ・サブスクリプションの詳細項目
@@ -3123,7 +3123,6 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"
@@ -3270,7 +3269,6 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
@@ -3374,7 +3372,6 @@ aws_secret_access_key=<シークレットキー>
     "Condition": {
       "NotIpAddress": {
         "aws:SourceIp": [
-          "nn.nnn.nnn.nnn/32",
           "nn.nnn.nnn.nnn/32"
         ]
       }
