@@ -536,22 +536,6 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 5. リクエスト数が減少し，CPU使用率が20%に低下する．
 6. タスク数が2つにスケールインし，CPU使用率40%に維持される．
 
-#### ・ローリングアップデート
-
-1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを構築．
-3. サービスを更新．
-4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
-
-#### ・CodeDeployを使用したBlue/Greenデプロイ
-
-![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
-
-1. ECRのイメージを更新
-2. タスク定義の新しいリビジョンを構築．
-3. サービスを更新．
-4. CodeDeployによって，タスク定義を基に，現行の本番環境（Prodブルー）のタスクとは別に，テスト環境（Testグリーン）が構築される．ロードバランサーの接続先を本番環境（Prodブルー）のターゲットグループ（Primaryターゲットグループ）から，テスト環境（Testグリーン）のターゲットグループに切り替える．テスト環境（Testグリーン）で問題なければ，これを新しい本番環境としてリリースする．
-
 <br>
 
 ### タスク
@@ -677,6 +661,23 @@ EXIT_CODE=$(echo ${RESULT} | jq .tasks[0].containers[0].exitCode)
 echo exitCode ${EXIT_CODE}
 exit ${EXIT_CODE}
 ```
+
+<br>
+
+### 新しいタスクのデプロイ
+
+#### ・ローリングアップデート
+
+![rolling-update](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/rolling-update.png)
+
+1. ECRのイメージを更新
+2. タスク定義の新しいリビジョンを構築．
+3. サービスを更新．
+4. ローリングアップデートによって，タスク定義を基に，新しいタスクがリリースされる．
+
+#### ・Blue/Greenデプロイメント
+
+詳しくは，CodeDeployの説明を参考にせよ．
 
 <br>
 
@@ -896,10 +897,21 @@ fs-xxx.efs.ap-northeast-1.amazonaws.com:/ xxx       xxx  xxx       1%   /var/www
 
 **＊コマンド例＊**
 
+指定したバケット内のファイル名を表示する．
+
 ```sh
-# 指定したバケット内のファイル名を表示
 $ aws s3 ls s3://<バケット名>
 ```
+
+**＊コマンド例＊**
+
+指定したバケット内のファイル容量を合計する．
+
+```sh
+$ aws s3 ls s3://<バケット名> --summarize --recursive --human-readable
+```
+
+
 
 <br>
 
@@ -961,7 +973,6 @@ $ aws s3 ls s3://<バケット名>
   "Id": "PolicyForCloudFrontPrivateContent",
   "Statement": [
     {
-      "Sid": "1",
       "Effect": "Allow",
       "Principal": {
         "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity <OAIのID番号>"
@@ -1018,7 +1029,6 @@ $ aws s3 ls s3://<バケット名>
   "Id": "S3PolicyId1",
   "Statement": [
     {
-      "Sid": "IPAllow",
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
@@ -2153,7 +2163,9 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 | 静的サイトホスティング | Cloud Front，S3           |
 | リアルタイム通知       | AppSync，IoT Core         |
 
-#### ・設定の構成
+#### ・```amplify.yml```ファイル
+
+Amplifyのビルドとデプロイの設定を行う．ルートディレクトリの直下に配置しておく．
 
 参考：https://docs.aws.amazon.com/ja_jp/amplify/latest/userguide/build-settings.html
 
@@ -2198,9 +2210,9 @@ frontend:
     # デプロイ対象のディレクトリ  
     files:
         # 全てのディレクトリ
-        - **/*
+        - "**/*"
     discard-paths: yes
-    # ビルド成果物のディレクトリ 
+    # ビルド成果物を配置するディレクトリ 
     baseDirectory: dist
   # キャッシュとして保存するディレクトリ
   cache:
@@ -2225,7 +2237,7 @@ test:
     # デプロイ対象のディレクトリ
     files:
         # 全てのディレクトリ
-        - **/*
+        - "**/*"
     configFilePath: *location*
     # ビルド成果物のディレクトリ      
     baseDirectory: *location*
@@ -2233,7 +2245,7 @@ test:
 
 <br>
 
-## 07. アプリケーションインテグレーション
+## 07. アプリケーション統合
 
 ### SQS：Simple Queue Service
 
@@ -2265,7 +2277,17 @@ test:
 | トピック           | 複数のサブスクリプションをグループ化したもの．       |
 | サブスクリプション | エンドポイントで受信するメッセージの種類を設定する． |
 
-#### ・サブスクリプション
+#### ・トピックの詳細項目
+
+| 設定項目                 | 説明                                                         |
+| ------------------------ | ------------------------------------------------------------ |
+| サブスクリプション       | サブスクリプションを登録する．                               |
+| アクセスポリシー         | トピックへのアクセス権限を設定する．                         |
+| 配信再試行ポリシー       | サブスクリプションのHTTP/Sエンドポイントが失敗した時のリトライ方法を設定する．<br>参考：https://docs.aws.amazon.com/ja_jp/sns/latest/dg/sns-message-delivery-retries.html |
+| 配信ステータスのログ記録 | サブスクリプションへの発信のログをCloudWatch Logsに転送するように設定する． |
+| 暗号化                   |                                                              |
+
+#### ・サブスクリプションの詳細項目
 
 | メッセージの種類      | 転送先                | 備考                                                         |
 | --------------------- | --------------------- | ------------------------------------------------------------ |
@@ -2273,9 +2295,19 @@ test:
 | SQS                   | SQS                   |                                                              |
 | Lambda                | Lambda                |                                                              |
 | Eメール               | 任意のメールアドレス  |                                                              |
-| HTTPS                 | 任意のドメイン名      | Chatbotのドメイン名は「```https://global.sns-api.chatbot.amazonaws.com```」 |
+| HTTP/S                | 任意のドメイン名      | Chatbotのドメイン名は「```https://global.sns-api.chatbot.amazonaws.com```」 |
 | JSON形式のメール      | 任意のメールアドレス  |                                                              |
 | SMS                   | SMS                   | 受信者の電話番号を設定する．                                 |
+
+<br>
+
+### EventBridge（CloudWatchEvents）
+
+#### ・EventBridgeとは
+
+AWSリソースのイベントを他のAWSリソースに転送する．サポート対象のAWSリソースは以下のリンクを参考にせよ．
+
+参考：https://docs.aws.amazon.com/eventbridge/latest/userguide/what-is-amazon-eventbridge.html
 
 <br>
 
@@ -2322,6 +2354,12 @@ SNSを経由して，CloudWatchからの通知をチャットアプリに転送�
 | Slackチャンネル | 通知の転送先のSlackチャンネルを設定する．                    |
 | アクセス許可    | SNSを介して，CloudWatchにアクセスするためのロールを設定する． |
 | SNSトピック     | CloudWatchへのアクセス時経由する，SNSトピックを設定する．    |
+
+#### ・サポート対象のイベント
+
+AWSリソースのイベントを，EventBridge（CloudWatchEvents）を用いて，Chatbotに転送できるが，全てのAWSリソースをサポートしているわけではない．サポート対象のAWSリソースは以下のリンクを参考にせよ．
+
+参考：https://docs.aws.amazon.com/ja_jp/chatbot/latest/adminguide/related-services.html#cloudwatchevents
 
 <br>
 
@@ -2558,39 +2596,87 @@ $ service awslogs start
 
 <br>
 
-### CloudWatch Events
-
-#### ・CloudWatch Eventsとは
-
-イベントを検知し，指定したアクションを行う．
-
-| イベント例                        |      | アクション例                               |
-| --------------------------------- | ---- | ------------------------------------------ |
-| ECSタスクスケジュール機能の有効化 | ⇒    | 決められた時間にスケジューリング機能を発火 |
-| APIのコール                       | ⇒    | Lambdaによる関数の実行                     |
-| AWSコンソールへのログイン         | ⇒    | SQSによるメッセージの格納                  |
-| インスタンスの状態変化            | ⇒    | SNSによるメール通知                        |
-| ...                               | ⇒    | ...                                        |
-
-<br>
-
 ### CloudWatch Alarm
 
 <br>
 
 ## 09. 開発者用ツール
 
-### CodeDeploy
+### CodePipeline
 
-#### ・CodeDeployとは
+#### ・CodePipelineとは
 
 <br>
 
-### デプロイ
+### CodeBuild
 
-#### ・appspecファイル
+#### ・```buildspec.yml```ファイル
 
-デプロイの設定を行う．
+CodeBuildの設定を行う．ルートディレクトリの直下に配置しておく．
+
+参考：https://docs.aws.amazon.com/ja_jp/codebuild/latest/userguide/build-spec-ref.html
+
+```yaml
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  preBuild:
+    commands:
+      # ECRにログイン
+      - $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
+      # イメージタグはコミットのハッシュ値を使用
+      - IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      # ECRのURLをCodeBuildの環境変数から作成
+      - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}
+  build:
+    commands:
+      # タグ付けしてイメージをビルド
+      - docker build -t REPOSITORY_URI:$IMAGE_TAG -f Dockerfile .
+  postBuild:
+    commands:
+      # ECRにイメージをプッシュ
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      # ECRにあるデプロイ対象のイメージの情報（imageDetail.json）
+      - printf '{"Version":"1.0","ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+    
+# デプロイ対象のビルド成果物    
+artifacts:
+  files: imageDetail.json
+```
+
+#### ・ビルド時に作成すべきデプロイ設定ファイル
+
+デプロイ対象となるイメージを定義するために，標準デプロイアクションの場合には```imagedefinitions.json```ファイル，またはBlue/Greenデプロイメントの場合には```imageDetail.json```ファイルを用意する必要がある．これはリポジトリに事前に配置するのではなく，ビルド時に自動的に作成するようにした方がよい．
+
+参考：https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/file-reference.html
+
+<br>
+
+### CodeDeployによるBlue/Greenデプロイメント
+
+#### ・Blue/Greenデプロイメントとは
+
+![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
+
+以下の手順でデプロイを行う．
+
+1. ECRのイメージを更新
+2. タスク定義の新しいリビジョンを構築．
+3. サービスを更新．
+4. CodeDeployによって，タスク定義を基に，現行の本番環境（Prodブルー）のタスクとは別に，テスト環境（Testグリーン）が構築される．ロードバランサーの接続先を，本番環境（Prodブルー）のターゲットグループ（Primaryターゲットグループ）に加えて，テスト環境（Testグリーン）にも向ける．
+5. 社内からテスト環境（Testグリーン）のALBに，特定のポート番号でアクセスし，動作を確認する．
+6. 動作確認で問題なければ，Console画面からの入力で，ロードバランサーの接続先をテスト環境（Testグリーン）のみに設定する．
+7. テスト環境（Testグリーン）が新しい本番環境としてユーザに公開される．
+8. 元々の本番環境（Prodブルー）は削除される．
+
+#### ・```appspec.yml```ファイル
+
+CodeDeployの設定を行う．ルートディレクトリの直下に配置しておく．仕様として，複数のコンテナをデプロイできない．タスク定義名を```<TASK_DEFINITION>```とすると，自動補完してくれる．
+
+参考：https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-resources.html
 
 ```yaml
 version: 0.0
@@ -2600,15 +2686,93 @@ Resources:
       # 使用するAWSリソース
       Type: AWS::ECS::Service
       Properties:
-        # 使用するタスク定義．<TASK_DEFINITION> とすると，自動補完してくれる．
+        # 使用するタスク定義
         TaskDefinition: "<TASK_DEFINITION>"
         # 使用するロードバランサー
         LoadBalancerInfo:
-          ContainerName: "xxx-container"
+          ContainerName: "<コンテナ名>"
           ContainerPort: "80"
+        PlatformVersion: "1.4.0"
 ```
 
-#### ・ライフサイクルイベント
+#### ・```taskdef.json```ファイル
+
+デプロイされるタスク定義を実装し，ルートディレクトリの直下に配置する．CodeDeployは，CodeBuildから渡された```imageDetail.json```ファイルを検知し，ECRからイメージを取得する．この時，```taskdef.json```ファイルのイメージ名を```<IMAGE1_NAME>```としておくと，ECRから取得したイメージ名を使用して，自動補完してくれる．
+
+```json
+{
+  "family": "<タスク定義名>",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "taskRoleArn": "<タスクロールのARN>",
+  "executionRoleArn": "<タスク実行ロールのARN>",
+  "cpu": "512",
+  "memory": "1024",
+  "containerDefinitions": [
+    {
+      "name": "<コンテナ名>",
+      "image": "<IMAGE1_NAME>",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "<アプリケーションの環境変数名>",
+          "valueFrom": "<SSMのパラメータ名>"
+        },
+        {
+          "name": "DB_HOST",
+          "valueFrom": "/ecs/DB_HOST"
+        },
+        {
+          "name": "DB_DATABASE",
+          "valueFrom": "/ecs/DB_DATABASE"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "/ecs/DB_PASSWORD"
+        },
+        {
+          "name": "DB_USERNAME",
+          "valueFrom": "/ecs/DB_USERNAME"
+        },
+        {
+          "name": "REDIS_HOST",
+          "valueFrom": "/ecs/REDIS_HOST"
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "valueFrom": "/ecs/REDIS_PASSWORD"
+        },
+        {
+          "name": "REDIS_PORT",
+          "valueFrom": "/ecs/REDIS_PORT"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "<ロググループ名>",
+          "awslogs-datetime-format": "\\[%Y-%m-%d %H:%M:%S\\]",
+          "awslogs-region": "<リージョン>",
+          "awslogs-stream-prefix": "<ログストリーム名のプレフィクス>"
+        }
+      }
+    }
+  ]
+}
+```
+
+<br>
+
+### CodeDeployによるインプレースデプロイメント
 
 <br>
 
@@ -2959,7 +3123,6 @@ Cookie: PHPSESSID=<セッションID>; _gid=<GoogleAnalytics値>; __ulfpc=<Googl
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"
@@ -3106,7 +3269,6 @@ ECRにアタッチされる，イメージの有効期間を定義するポリ�
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
       "Effect": "Allow",
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
@@ -3210,7 +3372,6 @@ aws_secret_access_key=<シークレットキー>
     "Condition": {
       "NotIpAddress": {
         "aws:SourceIp": [
-          "nn.nnn.nnn.nnn/32",
           "nn.nnn.nnn.nnn/32"
         ]
       }
