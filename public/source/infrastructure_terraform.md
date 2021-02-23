@@ -8,11 +8,11 @@
 
 ローカルにstateファイルを作成する．
 
-```bash
+```sh
 $ terraform init -backend=false
 ```
 
-```bash
+```sh
 # ディレクトリを指定することも可能
 $ terraform init -backend=false <ルートモジュールのディレクトリへの相対パス>
 ```
@@ -21,7 +21,7 @@ $ terraform init -backend=false <ルートモジュールのディレクトリ�
 
 リモートにstateファイルを作成する．代わりに，```terraform settings```ブロック内の```backend```で指定しても良い．
 
-```bash
+```sh
 $ terraform init \
     -backend=true \
     -reconfigure \
@@ -36,7 +36,7 @@ $ terraform init \
 
 指定されたバックエンドのstateファイルがある場合，これを削除し，新しくstateファイルを作成する．
 
-```bash
+```sh
 $ terraform init -reconfigure
 ```
 
@@ -44,7 +44,7 @@ $ terraform init -reconfigure
 
 モジュールとプラグインを更新する．
 
-```bash
+```sh
 $ terraform init -upgrade
 ```
 
@@ -56,13 +56,13 @@ $ terraform init -upgrade
 
 設定ファイルの検証を行う．
 
-```bash
+```sh
 $ terraform validate
 
 Success! The configuration is valid.
 ```
 
-```bash
+```sh
 # ディレクトリを指定することも可能
 $ terraform validate <ルートモジュールのディレクトリへの相対パス>
 ```
@@ -75,7 +75,7 @@ $ terraform validate <ルートモジュールのディレクトリへの相対�
 
 インデントを揃えるべき箇所が存在するかどうかを判定する．もし存在する場合「```1```」，存在しない場合は「```0```」を返却する．
 
-```bash
+```sh
 $ terraform fmt -check
 ```
 
@@ -83,7 +83,7 @@ $ terraform fmt -check
 
 設定ファイルのインデントを揃える．処理を行ったファイルが表示される．
 
-```bash
+```sh
 # -recursive: サブディレクトリを含む全ファイルをフォーマット
 $ terraform fmt -recursive
 
@@ -98,7 +98,7 @@ main.tf
 
 terraformによる構築ではない方法で，すでにクラウド上にリソースが構築されている場合，これをterraformの管理下におく必要がある．リソースタイプとリソース名を指定し，stateファイルにリモートの状態を書き込む．現状，全てのリソースを一括して```import```する方法は無い．リソースIDは，リソースによって異なるため，リファレンスの「Import」または「Attributes Referenceの```id```」を確認すること（例えば，ACMにとってのIDはARNだが，S3バケットにとってのIDはバケット名である）．
 
-```bash
+```sh
 $ terraform import \
     -var-file=config.tfvars \
     <リソースタイプ>.<リソース名> <AWS上リソースID>
@@ -106,7 +106,7 @@ $ terraform import \
 
 モジュールを使用している場合，指定の方法が異なる．
 
-```bash
+```sh
 $ terraform import \
     -var-file=config.tfvars \
     module.<モジュール名>.<リソースタイプ>.<リソース名> <AWS上リソースID>
@@ -114,7 +114,7 @@ $ terraform import \
 
 例えば，AWS上にすでにECRが存在しているとして，これをterraformの管理下におく．
 
-```bash
+```sh
 $ terraform import \
     -var-file=config.tfvars \
     module.ecr.aws_ecr_repository.www xxxxxxxxx
@@ -122,7 +122,7 @@ $ terraform import \
 
 そして，ローカルのstateファイルとリモートの差分が無くなるまで，```import```を繰り返す．
 
-````bash
+````sh
 $ terraform plan -var-file=config.tfvars
 
 No changes. Infrastructure is up-to-date.
@@ -134,13 +134,13 @@ No changes. Infrastructure is up-to-date.
 
 （エラー例1）
 
-```bash
+```sh
 Error: InvalidParameterException: Creation of service was not idempotent.
 ```
 
 （エラー例2）
 
-```bash
+```sh
 Error: error creating ECR repository: RepositoryAlreadyExistsException: The repository with name 'tech-notebook_www' already exists in the registry with id 'XXXXXXXXXXXX'
 ```
 
@@ -152,7 +152,7 @@ Error: error creating ECR repository: RepositoryAlreadyExistsException: The repo
 
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルに反映する．
 
-```bash
+```sh
 $ terraform refresh -var-file=config.tfvars
 ```
 
@@ -174,11 +174,11 @@ $ terraform refresh -var-file=config.tfvars
 
 クラウドに対してリクエストを行い，現在のリソースの状態をtfstateファイルには反映せずに，設定ファイルの記述との差分を検証する．スクリプト実行時に，変数が定義されたファイルを実行すると，```variable```で宣言した変数に，値が格納される．
 
-```bash
+```sh
 $ terraform plan -var-file=config.tfvars
 ```
 
-```bash
+```sh
 # ディレクトリを指定することも可能
 # 第一引数で変数ファイルの相対パス，第二引数でをルートモジュールの相対パス
 $ terraform plan \
@@ -188,7 +188,7 @@ $ terraform plan \
 
 差分がなければ，以下の通りになる．
 
-```bash
+```sh
 No changes. Infrastructure is up-to-date.
 
 This means that Terraform did not detect any differences between your
@@ -200,7 +200,7 @@ actions need to be performed.
 
 特定のリソースに対して，```plan```コマンドを実行する．
 
-```bash
+```sh
 $ terraform plan \
     -var-file=config.tfvars \
     -target=<リソースタイプ>.<リソース名>
@@ -208,7 +208,7 @@ $ terraform plan \
 
 モジュールを使用している場合，指定の方法が異なる．
 
-```bash
+```sh
 $ terraform plan \
     -var-file=config.tfvars \
     -target=module.<モジュール名>.<リソースタイプ>.<リソース名>
@@ -218,7 +218,7 @@ $ terraform plan \
 
 このオプションをつければ，```refresh```コマンドを同時に実行してくれる．ただ，デフォルトで```true```なので，不要である．
 
-```bash
+```sh
 $ terraform plan \
     -var-file=config.tfvars \
     -refresh=true
@@ -230,7 +230,7 @@ https://github.com/hashicorp/terraform/issues/17311
 
 並列処理数を設定できる．デフォルト値は```10```である．
 
-```bash
+```sh
 $ terraform plan \
     -var-file=config.tfvars \
     -parallelism=30
@@ -240,7 +240,7 @@ $ terraform plan \
 
 実行プランファイルを生成する．```apply```コマンドのために使用できる．
 
-```bash
+```sh
 $ terraform plan \
     -var-file=config.tfvars \
     -out=<実行プランファイル名>.tfplan
@@ -254,11 +254,11 @@ $ terraform plan \
 
 AWS上にクラウドインフラストラクチャを構築する．
 
-```bash
+```sh
 $ terraform apply -var-file config.tfvars
 ```
 
-```bash
+```sh
 # ディレクトリを指定することも可能
 # 第一引数で変数ファイルの相対パス，第二引数でをルートモジュールの相対パス
 $ terraform apply \
@@ -268,7 +268,7 @@ $ terraform apply \
 
 成功すると，以下のメッセージが表示される．
 
-```bash
+```sh
 Apply complete! Resources: X added, 0 changed, 0 destroyed.
 ```
 
@@ -276,7 +276,7 @@ Apply complete! Resources: X added, 0 changed, 0 destroyed.
 
 特定のリソースに対して，```apply```コマンドを実行する．
 
-```bash
+```sh
 $ terraform apply \
     -var-file=config.tfvars \
     -target=<リソースタイプ>.<リソース名>
@@ -284,7 +284,7 @@ $ terraform apply \
 
 モジュールを使用している場合，指定の方法が異なる．
 
-```bash
+```sh
 $ terraform apply \
     -var-file=config.tfvars \
     -target=module.<モジュール名>.<リソースタイプ>.<リソース名>
@@ -294,7 +294,7 @@ $ terraform apply \
 
 並列処理数を設定できる．デフォルト値は```10```である．
 
-```bash
+```sh
 $ terraform apply \
     -var-file=config.tfvars \
     -parallelism=30
@@ -304,7 +304,7 @@ $ terraform apply \
 
 事前に，```plan```コマンドによって生成された実行プランファイルを元に，```apply```コマンドを実行する．実行プランを渡す場合は，変数をオプションに設定する必要はない．
 
-```bash
+```sh
 $ terraform apply <実行プランファイル名>.tfplan
 ```
 
@@ -316,7 +316,7 @@ $ terraform apply <実行プランファイル名>.tfplan
 
 stateファイルにおける指定されたリソースの```tainted```フラグを立てる．例えば，```apply```したが，途中でエラーが発生してしまい，リモートに中途半端はリソースが構築されてしまうことがある．ここで，```tainted```を立てておくと，リモートのリソースを削除したと想定した```plan```を実行できる．
 
-```bash
+```sh
 $ terraform taint \
     -var-file=config.tfvars \
     module.<モジュール名>.<リソースタイプ>.<リソース名>
@@ -324,7 +324,7 @@ $ terraform taint \
 
 この後の```plan```コマンドのログからも，```-/+```で削除が行われる想定で，差分を比較していることがわかる．
 
-```bash
+```sh
 $ terraform plan -var-file=config.tfvars
 
 An execution plan has been generated and is shown below.
@@ -348,13 +348,13 @@ Plan: 1 to add, 0 to change, 1 to destroy.
 
 ファイル内で定義しているリソースの一覧を表示する．
 
-```bash
+```sh
 $ terraform state list
 ```
 
 以下の通り，モジュールも含めて，リソースが表示される．
 
-```bash
+```sh
 aws_instance.www-1a
 aws_instance.www-1c
 aws_key_pair.key_pair
@@ -711,7 +711,7 @@ provider "aws" {
 
 Credentialsファイルではなく，```export```を使用して，必要な情報を設定しておくことも可能である．参照できる環境変数名は決まっている．
 
-```bash
+```sh
 # regionの代わり
 $ export AWS_DEFAULT_REGION="ap-northeast-1"
 
@@ -1594,11 +1594,12 @@ resource "aws_ecs_task_definition" "this" {
 }
 ```
 
+ログ分割の目印を設定する```awslogs-datetime-format```キーでは，タイムスタンプを表す```\\[%Y-%m-%d %H:%M:%S\\]```を設定すると良い．
 
 ```json
 [
   {
-    "name": "app",
+    "name": "<コンテナ名>",
     "image": "<ECRリポジトリのURL>",
     "essential": true,
     "portMappings": [
@@ -2899,7 +2900,7 @@ AWSのノートを参照せよ．
 
 #### ・terraform_apply.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -2914,7 +2915,7 @@ terraform apply \
 
 #### ・terraform_destroy_test.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -2932,7 +2933,7 @@ fi
 
 #### ・terraform_fmt.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -2944,7 +2945,7 @@ terraform fmt \
 
 #### ・terraform_init.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -2964,7 +2965,7 @@ terraform init \
 
 #### ・terraform_plan.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -2981,7 +2982,7 @@ terraform plan \
 
 #### ・terraform_validate.sh
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
@@ -3004,7 +3005,7 @@ CircleCIで利用する場合は，commandの中で，以下からダウンロ�
 
 https://github.com/mercari/tfnotify/releases/tag/v0.7.0
 
-```bash
+```sh
 #!/bin/bash
 
 set -xeuo pipefail
