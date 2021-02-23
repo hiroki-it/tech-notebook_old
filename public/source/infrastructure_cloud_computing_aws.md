@@ -2163,7 +2163,9 @@ VPC に複数の IPv4 CIDR ブロックがあり，一つでも 同じCIDR ブ�
 | 静的サイトホスティング | Cloud Front，S3           |
 | リアルタイム通知       | AppSync，IoT Core         |
 
-#### ・設定の構成
+#### ・```amplify.yml```ファイル
+
+Amplifyのビルドとデプロイの設定を行う．ルートディレクトリの直下に配置しておく．
 
 参考：https://docs.aws.amazon.com/ja_jp/amplify/latest/userguide/build-settings.html
 
@@ -2208,9 +2210,9 @@ frontend:
     # デプロイ対象のディレクトリ  
     files:
         # 全てのディレクトリ
-        - **/*
+        - "**/*"
     discard-paths: yes
-    # ビルド成果物のディレクトリ 
+    # ビルド成果物を配置するディレクトリ 
     baseDirectory: dist
   # キャッシュとして保存するディレクトリ
   cache:
@@ -2235,7 +2237,7 @@ test:
     # デプロイ対象のディレクトリ
     files:
         # 全てのディレクトリ
-        - **/*
+        - "**/*"
     configFilePath: *location*
     # ビルド成果物のディレクトリ      
     baseDirectory: *location*
@@ -2243,7 +2245,7 @@ test:
 
 <br>
 
-## 07. アプリケーションインテグレーション
+## 07. アプリケーション統合
 
 ### SQS：Simple Queue Service
 
