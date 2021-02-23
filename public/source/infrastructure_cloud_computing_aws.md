@@ -973,7 +973,6 @@ $ aws s3 ls s3://<バケット名> --summarize --recursive --human-readable
   "Id": "PolicyForCloudFrontPrivateContent",
   "Statement": [
     {
-      "Sid": "1",
       "Effect": "Allow",
       "Principal": {
         "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity <OAIのID番号>"
@@ -1030,7 +1029,6 @@ $ aws s3 ls s3://<バケット名> --summarize --recursive --human-readable
   "Id": "S3PolicyId1",
   "Statement": [
     {
-      "Sid": "IPAllow",
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
