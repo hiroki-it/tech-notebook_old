@@ -180,6 +180,20 @@ $ find /* -type f | xargs grep "<検索文字>"
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
+#### ・awkとの組み合わせ
+
+コマンドの出力結果に対して，```awk```コマンドを行う．
+
+**＊コマンド例＊**
+
+検索されたファイルの容量を合計する．
+
+```sh
+$ find ./* -name "*.js" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+$ find ./* -name "*.css" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+$ find ./* -name "*.png" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+```
+
 #### ・sortとの組み合わせ
 
 コマンドの出力結果に対して，並び順を変更する．
