@@ -38,7 +38,7 @@ Laravelの各コンポーネントには，似たような名前のメソッド�
 
 #### ・設定方法
 
-```
+```sh
 APP_NAME=<サービス名>
 APP_ENV=<環境名>
 APP_KEY=<セッションの作成やパスワードの暗号化に使う認証キー>
@@ -103,7 +103,7 @@ return [
 
 環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
 
-```
+```sh
 DB_CONNECTION=<RDB名>
 DB_HOST=<ホスト名>
 DB_PORT=<ポート番号>
@@ -163,14 +163,12 @@ return [
 
 環境変数を```.env```ファイルに実装する必要がある．
 
-```
+```sh
 CACHE_DRIVER=redis
 REDIS_HOST=<Redisのホスト>
 REDIS_PASSWORD=<Redisのパスワード>
 REDIS_PORT=<Redisのポート>
 ```
-
-
 
 <br>
 
@@ -2229,7 +2227,7 @@ class FileSystemPublicController extends Controller
 
 ファイルをS3バケット内のディレクトリに保存する．環境変数を```.env```ファイルに実装する必要がある．```filesystems.php```ファイルから，指定された設定が選択される．AWSアカウントの認証情報を環境変数として設定するか，またはS3アクセスポリシーをEC2やECSタスクに付与することにより，S3にアクセスできるようになる．
 
-```
+```sh
 # S3アクセスポリシーをEC2やECSタスクに付与してもよい
 AWS_ACCESS_KEY_ID=<アクセスキー>
 AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
@@ -2273,7 +2271,7 @@ Storage::disk('s3')->put('file.txt', 'file.txt');
 
 ただし，環境変数を使用して，```filesytems.php```ファイルでデフォルトディスクを```s3```に変更すると，```put```メソッドを直接使用できる．
 
-```php
+```sh
 FILESYSTEM_DRIVER=s3
 ```
 
@@ -3337,7 +3335,7 @@ Schema::create('examples', function (Blueprint $table) {
 
 ### artisanコマンドによる操作
 
-```
+```sh
 
 ```
 
@@ -4163,9 +4161,9 @@ $ php artisan make:provider <クラス名>
 
 <br>
 
-### AppServiceProvider
+### ServiceContainer
 
-#### ・ServiceContainer，バインド，リゾルブ
+#### ・ServiceContainer，バインド，リゾルブとは
 
 クラスをバインド（登録）しただけで新しいインスタンスをリゾルブ（生成）してくれるオブジェクトを『ServiceContainer』という．
 
@@ -4200,6 +4198,10 @@ interface Container extends ContainerInterface
     public function singleton($abstract, $concrete = null);
 }
 ```
+
+<br>
+
+### AppServiceProvider
 
 #### ・具象クラスをバインド
 
