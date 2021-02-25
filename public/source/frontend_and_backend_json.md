@@ -28,7 +28,9 @@
 
 #### ・マークアップ言語
 
-ブラウザレンダリングの仕組みに関するノートを参照せよ．
+詳しくは以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_browser_rendering.html
 
 #### ・CSV：Comma Separated Vector
 

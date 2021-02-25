@@ -1,4 +1,4 @@
-# Amazon Web Service
+Amazon Web Service
 
 ## 01. コンピューティング｜EC2
 
@@ -455,9 +455,7 @@ Cloud Frontと連携する場合，Cloud Frontに割り振られる可能性の�
 
 #### ・Regionとは
 
-物理サーバのあるデータセンターの地域名のこと．2020年時点では，以下の地点にデータセンターがある．
-
-![AWSRegionMap](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/AWSAWSRegionMap.png)
+物理サーバのあるデータセンターの地域名のこと．
 
 #### ・Globalとエッジロケーションとは
 
@@ -618,14 +616,14 @@ Regionは，さらに，各データセンターは物理的に独立したAvail
 
 #### ・新しいタスクを一時的に実行
 
-現在起動中のECSタスクとは別に，新しいタスクを一時的に起動する．起動時に，```overrides```オプションを使用して，指定したタスク定義のコンテナ設定を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．コマンドが実行された後に，タスクは自動的にStopped状態になる．CI/CDツールで実行する以外に，ローカルから手動で実行する場合もある．
+現在起動中のECSタスクとは別に，新しいタスクを一時的に起動する．CI/CDツールで実行する以外に，ローカルから手動で実行する場合もある．起動時に，```overrides```オプションを使用して，指定したタスク定義のコンテナ設定を上書きできる．正規表現で設定する必要があり，さらにJSONでは「```\```」を「```\\```」にエスケープしなければならない．コマンドが実行された後に，タスクは自動的にStopped状態になる．
 
 **＊実装例＊**
 
-LaravelのSeederコマンドやロールバックコマンドをローカルから実行する．
+LaravelのSeederコマンドやロールバックコマンドを，ローカルPCから実行する．
 
 ```sh
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -x
 
@@ -636,6 +634,7 @@ TASK_NAME="stg-ecs-task-definition"
 SUBNETS_CONFIG=$(aws ecs describe-services --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} --query "services[].deployments[].networkConfiguration[].awsvpcConfiguration[].subnets[]")
 SGS_CONFIG=$(aws ecs describe-services --cluster ${CLUSTER_NAME} --services ${SERVICE_NAME} --query "services[].deployments[].networkConfiguration[].awsvpcConfiguration[].securityGroups[]")
 
+# 実行したいコマンドをoverridesに設定する．
 echo "Run Task"
 TASK_ARN=$(aws ecs run-task \
   --launch-type FARGATE \
@@ -660,6 +659,31 @@ echo ${RESULT}
 EXIT_CODE=$(echo ${RESULT} | jq .tasks[0].containers[0].exitCode)
 echo exitCode ${EXIT_CODE}
 exit ${EXIT_CODE}
+```
+
+なお，実行IAMユーザを作成し，ECSタスクを起動できる最低限の権限を付与する．
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole",
+                "ecs:RunTask",
+                "ecs:DescribeServices",
+                "ecs:DescribeTasks"
+            ],
+            "Resource": [
+                "arn:aws:ecs:*:<アカウントID>:service/*",
+                "arn:aws:ecs:*:<アカウントID>:task/*",
+                "arn:aws:ecs:*:<アカウントID>:task-definition/*",
+                "arn:aws:iam::<アカウントID>:role/*"
+            ]
+        }
+    ]
+}
 ```
 
 <br>
@@ -1975,7 +1999,7 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 
 ### Route Table（= マッピングテーブル）
 
-![ルートテーブル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ルートテーブル.png)
+![route-table](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/route-table.png)
 
 #### ・ルートテーブルとは
 
@@ -2014,7 +2038,9 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 
 ### Network ACL：Network Access  Control List
 
-![ネットワークACL](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネットワークACL.png)
+![network-acl](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/network-acl.png)
+
+![network-acl](C:\Users\h.hasegawa\Documents\Drive 1st\プログラミング\tech-notebook\Drive_source\images\network-acl.png)
 
 #### ・Network ACLとは
 
@@ -2043,7 +2069,7 @@ NAPT（動的NAT）の機能を持つ．一つのパブリックIPに対して�
 
 内部ネットワークに相当する．外部から直接リクエストを受けずにレスポンスを返せるように，内のNATを経由させる必要がある．
 
-![パブリックサブネットとプライベートサブネットの設計](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パブリックサブネットとプライベートサブネットの設計.png)
+![public-subnet_private-subnet](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/public-subnet_private-subnet.png)
 
 #### ・同一VPC内の各AWSリソースに割り当てる最低限のIPアドレス数
 
@@ -2177,7 +2203,7 @@ version: 1
 #===================== 
 env:
   variables:
-      key: value
+    key: value
       
 #=====================      
 # バックエンドのCI/CD
@@ -2191,7 +2217,7 @@ backend:
       commands:
         - *enter command*
     postBuild:
-        commands:
+      commands:
         - *enter command*
         
 #=====================         
@@ -2201,11 +2227,16 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "APP_ENV=$APP_ENV" >> .env
+        - echo $API_URL | base64 --decode > .env
+        - echo $API_URL_BROWSER | base64 --decode >> .env
+        - echo $OAUTH_CLIENT_ID | base64 --decode >> .env
+        - echo $OAUTH_CLIENT_SECRET | base64 --decode >> .env
+        - echo $GOOGLE_MAP_QUERY_URL | base64 --decode >> .env
         - npm install
     build:
       commands:
         - nuxt generate
+        - ls -la ./dist
   artifacts:
     # デプロイ対象のディレクトリ  
     files:
@@ -2284,7 +2315,7 @@ test:
 | サブスクリプション       | サブスクリプションを登録する．                               |
 | アクセスポリシー         | トピックへのアクセス権限を設定する．                         |
 | 配信再試行ポリシー       | サブスクリプションのHTTP/Sエンドポイントが失敗した時のリトライ方法を設定する．<br>参考：https://docs.aws.amazon.com/ja_jp/sns/latest/dg/sns-message-delivery-retries.html |
-| 配信ステータスのログ記録 | サブスクリプションへの発信のログをCloudWatch Logsに転送するように設定する． |
+| 配信ステータスのログ記録 | サブスクリプションへの発信のログをCloudWatchLogsに転送するように設定する． |
 | 暗号化                   |                                                              |
 
 #### ・サブスクリプションの詳細項目
@@ -2600,11 +2631,27 @@ $ service awslogs start
 
 <br>
 
-## 09. 開発者用ツール
+## 09. 開発者用ツール｜Code系サービス
 
 ### CodePipeline
 
 #### ・CodePipelineとは
+
+CodeCommit，CodeBuild，CodeDeployを連携させて，AWSに対するCI/CD環境を構築する．CodeCommitは，他のソースコード管理サービスで代用できる．
+
+![code-pipeline](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/code-pipeline.png)
+
+#### ・CodeCommitとは
+
+ソースコードをバージョン管理する．
+
+#### ・CodeBuildとは
+
+ビルドフェーズとテストフェーズを実行する．
+
+#### ・CodeDeployとは
+
+デプロイフェーズを実行する．
 
 <br>
 
@@ -2627,7 +2674,7 @@ phases:
     commands:
       # ECRにログイン
       - $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
-      # イメージタグはコミットのハッシュ値を使用
+      # イメージタグはGitHubコミットのハッシュ値を使用
       - IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
       # ECRのURLをCodeBuildの環境変数から作成
       - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}
@@ -2659,7 +2706,7 @@ artifacts:
 
 #### ・Blue/Greenデプロイメントとは
 
-![Blue-Greenデプロイ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Blue-Greenデプロイ.jpeg)
+![blue-green-deployment](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/blue-green-deployment.jpeg)
 
 以下の手順でデプロイを行う．
 

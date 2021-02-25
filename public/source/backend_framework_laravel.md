@@ -1,6 +1,30 @@
 # Laravel
 
-## 01. コンポーネントのソースコード
+## 01. Laravelの全体像
+
+### ライフサイクル
+
+| 用語                                                    | 説明                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| ```index.php```ファイル                                 | エントリポイントから処理が始まる．                           |
+| Autoload                                                | ```autoload.php```ファイルにて，ライブラリが自動でロードされる． |
+| Load App                                                | ```bootstrap/app.php```ファイルにて，ServiceContainer（```Illuminate\Foundation\Application.php```）が実行される． |
+| Http Kernel                                             | Kernelが実行される．                                         |
+| ・Register ServiceProviders<br>・Boot Service Providers | ServiceProviderの```register```メソッドや```boot```メソッドが実行される．これにより，ServiceContainerにクラスがバインドされる． |
+| Middleware                                              | BeforeMiddlewareが実行される．                               |
+| ・Dispatch by Router<br>・Routes Match                  | ```web.php```ファイル，```app.php```ファイルなどのルーティング定義を元に，Routerが実行される． |
+| Controller                                              | Controllerを基点として，データベースにまで処理が走る．       |
+| Response                                                | Responseが実行される．                                       |
+| Terminate Middleware                                    | AfterMiddlewareが実行される．                                |
+| View                                                    | bladeファイルに基づいて静的ファイルが構築される．            |
+
+![laravel-lifecycle](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/laravel-lifecycle.png)
+
+参考：https://blog.albert-chen.com/the-integration-of-laravel-with-swoole-part-1/
+
+<br>
+
+### コンポーネントのソースコード
 
 Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
 
@@ -14,7 +38,7 @@ Laravelの各コンポーネントには，似たような名前のメソッド�
 
 #### ・設定方法
 
-```
+```sh
 APP_NAME=<サービス名>
 APP_ENV=<環境名>
 APP_KEY=<セッションの作成やパスワードの暗号化に使う認証キー>
@@ -79,7 +103,7 @@ return [
 
 環境変数を```.env```ファイルに実装する．```database.php```ファイルから，指定された設定が選択される．
 
-```
+```sh
 DB_CONNECTION=<RDB名>
 DB_HOST=<ホスト名>
 DB_PORT=<ポート番号>
@@ -139,14 +163,12 @@ return [
 
 環境変数を```.env```ファイルに実装する必要がある．
 
-```
+```sh
 CACHE_DRIVER=redis
 REDIS_HOST=<Redisのホスト>
 REDIS_PASSWORD=<Redisのパスワード>
 REDIS_PORT=<Redisのポート>
 ```
-
-
 
 <br>
 
@@ -2205,7 +2227,7 @@ class FileSystemPublicController extends Controller
 
 ファイルをS3バケット内のディレクトリに保存する．環境変数を```.env```ファイルに実装する必要がある．```filesystems.php```ファイルから，指定された設定が選択される．AWSアカウントの認証情報を環境変数として設定するか，またはS3アクセスポリシーをEC2やECSタスクに付与することにより，S3にアクセスできるようになる．
 
-```
+```sh
 # S3アクセスポリシーをEC2やECSタスクに付与してもよい
 AWS_ACCESS_KEY_ID=<アクセスキー>
 AWS_SECRET_ACCESS_KEY=<シークレットアクセスキー>
@@ -2249,7 +2271,7 @@ Storage::disk('s3')->put('file.txt', 'file.txt');
 
 ただし，環境変数を使用して，```filesytems.php```ファイルでデフォルトディスクを```s3```に変更すると，```put```メソッドを直接使用できる．
 
-```php
+```sh
 FILESYSTEM_DRIVER=s3
 ```
 
@@ -3313,7 +3335,7 @@ Schema::create('examples', function (Blueprint $table) {
 
 ### artisanコマンドによる操作
 
-```
+```sh
 
 ```
 
@@ -4139,9 +4161,9 @@ $ php artisan make:provider <クラス名>
 
 <br>
 
-### AppServiceProvider
+### ServiceContainer
 
-#### ・ServiceContainer，バインド，リゾルブ
+#### ・ServiceContainer，バインド，リゾルブとは
 
 クラスをバインド（登録）しただけで新しいインスタンスをリゾルブ（生成）してくれるオブジェクトを『ServiceContainer』という．
 
@@ -4176,6 +4198,10 @@ interface Container extends ContainerInterface
     public function singleton($abstract, $concrete = null);
 }
 ```
+
+<br>
+
+### AppServiceProvider
 
 #### ・具象クラスをバインド
 
@@ -4349,6 +4375,10 @@ $result = app()->make(Example::class)
 $example = App::make(Example::class);
 $result = $example->method();
 ```
+
+#### ・```register```メソッドと```boot```メソッドの違い
+
+Laravelのライフサイクルにおいて，ServiceContainerへのクラスのバインドの時には，まずServiceProviderの```register```メソッドが実行され，その後に```boot```メソッドが実行される．そのため，ServiceProviderが他のServiceProviderをコールするような処理を実装したいとき，これは```boot```メソッドに実装することが適している．
 
 <br>
 
