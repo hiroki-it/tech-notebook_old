@@ -447,7 +447,9 @@ $example->hoge;
 
 #### ・```__set```メソッド
 
-定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．（詳しくは，ドメイン駆動設計のノートを参照せよ）
+定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．オブジェクトの不変性は，以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_architecture_domain_driven_design.html
 
 **＊実装例＊**
 
@@ -688,7 +690,9 @@ $D = objB()->objC()->objC();
 
 **＊実装例＊**
 
-クイックソートのアルゴリズム（※詳しくは，別ノートを参照）
+以下のノートも参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_logic_algorithm.html
 
 1. 適当な値を基準値（Pivot）とする （※できれば中央値が望ましい）
 2. Pivotより小さい数を前方，大きい数を後方に分割する．
@@ -880,7 +884,9 @@ $dispatcher->dispatch("example", "test");
 
 #### ・イベント名に紐づくメソッドをコールするオブジェクト
 
-イベント名を文字列で定義し，特定のイベント名が渡された時に，それに対応づけられた関数をコールする．フレームワークの```EventDispatcher```を使用するのがよい
+イベント名を文字列で定義し，特定のイベント名が渡された時に，それに対応づけられた関数をコールする．フレームワークの```EventDispatcher```を使用するのがよい．以下のノートも参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_framework_symfony.html
 
 **＊実装例＊**
 
@@ -890,7 +896,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ExampleEventDispatcher
 {
-   // 詳しくは，フレームワークのノートを参照． 
+
 }
 ```
 

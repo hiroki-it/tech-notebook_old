@@ -975,7 +975,9 @@ workflows:
 
 #### ・commandsにおける環境変数の出力方法
 
-環境変数を```echo```の引数に指定する．パイプラインで```base64 --decode```を実行することにより，暗号化した状態で環境変数を渡すことができる．
+環境変数を```echo```の引数に指定する．パイプラインで```base64 --decode```を実行することにより，暗号化した状態で環境変数を渡すことができる．ここで出力している環境変数は，以下のノートを参考にせよ
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_framework_vuejs.html
 
 ```yaml
 jobs:

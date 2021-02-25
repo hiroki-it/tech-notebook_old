@@ -534,7 +534,12 @@ class Human implements Communication
 
 ### クラスチェーンによる継承元の参照
 
-クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．類似するものとして，プロトタイプチェーンについては，プロトタイプベースのオブジェクト指向に関するノートを参照せよ．
+クラスからデータやメソッドをコールした時，そのクラスにこれらが存在しなければ，継承元まで参照しにいく仕組みを『クラスチェーン』という．類似するものとして，プロトタイプチェーンは以下のノートを参考にせよ．
+
+参考：
+
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_object_orientation_prototype.html
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_object_orientation_method_data.html
 
 **＊実装例＊**
 

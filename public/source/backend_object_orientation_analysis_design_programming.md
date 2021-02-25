@@ -182,10 +182,17 @@
 
 ## 03. オブジェクト指向設計
 
-### これについては別のノートで説明する
+以下のノートを参考にせよ．
+
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_class.html
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_method_data.html
 
 <br>
 
 ## 04. オブジェクト指向プログラミング
 
-### これについては別のノートで説明する
+以下のノートを参考にせよ．
+
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_class.html
+- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_method_data.html
+

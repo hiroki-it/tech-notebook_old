@@ -215,7 +215,9 @@ try{
 
 #### ・DoctrineによるRDBの書き込み系の操作
 
-詳しくは，ライブラリに関するノートを参照せよ．
+詳しくは，以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_framework_symfony.html
 
 <br>
 
