@@ -800,3 +800,26 @@ module.exports = new Vuex.Store({
   }
 </script>
 ```
+
+<br>
+
+## 04. Nuxt.js
+
+### 環境変数
+
+```sh
+# API側のURL（フロントエンドからのリクエスト向け）
+API_URL=http://web:80/
+# API側のURL（外部サーバからのリクエスト向け）
+API_URL_BROWSER=http://localhost:8500/
+# API側のOauth認証の情報
+OAUTH_CLIENT_ID=
+OAUTH_CLIENT_SECRET=
+# GoogleMapのURL
+GOOGLE_MAP_QUERY_URL=https://www.google.com/maps/search/?api=1&query=
+# ホームパス
+HOME_PATH=/
+```
+
+
+
