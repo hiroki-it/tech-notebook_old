@@ -103,7 +103,9 @@ Authorization: Bearer <Bearerトークン，JWT，など>
 
 #### ・Form認証とは
 
-ログイン時にセッションを使用する認証方法のこと．認証スキームには属していない．認証方法以外のセッションの仕様については，APIのノートを参照せよ．
+ログイン時にセッションを使用する認証方法のこと．認証スキームには属していない．認証方法以外のセッションの仕様については，以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_api_restful.html
 
 #### ・Form認証の仕組み
 

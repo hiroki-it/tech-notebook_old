@@ -612,7 +612,7 @@ setcookie(Cookie名, Cookie値, 有効日時, パス, ドメイン, HTTPS接続�
 3. ブラウザは，そのCookie情報を保存する．
 4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダーのCookieヘッダーにCookie情報を埋め込んでサーバに送信する．サーバは，Cookie情報に紐づくクライアントのデータをReadする．
 
-![Cookieの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cookieの仕組み.png)
+![cookie](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/cookie.png)
 
 <br>
 
@@ -691,11 +691,11 @@ session.save_path = "tcp://xxxxx-redis.xxxxx.ng.0001.apne1.cache.amazonaws.com:6
 3. ブラウザは，そのセッションIDを保存する．
 4. 2回目以降のリクエストでは，ブラウザは，リクエストヘッダ情報のCookieヘッダーを使用して，セッションIDをサーバに送信する．サーバは，セッションIDに紐づくクライアントのデータをReadする．
 
-![セッションIDの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIDの仕組み.png)
+![session-id](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/session-id.png)
 
 #### ・ページ遷移とセッションID引継ぎ
 
-![セッションIdとページ遷移](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セッションIdとページ遷移.png)
+![session-id_page-transition](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/session-id_page-transition.png)
 
 <br>
 

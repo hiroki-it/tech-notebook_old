@@ -216,7 +216,9 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 ### Doctrineとは
 
-RDBの読み込み系／書き込み系の操作を行うパッケージ．他の同様パッケージとして，PDOがある．PDOについては，DBの操作のノートを参照せよ．
+RDBの読み込み系／書き込み系の操作を行うパッケージ．他の同様パッケージとして，PDOがある．PDOについては，以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_database_operation.html
 
 <br>
 

@@ -15,7 +15,7 @@
 - Rasterize
 - Composite
 
-![BrowserRenderingプロセス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/BrowserRenderingプロセス.png)
+![browser-rendering](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/browser-rendering.png)
 
 <br>
 
@@ -29,7 +29,7 @@
 
 Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．
 
-![マークアップ言語の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マークアップ言語の歴史.png)
+![markup-language-history](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/markup-language-history.png)
 
 <br>
 
@@ -321,7 +321,7 @@ scrollイベントとresizeイベントを監視し、これらのイベント�
 
 Intersection Observerによる要素の交差率を監視し，指定の交差率を超えた要素を随時読み込む方法．例えば，交差率の閾値を「```0.5```」と設定すると，ターゲットエレメントの交差率が「```0.5```」を超えた要素を随時読み込む．
 
-![IntersectionObserverとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IntersectionObserverとは.png)
+![intersection-observer](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/intersection-observer.png)
 
 <br>
 
@@ -425,7 +425,9 @@ JavaScriptのインタプリタのこと．JavaScriptエンジンは，レンダ
 
 #### ・機械語翻訳
 
-JavaScriptエンジンは，ソースコードを，字句解析，構造解析，意味解釈，命令の実行，をコード一行ずつに対し，繰り返し行う．詳しくは，ソフトウェアのノートを参照せよ．
+JavaScriptエンジンは，ソースコードを，字句解析，構造解析，意味解釈，命令の実行，をコード一行ずつに対し，繰り返し行う．詳しくは，以下のノートを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/infrastructure_software_centos.html
 
 ![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
