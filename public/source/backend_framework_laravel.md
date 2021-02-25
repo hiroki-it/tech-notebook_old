@@ -4376,6 +4376,10 @@ $example = App::make(Example::class);
 $result = $example->method();
 ```
 
+#### ・```register```メソッドと```boot```メソッドの違い
+
+Laravelのライフサイクルにおいて，ServiceContainerへのクラスのバインドの時には，まずServiceProviderの```register```メソッドが実行され，その後に```boot```メソッドが実行される．そのため，ServiceProviderが他のServiceProviderをコールするような処理を実装したいとき，これは```boot```メソッドに実装することが適している．
+
 <br>
 
 ### MigrationMacroServiceProvider
