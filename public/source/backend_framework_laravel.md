@@ -1,6 +1,30 @@
 # Laravel
 
-## 01. コンポーネントのソースコード
+## 01. Laravelの全体像
+
+### ライフサイクル
+
+| 用語                                                    | 説明                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| ```index.php```ファイル                                 | エントリポイントから処理が始まる．                           |
+| Autoload                                                | ```autoload.php```ファイルにて，ライブラリが自動でロードされる． |
+| Load App                                                | ```bootstrap/app.php```ファイルにて，ServiceContainer（```Illuminate\Foundation\Application.php```）が実行される． |
+| Http Kernel                                             | Kernelが実行される．                                         |
+| ・Register ServiceProviders<br>・Boot Service Providers | ServiceProviderの```register```メソッドや```boot```メソッドが実行される．これにより，ServiceContainerにクラスがバインドされる． |
+| Middleware                                              | BeforeMiddlewareが実行される．                               |
+| ・Dispatch by Router<br>・Routes Match                  | ```web.php```ファイル，```app.php```ファイルなどのルーティング定義を元に，Routerが実行される． |
+| Controller                                              | Controllerを基点として，データベースにまで処理が走る．       |
+| Response                                                | Responseが実行される．                                       |
+| Terminate Middleware                                    | AfterMiddlewareが実行される．                                |
+| View                                                    | bladeファイルに基づいて静的ファイルが構築される．            |
+
+![laravel-lifecycle](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/laravel-lifecycle.png)
+
+参考：https://blog.albert-chen.com/the-integration-of-laravel-with-swoole-part-1/
+
+<br>
+
+### コンポーネントのソースコード
 
 Laravelの各コンポーネントには，似たような名前のメソッドが多く内蔵されている．そのため，同様の機能を実現するために，各々が異なるメソッドを使用しがちになる．その時，各メソッドがブラックボックスにならないように，処理の違いをソースコードから確認する必要がある．
 
