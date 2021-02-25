@@ -21,7 +21,7 @@
 
 テストコードにおいては，クラスの一部または全体を，処理を持たないもの（モックオブジェクト）に置き換える．
 
-#### ・```mock()```
+#### ・```mock```メソッド
 
 クラス名（名前空間）を元に，モックオブジェクトを生成する．
 
@@ -31,7 +31,7 @@
 $mock = Phake::mock(Example::class);
 ```
 
-#### ・```when()```
+#### ・```when```メソッド
 
 モックオブジェクトに対して，スタブを生成する．
 
@@ -43,7 +43,7 @@ $mock = Phake::mock(Example::class);
     ->thenReturn([]);
 ```
 
-#### ・```verify()```
+#### ・```verify```メソッド
 
 メソッドがn回以上コールされたかを検証できる．
 
@@ -123,7 +123,7 @@ Phake::verify($mock, Phake::times(1))->exaMethod("AB");
 
 ### テストの事前準備と後片付け
 
-#### ・```setUp()```
+#### ・```setUp```メソッド
 
 モックオブジェクトなどを事前に準備するために用いられる．
 
@@ -143,7 +143,7 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
 }
 ```
 
-#### ・```tearDown()```
+#### ・```tearDown```メソッド
 
 テスト時に，グローバル変数やDIコンテナにデータを格納する場合，後のテストでもそのデータが誤って使用されてしまう可能性がある．そのために，テストの後片付けを行う．
 
@@ -168,6 +168,8 @@ class ExampleUseCaseTest extends \PHPUnit_Framework_TestCase
     }
 }
 ```
+
+<br>
 
 ### テストデータの準備
 
