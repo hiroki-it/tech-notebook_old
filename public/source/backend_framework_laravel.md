@@ -4,6 +4,10 @@
 
 ### ライフサイクル
 
+![laravel-lifecycle](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/laravel-lifecycle.png)
+
+参考：https://blog.albert-chen.com/the-integration-of-laravel-with-swoole-part-1/
+
 | 用語                                                    | 説明                                                         |
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | ```index.php```ファイル                                 | エントリポイントから処理が始まる．                           |
@@ -17,10 +21,6 @@
 | Response                                                | Responseが実行される．                                       |
 | Terminate Middleware                                    | AfterMiddlewareが実行される．                                |
 | View                                                    | bladeファイルに基づいて静的ファイルが構築される．            |
-
-![laravel-lifecycle](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/laravel-lifecycle.png)
-
-参考：https://blog.albert-chen.com/the-integration-of-laravel-with-swoole-part-1/
 
 <br>
 
