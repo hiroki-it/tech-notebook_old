@@ -71,6 +71,12 @@ CircleCIコンテナにssh接続し，コンテナ内で生成されたファイ
 $ <CircleCIから提示されたコマンドをコピペ> -i ~/.ssh/<秘密鍵名>
 ```
 
+#### ・Test Insights
+
+各テストのパフォーマンスや成功失敗率を確認できる．
+
+https://circleci.com/docs/2.0/insights-tests/
+
 <br>
 
 ### PHPUnitの自動実行

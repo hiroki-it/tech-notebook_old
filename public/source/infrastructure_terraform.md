@@ -2005,6 +2005,70 @@ output "nginx_ecr_repository_url" {
 
 ## 08. 各リソースタイプ独自の仕様
 
+### API Gateway
+
+#### ・OpenAPI仕様のインポートと差分認識
+
+あらかじめ用意したOpenAPI仕様のYAMLファイルを```body```オプションのパラメータとし，これをインポートすることにより，APIを定義できる．YAMLファイルに変数を渡すこともできる．
+
+```hcl
+###############################################
+# REST API
+###############################################
+resource "aws_api_gateway_rest_api" "example" {
+  name        = "${var.environment}-${var.service}-api-for-example"
+  description = "The API that enables two-way communication with ${var.environment}-example"
+  # VPCリンクのプロキシ統合のAPI
+  body = templatefile(
+    "${path.module}/open_api.yaml",
+    {
+      api_gateway_vpc_link_example_id = aws_api_gateway_vpc_link.example.id
+      nlb_dns_name                          = var.nlb_dns_name
+    }
+  )
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      policy
+    ]
+  }
+}
+```
+
+APIの再デプロイのトリガーとして，```redeployment```パラメータに```body```パラメータのハッシュ値を渡すようにする．これにより，インポート元のYAMLファイルに差分があった場合に，Terraformが```redeployment```パラメータの値の変化を認識できるようになり，再デプロイを実行できる．
+
+```hcl
+###############################################
+# Deployment
+###############################################
+resource "aws_api_gateway_deployment" "example" {
+  rest_api_id = aws_api_gateway_rest_api.example.id
+
+  triggers = {
+    redeployment = sha1(aws_api_gateway_rest_api.example.body)
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+###############################################
+# Stage
+###############################################
+resource "aws_api_gateway_stage" "example" {
+  deployment_id = aws_api_gateway_deployment.example.id
+  rest_api_id   = aws_api_gateway_rest_api.example.id
+  stage_name    = var.environment
+}
+```
+
+<br>
+
 ### AMI
 
 #### ・取得するAMIのバージョンを固定

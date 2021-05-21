@@ -1,4 +1,4 @@
-# API Gatewayのインポート機能
+# API Gatewayインポート機能
 
 ## 01. APIGateway拡張機能
 
@@ -40,7 +40,7 @@ paths:
       #===========================
       x-amazon-apigateway-integration:
         httpMethod: "GET" # 転送するHTTPメソッド
-        uri: "https://stg.example.com/api/v1/users/" # 転送先のバックエンドURL
+        uri: "http://<NLBのDNS名>/api/v1/users/" # 転送先のバックエンドURL
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'" # 転送するカスタムヘッダーとAPIキー
           integration.request.querystring.userId: method.request.querystring.userId # マッピングするクエリパラメータ
@@ -65,7 +65,7 @@ paths:
     post:
      x-amazon-apigateway-integration:
         httpMethod: POST
-        uri: "https://stg.example.com/api/v1/users/"
+        uri: "http://<NLBのDNS名>/api/v1/users/"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
         requestTemplates:
@@ -301,7 +301,7 @@ paths:
       #===========================          
       x-amazon-apigateway-integration:
         httpMethod: GET
-        uri: "https://stg.example.com/api/v1/users/"
+        uri: "http://<NLBのDNS名>/api/v1/users/"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.querystring.userId: method.request.querystring.userId # マッピングするクエリパラメータ
@@ -367,7 +367,7 @@ paths:
       #===========================          
       x-amazon-apigateway-integration:
         httpMethod: POST
-        uri: "https://stg.example.com/api/v1/users/"
+        uri: "http://<NLBのDNS名>/api/v1/users/"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
         connectionType: VPC_LINK
@@ -450,7 +450,7 @@ paths:
       #===========================                
       x-amazon-apigateway-integration:
         httpMethod: GET
-        uri: "https://stg.example.com/api/v1/users/{userId}"
+        uri: "http://<NLBのDNS名>/api/v1/users/{userId}"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.path.userId: method.request.path.userId
@@ -530,7 +530,7 @@ paths:
       #===========================               
       x-amazon-apigateway-integration:
         httpMethod: PUT
-        uri: "https://stg.example.com/api/v1/users/{userId}"
+        uri: "http://<NLBのDNS名>/api/v1/users/{userId}"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.path.userId: method.request.path.userId
@@ -711,7 +711,7 @@ paths:
       #===========================          
       x-amazon-apigateway-integration:
         httpMethod: GET
-        uri: "https://stg.example.com/api/v1/users/"
+        uri: "http://<NLBのDNS名>/api/v1/users/"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.querystring.userId: method.request.querystring.userId # マッピングするクエリパラメータ
@@ -783,7 +783,7 @@ paths:
       #===========================          
       x-amazon-apigateway-integration:
         httpMethod: POST
-        uri: "https://stg.example.com/api/v1/users/"
+        uri: "http://<NLBのDNS名>/api/v1/users/"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
         requestTemplates:
@@ -875,7 +875,7 @@ paths:
       #===========================                
       x-amazon-apigateway-integration:
         httpMethod: GET
-        uri: "https://stg.example.com/api/v1/users/{userId}"
+        uri: "http://<NLBのDNS名>/api/v1/users/{userId}"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.path.userId: method.request.path.userId
@@ -963,7 +963,7 @@ paths:
       #===========================               
       x-amazon-apigateway-integration:
         httpMethod: PUT
-        uri: "https://stg.example.com/api/v1/users/{userId}"
+        uri: "http://<NLBのDNS名>/api/v1/users/{userId}"
         requestParameters:
           integration.request.header.X-API-Key: "'XXXXX'"
           integration.request.path.userId: method.request.path.userId
