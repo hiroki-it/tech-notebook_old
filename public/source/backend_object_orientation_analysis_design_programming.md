@@ -4,7 +4,7 @@
 
 ### アーキテクチャスタイルと分析・設計手法
 
-![アーキテクチャスタイルの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/アーキテクチャスタイルの種類.png)
+![アーキテクチャスタイルの種類](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/アーキテクチャスタイルの種類.png)
 
 |                        | アーキテクチャスタイル | スタイルに基づく設計             |
 | -------------------- | ---------------------- | -------------------------------- |
@@ -21,7 +21,7 @@
 
 ### オブジェクト指向分析・設計を取り巻く歴史
 
-![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プログラミング言語と設計手法の歴史.png)
+![プログラミング言語と設計手法の歴史](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/プログラミング言語と設計手法の歴史.png)
 
 <br>
 
@@ -61,7 +61,7 @@
 
 ※ただし，UMLにおけるクラス図に関しては設計段階で使用するため，このノートでは説明しない．
 
-![複数視点のモデル化とUML](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/複数視点のモデル化とUML.jpg)
+![複数視点のモデル化とUML](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/複数視点のモデル化とUML.jpg)
 
 <br>
 
@@ -75,7 +75,7 @@
 
 #### ・分析に用いられるUMLダイアグラム
 
-![UML-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UML-2.png)
+![UML-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/UML-2.png)
 
 <br>
 
@@ -83,7 +83,7 @@
 
 ### DFD：Data Flow Diagram（データフロー図）
 
-![データフロー図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/データフロー図.jpg)
+![データフロー図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/データフロー図.jpg)
 
 <br>
 
@@ -95,7 +95,7 @@
 
 オンラインショッピングにおけるUse case
 
-![ユースケース図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ユースケース図.png)
+![ユースケース図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ユースケース図.png)
 
 <br>
 
@@ -105,7 +105,7 @@
 
 **＊具体例＊**
 
-![アクティビティ図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/アクティビティ図.png)
+![アクティビティ図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/アクティビティ図.png)
 
 ## 02-03. 振舞の視点
 
@@ -121,15 +121,15 @@
 
 #### ・状態遷移図とは
 
-「状態」を丸，「⁠遷移」を矢印で表現した分析モデル．矢印の横の説明は，遷移のきっかけとなる「イベント（入力）⁠／アクション（出力）⁠」を示す．
+『状態』を丸，『⁠遷移』を矢印で表現した分析モデル．矢印の横の説明は，遷移のきっかけとなる『イベント（入力）⁠／アクション（出力）⁠』を示す．
 
-![状態遷移図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ストップウォッチ状態遷移図.jpg)
+![状態遷移図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ストップウォッチ状態遷移図.jpg)
 
 #### ・状態遷移表とは
 
 状態遷移図から作成した表．状態遷移表を作成してみると，状態遷移図では，9つあるセルのうち4つのセルしか表現できておらず，残り5つのセルは表現されていないことに気づくことができる．
 
-![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ストップウォッチ状態遷移表.jpg)
+![状態遷移表](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ストップウォッチ状態遷移表.jpg)
 
 **＊例題＊**
 
@@ -140,7 +140,7 @@
 3. 現在の状態『b』から，次は小数点なので，b行の『d』へ移動．
 4. 現在の状態『d』から，次は数字なので，b行の『e』へ移動．
 
-![状態遷移表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/状態遷移表.png)
+![状態遷移表](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/状態遷移表.png)
 
 <br>
 
@@ -152,31 +152,31 @@
 
 データベースのオブジェクト指向分析において，エンティティ間の関係を表すために用いられるダイアグラム図．『IE 記法』と『IDEF1X 記法』が一般的に用いられる．
 
-![ER図（IE記法）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ER図（IE記法）.png)
+![ER図（IE記法）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ER図（IE記法）.png)
 
 #### ・Entity と Attribute
 
-![エンティティとアトリビュート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/エンティティとアトリビュート.png)
+![エンティティとアトリビュート](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/エンティティとアトリビュート.png)
 
 #### ・Relation と Cardinality（多重度）
 
   エンティティ間の関係を表す．
 
-![リレーションとカーディナリティ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/リレーションとカーディナリティ.png)
+![リレーションとカーディナリティ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/リレーションとカーディナリティ.png)
 
 #### ・1：1
 
-![1対1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/1対1.png)
+![1対1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/1対1.png)
 
 #### ・1：多（Relation が曖昧な状態）
 
-オブジェクト指向分析が進むにつれ，「1：0 以上の関係」「1：1 以上の関係」のように具体化しく．
+オブジェクト指向分析が進むにつれ，『1：0 以上の関係』『1：1 以上の関係』のように具体化しく．
 
-![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/1対1以上.png)
+![1対1以上](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/1対1以上.png)
 
 #### ・1：1 以上
 
-![1対1以上](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/1対1以上.png)
+![1対1以上](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/1対1以上.png)
 
 <br>
 
@@ -184,8 +184,8 @@
 
 以下のノートを参考にせよ．
 
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_class.html
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_method_data.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_object_orientation_class.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_object_orientation_method_data.html
 
 <br>
 
@@ -193,6 +193,6 @@
 
 以下のノートを参考にせよ．
 
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_class.html
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_object_orientation_method_data.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_object_orientation_class.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_object_orientation_method_data.html
 

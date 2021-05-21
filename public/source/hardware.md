@@ -6,7 +6,7 @@
 
 #### ・ユーザの操作が，ソフトウェアを介して，ハードウェアに伝わるまで
 
-![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソフトウェアとハードウェア.png)
+![ソフトウェアとハードウェア](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ソフトウェアとハードウェア.png)
 
 #### ・CPU（プロセッサ）
 
@@ -38,7 +38,7 @@ HDD：Hard Disk DriveとSSD：Solid State Driveがある．
 
 ### IntelとAMDにおけるCPUの歴史（※2009年まで）
 
-![IntelとAMDにおけるCPUの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IntelとAMDにおけるCPUの歴史.png)
+![IntelとAMDにおけるCPUの歴史](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IntelとAMDにおけるCPUの歴史.png)
 
 <br>
 
@@ -56,7 +56,7 @@ CPUの回路が処理と歩調を合わせるために用いる信号を，『�
 2.6GHz
 = 2.6×10^9  (クロック数／秒)
 ```
-![クロック数比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クロック数比較.png)
+![クロック数比較](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/クロック数比較.png)
 
 <br>
 
@@ -75,7 +75,7 @@ CPUが1秒間に何回命令を実行するかを表す．
 = 100 (×10^6 命令数／秒)
 ```
 
-![MIPSの例題](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/MIPSの例題.png)
+![MIPSの例題](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/MIPSの例題.png)
 
 #### ・1命令当たりの実行時間 (秒／命令) の求め方
 
@@ -91,7 +91,7 @@ CPUが1秒間に何回命令を実行するかを表す．
 
 『物理メモリ』は，RAMとROMに大きく分けられる．
 
-![p162](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p162.png)
+![p162](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p162.png)
 
 <br>
 
@@ -103,14 +103,14 @@ RAMは，メインメモリとして使われる『Dynamic RAM』と，キャッ
 
   メインメモリとして用いられる．よく見るやつ．
 
-![Dynamic RAM](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dynamic RAM.jpg)
+![Dynamic RAM](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Dynamic RAM.jpg)
 
 #### ・Static RAM
 
   キャッシュメモリとして用いられる．
 
 
-![Static RAM](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Static RAM.jpg)
+![Static RAM](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Static RAM.jpg)
 
 <br>
 
@@ -119,11 +119,11 @@ RAMは，メインメモリとして使われる『Dynamic RAM』と，キャッ
 
 #### ・Mask ROM
 
-![p164-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p164-1.png)
+![p164-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p164-1.png)
 
 #### ・Programmable ROM
 
-![p164-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p164-2.png)
+![p164-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p164-2.png)
 
 <br>
 
@@ -141,7 +141,7 @@ Javaでは，JVM：Java Virtual Machine（Java仮想マシン）が，メモリ�
 
 CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読み込みと書き出しの処理速度に差がある．
 
-![p169](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p169.png)
+![p169](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p169.png)
 
 <br>
 
@@ -151,7 +151,7 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
   CPUとメインメモリの間に，キャッシュメモリを何段階か設置し，CPUとメインメモリの間の読み込みと書き出しの処理速度の差を緩和させる．
 
-![メモリキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/メモリキャッシュ.gif)
+![メモリキャッシュ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/メモリキャッシュ.gif)
 
 <br>
 
@@ -166,13 +166,13 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 5. CPUは，一次キャッシュメモリに書き込む．
 6. CPUは，命令を実行する．
 
-![メモリとキャッシュメモリ_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/メモリとキャッシュメモリ_1.jpg)
+![メモリとキャッシュメモリ_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/メモリとキャッシュメモリ_1.jpg)
 
 #### ・実例
 
   タスクマネージャのパフォーマンスタブで，n次キャッシュメモリがどのくらい使われているのかを確認できる．
 
-![キャッシュメモリの実例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/キャッシュメモリの実例.png)
+![キャッシュメモリの実例](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/キャッシュメモリの実例.png)
 
 
 
@@ -182,19 +182,19 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
   CPUは，命令をメインメモリとキャッシュメモリの両方に書き込む．常にメインメモリとキャッシュメモリの内容が一致している状態を確保できるが，メモリへの書き込みが頻繁に行われるので遅い．
 
-![Write-through方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Write-through方式.jpg)
+![Write-through方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Write-through方式.jpg)
 
 #### ・Write-back 方式
 
   CPUは，キャッシュメモリのみに書き込む．次に，キャッシュメモリがメインメモリに書き込む．メインメモリとキャッシュメモリの内容が一致している状態を必ずしも確保できないが，メインメモリへの書き込み回数が少ないため速い
 
-![Write-back方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Write-back方式.jpg)
+![Write-back方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Write-back方式.jpg)
 
 <br>
 
 ### 実効アクセス時間
 
-![p171-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p171-1.png)
+![p171-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p171-1.png)
 
   <br>
 
@@ -210,7 +210,7 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 仮想記憶 ⇒ 仮想メモリ
 
-![アドレス空間管理の種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/アドレス空間管理の種類.png)
+![アドレス空間管理の種類](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/アドレス空間管理の種類.png)
 
 <br>
 
@@ -238,13 +238,13 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 物理メモリの領域を，一つの区画として扱い，プログラムに割り当てる方式．単一のプログラムしか読み込めず，余りのメモリ領域は利用できない．
 
-![単一区画方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/単一区画方式.png)
+![単一区画方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/単一区画方式.png)
 
 #### ・多重区画方式とは
 
 物理メモリの領域を，複数の同じ大きさの区画に分割し，各区画にプログラムに割り当てる方式．複数のプログラムを読み込むことができるが，単一区画方式と同様に，余ったメモリ領域は利用できない．
 
-![多重区画方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/多重区画方式.png)
+![多重区画方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/多重区画方式.png)
 
 <br>
 
@@ -254,7 +254,7 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 物理メモリの領域を，プログラムの大きさに応じて，区画を様々な大きさの区画に分割し，プログラムに割り当てる方式．固定区画方式とは異なり，メモリ領域を有効に利用できる．
 
-![可変区画方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/可変区画方式.png)
+![可変区画方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/可変区画方式.png)
 
 <br>
 
@@ -262,7 +262,7 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 #### ・スワッピング方式とは
 
-![スワッピング方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スワッピング方式.png)
+![スワッピング方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スワッピング方式.png)
 
 物理メモリの領域を，優先度の高いプログラムに割り当て，反対に優先度が低いプログラムはストレージに退避させる方式．スワップ領域の作成方法については，CentOSのノートを参照．
 
@@ -282,23 +282,23 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 仮想メモリの実装方法の一つ．仮想メモリのアドレス空間を『固定長』の領域（ページ），また物理メモリのアドレス空間を『固定長』の領域（ページフレーム）に分割し，管理する方式．
 
-![ページの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ページの構造.png)
+![ページの構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ページの構造.png)
 
 #### ・ページイン／ページアウト
 
-仮想メモリは，CPUの処理によって稼働したプログラムの要求を，物理メモリの代理として受け付ける．sutore-ji から物理メモリのページフレームにページを読み込むことを『Page-in』という．また，物理メモリのページフレームからストレージにページを追い出すことを『Page-out』という．
+仮想メモリは，CPUの処理によって稼働したプログラムの要求を，物理メモリの代理として受け付ける．ストレージから物理メモリのページフレームにページを読み込むことを『Page-in』という．また，物理メモリのページフレームからストレージにページを追い出すことを『Page-out』という．
 
-![ページインとページアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ページインとページアウト.png)
+![ページインとページアウト](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ページインとページアウト.png)
 
 #### ・仮想メモリとのマッピングによる大容量アドレス空間の実現
 
 仮想メモリのアドレス空間を，物理メモリのアドレス空間とストレージにマッピングすることによって，物理メモリのアドレス空間を疑似的に大きく見せかけることができる．
 
-![仮想メモリとのマッピングによる大容量アドレス空間の再現_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_1.png)
+![仮想メモリとのマッピングによる大容量アドレス空間の再現_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_1.png)
 
 ちなみに，富士通の仮想メモリの容量は，以下の通り．
 
-![仮想メモリのアドレス空間の容量設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/仮想メモリのアドレス空間の容量設定.png)
+![仮想メモリのアドレス空間の容量設定](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/仮想メモリのアドレス空間の容量設定.png)
 
 <br>
 
@@ -316,22 +316,22 @@ CPUから命令が起こるとき，CPU，DRAM，ストレージ間には，読�
 
 MMUによって，仮想メモリのアドレスは，物理メモリのアドレスに変換される．この仕組みを，『動的アドレス変換機構』と呼ぶ．
 
-![メモリ管理ユニット](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/メモリ管理ユニット.png)
+![メモリ管理ユニット](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/メモリ管理ユニット.png)
 
 #### ・アドレス変換の仕組み（ページング方式型／セグメント方式型）
 
 1. 仮想メモリにおけるページの仮想アドレスを，ページ番号とページオフセットに分割する．
 
-![ページの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ページの構造.png)
+![ページの構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ページの構造.png)
 
 2. ページテーブルを用いて，仮想アドレスのページ番号に対応する物理アドレスのページ番号を探す．
 3. 物理ページ番号にページオフセットを再結合し，物理メモリのページフレームの物理アドレスとする．
 
-![仮想メモリとのマッピングによる大容量アドレス空間の再現_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_3.png)
+![仮想メモリとのマッピングによる大容量アドレス空間の再現_3](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_3.png)
 
 #### ・ページテーブルにおける仮想ページ番号と物理ページ番号の対応づけ
 
-![仮想メモリとのマッピングによる大容量アドレス空間の再現_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_4.png)
+![仮想メモリとのマッピングによる大容量アドレス空間の再現_4](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/仮想メモリとのマッピングによる大容量アドレス空間の再現_4.png)
 
 <br>
 
@@ -341,7 +341,7 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 ストレージから物理メモリのアドレス空間への割り込み処理のこと．CPUによって稼働したプログラムが，仮想メモリのアドレス空間のページにアクセスし，そのページが物理メモリのアドレス空間にマッピングされていなかった場合に，ストレージから物理メモリのアドレス空間に『ページイン』が起こる．
 
-![ページフォールト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ページフォールト.png)
+![ページフォールト](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ページフォールト.png)
 
 <br>
 
@@ -351,15 +351,15 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 #### ・『FIFO方式：First In First Out』と『LIFO方式：Last In First Out』
 
-![p261-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p261-2.png)
+![p261-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p261-2.png)
 
-![p261-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p261-3.png)
+![p261-3](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p261-3.png)
 
 #### ・『LRU方式：Least Recently Used』と『LFU方式：Least Frequently Used』
 
-![p261-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p261-1.png)
+![p261-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p261-1.png)
 
-![p261-4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p261-4.png)
+![p261-4](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p261-4.png)
 
 <br>
 
@@ -369,7 +369,7 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 一度実行すれば，再度，ストレージから物理メモリにページインを行わずに，実行を繰り返せるプログラムのこと．
 
-![再使用可能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/再使用可能.gif)
+![再使用可能](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/再使用可能.gif)
 
 <br>
 
@@ -377,7 +377,7 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 再使用可能の性質をもち，また複数のプログラムから呼び出されても，互いの呼び出しが干渉せず，同時に実行できるプログラムのこと．
 
-![再入可能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/再入可能.gif)
+![再入可能](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/再入可能.gif)
 
 <br>
 
@@ -385,7 +385,7 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 ストレージから物理メモリにページインを行う時に，アドレス空間上のどこに配置されても実行できるプログラムのこと．
 
-![再配置可能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/再配置可能.gif)
+![再配置可能](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/再配置可能.gif)
 
 <br>
 
@@ -393,7 +393,7 @@ MMUによって，仮想メモリのアドレスは，物理メモリのアド�
 
 CPU，メインメモリ，ストレージ間には，読み込みと書き出しの処理速度に差がある．（※再度記載）
 
-![p169](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p169.png)
+![p169](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p169.png)
 
 <br>
 
@@ -401,7 +401,7 @@ CPU，メインメモリ，ストレージ間には，読み込みと書き出�
 
 メインメモリとストレージの間に，ディスクキャッシュを設置し，読み込みと書き出しの処理速度の差を緩和させる．
 
-![ディスクキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ディスクキャッシュ.gif)
+![ディスクキャッシュ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ディスクキャッシュ.gif)
 
 
 
@@ -411,9 +411,9 @@ CPU，メインメモリ，ストレージ間には，読み込みと書き出�
 
 断片化されたデータ領域を整理整頓する．
 
-![p184-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p184-1.png)
+![p184-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p184-1.png)
 
-![p184-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p184-2.png)
+![p184-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p184-2.png)
 
 <br>
 
@@ -433,7 +433,7 @@ CPU，メインメモリ，ストレージ間には，読み込みと書き出�
 
   データとパリティ（誤り訂正符号）を，3つ以上のHDDに書き込む．
 
-![RAIDの種類](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/RAIDの種類.png)
+![RAIDの種類](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/RAIDの種類.png)
 
 <br>
 
@@ -441,13 +441,13 @@ CPU，メインメモリ，ストレージ間には，読み込みと書き出�
 
 GPUとVRAMの容量によって，扱うことのできる解像度と色数が決まる．
 
-![VRAM](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VRAM.jpg)
+![VRAM](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/VRAM.jpg)
 
 富士通PCのGPUとVRAMの容量は，以下の通り．
 
-![本パソコンのVRAMスペック](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/本パソコンのVRAMスペック.jpg)
+![本パソコンのVRAMスペック](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/本パソコンのVRAMスペック.jpg)
 
 色数によって，１ドット当たり何ビットを要するが異なる．
 
-![p204](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p204.jpg)
+![p204](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p204.jpg)
 

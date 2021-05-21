@@ -1,6 +1,32 @@
-# マイクロサービス
+# マイクロサービスアーキテクチャ
 
-## 01. サービス内部の構成
+## 01. マイクロサービスアーキテクチャとは
+
+### メリット
+
+#### ・ビジネスのスケーリングに強い
+
+ビジネスがスケーリングする時，サービスの新規実装または削除を行えば良いため，ドメイン層の激しい変化に強い．
+
+#### ・コンウェイの法則が働く
+
+マイクロサービスアーキテクチャにより，組織構造が小さなチームの集まりに変化することを期待できる．
+
+#### ・高頻度でリリース可能
+
+各サービスを独立してデプロイできるため，高頻度でリリースできる．
+
+#### ・障害の影響が部分的
+
+いずれかのサービスに障害が起こったとして，サーキットブレイカーを用いることにより，上流サービスへの障害の波及を食い止められる．そのため，障害の影響が部分的となり，アプリケーション全体が落ちてしまうことがない．
+
+#### ・複数の開発言語を使用可能
+
+サービス間で，共通のデータ記述言語を使用してデータ通信を行えば，各サービスの開発言語が異なっていても問題ない．
+
+<br>
+
+## 02. サービス内部の構成
 
 ### サービス
 
@@ -12,7 +38,7 @@
 
 ドメイン層がインフラストラクチャ層に依存しないようにするため，ドメイン層の依存性を逆転させる必要がある．詳しくは，以下のノートを参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_architecture_domain_driven_design.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_architecture_domain_driven_design.html
 
 <br>
 
@@ -28,7 +54,7 @@
 
 <br>
 
-## 02. サービス間の連携
+## 03. サービス間の連携
 
 ### アプリケーション層の連携
 
@@ -36,13 +62,13 @@
 
 分散型システムとも言う．オーケストレーションとしてのプログラムは存在せず，各サービスで下流サービスに連携する責務を持たせる設計方法．一つのリクエストが送信された時に，サービスからサービスに処理が繋がっていく．サービス間のインターフェースとして，キューを設置する．このノートでは，コレオグラフィを用いたアプリケーション層の連携を説明する．
 
-![choreography](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/choreography.png)
+![choreography](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/choreography.png)
 
 #### ・オーケストレーションとは
 
 中央集権型システムとも言う．全てのサービスを制御する責務を持ったオーケストレーションプログラムを設置する設計方法．一つのリクエストが送信された時に，オーケストレーションプログラムは各サービスをコールしながら処理の結果を繋いでいく．
 
-![orchestration](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/orchestration.png)
+![orchestration](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/orchestration.png)
 
 <br>
 
@@ -60,7 +86,7 @@
 
 ローカルトランザクションの時に，インフラストラクチャ層を実現する設計方法．上流サービスのデータベースの操作完了をイベントとして，下流サービスのデータベースの操作処理を連続的にコールする．ロールバック時には補償トランザクションが実行され，逆順にデータベースの状態が元に戻される．
 
-![saga-pattern](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/saga-pattern.png)
+![saga-pattern](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/saga-pattern.png)
 
 <br>
 
@@ -76,7 +102,7 @@
 
 サービス間に設置され，他のサービスに連鎖する障害を吸収するプログラムのこと．下流サービスに障害が起こった時に，上流サービスにエラーを返してしまわないよう，直近の成功時の処理結果を返信する．
 
-![circuit-breaker](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/circuit-breaker.png)
+![circuit-breaker](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/circuit-breaker.png)
 
 <br>
 
@@ -86,11 +112,11 @@
 
 サービス間で分散してしまう各ログを，一意なIDで紐づける方法．
 
-![distributed-tracing](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/distributed-tracing.png)
+![distributed-tracing](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/distributed-tracing.png)
 
 <br>
 
-## 03. フロントエンドのマイクロサービス化
+## 04. フロントエンドのマイクロサービス化
 
 ### UI部品合成
 
@@ -98,7 +124,7 @@
 
 フロントエンドのコンポーネントを，各サービスに対応するように分割する設計方法．
 
-![composite-ui](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/composite-ui.png)
+![composite-ui](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/composite-ui.png)
 
 <br>
 
@@ -108,4 +134,4 @@
 
 クライアントの種類（モバイル，Web，デスクトップ）に応じたAPIを構築し，このAPIから各サービスにルーティングする設計方法．
 
-![bff-pattern](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/bff-pattern.png)
+![bff-pattern](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/bff-pattern.png)

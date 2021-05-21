@@ -16,10 +16,7 @@
 
 #### ・Provider例
 
-| 名前                 |
-| -------------------- |
-| VMware Workstation   |
-| Oracle VM VirtualBox |
+VMware Workstation，Oracle VM VirtualBox，など
 
 ![ホスト型仮想化](https://user-images.githubusercontent.com/42175286/60386396-3afbd080-9acf-11e9-9094-f61aa839dc04.png)
 
@@ -33,11 +30,7 @@ BIOSから起動したハイパーバイザー上で，各サーバを仮想的�
 
 #### ・Provider例
 
-| 名前                      |
-| ------------------------- |
-| VMware vSphere Hypervisor |
-| Xen                       |
-| KVM                       |
+VMware vSphere Hypervisor，Xen，KVM，など
 
 ![ハイパーバイザー型仮想化](https://user-images.githubusercontent.com/42175286/60386395-3afbd080-9acf-11e9-9fbe-6287753cb43a.png)
 
@@ -53,11 +46,7 @@ BIOSから起動したハイパーバイザー上で，各サーバを仮想的�
 
 #### ・Provider例
 
-| 名前   |
-| ------ |
-| Docker |
-| LXC    |
-| OpenVZ |
+Docker，LXC，OpenVZ，など
 
 ![コンテナ型仮想化](https://user-images.githubusercontent.com/42175286/60386394-3afbd080-9acf-11e9-96fd-321a88dbadc5.png)
 
@@ -83,7 +72,7 @@ BIOSから起動したハイパーバイザー上で，各サーバを仮想的�
 
 #### ・Overheadの比較
 
-sysbenchというベンチマークツールを用いて，CPU・メモリ・ファイルI/Oに着目し，物理マシン・コンテナ型仮想化（Docker）・ホスト型仮想化（VirtualBox）のパフォーマンスを比較．
+sysbenchというベンチマークツールを用いて，CPU・メモリ・ファイルI/Oに着目し，物理マシン・コンテナ型仮想化（Docker）・ホスト型仮想化（VirtualBox）のパフォーマンスを比較すると，コンテナ型であるDockerは最もOverheadが小さい．
 
 ![各仮想化の比較](https://user-images.githubusercontent.com/42175286/60386476-27049e80-9ad0-11e9-92d8-76eed8927392.png)
 

@@ -6,7 +6,7 @@
 
 DBへのアクセス処理を書き込みと読み出しに分離する設計のこと．DDDに部分的に組み込むことができる．```N+１```問題にも，対処できる．
 
-![cqrs](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/cqrs.png)
+![cqrs](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/cqrs.png)
 
 <br>
 

@@ -6,7 +6,7 @@
 
 ネットワークには，『インターネット』『WAN』『LAN』がある．家庭内LAN，学内LAN，企業内LAN，企業WANなど，さまざまなネットワークがあり，インターネットは，それぞれのネットワークを互いに接続しているネットワークである．
 
-![インターネットとWANとLAN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターネットとWANとLAN.png)
+![インターネットとWANとLAN](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インターネットとWANとLAN.png)
 
 <br>
 
@@ -14,13 +14,13 @@
 
 例えば，LANとしてEthernet，WANとしてデジタル専用線を用いる．
 
-![WAN，LANの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WAN，LANの具体例.png)
+![WAN，LANの具体例](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/WAN，LANの具体例.png)
 
 <br>
 
 ### WANの種類と歴史
 
-![WANの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WANの種類と歴史.png)
+![WANの歴史](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/WANの種類と歴史.png)
 
 <br>
 
@@ -28,7 +28,7 @@
 
 ルータを境に，プライベートネットワークとグローバルネットワークに分けられる．ややこしいが，ルータにはグローバルIPアドレスが割り当てられている．
 
-![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルネットワークとプライベートネットワーク.PNG)
+![グローバルネットワークとプライベートネットワーク](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/グローバルネットワークとプライベートネットワーク.PNG)
 
 <br>
 
@@ -44,7 +44,7 @@
 
 外部から直接リクエストを受けない．『データベースサーバ』は，内部ネットワークに設置するべき．
 
-![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部，DMZ，外部.png)
+![内部，DMZ，外部](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/内部，DMZ，外部.png)
 
 <br>
 
@@ -54,13 +54,13 @@
 
   少数対少数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報は必要ない．
 
-![回線交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/回線交換方式.png)
+![回線交換方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/回線交換方式.png)
 
 #### ・パケット交換方式
 
   通信するデータをパケット化する．多数対多数でデータ通信を行うため，送信時に，送信者と受信者の宛先情報が必要になる．
 
-![パケット交換方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケット交換方式.png)
+![パケット交換方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パケット交換方式.png)
 
 <br>
 
@@ -74,7 +74,7 @@
 4. ネットワークインターフェース層でEthernetヘッダが追加される．
 5. パケットとして送信される．
 
-![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
+![パケットの構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パケットの構造.jpg)
 
 <br>
 
@@ -82,7 +82,7 @@
 
 #### ・各概念層のヘッダ情報追加
 
-![OSI参照モデル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデル.png)
+![OSI参照モデル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/OSI参照モデル.png)
 
 <br>
 
@@ -92,7 +92,7 @@
 
 TCP/IPモデルで用いられるプロトコルのうち，最も代表的な「TCP」と「IP」から名前をとって「TCP/IP」と名付けられた．プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
 
-![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セキュアプロトコル.png)
+![セキュアプロトコル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/セキュアプロトコル.png)
 
 <br>
 
@@ -100,7 +100,7 @@ TCP/IPモデルで用いられるプロトコルのうち，最も代表的な�
 
 ### 各概念層と通信機器の間の対応関係
 
-![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器.jpg)
+![OSI参照モデルと通信機器.png](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/OSI参照モデルと通信機器.jpg)
 
 #### ・ネットワーク層
 
@@ -116,7 +116,7 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 送信元で作成されたパケットは，非カプセル化されながら，通信機器に認識される．
 
-![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSI参照モデルと通信機器でのパケット認識.jpg)
+![OSI参照モデルと通信機器でのパケット認識.png](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/OSI参照モデルと通信機器でのパケット認識.jpg)
 
 <br>
 
@@ -126,13 +126,13 @@ Network Interface Card（（例）LANアダプタ，LANボード，LANカード�
 
 #### ・各部品の名称
 
-![URLと電子メールの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/URLと電子メールの構造.png)
+![URLと電子メールの構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/URLと電子メールの構造.png)
 
 #### ・完全修飾ドメイン名とサーバー中継
 
 完全修飾ドメイン名をもとにして，サーバーを中継していき，最終的なサーバにたどり着く．
 
-![ドメイン名の構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン名の構造.PNG)
+![ドメイン名の構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ドメイン名の構造.PNG)
 
 #### ・URLにおけるパスパラメータとクエリパラメータの使い分け
 
@@ -152,7 +152,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ドメイン名の子関係にある名前．ホスト名（以下では省略されている）と，ドメイン名の間につける．
 
-![サブドメイン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/サブドメイン.png)
+![サブドメイン](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/サブドメイン.png)
 
 <br>
 
@@ -160,7 +160,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 ### メールデータの送受信に関わるプロトコル
 
-![SMTP，POP3，IMAP4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP，POP3，IMAP4.png)
+![SMTP，POP3，IMAP4](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SMTP，POP3，IMAP4.png)
 
 <br>
 
@@ -174,7 +174,7 @@ http://www.example.co.jp:80/userInfo/777?text1=a&text2=b
 
 SMTPに認証を組み込んだ仕組みのこと．クライアントから送信側メールサーバにメールデータをSMTP送信する時，メールサーバがクライアントに対して認証を行う．
 
-![SMTP-AUTH](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SMTP-AUTH.png)
+![SMTP-AUTH](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SMTP-AUTH.png)
 
 <br>
 
@@ -196,7 +196,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
   GmailでPOPかIMAPを設定可能
 
-![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GmailでPOPかIMAPを設定.jpg)
+![GmailでPOPorIMAPを設定](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/GmailでPOPかIMAPを設定.jpg)
 
 <br>
 
@@ -212,7 +212,7 @@ SMTPに認証を組み込んだ仕組みのこと．クライアントから送�
 
 ### TCPによるヘッダ情報の追加と識別の仕組み
 
-![トランスポート層からアプリケーション層へのパケットの移動](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トランスポート層からアプリケーション層へのパケットの移動.PNG)
+![トランスポート層からアプリケーション層へのパケットの移動](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/トランスポート層からアプリケーション層へのパケットの移動.PNG)
 
 #### ・リクエスト時の仕組み（図の 「←」 ）
 
@@ -246,7 +246,7 @@ http://localhost:8080/
 
 IANA：Internet Assigned Numbers Authority（インターネット割当番号公社）によって管理されているポート番号．Webサーバがリクエストを受信する時，またレスポンスを送信する時に使用される．ホストOSとゲスト（仮想サーバ）との通信では，80番（HTTP）の受信に関する様々な設定が必要になる．
 
-![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ポート番号とプロトコルの対応関係.png)
+![ポート番号とプロトコルの対応関係](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ポート番号とプロトコルの対応関係.png)
 
 #### ・登録済みポート番号（1024 ～ 49151）
 
@@ -258,7 +258,9 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 
 #### ・ポートフォワーディング（ポート転送）
 
-サーバ内の特定のポート番号のアプリケーションに対して，パケットが送信されてきた時，これを異なるポート番号のアプリケーションに転送すること．SSHプロトコルと組み合わせたSSHポートフォワーディングについては，暗号化技術のノートを参照．
+サーバ内の特定のポート番号のアプリケーションに対して，パケットが送信されてきた時，これを異なるポート番号のアプリケーションに転送すること．SSHプロトコルと組み合わせたSSHポートフォワーディングについては，以下を参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/infrastructure_network_encryption_technology.html
 
 <br>
 
@@ -278,13 +280,13 @@ IANA：Internet Assigned Numbers Authority（インターネット割当番号�
 2. ルータAは，IPパケットをデジタル専用線に乗せて，ルータBに送信．
 3. ルータBは，構成したIPパケットをEthernetに乗せて，Webサーバに送信．
 
-![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネットワークにおけるTCP_IPを用いたデータ通信.png)
+![ネットワークにおけるTCP_IPを用いたデータ通信](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ネットワークにおけるTCP_IPを用いたデータ通信.png)
 
 <br>
 
 ### IPv4アドレスの種類
 
-![プライベートIPアドレスとグローバルIPアドレス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プライベートIPアドレスとグローバルIPアドレス.png)
+![プライベートIPアドレスとグローバルIPアドレス](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/プライベートIPアドレスとグローバルIPアドレス.png)
 
 #### ・プライベートIPアドレス
 
@@ -300,13 +302,13 @@ LAN内で使用される．異なるプライベートネットワーク間で�
 
 例えば，プライベートIPアドレスの４つのオクテット（第一オクテットから第四オクテットまで）が１Byteの容量をもち，IPアドレス全体で４Byteの容量をもつ．ちなみに，```172```から始まるIPアドレスは，クラスBである．　
 
-![IPアドレスとbitの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスとbitの関係.png)
+![IPアドレスとbitの関係](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPアドレスとbitの関係.png)
 
 <br>
 
 ### プライベート／グローバルIPアドレスのネットワーク部とホスト部
 
-![IPアドレスのホスト部とネットワーク部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスのホスト部とネットワーク部.png)
+![IPアドレスのホスト部とネットワーク部](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPアドレスのホスト部とネットワーク部.png)
 
 #### ・クラスによるホスト部とネットワーク部の定義
 
@@ -356,7 +358,7 @@ IPアドレスをクラスとして分類し，各クラスでIPアドレスの�
 
 #### ・完全修飾ドメイン名とグローバルIPアドレスのマッピング
 
-![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング4.png)
+![IPアドレスと完全修飾ドメイン名のマッピング1（編集後）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPアドレスと完全修飾ドメイン名のマッピング4.png)
 
 例えば，外部WebサーバのグローバルIPアドレスが『203.142.205.139』であると知っている場合，URLのプロトコル部分以下を『```203.142.205.139```』としてリクエストすれば，外部Webサーバが提供するウェブサイトにアクセスできる．しかし，グローバルIPアドレスは数字の羅列であるため，人間には覚えにくい．そこで，グローバルIPアドレスの代わりに，完全修飾ドメイン名をURLの一部として用いる．
 
@@ -409,13 +411,13 @@ http://www.example.co.jp:53/
 
 4. これらの『送信元プライベートIPアドレス』が，NATルータで，グローバルIPアドレスに変換される．
 
-![プライベートからグローバルへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プライベートからグローバルへのnat変換.png)
+![プライベートからグローバルへのnat変換](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/プライベートからグローバルへのnat変換.png)
 
 #### ・レスポンス時の変換
 
 プライベートネットワークに入る時に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスをプライベートIPアドレスに変換する．
 
-![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/グローバルからプライベートへのnat変換.png)
+![グローバルからプライベートへのnat変換](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/グローバルからプライベートへのnat変換.png)
 
 <br>
 
@@ -434,13 +436,13 @@ http://www.example.co.jp:53/
 |      ```192.168.2.1```       |   ```50011```    |      |   ```130.X.X.X:50011```    |   ```50011```    |
 |      ```192.168.3.1```       |   ```50011```    |      |   ```130.X.X.X:50012```    |   ```50012```    |
 
-![napt変換](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/napt変換.png)
+![napt変換](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/napt変換.png)
 
 #### ・レスポンス時の変換
 
 プライベートネットワークに入る時に，付け加えられたポート番号を元に，パケットのヘッダ情報における『宛先』のグローバルIPアドレスを，異なるプライベートIPアドレスに変換し分ける．
 
-![napt変換_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/napt変換_2.png)
+![napt変換_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/napt変換_2.png)
 
 <br>
 
@@ -450,7 +452,7 @@ http://www.example.co.jp:53/
 
 Webサーバ，APサーバ，DBサーバによるネットワークの仕組みをWebシステムという．ソフトウェアとハードウェアのノートも参照せよ．
 
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
 ### Webサーバ
 
@@ -458,7 +460,7 @@ Webサーバ，APサーバ，DBサーバによるネットワークの仕組み�
 
 ミドルウェア（Apache，Nginxなど）がインストールされている．また，Web兼APサーバのミドルウェアとして機能する（NGINX Unit）がインストールされていることもある．
 
-![Nginxの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Nginxの仕組み.png)
+![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
 |                                | Webサーバ |  →   | APサーバ |  →   |  DBサーバ  |
 | ------------------------------ | :-------: | :--: | :------: | :--: | :--------: |
@@ -469,47 +471,49 @@ Webサーバ，APサーバ，DBサーバによるネットワークの仕組み�
 
 #### ・サーバ変数（```$_SERVER```）
 
-```
-$_SERVER['SERVER_ADDR']           サーバのIPアドレス(例:192.168.0.1)
-$_SERVER['SERVER_NAME']           サーバの名前(例:www.example.com)
-$_SERVER['SERVER_PORT']           サーバのポート番号(例:80)
-$_SERVER['SERVER_PROTOCOL']       サーバプロトコル(例:HTTP/1.1)
-$_SERVER['SERVER_ADMIN']          サーバの管理者(例:root@localhost)
-$_SERVER['SERVER_SIGNATURE']      サーバのシグニチャ(例:Apache/2.2.15...)
-$_SERVER['SERVER_SOFTWARE']       サーバソフトウェア(例:Apache/2.2.15...)
-$_SERVER['GATEWAY_INTERFACE']     CGIバージョン(例:CGI/1.1)
-$_SERVER['DOCUMENT_ROOT']         ドキュメントルート(例:/var/www/html)
-$_SERVER['PATH']                  環境変数PATHの値(例:/sbin:/usr/sbin:/bin:/usr/bin)
-$_SERVER['PATH_TRANSLATED']       スクリプトファイル名(例:/var/www/html/test.php)
-$_SERVER['SCRIPT_FILENAME']       スクリプトファイル名(例:/var/www/html/test.php)
-$_SERVER['REQUEST_URI']           リクエストのURI(例:/test.php)
-$_SERVER['PHP_SELF']              PHPスクリプト名(例:/test.php)
-$_SERVER['SCRIPT_NAME']           スクリプト名(例:/test.php)
-$_SERVER['PATH_INFO']             URLの引数に指定されたパス名(例:/test.php/aaa)
-$_SERVER['ORIG_PATH_INFO']        PHPで処理される前のPATH_INFO情報
-$_SERVER['QUERY_STRING']          URLの?以降に記述された引数(例:q=123)
-$_SERVER['REMOTE_ADDR']           クライアントのIPアドレス(例:192.168.0.123)
-$_SERVER['REMOTE_HOST']           クライアント名(例:client32.example.com)
-$_SERVER['REMOTE_PORT']           クライアントのポート番号(例:64799)
-$_SERVER['REMOTE_USER']           クライアントのユーザ名(例:tanaka)
-$_SERVER['REQUEST_METHOD']        リクエストメソッド(例:GET)
-$_SERVER['REQUEST_TIME']          リクエストのタイムスタンプ(例:1351987425)
-$_SERVER['REQUEST_TIME_FLOAT']    リクエストのタイムスタンプ(マイクロ秒)(PHP 5.1.0以降)
-$_SERVER['REDIRECT_REMOTE_USER']  リダイレクトされた場合の認証ユーザ(例:tanaka)
-$_SERVER['HTTP_ACCEPT']           リクエストのAccept:ヘッダの値(例:text/html)
-$_SERVER['HTTP_ACCEPT_CHARSET']   リクエストのAccept-Charset:ヘッダの値(例:utf-8)
-$_SERVER['HTTP_ACCEPT_ENCODING']  リクエストのAccept-Encoding:ヘッダの値(例:gzip)
-$_SERVER['HTTP_ACCEPT_LANGUAGE']  リクエストのAccept-Language:ヘッダの値(ja,en-US)
-$_SERVER['HTTP_CACHE_CONTROL']    リクエストのCache-Control:ヘッダの値(例:max-age=0)
-$_SERVER['HTTP_CONNECTION']       リクエストのConnection:ヘッダの値(例:keep-alive)
-$_SERVER['HTTP_HOST']             リクエストのHost:ヘッダの値(例:www.example.com)
-$_SERVER['HTTP_REFERER']          リンクの参照元URL(例:http://www.example.com/)
-$_SERVER['HTTP_USER_AGENT']       リクエストのUser-Agent:ヘッダの値(例:Mozilla/5.0...)
-$_SERVER['HTTPS']                 HTTPSを利用しているか否か(例:on)
-$_SERVER['PHP_AUTH_DIGEST']       ダイジェスト認証時のAuthorization:ヘッダの値
-$_SERVER['PHP_AUTH_USER']         HTTP認証時のユーザ名
-$_SERVER['PHP_AUTH_PW']           HTTP認証時のパスワード
-$_SERVER['AUTH_TYPE']             HTTP認証時の認証形式
+```php
+<?php
+    
+$_SERVER['SERVER_ADDR']           # サーバのIPアドレス(例:192.168.0.1)
+$_SERVER['SERVER_NAME']           # サーバの名前(例:www.example.com)
+$_SERVER['SERVER_PORT']           # サーバのポート番号(例:80)
+$_SERVER['SERVER_PROTOCOL']       # サーバプロトコル(例:HTTP/1.1)
+$_SERVER['SERVER_ADMIN']          # サーバの管理者(例:root@localhost)
+$_SERVER['SERVER_SIGNATURE']      # サーバのシグニチャ(例:Apache/2.2.15...)
+$_SERVER['SERVER_SOFTWARE']       # サーバソフトウェア(例:Apache/2.2.15...)
+$_SERVER['GATEWAY_INTERFACE']     # CGIバージョン(例:CGI/1.1)
+$_SERVER['DOCUMENT_ROOT']         # ドキュメントルート(例:/var/www/html)
+$_SERVER['PATH']                  # 環境変数PATHの値(例:/sbin:/usr/sbin:/bin:/usr/bin)
+$_SERVER['PATH_TRANSLATED']       # スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['SCRIPT_FILENAME']       # スクリプトファイル名(例:/var/www/html/test.php)
+$_SERVER['REQUEST_URI']           # リクエストのURI(例:/test.php)
+$_SERVER['PHP_SELF']              # PHPスクリプト名(例:/test.php)
+$_SERVER['SCRIPT_NAME']           # スクリプト名(例:/test.php)
+$_SERVER['PATH_INFO']             # URLの引数に指定されたパス名(例:/test.php/aaa)
+$_SERVER['ORIG_PATH_INFO']        # PHPで処理される前のPATH_INFO情報
+$_SERVER['QUERY_STRING']          # URLの?以降に記述された引数(例:q=123)
+$_SERVER['REMOTE_ADDR']           # クライアントのIPアドレス(例:192.168.0.123)
+$_SERVER['REMOTE_HOST']           # クライアント名(例:client32.example.com)
+$_SERVER['REMOTE_PORT']           # クライアントのポート番号(例:64799)
+$_SERVER['REMOTE_USER']           # クライアントのユーザ名(例:tanaka)
+$_SERVER['REQUEST_METHOD']        # リクエストメソッド(例:GET)
+$_SERVER['REQUEST_TIME']          # リクエストのタイムスタンプ(例:1351987425)
+$_SERVER['REQUEST_TIME_FLOAT']    # リクエストのタイムスタンプ(マイクロ秒)(PHP 5.1.0以降)
+$_SERVER['REDIRECT_REMOTE_USER']  # リダイレクトされた場合の認証ユーザ(例:tanaka)
+$_SERVER['HTTP_ACCEPT']           # リクエストのAccept:ヘッダの値(例:text/html)
+$_SERVER['HTTP_ACCEPT_CHARSET']   # リクエストのAccept-Charset:ヘッダの値(例:utf-8)
+$_SERVER['HTTP_ACCEPT_ENCODING']  # リクエストのAccept-Encoding:ヘッダの値(例:gzip)
+$_SERVER['HTTP_ACCEPT_LANGUAGE']  # リクエストのAccept-Language:ヘッダの値(ja,en-US)
+$_SERVER['HTTP_CACHE_CONTROL']    # リクエストのCache-Control:ヘッダの値(例:max-age=0)
+$_SERVER['HTTP_CONNECTION']       # リクエストのConnection:ヘッダの値(例:keep-alive)
+$_SERVER['HTTP_HOST']             # リクエストのHost:ヘッダの値(例:www.example.com)
+$_SERVER['HTTP_REFERER']          # リンクの参照元URL(例:http://www.example.com/)
+$_SERVER['HTTP_USER_AGENT']       # リクエストのUser-Agent:ヘッダの値(例:Mozilla/5.0...)
+$_SERVER['HTTPS']                 # HTTPSを利用しているか否か(例:on)
+$_SERVER['PHP_AUTH_DIGEST']       # ダイジェスト認証時のAuthorization:ヘッダの値
+$_SERVER['PHP_AUTH_USER']         # HTTP認証時のユーザ名
+$_SERVER['PHP_AUTH_PW']           # HTTP認証時のパスワード
+$_SERVER['AUTH_TYPE']             # HTTP認証時の認証形式
 ```
 
 #### ・リクエスト変数（```$_REQUEST```）
@@ -522,6 +526,7 @@ GET変数（```$_GET```），POST変数（```$_POST```），COOKIE（```$_COOKIE
 
 ```php
 <?php
+    
 // $_GET['hoge']
 $request->query->get('hoge');
  
@@ -579,13 +584,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
   サーバ自体のスペックをより高くすることで，サーバ当たりの処理能力を向上させる．その逆は，スケールダウン．設定で，仮想サーバのスペックを上げることも，これに該当する．
 
-![スケールアップ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スケールアップ.png)
+![スケールアップ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スケールアップ.png)
 
 #### ・水平スケーリング（スケールアウト ⇔ スケールイン）
 
   サーバの台数を増やすことで，サーバ全体の処理能力を向上させる．その逆は，スケールイン．
 
-![スケールアウト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スケールアウト.png)
+![スケールアウト](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スケールアウト.png)
 
 <br>
 
@@ -595,7 +600,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 同じ処理を行う2つのシステムからなるシステム構成のこと．随時，処理結果を照合する．いずれかが故障した場合，異常が発生したシステムを切り離し，残る片方で処理を続けることによって，故障を乗り切る．
 
-![デュアルシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デュアルシステム.png)
+![デュアルシステム](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/デュアルシステム.png)
 
 <br>
 
@@ -603,17 +608,17 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 オンライン処理を行う主系システムと，バッチ処理を行う従系システムからなるシステム構成のこと．主系システムが故障した場合，主系システムのオンライン処理を従系システムに引き継ぎ，処理を続けることによって，故障を乗り切る．
 
-![デュプレックスシステム](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デュプレックスシステム.png)
+![デュプレックスシステム](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/デュプレックスシステム.png)
 
 従系システムの待機方法には２つの種類がある．
 
 #### ・ホットスタンバイ
 
-![p613-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-1.png)
+![p613-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p613-1.png)
 
 #### ・コールドスタンバイ
 
-![p613-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p613-2.png)
+![p613-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p613-2.png)
 
 <br>
 
@@ -625,7 +630,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 １－(1－0.81) × (1－0.64) = 0.9316
 
-![稼働率の計算](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/稼働率の計算.jpg)
+![稼働率の計算](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/稼働率の計算.jpg)
 
 <br>
 
@@ -637,13 +642,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 代理でリクエストを送るフォワードプロキシサーバと，レスポンスを送るリバースプロキシサーバに分類できる．
 
-![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
+![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
 
 #### ・キャッシュ機能
 
 リバースプロキシサーバに，Webページのコンテンツをキャッシュとして保存することによって，Webサーバのアクセス負荷を抑える．ちなみに，ブラウザもキャッシュ機能を持っている．
 
-![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロキシサーバのキャッシュ機能.png)
+![プロキシサーバのキャッシュ機能](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/プロキシサーバのキャッシュ機能.png)
 
 <br>
 
@@ -653,7 +658,7 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 フォワードプロキシサーバはプロバイダの会社に，リバースプロキシサーバはリクエスト先の社内ネットワークに設置されている．
 
-![プロキシサーバの設置場所](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/プロキシサーバの設置場所.png)
+![プロキシサーバの設置場所](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/プロキシサーバの設置場所.png)
 
 #### ・クラウド上の場合
 
@@ -667,13 +672,13 @@ Webサーバから動的コンテンツのリクエストがあった場合に�
 
 Webサーバとしてではなく，リバースプロキシサーバとして使用し，代理リクエストやキャッシュを行わせることが可能．
 
-![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/リバースプロキシサーバとしてのNginx.png)
+![リバースプロキシサーバとしてのNginx](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/リバースプロキシサーバとしてのNginx.png)
 
 <br>
 
 ## 06-04.  プロキシサーバ，DNSサーバによる名前解決
 
-![名前解決の仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/名前解決の仕組み.png)
+![名前解決の仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/名前解決の仕組み.png)
 
 ### （1）完全修飾ドメイン名に対応するIPアドレスのレスポンス
 
@@ -716,42 +721,42 @@ Webサーバとしてではなく，リバースプロキシサーバとして�
 
 ### 一覧
 
-| 項目                            | 説明                                                         | 備考                                                         |
-| ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Response Time（レスポンス時間） | リクエストを送信してから，サーバが処理を実行し，レスポンスが返信されるまでに要する時間のこと． |                                                              |
-| Latency（レイテンシー）         | リクエストを送信してから，レスポンスが返信されるまで要する時間のこと．サーバの処理時間は含まない． |                                                              |
-| Connection Time（接続時間）     | リクエストを送信する前に，サーバとのTCP接続の確立に要する時間のこと． | リクエストとレスポンスの送受信の前後に行われるTCP接続の確立を「スリーウェイハンドシェイク」という． |
-| Bandwidth（帯域幅）             | 一度に送受信できるデータの最大容量のこと．                   |                                                              |
-| Throughput（伝送速度）          | 単位時間当たりの送信できる最大のデータ容量のこと．           | 他からの影響を受けた実際の伝送速度を「実効伝送速度」という． |
+|                             |                                                              |                                                              |
+| --------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| レスポンスタイム            | リクエストを送信してから，サーバが処理を実行し，レスポンスが返信されるまでに要する時間のこと． |                                                              |
+| レイテンシー                | リクエストを送信してから，レスポンスが返信されるまで要する時間のこと．サーバの処理時間は含まない． |                                                              |
+| Connection Time（接続時間） | リクエストを送信する前に，サーバとのTCP接続の確立に要する時間のこと． | リクエストとレスポンスの送受信の前後に行われるTCP接続の確立を「スリーウェイハンドシェイク」という． |
+| Bandwidth（帯域幅）         | 一度に送受信できるデータの最大容量のこと．                   |                                                              |
+| スループット（伝送速度）    | 単位時間当たりの送信できる最大のデータ容量のこと．           | 他からの影響を受けた実際のスループットを「実効スループット」という． |
 
 <br>
 
-###  Throughput（伝送速度）
+###  スループット（伝送速度）
 
 #### ・伝送とは
 
 サーバからクライアントPCにデータを送信すること．相互の送信は，通信と呼ぶ．
 
-#### ・伝送速度とは
+#### ・スループットとは
 
-単位時間当たりの送信できる最大のデータ容量のこと．実際には，伝送速度は，『プロバイダ』，『光回線』，『自宅の有線／無線』の三つに影響されるため，伝送速度で期待されるデータ容量を満たせないことが多い．実際の伝送速度を「実効伝送速度」という．
+単位時間当たりの送信できる最大のデータ容量のこと．実際には，スループットは，『プロバイダ』，『光回線』，『自宅の有線／無線』の三つに影響されるため，スループットで期待されるデータ容量を満たせないことが多い．実際のスループットを「実効スループット」という．
 
-![伝送速度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/伝送速度.png)
+![伝送速度](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/伝送速度.png)
 
 #### ・伝送秒数の求め方
 
 ```
 (伝送秒数)
-= データ容量(bit) ÷ 伝送速度(bit/s) × 伝送効率
+= データ容量(bit) ÷ スループット(bit/s) × 伝送効率
 ```
 
 #### ・トラフィックとは
 
-ネットワークの，とある地点での伝送速度```(bit/s)```のこと．
+とあるネットワーク地点でのスループットのこと．
 
-![トラフィック](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィック.png)
+![トラフィック](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/トラフィック.png)
 
 総務省のデータで，日本のブロードバンド大手5社の総トラフィックを年次でグラフ化したものがある．
 
-![トラフィックのグラフ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トラフィックのグラフ.png)
+![トラフィックのグラフ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/トラフィックのグラフ.png)
 

@@ -15,7 +15,7 @@
 - Rasterize
 - Composite
 
-![browser-rendering](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/browser-rendering.png)
+![browser-rendering](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/browser-rendering.png)
 
 <br>
 
@@ -29,7 +29,7 @@
 
 Webページをテキストによって構成するための言語をマークアップ言語という．1970年，IBMが，タグによって，テキスト文章に構造や意味を持たせるGML言語を発表した．
 
-![markup-language-history](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/markup-language-history.png)
+![markup-language-history](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/markup-language-history.png)
 
 <br>
 
@@ -133,13 +133,13 @@ var hoge = true;
     
     // 外側の変数（hoge）を参照できる．
     if(hoge) {
-      console.log('外部ファイルを読み込みました');
+      console.log("外部ファイルを読み込みました");
     }
     
     var localNum = 20;
     function localMethod() {
         // 外側の変数（localNum）を参照できる．
-        console.log('localNum');
+        console.log("localNum");
     }
     
     // 定義したメソッドを実行
@@ -163,13 +163,13 @@ var hoge = true;
     
     // 外側の変数（hoge）を参照できる．
     if(hoge) {
-      console.log('外部ファイルを読み込みました');
+      console.log("外部ファイルを読み込みました");
     }
     
     var localNum = 20;
     function localMethod() {
         // 外側の変数（localNum）を参照できる．
-        console.log('localNum');
+        console.log("localNum");
     }
     
     // 定義したメソッドを実行
@@ -225,7 +225,7 @@ function methodA(){
 
 ```javascript
 // 指定したIDで，クリックイベントが発火した時に，処理を行う．
-document.getElementById('btn').onclick = function(){
+document.getElementById("btn").onclick = function(){
 	console.log("イベントが発火しました");
 }
 ```
@@ -237,19 +237,19 @@ document.getElementById('btn').onclick = function(){
 
 ```javascript
 // DOMContentLoadedイベントが発火した時に，処理を行う．
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener("DOMContentLoaded", function(){
 	console.log("イベントが発火しました");
 });
 ```
 
 ```javascript
 // 一つ目
-document.getElementById('btn').addEventListener('click', function(){
+document.getElementById("btn").addEventListener("click", function(){
 	console.log("イベントが発火しました（１）");
 }, false);
 
 // 二つ目
-document.getElementById('btn').addEventListener('click', function(){
+document.getElementById("btn").addEventListener("click", function(){
 	console.log("イベントが発火しました（２）");
 }, false);
 ```
@@ -272,7 +272,7 @@ JavaScriptやHTMLの更新にブラウザが追いついていない場合に，
 
 #### ・非同期的な読み込み
 
-サーバサイドからリソース（Html，CSS，JS，画像）は，分割されながら，バイト形式でレスポンスされ，これを優先度に基づいて読み込む処理．分割でレスポンスされたリソースを，随時読み込んでいくため，各リソースの読み込みは非同期的に行われる．Downloading処理が終了したリソースから，次のParse処理に進んでいく．
+まず，サーバサイドからリソース（Html，CSS，JS，画像）は，分割されながら，バイト形式でレスポンスされる．これは，メッセージボディに含まれている．これを優先度に基づいて読み込む処理．分割でレスポンスされたリソースを，随時読み込んでいく．そのため，各リソースの読み込みは非同期的に行われる．Downloading処理が終了したリソースから，次のParse処理に進んでいく．
 
 #### ・リソースの優先順位
 
@@ -321,7 +321,7 @@ scrollイベントとresizeイベントを監視し、これらのイベント�
 
 Intersection Observerによる要素の交差率を監視し，指定の交差率を超えた要素を随時読み込む方法．例えば，交差率の閾値を「```0.5```」と設定すると，ターゲットエレメントの交差率が「```0.5```」を超えた要素を随時読み込む．
 
-![intersection-observer](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/intersection-observer.png)
+![intersection-observer](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/intersection-observer.png)
 
 <br>
 
@@ -343,7 +343,7 @@ Downloading処理によって読み込まれたリソースを翻訳するプロ
 
 #### ・構造解析の流れ
 
-1. Downloading処理で読みこまれたバイト形式ファイルは，文字コードに基づいて，一連の文字列に変換される．ここでは，以下のHTML形式ファイルとCSS形式ファイル（```style.css```）に変換されたとする．
+Downloading処理で読みこまれたバイト形式ファイルは，文字コードに基づいて，一連の文字列に変換される．ここでは，以下のHTML形式ファイルとCSS形式ファイル（```style.css```）に変換されたとする．
 
 ```html
 <!DOCTYPE html>
@@ -372,23 +372,21 @@ p span { display: none }
 img { float: right }
 ```
 
+リソースの文字列からHTMLタグが認識され，トークンに変換される．各トークンは，一つのオブジェクトに変換される．
 
-2. リソースの文字列からHTMLタグが認識され，トークンに変換される．
-3. 各トークンは，一つのオブジェクトに変換される．
+![DOMツリーが生成されるまで](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DOMツリーが生成されるまで.png)
 
-![DOMツリーが生成されるまで](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DOMツリーが生成されるまで.png)
+HTMLパーサーは，オブジェクトをノードとして，DOMツリーを生成する．DOMツリーを生成する途中でscriptタグに到達すると，一旦，JSファイルを読み込んでScripting処理を終えてから，DOMツリーの生成を再開する．
 
-4. HTMLパーサーは，オブジェクトをノードとして，DOMツリーを生成する．DOMツリーを生成する途中で```<script>```に到達すると，一旦，JSファイルを読み込んでScripting処理を終えてから，DOMツリーの生成を再開する．
+DOMのインターフェースについては，こちら．
 
-   DOMのインターフェースについては，こちら．
-   
-   https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
+https://developer.mozilla.org/ja/docs/Web/API/Document_Object_Model
 
-![DOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DOMツリー.png)
+![DOMツリー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DOMツリー.png)
 
-5. 同時に，CSSパーサーは，```<head>```にある```<link>```をもとにサーバにリクエストを行う．レスポンスされたcssファイルに対してDownloading処理を行った後，オブジェクトをノードとして，CSSOMツリーを生成する．
+同時に，CSSパーサーは，headタグにあるlinkタグをもとにサーバにリクエストを行う．レスポンスされたCSSファイルに対してDownloading処理を行った後，オブジェクトをノードとして，CSSOMツリーを生成する．
 
-![CSSOMツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CSSOMツリー.png)
+![CSSOMツリー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/CSSOMツリー.png)
 
 <br>
 
@@ -419,17 +417,17 @@ JavaScriptエンジンによって，JavaScriptコードが機械語に翻訳さ
 
 #### ・JavaScriptエンジンとは
 
-JavaScriptのインタプリタのこと．JavaScriptエンジンは，レンダリングエンジンからHtmlに組み込まれたJavaScriptコードを受け取る．JavaScriptエンジンは，これを機械語に翻訳し，ハードウェアに対して，命令を実行する．
+JavaScriptのインタプリタのこと．JavaScriptエンジンは，レンダリングエンジンからHTMLファイルに組み込まれたJavaScriptのコードを受け取る．JavaScriptエンジンは，これを機械語に翻訳し，ハードウェアに対して，命令を実行する．
 
-![JavascriptEngine](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/JavascriptEngine.png)
+![JavascriptEngine](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/JavascriptEngine.png)
 
 #### ・機械語翻訳
 
 JavaScriptエンジンは，ソースコードを，字句解析，構造解析，意味解釈，命令の実行，をコード一行ずつに対し，繰り返し行う．詳しくは，以下のノートを参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/infrastructure_software_centos.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/infrastructure_software_centos.html
 
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
 <br>
 
@@ -448,7 +446,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 レンダリングエンジンは，DOMツリーのルートのノードから順にCSSOSツリーを適用し，Renderツリーを生成する．
 
-![Renderツリー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Renderツリー.png)
+![Renderツリー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Renderツリー.png)
 
 <br>
 
@@ -458,7 +456,7 @@ JavaScriptエンジンは，ソースコードを，字句解析，構造解析�
 
 上記で読み込まれたHTML形式テキストファイルには，ネストされた 2 つの div がある．1 つ目（親）の```div```より，ノードの表示サイズをビューポートの幅の 50% に設定し、この親に含まれている 2 つ目（子）の```div```より，その幅を親の50%、つまりビューポートの幅の25%になるようにレイアウトされる．
 
-![Layout処理](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Layout処理.png)
+![Layout処理](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Layout処理.png)
 
 <br>
 
@@ -496,7 +494,7 @@ DOMツリーの各ノードを，ブラウザ上に描画する．
 
 クライアントのブラウザにおいて，レスポンスされた静的コンテンツがキャッシュとして保存される．
 
-![ブラウザのキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ブラウザのキャッシュ.png)
+![ブラウザのキャッシュ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ブラウザのキャッシュ.png)
 
 #### ・リバースProxyサーバにおけるキャッシュ
 
@@ -512,7 +510,7 @@ DOMツリーの各ノードを，ブラウザ上に描画する．
 
 #### ・ETag値による検証
 
-![EtagとIf-NoneMach](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ETagとIf-None-Match.png)
+![EtagとIf-NoneMach](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ETagとIf-None-Match.png)
 
 === （１）キャッシュの有効時間が切れるまで ===
 

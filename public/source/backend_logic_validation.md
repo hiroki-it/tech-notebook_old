@@ -37,26 +37,26 @@
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 // 変数に Tue を格納
-$weeks = 'Tue';
+$weeks = "Tue";
 
-// if文でTueに該当したら'火曜日'と表示する．
-if ($weeks == 'Mon') {
-    echo '月曜日';
-} elseif ($weeks == 'Tue') {
-    echo '火曜日';
-} elseif ($weeks == 'Wed') {
-    echo '水曜日';
-} elseif ($weeks == 'Thu') {
-    echo '木曜日';
-} elseif ($weeks == 'Fri') {
-    echo '金曜日';
-} elseif ($weeks == 'Sat') {
-    echo '土曜日';
+// if文でTueに該当したら"火曜日"と表示する．
+if ($weeks == "Mon") {
+    echo "月曜日";
+} elseif ($weeks == "Tue") {
+    echo "火曜日";
+} elseif ($weeks == "Wed") {
+    echo "水曜日";
+} elseif ($weeks == "Thu") {
+    echo "木曜日";
+} elseif ($weeks == "Fri") {
+    echo "金曜日";
+} elseif ($weeks == "Sat") {
+    echo "土曜日";
 } else {
-    echo '日曜日';
+    echo "日曜日";
 }
 
 // 実行結果
@@ -69,36 +69,37 @@ if ($weeks == 'Mon') {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+
 // 変数に Tue を格納
-$weeks = 'Tue';
- 
-// 条件分岐でTueに該当したら'火曜日'と表示する．breakでif文を抜けなければ，全て実行されてしまう．
+$weeks = "Tue";
+
+// 条件分岐でTueに該当したら"火曜日"と表示する．breakでif文を抜けなければ，全て実行されてしまう．
 switch ($weeks) {
-  case 'Mon':
-    echo '月曜日';
-    break;
-  case 'Tue':
-    echo '火曜日';
-    break;
-  case 'Wed':
-    echo '水曜日';
-    break;
-  case 'Thu':
-    echo '木曜日';
-    break;
-  case 'Fri':
-    echo '金曜日';
-    break;
-  case 'Sat':
-    echo '土曜日';
-    break;
-  case 'Sun':
-    echo '日曜日';
-    break;
-  default:
-    echo '曜日がありません';  
+    case "Mon":
+        echo "月曜日";
+        break;
+    case "Tue":
+        echo "火曜日";
+        break;
+    case "Wed":
+        echo "水曜日";
+        break;
+    case "Thu":
+        echo "木曜日";
+        break;
+    case "Fri":
+        echo "金曜日";
+        break;
+    case "Sat":
+        echo "土曜日";
+        break;
+    case "Sun":
+        echo "日曜日";
+        break;
+    default:
+        echo "曜日がありません";
 }
 
 // 実行結果
@@ -115,7 +116,7 @@ switch ($weeks) {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 class Example
@@ -140,21 +141,21 @@ class Example
                 // if文を通過した場合，メソッドの返却値が格納される．
                 // 通過しない場合，定数が格納される．
                 if ($option->isOptionItemA()) {
-                    $result['optionItemA'] = $option->optionItemA();
+                    $result["optionItemA"] = $option->optionItemA();
                 } else {
-                    $result['optionItemA'] = self::noOptionItem;
+                    $result["optionItemA"] = self::noOptionItem;
                 }
 
                 if ($option->isOptionItemB()) {
-                    $result['optionItemB'] = $option->optionItemB();
+                    $result["optionItemB"] = $option->optionItemB();
                 } else {
-                    $result['optionItemB'] = self::noOptionItem;
+                    $result["optionItemB"] = self::noOptionItem;
                 }
 
                 if ($option->isOptionItemC()) {
-                    $result['optionItemC'] = $option->optionItemC();
+                    $result["optionItemC"] = $option->optionItemC();
                 } else {
-                    $result['optionItemC'] = self::noOptionItem;
+                    $result["optionItemC"] = self::noOptionItem;
                 }
             }
         }
@@ -162,7 +163,6 @@ class Example
         return $result;
     }
 }
-
 ```
 
 #### ・三項演算子を用いた場合
@@ -171,7 +171,7 @@ class Example
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 class Example
@@ -180,38 +180,37 @@ class Example
      * マジックナンバー
      */
     const noOptionItem = 0;
-    
+
     /**
      * @var Entity
      */
     private $routeEntity;
-    
+
     public function example($result)
     {
         // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
         if (!empty($this->routeEntity->options)) {
             foreach ($this->routeEntity->options as $option) {
-                
+
                 // if文を通過した場合，メソッドの返却値が格納される．
                 // 通過しない場合，定数が格納される．
-                $result['optionItemA'] = ($option->isOptionItemA())
-                    ? $option->optionItemA()
-                    : self::noOptionItem;
-                
-                $result['optionItemB'] = ($option->isOptionItemB())
-                    ? $option->optionItemB()
-                    : self::noOptionItem;
-                
-                $result['optionItemC'] = ($option->isOptionItemC())
-                    ? $option->optionItemC()
-                    : self::noOptionItem;
+                $result["optionItemA"] = ($option->isOptionItemA())
+                  ? $option->optionItemA()
+                  : self::noOptionItem;
+
+                $result["optionItemB"] = ($option->isOptionItemB())
+                  ? $option->optionItemB()
+                  : self::noOptionItem;
+
+                $result["optionItemC"] = ($option->isOptionItemC())
+                  ? $option->optionItemC()
+                  : self::noOptionItem;
             };
         }
-        
+
         return $result;
     }
 }
-
 ```
 
 #### ・初期値と上書きのロジックを用いた場合
@@ -220,7 +219,7 @@ class Example
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 class Example
@@ -238,9 +237,9 @@ class Example
     public function example($result)
     {
         // 初期値0を設定
-        $result['optionItemA'] = self::noOptionItem;
-        $result['optionItemB'] = self::noOptionItem;
-        $result['optionItemC'] = self::noOptionItem;
+        $result["optionItemA"] = self::noOptionItem;
+        $result["optionItemB"] = self::noOptionItem;
+        $result["optionItemC"] = self::noOptionItem;
     
         // RouteEntityからoptionsオブジェクトに格納されるoptionオブジェクト配列を取り出す．
         if(!empty($this->routeEntity->options)) {
@@ -249,15 +248,15 @@ class Example
                 // if文を通過した場合，メソッドの返却値によって初期値0が上書きされる．
                 // 通過しない場合，初期値0が用いられる．
                 if ($option->isOptionItemA()) {
-                    $result['optionItemA'] = $option->optionItemA();
+                    $result["optionItemA"] = $option->optionItemA();
                 }
             
                 if ($option->isOptionItemB()) {
-                    $result['optionItemB'] = $option->optionItemB();
+                    $result["optionItemB"] = $option->optionItemB();
                 }
             
                 if ($option->isOptionItemC()) {
-                    $result['optionItemC'] = $option->optionItemC();
+                    $result["optionItemC"] = $option->optionItemC();
                 }
             };
         }
@@ -282,7 +281,7 @@ class Example
 2. 記述内容を，条件部と動作部に分解し，決定表で表す．
 3. 決定表を，流れ図で表す．
 
-![決定表](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/決定表.png)
+![決定表](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/決定表.png)
 
 #### ・if-elseif-elseは用いない
 
@@ -290,13 +289,13 @@ class Example
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 // 西暦を格納する．
 $year = N;
 ```
 
-```PHP
+```php
 <?php
     
 function leapYear(int $year): string
@@ -330,7 +329,7 @@ function leapYear(int $year): string
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // 西暦を格納する．
@@ -370,7 +369,7 @@ if文の代わりに，```switch-case-break```によって，実装に，『◯�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 function leapYear(int $year): string
@@ -407,7 +406,7 @@ function leapYear(int $year): string
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 function leapYear(int $year): string
@@ -442,14 +441,14 @@ function leapYear(int $year): string
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
-    
+
 class Example {};
 
 if(new Example == new Example){
-    echo '同じです';
-} else { echo '異なります'; }
+    echo "同じです";
+} else { echo "異なります"; }
 
 // 実行結果
 // 同じです
@@ -461,15 +460,15 @@ if(new Example == new Example){
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 class Example {};
 
 if (new Example === new Example) {
-    echo '同じです';
+    echo "同じです";
 } else {
-    echo '異なります';
+    echo "異なります";
 }
 
 // 実行結果
@@ -480,7 +479,7 @@ if (new Example === new Example) {
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 class Example {};
@@ -488,9 +487,9 @@ class Example {};
 $a = $b = new Example;
 
 if ($a === $b) {
-    echo '同じです';
+    echo "同じです";
 } else {
-    echo '異なります';
+    echo "異なります";
 }
 
 // 実行結果
@@ -499,39 +498,45 @@ if ($a === $b) {
 
 <br>
 
-## 03. 例外処理とロギング
+## 03. エラーキャッチ，例外スロー，ロギング
 
-### 例外クラスと例外スロー
+### エラーとロギングのコツ
 
-#### ・if-throw文
+#### ・エラーの種類
 
-特定の処理の中に，想定できる例外があり，それを例外クラスとしてするために用いる．ここでは，全ての例外クラスの親クラスである```Exception```クラスのインスタンスを投げている．
+プログラムの実行が強制停止されるランタイムエラー，停止せずに続行される非ランタイムエラー，に分類される．
+
+#### ・データベースにとって
+
+データベース更新系の処理の途中にエラーが発生すると，データベースが中途半端な更新状態になってしまう．そのため，エラーをキャッチし，これをきっかけにロールバック処理を実行する必要がある．なお，下流クラスのエラーの内容自体は握りつぶさずに，スタックトレースとして上流クラスでロギングしておく．
+
+#### ・システム開発者にとって
+
+エラーが画面上に返却されたとしても，これはシステム開発者にとってわかりにくい．そのため，エラーをキャッチし，システム開発者にわかる言葉に変換した例外としてスローする必要がある．なお，下流クラスのエラー自体は握りつぶさずに，スタックトレースとして上流クラスでロギングしておく．
+
+#### ・ユーザにとって
+
+エラーが画面上に返却されたとしても，ユーザにとっては何が起きているのかわからない．また，エラーをキャッチし，例外としてスローしたとしても，システム開発者にとっては理解できるが，ユーザにとっては理解できない．そのため，例外スローをさらに上流クラスに持ち上げ，最終的には，これをポップアップなどでわかりやすく通知する必要がある．これらは，サーバサイドのtry-catch-finally文や，フロントエンドのポップアップ処理で実現する．なお，下流クラスのエラー自体は握りつぶさずに，スタックトレースとして上流クラスでロギングしておく．
+
+<br>
+
+### スローされる例外
+
+#### ・標準例外クラス
+
+参考：https://www.php.net/manual/ja/spl.exceptions.php
+
+#### ・独自例外クラス
+
+エラーの種類に合わせて，```Exception```クラスを継承した独自例外クラスを実装し，使い分けるとよい．
 
 **＊実装例＊**
 
-```PHP
+「Example変数が見つからない」というエラーに対応する例外クラスを定義する．
+
+```php
 <?php
 
-function value(int $value) {
-    
-    if (empty($value)) {
-        // 例外クラスを返却
-        throw new Exception('Value is empty');
-    }
-    
-    return "これは ${value} です．";
-}
-```
-#### ・Exceptionクラスを継承した独自例外クラス
-
-**＊実装例＊**
-
-例外の種類に合わせて，```Exception```クラスを継承した独自例外クラスを実装し，使い分けるとよい．
-
-```PHP
-<?php
-
-// 独自例外クラス
 class ExampleNotFoundException extends Exception
 {
     // 基本的に何も実装しない．
@@ -546,7 +551,7 @@ use Exception\ExampleNotFound;
 function example(string $example) {
     
     if (empty($exmaple)) {
-        throw new ExampleNotFoundException('Example is not found.');;
+        throw new ExampleNotFoundException("Example is not found.");
     }
     
     return "これは ${example} です．";
@@ -554,21 +559,44 @@ function example(string $example) {
 ```
 <br>
 
-### try-catch-finally文
+### エラーのキャッチ
 
-#### ・単なるif-throw文
+#### ・if-throw文
 
-if-throwでは，都度例外を検証するがあり，様々な可能性を考慮しなければいけなくなる．
+特定の処理の中に，想定できる例外があり，それを例外クラスとしてするために用いる．ここでは，全ての例外クラスの親クラスである```Exception```クラスのインスタンスを投げている．
+
+**＊実装例＊**
 
 ```php
 <?php
 
-if (empty($){
-    throw new ExternalApiException();
+function value(int $value) {
+    
+    if (empty($value)) {
+        // 例外クラスを返却
+        throw new Exception("Value is empty");
+    }
+    
+    return "これは ${value} です．";
 }
+```
 
-if (example){
-    throw new ExampleInvalidArgumentException();
+ただし，if-throwでは，都度例外を検証するがあり，様々な可能性を考慮しなければいけなくなる．
+
+```php
+<?php
+    
+function value() {
+    
+    if (...) {
+        throw new ExternalApiException();
+    }
+    
+    if (...) {
+        throw new ExampleInvalidArgumentException();
+    }
+        
+    return "成功です．"
 }
 ```
 
@@ -578,7 +606,7 @@ try-catch-finallyでは，特定の処理の中で起こる想定できない例
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 use \Exception\ExternalApiErrorException;
@@ -586,14 +614,10 @@ use \Exception\HttpRequestErrorException;
 
 class Example
 {
-    /**
-     * @param message $message
-     * @return bool
-     */
     public function sendMessage(Message $message)
     {
         try {
-            
+
             // ExternalApiErrorException，HttpRequestErrorException，Exceptionが起こる
 
         } catch (ExternalApiErrorException $exception) {
@@ -626,46 +650,42 @@ finally句は，try句やcatch句の返却処理が行われる直前に実行�
 ```php
 <?php
 
-use \Exception\ExternalApiErrorException;
-use \Exception\HttpRequestErrorException;
+use Exception\ExternalApiErrorException;
+use Exception\HttpRequestErrorException;
 
 class Example
 {
-    /**
-     * @param message $message
-     * @return bool
-     */
     public function sendMessage(Message $message)
     {
         try {
-            
+
             // （１）
-            echo "Aの直前です"
+            echo "Aの直前です";
             return "Aです．";
             
         } catch (ExternalApiErrorException $exception) {
-  
+
             // （２）
-            echo "Bの直前です"
+            echo "Bの直前です";
             return "Bです．";
             
         } catch (HttpRequestErrorException $exception) {
-            
+
             // （３）
-            echo "Cの直前です"
+            echo "Cの直前です";
             return "Cです．";
             
         } catch (Exception $exception) {
-            
+
             // （４）
-            echo "Dの直前です"
+            echo "Dの直前です";
             return "Dです．";
             
         } finally {
-            
+
             // returnやcontinueを使用しない
             echo "Eです．";
-            
+
         }
     }
 }
@@ -699,60 +719,145 @@ class Example
 
 ### ロギング
 
-#### ・例外ごとのロギング分け
+#### ・エラー処理関数
+
+PHPには標準で，エラー処理関数が用意されている．その中でも，```error_log```メソッドをよく使う．
+
+参考：https://www.php.net/manual/ja/ref.errorfunc.php
+
+```php
+error_log(
+    "<エラーメッセージ>",
+    "<メッセージの出力先（3の場合にファイル出力）>",
+    "<ログファイルの場所>"
+)
+```
+
+**＊実装例＊**
+
+```php
+<?php
+
+class Notification
+{
+    public function sendMessage()
+    {
+        try {
+
+            // 下流クラスによる例外スローを含む処理
+
+        } catch (\exception $exception) {
+
+            error_log(
+                sprintf(
+                    "ERROR: %s at %s line %s",
+                    $exception->getMessage(),
+                    $exception->getFile(),
+                    $exception->getLine()
+                ),
+                3,
+                __DIR__ . "/error.log"
+            );
+        }
+    }
+}
+```
+他に，Loggerインターフェースを使用することも多い．
+
+参考：https://github.com/php-fig/log
+
+```php
+<?php
+
+use Psr\Log\LoggerInterface;
+
+class Notification
+{
+    private $logger;
+
+    public function __construct(LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
+
+    public function sendMessage()
+    {
+        try {
+
+            // 下流クラスによる例外スローを含む処理
+
+        } catch (\exception $exception) {
+
+            $this->logger->error(sprintf(
+                "ERROR: %s at %s line %s",
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            ));
+        }
+    }
+}
+```
+
+#### ・例外スローごとのロギング
 
 例えば，メッセージアプリのAPIに対してメッセージ生成のリクエストを送信する時，例外処理に合わせて，外部APIとの接続失敗によるエラーログを生成と，自社システムなどその他原因によるエラーログを生成を行う必要がある．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
-use \Exception\ExternalApiErrorException;
-use \Exception\HttpRequestErrorException;
+use Exception\ExternalApiErrorException;
+use Exception\HttpRequestErrorException;
 
 class Example
 {
-    /**
-     * @param message $message
-     * @return bool
-     */
     public function sendMessage(Message $message)
     {
         try {
-            
+
             // 外部APIのURL，送信方法，トークンなどのパラメータが存在するかを検証．
             // 外部APIのためのリクエストメッセージを生成．
             // 外部APIのURL，送信方法，トークンなどのパラメータを設定．
 
         } catch (\HttpRequestErrorException $exception) {
-             
-            // 外部APIとの接続失敗によるエラーをロギング
-            error_log(
-                $exception->getMessage(),
-                3,
-                __DIR__ . '/http_request_error.log'
-            );
             
+            // 下流クラスによる例外スローを含む処理
+
+            // 外部APIとの接続失敗によるエラーをロギング
+            $this->logger->error(sprintf(
+                "ERROR: %s at %s line %s",
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            ));
+
         } catch (\ExternalApiErrorException $exception) {
+            
+            // 下流クラスによる例外スローを含む処理
 
             // 外部APIのシステムエラーをロギング
-            error_log(
+            $this->logger->error(sprintf(
+                "ERROR: %s at %s line %s",
                 $exception->getMessage(),
-                3,
-                __DIR__ . '/external_api_error.log'
-            );
-            
+                $exception->getFile(),
+                $exception->getLine()
+            ));
+
         } catch (\Exception $exception) {
             
+            // 下流クラスによる例外スローを含む処理
+
             // その他（自社システムなど）によるエラーをロギング
-            error_log(
+            $this->logger->error(sprintf(
+                "ERROR: %s at %s line %s",
                 $exception->getMessage(),
-                3,
-                __DIR__ . '/app_error.log'
-            );
+                $exception->getFile(),
+                $exception->getLine()
+            ));
         }
-        
+
         // 問題なければTRUEを返却．
         return true;
     }

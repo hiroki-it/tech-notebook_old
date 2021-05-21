@@ -8,7 +8,7 @@
 
 View層とModel層の間にViewModel層を置き，View層とViewModel層の間で双方向にデータをやり取り（双方向データバインディング）することによって，View層とModel層の間を疎結合にするための設計手法の一つ．
 
-![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/一般的なMVVMアーキテクチャ.png)
+![一般的なMVVMアーキテクチャ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/一般的なMVVMアーキテクチャ.png)
 
 #### ・ MVVMアーキテクチャにおける各層の責務
 
@@ -34,7 +34,7 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 3. Model層では，Vuex（```store.js```)やJavaScriptからなるモデル（```xxx.js```）を設置する．
 4. これの元，双方向データバインディングが実現される仕組みとして，View層でイベントが起こると，ViewModel層でこれにバインディングされたイベントハンドラ関数がコールされる．
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VueにおけるMVVMアーキテクチャ.png)
+![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/VueにおけるMVVMアーキテクチャ.png)
 
 
 ### 親子コンポーネント間のデータ渡し
@@ -43,69 +43,9 @@ Vueは，アプリケーションの設計にMVVMアーキテクチャを用い�
 
 まず，双方向データバインディングとは異なる概念なので，混乱しないように注意する．コンポーネント（```xxx-component.vue```）の```script```タグ部分（ViewModel層）の親子間では，```props```と```$emit()```を用いて，データを渡す．この仕組みを，Props Down, Events Upという．
 
-![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/親子コンポーネント間の双方向データバインディング.png)
+![親子コンポーネント間の双方向データバインディング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/親子コンポーネント間の双方向データバインディング.png)
 
-![Vueコンポーネントツリーにおけるコンポーネント間の通信](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Vueコンポーネントツリーにおけるコンポーネント間の通信.png)
-
-<br>
-
-### ViewModel層におけるルートVueインスタンスの実装方法
-
-#### ・グローバル登録
-
-**＊実装例＊**
-
-```javascript
-Vue.component('v-example-component',{
-    template: require('./xxx/xxx/xxx')
-});
-
-// 変数への格納を省略してもよい
-var vm = new Vue({
-    el: '#app'
-})
-```
-
-#### ・ローカル登録
-
-**＊実装例＊**
-
-```javascript
-var vExampleComponent = {
-    // テンプレートと親コンポーネントの対応関係
-    template: require('./xxx/xxx/xxx'),
-};
-
-// 変数への格納を省略してもよい
-var vm = new Vue({
-
-    el: '#app',
-
-    components: {
-        // 親コンポーネントにオブジェクト名をつける．
-        'v-example-component': vExampleComponent
-    }
-
-})
-```
-
-ただし，コンポーネントのオブジェクト名の定義は，以下のように省略することができる．
-
-**＊実装例＊**
-
-```javascript
-// 変数への格納を省略してもよい
-var vm = new Vue({
-
-    el: '#app',
-
-    components: {
-        // テンプレートと親コンポーネントの対応関係
-        'v-example-component': require('./xxx/xxx/xxx'),
-    }
-
-})
-```
+![component-tree_communication](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/component-tree_communication.png)
 
 <br>
 
@@ -125,7 +65,7 @@ var vm = new Vue({
   
     <!-- 
     ・親コンポーネントタグを記述．
-    ・index.jsdataオプションの値をpropsに渡すように設定．
+    ・dataオプションの値をpropsに渡すように設定．
     ・イベントとイベントハンドラ関数を対応づける．
     -->
     <v-example-component-1
@@ -147,12 +87,16 @@ var vm = new Vue({
 
 <!-- ルートVueインスタンスの生成は外部スクリプトで行う． -->
 <script 
-    src="{{ asset('.../index.js') }}">
+    <src={{ asset(".../index.js") }}>
 </script>
 ```
-#### (1-2) 【ViewModel層】データの初期化を行うVueコンストラクタ（```index.js```）
+#### (1-2) 【ViewModel層】データの初期化を行うVueコンストラクタ関数（```index.js```）
 
-Vueコンストラクタをインスタンス化することによって，ルートVueインスタンスが生成される．インスタンスの変数名```vm```はVIewModelの意味である．インスタンス化時，全てのコンポーネントのデータが初期化される．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
+![vue-instance](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/vue-instance.png)
+
+Vueコンストラクタ関数を用いて，インスタンス化することによって，ルートVueインスタンスが生成される．インスタンスの変数名```vm```はVIewModelの意味である．インスタンス化時，全てのコンポーネントのデータが初期化される．各コンポーネントで個別に状態を変化させたいものは，```props```オプションではなく，```data```オプションとして扱う．
+
+参考：https://v1-jp.vuejs.org/guide/instance.html
 
 **＊実装例＊**
 
@@ -162,9 +106,10 @@ Vueコンストラクタをインスタンス化することによって，ル�
 var vm = new Vue({
 
     //　Vueインスタンスを使用するdivタグを設定.
-    el: '#app',
+    el: "#app",
 
     /* dataオプション
+    ・Vueインスタンスのデータを保持する
     ・異なる場所にある同じコンポーネントは異なるVueインスタンスからなる．
     ・異なるVueインスタンスは異なる値をもつ必要があるため，メソッドとして定義．
     */
@@ -180,16 +125,16 @@ var vm = new Vue({
     },
 
     /* methodオプション
+    ・Vueインスタンスのアクセサメソッドや状態変化メソッド
     ・イベントハンドラ関数，dataオプションのセッターを定義
-    ・dataオプションの状態を変化させる．
     */
     method: {
 
         // イベントハンドラ関数
         changeQuery(criteriaObj) {
             const keys = [
-                'criteria',
-                'limit',
+                "criteria",
+                "limit",
             ];
             for (const key of keys) {
                 if (key in criteriaObj) {
@@ -224,8 +169,8 @@ var vm = new Vue({
     },
 
     /* watchオプション
-    Vueインスタンス内の値の変化を監視する関数を定義．
-    Vue-Routerを参照せよ．
+    ・Vueインスタンス内の値の変化を監視する関数を定義．
+    ・Vue-Routerを参照せよ．
     */
     watch: {},
 
@@ -233,9 +178,9 @@ var vm = new Vue({
     component: {
 
         //『HTMLでのコンポーネントのタグ名：子コンポーネント』
-        'v-example-component-1': require('.../component/xxx-1.vue'),
-        'v-example-component-2': require('.../component/xxx-2.vue'),
-        'v-example-component-3': require('.../component/xxx-3.vue')
+        "v-example-component-1": require(".../component/xxx-1.vue"),
+        "v-example-component-2": require(".../component/xxx-2.vue"),
+        "v-example-component-3": require(".../component/xxx-3.vue")
     },
 })
 
@@ -288,12 +233,12 @@ var vm = new Vue({
     ・親コンポーネントまたはajaxメソッドからpropsオブジェクトのプロパティに値が格納される．
     */
     props: {
-      'criteria': {
+      "criteria": {
         type: Object,
         required: true,
       },
 
-      'example': {
+      "example": {
         type: Object,
         required: true,
       }
@@ -321,8 +266,8 @@ var vm = new Vue({
         ・changeイベントの発火と，これのイベントハンドラ関数に引数を渡す．
         */
         this.$emit(
-                'change',
-                {'criteria': localCriteria}
+                "change",
+                {"criteria": localCriteria}
         );
       },
 
@@ -335,8 +280,8 @@ var vm = new Vue({
       component: {
           
         // 子コンポーネントと孫コンポーネントの対応関係
-        'v-example-component-4': require('./xxx/xxx/xxx-4'),
-        'v-example-component-5': require('./xxx/xxx/xxx-5'),
+        "v-example-component-4": require("./xxx/xxx/xxx-4"),
+        "v-example-component-5": require("./xxx/xxx/xxx-5"),
       },
     }
   }
@@ -380,7 +325,7 @@ class Example {
 
 #### ・```v-on:```とは
 
-![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Vueにおけるemitとv-onの連携.png)
+![Vueにおけるemitとv-onの連携](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Vueにおけるemitとv-onの連携.png)
 
 View層（```template```タグ部分）のイベントを，ViewModel層（```script```タグ部分）のイベントハンドラ関数（```methods:```内にあるメソッド）やインラインJSステートメントにバインディングし，イベントが発火した時点でイベントハンドラ関数をコールする．コンポーネントの```script```タグ部分（ViewModel層）の親子間データ渡しである「Props Down, Events Up」とは異なる概念なので注意する．
 
@@ -403,7 +348,7 @@ View層のフォーム送信イベントが起きた時点で，ViewModel層に�
 **＊実装例＊**
 
 ```html
-<div id='app'>
+<div id="app">
   <v-example-component
           v-on:search="result()"
   ></v-example-component>
@@ -411,7 +356,7 @@ View層のフォーム送信イベントが起きた時点で，ViewModel層に�
 
 <!-- Vueインスタンスの生成は外部スクリプトで行う． -->
 <script
-        src="{{ asset('.../index.js') }}">
+        src="{{ asset(".../index.js") }}">
 </script>
 ```
 
@@ -424,7 +369,7 @@ index.jsの```methods:```内には，イベントハンドラ関数として```r
 var vm = new Vue({
     
     //　Vueインスタンスを使用するdivタグを設定.
-    el: '#app',
+    el: "#app",
     
     // イベントハンドラ関数
     method: {
@@ -457,7 +402,7 @@ var vm = new Vue({
     methods: {
       search() {
         // 親コンポーネントのsearchイベントを発火させる．
-        this.$emit('search')
+        this.$emit("search")
       },
     }
   })
@@ -472,7 +417,7 @@ View層でクリックイベントが起きた時点で発火し，ViewModel層�
 
 ```
 
-#### ・ ```v-on:change="<イベントハンドラ関数>"```
+#### ・```v-on:change="<イベントハンドラ関数>"```
 
 View層で```input```タグや```select```タグで，値の入力後にマウスフォーカスがタグから外れた時点で発火し，ViewModel層でバインディングされたイベントハンドラ関数をコールする
 
@@ -542,6 +487,68 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 <br>
 
+## 01-03. コンポーネント
+
+### コンポーネントの登録方法
+
+#### ・グローバル登録
+
+**＊実装例＊**
+
+```javascript
+Vue.component("v-example-component", {
+    template: require("./xxx/xxx/xxx")
+});
+
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    el: "#app"
+})
+```
+
+#### ・ローカル登録
+
+**＊実装例＊**
+
+```javascript
+var vExampleComponent = {
+    // テンプレートと親コンポーネントの対応関係
+    template: require("./xxx/xxx/xxx"),
+};
+
+// 変数への格納を省略してもよい
+var vm = new Vue({
+
+    el: "#app",
+
+    components: {
+        // 親コンポーネントにオブジェクト名をつける．
+        "v-example-component": vExampleComponent
+    }
+
+})
+```
+
+ただし，コンポーネントのオブジェクト名の定義は，以下のように省略することができる．
+
+**＊実装例＊**
+
+```javascript
+// 変数への格納を省略してもよい
+var vm = new Vue({
+
+    el: "#app",
+
+    components: {
+        // テンプレートと親コンポーネントの対応関係
+        "v-example-component": require("./xxx/xxx/xxx"),
+    }
+
+})
+```
+
+<br>
+
 
 ## 02. Vue-Routerライブラリによるルーティング
 
@@ -549,7 +556,7 @@ View層で```input```タグで，一文字でも値が入力された時点で�
 
 #### ・Vue-Routerとは
 
-![ルーティングコンポーネント](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ルーティングコンポーネント.png)
+![vue-router](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/vue-router.png)
 
 ルーティングライブラリの一つ．コンポーネントに対してルーティングを行い，```/{ルート}/パラメータ}```に応じて，コールするコンポーネントを動的に切り替えることができる．
 
@@ -561,7 +568,7 @@ http://www.example.co.jp:80/{ルート}/{パスパラメータ}?text1=a&text2=b
 
 ```javascript
 // Vue-Routerライブラリを読み込む．
-const vueRouter = require('vue-router').default;
+const vueRouter = require("vue-router").default;
 
 // VueRouterインスタンスを作成する．
 const router = new VueRouter({
@@ -575,18 +582,21 @@ const router = new VueRouter({
 module.exports = router;
 ```
 
-そして，Vue-Routerの機能を利用するために，```router```オプションとして．ルートコンポーネントに注入する必要がある．
+そして，Vue-Routerの機能を利用するために，```router```オプションをルートコンポーネントに注入する必要がある．
 
 ```javascript
+import router from "./router"
+
 // 変数への格納を省略してもよい
 var vm = new Vue({
 
+    // routerオプション
     router,
 
     // watchオプション
     watch: {
         // スタック内で履歴の移動が起こった時に，対応付けた無名関数を実行．
-        '$route': function (to, from) {
+        "$route": function (to, from) {
             if (to.fullPath !== from.fullPath) {
                 // 何らかの処理．
             }
@@ -602,6 +612,15 @@ Webアプリケーション全体に1つ存在し，全体的なRouter機能を�
 | メソッド   | 説明                                                         |
 | ---------- | ------------------------------------------------------------ |
 | ```push``` | ```query```オブジェクトを引数とする．履歴スタック内に新しい履歴を追加し，現在をその履歴とする．また，ブラウザの戻る操作で，履歴スタック内の一つ前の履歴に移動する． |
+
+参考：https://router.vuejs.org/guide/essentials/navigation.html
+
+**＊実装例＊**
+
+```javascript
+// users/?example=xyz が履歴スタックに追加される．
+this.$router.push({ path : "/users", query: { example : "xyz" }});
+```
 
 #### ・```$route```（Routeオブジェクト）
 
@@ -623,13 +642,15 @@ JQueryにはJQueryRouter，ReactにはReact-Routerがある．
 
 ## 03. Vuexライブラリによるデータの状態変化の管理
 
-### Vuexとは
+### Vuex
+
+#### ・Vuexとは
 
 Vuejsでライブラリの一つで，MVVMアーキテクチャのモデルに相当する機能を提供し，グローバルで参照できる．異なるコンポーネントで共通したデータを扱いたくとも，双方向データバインディングでは，親子コンポーネント間でしか，データを受け渡しできない．しかし，Vuexストア内で，データの状態の変化を管理することによって，親子関係なく，全てのコンポーネント間でデータを受け渡しできるようになる．
 
 ※Vuexからなるモデルはどうあるべきか，について要勉強
 
-![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VueコンポーネントツリーとVuexの関係.png)
+![VueコンポーネントツリーとVuexの関係](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/VueコンポーネントツリーとVuexの関係.png)
 
 <br>
 
@@ -659,7 +680,7 @@ Vuejsでライブラリの一つで，MVVMアーキテクチャのモデルに�
 
 ```javascript
 // Vuexライブラリを読み込む．
-const vuex = require('vuex')
+const vuex = require("vuex")
 
 // 外部ファイルが，このStoreインスタンスを読み込めるようにする．
 module.exports = new Vuex.Store({
@@ -716,7 +737,7 @@ module.exports = new Vuex.Store({
     actions: {
         // 省略記法（Argument destructuring)
         mutate({commit}) {
-            commit('mutate');
+            commit("mutate");
         }
     }
 })
@@ -762,12 +783,12 @@ module.exports = new Vuex.Store({
 <script>
 
   // Vuex.Store()を読み込む．
-  const store = require('./_store')
+  const store = require("./_store")
 
   // Vuex.Store()のgetters，mutations，actionsをマッピングできるように読み込む．
-  const mapGetters = require('vuex').mapGetters;
-  const mapActions = require('vuex').mapActions;
-  const mapMutaions = require('vuex').mapMutaions;
+  const mapGetters = require("vuex").mapGetters;
+  const mapActions = require("vuex").mapActions;
+  const mapMutaions = require("vuex").mapMutaions;
 
 
   module.exports = {
@@ -779,7 +800,7 @@ module.exports = new Vuex.Store({
       StoreのGetterをローカルのcomputed:{}にマッピングし，コールできるように．
       */
       ...mapGetters([
-        'x-Function'
+        "x-Function"
       ])
 
     },
@@ -789,12 +810,12 @@ module.exports = new Vuex.Store({
 
       // mapMutationsヘルパー
       ...mapMutations([
-        'y-Function'
+        "y-Function"
       ]),
 
       // mapActionsヘルパー
       ...mapActions([
-        'z-Function'
+        "z-Function"
       ]),
     }
   }
@@ -803,23 +824,283 @@ module.exports = new Vuex.Store({
 
 <br>
 
-## 04. Nuxt.js
+## 04. ライフサイクル
 
-### 環境変数
+### ライフサイクルフック
 
-```sh
-# API側のURL（フロントエンドからのリクエスト向け）
-API_URL=http://web:80/
-# API側のURL（外部サーバからのリクエスト向け）
-API_URL_BROWSER=http://localhost:8500/
-# API側のOauth認証の情報
-OAUTH_CLIENT_ID=
-OAUTH_CLIENT_SECRET=
-# GoogleMapのURL
-GOOGLE_MAP_QUERY_URL=https://www.google.com/maps/search/?api=1&query=
-# ホームパス
-HOME_PATH=/
+#### ・ライフサイクルフックとは
+
+Vueインスタンスの生成から破棄までの間に実行される関数のこと．全ての関数を使用する必要はない．
+
+参考：https://jp.vuejs.org/v2/api/index.html#%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB%E3%83%95%E3%83%83%E3%82%AF
+
+| 順番 | フック名      | タイミング                                                   |
+| :--- | :------------ | :----------------------------------------------------------- |
+| 1    | beforeCreate  | Vueインスタンスの生成前                                      |
+| 2    | created       | Vueインスタンスの生成後                                      |
+| 3    | beforeMount   | Vueインスタンスがマウントされる前                            |
+| 4    | mounted       | Vueインスタンスがマウントされた後                            |
+| 5    | beforeUpdate  | データ更新時の再レンダリング前                               |
+| 6    | updated       | データ更新時の再レンダリング後                               |
+| 7    | beforeDestroy | Vueインスタンスが削除される前（```$destroy```メソッド実行前） |
+| 8    | destroyed     | Vueインスタンスが削除された後（```$destroy```メソッド実行後） |
+
+#### ・マウントとは
+
+ブラウザ上のリアルDOMの要素を，Vue.jsの処理によって生成される仮想DOMの要素で置き換えること．
+
+参考：https://jp.vuejs.org/v2/guide/render-function.html#%E3%83%8E%E3%83%BC%E3%83%89%E3%80%81%E3%83%84%E3%83%AA%E3%83%BC%E3%80%81%E3%81%8A%E3%82%88%E3%81%B3%E4%BB%AE%E6%83%B3-DOM
+
+#### ・beforeCreate
+
+Vueインスタンスの生成前に実行される．
+
+**＊検証例＊**
+
+beforeCreateフックの動作を検証する．```data```オプションは，Vueインスタンス生成後に有効になるため，beforeCreateフックでコールできず，```undefined```になる．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+new Vue({
+    
+  data(){
+    return{
+      hoge:"Hiroki"
+    }
+  },
+    
+  beforeCreate () {
+    console.log(this.name)
+  }
+}
+</script>
 ```
 
+```sh
+# 結果
+undefined
+```
 
+#### ・created
 
+フックの中で特によく使う．Vueインスタンスの生成後に実行される．マウント前に必要な処理を実装する．
+
+**＊実装例＊**
+
+非同期通信によるデータを取得，マウント時に必要なデータの準備，など
+
+**＊検証例＊**
+
+createdフックの動作を検証する．```data```オプションは，Vueインスタンス生成後に設定されるため，createdフックでコールでき，処理結果が表示される．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name:"Hiroki"
+    }
+  },
+    
+  created() {
+    console.log(this.name)
+  }
+}
+</script>
+```
+
+```sh
+# 結果
+"Hiroki"
+```
+
+#### ・beforeMount
+
+Vueインスタンスがマウントされる前に実行される．
+
+**＊検証例＊**
+
+beforeMountフックの動作を検証する．```data```オプションから```name```変数への展開は，マウントによって実行される．そのため，beforeMountフックの段階では要素自体が生成されておらず，何も表示されない．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name: ""
+    }
+  },
+    
+  beforeMount() {
+    this.name = "Hiroki"
+  }
+}
+</script>
+```
+
+```sh
+# 結果
+要素が生成されていないため，何も表示されない．
+```
+
+#### ・mounted
+
+フックの中で特によく使う．Vueインスタンスがマウントされた後に実行される．要素を操作する処理を実装する．まず，Vueインスタンスに```el```オプションが設定されているかを識別し，これに応じて処理の流れが分岐する．SSRの場合には使用できない．
+
+**＊実装例＊**
+
+Vue.js以外の外部ライブラリの読み込み，検索実行時のイベントハンドラ関数，ページング実行時のイベントハンドラ関数，など
+
+**＊検証例＊**
+
+beforeMountフックの動作を検証する．```data```オプションから```name```変数への展開は，elementへのマウント中に実行される．そのため，```mounted```メソッドが実行され，空文字が上書きされる．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name: ""
+    }
+  },
+    
+  mounted() {
+    this.name = "Hiroki"
+  }
+}
+</script>
+```
+
+```sh
+# 結果
+"Hiroki"
+```
+
+ただし，全ての子コンポーネントでマウントが完了したことを待つために，```nextTick```メソッドを使用する必要がある．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name: ""
+    }
+  },
+    
+  mounted() {
+      this.$nextTick(function () {
+          this.name = "Hiroki"
+      })
+  }
+}
+</script>
+```
+
+#### ・beforeUpdate
+
+データが更新される時の再レンダリング前に実行される．再レンダリング前に要素を操作する処理を実装する．
+
+**＊実装例＊**
+
+WindowオブジェクトやDocumentオブジェクトのメソッドによる要素の取得，など
+
+**＊検証例＊**
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name: ""
+    }
+  },
+    
+  mounted() {
+      this.$nextTick(function () {
+          this.name = "Hiroki"
+      })
+  },
+  
+  beforeUpdate(){
+      console.log(this.name)
+  }
+}
+</script>
+```
+
+```sh
+# 結果
+"Hiroki"
+```
+
+#### ・updated
+
+データが更新される時の再レンダリング後に実行される．再レンダリング後に要素を操作する処理を実装する．
+
+```vue
+<template>
+  <div>{{ name }}</div>
+</template>
+<script>
+// 変数への格納を省略してもよい
+var vm = new Vue({
+    
+  data() {
+    return{
+      name: ""
+    }
+  },
+    
+  mounted() {
+      this.$nextTick(function () {
+          this.name = "Hiroki"
+      })
+  },
+  
+  beforeUpdate(){
+      console.log(this.name)
+  }
+}
+</script>
+```
+
+```sh
+# 結果
+"Hiroki"
+```
+
+#### ・beforeDestroy
+
+Vueインスタンスが削除される前に実行する．インスタンスを削除する前に無効化しておく必要のある処理を実装する．SSRの場合には使用できない．
+
+#### ・destroyed
+
+Vueインスタンスが削除された後に実行する．インスタンスを削除した後のTearDown処理を実装する．SSRの場合には使用できない．

@@ -6,7 +6,7 @@
 
 ユーザの操作による命令が，ソフトウェアを介して，ハードウェアに伝わるまで，を以下に示す．
 
-![ソフトウェアとハードウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソフトウェアとハードウェア.png)
+![ソフトウェアとハードウェア](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ソフトウェアとハードウェア.png)
 
 ### ソフトウェアの種類
 
@@ -34,7 +34,7 @@
 
 ### ネイティブアプリケーション
 
-![ネイティブアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ネイティブアプリ.png)
+![ネイティブアプリ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ネイティブアプリ.png)
 
 端末のシステムによって稼働するアプリのこと．一度ダウンロードしてしまえば，インターネットに繋がっていなくとも，使用できる．
 
@@ -46,7 +46,7 @@ Office，BookLiveのアプリ版
 
 ### Webアプリケーションとクラウドアプリケーション
 
-![Webアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webアプリ.png)
+![Webアプリ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Webアプリ.png)
 
 #### ・Webアプリケーション
 
@@ -68,9 +68,9 @@ Google Drive，Dropbox
 
 ### ハイブリッドアプリケーション
 
-![Webviewよるアプリパッケージ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webviewよるアプリパッケージ.png)
+![Webviewよるアプリパッケージ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Webviewよるアプリパッケージ.png)
 
-![ハイブリッドアプリ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハイブリッドアプリ.png)
+![ハイブリッドアプリ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ハイブリッドアプリ.png)
 
 端末でWebviewを稼働させ，WebシステムのレンダリングなどをWebview上で行うアプリのこと．
 
@@ -94,7 +94,7 @@ Nginxのノートを参照．
 
 #### ・Node.js
 
-![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
+![Webサーバ，APサーバ，DBサーバ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Webサーバ，APサーバ，DBサーバ.png)
 
 <br>
 
@@ -108,7 +108,7 @@ mod_phpという拡張モジュールを読み込むことによって，Apache�
 
 WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
-![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
+![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
 #### ・NGINX Unit
 
@@ -116,7 +116,7 @@ WebサーバのNginxと組み合わせて使用できるミドルウェア．
 
 #### ・CGIプログラム：Common Gateway Interface
 
-![CGIの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CGIの仕組み.png)
+![CGIの仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/CGIの仕組み.png)
 
 <br>
 
@@ -140,17 +140,39 @@ Unixを源流として派生したOS．現在では主に，Linux系統（緑色
 
 ※ちなみに，MacOSはBSD系統
 
-![Unix系OSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Unix系OSの歴史.png)
+![Unix系OSの歴史](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Unix系OSの歴史.png)
 
 #### ・WindowsOS
 
 MS-DOSを源流として派生したOS．今では，全ての派生がWindows 10に集約された．
 
-![WindowsOSの歴史](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WindowsOSの歴史.png)
+![WindowsOSの歴史](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/WindowsOSの歴史.png)
 
 <br>
 
-### Unix ｜ Linux系統
+### 基本ソフトウェア
+
+#### ・基本ソフトウェアの構成
+
+![基本ソフトウェアの構成](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/基本ソフトウェアの構成.png)
+
+#### ・ユーティリティ
+
+基本ソフトウェアのノートを参照．
+
+#### ・言語プロセッサ
+
+基本ソフトウェアのノートを参照．
+
+#### ・制御プログラム（カーネル）
+
+基本ソフトウェアのノートを参照．
+
+<br>
+
+## 04-02. Unix系OS
+
+### Linux系統
 
 #### ・OSとバージョンの確認コマンド
 
@@ -175,27 +197,27 @@ Debian，Ubuntu，
 
 Slackware
 
-![Linux distribution](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LinuxDistribution.png)
+![Linux distribution](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/LinuxDistribution.png)
 
 <br>
 
-### 基本ソフトウェア
+### BSD系統｜MacOS
 
-#### ・基本ソフトウェアの構成
+#### ・環境変数の確認
 
-![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/基本ソフトウェアの構成.png)
+環境変数を確認する．全ての項目は，実際に実行して確認すること．
 
-#### ・ユーティリティ
+```shell
+$ export -p
 
-基本ソフトウェアのノートを参照．
-
-#### ・言語プロセッサ
-
-基本ソフトウェアのノートを参照．
-
-#### ・制御プログラム（カーネル）
-
-基本ソフトウェアのノートを参照．
+export EDITOR=vim
+export HOME=/Users/h.hasegawa
+export LANG=en_US.UTF-8
+export SHELL=/bin/zsh
+export USER=h.hasegawa
+export VISUAL=vim
+...
+```
 
 <br>
 
@@ -215,7 +237,7 @@ Slackware
 
 ### BIOS：Basic Input/Output System
 
-![BIOS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/BIOS.jpg)
+![BIOS](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/BIOS.jpg)
 
 <br>
 
@@ -223,7 +245,7 @@ Slackware
 
 Windows 8以降で採用されている新しいFirmware
 
-![UEFIとセキュアブート](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UEFIとセキュアブート.jpg)
+![UEFIとセキュアブート](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/UEFIとセキュアブート.jpg)
 
 <br>
 
@@ -257,7 +279,7 @@ Windows 8以降で採用されている新しいFirmware
 
 ### OSSの種類
 
-![OSS一覧](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/OSS一覧.png)
+![OSS一覧](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/OSS一覧.png)
 
 引用：https://openstandia.jp/oss_info/
 

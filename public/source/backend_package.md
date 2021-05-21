@@ -64,7 +64,7 @@
 
 その後，名前空間の読み込みを登録する．
 
-```sh
+```shell
 $ composer dump-autoload
 ```
 
@@ -76,7 +76,7 @@ $ composer dump-autoload
 
 パッケージ名を```composer.json```ファイルを書き込む．インストールは行わない．コマンドを使用せずに自分で実装しても良い．
 
-```sh
+```shell
 $ composer require <パッケージ名>:^x.x
 ```
 
@@ -86,9 +86,9 @@ $ composer require <パッケージ名>:^x.x
 
 #### ・インストール
 
-初めてパッケージをインストールする時，```composer.json```ファイルにあるパッケージを全てインストールする．
+初めてパッケージをインストールする時，```composer.lock```ファイルにあるパッケージを全てインストールする．```composer.lock```のおかげで，リポジトリの利用者が，```composer install```の実行時に，共通のバージョンのパッケージをインストールできる．
 
-```sh
+```shell
 $ composer install 
 ```
 
@@ -96,7 +96,7 @@ $ composer install
 
 コマンド処理中のログを表示する
 
-```sh
+```shell
 $ composer install -vvv
 ```
 
@@ -104,7 +104,7 @@ $ composer install -vvv
 
 require-devタグ内のパッケージは除いてインストール
 
-```sh
+```shell
 $ composer install --no-dev
 ```
 
@@ -112,7 +112,7 @@ $ composer install --no-dev
 
 Composerの配布サイトからインストールする．```prefer-source```オプションを使用するよりも高速でインストールできる．デフォルトでdistを使用するため，実際は宣言しなくても問題ない．
 
-```sh
+```shell
 $ composer install --prefer-dist
 ```
 
@@ -120,7 +120,7 @@ $ composer install --prefer-dist
 
 GitHubのComposerリポジトリからインストールする．Composerの開発者用である．
 
-```sh
+```shell
 $ composer install --prefer-source
 ```
 
@@ -130,9 +130,9 @@ $ composer install --prefer-source
 
 #### ・追加インストールと更新
 
-インストールされていないパッケージをインストールする．また，バージョン定義をもとに更新可能なパッケージを更新する．
+パッケージ名を```composer.json```ファイルを元にして，インストールされていないパッケージをインストールし，さらにバージョン定義をもとに更新可能なパッケージを更新する．また，```composer.lock```ファイルに全てのパッケージ情報を書き込むため，リポジトリの利用者がインストールするパッケージにも影響を与える．
 
-```sh
+```shell
 $ composer update
 ```
 
@@ -140,7 +140,7 @@ $ composer update
 
 コマンド処理中のログを表示する
 
-```sh
+```shell
 $ composer install -vvv
 ```
 
@@ -148,7 +148,7 @@ $ composer install -vvv
 
 phpのメモリ上限を無しにして，任意のcomposerコマンドを実行する．phpバイナリファイルを使用する．Dockerコンテナ内で実行する場合，設定画面からコンテナのCPUやメモリを増設することもできる．．
 
-```sh
+```shell
 $ COMPOSER_MEMORY_LIMIT=-1 composer update -vvv
 ```
 
@@ -160,7 +160,7 @@ $ COMPOSER_MEMORY_LIMIT=-1 composer update -vvv
 
 インストール時に生成されたキャッシュを削除する．
 
-```sh
+```shell
 $ composer clear-cache
 ```
 
@@ -168,7 +168,7 @@ $ composer clear-cache
 
 ユーザが定義したエイリアス名のコマンドを実行する．
 
-```sh
+```shell
 $ composer <エイリアス名>
 ```
 
@@ -185,7 +185,7 @@ $ composer <エイリアス名>
             "@php artisan package:discover --ansi"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists(".env") || copy(".env.example", ".env");\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
@@ -193,6 +193,48 @@ $ composer <エイリアス名>
     }
 }
 ```
+
+<br>
+
+### バージョンアップの手順
+
+#### ・事前確認の重要性
+
+バージョン更新により，アプリケーションやこれに関係する他のアプリケーションに影響が起こる可能性がある．そのため，予想外の影響が起こらないように，マニュアルやリリースノートにて，バージョン間の差異を全て確認しておく必要がある．
+
+#### 1. バージョン間の互換性を確認
+
+破壊的変更のためにバージョン間で互換性が全くなく，古いバージョンと新しいバージョンで使用方法やオプションが異なる可能性がある．一方で，互換性があるものの，大きな変更がなされている可能性がある．
+
+#### 2. 追加，廃止，非推奨を確認
+
+バージョンアップにより，新しい機能が追加されている可能性がある．一方で，今までの方法が廃止または非推奨に移行している可能性がある．
+
+#### 3. 予約語や関数を確認
+
+バージョンアップにより，予約語や関数が変更されている可能性がある．予約語を自身が使用しているとバッティングしてエラーになってしまう．
+
+#### 4. アプリケーションの修正作業の考慮
+
+バージョンアップに伴ってソースコードの修正が必要なことがわかった場合，バージョンアップの手順自体に修正作業を組み込む必要がある．
+
+#### 5. メンテナンスページの表示
+
+バージョンアップによりダウンタイムが発生する場合，その間はメンテナンスページを表示する必要がある，例えば，ALBにはメンテナンスページを表示するための機能がある．
+
+#### 6. 更新作業をリハーサル
+
+テスト環境で更新作業をリハーサルし，問題なく完了することを確認する．
+
+#### 7. アプリケーションのテスト
+
+テスト環境のバージョンアップ後に，アプリケーションをテストする必要がある．
+
+#### 8. リードレプリカを最初にアップデート
+
+#### 9. 切り戻し作業の考慮
+
+本番環境のバージョンアップ後に想定外の問題が起こることも考慮して，バージョンアップの手順自体に切り戻し作業を組み込む必要がある．
 
 <br>
 
@@ -204,10 +246,10 @@ $ composer <エイリアス名>
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
-require_once realpath(__DIR__ . '/vendor/autoload.php');
+require_once realpath(__DIR__ . "/vendor/autoload.php");
 ```
 
 <br>
@@ -218,7 +260,7 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 RDBの読み込み系／書き込み系の操作を行うパッケージ．他の同様パッケージとして，PDOがある．PDOについては，以下のノートを参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_database_operation.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_database_operation.html
 
 <br>
 
@@ -232,7 +274,7 @@ CRUD処理に必要なSQLを保持し，トランザクションによってSQL�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // QueryBuilderインスタンスを作成．
@@ -245,11 +287,11 @@ QueryBuilderクラスにおける```insert```メソッドに，値を設定す�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $queryBuilder
-    ->insert('mst_users')
+    ->insert("mst_users")
 ```
 
 #### 3. READ処理
@@ -258,12 +300,12 @@ QueryBuilderクラスにおける```select```メソッドに，値を設定す�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $queryBuilder
-    ->select('id', 'name')
-    ->from('mst_users');
+    ->select("id", "name")
+    ->from("mst_users");
 ```
 
 #### 4. UPDATE処理
@@ -272,11 +314,11 @@ QueryBuilderクラスにおける```update```メソッドに，値を設定す�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $queryBuilder
-    ->update('mst_users');
+    ->update("mst_users");
 ```
 
 #### 5. DELETE処理
@@ -285,10 +327,10 @@ QueryBuilderクラスにおける```delete```メソッドに，値を設定す�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 $queryBuilder
-    ->delete('mst_users');
+    ->delete("mst_users");
 ```
 
 #### 6. データベースへの接続，SQLの実行 
@@ -297,7 +339,7 @@ $queryBuilder
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // データベースに接続．
@@ -318,7 +360,7 @@ $queryBuilder->getConnection()
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 use Doctrine\DBAL\Connection;
@@ -333,21 +375,21 @@ class DogToyQuery
         
         // SQLの定義
         $queryBuilder->select([
-          'dog_toy.type AS dog_toy_type',
-          'dog_toy.name AS dog_toy_name',
-          'dog_toy.number AS number',
-          'dog_toy.price AS dog_toy_price',
-          'dog_toy.color_value AS color_value'
+          "dog_toy.type AS dog_toy_type",
+          "dog_toy.name AS dog_toy_name",
+          "dog_toy.number AS number",
+          "dog_toy.price AS dog_toy_price",
+          "dog_toy.color_value AS color_value"
         ])
           
           // FROMを設定する．
-          ->from('mst_dog_toy', 'dog_toy')
+          ->from("mst_dog_toy", "dog_toy")
           
           // WHEREを設定する．この時，値はプレースホルダーとしておく．
-          ->where('dog_toy.type = :type')
+          ->where("dog_toy.type = :type")
           
           // プレースホルダーに値を設定する．ここでは，引数で渡す『$toyType』とする．
-          ->setParameter('type', $toyType);
+          ->setParameter("type", $toyType);
         
         // データベースに接続．
         return $queryBuilder->getConnection()
@@ -364,7 +406,7 @@ class DogToyQuery
 
 読み出し系で取得したデータをキャッシュすることができる．
 
-```PHP
+```php
 <?php
     
 use Doctrine\Common\Cache\FilesystemCache;
@@ -404,7 +446,7 @@ class Example
 
 #### ・トランザクション，コミット，ロールバック
 
-![コミットメント制御](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コミットメント制御.jpg)
+![コミットメント制御](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/コミットメント制御.jpg)
 
 RDBの処理用語に相当する```beginTransaction```メソッド，```commit```メソッド，```rollBack```メソッドを用いて，RDBを操作する．
 
@@ -412,7 +454,7 @@ RDBの処理用語に相当する```beginTransaction```メソッド，```commit`
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $conn = new Doctrine\DBAL\Connection
@@ -451,10 +493,10 @@ try{
 
 DateTimeインスタンスを引数として，Carbonインスタンスを作成する．
 
-```PHP
+```php
 <?php
     
-$datetime = new \DateTime('2019-07-07 19:07:07');
+$datetime = new \DateTime("2019-07-07 19:07:07");
 $carbon = Carbon::instance($datetime);
 
 echo $carbon; // 2019-07-07 19:07:07
@@ -468,7 +510,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 $carbon = Carbon::create(2019, 07, 07, 19, 07, 07);
@@ -486,7 +528,7 @@ echo $carbon; // 2019-07-07 19:07:07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // 日時数字から，Carbonインスタンスを作成する．
@@ -499,7 +541,7 @@ echo $carbonFromeDate; // 2019-07-07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // 時間数字から，Carbonインスタンスを作成する．
@@ -514,12 +556,12 @@ echo $carbonFromTime; // 19:07:07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // 日付，時間，日時フォーマットから，Carbonインスタンスを作成する．
 // 第一引数でフォーマットを指定する必要がある．
-$carbonFromFormat = Carbon::createFromFormat('Y-m-d H:m:s', '2019-07-07 19:07:07');
+$carbonFromFormat = Carbon::createFromFormat("Y-m-d H:m:s", "2019-07-07 19:07:07");
 
 echo $carbonFromFormat; // 2019-07-07 19:07:07
 ```
@@ -528,7 +570,7 @@ echo $carbonFromFormat; // 2019-07-07 19:07:07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 // タイムスタンプフォーマットから，Carbonインスタンスを作成する．
@@ -545,10 +587,10 @@ echo $carbonFromTimestamp; // 2019-07-07 19:07:07
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
-$carbon = Carbon::parse('2019-07-07 19:07:07')
+$carbon = Carbon::parse("2019-07-07 19:07:07")
 ```
 
 <br>
@@ -567,7 +609,7 @@ SQLの```SELECT```や```WHERE```といった単語を用いて，```foreach```�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
 use Pinq\Traversable;
@@ -579,7 +621,7 @@ class Example
     {
         
         return [
-          'data' => Traversable::from($entities)
+          "data" => Traversable::from($entities)
             // 一つずつ要素を取り出し，関数に渡す．
             ->select(
               function ($entity) {
@@ -602,34 +644,100 @@ class Example
 
 <br>
 
-### Clientインスタンス
+### リクエスト
 
-#### ・リクエストメッセージをGET送信
+#### ・GET送信
+
+参考：https://docs.guzzlephp.org/en/stable/quickstart.html#query-string-parameters
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
-    
+
+use GuzzleHttp\Client;
+
 $client = new Client();
 
 // GET送信
-$response = $client->request("GET", <アクセスしたいURL>);
+$response = $client->request(
+    "GET",
+    "https://xxxxxxxx",
+    [
+        "query" => [
+            "id" => 1
+        ]
+    ]
+);
 ```
+
+#### ・POST送信
+
+参考：https://docs.guzzlephp.org/en/stable/quickstart.html#post-form-requests
+
+```php
+<?php
+
+use GuzzleHttp\Client;
+
+$client = new Client();
+
+$json = json_encode([
+    "message" => "Hello World!"
+]);
+
+// POST送信
+$response = $client->request(
+    "POST",
+    "https://xxxxxxxx",
+    [
+        "headers"     => [
+            "Authorization"  => $this->token,
+            "Content-Length" => strlen($json),
+            "Content-Type"   => "application/json",
+        ],
+        "form_params" => [
+            "body" => $message
+        ]
+    ]
+);
+```
+
+<br>
+
+###  レスポンス
 
 #### ・レスポンスメッセージからボディを取得
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
-    
+
+use GuzzleHttp\Client;
+
 $client = new Client();
 
-// POST送信
-$response = $client->request("POST", <アクセスしたいURL>);
+$json = json_encode([
+    "message" => "Hello World!"
+]);
 
-// レスポンスメッセージからボディのみを取得
+// POST送信
+$response = $client->request(
+    "POST",
+    "https://xxxxxxxx",
+    [
+        "headers"     => [
+            "Authorization"  => $this->token,
+            "Content-Length" => strlen($json),
+            "Content-Type"   => "application/json",
+        ],
+        "form_params" => [
+            "body" => $message
+        ]
+    ]
+);
+
 $body = json_decode($response->getBody(), true);
 ```
 
@@ -647,12 +755,12 @@ htmlファイルを元にして，ローカルディレクトリにPDFファイ�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
     
-$snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+$snappy = new Pdf("/usr/local/bin/wkhtmltopdf");
 
-$snappy->generateFromHtml('example.html', '.../example.pdf');
+$snappy->generateFromHtml("example.html", ".../example.pdf");
 ```
 
 <br>
@@ -663,7 +771,7 @@ $snappy->generateFromHtml('example.html', '.../example.pdf');
 
 リクエストされたデータが正しいかを，サーバサイド側で検証する．フロントエンドからリクエストされるデータに関しては，JavaScriptとPHPの両方によるバリデーションが必要である．
 
-```PHP
+```php
 <?php
     
 // ここに実装例

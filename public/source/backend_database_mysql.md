@@ -6,12 +6,12 @@
 
 #### ・CentOSにインストール
 
-```sh
+```shell
 # mysqlコマンドのみをインストールしたい場合はこちら
 $ dnf install -y mysql
 ```
 
-```sh
+```shell
 # mysqlコマンド，データベースサーバ機能，をインストールしたい場合はこちら
 $ dnf install -y mysql-server
 ```
@@ -30,18 +30,18 @@ SHOW SESSION VARIABLES;
 SHOW GLOBAL VARIABLES;
 
 -- OSとDBのタイムゾーンに関するパラメータを表示
-SHOW SESSION VARIABLES LIKE '%time_zone';
-SHOW GLOBAL VARIABLES LIKE '%time_zone';
+SHOW SESSION VARIABLES LIKE "%time_zone";
+SHOW GLOBAL VARIABLES LIKE "%time_zone";
 ```
 
 #### ・パラメータの設定
 
 ```sql
 -- グローバルパラメータの場合
-SET GLOBAL time_zone = 'Asia/Tokyo';
+SET GLOBAL time_zone = "Asia/Tokyo";
 
 -- セッションパラメータの場合
-SET time_zone = 'Asia/Tokyo';
+SET time_zone = "Asia/Tokyo";
 ```
 
 <br>
@@ -58,16 +58,16 @@ SET time_zone = 'Asia/Tokyo';
 -- 注文テーブル作成
 CREATE TABLE order_data (
 
-    -- Primary Key制約
-    order_id INT(10) PRIMARY KEY COMMENT '注文ID',
+    -- プライマリキー制約
+    order_id INT(10) PRIMARY KEY COMMENT "注文ID",
 
     -- Not Null制約
-    order_kbn INT(3) NOT NULL COMMENT '注文区分',
-    system_create_date_time DATETIME NOT NULL COMMENT 'システム登録日時',
-    system_update_date_time DATETIME NOT NULL COMMENT 'システム更新日時',
-    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT '0：通常，1：削除済',
+    order_kbn INT(3) NOT NULL COMMENT "注文区分",
+    system_create_date_time DATETIME NOT NULL COMMENT "システム登録日時",
+    system_update_date_time DATETIME NOT NULL COMMENT "システム更新日時",
+    delete_flg INT(1) DEFAULT 0 NOT NULL COMMENT "0：通常，1：削除済",
   
-    -- 複合Primary Key制約（これを指定する場合，上記のPrimary Key制約の記述は不要）
+    -- 複合プライマリキー制約（これを指定する場合，上記のプライマリキー制約の記述は不要）
     PRIMARY KEY(order_id, order_kbn)
   
     -- 参照制約キー
@@ -98,13 +98,13 @@ FROM
 
 ### 制約
 
-#### ・Primary key（主キー）制約と複合主キー制約
+#### ・プライマリキー制約と複合プライマリキー制約
 
-テーブルの中で，レコードを一意に特定できる値を『主キー』の値と呼ぶ．
+テーブルの中で，レコードを一意に特定できる値を『プライマリキー』の値と呼ぶ．
 
-![主キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/主キー.jpg)
+![主キー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/主キー.jpg)
 
-主キーは複数設定することができ，複合主キーの場合，片方のフィールドの値が異なれば，異なる主キーとして見なされる．以下のように，ユーザIDと期間開始日付を複合主キーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
+プライマリキーは複数設定することができ，複合プライマリキーの場合，片方のフィールドの値が異なれば，異なるプライマリキーとして見なされる．以下のように，ユーザIDと期間開始日付を複合プライマリキーとすると，一人のユーザが複数の期間をもつ場合に対応できる．
 
 | *user_id* | *period_start_date* | period_end_date | fee_yen |
 | --------- | ------------------- | --------------- | ------- |
@@ -124,7 +124,7 @@ FROM
 
 親テーブルで参照される値は，子テーブルからは削除できない．
 
-![外部キー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/外部キー.png)
+![外部キー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/外部キー.png)
 
 <br>
 
@@ -134,7 +134,7 @@ FROM
 
 あらかじめ一連のSQL文をデータベースに格納しておき，Call文で呼び出す方式．
 
-![p325](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p325.gif)
+![p325](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p325.gif)
 
 #### ・使い方
 
@@ -164,16 +164,16 @@ EXEC SelectContact
 
 DBからテーブルをエクスポートする．エクスポートしたいテーブルの数だけ，テーブル名を連ねる
 
-```sh
-$ mysqldump --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' '{ テーブル名1 }' '{ テーブル名2 }' > table.sql
+```shell
+$ mysqldump --force -u "{ アカウント }" -p -h "{ DBのホスト }" "{ DB名 }" "{ テーブル名1 }" "{ テーブル名2 }" > table.sql
 ```
 
 #### ・テーブルのインポート
 
 DBにテーブルをインポートする．forceオプションで，エラーが出ても強制的にインポート．
 
-```sh
- $ mysql --force -u '{ アカウント }' -p -h '{ DBのホスト }' '{ DB名 }' < table.sql
+```shell
+ $ mysql --force -u "{ アカウント }" -p -h "{ DBのホスト }" "{ DB名 }" < table.sql
 ```
 
 <br>
@@ -209,7 +209,7 @@ DBにテーブルをインポートする．forceオプションで，エラー�
 #### ・ユーザ作成
 
 ```sql
-CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{ パスワード }';
+CREATE USER "{ ユーザ名 }" IDENTIFIED BY "{ パスワード }";
 ```
 
 #### ・ユーザ一覧
@@ -217,7 +217,10 @@ CREATE USER '{ ユーザ名 }' IDENTIFIED BY '{ パスワード }';
 ここで表示される特権と．ALL特権は異なる．
 
 ```sql
-SELECT * FROM mysql.user;
+SELECT
+    *
+FROM
+    mysql.user;
 ```
 
 <br>
@@ -246,16 +249,16 @@ DROP USER { ユーザ名 }@`%`;
 
 ```sql
 -- 全てのデータベースに関する権限を付与
-GRANT ALL PRIVILEGES ON *.* TO '{ ユーザ名 }';
+GRANT ALL PRIVILEGES ON *.* TO "{ ユーザ名 }";
 
 -- Amazon AuroraまたはRDSの場合はこちら
-GRANT ALL PRIVILEGES ON `%`.* TO '{ ユーザー名 }';
+GRANT ALL PRIVILEGES ON `%`.* TO "{ ユーザー名 }";
 ```
 
 ```sql
 -- Amazon Auroraも同じく
 -- 特定のデータベースに関する全権限を付与
-GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
+GRANT ALL PRIVILEGES ON {DB名}.* TO "{ ユーザ名 }";
 ```
 
 #### ・一部の操作権限を付与
@@ -263,7 +266,7 @@ GRANT ALL PRIVILEGES ON {DB名}.* TO '{ ユーザ名 }';
 特定のデータベースに関する読み出し権限のみ付与する．
 
 ```sql
-GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';
+GRANT SELECT ON {DB名}.* TO "{ ユーザ名 }";
 ```
 
 #### ・権限の振り方
@@ -282,13 +285,13 @@ GRANT SELECT ON {DB名}.* TO '{ ユーザ名 }';
 ユーザに付与されている権限を表示する．
 
 ```sql
-SHOW GRANTS FOR '{ ユーザ名 }';
+SHOW GRANTS FOR "{ ユーザ名 }";
 ```
 
 作成しただけで権限を何も付与してないユーザの場合，「データベースサーバ内の全データベースに関して，全権限なし」を表す```USAGE```として表示される．
 
 ```sql
-GRANT USAGE ON *.* TO '{ ユーザー名 }';
+GRANT USAGE ON *.* TO "{ ユーザー名 }";
 ```
 
 特定のデータベースの操作権限を与えると，上記に加えて，付与したGRANT権限も表示されるようになる．
@@ -303,15 +306,19 @@ GRANT USAGE ON *.* TO '{ ユーザー名 }';
 
 ```sql
 -- Amazon AuroraまたはRDSの場合
-REVOKE ALL PRIVILEGES ON `%`.* FROM '{ ユーザ名 }';
+REVOKE ALL PRIVILEGES ON `%`.*
+FROM
+    "{ ユーザ名 }";
 
-REVOKE ALL PRIVILEGES ON {DB名}.* FROM '{ ユーザ名 }';
+REVOKE ALL PRIVILEGES ON { DB名 }.*
+FROM
+    "{ ユーザ名 }";
 ```
 
 #### ・ユーザ名変更
 
 ```sql
-RENAME USER '{ 古いユーザ名 }' TO '{ 新しいユーザ名 }';
+RENAME USER "{ 古いユーザ名 }" TO "{ 新しいユーザ名 }";
 ```
 
 <br>
@@ -427,7 +434,7 @@ SELECT LAST_INSERT_ID();
 文字列をハッシュ化
 
 ```sql
-SELECT MD5('xxxxx');
+SELECT MD5("xxxxx");
 ```
 
 <br>
@@ -452,13 +459,13 @@ FROM
 
 #### ・```JOIN```句の種類
 
-![内部結合のベン図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部結合のベン図.jpg)
+![内部結合のベン図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/内部結合のベン図.jpg)
 
 #### ・```LEFT JOIN```（左外部結合）
 
 『users』テーブルと『items』テーブルの商品IDが一致しているデータと，元となる『users』テーブルにしか存在しないデータが，セットで取得される．
 
-![LEFT_JOIN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/LEFT_JOIN.png)
+![LEFT_JOIN](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/LEFT_JOIN.png)
 
 <br>
 
@@ -483,8 +490,8 @@ FROM
     -- まず，1つ目のフィールドと2つ目のフィールドが同じレコードを取得．
 WHERE
     -- 次に，上記で取得したレコードのうち，次の条件も満たすレコードのみを取得．
-    { ロー名1 } = { ロー名2 }
-    AND { ロー名2 } = { ロー名3 }
+    { レコード名1 } = { レコード名2 }
+    AND { レコード名2 } = { レコード名3 }
 ```
 
 #### ・内部結合に```INNER JOIN ON```を用いる場合
@@ -515,23 +522,23 @@ FROM
 **＊実装例＊**
 
 
-```PHP
+```php
 <?php
-$joinedIdList = implode(',', $idList);
+$joinedIdList = implode(",", $idList);
 
 // 並び替え条件を設定
 $expression = call_user_func(function () use ($orders, $joinedIdList) {
     if ($orders) {
         foreach ($orders as $key => $order) {
             switch ($key) {
-                case 'id':
-                    return sprintf('ss.id %s', $order);
+                case "id":
+                    return sprintf("ss.id %s", $order);
             }
         }
     }
     
     // IN句順の場合
-    return sprintf('FIELD(ss.id, %s)', $idList);
+    return sprintf("FIELD(ss.id, %s)", $idList);
 });
 
 $sql = <<<SQL
@@ -571,7 +578,7 @@ SELECT
 FROM
     { テーブル名 } 
 WHERE
-    { カラム名 } not in ({ ロー名1 }, { ロー名2 },...);
+    { カラム名 } not in ({ レコード名1 }, { レコード名2 },...);
 ```
 
 指定したカラムで，```SELECT```で読み出した値以外の『フィールド』を取得
@@ -589,7 +596,7 @@ WHERE
         FROM
             { テーブル名 }
         WHERE
-            { ロー名 } >= 160
+            { レコード名 } >= 160
     );
 ```
 
@@ -685,7 +692,7 @@ FROM
 GROUP BY
     { カラム名 }
 HAVING
-    { ロー名 };
+    { レコード名 };
 ```
 
 ```sql
@@ -694,7 +701,7 @@ SELECT
 FROM
     { テーブル名 }
 WHERE
-    { ロー名 }
+    { レコード名 }
 GROUP BY
     { カラム名 };
 ```
@@ -713,7 +720,7 @@ SELECT
 FROM
     { テーブル名 }
 WHERE
-    { カラム名 } LIKE '%営業';
+    { カラム名 } LIKE "%営業";
 ```
 
 ```sql
@@ -722,7 +729,7 @@ SELECT
 FROM
     { テーブル名 }
 WHERE
-    { カラム名 } LIKE '_営業';
+    { カラム名 } LIKE "_営業";
 ```
 
 <br>
@@ -795,9 +802,123 @@ WHERE
 
 <br>
 
+### インデックス
+
+#### ・インデックスとは
+
+テーブルから特定のカラムだけを抜き出し，検索しやすいように並び替え，名前を付けて保存しておいたもの．インデックスとして保存されたカラムから特定のレコードを直接取得できるため，SQLの実行時間がカラム数に依存しなくなる．インデックスを使用しない場合，SQLの実行時に全てカラムを取得するため，実行時間がテーブルのカラム数に依存してしまう．
+
+#### ・クラスタインデックス
+
+プライマリキーあるいはユニークキーのカラムを抜き出して並び替えたインデックスのこと．
+
+#### ・セカンダリインデックス
+
+プライマリキーあるいはユニークキーではないカラムを抜き出して並び替えたインデックスのこと．
+
+#### ・複合インデックス
+
+複数のカラムをひとまとめに抜き出して並び替えたインデックスのこと．対象としたカラムごとに異なる値のレコード数が計測され，この数が少ない（一意の値の多い）カラムが検出される．そして，カラムのレコードの昇順で並び替えられ，インデックスとして保存される．
+
+**＊例＊**
+
+以下のようなテーブルがあり，```name```カラムと```address```カラムをインデックスとして抜き出すとする．
+
+| id   | name      | address | old  |
+| ---- | --------- | ------- | ---- |
+| 1    | Suzuki    | Tokyo   | 24   |
+| 2    | Yamada    | Osaka   | 18   |
+| 3    | Takahashi | Nagoya  | 18   |
+| 4    | Honda     | Tokyo   | 16   |
+| 5    | Endou     | Tokyo   | 24   |
+
+抜き出されたカラムごとに異なる値のレコード数が計測され，```name```カラムは```address```カラムよりも一意のレコードが多いため，```name```カラムの昇順（アルファベット順）に並び替えられ，インデックスとして保存される．
+
+| name      | address |
+| --------- | ------- |
+| Endou     | Tokyo   |
+| Honda     | Tokyo   |
+| Suzuki    | Tokyo   |
+| Takahashi | Nagoya  |
+| Yamada    | Osaka   |
+
+<br>
+
+### ```EXPLAIN```句
+
+#### ・使い方
+
+設定した```SELECT```句が仮に実行された場合に，いずれのテーブルのいずれのカラムを取得することになるかを表示する．また，想定実行時間も検出できるため，スロークエリの検出に役立つ．
+
+参考：https://dev.mysql.com/doc/refman/5.7/en/explain-output.html
+
+```sql
+EXPLAIN
+SELECT
+    *
+FROM
+    t1,
+    t2
+WHERE
+    t1.c1 = 1
+    AND t1.c2 = t2.c3 
+```
+
+```shell
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: t1
+         type: ref
+possible_keys: index_t1_on_c1_and_c2
+          key: index_t1_on_c1_and_c2
+      key_len: 5
+          ref: const
+         rows: 10
+        Extra: Using where; Using index
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: t2
+         type: ref
+possible_keys: index_t2_on_c3
+          key: index_t2_on_c3
+      key_len: 5
+          ref: sample.t1.c2
+         rows: 1
+        Extra: Using index   
+```
+
+#### ・```select_type```
+
+SQLの種類が表示される．サブクエリを含まないSQLは```SIMPLE```となり，サブクエリを含むと，サブクエリの種類に応じて，```PRIMARY```，```SUBQUERY```，```DEPENDENT SUBQUERY```，```UNCACHEABLE SUBQUERY```，```DERIVED```，のいずれかが表示される．
+
+#### ・```table```
+
+設定した```SELECT```句がアクセスするテーブル名が表示される．
+
+#### ・```type```
+
+設定した```SELECT```句がテーブルにアクセスする時に，どの程度の数のカラムを検索するのかが表示される．検索するカラムが多いSQLほど，想定実行時間が長くなる．
+
+| 種類   | 条件                                                         | 検索するカラム数           | 補足                                                         |
+| ------ | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------ |
+| ALL    | ・インデックスを使用していない．                             | 全てのカラム               | 全てのカラムを検索するため，実行時間が最も長く，改善する必要がある． |
+| index  | ・インデックスを使用していない．                             | 全てのインデックスのカラム |                                                              |
+| range  | ・セカンダリインデックスを使用している．<br>・```WHERE```句に重複したレコード値，```IN```句，```BETWEEN```句を使用している． | 特定の複数カラム           |                                                              |
+| ref    | ・セカンダリインデックスを使用している．<br>・```WHERE```句に重複しないレコード値 | 特定の複数カラム           |                                                              |
+| eq_ref | ・クラスタインデックスを使用している．                       | 一つのカラム               | 一つのカラムしか```fetch```しないため，```JOIN```句を使用したアクセスの中で，実行時間が最も短い． |
+| const  | ・クラスタインデックスを使用している．<br>・```JOIN```句を使用していない． | 一つのカラム               | 一つのカラムしか```fetch```しないため，実行時間が最も短い．  |
+
+#### ・```possible_keys```
+
+インデックスとして設定されたカラムのうちで，実際に利用可能なものの一覧が表示される．
+
+<br>
+
 ### Tips
 
-#### ・各データベースの容量
+#### ・各データベース容量の確認
 
 ```sql
 SELECT
@@ -811,7 +932,7 @@ ORDER BY
     sum(data_length + index_length) DESC;
 ```
 
-#### ・カラム検索
+#### ・カラムの検索
 
 ```sql
 SELECT
@@ -823,6 +944,8 @@ WHERE
     column_name = { 検索したいカラム名 }
     AND table_schema = { 検索対象のデータベース名 }
 ```
+
+#### ・最適なインデックスの検出
 
 <br>
 
@@ -842,17 +965,17 @@ WHERE
 
 ### PDOにおける```FETCH```
 
-#### ・```fetch():array```
+#### ・```fetch(): array```
 
 読み出された全てのレコードのうち，最初のレコードの全てのカラムを取得し，一次元の連想配列で返却する．
 
-#### ・```fetchAll():array```
+#### ・```fetchAll(): array```
 
 読み出された全てのレコードの，全てのカラムを取得し，二次元の連想配列で返却する．
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 // SELECT文を定義して実行．
 $sql = "SELECT * FROM doraemon_characters";
@@ -886,11 +1009,11 @@ print_r($data);
 // )
 ```
 
-#### ・```fetchColumn():mixed```
+#### ・```fetchColumn(): mixed```
 
 読み出された全てのレコードのうち，最初のレコードの一番左のカラムのみを取得し，混合型で返却する．主に，```COUNT()```の場合に用いる
 
-```PHP
+```php
 <?php
 // SELECT文を定義して実行．
 $sql = "SELECT { カラム名 }OUNT(*) FROM doraemon_characters";
@@ -941,30 +1064,30 @@ while(result.next()){
 
 #### ・PDOの場合
 
-```PHP
+```php
 <?php
 // $_POSTを用いて，送信されたpostメソッドのリクエストを受け取り，属性から各値を取得
-$staff_name = $_POST['name'];
-$staff_pass = $_POST['pass'];
+$staff_name = $_POST["name"];
+$staff_pass = $_POST["pass"];
 
 
 // HTMLとして変数の内容を出力する際，「<」「>」などの特殊文字をエスケープ（無害化）
-$staff_name = htmlspecialchars($staff_name, ENT_QUOTES, 'UTF-8');
-$staff_pass = htmlspecialchars($staff_pass, ENT_QUOTES, 'UTF-8');
+$staff_name = htmlspecialchars($staff_name, ENT_QUOTES, "UTF-8");
+$staff_pass = htmlspecialchars($staff_pass, ENT_QUOTES, "UTF-8");
 
 
 // データベースと接続（イコールの間にスペースを入れるとエラーになる）
-$dsn = 'mysql:dbname=kizukeba_pronami_php;
+$dsn = "mysql:dbname=kizukeba_pronami_php;
 host=kizukebapronamiphp
-charaset=UTF-8';
-$user = 'root';
-$password = '';
+charaset=UTF-8";
+$user = "root";
+$password = "";
 $dbh = new PDO($dsn, $user, $password);
 $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 
 // 列名と値を指定してINSERT
-$sql='INSERT INTO mst_staff (name,password) VALUES (?,?)';
+$sql="INSERT INTO mst_staff (name,password) VALUES (?,?)";
 $stmt = $dbh->prepare($sql);
 
 
@@ -993,7 +1116,7 @@ $dbh = null;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 namespace Migration;
 
@@ -1002,7 +1125,7 @@ class ItemQuery
     // 列名と値を指定してINSERT
     public static function insert()
     {
-        return "INSERT INTO item_table VALUES(1, '商品A', 1000, '2019-07-24 07:07:07');";
+        return "INSERT INTO item_table VALUES(1, "商品A", 1000, "2019-07-24 07:07:07");";
     }
 }
 ```
@@ -1033,17 +1156,17 @@ class ItemQuery
 
 ビジネスの基盤となるマスタデータ（商品データ，取引先データなど）と，日々更新されるトランザクションデータ（販売履歴，入金履歴など）を突き合わせ，新しいデータを作成する処理のこと．
 
-![マッチング処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_1.PNG)
+![マッチング処理_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/マッチング処理_1.PNG)
 
 #### ・アルゴリズム
 
-![マッチング処理_4](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_4.png)
+![マッチング処理_4](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/マッチング処理_4.png)
 
 #### ・具体例
 
 とある生命保険会社では，顧客の保険契約データを契約マスタテーブルで，またそれとは別に，保険契約データの変更点（異動事由）を異動トランザクションテーブルで，管理している．毎日，契約マスタテーブルと異動トランザクションテーブルにおける前日レコードを突き合わせ，各契約の異動事由に応じて，変更後契約データとして，新契約マスタテーブルに挿入する．
 
-![マッチング処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_2.PNG)
+![マッチング処理_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/マッチング処理_2.PNG)
 
 前処理として，契約マスタデータと異動トランザクションデータに共通する識別子が同じ順番で並んでいる必要がある．
 
@@ -1053,5 +1176,5 @@ class ItemQuery
 4. 『契約マスタデータ < 異動トランザクションデータ』になるまで，データを突き合わせる．
 5. 最終的に，変更後マスタテーブルは以下の通りになる．
 
-![マッチング処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/マッチング処理_3.png)
+![マッチング処理_3](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/マッチング処理_3.png)
 

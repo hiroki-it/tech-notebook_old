@@ -43,9 +43,8 @@ class Example
 class Example
 {
     private $data;
-  
-  　// 自信が持つデータを操作する.
-  
+
+    // 自信が持つデータを操作する.
     public function data()
     {
         return $this->data;
@@ -94,7 +93,7 @@ class Example
 
 ```php
 <?php
-  
+
 function example($data){
     return $data;
 }
@@ -121,7 +120,7 @@ https://qiita.com/miyapei/items/6c43e8b38317afb5fdce
 
 ```php
 <?php
-  
+
 class Example extends ParentExample
 {
     public function __construct($data)
@@ -227,38 +226,13 @@ example($data);
 
 ```php
 <?php
-class DogToyEntity
-{
-    public function __construct()
-    {
-        // 中身は省略
-    }
-    
-    // インスタンスを作成する集約メソッドは，データ値にアクセスしないため，常に同一の処理を行う．
-    public static function aggregateDogToyEntity(array $fetchedData)
-    {
-        return new DogToyEntity(
-            new ColorVO($fetchedData['dog_toy_type']),
-            $fetchedData['dog_toy_name'],
-            $fetchedData['number'],
-            new PriceVO($fetchedData['dog_toy_price']),
-            new ColorVO($fetchedData['color_value'])
-        );
-    }
-}
-```
 
-**＊実装例＊**
-
-```php
-<?php
 class Example
 {
     // 受け取ったOrderエンティティから値を取り出すだけで，データ値は呼び出していない．
     public static function computeExampleFee(Entity $order): Money
     {
-        $money = new Money($order->exampleFee);
-        return $money;
+        return new Money($order->exampleFee);
     }
 }
 ```
@@ -313,7 +287,7 @@ class ABC {
     {
         // 単なるGetterではなく，例外処理も加える．
         if(!isset($this->property)){
-            throw new ErrorException('データに値がセットされていません．');
+            throw new ErrorException("データに値がセットされていません．");
         }
         return $this->property;
     }
@@ -342,7 +316,6 @@ class Test01 {
     {
         $this->property01 = $property01;
     }
-    
 }    
 ```
 
@@ -372,8 +345,10 @@ Test01クラスインスタンスの```$property01```に値を設定するため
 
 ```php
 <?php
-class Test01 {
-// 中身は省略
+
+class Test01
+{
+    // 中身は省略
 }
 
 $test01 = new Test01;
@@ -387,8 +362,10 @@ $test01->setProperty01("新しいデータ01の値");
 
 ```php
 <?php
-class Test02 {
-// 中身は省略
+
+class Test02
+{
+    // 中身は省略
 }
 
 $test02 = new Test02("データ02の値");
@@ -416,7 +393,7 @@ class Example
 {
 
     private $example = [];
-    
+
     // 引数と返却値のデータ型を指定
     public function __get(string $name): string
     {
@@ -449,7 +426,7 @@ $example->hoge;
 
 定義されていないデータや，アクセス権のないデータに値を設定しようとした時に，代わりにコールされる．オブジェクトの不変性を実現するために使用される．オブジェクトの不変性は，以下のノートを参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_architecture_domain_driven_design.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_architecture_domain_driven_design.html
 
 **＊実装例＊**
 
@@ -490,7 +467,9 @@ $example->hoge = "HOGE";
 
 ```php
 <?php
-class Test02 {
+    
+class Test02
+{
 
     private $property02;
 
@@ -509,6 +488,7 @@ Test01クラスインスタンスの```$property01```に値を設定するため
 
 ```php
 <?php
+    
 $test01 = new Test01;
 
 $test01->setProperty01("データ01の値");
@@ -520,6 +500,7 @@ $test01->setProperty01("新しいデータ01の値");
 
 ```php
 <?php
+    
 $test02 = new Test02("データ02の値");
 
 $test02 = new Test02("新しいデータ02の値");
@@ -596,6 +577,7 @@ class B extends A {}
 
 ```php
 <?php
+    
 echo get_class(B::get_self());   // 継承元のクラスA
 
 echo get_class(B::get_static()); // 継承先のクラスB
@@ -615,9 +597,11 @@ echo get_class(A::get_static()); // 継承元のクラスA
 
 ```php
 <?php
-class Obj_A{
+
+class Obj_A
+{
     private $objB;
-    
+
     // 返却値のデータ型を指定
     public function objB(): ObjB
     {
@@ -630,7 +614,9 @@ class Obj_A{
 
 ```php
 <?php
-class Obj_B{
+    
+class Obj_B
+{
     private $objC;
  
     // 返却値のデータ型を指定
@@ -645,7 +631,9 @@ class Obj_B{
 
 ```php
 <?php
-class Obj_C{
+    
+class Obj_C
+{
     private $objD;
  
     // 返却値のデータ型を指定
@@ -660,6 +648,7 @@ class Obj_C{
 
 ```php
 <?php
+    
 $ObjA = new Obj_A;
 
 $ObjB = $ObjA->objB();
@@ -673,6 +662,7 @@ $ObjD = $ObjC->objD();
 
 ```php
 <?php
+    
 $D = objB()->objC()->objC();
 
 // $D には ObjD が格納されている．
@@ -686,13 +676,13 @@ $D = objB()->objC()->objC();
 
 ある関数 ``` f  ```の定義の中に ``` f ```自身を呼び出している箇所がある．
 
-![再帰的](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/再帰的.png)
+![再帰的](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/再帰的.png)
 
 **＊実装例＊**
 
 以下のノートも参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_logic_algorithm.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_logic_algorithm.html
 
 1. 適当な値を基準値（Pivot）とする （※できれば中央値が望ましい）
 2. Pivotより小さい数を前方，大きい数を後方に分割する．
@@ -703,56 +693,56 @@ $D = objB()->objC()->objC();
 
 ```php
 <?php
-class Example{
-    
+
+class Example
+{
+
     public function quickSort(array $array): array
     {
         // 配列の要素数が一つしかない場合，クイックソートする必要がないので，返却する．
         if (count($array) <= 1) {
             return $array;
         }
-        
+
         // 一番最初の値をPivotとする．
         $pivot = array_shift($array);
-        
+
         // グループを定義
         $left = $right = [];
-        
+
         foreach ($array as $value) {
-            
+
             if ($value < $pivot) {
-                
+
                 // Pivotより小さい数は左グループに格納
                 $left[] = $value;
-                
             } else {
-                
+
                 // Pivotより大きい数は右グループに格納
                 $right[] = $value;
-                
             }
-            
+
         }
-        
+
         // 処理の周回ごとに，結果の配列を結合．
         return array_merge
         (
         // 左のグループを再帰的にクイックソート．
             quickSort($left),
-            
+
             // Pivotを結果に組み込む．
-            array($pivot),
-            
+            [$pivot],
+
             // 左のグループを再帰的にクイックソート．
             quickSort($right)
-        ); 
+        );
     }
 }
 
 // 実際に使ってみる．
-$array = array(6, 4, 3, 7, 8, 5, 2, 9, 1);
+$array = [6, 4, 3, 7, 8, 5, 2, 9, 1];
 $result = quickSort($array);
-var_dump($result); 
+var_dump($result);
 
 // 昇順に並び替えられている．
 // 1, 2, 3, 4, 5, 6, 7, 8 
@@ -781,7 +771,9 @@ var_dump($result);
 
 ```php
 <?php
-class Example{
+    
+class Example
+{
   
     public function returnMethod()
     {
@@ -801,7 +793,9 @@ $example->returnMethod(); // returnMethod()です。
 
 ```php
 <?php
-class Example{
+    
+class Example
+{
   
     function exitMethod()
     {
@@ -831,9 +825,10 @@ $example->exitMethod(); // exitMethod()です。
 
 ```php
 <?php
+    
 class Example
 {
-    function oneToThree(): array
+    public function oneToThree(): array
     {
         for ($i = 1; $i <= 3; $i++) {
             // yield を返却した後、$i の値が維持される．
@@ -864,8 +859,10 @@ foreach ($oneToThree as $value) {
 
 ```php
 <?php
-class Dispatcher {
-// 中身は省略
+    
+class Dispatcher
+{
+    // 中身は省略
 }
 
 $dispatcher = new Dispatcher;
@@ -886,12 +883,13 @@ $dispatcher->dispatch("example", "test");
 
 イベント名を文字列で定義し，特定のイベント名が渡された時に，それに対応づけられた関数をコールする．フレームワークの```EventDispatcher```を使用するのがよい．以下のノートも参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_framework_symfony.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_framework_symfony.html
 
 **＊実装例＊**
 
 ```php
 <?php
+    
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ExampleEventDispatcher
@@ -908,54 +906,53 @@ class ExampleEventDispatcher
 
 ```php
 <?php
+
 class ResultCacher
 {
     private $resultCollection;
-    
+
     private $funcCollection;
-    
+
     public function __construct()
     {
         $this->funcCollection = $this->addListener();
     }
-  
-  
+
+
     // 集計メソッド
     public function computeRevenue()
     {
         // 時間のかかる集計処理;
     }
 
-  
+
     public function funcNameListener(string $funcName)
     {
         // 返却値が設定されていなかった場合，値を設定.
         if (!isset($this->resultCollection[$funcName])) {
-            
+
             // メソッドの返却値をCollectionに設定．
             $this->resultCollection[$funcName] = $this->dispatch($funcName);
         }
-        
+
         // 返却値が設定されていた場合,そのまま使う．
         return $this->resultCollection[$funcName];
     }
-  
-  
+
     // 返却値をキャッシュしたいメソッド名を登録しておく．
     private function addListener()
     {
         return [
-          "computeRevenue" => [$this, "computeRevenue"]
+            "computeRevenue" => [$this, "computeRevenue"]
         ];
     }
-  
-    
+
     private function dispatch(string $funcName)
     {
         // call_user_funcでメソッドを実行
         return call_user_func(
-          // 登録されているメソッド名から，メソッドをDispatch.
-          $this->funcCollection[$funcName]
+        // 登録されているメソッド名から，メソッドをDispatch.
+            $this->funcCollection[$funcName]
         );
     }
 }
@@ -963,7 +960,7 @@ class ResultCacher
 
 <br>
 
-## 02-03. 無名関数
+## 02-03. Closure（無名関数）
 
 特定の処理が，```private```メソッドとして切り分けるほどでもないが，他の部分と明示的に区分けたい時は，無名関数を用いるとよい．
 
@@ -975,8 +972,10 @@ class ResultCacher
 
 ```php
 <?php
-class Item {
-// 中身は省略
+
+class Item
+{
+    // 中身は省略
 }
 
 $item = new Item;
@@ -1000,7 +999,8 @@ echo $optionName;
 
 ```php
 <?php
-class Item {
+class Item 
+{
 // 中身は省略
 }
 
@@ -1026,11 +1026,13 @@ echo $optionName("BC");
 
 ```php
 <?php
-class Item {
+class Item 
+{
 // 中身は省略
 }
 
-class Option {
+class Option 
+{
 // 中身は省略
 }
 
@@ -1063,7 +1065,8 @@ echo $option->name("BC");
 
 ```php
 <?php
-class Item {
+class Item 
+{
 // 中身は省略
 }
 
@@ -1097,6 +1100,7 @@ echo $optionName;
 
 ```php
 <?php
+    
 // 第一引数のみの場合
 class Example
 {
@@ -1124,6 +1128,7 @@ $example->test("callbackMethod");
 
 ```php
 <?php
+    
 // 第一引数と第二引数の場合
 class Example
 {
@@ -1154,6 +1159,7 @@ $example->higherOrder("第一引数", "callbackMethod");
 
 ```php
 <?php
+    
 class Example
 {
     // 高階関数のように，関数を引数として渡す．
@@ -1170,8 +1176,7 @@ $example = new Example;
 // 親メソッドのスコープで定義されている変数を引数として渡す．（普段よくやっている値渡しと同じ）
 $example->higherOrder($parentVar, function () use ($parentVar) {
     return $parentVar . "の出力に成功しました．";
-}
-);
+});
 
 // 出力結果
 // 親メソッドのスコープの変数の出力に成功しました．
@@ -1185,6 +1190,7 @@ $example->higherOrder($parentVar, function () use ($parentVar) {
 
 ```php
 <?php
+    
 class Example
 {
     
@@ -1205,7 +1211,7 @@ class Example
         foreach ($this->properties as $property) {
 
             // 引数の無名関数によって，データに対する加工方法が異なる．
-            // 例えば，判定でTRUEのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
+            // 例えば，判定でtrueのもののみを返すメソッドを渡すと，自データを絞り込むような処理を行える．
             $returned = call_user_func($property, $callback);
             if ($returned) {
 
@@ -1222,427 +1228,45 @@ class Example
 
 <br>
 
-## 03. データ構造の実装方法
-
-ハードウェアが処理を行う時に，データの集合を効率的に扱うためのデータ格納形式をデータ構造という．データ構造のPHPによる実装方法を以下に示す．
-
-### Array型
-
-同じデータ型のデータを並べたデータ格納様式のこと．
-
-#### ・インデックス配列
-
-番号キーごとに値が格納されたArray型のこと．
-
-```
-Array
-(
-  [0] => A
-  [1] => B
-  [2] => C
-)
-```
-
-#### ・多次元配列
-
-配列の中に配列をもつArray型のこと．配列の入れ子構造が２段の場合，『二次元配列』と呼ぶ．
-
-```
-( 
-  [0] => Array
-         (
-            [0] => リンゴ
-            [1] => イチゴ
-            [2] => トマト
-         )
-
-  [1] => Array
-         (
-            [0] => メロン
-            [1] => キュウリ
-            [2] => ピーマン
-         )
-)
-```
-
-#### ・連想配列
-
-キー名（赤，緑，黄，果物，野菜）ごとに値が格納されたArray型のこと．下の例は，二次元配列かつ連想配列である．
-
-```
-Array
-(
-    [赤] => Array
-        (
-            [果物] => リンゴ
-            [果物] => イチゴ
-            [野菜] => トマト
-        )
-
-    [緑] => Array
-        (
-            [果物] => メロン
-            [野菜] => キュウリ
-            [野菜] => ピーマン
-        )
-)
-```
-
-#### ・配列内の要素の走査（スキャン）
-
-配列内の要素を順に調べていくことを『走査（スキャン）』という．例えば，```foreach```は，配列内の全ての要素を走査する処理である．下図では，連想配列が表現されている．
-
-![配列の走査](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/配列の走査.png)
-
-#### ・内部ポインタを用いた配列要素の出力
-
-『内部ポインタ』とは，配列において，参照したい要素を位置で指定するためのカーソルのこと．
-
-**＊実装例＊**
-
-```php
-<?php
-    
-$array = array("あ", "い", "う");
-
-// 内部ポインタが現在指定している要素を出力．
-echo current($array); // あ
-
-// 内部ポインタを一つ進め，要素を出力．
-echo next($array); // い
-
-// 内部ポインタを一つ戻し，要素を出力．
-echo prev($array); // あ
-
-// 内部ポインタを最後まで進め，要素を出力．
-echo end($array); // う
-
-// 内部ポインタを最初まで戻し，要素を出力
-echo reset($array); // あ
-```
-
-<br>
-
-### LinkedList型
-
-PHPで用いることはあまりないデータ格納様式．詳しくは，JavaにおけるLinkedList型を参照せよ．
-
-#### ・PHPの```list```メソッドとは何なのか
-
-PHPの```list```メソッドは，List型とは意味合いが異なる．配列の要素一つ一つを変数に格納したい場合，List型を使わなければ，冗長ではあるが，以下のように実装する必要がある．
-
-**＊実装例＊**
-
-```php
-<?php
-    
-$array = array("あ", "い", "う");
-$a = $array[0];
-$i = $array[1];
-$u = $array[2];
-
-echo $a.$i.$u; // あいう
-```
-
-しかし，以下の様に，```list```メソッドを使うことによって，複数の変数への格納を一行で実装することができる．
-
-**＊実装例＊**
-
-```php
-<?php
-    
-list($a, $i, $u) = array("あ", "い", "う");
-
-echo $a.$i.$u; // あいう
-```
-
-
-
-### Queue型
-
-![Queue1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Queue1.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
- 
-
-![Queue2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Queue2.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
- 
-
-![Queue3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Queue3.gif)
-
-PHPでは，```array_push```メソッドと```array_shift```メソッドを組み合わせることで実装できる．
-
-**＊実装例＊**
-
-```php
-<?php
-$array = array("Blue", "Green");
-
-// 引数を，配列の最後に，要素として追加する．
-array_push($array, "Red");
-print_r($array);
-
-// 出力結果
-
-//	Array
-//	(
-//		[0] => Blue
-//		[1] => Green
-//		[2] => Red
-//	)
-
-// 配列の最初の要素を取り出す．
-$theFirst= array_shift($array);
-print_r($array);
-
-// 出力結果
-
-//	Array
-//	(
-//    [0] => Green
-//    [1] => Red
-//	)
-
-// 取り出された値の確認
-echo $theFirst; // Blue
-```
-
-#### ・メッセージQueue
-
-送信側の好きなタイミングでファイル（メッセージ）をメッセージQueueに追加できる．また，受信側の好きなタイミングでメッセージを取り出すことができる．
-
-![メッセージキュー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/メッセージキュー.jpg)
-
-<br>
-
-### Stack型
-
-PHPでは，```array_push```メソッドと```array_pop```メソッドで実装可能．
-
-![Stack1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Stack1.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
- 
-
-![Stack2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Stack2.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
- 
-
-![Stack3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Stack3.gif)
-
-<br>
-
-### Tree型
-
-#### ・二分探索木
-
-  各ノードにデータが格納されている．
-
-![二分探索木](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/二分探索木1.gif)
-
-#### ・ヒープ
-
-  Priority Queueを実現するときに用いられる．各ノードにデータが格納されている．
-
-![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ヒープ1.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
-![ヒープ1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ヒープ2.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
-![ヒープ2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ヒープ3.gif)
-
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
-
-![. ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ヒープ4.gif)
-
-<br>
-
-## 03-02. Javaにおけるデータ構造の実装方法
-
-データ構造のJavaによる実装方法を以下に示す．
-
-### Array型
-
-#### ・ArrayList
-
-ArrayListクラスによって実装されるArray型．PHPのインデックス配列に相当する．
-
-#### ・HashMap
-
-HashMapクラスによって実装されるArray型．PHPの連想配列に相当する．
-
-<br>
-
-### LinkedList型
-
-値をポインタによって順序通り並べたデータ格納形式のこと．
-
-#### ・単方向List
-
-![p555-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p555-1.gif)
-
-#### ・双方向List
-
-![p555-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p555-2.gif)
-
-#### ・循環List
-
-![p555-3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p555-3.gif)
-
-<br>
-
-### Queue型
-
-<br>
-
-### Stack型
-
-<br>
-
-### Tree型
-
-<br>
-
-## 05-03. データ型
-
-### スカラー型
-
-#### ・int
-
-#### ・float
-
-#### ・string
-
-#### ・boolean
-
-|   T／F    | データの種類 | 説明                     |
-| :-------: | ------------ | ------------------------ |
-| **FALSE** | ```$var =``` | 何も格納されていない変数 |
-|           | ```False```  | 文字としてのFalse        |
-|           | ```0```      | 数字、文字列             |
-|           | ```""```     | 空文字                   |
-|           | array()      | 要素数が0個の配列        |
-|           | NULL         | NULL値                   |
-| **TRUE**  | 上記以外の値 |                          |
-
-<br>
-
-### 複合型
-
-
-#### ・array
-
-#### ・object
-
-```
-Fruit Object
-(
-    [id:private] => 1
-    [name:private] => リンゴ
-    [price:private] => 100
-)
-```
-
-<br>
-
-### その他のデータ型
-
-#### ・null
-
-#### ・date
-
-厳密にはデータ型ではないが，便宜上，データ型とする．タイムスタンプとは，協定世界時(UTC)を基準にした1970年1月1日の0時0分0秒からの経過秒数を表したもの．
-
-| フォーマット         | 実装方法            | 備考                                                         |
-| -------------------- | ------------------- | ------------------------------------------------------------ |
-| 日付                 | 2019-07-07          | 区切り記号なし、ドット、スラッシュなども可能                 |
-| 時間                 | 19:07:07            | 区切り記号なし、も可能                                       |
-| 日付と時間           | 2019-07-07 19:07:07 | 同上                                                         |
-| タイムスタンプ（秒） | 1562494027          | 1970年1月1日の0時0分0秒から2019-07-07 19:07:07 までの経過秒数 |
-
-<br>
-
-### キャスト演算子
-
-#### ・```(string)```
-
-```php
-<?php
-$var = 10; // $varはInt型．
-
-// キャスト演算子でデータ型を変換
-$var = (string) $var; // $varはString型
-```
-
-#### ・```(int)```
-
-```php
-<?php
-$var = "1";
-
-// Int型
-$var = (int) $var;
-
-// 1
-```
-
-#### ・```(bool)```
-
-```php
-<?php
-$var = 1;
-
-// Boolean型
-$var = (bool) $var;
-
-// true
-```
-
-#### ・```(float)```
-
-```php
-<?php
-$var = "1.0";
-
-// Float型
-$var = (float) $var;
-
-// 1.0
-```
-
-#### ・```(array)```
-
-```php
-<?php
-// Array型
-$var = (array) $var;
-```
-
-#### ・```(object)```
-
-```php
-<?php
-// Object型
-$var = (object) $var;
-```
-
-<br>
-
-## 04. 定数
+## 03. 定数
 
 ### 定数が役に立つ場面
 
-計算処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．例えば，ValueObjectにおける定数がある．
+#### ・フラグON/OFF
+
+```php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * フラグ定数クラス
+ */
+final class FlagConstant
+{
+    /**
+     * フラグが立っている状態
+     */
+    public const IS_ON = true;
+
+    /**
+     * フラグが立っていない状態
+     */
+    public const IS_OFF = false;
+}
+```
+
+#### ・区分値
+
+ドメイン駆動設計の値オブジェクトを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_architecture_domain_driven_design.html
+
+#### ・数値計算，数値比較
+
+計算処理や数値比較処理では，可読性の観点から，できるだけ数値を直書きしない．数値に意味合いを持たせ，定数として扱うと可読性が高くなる．ドメイン駆動設計の値オブジェクトを参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_architecture_domain_driven_design.html
 
 **＊実装例＊**
 
@@ -1656,9 +1280,7 @@ class requiredTime
     const WALKING_SPEED_PER_MINUTE = 80;
     const CAR_SPEED_PER_MINUTE = 400;
     
-    
     private $distance;
-    
     
     public function __construct(int $distance)
     {
@@ -1669,19 +1291,17 @@ class requiredTime
     public function isMinuteByWalking()
     {
         if ($this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE < self::JUDGMENT_MINUTE) {
-            return TRUE;
+            return true;
         }
         
-        return FALSE;
+        return false;
     }
-    
     
     public function minuteByWalking()
     {
         $minute = $this->distance * 1000 / self::WALKING_SPEED_PER_MINUTE;
         return ceil($minute);
     }
-    
     
     public function minuteByCar()
     {
@@ -1709,7 +1329,7 @@ class requiredTime
 <?php
     
 # /var/www/app/vendor/autoload.php
-require_once realpath(__DIR__ . '/vendor/autoload.php');
+require_once realpath(__DIR__ . "/vendor/autoload.php");
 ```
 
 #### ・```__FUNCTION__```
@@ -1720,22 +1340,24 @@ require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 ```php
 <?php
-    
+
 class ExampleA
 {
-  public function a()
-  {
-    echo __FUNCTION__;
-  }
+    public function a()
+    {
+        echo __FUNCTION__;
+    }
 }
 ```
 
 ```php
 <?php
-    
-class ExampleA {
-public function a(){}
+
+class ExampleA
+{
+    public function a(){}
 }
+
 $exampleA = new ExampleA;
 $exampleA->a(); // a が返却される．
 ```
@@ -1748,13 +1370,13 @@ $exampleA->a(); // a が返却される．
 
 ```php
 <?php
-    
+
 class ExampleB
 {
-  public function b()
-  {
-    echo __METHOD__;
-  }
+    public function b()
+    {
+        echo __METHOD__;
+    }
 }
 ```
 
@@ -1767,7 +1389,7 @@ $exampleB->b(); // ExampleB::b が返却される．
 
 <br>
 
-## 05. 変数
+## 04. 変数
 
 ### 変数展開
 
@@ -1891,7 +1513,7 @@ echo $b; // 2
 
 <br>
 
-## 07. 組み込みラッパー関数
+## 05. 組み込みラッパー関数
 
 ### 入出力ストリームへのアクセス
 
@@ -1907,7 +1529,7 @@ stdin：standard in（標準入力）を意味する．PHPのプロセスが，�
 <?php
 
 // ログを読み出す
-$stdin = fopen('php://stdin', 'r');
+$stdin = fopen("php://stdin", "r");
 ```
 
 #### ・php://stdout
@@ -1918,8 +1540,8 @@ stdout：standard out（標準出力）を意味する．PHPのプロセスが�
 <?php
 
 // ログを書き込む
-$stderr = fopen('php://stdout', 'w');
-fwrite($stderr, 'ログです．');
+$stderr = fopen("php://stdout", "w");
+fwrite($stderr, "ログです．");
 ```
 
 #### ・php://stderr
@@ -1930,13 +1552,13 @@ stderr：standard error（標準出力エラー）を意味する．PHPのプロ
 <?php
 
 // エラーログを書き込む
-$stderr = fopen('php://stderr', 'w');
-fwrite($stderr, 'エラーログです．');
+$stderr = fopen("php://stderr", "w");
+fwrite($stderr, "エラーログです．");
 ```
 
 <br>
 
-## 08. その他の関数
+## 06. その他の関数
 
 ### ファイルシステム関数
 
@@ -1956,21 +1578,72 @@ $json = json_encode($array);
 
 // fopen()，fwrite()，fclose()を実行できる．
 file_put_contents(
-    'data.json',
+    "data.json",
     $json
 );
 ```
 
 <br>
 
-## 09. 正規表現とパターン演算子
+## 07. 正規表現とパターン演算子
 
 ### 正規表現
 
-#### ・正規表現を用いた文字列検索
+#### ・正規表現とは
+
+数値，記号，文字列などの種類を簡単に表現する文字列のこと．
+
+#### ・数字
+
+**＊実装例＊**
+
+『0から9のいずれか』の数字を意味する．
 
 ```php
-// ここに実装例
+<?php
+
+$var = "0123456789";
+
+// OR条件と範囲指定
+$result = preg_match("/[0-9]/", $var)
+    
+var_dump($result); // true
+```
+
+#### ・アルファベット
+
+**＊実装例＊**
+
+『aからzのいずれか』または『AからZのいずれか』のアルファベットを意味する．
+
+```php
+<?php
+
+$var = "aAbBcC";
+
+// OR条件と範囲指定
+$result = preg_match("/[a-zA-Z]/", $var)
+    
+var_dump($result); // true
+```
+
+#### ・メタ文字
+
+エスケープのために，必ずバックスラッシュを付ける必要がある．
+
+**＊実装例＊**
+
+『?』『.』『*』『$』のいずれかのメタ文字を意味する．
+
+```php
+<?php
+
+$var = "?";
+
+// OR条件のみ
+$result = preg_match("/[\?.*$]/", $var)
+    
+var_dump($result); // true
 ```
 
 <br>
@@ -1989,7 +1662,7 @@ $x = "";
 
 // jpegの大文字小文字
 preg_match(
-    '/jpeg$/i',
+    "/jpeg$/i",
     $x
 );
 ```

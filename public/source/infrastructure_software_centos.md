@@ -4,7 +4,7 @@
 
 ### 基本ソフトウェアの構成
 
-![基本ソフトウェアの構成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/基本ソフトウェアの構成.png)
+![基本ソフトウェアの構成](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/基本ソフトウェアの構成.png)
 
 <br>
 
@@ -74,7 +74,7 @@ $ which python3
 
 **＊実装例＊**
 
-```sh
+```shell
 #!/bin/bash
 
 echo "Hello World!"
@@ -86,22 +86,22 @@ echo "Hello Tokyo!"
 
 いずれかの方法で実行する．
 
-```sh
+```shell
 # sourceコマンド
 $ source hello.sh
 ```
 
-```sh
+```shell
 # bashコマンド
 $ bash hello.sh
 ```
 
-```sh
+```shell
 # ドット
 $ . hello.sh
 ```
 
-```sh
+```shell
 # 相対パスもしくは絶対パスでシェルスクリプトを指定
 # カレントディレクトリにあるhello.shを実行することはできない
 $ ./hello.sh
@@ -111,7 +111,7 @@ $ ./hello.sh
 
 **＊実装例＊**
 
-```sh
+```shell
 #!/bin/bash
  
 for i in 1 2 3 4 5
@@ -126,7 +126,7 @@ done
 
 **＊実装例＊**
 
-```sh
+```shell
 #!/bin/bash
 
 case $ENV in
@@ -154,7 +154,7 @@ esac
 
 「```|```」の縦棒記号のこと．複数のプログラムの入出力を繋ぐことができる．
 
-![pipeline](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/pipeline.png)
+![pipeline](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/pipeline.png)
 
 #### ・grepとの組み合わせ
 
@@ -164,7 +164,7 @@ esac
 
 検索されたファイル内で，さらに文字列を検索する．
 
-```sh
+```shell
 $ find /* -type f | xargs grep "<検索文字>"
 ```
 
@@ -176,7 +176,7 @@ $ find /* -type f | xargs grep "<検索文字>"
 
 フィルタリングされたプロセスを削除する．
 
-```sh
+```shell
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
@@ -188,10 +188,10 @@ $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 
 検索されたファイルの容量を合計する．
 
-```sh
-$ find ./* -name "*.js" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
-$ find ./* -name "*.css" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
-$ find ./* -name "*.png" -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }'
+```shell
+$ find ./* -name "*.js" -type f -printf "%s\n" | awk "{ sum += $1; } END { print sum; }"
+$ find ./* -name "*.css" -type f -printf "%s\n" | awk "{ sum += $1; } END { print sum; }"
+$ find ./* -name "*.png" -type f -printf "%s\n" | awk "{ sum += $1; } END { print sum; }"
 ```
 
 #### ・sortとの組み合わせ
@@ -202,7 +202,7 @@ $ find ./* -name "*.png" -type f -printf "%s\n" | awk '{ sum += $1; } END { prin
 
 表示された環境変数をAZ昇順に並び替える．
 
-```sh
+```shell
 $ printenv | sort -f
 ```
 
@@ -218,7 +218,27 @@ $ printenv | sort -f
 | stdout（標準出力）       | コマンドからターミナルに対して，エラー以外のデータを出力するためのインターフェースのこと． |
 | stderr（標準エラー出力） | コマンドからターミナルに対して，エラーデータを出力するためのインターフェースのこと． |
 
-![標準入力，標準出力，標準出力エラー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/標準入力，標準出力，標準出力エラー.jpg)
+![標準入力，標準出力，標準出力エラー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/標準入力，標準出力，標準出力エラー.jpg)
+
+#### ・標準出力に出力
+
+コマンド処理の後に，「```>&1```」を追加すると，処理の結果を，標準出力に出力できる．
+
+**＊コマンド例＊**
+
+```shell
+$ echo "stdout" >&1
+```
+
+#### ・標準エラー出力に出力
+
+コマンド処理の後に，「```>&2```」を追加すると，処理の結果を，標準エラー出力に出力できる．
+
+**＊コマンド例＊**
+
+```shell
+$ echo "stderr" >&2
+```
 
 <br>
 
@@ -230,7 +250,7 @@ $ printenv | sort -f
 
 ファイルの権限を変更する．よく使用されるパーミッションのパターンは次の通り．
 
-```sh
+```shell
 $ chmod 600 <ファイル名>
 ```
 
@@ -238,7 +258,7 @@ $ chmod 600 <ファイル名>
 
 ディレクトリ内のファイルに対して，再帰的に権限を付与する．
 
-```sh
+```shell
 $ chmod -R 600 <ディレクトリ名>
 ```
 
@@ -277,11 +297,11 @@ $ chmod -R 600 <ディレクトリ名>
 
 ディレクトリの属性情報も含めて，ディレクトリ構造とファイルを再帰的にコピー．
 
-```sh
+```shell
 $ cp -Rp /<ディレクトリ名1>/<ディレクトリ名2> /<ディレクトリ名1>/<ディレクトリ名2>
 ```
 
-```sh
+```shell
 # 隠しファイルも含めて，ディレクトリの中身を他のディレクトリ内にコピー
 # 「アスタリスク」でなく「ドット」にする
 $ cp -Rp /<ディレクトリ名>/ /<ディレクトリ名> 
@@ -291,8 +311,8 @@ $ cp -Rp /<ディレクトリ名>/ /<ディレクトリ名>
 
 『ファイル名.YYYYmmdd』の形式でバックアップファイルを作成
 
-```sh
-$ cp -p <ファイル名> <ファイル名>.`date +'%Y%m%d'`
+```shell
+$ cp -p <ファイル名> <ファイル名>.`date +"%Y%m%d"`
 ```
 
 <br>
@@ -303,7 +323,7 @@ $ cp -p <ファイル名> <ファイル名>.`date +'%Y%m%d'`
 
 定義されたシェル変数を出力する．変数名には```$```マークを付ける．
 
-```sh
+```shell
 $ <変数名>=<値>
 
 $ echo $<変数名>
@@ -317,11 +337,11 @@ $ echo $<変数名>
 
 ファイルを検索するためのユーティリティ．アスタリスクを付けなくとも，自動的にワイルドカードが働く．
 
-```sh
+```shell
 $ find /* -type f | xargs grep "<検索文字>"
 ```
 
-```sh
+```shell
 # パーミッションエラーなどのログを破棄して検索．
 $ find /* -type f | xargs grep "<検索文字>" 2> /dev/null
 ```
@@ -330,7 +350,7 @@ $ find /* -type f | xargs grep "<検索文字>" 2> /dev/null
 
 ルートディレクトリ以下で， example という文字をもち，ファイル名が .conf で終わるファイルを全て検索する．
 
-```sh
+```shell
 $ find /* -name "*.conf" -type f | xargs grep "<検索文字>"
 ```
 
@@ -346,7 +366,7 @@ $ find /* -name "*.conf" -type f | xargs grep "<検索文字>"
 
 カレントディレクトリに，シンボリックリンクを作成する．リンクの元になるディレクトリやファイルのパスを指定する．
 
-```sh
+```shell
 $ ln -s <リンク元までのパス> <シンボリックリンク名> 
 ```
 
@@ -358,7 +378,7 @@ $ ln -s <リンク元までのパス> <シンボリックリンク名>
 
 隠しファイルや隠しディレクトリも含めて，全ての詳細を表示する．
 
-```sh
+```shell
 $ ls -l -a
 ```
 
@@ -370,7 +390,7 @@ $ ls -l -a
 
 複数階層のディレクトリを作成する．
 
-```sh
+```shell
 $ mkdir -p /<ディレクトリ名1>/<ディレクトリ名2>
 ```
 
@@ -382,7 +402,7 @@ $ mkdir -p /<ディレクトリ名1>/<ディレクトリ名2>
 
 ディレクトリ自体と中のファイルを再帰的に削除する．
 
-```sh
+```shell
 $ rm -R <ディレクトリ名> 
 ```
 
@@ -394,7 +414,7 @@ $ rm -R <ディレクトリ名>
 
 ファイルを8進数の機械語で出力する．
 
-```sh
+```shell
 $ od <ファイル名>
 ```
 
@@ -402,7 +422,7 @@ $ od <ファイル名>
 
 ファイルを16進数の機械語で出力する．
 
-```sh
+```shell
 $ od -Ad -tx <ファイル名>
 ```
 
@@ -414,7 +434,7 @@ $ od -Ad -tx <ファイル名>
 
 現在設定されているシェル変数を一覧で表示する．
 
-```sh
+```shell
 $ set
 ```
 
@@ -422,7 +442,7 @@ $ set
 
 シェルスクリプトの構文解析を行う．
 
-```sh
+```shell
 $ set -n
 ```
 
@@ -430,7 +450,7 @@ $ set -n
 
 一連の処理の途中で```0```以外の終了ステータスが出力された場合，全ての処理を終了する．
 
-```sh
+```shell
 $ set -e
 ```
 
@@ -438,7 +458,7 @@ $ set -e
 
 一連の処理をデバッグ情報として出力する．
 
-```sh
+```shell
 $ set -x
 ```
 
@@ -446,7 +466,7 @@ $ set -x
 
 一連の処理の中で，未定義の変数が存在した場合，全ての処理を終了する．
 
-```sh
+```shell
 $ set -u
 ```
 
@@ -454,7 +474,7 @@ $ set -u
 
 パイプライン（```|```）内の一連の処理の途中で，エラーが発生した場合，その終了ステータスを出力し，全ての処理を終了する．
 
-```sh
+```shell
 $ set -o pipefail
 ```
 
@@ -466,7 +486,7 @@ $ set -o pipefail
 
 カレントディレクトリのシンボリックリンクを削除する．
 
-```sh
+```shell
 $ unlink <シンボリックリンク名>
 ```
 
@@ -480,13 +500,13 @@ $ unlink <シンボリックリンク名>
 
 事前に，秘密鍵の権限は「600」にしておく．tty（擬似ターミナル）を使用する場合は，```-T```オプションをつける．
 
-```sh
+```shell
 $ ssh -l <サーバのユーザ名>@<サーバのホスト名> -p 22 -i <秘密鍵のパス> -T
 ```
 
 #### ・-l，-p，<ポート>，-i，-T，-vvv
 
-```sh
+```shell
 # -vvv：ログを出力する
 $ ssh -l <サーバのユーザ名>@<サーバのホスト名> -p 22 -i <秘密鍵のパス> -T -vvv
 ```
@@ -513,7 +533,7 @@ Host <接続名２>
 
 これにより，コマンド実行時の値渡しを省略できる．tty（擬似ターミナル）を使用する場合は，-Tオプションをつける．
 
-```sh
+```shell
 # 秘密鍵の権限は，事前に「600」にしておく
 $ ssh <接続名> -T
 ```
@@ -528,7 +548,7 @@ $ ssh <接続名> -T
 
 稼働しているプロセスの詳細情報を表示するためのユーティリティ．
 
-```sh
+```shell
 # 稼働しているプロセスのうち，詳細情報に「xxx」を含むものを表示する．
 $ ps aux | grep "<検索文字>"
 ```
@@ -545,7 +565,7 @@ $ ps aux | grep "<検索文字>"
 
 デーモンのUnitを一覧で確認する．
 
-```sh
+```shell
 $ systemctl list-unit-files --type=service
 
 crond.service           enabled  # enable：自動起動する
@@ -557,7 +577,7 @@ systemd-reboot.service  static   # enable：他サービス依存
 
 マシン起動時にデーモンが自動起動するように設定する．
 
-```sh
+```shell
 $ systemctl enable <プロセス名>
 
 # 例：Cron，Apache
@@ -568,7 +588,7 @@ $ systemctl enable httpd.service
 
 マシン起動時にデーモンが自動起動しないように設定する．
 
-```sh
+```shell
 $ systemctl disable <プロセス名>
 
 # 例：Cron，Apache
@@ -592,13 +612,13 @@ $ systemctl disable httpd.service
 
 指定したPIDのプロセスを削除する．
 
-```sh
+```shell
 $ kill -9 <プロセスID（PID）>
 ```
 
 指定したコマンドによるプロセスを全て削除する．
 
-```sh
+```shell
 $ sudo pgrep -f <コマンド名> | sudo xargs kill -9
 ```
 
@@ -614,7 +634,7 @@ cronデーモンの動作が定義されたcrontabファイルを操作するた
 
 作成したcronファイルを登録する．cron.dファイルは操作できない．
 
-```sh
+```shell
 # crontab：command run on table
 $ crontab <ファイルパス>
 ```
@@ -631,7 +651,7 @@ cronデーモンを起動するためのプログラム
 
 フォアグラウンドプロセスとしてcronを起動
 
-```sh
+```shell
 $ crond -n
 ```
 
@@ -651,7 +671,7 @@ $ crond -n
 1. あらかじめ，各ディレクトリにcronファイルを配置しておく．
 2. cronとして登録するファイルを作成する．```run-parts```コマンドで，指定した時間に，各cronディレクトリ内のcronファイルを一括で実行するように記述しておく．
 
-```sh
+```shell
 # 設定
 SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -681,46 +701,46 @@ CONTENT_TYPE=text/plain; charset=UTF-8
 
 **＊実装例＊**
 
-```sh
+```shell
 # 毎時・1分
 1 * * * * root run-parts /etc/cron.hourly
 ```
 
-```sh
+```shell
 # 毎日・2時5分
 5 2 * * * root run-parts /etc/cron.daily
 ```
 
-```sh
+```shell
 # 毎週日曜日・2時20分
 20 2 * * 0 root run-parts /etc/cron.weekly
 ```
 
-```sh
+```shell
 # 毎月一日・2時40分
 40 2 1 * * root run-parts /etc/cron.monthly
 ```
 
-```sh
+```shell
 # cron起動時に一度だけ
 @reboot make clean html
 ```
 
 3. このファイルをcrontabコマンドで登録する．cronファイルの実体はないことと，変更した場合は登録し直さなければいけないことに注意する．
 
-```sh
+```shell
 $ crontab <ファイルパス>
 ```
 
 4. 登録されている処理を確認する．
 
-```sh
+```shell
 $ crontab -l
 ```
 
 5. ログに表示されているかを確認．
 
-```sh
+```shell
 $ cd /var/log
 $ tail -f cron
 ```
@@ -738,12 +758,12 @@ $ tail -f cron
 
 ユーザーが，OS上のプロセスを制御できるようにするためのプログラム．
 
-```sh
+```shell
 # インストール
 $ pip3 install supervisor
 ```
 
-```sh
+```shell
 # /etc/supervisor/supervisord.conf に設定ファイルを置いて起動．
 $ /usr/local/bin/supervisord
 ```
@@ -752,7 +772,7 @@ $ /usr/local/bin/supervisord
 
 **＊実装例＊**
 
-```
+```shell
 [supervisord]
 # 実行ユーザ
 user=root
@@ -789,7 +809,7 @@ directory=/var/www/tech-notebook
 
 vim上でファイルを開く．
 
-```sh
+```shell
 $ vim <ファイル名>
 ```
 
@@ -801,7 +821,7 @@ $ vim <ファイル名>
 
 履歴1000件の中からコマンドを検索する．
 
-```sh
+```shell
 $ history | grep <過去のコマンド>
 ```
 
@@ -809,13 +829,11 @@ $ history | grep <過去のコマンド>
 
 ### tr
 
-```sh
+```shell
 #!/bin/bash
 
-cat ./src.txt | tr '\n' ',' > ./dst.txt
+cat ./src.txt | tr "\n" "," > ./dst.txt
 ```
-
-#### 
 
 <br>
 
@@ -828,7 +846,7 @@ cat ./src.txt | tr '\n' ',' > ./dst.txt
 
 基本的な手順としては，シェル変数を設定し，これを環境変数に追加する．
 
-```sh
+```shell
 # シェル変数を設定
 $ PATH=$PATH:<バイナリファイルへのあるディレクトリへの絶対パス>
 # 環境変数に追加
@@ -837,13 +855,13 @@ $ export PATH
 
 シェル変数の設定と，環境変数への追加は，以下の通り同時に記述できる．
 
-```sh
+```shell
 # 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを追加．
 # バイナリファイルを入力すると，絶対パス
 $ export PATH=$PATH:<バイナリファイルへのあるディレクトリへの絶対パス>
 ```
 
-```sh
+```shell
 # 不要なパスを削除したい場合はこちら
 # 環状変数として，指定したバイナリファイル（bin）のあるディレクトリへの絶対パスを上書き
 $ export PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -854,7 +872,7 @@ $ export PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 exportの結果は，OSの再起動で初期化されてしまう．そのため，再起動時に自動的に実行されるよう，```/home/centos/.bashrc```に追記しておく．
 
-```sh
+```shell
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -868,7 +886,7 @@ PATH=$PATH:/usr/local/sbin/xxxx
 
 export PATH
 
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# Uncomment the following line if you don"t like systemctl"s auto-paging feature:
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
@@ -882,7 +900,7 @@ export PATH
 
 全ての環境変数を表示する．
 
-```sh
+```shell
 $ printenv
 ```
 
@@ -892,7 +910,7 @@ $ printenv
 
 #### ・set-timezone
 
-```sh
+```shell
 # タイムゾーンを日本時間に変更
 $ timedatectl set-timezone Asia/Tokyo
 
@@ -911,7 +929,7 @@ $ date
 
 各プロセスの稼働情報（ユーザ名，CPU，メモリ）を確認する． CPU使用率昇順に並べる
 
-```sh
+```shell
 $ top
 ```
 
@@ -919,7 +937,7 @@ $ top
 
 メモリ使用率昇順に並べる．
 
-```sh
+```shell
 $ top -a
 ```
 
@@ -931,7 +949,7 @@ $ top -a
 
 物理メモリ，スワップ領域，の使用状況をメガバイトで確認する．
 
-```sh
+```shell
 # m：Mega Bytes
 # t: -total
 $ free -m -total
@@ -945,7 +963,7 @@ $ free -m -total
 
 ストレージの使用状況をメガバイトで確認する．
 
-```sh
+```shell
 # h：--human-readable
 # t: -total
 $ df -h -m -t
@@ -959,24 +977,24 @@ $ df -h -m -t
 
 物理メモリのアドレス空間管理の方法の一つ．ハードウェアのノートを参照．
 
-![スワッピング方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スワッピング方式.png)
+![スワッピング方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スワッピング方式.png)
 
 #### ・スワップ領域の作成方法
 
-```sh
+```shell
 # 指定したディレクトリをスワップ領域として使用
 $ mkswap /swap_volume
 ```
-```sh
+```shell
 # スワップ領域を有効化
 # 優先度のプログラムが，メモリからディレクトリに，一時的に退避されるようになる
 $ swapon /swap_volume
 ```
-```sh
+```shell
 # スワップ領域の使用状況を確認
 $ swapon -s
 ```
-```sh
+```shell
 # スワップ領域を無効化
 $ swapoff /swap_volume
 ```
@@ -991,7 +1009,7 @@ $ swapoff /swap_volume
 
 様々なレベルを対象にした管理ユーティリティがある．
 
-![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ライブラリ，パッケージ，モジュールの違い.png)
+![ライブラリ，パッケージ，モジュールの違い](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ライブラリ，パッケージ，モジュールの違い.png)
 
 #### ・ライブラリ管理ユーティリティ
 
@@ -1030,11 +1048,11 @@ $ swapoff /swap_volume
 
 指定したライブラリをインストールする．
 
-```sh
+```shell
 # /usr/local 以下にインストール
 $ pip install --user <ライブラリ名>
 ```
-```sh
+```shell
 # requirements.txt を元にライブラリをインストール
 $ pip install -r requirements.txt
 
@@ -1046,7 +1064,7 @@ pip install -r requirements.txt　--prefix=/usr/local
 
 pipでインストールされたパッケージを元に，要件ファイルを作成する．
 
-```sh
+```shell
 $ pip freeze > requirements.txt
 ```
 
@@ -1054,7 +1072,7 @@ $ pip freeze > requirements.txt
 
 pipでインストールしたパッケージ情報を表示する．
 
-```sh
+```shell
 $ pip show sphinx
 
 Name: Sphinx
@@ -1078,7 +1096,7 @@ Required-by: sphinxcontrib.sqltable, sphinx-rtd-theme, recommonmark
 
 #### ・入手方法
 
-```sh
+```shell
 # リポジトリの作成
 $ curl -sL https://rpm.nodesource.com/setup_<バージョン>.x | bash -
 
@@ -1090,7 +1108,7 @@ $ yum install nodejs
 
 package.jsonを生成する．
 
-```sh
+```shell
 $ npm init
 ```
 
@@ -1098,12 +1116,12 @@ $ npm init
 
 ディレクトリにパッケージをインストール
 
-```sh
+```shell
 # ローカルディレクトリにパッケージをインストール
 $ npm install <パッケージ名>
 ```
 
-```sh
+```shell
 # グローバルディレクトリにインストール（あまり使わない）
 $ npm install -g <パッケージ名>
 ```
@@ -1118,13 +1136,13 @@ $ npm install -g <パッケージ名>
 
 パッケージをインストールまたは更新する．一度に複数のオプションを組み合わせて記述する．インストール時にパッケージ間の依存関係を解決できないので注意．
 
-```sh
+```shell
 # パッケージをインストール
 # -ivh：--install -v --hash 
 $ rpm -ivh <パッケージ名>
 ```
 
-```sh
+```shell
 # パッケージを更新
 # -Uvh：--upgrade -v --hash 
 $ rpm -Uvh <パッケージ名>
@@ -1134,7 +1152,7 @@ $ rpm -Uvh <パッケージ名>
 
 インストールされた全てのパッケージの中で，指定した文字を名前に含むものを表示する．
 
-```sh
+```shell
 # -qa：
 $ rpm -qa | grep <検索文字>
 ```
@@ -1143,7 +1161,7 @@ $ rpm -qa | grep <検索文字>
 
 指定したパッケージ名で，関連する全てのファイルの場所を表示する．
 
-```sh
+```shell
 # -ql：
 $ rpm -ql <パッケージ名>
 ```
@@ -1152,7 +1170,7 @@ $ rpm -ql <パッケージ名>
 
 指定したパッケージ名で，インストール日などの情報を表示する．
 
-```sh
+```shell
 # -qi：
 $ rpm -qi <パッケージ名>
 ```
@@ -1165,7 +1183,7 @@ $ rpm -qi <パッケージ名>
 
 rpmと同様の使い方ができる．また，インストール時にパッケージ間の依存関係を解決できる．
 
-```sh
+```shell
 # パッケージをインストール
 $ yum install -y <パッケージ名>
 
@@ -1177,7 +1195,7 @@ $ yum reinstall -y <パッケージ名>
 
 インストールされた全てのパッケージを表示する．
 
-```sh
+```shell
 # 指定した文字を名前に含むものを表示．
 $ yum list | grep <検索文字>
 ```
@@ -1188,7 +1206,7 @@ CentOS公式リポジトリはパッケージのバージョンが古いこと�
 
 1. CentOSのEPELリポジトリをインストール．インストール時の設定ファイルは，/etc/yu.repos.d/* に配置される．
 
-```sh
+```shell
 # CentOS7系の場合
 $ yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
@@ -1200,7 +1218,7 @@ $ yum install -y epel-release でもよい
 ```
 2. CentOSのRemiリポジトリをインストール．RemiバージョンはCentOSバージョンを要確認．インストール時の設定ファイルは，```/etc/yu.repos.d/*```に配置される．
 
-```sh
+```shell
 # CentOS7系の場合
 $ yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
@@ -1210,7 +1228,7 @@ $ dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
 4. 設定ファイルへは，インストール先のリンクなどが自動的に書き込まれる．
 
-```
+```shell
 [epel]
 name=Extra Packages for Enterprise Linux 6 - $basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
@@ -1241,7 +1259,7 @@ gpgcheck=1
 
 5. Remiリポジトリの有効化オプションを永続的に使用できるようにする．
 
-```sh
+```shell
 # CentOS7の場合
 $ yum install -y yum-utils
 # 永続的に有効化
@@ -1254,7 +1272,7 @@ $ dnf module enable php:remi-7.4
 
 6. remiリポジトリを指定して，php，php-mbstring，php-mcryptをインストールする．Remiリポジトリを経由してインストールしたソフトウェアは```/opt/remi/*```に配置される．
 
-```sh
+```shell
 # CentOS7の場合
 # 一時的に有効化できるオプションを利用して，明示的にremiを指定
 $ yum install --enablerepo=remi,remi-php74 -y php php-mbstring php-mcrypt
@@ -1267,7 +1285,7 @@ $ dnf install -y php php-mbstring php-mcrypt
 
 7. 再インストールする時は，reinstallとすること．
 
-```sh
+```shell
 # CentOS7の場合
 # 一時的に有効化できるオプションを利用して，明示的にremiを指定
 $ yum reinstall --enablerepo=remi,remi-php74 -y php php-mbstring php-mcrypt
@@ -1286,7 +1304,7 @@ $ dnf reinstall -y php php-mbstring php-mcrypt
 
 #### ・which
 
-```sh
+```shell
 # pythonのインストールディレクトリを確認
 $ pyenv which python
 /.pyenv/versions/3.8.0/bin/python
@@ -1328,13 +1346,13 @@ PHP，Ruby，JavaScript，Python，など．インタプリタという言語プ
 
 Scala，Groovy，Kotlin，など．Java仮想マシンによって，中間言語方式で翻訳される．
 
-![コンパイル型とインタプリタ型言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイル型とインタプリタ型言語.jpg)
+![コンパイル型とインタプリタ型言語](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/コンパイル型とインタプリタ型言語.jpg)
 
 <br>
 
 ### 実行のエントリポイント
 
-#### ・PHPの場合
+#### ・動的型付け型言語の場合
 
 動的型付け言語では，エントリポイントが指定プログラムの先頭行と決まっており，そこから枝分かれ状に処理が実行されていく．PHPでは，```index.php```ファイルがエントリポイントと決められている．その他のファイルにはエントリポイントは存在しない．
 
@@ -1346,34 +1364,36 @@ use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 // まず最初に，bootstrap.phpを読み込む．
-require dirname(__DIR__) . '/config/bootstrap.php';
+require dirname(__DIR__) . "/config/bootstrap.php";
 
-if ($_SERVER['APP_DEBUG']) {
+if ($_SERVER["APP_DEBUG"]) {
     umask(0000);
     
     Debug::enable();
 }
 
-if ($trustedProxies = $_SERVER['TRUSTED_PROXIES']?? $_ENV['TRUSTED_PROXIES'] ?? false) {
-    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+if ($trustedProxies = $_SERVER["TRUSTED_PROXIES"]?? $_ENV["TRUSTED_PROXIES"] ?? false) {
+    Request::setTrustedProxies(explode(",", $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
 }
 
-if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
+if ($trustedHosts = $_SERVER["TRUSTED_HOSTS"] ?? $_ENV["TRUSTED_HOSTS"] ?? false) {
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
+$kernel = new Kernel($_SERVER["APP_ENV"], (bool)$_SERVER["APP_DEBUG"]);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
 ```
 
-#### ・Javaの場合
+#### ・静的型付け型言語の場合
 
 静的型付け言語では，エントリポイントが決まっておらず，自身で定義する必要がある．Javaでは，「```public static void main(String[] args)```メソッドを定義した場所がエントリポイントになる．
 
 ```java
+import java.util.*;
+
 public class Age
 {
     // エントリポイントとなるメソッド
@@ -1400,23 +1420,23 @@ public class Age
 
 コードを，バイナリ形式のオブジェクトコードとして，まとめて機械語に翻訳した後，CPUに対して命令が実行される．
 
-![コンパイラ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/コンパイラ言語.png)
+![コンパイラ言語](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/コンパイラ言語.png)
 
 #### ・ビルド（コンパイル＋リンク）
 
-コンパイルによって，ソースコードは機械語からなるオブジェクトコードに変換される．その後，各オブジェクトコードはリンクされ．exeファイルとなる．この一連のプロセスを『ビルド』という．
+コンパイルによって，ソースコードは機械語からなるオブジェクトコードに変換される．その後，各オブジェクトコードはリンクされ．exeファイルとなる．この一連のプロセスを『ビルド』という．また，ビルドによって生成されたファイルを『アーティファクト（成果物）』という．
 
-![ビルドとコンパイル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ビルドとコンパイル.jpg)
+![ビルドとコンパイル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ビルドとコンパイル.jpg)
 
 #### ・仕組み（じ，こ，い，さい，せい，リンク，実行）
 
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
    ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
 
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
+   ![構文規則と説明](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -1449,7 +1469,7 @@ public class Age
 
 #### 1. パッケージをインストール
 
-```sh
+```shell
 # パッケージを公式からインストールと解答
 $ wget <パッケージのリンク>
 $ tar <パッケージのフォルダ名>
@@ -1463,7 +1483,7 @@ $ cd build
 
 configureファイルを元に，ルールが定義されたMakefileを作成する．
 
-```sh
+```shell
 # configureへのパスに注意．
 $ ../configure --prefix="<ソースコードのインストール先のパス>"
 ```
@@ -1472,14 +1492,14 @@ $ ../configure --prefix="<ソースコードのインストール先のパス>"
 
 パッケージのソースコードからexeファイルをビルドする．
 
-```sh
+```shell
 # -j で使用するコア数を宣言し，処理の速度を上げられる．
 $ make -j4
 ```
 
 任意で，exeファイルのテストを行える．
 
-```sh
+```shell
 $ make check
 ```
 
@@ -1487,14 +1507,14 @@ $ make check
 
 生成されたソースコードのファイルを，指定したディレクトリにコピー．
 
-```sh
+```shell
 # installと命令するが，実際はコピー．sudoを付ける．
 $ sudo make install
 ```
 
 元となったソースコードやオブジェクトコードを削除．
 
-```sh
+```shell
 $ make clean
 ```
 
@@ -1508,42 +1528,42 @@ $ make clean
 
 コードを，一行ずつ機械語に変換し，その都度，CPUに対して命令が実行される．
 
-![インタプリタ言語](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インタプリタ言語.png)
+![インタプリタ言語](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インタプリタ言語.png)
 
 コマンドラインでそのまま入力し，機械語翻訳と実行を行うことができる．
 
-```sh
+```shell
 #===========
 # PHPの場合
 #===========
 
 # PHPなので，処理終わりにセミコロンが必要
-$ php -r '<何らかの処理>'
+$ php -r "<何らかの処理>"
 
 # Hello Worldを出力
-$ php -r 'echo "Hello World";'
+$ php -r "echo "Hello World";"
 
 # phpinfoを出力
-$ php -r 'phpinfo();'
+$ php -r "phpinfo();"
 
 # （おまけ）phpinfoの出力をテキストファイルに保存
-$ php -r 'phpinfo();' > phpinfo.txt
+$ php -r "phpinfo();" > phpinfo.txt
 ```
 
-```sh
+```shell
 # php.iniの読み込み状況を出力
 $ php --ini
 ```
 
 #### ・仕組み（じ，こ，い，実行）
 
-![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
+![字句解析，構文解析，意味解析，最適化](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/字句解析，構文解析，意味解析，最適化.png)
 
 1. **Lexical analysis（字句解析）**
 
    ソースコードの文字列を言語の最小単位（トークン）の列に分解． 以下に，トークンの分類方法の例を示す．
 
-   ![構文規則と説明](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/構文規則と説明.png)
+   ![構文規則と説明](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/構文規則と説明.png)
 
 2. **Syntax analysis（構文解析）**
 
@@ -1575,19 +1595,19 @@ Webサーバを仮想的に構築する時，PHPの言語プロセッサが同�
 2. JVM：Java Virtual Machine内で，インタプリタによって，クラスデータを機械語に翻訳する．
 3. 結果的に，OS（制御プログラム？）に依存せずに，命令を実行できる．（C言語）
 
-![Javaによる言語処理_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_1.png)
+![Javaによる言語処理_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Javaによる言語処理_1.png)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/矢印_80x82.jpg)
 
-![Javaによる言語処理_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_2.png)
+![Javaによる言語処理_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Javaによる言語処理_2.png)
 
-![矢印_80x82](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/矢印_80x82.jpg)
+![矢印_80x82](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/矢印_80x82.jpg)
 
-![Javaによる言語処理_3](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Javaによる言語処理_3.png)
+![Javaによる言語処理_3](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Javaによる言語処理_3.png)
 
 #### ・C言語とJavaのOSへの依存度比較
 
-![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CとJavaのOSへの依存度比較.png)
+![CとJavaのOSへの依存度比較](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/CとJavaのOSへの依存度比較.png)
 
 - JVM言語
 
@@ -1611,7 +1631,7 @@ Linuxに標準で導入されているミドルウェア．ただし，アプリ
 
 1. SELinuxの状態を確認
 
-```sh
+```shell
 $ getenforce
 
 # 有効の場合
@@ -1620,14 +1640,14 @@ Enforcing
 
 2. ```/etc/sellnux/config```を修正する．
 
-```config
+```shell
 # This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
 #     enforcing - SELinux security policy is enforced.
 #     permissive - SELinux prints warnings instead of enforcing.
 #     disabled - No SELinux policy is loaded.
 
-SELINUX=disabled <---- disabledに変更
+SELINUX=disabled # <---- disabledに変更
 
 # SELINUXTYPE= can take one of these three values:
 #     targeted - Targeted processes are protected,
@@ -1646,7 +1666,7 @@ OSを再起動しないと設定が反映されない．
 
 クライアントは，マスタスケジュールに対して，ジョブを実行するための命令を与える．
 
-![ジョブ管理とタスク管理の概要](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブ管理とタスク管理の概要.jpg)
+![ジョブ管理とタスク管理の概要](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ジョブ管理とタスク管理の概要.jpg)
 
 <br>
 
@@ -1680,13 +1700,13 @@ OSを再起動しないと設定が反映されない．
 
 Initiatorによって，ジョブはジョブステップに分解される．
 
-![ジョブからジョブステップへの分解](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブからジョブステップへの分解.png)
+![ジョブからジョブステップへの分解](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ジョブからジョブステップへの分解.png)
 
 <br>
 
 ### タスク管理
 
-![ジョブステップからタスクの生成](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ジョブステップからタスクの生成.png)
+![ジョブステップからタスクの生成](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ジョブステップからタスクの生成.png)
 
 タスクとは，スレッドに似たような，単一のプロセスのこと．Initiatorによるジョブステップから，タスク管理によって，タスクが生成される．タスクが生成されると実行可能状態になる．ディスパッチャによって実行可能状態から実行状態になる．
 
@@ -1698,32 +1718,32 @@ Initiatorによって，ジョブはジョブステップに分解される．
 
 待ち行列に登録されたタスクから順に，ディスパッチしていく方式．
 
-![到着順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/到着順方式_1.png)
+![到着順方式_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/到着順方式_1.png)
 
 **＊具体例＊**
 
 以下の様に，タスクがCPUに割り当てられていく．
 
-![到着順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/到着順方式_2.png)
+![到着順方式_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/到着順方式_2.png)
 
 #### ・Round robin 方式
 
 Round robinは，『総当たり』の意味．一定時間（タイムクウォンタム）ごとに，実行状態にあるタスクが強制的に待ち行列に登録される．交代するように，他のタスクがディスパッチされる．
 
-![ラウンドロビン方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ラウンドロビン方式.png)
+![ラウンドロビン方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ラウンドロビン方式.png)
 
 **＊具体例＊**
 
 生成されたタスクの到着時刻と処理時間は以下のとおりである．強制的なディスパッチは，『20秒』ごとに起こるとする．
 
-![優先順方式_1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/優先順方式_1.png)
+![優先順方式_1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/優先順方式_1.png)
 
 1. タスクAが0秒に待ち行列へ登録される．
 2. 20秒間，タスクAは実行状態へ割り当てられる．
 3. 20秒時点で，タスクAは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクBは，実行可能状態から実行状態にディスパッチされる．
 4. 40秒時点で，タスクCは実行状態から待ち行列に追加される．同時に，待ち行列の先頭にいるタスクAは，実行可能状態から実行状態にディスパッチされる．
 
-![優先順方式_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/優先順方式_2.png)
+![優先順方式_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/優先順方式_2.png)
 
 <br>
 
@@ -1731,5 +1751,5 @@ Round robinは，『総当たり』の意味．一定時間（タイムクウォ
 
 アプリケーションから低速な周辺機器へデータを出力する時，まず，CPUはスプーラにデータを出力する．Spoolerは，全てのデータをまとめて出力するのではなく，一時的に補助記憶装置（Spool）にためておきながら，少しずつ出力する（Spooling）．
 
-![スプーリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スプーリング.jpg)
+![スプーリング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スプーリング.jpg)
 

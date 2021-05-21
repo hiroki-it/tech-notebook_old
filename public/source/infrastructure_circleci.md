@@ -36,7 +36,7 @@ workflows:
 
 ホストOS側で，以下のコマンドを実行する．
 
-```bash
+```shell
 $ circleci config validate
 
 # 以下の文章が表示されれば問題ない．
@@ -47,7 +47,7 @@ $ circleci config validate
 
 設定ファイルを実行した時の処理を展開し，ファイルに出力できる
 
-```bash
+```shell
 $ circleci config process .circleci/config.yml > .circleci/process.yml
 ```
 
@@ -55,7 +55,7 @@ $ circleci config process .circleci/config.yml > .circleci/process.yml
 
 コマンドにより，テストに必要なDockerイメージをpullし，コンテナを構築する．続いて，コンテナ内でCircleCIを実行する．バージョン2.1以降では，事前に，設定ファイルの処理を展開しておく必要がある．
 
-```bash
+```shell
 # バージョン2.1の設定ファイルの処理を展開
 $ circleci config process .circleci/config.yml > .circleci/process.yml
 
@@ -67,7 +67,7 @@ $ circleci local execute -c .circleci/process.yml --job <job名>
 
 CircleCIコンテナにssh接続し，コンテナ内で生成されたファイルを確認することができる．
 
-```bash
+```shell
 $ <CircleCIから提示されたコマンドをコピペ> -i ~/.ssh/<秘密鍵名>
 ```
 
@@ -85,7 +85,7 @@ $ <CircleCIから提示されたコマンドをコピペ> -i ~/.ssh/<秘密鍵�
 
 4. 結果を通知することも可能．
 
-![継続的インテグレーション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/継続的インテグレーション.png)
+![継続的インテグレーション](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/継続的インテグレーション.png)
 
 ### PHPStanの自動実行
 
@@ -445,7 +445,7 @@ workflows:
 
 #### ・jobの粒度
 
-![CICDパイプライン](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CICDパイプライン.png)
+![CICDパイプライン](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/CICDパイプライン.png)
 
 | 粒度   | 説明                                                         | 備考                                                       |
 | ------ | ------------------------------------------------------------ | ---------------------------------------------------------- |
@@ -465,7 +465,7 @@ jobを実行する仮想環境を選択できる．
 
 Dockerコンテナを実行環境として設定する．これを選択したうえで，Dockerイメージのビルド（Docker composeを含む）を実行する場合，実行環境Dockerコンテナの中でDockerコンテナを構築するという入れ子構造になる．これは非推奨のため，```setup_remote_docker```を使用して，実行環境Dockerコンテナとは別の環境で```job```を行う必要がある．```machine```タイプを選んだ場合，```setup_remote_docker```は不要である．ただし，ボリュームマウントを使用できなくなるので注意する．また，DockerfileのCOPYコマンドが機能しなくなる．
 
-![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/docker_executor.png)
+![machine_executor](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/docker_executor.png)
 
 **＊実装例＊**
 
@@ -496,7 +496,7 @@ jobs:
 
 Linuxサーバを実行環境として設定する．
 
-![machine_executor](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/machine_executor.png)
+![machine_executor](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/machine_executor.png)
 
 **＊実装例＊**
 
@@ -568,9 +568,9 @@ workflows:
 
 #### ・restore_cache，save_cache
 
-![CircleCIキャッシュ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/CircleCIキャッシュ.png)
+![CircleCIキャッシュ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/CircleCIキャッシュ.png)
 
-ビルドの成果物をキャッシュとして保存する．この機能を使用しない場合，例えば，CircleCIコンテナで```composer install```を実行すると，毎回のWorkflowで同じライブラリがインストールされる．しかし，Workflowのたびに，ライブラリをインストールするのは非効率である．そこで，```composer.json```ファイルの実装が変更されない限り，前回のWorkflowのビルド時に，vendorディレクトリに配置された成果物を再利用するようにする．この機能は，複数のWorkflowの間だけでなく，一つのWorkflowの中でも利用できる．
+ビルドのアーティファクトをキャッシュとして保存する．この機能を使用しない場合，例えば，CircleCIコンテナで```composer install```を実行すると，毎回のWorkflowで同じライブラリがインストールされる．しかし，Workflowのたびに，ライブラリをインストールするのは非効率である．そこで，```composer.json```ファイルの実装が変更されない限り，前回のWorkflowのビルド時に，vendorディレクトリに配置されたアーティファクトを再利用するようにする．この機能は，複数のWorkflowの間だけでなく，一つのWorkflowの中でも利用できる．
 
 **＊実装例＊**
 
@@ -672,7 +672,7 @@ jobs:
 
 #### ・persist_to_workspace，attach_workspace
 
-![workflow_workspace_cache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/workflow_workspace_cache.png)
+![workflow_workspace_cache](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/workflow_workspace_cache.png)
 
 CircleCIでは，jobごとに異なる仮想環境が構築されるため，他の```job```で使用された一時ファイルを再利用したい場合に，これを使う．
 
@@ -718,7 +718,7 @@ jobs:
   jobB:
     steps:
       - attach_workspace:
-        at: .
+         at: .
 ```
 
 <br>
@@ -922,16 +922,18 @@ workflows:
 
 <br>
 
-### branches
+### filters
 
-#### ・branchesとは
+#### ・filtersとは
 
 コミットされた時に```job```が発火するブランチ名，あるいは発火しないブランチ名，を設定する．正規表現で実装する必要がある．
 
-| よくあるパターン  | 説明                                    |
-| ----------------- | --------------------------------------- |
-| ```/.*/```        | 全てのブランチを明示的に指定            |
-| ```/feature.*/``` | 「feature」と名前のついたブランチを指定 |
+#### ・```only```，```ignore```
+
+| よくあるパターン    | 説明                                     |
+| ------------------- | ---------------------------------------- |
+| ```/.*/```          | 全てのブランチを明示的に指定             |
+| ```/feature\/.*/``` | 「feature/」と名前のついたブランチを指定 |
 
 **＊実装例＊**
 
@@ -941,9 +943,10 @@ workflows:
   build:
     jobs:
       - example:
-          branches:
-            only:
-              - /.*/
+          filters:      
+            branches:
+              only:
+                - /.*/
 ```
 
 ```yaml
@@ -952,9 +955,27 @@ workflows:
   build:
     jobs:
       - example:
-          branches:
-            ignore:
-              - /feature.*/
+          filters:      
+            branches:
+              ignore:
+                - /feature\/.*/
+```
+
+#### ・tags
+
+タグをつけたコミットに対して発火する．```ignore```キーで全てのブランチを指定することにより，マージによる発火を防ぐことができる．
+
+```yaml
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - example:
+          filters:
+            branches:
+               ignore: /.*/
+            tags:
+               only: /release\/.*/
 ```
 
 <br>
@@ -975,9 +996,9 @@ workflows:
 
 #### ・commandsにおける環境変数の出力方法
 
-環境変数を```echo```の引数に指定する．パイプラインで```base64 --decode```を実行することにより，暗号化した状態で環境変数を渡すことができる．ここで出力している環境変数は，以下のノートを参考にせよ
+環境変数を```echo```の引数に指定する．あらかじめエンコードされた環境変数を管理しておき，```base64 --decode```を実行して出力すると，安全に環境変数を管理できる．ここで出力している環境変数は，以下のノートを参考にせよ
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_framework_vuejs.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/frontend_framework_vuejs.html
 
 ```yaml
 jobs:
@@ -1038,8 +1059,8 @@ jobs:
       - run:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
-            echo 'export PATH=/path/to/foo/bin:$PATH' >> $BASH_ENV
-            echo 'export VERY_IMPORTANT=$(cat important_value)' >> $BASH_ENV
+            echo "export PATH=/path/to/foo/bin:$PATH" >> $BASH_ENV
+            echo "export VERY_IMPORTANT=$(cat important_value)" >> $BASH_ENV
             source $BASH_ENV
 ```
 
@@ -1061,7 +1082,7 @@ jobs:
 
 #### ・Projectレベル
 
-Containerレベルより参照範囲が大きく，プロジェクト内，すなわちリポジトリ内のみで参照できる．Environment Variables機能を使用する．
+Containerレベルより参照範囲が大きく，プロジェクト内，すなわちリポジトリ内のみで参照できる．Environment Variables機能を使用する．環境変数の値が４文字未満，または環境変数の値が `true`、`True`、`false`、`False` のいずれかの場合，CircleCIの処理で出力されるプロジェクトの環境変数はマスキングされないため，注意が必要である．
 
 
 #### ・Grobalレベル
@@ -1119,7 +1140,7 @@ CircleCIでDocker Composeを使用する場合に必要である．Docker Compos
 
 **＊実装例＊**
 
-LaravelコンテナとMySQLコンテナの場合を示す．
+LaravelコンテナとMySQLコンテナの場合を示す．コンテナ内に対してコマンドを実行する時のディレクトリは，Dockerfileの```WORKDIR```によって決まるので注意する．
 
 ```yaml
 version: 2.1
@@ -1158,6 +1179,10 @@ jobs:
           command: |
             cp .env.docker.example .env.docker
       - run:
+          name: Docker config
+          command: |
+            docker-compose config
+      - run:
           name: Docker compose up
           command: |
             set -xe
@@ -1168,7 +1193,7 @@ jobs:
       - run:
           name: Composer install
           command: |
-            docker exec -it laravel-container composer install -n --prefer-dist
+            docker-compose exec laravel-container composer install -n --prefer-dist
       - save_vendor
       # Dockerizeをインストール
       - docker/install-dockerize:
@@ -1182,17 +1207,17 @@ jobs:
       - run:
           name: Run artisan migration
           command: |
-            docker exec -it laravel-container php artisan migrate --force
+            docker-compose exec laravel-container php artisan migrate --force
       # Dockerコンテナに対してPHP-Unitコマンドを送信
       - run:
           name: Run unit test
           command: |
-            docker exec -it laravel-container ./vendor/bin/phpunit
+            dockercompose exec laravel-container ./vendor/bin/phpunit
       # Dockerコンテナに対してPHP-Stanコマンドを送信  
       - run:
           name: Run static test
           command: |
-            docker exec -it laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
+            docker-compose exec laravel-container ./vendor/bin/phpstan analyse --memory-limit=512M
 ```
 
 <br>
@@ -1203,7 +1228,7 @@ jobs:
 
 CircleCIでDockerイメージをビルドした後，各イメージレイヤーをDLCボリュームにキャッシュする．そして，次回以降のビルド時に，差分がないイメージレイヤーをDLCボリュームからプルして再利用する．これにより，Dockerイメージのビルド時間を短縮できる．
 
-![DockerLayerCache](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DockerLayerCache.png)
+![DockerLayerCache](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DockerLayerCache.png)
 
 #### ・使用例
 
@@ -1419,9 +1444,9 @@ jobs:
     no-output-timeout: 20m
     # projectを作業ディレクトリとした時の相対パス
     dockerfile: ./infra/docker/Dockerfile
-    path: '.'
+    path: "."
     profile-name: myProfileName
-    repo: '{$SERVICE}-repository'
+    repo: "{$SERVICE}-repository"
     # CircleCIのハッシュ値によるバージョニング
     tag: $CIRCLE_SHA1
     # job内にて，attach_workspaceステップを実行．
@@ -1451,13 +1476,13 @@ jobs:
   aws-ecs/update-service:
     name: ecs_update_service_by_rolling_update
     # タスク定義名を指定
-    family: '${SERVICE}-ecs-task-definition'
+    family: "${SERVICE}-ecs-task-definition"
     # クラスター名を指定
-    cluster-name: '${SERVICE}-cluster'
+    cluster-name: "${SERVICE}-cluster"
     # サービス名を指定
-    service-name: '${SERVICE}-service'
+    service-name: "${SERVICE}-service"
     # コンテナ名とイメージタグを指定．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
-    container-image-name-updates: 'container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}'
+    container-image-name-updates: "container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}"
     # サービス更新後のタスク監視
     verify-revision-is-deployed: true
           
@@ -1501,11 +1526,11 @@ jobs:
   aws-ecs/update-service:
     name: ecs_update_service_by_code_deploy
     # タスク定義名を指定
-    family: '${SERVICE}-ecs-task-definition'
+    family: "${SERVICE}-ecs-task-definition"
     # クラスター名を指定
-    cluster-name: '${SERVICE}-cluster'
+    cluster-name: "${SERVICE}-cluster"
     # サービス名を指定
-    service-name: '${SERVICE}-service'
+    service-name: "${SERVICE}-service"
     # CodeDeployにおけるデプロイの作成を設定
     deployment-controller: CODE_DEPLOY
     codedeploy-application-name: $SERVICE
@@ -1513,7 +1538,7 @@ jobs:
     codedeploy-load-balanced-container-name: www-container
     codedeploy-load-balanced-container-port: 80
     # コンテナ名とイメージタグを指定．イメージはCircleCIのハッシュ値でタグ付けしているので必須．
-    container-image-name-updates: 'container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}'
+    container-image-name-updates: "container=laravel,tag=${CIRCLE_SHA1},container=nginx,tag=${CIRCLE_SHA1}"
     # サービス更新後のタスク監視
     verify-revision-is-deployed: true
           
@@ -1665,7 +1690,7 @@ orbs:
 
 commands:
   # 他のジョブ内で使用できるようにcommandとして定義
-  slack_notify:
+  notify_of_failure:
     steps:
       - slack/notify:
           event: fail
@@ -1688,7 +1713,7 @@ workflows:
                 - develop
           # 失敗時に通知
           post-steps:
-            - slack_notify:
+            - notify_of_failure:
             
   # 本番環境にデプロイ                
   main:
@@ -1701,6 +1726,6 @@ workflows:
                 - main
           # 失敗時に通知
           post-steps:
-            - slack_notify:
+            - notify_of_failure:
 ```
 

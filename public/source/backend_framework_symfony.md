@@ -8,7 +8,7 @@
 
 ## 01-02. Symfonyのディレクトリ構成
 
-```
+```shell
 Symfony
 ├── config　#設定ファイル（カーネルのためのルート定義ファイル等）
 │
@@ -64,7 +64,7 @@ Symfony
 
 ### Console
 
-```PHP
+```php
 <?php
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\LockableTrait;
@@ -77,7 +77,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 ### HttpFoundation
 
-```PHP
+```php
 <?php
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,7 +91,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 ### HttpKernel
 
-```PHP
+```php
 <?php
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -103,7 +103,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 ### Pimple
 
-```PHP
+```php
 <?php
 use Pimple\ConfigSupport;
 use Pimple\Container;
@@ -115,7 +115,7 @@ use Pimple\ServiceProviderInterface;
 
 ### Security
 
-```PHP
+```php
 <?php
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -126,7 +126,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 ### EventDispatcher
 
-```PHP
+```php
 <?php
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -137,7 +137,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 ### Routing
 
-```PHP
+```php
 <?php
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 ```
@@ -146,7 +146,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 ### Cache
 
-```PHP
+```php
 <?php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 ```
@@ -164,7 +164,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputArgument;
@@ -177,13 +177,13 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
     protected function configure()
     {
         // コマンド名
-        $this->setName('create:example');
+        $this->setName("create:example");
 
         // コマンド名の後に追加したい引数名
         $this->addArgument(
-          'year-month',
+          "year-month",
           InputArgument::REQUIRED,
-          '処理年月を設定してください．'
+          "処理年月を設定してください．"
         );
     }
   
@@ -193,8 +193,8 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
         try {
                 // 日時フォーマットからCarbonインスタンスを作成する．
                 $year_month = Carbon::createFromFormat(
-                  'Y-m',
-                  $input->getArgument('year-month')
+                  "Y-m",
+                  $input->getArgument("year-month")
                 );
         
         } catch (\Exception $e) {
@@ -210,7 +210,7 @@ class createExampleCommand extends \Symfony\Component\Console\Command\Command
 
 #### ・```for```
 
-```sh
+```shell
 # txtファイルを変数fに繰り返し格納し，処理を行う．
 for f in *txt do echo $f; done;
 ```
@@ -221,12 +221,12 @@ for f in *txt do echo $f; done;
 
 10秒ごとに，コマンドを自動実行する．
 
-```sh
+```shell
 # 10秒ごとに，コマンド処理を実行．
 for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 ```
 
-```sh
+```shell
 # 15時ごとに，コマンド処理を実行．
 0 15 * * * * create:example;
 ```
@@ -262,12 +262,12 @@ for f in `seq 0 10 59`; do (sleep {$f}; create:example) & done;
 
 **【app.phpの実装例】**
 
-```PHP
+```php
 <?php
 use Symfony\Component\HttpFoundation\Request;
 
 
-$kernel = new AppKernel('dev', true);
+$kernel = new AppKernel("dev", true);
 
 if (PHP_VERSION_ID < 70000) {
     $kernel->loadClassCache();
@@ -285,7 +285,7 @@ $kernel->terminate($request, $response);
 
 上記の```handle()```が定義されているファイル．ここで定義された```handle()```が，C/Aへのルートの特定，特定されたC/Aの実行，テンプレートのレンダリングを行う．
 
-```PHP
+```php
 <?php
 public function handle
 (
@@ -318,7 +318,7 @@ public function handle
 1. Ajaxによるリクエストの場合，JSON型データをレスポンスし，かつページレンダリング．
 2. Ajaxによるリクエストでない場合，ページレンダリングのみ
 
-```PHP
+```php
 <?php
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -330,7 +330,7 @@ class ExampleController extends AbstractController
     public function get(Request $req)
     {
         // Ajaxによるリクエストの場合．
-        if ($req->headers->get('content-type') === 'application/json') {
+        if ($req->headers->get("content-type") === "application/json") {
             
             $xxxRepository = new XxxRepository;
             $entityObject = $xxxRepository->getEntity();
@@ -339,11 +339,11 @@ class ExampleController extends AbstractController
             
             // Ajaxにレンスポンス．
             return new JsonResponse([ 
-                'value' => $entityArray
+                "value" => $entityArray
               ]);
         }
     
-        return $this->render('.../xxx.twig')->setStatusCode(200);
+        return $this->render(".../xxx.twig")->setStatusCode(200);
     }
 }
 ```
@@ -354,7 +354,7 @@ class ExampleController extends AbstractController
 
 ### HttpKernelによるリクエストとレスポンス
 
-![SymfonyのHttpKernelの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SymfonyのHttpKernelの仕組み.png)
+![SymfonyのHttpKernelの仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SymfonyのHttpKernelの仕組み.png)
 
 <br>
 
@@ -374,19 +374,19 @@ Symfonyから提供されるDIコンテナのこと．
 
 コントローラへのルーティングを設定する．
 
-```PHP
+```php
 <?php
 use App\Controller\BlogApiController; // ルーティング先のコントローラを読み込み
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes) {
-    $routes->add('api_post_show', '/api/posts/{id}')
-        ->controller([BlogApiController::class, 'show'])
-        ->methods(['GET', 'HEAD'])
+    $routes->add("api_post_show", "/api/posts/{id}")
+        ->controller([BlogApiController::class, "show"])
+        ->methods(["GET", "HEAD"])
     ;
-    $routes->add('api_post_edit', '/api/posts/{id}')
-        ->controller([BlogApiController::class, 'edit'])
-        ->methods(['PUT'])
+    $routes->add("api_post_edit", "/api/posts/{id}")
+        ->controller([BlogApiController::class, "edit"])
+        ->methods(["PUT"])
     ;
 };
 ```
@@ -401,14 +401,14 @@ return function (RoutingConfigurator $routes) {
 
 データをキャッシングできる．オプションで，名前空間，キャッシュ存続時間，キャッシュルートパスを指定できる．
 
-```PHP
+```php
 <?php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$cache = new FilesystemAdapter('', 0, 'example/cache/');
+$cache = new FilesystemAdapter("", 0, "example/cache/");
 
 // キャッシュIDに紐づくキャッシュアイテムオブジェクトを取得
-$cacheItemObj = $cache->getItem('stats.products_count');
+$cacheItemObj = $cache->getItem("stats.products_count");
 
 // キャッシュIDに紐づくキャッシュアイテムオブジェクトに，データが設定されていない場合
 if (!$cacheItemObj->isHit()) {

@@ -4,7 +4,7 @@
 
 ### オブジェクト指向設計に用いられるUMLダイアグラム
 
-![UML-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/UML-1.png)
+![UML-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/UML-1.png)
 
 <br>
 
@@ -32,19 +32,19 @@
 
 Association（関連），Aggregation（集約），Composition（合成）が用いられる．詳しくは，以降の説明を参照せよ．
 
-![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
+![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
 
 #### ・クラス間の関係性を表す図
 
 Generalization（汎化），Realization（実現）が用いられる．詳しくは，以降の説明を参照せよ．
 
-![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間の関係性のクラス図.png)
+![クラス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/クラス間の関係性のクラス図.png)
 
 #### ・クラス間，インスタンス間，クラス／インスタンス間の関係性を表す図
 
 Dependency（依存）が用いられる．詳しくは，以降の説明を参照せよ．
 
-![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
+![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
 <br>
 
@@ -60,7 +60,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 「会社クラス」から見て，対する「社員クラス」の数は1つである．逆に，「社員クラス」から見て，対する「会社クラス」の数は0以上であるという表記．
 
-![多重度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/多重度.png)
+![多重度](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/多重度.png)
 
 | 表記  |    対するクラスがいくつあるか    |
 | :---: | :------------------------------: |
@@ -114,14 +114,14 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 1. 5つのライフライン（店員オブジェクト，管理画面オブジェクト，検索画面オブジェクト，商品DBオブジェクト，商品詳細画面オブジェクト）を設定する．
 2. 各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．
 
-![シーケンス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シーケンス図.png)
+![シーケンス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/シーケンス図.png)
 
 #### ・設計例2
 
 1. 3つのライフラインを設定する．
 2. 各ライフラインで実行される実行仕様間の命令内容を，メッセージや複合フラグメントで示す．
 
-![シーケンス図_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/シーケンス図_2.png)
+![シーケンス図_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/シーケンス図_2.png)
 
 <br>
 
@@ -129,7 +129,7 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 『Association ＞ Aggregation ＞ Composition』の順で，依存性が低くなる．
 
-![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
+![インスタンス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インスタンス間の関係性のクラス図.png)
 
 <br>
 
@@ -149,15 +149,17 @@ Dependency（依存）が用いられる．詳しくは，以降の説明を参�
 
 ＊Tireクラス＊
 
-```PHP
+```php
 <?php
+    
 class Tire {}
 ```
 
 ＊CarXクラス＊
 
-```PHP
+```php
 <?php
+    
 //CarXクラス定義
 class CarX
 {
@@ -183,8 +185,9 @@ class CarX
 
 ＊CarYクラス＊
 
-```PHP
+```php
 <?php
+    
 //CarYクラス定義
 class CarY
 {
@@ -210,8 +213,9 @@ class CarY
 
 以下の様に，Tireクラスのインスタンスを，CarXクラスとCarYクラスの引数として用いている．
 
-```PHP
+```php
 <?php
+    
 //Tireクラスをインスタンス化
 $tire1 = new Tire();
 $tire2 = new Tire();
@@ -233,20 +237,22 @@ $suv = new CarY($tire1, $tire2, $tire5, $tire6);
 
 #### ・Compositionとは
 
-インスタンスを，他インスタンスの```__constructor```の引数として渡すのではなく，クラスの中でインスタンス化し，データとして保持する関係性は，『合成』である．
+インスタンスを，他インスタンスの```constructor```メソッドの引数として渡すのではなく，クラスの中でインスタンス化し，データとして保持する関係性は，『合成』である．
 
 ＊Lockクラス＊
 
-```PHP
+```php
 <?php
+    
 //Lockクラス定義
 class Lock {}
 ```
 
 ＊Carクラス＊
 
-```PHP
+```php
 <?php
+    
 //Carクラスを定義
 class Car
 {
@@ -261,9 +267,9 @@ class Car
 }
 ```
 
-以下の様に，Lockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．このように，LockインスタンスからCarクラスの方向には，Compositionの関係性がある．
+以下の様に，Lockインスタンスは，Carクラスの中で定義されているため，Lockインスタンスにはアクセスできない．また，Carクラスが起動しなければ，Lockインスタンスは起動できない．さらに，Carクラスが削除されれば，Lockクラスも削除される．このように，LockインスタンスからCarクラスの方向には，Compositionの関係性がある．
 
-```PHP
+```php
 <?php
 // Carクラスのインスタンスの中で，Lockクラスがインスタンス化される．
 $car = new Car();
@@ -273,7 +279,7 @@ $car = new Car();
 
 ## 04. クラス間の関係性
 
-![クラス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間の関係性のクラス図.png)
+![クラス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/クラス間の関係性のクラス図.png)
 
 ### Generalization（汎化）
 
@@ -283,8 +289,9 @@ $car = new Car();
 
 ＊親クラス＊
 
-```PHP
+```php
 <?php
+    
 // 通常クラス
 class Goods
 {
@@ -324,8 +331,9 @@ class Goods
 
 ＊子クラス＊
 
-```PHP
+```php
 <?php
+    
 // 通常クラス
 class GoodsWithTax extends Goods
 {
@@ -378,14 +386,15 @@ class GoodsWithTax extends Goods
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
+    
 // 抽象クラス．型として提供したいものを定義する．
 abstract class ShainManagement
 {
     // 定数の定義
-    const TIME_TO_ARRIVE = strtotime('10:00:00');
-    const TIME_TO_LEAVE = strtotime('19:00:00');
+    const TIME_TO_ARRIVE = strtotime("10:00:00");
+    const TIME_TO_LEAVE = strtotime("19:00:00");
     
     // 抽象メソッド．
     // 処理内容を子クラスでOverrideしなければならない．
@@ -395,20 +404,20 @@ abstract class ShainManagement
     // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
     public function toArrive()
     {
-        $nowTime = strtotime( date('H:i:s') );
+        $nowTime = strtotime( date("H:i:s") );
     
         // 出社時間より遅かった場合，遅刻と表示する．
         if($nowTime > self::TIME_TO_ARRIVE){
         
             return sprintf(
                 "%s の遅刻です．",
-                date('H時i分s秒', $nowTime - self::TIME_TO_ARRIVE)
+                date("H時i分s秒", $nowTime - self::TIME_TO_ARRIVE)
             );
         }
         
         return sprintf(
             "%s に出勤しました．",
-            date('H時i分s秒', $nowTime)
+            date("H時i分s秒", $nowTime)
         );
     
     }
@@ -417,19 +426,20 @@ abstract class ShainManagement
     // 子クラスへそのまま継承される．子クラスでオーバーライドしなくても良い．
     public function toLeave()
     {
-        $nowTime = strtotime( date('H:i:s') );
+        $nowTime = strtotime( date("H:i:s") );
         
         return sprintf(
             "%sに退社しました．%s の残業です．",
-            date('H時i分s秒', $nowTime),
-            date('H時i分s秒', $nowTime - self::TIME_TO_LEAVE)
+            date("H時i分s秒", $nowTime),
+            date("H時i分s秒", $nowTime - self::TIME_TO_LEAVE)
         );
     }
 }
 ```
 
-```PHP
+```php
 <?php
+    
 // 子クラス
 class EnginnerShainManagement extends ShainManagement
 {
@@ -445,7 +455,7 @@ class EnginnerShainManagement extends ShainManagement
 
 プリウスと各世代プリウスが，抽象クラスと子クラスの関係にある．
 
-![抽象クラス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/抽象クラス.png)
+![抽象クラス](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/抽象クラス.png)
 
 <br>
 
@@ -463,45 +473,45 @@ class EnginnerShainManagement extends ShainManagement
 
 各車は，モーター機能を必ず持っていなければ，正常に働くことができない．そこで，モータ機能に最低限必要なメソッドの実装を強制する．
 
-![インターフェースとは](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターフェースとは.png)
+![インターフェースとは](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インターフェースとは.png)
 
 実装クラスに処理内容を記述しなければならない．すなわち，抽象クラスにメソッドの型のみ定義した場合と同じである．多重継承できる．
 
-![子インターフェースの多重継承_2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/子インターフェースの多重継承_2.png)
+![子インターフェースの多重継承_2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/子インターフェースの多重継承_2.png)
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
-// コミュニケーションのメソッドの実装を強制するインターフェース
-interface Communication
+    
+interface Animal
 {
      // インターフェイスでは，実装を伴うメソッドやデータの宣言はできない
-     public function talk();
-     public function touch();
-     public function gesture();
+     public function eat();
+     public function sleep();
+     public function mating();
 }
 ```
 
-```PHP
+```php
 <?php
-// 正常に機能するように，コミュニケーションのメソッドの実装を強制する．
-class Human implements Communication
+
+class Mammal implements Animal
 {
-    // メソッドの処理内容を定義しなければならない．
-     public function talk()
+    // 実装クラスが正常に機能するために最低限必要なメソッドの実装を強制する．
+     public function eat()
      {
-          // 話す
+          // 食べる
      }
      
-     public function touch()
+     public function sleep()
      {
-          // 触る
+          // 眠る
      }
      
-     public function gesture()
+     public function mating()
      {
-          // 身振り手振り
+          // 交尾する
      }
 }
 ```
@@ -525,7 +535,7 @@ class Human implements Communication
 1. 種々の車クラスの共通処理のをもつ抽象クラスとして，Carクラスを作成．
 2. 各車は，エンジン機能を必ず持っていなければ，正常に働くことができない．そこで，抽象メソッドによって，エンジン機能に最低限必要なメソッドの実装を強制する．
 
-![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/インターフェースと抽象クラスの使い分け.png)
+![インターフェースと抽象クラスの使い分け](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/インターフェースと抽象クラスの使い分け.png)
 
 <br>
 
@@ -538,12 +548,12 @@ class Human implements Communication
 
 参考：
 
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_object_orientation_prototype.html
-- https://hiroki-it.github.io/tech-notebook_gitbook/public/frontend_object_orientation_method_data.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/frontend_object_orientation_prototype.html
+- https://hiroki-it.github.io/tech-notebook-gitbook/public/frontend_object_orientation_method_data.html
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
   
 // 継承元クラス
@@ -558,7 +568,7 @@ class Example
 }
 ```
 
-```PHP
+```php
 <?php
   
 // 継承先クラス
@@ -573,7 +583,7 @@ class SubExample extends Example
 }
 ```
 
-```PHP
+```php
 <?php
   
 $subExample = new SubExample;
@@ -589,7 +599,7 @@ echo $subExample->getValue();
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
   
 abstract class Example 
@@ -601,7 +611,7 @@ abstract class Example
 }
 ```
 
-```PHP
+```php
 <?php
   
 class SubExample extends Example
@@ -620,7 +630,7 @@ class SubExample extends Example
 
 #### ・Traitとは
 
-![Trait](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Trait.png)
+![Trait](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Trait.png)
 
 再利用したいメソッドやデータを部品化し，利用したい時にクラスに取り込む．Traitを用いるときは，クラス内でTraitをuse宣言する．Trait自体は不完全なクラスであり，インスタンス化できない．
 
@@ -678,7 +688,7 @@ trait UnsupportedMagicMethodTrait
      */
     public function __get($name)
     {
-        throw new \Exception('This method is not supported');
+        throw new \Exception("This method is not supported");
     }
 
     /**
@@ -690,7 +700,7 @@ trait UnsupportedMagicMethodTrait
      */
     public function __set($name, $value)
     {
-        throw new \Exception('This method is not supported');
+        throw new \Exception("This method is not supported");
     }
 }
 ```
@@ -726,7 +736,7 @@ class Example1
 <?php
 
 // 外部ファイル名を指定して，クラスを読み込む．
-require_once('Example1.php');
+require_once("Example1.php");
 
 class Example2
 {
@@ -744,7 +754,7 @@ class Example2
 <?php
   
 // 外部ファイル名を指定して，クラスを読み込む．
-require_once('Example1.php');
+require_once("Example1.php");
 
 class Example2
 {
@@ -762,7 +772,7 @@ class Example2
 <?php
 
 function printTest() {
-    return  'test';
+    return  "test";
 }
 ```
 
@@ -770,7 +780,7 @@ function printTest() {
 <?php
 
 // 外部ファイル名を指定して読み込む．
-require_once ('printTestFunction.php');
+require_once ("printTestFunction.php");
 
 printTest();
 ```
@@ -789,7 +799,7 @@ PHP```5.3```以降では，外部ファイルとして定義されたクラス�
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
   
 // 名前空間を定義．
@@ -807,7 +817,7 @@ class Example1
 }
 ```
 
-```PHP
+```php
 <?php
 
 namespace Domain\Entity;
@@ -829,7 +839,7 @@ class Example2
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 
 namespace Domain\Entity;
@@ -857,7 +867,7 @@ class Example2
 
 クラス間，インスタンス間，クラス／インスタンス間について，依存される側が変更された場合に，依存する側で変更が起きる関係性は，『依存』である．Association，Aggregation，Compositionの関係性と，さらにデータをクラス／インスタンス内に保持しない以下の場合も含む．
 
-![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
+![クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/クラス間，インスタンス間，クラスインスタンス間の関係性のクラス図.png)
 
 #### ・クラス間の場合
 
@@ -893,7 +903,7 @@ https://stackoverflow.com/questions/41765798/difference-between-aggregation-and-
 
 ModuleAとModuleBは，データ結合の関係にある．
 
-```PHP
+```php
 <?php
 class ModuleA // コールされる側
 {
@@ -904,7 +914,7 @@ class ModuleA // コールされる側
 }
 ```
 
-```PHP
+```php
 <?php
 class ModuleB // コールする側
 {
@@ -920,7 +930,7 @@ class ModuleB // コールする側
 
 デザインパターンのFactoryクラスでは，スカラ型データの値に応じて，インスタンスを作り分ける．Factoryクラスのインスタンスと，これをコールする他インスタンス は，データ結合の関係にある．
 
-```PHP
+```php
 <?php
 /**
  * コールされる側
@@ -951,7 +961,7 @@ object型のデータをサプライヤー側として，クライアント側�
 
 ModuleAとModuleBは，スタンプ結合の関係にある．
 
-```PHP
+```php
 <?php
 class Common
 {
@@ -970,7 +980,7 @@ class Common
 }
 ```
 
-```PHP
+```php
 <?php
 class ModuleA
 {
@@ -985,7 +995,7 @@ class ModuleA
 }
 ```
 
-```PHP
+```php
 <?php
 class ModuleB
 {
@@ -1014,7 +1024,7 @@ class ModuleB
 
 各モジュールは，結合度が低く，凝集度が高いほどよい．例として，以下の画像では，道具モジュールを，キッチン引き出しモジュールとガレージ工具箱モジュールに分け，各クラスの結合度を低く，凝集度を高くするように対応している・
 
-![低結合度高凝集度](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/低結合度高凝集度.png)
+![低結合度高凝集度](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/低結合度高凝集度.png)
 
 <br>
 
@@ -1047,7 +1057,7 @@ class ModuleB
 
 Pimpleライブラリを使用した場合
 
-```PHP
+```php
 <?php
 use Pimple\Container;
 
@@ -1058,34 +1068,34 @@ class Container
 {
     public function __construct()
     {
-        $container['xxx.logger'] = function ($container) {
+        $container["xxx.logger"] = function ($container) {
             return new XxxLogger();
         };
         
-        $container['yyy.notification'] = function ($container) {
+        $container["yyy.notification"] = function ($container) {
             return new YyyNotification();
         };
         
-        $container['sample'] = function ($container) {
-            return new Sample($container['xxx.logger'], $container['yyy.notification']);
+        $container["sample"] = function ($container) {
+            return new Sample($container["xxx.logger"], $container["yyy.notification"]);
         };
     }
 }
 ```
 
-```PHP
+```php
 <?php
 // autoload.php で，DIコンテナ自体のインスタンスを事前に生成．
 $container = new Container();
 ```
 
-```PHP
+```php
 <?php
 // DIコンテナの読み込み
-require_once __DIR__ . '/autoload.php';
+require_once __DIR__ . "/autoload.php";
 
 // クラス名を宣言してインスタンスを生成．
-$sample = $container['sample'];
+$sample = $container["sample"];
 ```
 
 #### ・アンチパターンのService Locater Pattern
@@ -1094,18 +1104,18 @@ $sample = $container['sample'];
 
 **＊実装例＊**
 
-```PHP
+```php
 <?php
 class Sample
 {
     public function __construct($container)
     {
-        $this->logger            = $container['xxx.logger'];
-        $this->notification      = $container['yyy.notification'];
+        $this->logger            = $container["xxx.logger"];
+        $this->notification      = $container["yyy.notification"];
     }
 }
 ```
-```PHP
+```php
 <?php
 // DIコンテナ自体をインジェクションしてしまうと，不要なインスタンスにも依存してしまう．
 $sample = new Sample($container);
@@ -1133,13 +1143,13 @@ $sample = new Sample($container);
 
 より上位レイヤーのコール処理を配置し，より下位レイヤーでコールされる側の定義を行う．これによって，上位レイヤーのクラスが，下位レイヤーのクラスに依存する関係性になる．
 
-![DIPに基づかない設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DIPに基づかない設計の場合.png)
+![DIPに基づかない設計の場合](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DIPに基づかない設計の場合.png)
 
 #### ・DIPに基づく設計の場合
 
 抽象クラス（またはインターフェース）で抽象メソッドを記述することによって，実装クラスでの実装が強制される．つまり，実装クラスは抽象クラスに依存している．より上位レイヤーに抽象クラス（またはインターフェース）を配置することによって，下位レイヤーのクラスが上位レイヤーのクラスに依存しているような逆転関係を作ることができる．
 
-![DIPに基づく設計の場合](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DIPに基づく設計の場合.png)
+![DIPに基づく設計の場合](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DIPに基づく設計の場合.png)
 
 #### ・DIPに基づくドメイン駆動設計の場合
 
@@ -1148,6 +1158,6 @@ $sample = new Sample($container);
 3. 両方のクラスに対して，バインディング（関連付け）を行い，抽象クラスをコールした時に，実際には実装クラスがコールされるようにする．
 4. これらにより，依存性が逆転する．依存性逆転の原則に基づくことによって，ドメイン層への影響なく，Repositoryの交換が可能になる．
 
-![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ドメイン駆動設計_依存性逆転の原則.jpg)
+![ドメイン駆動設計_逆転依存性の原則](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ドメイン駆動設計_依存性逆転の原則.jpg)
 
-![トレイト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トレイト.png)
+![トレイト](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/トレイト.png)

@@ -8,7 +8,7 @@ GCPから，グローバルIPアドレスと完全修飾ドメイン名が提供
 
 以下のデザイン例では，Dualシステムが採用されている．
 
-![GCPのクラウドデザイン一例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/GCPのクラウドデザイン一例.png)
+![GCPのクラウドデザイン一例](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/GCPのクラウドデザイン一例.png)
 
 ### GAE：Google App Engine：GAE
 

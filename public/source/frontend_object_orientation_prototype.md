@@ -41,7 +41,7 @@ var obj = new Object();
 **＊実装例＊**
 
 ```javascript
-var array = ['a', 'b', 'c'];
+var array = ["a", "b", "c"];
 
 // key，valueを取得できる．
 var iterator = array.entries();
@@ -51,9 +51,9 @@ for (const value of iterator) {
   console.log(e);
 }
 
-// [0, 'a']
-// [1, 'b']
-// [2, 'c']
+// [0, "a"]
+// [1, "b"]
+// [2, "c"]
 ```
 
 #### ・```Array.prototype.map()```
@@ -80,7 +80,7 @@ for (const value of iterator) {
 **＊実装例＊**
 
 ```javascript
-const clothing = ['shoes', 'shirts', 'socks', 'sweaters'];
+const clothing = ["shoes", "shirts", "socks", "sweaters"];
 
 console.log(
     clothing.length
@@ -172,9 +172,9 @@ console.log(
 <button id="btn">表示</button>
 
 <script>
-const btn = document.getElementById('btn');
-btn.addEventListener('click', function() {
-    console.log('クリックされました！');
+const btn = document.getElementById("btn");
+btn.addEventListener("click", function() {
+    console.log("クリックされました！");
     },
     false
     );
@@ -349,13 +349,17 @@ console.log(
 
 ### 糖衣構文の```class```の使用
 
+#### ・JavaScriptのクラスとは
+
 ES6から，糖衣構文の```class```によって，オブジェクトを宣言できるようになった．クラス宣言あるいはクラス式で記述する．オブジェクトの生成時，```constructor()```でオブジェクトの初期化を行う．パスカルケース（大文字から始める記法）を用いる．
+
+#### ・クラス宣言記法
 
 **＊実装例＊**
 
 ```javascript
-// クラス宣言
-class Example {
+// named exportによる出力
+export class Example {
     
     // classでしか使えない．
     // Setterの代わりにコンストラクタでImmutableを実現．
@@ -371,8 +375,21 @@ class Example {
 ```
 
 ```javascript
-// クラス式
-const Example = class {
+// ファイルの読み込み
+import {Example} from "./example.js";
+
+// 生成，初期化
+const example = new Example(1);
+
+// メソッドのコール
+example.getValue();
+```
+
+#### ・クラス式記法
+
+```javascript
+// named exportによる出力
+export const Example = class {
     
     // classでしか使えない．
     // Setterの代わりにコンストラクタでImmutableを実現．
@@ -388,8 +405,14 @@ const Example = class {
 ```
 
 ```javascript
+// ファイルの読み込み
+import {Example} from "./example.js";
+
 // 生成，初期化
-const example = new Example(1)
+const example = new Example(1);
+
+// メソッドのコール
+example.getValue();
 ```
 
 <br>
@@ -497,7 +520,7 @@ SubExample.prototype = Object.create(Example.prototype, {
     
     // メソッドを定義
     printSubValue: function() {
-        return 'これは' + this.subProperty + 'です．';
+        return "これは" + this.subProperty + "です．";
     }
   
 });
@@ -551,7 +574,7 @@ example.getValue(); // 1
 
 ```javascript
 // 一番外側はWindowオブジェクト
-param = 'global param';
+param = "global param";
 
 // 関数宣言
 function printParam(){
@@ -560,13 +583,13 @@ function printParam(){
 
 // オブジェクト1
 const object1 = {
-  param: 'object1 param',
+  param: "object1 param",
   func: printParam
 }
 
 // オブジェクト2
 const object2 = {
-  param: 'object2 param',
+  param: "object2 param",
   func: printParam
 }
 ```
@@ -589,7 +612,7 @@ object2.printParam; // object2 param
 
 ```javascript
 // 一番外側はWindowオブジェクト
-param = 'global param';
+param = "global param";
 
 // アロー関数による省略記法
 const printParam = () => {
@@ -598,13 +621,13 @@ const printParam = () => {
 
 // オブジェクト1
 const object1 = {
-  param: 'object1 param',
+  param: "object1 param",
   func: printParam
 };
 
 // オブジェクト2
 const object2 = {
-  param: 'object2 param',
+  param: "object2 param",
   func: printParam
 }
 ```

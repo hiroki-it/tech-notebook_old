@@ -6,7 +6,7 @@
 
 『共通鍵暗号方式』や『公開鍵暗号方式』によって実現される．暗号アルゴリズムに基づく暗号方式を用いてデータを暗号化することによって，通信データの盗聴を防ぐ．
 
-![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_1.png)
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/盗聴_改竄_成りすまし_1.png)
 
 <br>
 
@@ -14,7 +14,7 @@
 
 『デジタル署名』や『ハッシュ関数』によって実現される．相手に送ったデータと相手が受け取ったデータが同じかどうかを確認することによって，通信データの改竄を防ぐ．
 
-![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_2.png)
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/盗聴_改竄_成りすまし_2.png)
 
 <br>
 
@@ -22,7 +22,7 @@
 
 『デジタル署名』によって実現される．正しい相手であることを証明することによって，成りすましを防ぐ．
 
-![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/盗聴_改竄_成りすまし_3.png)
+![盗聴_改竄_成りすまし](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/盗聴_改竄_成りすまし_3.png)
 
 <br>
 
@@ -79,13 +79,13 @@
 
 **短所**：鍵の配布が大変
 
-![p437](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/p437.png)
+![p437](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/p437.png)
 
 #### ・共通鍵の再利用の可否
 
 各受信者（クライアント）は，サーバから，受信者ごとに生成された共通鍵をもらう．鍵の再利用をするべきではない．
 
-![共通鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/共通鍵の再利用.png)
+![共通鍵の再利用](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/共通鍵の再利用.png)
 
 <br>
 
@@ -93,7 +93,7 @@
 
 #### ・公開鍵暗号方式とは
 
-![公開鍵暗号方式](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/公開鍵暗号方式.png)
+![公開鍵暗号方式](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/公開鍵暗号方式.png)
 
 公開鍵暗号方式でも記載の通り，共通鍵暗号方式の鍵配送問題を解決すべく開発された．『RSA暗号』などによって実装される．受信者（クライアント）の公開鍵で暗号化した場合，受信者の秘密鍵でのみ復号可能．すなわち，第三者に復号（解読）されることはないと判断可能．
 
@@ -110,7 +110,7 @@
 
 各受信者（クライアント）は，サーバから，異なるサーバで再利用される公開鍵をもらう．ただし，サーバごとに異なる秘密鍵と公開鍵を用いてもよい．
 
-![公開鍵の再利用](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/公開鍵の再利用.png)
+![公開鍵の再利用](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/公開鍵の再利用.png)
 
 <br>
 
@@ -118,7 +118,7 @@
 
 共通鍵暗号方式と公開鍵暗号方式を組み合わせた暗号方式．両方の方式の長所と短所を補う．
 
- ![ハイブリッド暗号](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハイブリッド暗号.png)
+ ![ハイブリッド暗号](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ハイブリッド暗号.png)
 
 <br>
 
@@ -128,7 +128,7 @@
 
 プロトコルとしての暗号化技術である『セキュアプロトコル』は，赤色で示してある．
 
-![セキュアプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/セキュアプロトコル.png)
+![セキュアプロトコル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/セキュアプロトコル.png)
 
 <br>
 
@@ -142,7 +142,7 @@ Webコンテンツデータ，メールデータ，その他
 
 パケット交換方式におけるパケットのヘッダ情報は，パソコンの各概念層のプロトコルによって追加されていく．
 
-![パケットの構造](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットの構造.jpg)
+![パケットの構造](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パケットの構造.jpg)
 
 <br>
 
@@ -154,7 +154,7 @@ Webコンテンツデータ，メールデータ，その他
 
 暗号化ダイジェスト（デジタル署名）を含むデジタル証明書をメールに添付することによって，公開鍵の成りすましを防ぐセキュリティ技術．
 
-![S_MIME](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/S_MIME.png)
+![S_MIME](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/S_MIME.png)
 
 #### ・S/MIMEにおけるデジタル証明書
 
@@ -170,7 +170,7 @@ Webコンテンツデータ，メールデータ，その他
 
 公開鍵暗号方式に基づくセキュアプロトコル．アプリケーション層で，公開鍵暗号方式と，公開鍵認証方式やパスワード認証方式の技術を用いて，サーバのリモート接続／操作を行う．物理Webサーバであっても，仮想Webサーバであっても，SSHによるリモート接続／操作の仕組みは同じである．
 
-![ssh接続](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ssh接続.png)
+![ssh接続](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ssh接続.png)
 
 #### ・SSH接続／操作する側に必要なソフトウェア
 
@@ -193,13 +193,13 @@ Webコンテンツデータ，メールデータ，その他
 [local pc] $ ssh -L20000:xxxx.rds.amazonaws.com:3306 username@fumidai.com 
 ```
 
-![SSHポートフォワード](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSHポートフォワード.png)
+![ssh-port-forward](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ssh-port-forward.png)
 
 **＊具体例＊**
 
 このリモートサーバが仮想サーバ／コンテナの場合もあり，ホストOSと仮想サーバ／コンテナの接続でもSSHポートフォワーディングが用いられている．ホスト外部のパソコンから，ホストOS上の仮想サーバ／コンテナに接続したい場合，SSHポートフォワーディングを用いることによって，ホストOSを踏み台とした仮想サーバ／コンテナへの接続が行えるようになる．
 
-![Dockerにおけるポートフォワーディング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Dockerにおけるポートフォワーディング.png)
+![Dockerにおけるポートフォワーディング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Dockerにおけるポートフォワーディング.png)
 
 <br>
 
@@ -212,7 +212,7 @@ SSHを介して，ファイル転送を行う．SSHの機能をより拡張し�
 1. クライアントは，リモート接続先のサーバにファイル送信を命令する．
 2. サーバは，Shellを用いてSCPプログラムを起動し，クライアントにファイルを送信する．
 
-![SCPの仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SCPの仕組み.png)
+![SCPの仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SCPの仕組み.png)
 
 #### ・ファイルを要求する側に必要なソフトウェア
 
@@ -244,13 +244,13 @@ SSHを介して，ファイル転送を行う．SSHとFTPを組み合わせた�
 
 ハイブリッド暗号方式に基づくセキュアプロトコル．トランスポート層で，パケットのヘッダ情報の暗号化を担う．具体的には，HTTPプロトコルで，GET送信のヘッダ部分，またPOST送信のヘッダ部分とボディ部分を暗号化する．
 
-![SSL_TLSプロトコル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSL_TLSプロトコル.png)
+![SSL_TLSプロトコル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SSL_TLSプロトコル.png)
 
 **＊具体例＊**
 
 Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例えば，オレオレ証明書を用いている）と，以下のような警告が表示される．SSLサーバ証明書については，公開鍵基盤の説明を参照せよ．
 
-![SSL接続に不備がある場合の警告](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSL接続に不備がある場合の警告.jpg)
+![SSL接続に不備がある場合の警告](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SSL接続に不備がある場合の警告.jpg)
 
 #### ・SSL/TLSにおけるデジタル証明書とドメイン認証
 
@@ -264,13 +264,13 @@ Chromeでは，HTTPSにおいて，SSLサーバ証明書に不備がある（例
 
 異なるネットワーク間で安全な通信を行うための仕組み．IPsecやSSL/TLSによって実現される．
 
-![VPN（ネットワーク間）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPN（ネットワーク間）.png)
+![VPN（ネットワーク間）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/VPN（ネットワーク間）.png)
 
 #### ・インターネットVPNでのSSL/TLS通信の利用
 
 VPNゲートウェイとのSSL/TLS通信によって，インターネットVPNを実現できる．
 
-![SSLによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SSLによるインターネットVPN.jpg)
+![SSLによるインターネットVPN](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SSLによるインターネットVPN.jpg)
 
 <br>
 
@@ -282,7 +282,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 『公開鍵暗号方式とは逆の仕組み（※つまり，公開鍵暗号方式ではない）』と『ハッシュ関数』を利用した暗号化．『成りすまし』と『改竄』を防ぐことができる．
 
-![デジタル署名](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デジタル署名.png)
+![デジタル署名](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/デジタル署名.png)
 
 **＊サーバが行うこと＊**
 
@@ -319,7 +319,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 『成りすまし』と『改竄』を防げるデジタル署名に，『盗聴』を防げる公開鍵暗号方式を組み込んだ暗号化技術．
 
-![デジタル署名と暗号化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デジタル署名と暗号化.png)
+![デジタル署名と暗号化](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/デジタル署名と暗号化.png)
 
 <br>
 
@@ -327,7 +327,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 何かのデータを入力すると，規則性のない一定の桁数の値を出力する演算手法．
 
-![ハッシュ関数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハッシュ関数.png)
+![ハッシュ関数](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ハッシュ関数.png)
 
 <br>
 
@@ -339,7 +339,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 #### ・公開鍵の検証の仕組み
 
-![デジタル証明書（SSLサーバ証明書）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/デジタル証明書（SSLサーバ証明書）.gif)
+![デジタル証明書（SSLサーバ証明書）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/デジタル証明書（SSLサーバ証明書）.gif)
 
 多くの場合，サーバの提供会社が中間認証局をもっている．中間認証局とルート認証局の関係については，認証局そのもののなりすましの防止策を参照．
 
@@ -365,7 +365,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 デジタル証明書（S/MIME証明書，SSLサーバ証明書）を発行する認証局そのものが，成りすましの可能性がある．そこで，認証局をランク付けし，ルート認証局が下位ランクの認証局に権限を与えることで，下位の認証局の信頼性を持たせている．なお，ルート認証局は専門機関から厳しい審査を受けているため，ルート認証局自体がなりすましである可能性は非常に低い．
 
-![認証局自体の成りすまし防止](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/認証局自体の成りすまし防止.png)
+![認証局自体の成りすまし防止](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/認証局自体の成りすまし防止.png)
 
 <br>
 
@@ -377,11 +377,11 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 共通鍵暗号方式に基づくセキュアプロトコル．ネットワーク層で，パケットのヘッダ情報の暗号化を担う．インターネットVPNの実現のために用いられる．盗聴を防ぐことができる．
 
-![IPsecによるインターネットVPN](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPsecによるインターネットVPN.jpg)
+![IPsecによるインターネットVPN](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPsecによるインターネットVPN.jpg)
 
 #### ・IPsecによるパケットのカプセル化
 
-![IPsecによるカプセル化](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPsecによるカプセル化.jpg)
+![IPsecによるカプセル化](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPsecによるカプセル化.jpg)
 
 <br>
 
@@ -391,7 +391,7 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 異なるネットワーク間で安全な通信を行うための仕組み．使用されているセキュアプロトコルに基づいて，『PPTP-VPN』，『SSL/TLS-VPN』，『IPsec-VPN』がある．
 
-![i](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/VPN（ネットワーク間）.png)
+![i](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/VPN（ネットワーク間）.png)
 
 #### ・PPTP-VPNの例
 
@@ -421,15 +421,15 @@ VPNゲートウェイとのSSL/TLS通信によって，インターネットVPN�
 
 平文で保存しておくと，流出した時に勝手に使用されてしまうため，ハッシュ値で保存するべきである．
 
-![ハッシュ値で保存](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ハッシュ値で保存.png)
+![ハッシュ値で保存](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ハッシュ値で保存.png)
 
 <br>
 
 ### 生体認証
 
-![生体認証-1](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/生体認証-1.png)
+![生体認証-1](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/生体認証-1.png)
 
-![生体認証-2](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/生体認証-2.png)
+![生体認証-2](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/生体認証-2.png)
 
 <br>
 
@@ -447,4 +447,4 @@ webページに，サーバに対してHTTPリクエストを送信するプロ�
 
 株式会社LACによるPenetration テストサービス
 
-![ペネトレーションテスト](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ペネトレーションテスト.png)
+![ペネトレーションテスト](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ペネトレーションテスト.png)

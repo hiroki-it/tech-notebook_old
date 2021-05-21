@@ -4,31 +4,31 @@
 
 ### 防御方法の種類
 
-![ファイアウォール_ips_ids_waf](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ファイアウォール_ips_ids_waf.png)
+![ファイアウォール_ips_ids_waf](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ファイアウォール_ips_ids_waf.png)
 
 <br>
 
 ### ファイアウォール
 
-![内部，DMZ，外部](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/内部，DMZ，外部.png)
+![内部，DMZ，外部](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/内部，DMZ，外部.png)
 
 #### ・Proxyサーバによるアプリケーションゲートウェイ型ファイアウォール
 
 Proxyサーバ上で，SSLサーバ証明書の認証，セキュリティ系のソフトウェアの稼働，を行い，ファイアウォールとして用いる．Proxyサーバセキュリティ精度を重視する場合はこちら．
 
-![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
+![フォワードプロキシサーバーとリバースプロキシサーバ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/フォワードプロキシサーバーとリバースプロキシサーバ.png)
 
 #### ・パケットフィルタリング型ファイアウォール
 
   パケットのヘッダ情報に記載された送信元IPアドレスやポート番号などによって，パケットを許可するべきかどうかを決定する．速度を重視する場合はこちら．ファイアウォールとWebサーバの間には，NATルータやNAPTルータが設置されている．これらによる送信元プライベートIPアドレスから送信元グローバルIPアドレスへの変換についても参照せよ．
 
-![パケットフィルタリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットフィルタリング.gif)
+![パケットフィルタリング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パケットフィルタリング.gif)
 
 **＊具体例＊**
 
 Win10における設定画面
 
-![パケットフィルタリングの設定](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パケットフィルタリングの設定.gif)
+![パケットフィルタリングの設定](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パケットフィルタリングの設定.gif)
 
 <br>
 
@@ -38,7 +38,7 @@ Win10における設定画面
 
 ネットワーク上を流れるトラフィックを監視し，不正アクセスと思われるパケットを検出した時に，管理者に通知するシステム．あくまで通知するだけで，攻撃を防御することはしない．
 
-![IDS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IDS.png)
+![IDS](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IDS.png)
 
 <br>
 
@@ -48,7 +48,7 @@ Win10における設定画面
 
 ネットワーク上を流れるトラフィックを監視し，不正アクセスと思われるパケットを検出した時に，管理者に通知し，さらにパケットの侵入を防ぐシステム．
 
-![IPS](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/IPS.png)
+![IPS](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/IPS.png)
 
 <br>
 
@@ -58,7 +58,7 @@ Win10における設定画面
 
 Webアプリケーション自体を保護するシステム．
 
-![WAF](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/WAF.png)
+![WAF](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/WAF.png)
 
 <br>
 
@@ -76,7 +76,7 @@ Webアプリケーション自体を保護するシステム．
 
 Wordなどのワープロアプリや，Excelなどの表計算アプリに感染
 
-![Macroウイルス](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Macroウイルス.jpg)
+![Macroウイルス](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Macroウイルス.jpg)
 
 <br>
 
@@ -90,7 +90,7 @@ Wordなどのワープロアプリや，Excelなどの表計算アプリに感�
 
 共有フォルダ経由での感染拡大
 
-![Worm（共有フォルダ）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Worm（共有フォルダ）.jpg)
+![Worm（共有フォルダ）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Worm（共有フォルダ）.jpg)
 
 <br>
 
@@ -102,7 +102,7 @@ Wordなどのワープロアプリや，Excelなどの表計算アプリに感�
 
 Google play で，過去にアプリとして忍び込んでいたトロイの木馬
 
-![トロイの木馬](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/トロイの木馬.jpg)
+![トロイの木馬](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/トロイの木馬.jpg)
 
 感染方法がギリシャ神話上のトロイの木馬に似ていることに由来する．有用なプログラムであるように見せかけて，パソコン利用者に実行させることで感染．裏で不正な処理を行う．
 
@@ -116,7 +116,7 @@ Google play で，過去にアプリとして忍び込んでいたトロイの�
 
 パソコン利用者の個人情報を収集し，外部に送信する．
 
-![スパイウェア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/スパイウェア.png)
+![スパイウェア](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/スパイウェア.png)
 
 <br>
 
@@ -128,17 +128,17 @@ Google play で，過去にアプリとして忍び込んでいたトロイの�
 
 #### ・パソコンがボット化するまでのプロセス
 
-![ボット化のプロセス（パソコン）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ボット化のプロセス（パソコン）.jpg)
+![ボット化のプロセス（パソコン）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ボット化のプロセス（パソコン）.jpg)
 
 #### ・スマホがボット化するまでのプロセス
 
-![ボット化のプロセス（スマホ）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ボット化のプロセス（スマホ）.jpg)
+![ボット化のプロセス（スマホ）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ボット化のプロセス（スマホ）.jpg)
 
 #### ・Bot の使われ方
 
   まず，攻撃対象のネットワーク内にあるパソコンをBot化させる．攻撃者は，Bot化したパソコンを踏み台としてサーバーを攻撃させるように，C&Cサーバーに命令を出す．
 
-![C&Cサーバー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/C&Cサーバー.png)
+![C&Cサーバー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/C&Cサーバー.png)
 
 <br>
 
@@ -146,11 +146,19 @@ Google play で，過去にアプリとして忍び込んでいたトロイの�
 
 ### DoS攻撃：Denial of Service
 
-#### ・DoS攻撃とは
+#### ・DoS攻撃，DDos攻撃とは
 
-アクセスが集中することでWebサーバーがパンクすることを利用し，悪意を持ってWebサーバーに大量のデータを送りつける手法．
+アクセスが集中することでWebサーバーがパンクすることを利用し，悪意を持ってWebサーバーに大量のデータを送りつける手法．リクエストの送信元が一つの場合はDos攻撃，複数の場合はDDos攻撃という．
 
-![DoS攻撃](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DoS攻撃.png)
+![DoS攻撃](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DoS攻撃.png)
+
+#### ・php.iniファイルによる対策
+
+php.iniファイルにて，一度に受信できるPOSTリクエストの上限値を設定できる．
+
+```ini
+max_input_vars = 1000
+```
 
 <br>
 
@@ -162,7 +170,7 @@ Google play で，過去にアプリとして忍び込んでいたトロイの�
 
 データベースのSQLクエリのパラメータとなる入力に，不正な文字列を入力して不正なSQLクエリを実行させ，データベースの情報を抜き取る手法．ただし，近年は減少傾向にある．
 
-![SQLインジェクション](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/SQLインジェクション.jpg)
+![SQLインジェクション](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/SQLインジェクション.jpg)
 
 #### ・特殊な記号の無効化による対策
 
@@ -223,7 +231,7 @@ class dogToyQuey(Value $toyType): array
 
 WebアプリケーションによるHTML出力のエスケープ処理の欠陥を悪用し，利用者のWebブラウザで悪意のあるスクリプトを実行させる ．
 
-![Cross Cite Scripting](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Cross Cite Scripting.png)
+![Cross Cite Scripting](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Cross Cite Scripting.png)
 
 <br>
 
@@ -233,7 +241,7 @@ WebアプリケーションによるHTML出力のエスケープ処理の欠陥�
 
 traversalは，横断する（ディレクトリの構造を乗り越える）の意味．パス名を使ってファイルを指定し，管理者の意図していないファイルを不正に閲覧またはダウンロードする．
 
-![ディレクトリトラバーサル](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ディレクトリトラバーサル.jpg)
+![ディレクトリトラバーサル](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ディレクトリトラバーサル.jpg)
 
 <br>
 
@@ -245,7 +253,7 @@ traversalは，横断する（ディレクトリの構造を乗り越える）�
 
 漏洩したパスワードを用いて，正面から正々堂々とアクセスする手法．
 
-![パスワードリスト攻撃](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パスワードリスト攻撃.png)
+![パスワードリスト攻撃](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パスワードリスト攻撃.png)
 
 <br>
 
@@ -255,11 +263,11 @@ traversalは，横断する（ディレクトリの構造を乗り越える）�
 
 Brute-forceは力ずくの意味．IDを固定して，パスワードを総当たりで試す手法．例えば，5桁数字のパスワードなら，9の5乗通りの組み合わせを試す．一方で，Reverse Brute-forceは，パスワードを固定して，IDを総当たりで試す手法．
 
-![Brute-force攻撃とReverse Brute-force攻撃](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Brute-force攻撃とReverse Brute-force攻撃.png)
+![Brute-force攻撃とReverse Brute-force攻撃](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Brute-force攻撃とReverse Brute-force攻撃.png)
 
 #### ・パスワードのパターン数
 
-![パスワードのパターン数](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/パスワードのパターン数.png)
+![パスワードのパターン数](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/パスワードのパターン数.png)
 
 <br>
 
@@ -269,7 +277,7 @@ Brute-forceは力ずくの意味．IDを固定して，パスワードを総当�
 
   ハッシュ化された暗号から，元のパスワードを解析する手法．
 
-![Rainbow攻撃](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Rainbow攻撃.png)
+![Rainbow攻撃](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Rainbow攻撃.png)
 
 <br>
 
@@ -281,7 +289,7 @@ Brute-forceは力ずくの意味．IDを固定して，パスワードを総当�
 
 技術的な手法ではなく，物理的な手法（盗み見，盗み聞き，成りすまし，詐欺など）によってパスワードを取得し，アクセスする手法．
 
-![ソーシャルエンジニアリング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ソーシャルエンジニアリング.png)
+![ソーシャルエンジニアリング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ソーシャルエンジニアリング.png)
 
 <br>
 
@@ -293,15 +301,15 @@ Brute-forceは力ずくの意味．IDを固定して，パスワードを総当�
 
 #### ・パソコンがボット化するまでのプロセス（再掲）
 
-![ボット化のプロセス（パソコン）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ボット化のプロセス（パソコン）.jpg)
+![ボット化のプロセス（パソコン）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ボット化のプロセス（パソコン）.jpg)
 
 #### ・スマホがボット化するまでのプロセス（再掲）
 
-![ボット化のプロセス（スマホ）](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/ボット化のプロセス（スマホ）.jpg)
+![ボット化のプロセス（スマホ）](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/ボット化のプロセス（スマホ）.jpg)
 
 #### ・Bot の使われ方（再掲）
 
-![C&Cサーバー](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/C&Cサーバー.png)
+![C&Cサーバー](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/C&Cサーバー.png)
 
 <br>
 
@@ -311,7 +319,7 @@ Brute-forceは力ずくの意味．IDを固定して，パスワードを総当�
 
 キャッシュDNSサーバーがもつIPアドレスを偽のIPアドレスに変え，偽のWebサイトに強制的にアクセスさせる手法．
 
-![DNSキャッシュポイズニング](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/DNSキャッシュポイズニング.gif)
+![DNSキャッシュポイズニング](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/DNSキャッシュポイズニング.gif)
 
 <br>
 
@@ -321,5 +329,5 @@ Brute-forceは力ずくの意味．IDを固定して，パスワードを総当�
 
 例えば，Webサイトのカード決済画面やサーバに潜ませることによって，カード情報を第三者に送信する手法．
 
-![バックドア](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/バックドア.png)
+![バックドア](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/バックドア.png)
 

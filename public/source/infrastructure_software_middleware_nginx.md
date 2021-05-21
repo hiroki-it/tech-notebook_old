@@ -14,14 +14,14 @@
 
 #### ・起動／停止
 
-```sh
+```shell
 $ sudo systemctl start nginx
 $ sudo systemctl stop nginx
 ```
 
 #### ・設定ファイルのバリデーション
 
-```sh
+```shell
 $ sudo service nginx configtest
 
 # もしくはこちら
@@ -30,7 +30,7 @@ $ sudo nginx -t
 
 #### ・設定ファイルの反映と安全な再起動
 
-```sh
+```shell
 $ sudo systemctl reload nginx
 ```
 
@@ -38,7 +38,7 @@ $ sudo systemctl reload nginx
 
 読み込まれている全ての設定ファイル（```include```ディレクティブの対象も含む）の内容を展開して表示する．
 
-```sh
+```shell
 $ sudo nginx -T
 ```
 
@@ -52,11 +52,11 @@ $ sudo nginx -T
 
 静的ファイルのリクエストが送信されてきた場合，Nginxはそのままレスポンスを返信する．動的ファイルのリクエストが送信されてきた場合，Nginxは，FastCGIプロトコルを介して，PHP-FPMにリクエストをリダイレクトする．
 
-![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
+![NginxとPHP-FPMの組み合わせ](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/NginxとPHP-FPMの組み合わせ.png)
 
 **＊実装例＊**
 
- ```sh
+ ```shell
 # 設定ファイルのバリデーション
 $ php-fpm -t
  ```
@@ -136,7 +136,7 @@ fastcgi_param  SERVER_NAME        $server_name;
 fastcgi_param  REDIRECT_STATUS    200;
 ```
 
-#### ・www.confについて
+#### ・www.confファイルについて
 
 php.iniファイルによって読み込まれる```/etc/php-fpm.d/www.conf```ファイルは，PHP-FPMに関する設定が定義されたファイルである．php.iniよりも優先されるので，設定項目が重複している場合は，こちらを変更する．
 
@@ -180,7 +180,6 @@ php_value[session.save_path]    = "tcp://xxxxx.r9ecnn.ng.0001.apne1.cache.amazon
 
 # 
 php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
-
 ```
 
 <br>
@@ -215,7 +214,7 @@ server {
     ssl on;
     ssl_certificate /etc/nginx/ssl/server.crt;
     ssl_certificate_key /etc/nginx/ssl/server.key;
-    add_header Strict-Transport-Security 'max-age=86400';
+    add_header Strict-Transport-Security "max-age=86400";
 
     location / {
         proxy_pass http://app1;
@@ -390,9 +389,9 @@ http {
     server_tokens      off;
     include            /etc/nginx/mime.types;
     default_type       application/octet-stream;
-    log_format         main  '$remote_addr - $remote_user [$time_local] "$request" '
-                             '$status $body_bytes_sent "$http_referer" '
-                             '"$http_user_agent" "$http_x_forwarded_for"';
+    log_format         main  "$remote_addr - $remote_user [$time_local] "$request" "
+                             "$status $body_bytes_sent "$http_referer" "
+                             ""$http_user_agent" "$http_x_forwarded_for"";
     access_log         /var/log/nginx/access.log  main;
     sendfile           on;
     tcp_nopush         on;
@@ -450,7 +449,7 @@ location ^~ /images/ {
 }
 
 # 3と4. 末尾が、『gif，jpg，jpegの形式』 のリクエストの場合
-# バックスラッシュでドットをエスケープし，任意の文字ではなく「ドット文字」として認識できるようにする．
+# バックスラッシュでドットをエスケープし，任意の文字ではなく『ドット文字』として認識できるようにする．
 location ~* \.(gif|jpg|jpeg)$ {
 
 }
@@ -478,6 +477,12 @@ location / {
 |    4     |   ~*   | 正規表現（大文字・小文字を区別しない）． | ```http://example.com/images/aaa.jpg```                      |
 |    5     |  なし  | 指定したルートで始まる場合．             | ・```http://example.com/aaa.html```<br>・```http://example.com/docs/aaa.html``` |
 
+#### ・リダイレクトとリライトの違い
+
+リダイレクトでは，リクエストされたURLをサーバ側で新しいURLに書き換え，リクエストを再送信する．そのため，クライアント側は新しいURLで改めてリクエストを送信することになる．一方で，リライトでは，リクエストされたURLをサーバ側で新しいURLに書き換え，そのURLでレンダリングを行う．そのため，クライアント側は古いURLのままリクエストを送信することになる．その他の違いについては，以下を参考にせよ．
+
+参考：https://blogs.iis.net/owscott/url-rewrite-vs-redirect-what-s-the-difference
+
 <br>
 
 ### ディレクティブ
@@ -488,7 +493,7 @@ location / {
 
 ```nginx
 # Referrer-Policyヘッダーに値を設定する
-add_header Referrer-Policy 'no-referrer-when-downgrade';
+add_header Referrer-Policy "no-referrer-when-downgrade";
 ```
 
 #### ・```default_type```

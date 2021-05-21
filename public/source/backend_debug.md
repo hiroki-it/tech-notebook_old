@@ -6,7 +6,7 @@
 
 #### ・ 基本形
 
-ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブ，で確認することができる．
+ブラウザの『デベロッパーツール＞Network＞出力先ページのPreviewタブまたはResponseタブ』で確認できる．
 
 **＊実装例＊**
 
@@ -18,14 +18,14 @@ var_dump($var);
 
 #### ・例外処理との組み合わせ
 
-ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．エラー画面の上部で，```var_dump($var)```の結果を確認することができる．
+ブラウザのデベロッパーツール＞Network＞出力先ページのPreviewタブで例外エラー画面が表示される．エラー画面の上部で，```var_dump($var)```の結果を確認できる．
 
 **＊実装例＊**
 
 ```php
 <?php
 
-throw new \Exception(var_dump($var););
+throw new \Exception(var_dump($var));
 ```
 
 <br>
@@ -88,7 +88,7 @@ if ($x = 3){
 
 ```PHP
 <?php
-header('Content-Type: text/html; charset=UTF-8');
+header("Content-Type: text/html; charset=UTF-8");
 ```
 
 <br>
@@ -168,5 +168,5 @@ DBGプロトコルを使用し，エディタサーバとデバッガーエン�
 
 エディタは，デバッガーエンジンに対してソースコードを送信する．デバッガーエンジンは，Breakpointまでの各変数の中身を解析し，エディタサーバに返信する．
 
-![Xdebug仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Xdebug仕組み.png)
+![Xdebug仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Xdebug仕組み.png)
 

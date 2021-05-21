@@ -6,15 +6,15 @@
 
 #### ・HTTP認証とは
 
-ログイン時にHTTP通信の中で認証を行うこと．リクエストヘッダーとレスポンスヘッダーにおいて，認証スキームを選ぶことができる．「Basic認証スキーム」，「Digest認証スキーム」，「Bearer認証スキーム」，などがある．
+ログイン時にHTTP通信の中で認証を行うこと．リクエストヘッダーとレスポンスヘッダーにおいて，認証方法としての認証スキームを選べる．認証スキームの種類には，「Basic認証」，「Digest認証」，「Bearer認証」などがある．
 
 <br>
 
-### Basic認証スキーム
+### Basic認証
 
-#### ・Basic認証スキームとは
+#### ・Basic認証とは
 
-![Basic認証](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Basic認証.png)
+![Basic認証](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Basic認証.png)
 
 
 | 役割         | 説明                                                         |
@@ -35,15 +35,15 @@ WWW-Authenticate: Basic realm="Server Name", charaset="UTF-8"
 
 ```http
 # リクエストヘッダーについて，詳しくは，以降の説明を参照せよ．
-Authorization: Basic bG9naW46cGFzc3dvcmQ=
+authorization: Basic bG9naW46cGFzc3dvcmQ=
 ```
 
 4. サーバは，ユーザ名とパスワードを照合し，合致していれば，認証後ページのレスポンスを送信する．
 
 
-#### ・認証と認可に用いられるHTTPヘッダー
+#### ・照合情報の送信方法
 
-リクエスト時，クライアントはAuthorizationヘッダーでBasicスキームを宣言し，Base64でエンコードされた「```<ユーザ名>:<パスワード>```」を設定する．サーバは，これを照合し，クライアントの認証を行う．Basicスキームの宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
+リクエスト時，クライアントはAuthorizationヘッダーでBasic認証を宣言し，Base64でエンコードされた「```<ユーザ名>:<パスワード>```」を設定する．サーバは，これを照合し，クライアントの認証を行う．Basic認証の宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
 
 ```http
 # レスポンスヘッダー
@@ -53,17 +53,17 @@ WWW-Authenticate: Basic realm="<認証領域>", charaset="UTF-8"
 
 ```http
 # リクエストヘッダー
-Authorization: Basic <ユーザ名>:<パスワード>
+authorization: Basic <ユーザ名>:<パスワード>
 ```
 
 <br>
 
 
-### Digest認証スキーム
+### Digest認証
 
-#### ・Digest認証スキームとは
+#### ・Digest認証とは
 
-#### ・認証と認可に用いられるHTTPヘッダー
+#### ・照合情報の送信方法
 
 ```http
 # レスポンスヘッダー
@@ -72,32 +72,44 @@ WWW-Authenticate: Basic realm="<認証領域>", charaset="UTF-8"
 
 ```http
 # リクエストヘッダー
-Authorization: Digest realm="<認証領域>" nonce="<サーバ側が生成した任意の文字列>" algorithm="<ハッシュ関数名>" qoq="auth"
+authorization: Digest realm="<認証領域>" nonce="<サーバ側が生成した任意の文字列>" algorithm="<ハッシュ関数名>" qoq="auth"
 ```
 
 <br>
 
-### Bearer認証スキーム
+### Bearer認証
 
-#### ・Bearer認証スキームとは
+#### ・Bearer認証とは
 
-ログイン時にBearerトークンを使用した認証に用いる．アクセストークンの種類については，以降の説明を参照せよ．
+ログイン時にBearerトークンを使用する認証スキームのこと．アクセストークンの種類については，後述の説明を参照せよ．
 
-#### ・認証と認可に用いられるHTTPヘッダー
+#### ・照合情報の送信方法
+
+発行されたBearerトークンは，WWW-Authenticateヘッダーに割り当てられて返信される．
 
 ```http
 # レスポンスヘッダー
 WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 ```
 
+これを，Authorizationヘッダー，リクエストボディ，クエリパラメータのいずれかに割り当てて送信する．
+
 ```http
 # リクエストヘッダー
-Authorization: Bearer <Bearerトークン，JWT，など>
+authorization: Bearer <Bearerトークン，JWT，など>
 ```
 
 <br>
 
-## 01-02. その他の認証
+### Oauth認証
+
+#### ・Oauth認証とは
+
+後述の説明を参考にせよ．
+
+<br>
+
+## 01-02. HTTP認証以外の認証方法
 
 ### Form認証
 
@@ -105,7 +117,7 @@ Authorization: Bearer <Bearerトークン，JWT，など>
 
 ログイン時にセッションを使用する認証方法のこと．認証スキームには属していない．認証方法以外のセッションの仕様については，以下のノートを参考にせよ．
 
-参考：https://hiroki-it.github.io/tech-notebook_gitbook/public/backend_api_restful.html
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_api_restful.html
 
 #### ・Form認証の仕組み
 
@@ -125,7 +137,28 @@ Set-Cookie: sessionId=<セッションID>
 
 ```http
 # リクエストヘッダーの場合
-Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
+cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
+```
+
+<br>
+
+### APIキー認証
+
+#### ・APIキー認証とは
+
+事前にAPIキーとなる文字列を配布し，認証フェースは行わずに認可フェーズのみでクライアントを照合する方法のこと．API GatewayにおけるAPIキー認証については，以下を参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/infrastructure_cloud_computing_aws.html
+
+#### ・照合情報の送信方法
+
+独自ヘッダーとして，x-api-keyを定義し，これに割り当てて送信する．リクエストヘッダへのパラメータの割り当てについては，以下を参考にせよ．
+
+参考：https://hiroki-it.github.io/tech-notebook-gitbook/public/backend_api_restful.html
+
+```http
+# リクエストヘッダー
+x-api-key: XXXXX（キー）
 ```
 
 <br>
@@ -136,14 +169,14 @@ Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
 
 #### ・Two Step Verificationとは
 
-ログイン時に段階的に二つの認証を行う方法のこと．
+ログイン時に段階的に二つの認証方法を設定し，クライアントを照合する方法のこと．
 
 | 一段階目の認証例 | 二段階目の認証例 | 説明                                                         | 備考                                         |
 | ---------------- | ---------------- | ------------------------------------------------------------ | -------------------------------------------- |
-| IDとパスワード   | IDとパスワード   | IDとパスワードによる認証の後，別のIDとパスワードによる認証を行う． |                                              |
-|                  | 秘密の質問       | 質問に対してあらかじめ設定した回答を送信し，認可を行う．     |                                              |
-|                  | SMS              | SMSで受信した認証コードを送信し，認可を行う．                | 異なる要素のため，これは二要素認証でもある． |
-|                  | 指紋             | 指紋の解析結果を送信し，認可を行う．                         | 異なる要素のため，これは二要素認証でもある． |
+| IDとパスワード   | IDとパスワード   | IDとパスワードによる認証方法の後，別のIDとパスワードによる認証方法を設定する． |                                              |
+|                  | 秘密の質問       | IDとパスワードによる認証方法の後，質問に対してあらかじめ設定した回答による認証方法を設定する． |                                              |
+|                  | SMS              | IDとパスワードによる認証方法の後，SMS宛に送信した認証コードによる認証方法を設定する． | 異なる要素のため，これは二要素認証でもある． |
+|                  | 指紋             | IDとパスワードによる認証方法の後，指紋の解析結果による認証方法を設定する． | 異なる要素のため，これは二要素認証でもある． |
 
 <br>
 
@@ -151,24 +184,25 @@ Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
 
 #### ・Two Factor Authorizationとは
 
-二段階認証のうちで特に，ログイン時に異なる要素の認証を使用して，段階的に認証すること方法のこと．
+二段階認証のうちで特に，ログイン時に異なる要素の認証方法を使用して，段階的にクライアントを照合すること方法のこと．後述するOauth認証を組み込んでも良い．
 
 | 一要素目の認証例       | 二要素目の認証例                                             |
 | ---------------------- | ------------------------------------------------------------ |
 | IDとパスワード（知識） | 事前登録された電話番号のSMSで受信したワンタイムパスワード（所持） |
 |                        | 事前登録された電話番号のSMSで受信した認証コード（所持）      |
+|                        | Oauth認証（所持）                                            |
 |                        | 指紋（生体）                                                 |
 | 暗証番号（知識）       | キャッシュカード（所持）                                     |
 
 <br>
 
-## 02. 認可
+## 02. 認可フェーズ
 
-### 認証と認可の違い
+### 認証フェーズと認可フェーズの違い
 
-![アクセストークンを用いたセキュリティ仕組み](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/アクセストークンを用いたセキュリティの仕組み.jpg)
+![アクセストークンを用いたセキュリティ仕組み](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/アクセストークンを用いたセキュリティの仕組み.jpg)
 
-認証と認可では，仕組みの中に，３つの役割が定義されている．
+認証フェーズと認可フェーズでは，仕組みの中に，３つの役割が定義されている．
 
 1. クライアントが，HTTPリクエストにIDとパスワードを設定してリクエスト．
 2. IdP：Identity Providerが，IDを『認証』し，クライアント側にアクセストークンを発行．
@@ -187,20 +221,20 @@ Cookie: PHPSESSID=<セッションID>; csrftoken=u32t4o3tb3gg43; _gat=1
 
 #### ・Oauthプロトコル，Oauth認証とは
 
-![Oauthの具体例](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/Oauthの具体例.png)
+![Oauthの具体例](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/Oauthの具体例.png)
 
-ログイン時の認可で用いられるプロトコル．Oauthプロトコルによる認可を用いた認証認可フロー全体を，『Oauth認証』と呼ぶことに注意する．認証と認可では，３つの役割が定義されていることを説明したが，Oauthプロトコル```2.0```では，より具体的に４つの役割が定義されている．
+認証認可フェーズ全体の中で，認可フェーズにOauthプロトコルを用いたクライアントの照合方法を『Oauth認証』と呼ぶ．認証フェーズと認可フェーズでは，３つの役割が定義されていることを説明したが，Oauthプロトコル```2.0```では，より具体的に４つの役割が定義されている．
 
 | 役割                                  | 説明                                                         | 具体例                                                       |
 | ------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | クライアントアプリ（APIクライアント） | リソースオーナに対するアクション機能を持つサーバのこと．     | 例えば，Facebookアカウントは，連携する他アプリケーションへのログインアクション機能を持っている． |
 | リソースオーナー                      | クライアントを使用しているユーザのこと．                     | 例えば，Googleアカウントと他アプリケーションの連携時に，連携OKのボタンを押す． |
-| 認可サーバ（Identity Provider）       | リソースサーバがリソースオーナーにアクセスできるトークンを生成するサーバのこと． | アクセストークンの種類については，以降の説明を参照せよ．     |
+| 認可サーバ（Identity Provider）       | リソースサーバがリソースオーナーにアクセスできるトークンを生成するサーバのこと． | アクセストークンの種類については，後述の説明を参照せよ．なお，Oauth認証では認証スキーマとしてBearer認証が選ばれる傾向にあるため，認可サーバがBearerトークンを発行するように実装することが多い． |
 | リソースサーバ（APIサーバ）           | クライアントのアカウント情報を持っているサーバのこと．       | 例えば，Facebookから連携できるInstagram．                    |
 
 #### ・使用される認証スキーム
 
-Oauth認証では，Bear認証スキームが用いられることが多いが，AWSやGitHubは，独自の認証スキームを使用している．アクセストークンとしては，BearerトークンやJWTが用いられる．
+Oauth認証では，認証スキーマとしてBearer認証が選ばれることが多いが，AWSやGitHubは，独自の認証スキームを使用している．アクセストークンとしては，BearerトークンやJWTが用いられる．なお，認可サーバによって発行されたBearerトークンは，Authorizationヘッダー，リクエストボディ，クエリパラメータのいずれかに割り当てて送信できる．
 
 ```http
 # レスポンスヘッダー
@@ -209,7 +243,7 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 
 ```http
 # リクエストヘッダー
-Authorization: Bearer <Bearerトークン，JWT，など>
+authorization: Bearer <Bearerトークン，JWT，など>
 ```
 
 #### ・付与タイプ
@@ -232,7 +266,7 @@ Oauth認証のトークンの付与方法には種類がある．
 
 #### ・Personal Access Tokenとは
 
-Personal Access Token（個人用アクセストークン）を使用する認証方法．Oauth認証では，認可時にクライアントアプリがアクセストークンの付与を認可サーバにリクエストし，認証時にこれを送信してくれる．しかし，Personal Access Tokenでは，ユーザがアクセストークンの付与をリクエストし，また開示されたアクセストークンを送信する必要がある．作成時以降，アクセストークンを確認できなくなるため，ユーザがアクセストークンを管理する必要がある．
+Personal Access Token（個人用アクセストークン）を使用する認証方法．Oauth認証では，認可フェーズ時にクライアントアプリがアクセストークンの付与を認可サーバにリクエストし，認証時にこれを送信してくれる．しかし，Personal Access Tokenでは，ユーザがアクセストークンの付与をリクエストし，また開示されたアクセストークンを送信する必要がある．作成時以降，アクセストークンを確認できなくなるため，ユーザがアクセストークンを管理する必要がある．
 
 参考：https://www.contentful.com/help/personal-access-tokens/
 
@@ -260,11 +294,11 @@ Personal Access Token（個人用アクセストークン）を使用する認�
 
 #### ・Bearerトークンとは
 
-単なる文字列で定義されたアクセストークン．認証と認可において，実際に認証された本人かどうかを判定する機能は無く，トークンを持っていれば，それを本人と見なす．そのため，トークンの文字列が流出してしまわないよう，厳重に管理する必要がある．
+単なる文字列で定義されたアクセストークン．認証フェーズと認可フェーズにおいて，実際に認証された本人かどうかを判定する機能は無く，トークンを持っていれば，それを本人と見なす．そのため，トークンの文字列が流出してしまわないよう，厳重に管理する必要がある．
 
-#### ・認証と認可に用いられるHTTPヘッダー
+#### ・照合情報の送信方法
 
-リクエスト時，Authorizationヘッダーで，Bearerスキームを宣言し，Bearerトークンの文字列を設定する．Bearerの宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
+リクエスト時，Authorizationヘッダーで，Bearer認証を宣言し，Bearerトークンの文字列を設定する．Bearerの宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
 
 ```http
 # レスポンスヘッダー
@@ -272,7 +306,7 @@ WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 ```
 ```http
 # リクエストヘッダー
-Authorization: Bearer <Bearerトークンの文字列>
+authorization: Bearer <Bearerトークンの文字列>
 ```
 
 <br>
@@ -290,8 +324,8 @@ JSON型で実装されたアクセストークン．Oauth認証のアクセス�
 JWTは，エンコードされたヘッダー，ペイロード，署名，から構成される．
 
 ```javascript
-const token = base64urlEncoding(header) + '.' +
-      base64urlEncoding(payload) + '.' +
+const token = base64urlEncoding(header) + "." +
+      base64urlEncoding(payload) + "." +
       base64urlEncoding(signature)
 ```
 
@@ -324,18 +358,18 @@ const payload = {
 
 ```javascript
 const signature = HMACSHA256(
-    base64urlEncoding(header) + '.' + base64urlEncoding(payload),
+    base64urlEncoding(header) + "." + base64urlEncoding(payload),
     secret
 )
 ```
 
-#### ・認証と認可に用いられるHTTPヘッダー
+#### ・照合情報の送信方法
 
-リクエスト時，Authorizationヘッダーで，Bearerスキームを宣言し，JWTの文字列を設定する．Bearerスキームの宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
+リクエスト時，Authorizationヘッダーで，Bearer認証を宣言し，JWTの文字列を設定する．Bearer認証の宣言と文字列の間には，半角スペースが必要である．ユーザに表示するための認証領域には，任意の値を持たせることができ，サイト名が設定されることが多い．
 
 ```http
 # リクエストヘッダー
-Authorization: Bearer <JWTの文字列>
+authorization: Bearer <JWTの文字列>
 ```
 
 ```http
@@ -343,6 +377,6 @@ Authorization: Bearer <JWTの文字列>
 WWW-Authenticate: Bearer realm="<認証領域>", charaset="UTF-8"
 ```
 
-#### ・JWTを用いた認証と認可
+#### ・JWTを用いた認証フェーズと認可フェーズ
 
-![JWT](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/JWT.png)
+![JWT](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/JWT.png)

@@ -10,7 +10,7 @@
 
 インターネットを経由して，ベンダーのサーバに自身のデータを保存し，利用すること．ベンダーが，システムを稼働させるために必要なソフトウェアとハードウェアをどこまで提供するかによって，サービスの名称が異なる．
 
-![オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png)
+![オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/オンプレ，ホスティング，IaaS，CaaS，PaaS，Faas，SaaSの比較.png)
 
 <br>
 
