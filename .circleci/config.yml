@@ -80,8 +80,7 @@ jobs:
             - ./public/build
 
 workflows:
-  version: 2.1
-  build-push:
+  master:
     jobs:
       # Push Image To Docker Hub
       - push-builder-image:
