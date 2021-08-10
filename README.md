@@ -7,8 +7,9 @@
 
 ## クラウドインフラ構成図
 
-Terraformのソースコードは，  
-[tech-notebook_terraform](https://github.com/Hiroki-IT/tech-notebook_terraform) で管理しております．
+Terraformのソースコードは，[tech-notebook_terraform](https://github.com/Hiroki-IT/tech-notebook_terraform) で管理しております．
+
+Terraformにつきまして，CircleCIとAWS STSを用いたCICDは構築しておらず，手動でapplyしております．
 
 ![tech-notebook_aws_design](https://raw.githubusercontent.com/Hiroki-IT/tech-notebook/master/images/tech-notebook_aws_design.png)
 
