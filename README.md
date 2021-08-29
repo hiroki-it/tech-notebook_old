@@ -2,8 +2,7 @@
 
 このサイトは，[Read the Docs](https://sphinx-rtd-theme.readthedocs.io/en/stable/) とモダンインフラを使用して作成したサイトです．
 
-クラウドサービス利用による金銭的な理由から
-[tech-notebook_gitbook](https://github.com/Hiroki-IT/tech-notebook_gitbook) も使用しております．
+クラウドサービス利用による金銭的な理由から [tech-notebook_gitbook](https://github.com/Hiroki-IT/tech-notebook_gitbook) に移行しました．
 
 ## クラウドインフラ構成図
 
