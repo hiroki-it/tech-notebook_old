@@ -6,7 +6,7 @@ services:
     container_name: tech-notebook-www
     hostname: tech-notebook-www
     build:
-      dockerfile: ./infra/docker/www/Dockerfile
+      dockerfile: ./docker/www/Dockerfile
       target: develop
       context: .
     image: tech-notebook-www:latest
@@ -26,7 +26,7 @@ services:
     container_name: tech-notebook-builder
     hostname: tech-notebook-builder
     build:
-      dockerfile: ./infra/docker/builder/Dockerfile
+      dockerfile: ./docker/builder/Dockerfile
       target: develop
       context: .
     image: tech-notebook-builder:latest
