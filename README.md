@@ -2,9 +2,9 @@
 
 このサイトは，[Read the Docs](https://sphinx-rtd-theme.readthedocs.io/en/stable/) ，AWS，CircleCI，Terraformを使用して作成したサイトです．
 
-クラウドサービス利用による金銭的な理由から，以下に移行しました．
+クラウドサービス利用による金銭的な理由から本サイトは廃止し，Mkdocsに移行しました．
 
-- サイトURL：https://hiroki-it.github.io/tech-notebook-mkdocs/about.html
+- 移行先URL：https://hiroki-it.github.io/tech-notebook-mkdocs/about.html
 - リポジトリ：[tech-notebook-mkdocs](https://github.com/hiroki-it/tech-notebook-mkdocs)
 
 ## クラウドインフラ構成図
