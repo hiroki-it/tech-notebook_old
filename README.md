@@ -1,4 +1,4 @@
-## このサイトについて（PC版のみ）
+## このサイトについて
 
 このサイトは，[Read the Docs](https://sphinx-rtd-theme.readthedocs.io/en/stable/) ，AWS，CircleCI，Terraformを使用して作成したサイトです．
 
