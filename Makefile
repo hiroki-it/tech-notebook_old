@@ -1,9 +1,4 @@
-commit-image:
-	git checkout develop
+commit-push-all:
 	git add images
 	git commit -m "add 新しく画像を引用した．"
-
-commit-push-all: commit-image
 	git push
-	git checkout master && git merge develop && git push
-	git checkout develop
