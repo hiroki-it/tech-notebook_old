@@ -4,7 +4,7 @@
 
 クラウドサービス利用による金銭的な理由から本サイトは廃止し，Mkdocsに移行しました．
 
-- 移行先URL：https://hiroki-it.github.io/tech-notebook-mkdocs/about.html
+- 移行先URL：https://hiroki-it.github.io/tech-notebook-mkdocs/index.html
 - リポジトリ：[tech-notebook-mkdocs](https://github.com/hiroki-it/tech-notebook-mkdocs)
 
 ## クラウドインフラ構成図
