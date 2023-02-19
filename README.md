@@ -13,5 +13,6 @@ Terraformのソースコードは，[tech-notebook-terraform](https://github.com
 
 Terraformにつきまして，CircleCIとAWS STSを用いたCICDは構築しておらず，手動でapplyしております．
 
-![tech-notebook_aws_design](https://raw.githubusercontent.com/hiroki-it/tech-notebook/master/images/tech-notebook_aws_design.png)
+![tech-notebook_aws_design](https://raw.githubusercontent.com/hiroki-it/tech-notebook-images/master/images/tech-notebook_aws_design.png)
 
+<br>
